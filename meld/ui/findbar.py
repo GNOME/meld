@@ -14,15 +14,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld.ui import gnomeglade
+from meld.ui._gtktemplate import Template
 
 
-class FindBar(gnomeglade.Component):
+@Template(resource_path='/org/gnome/meld/ui/findbar.ui')
+class FindBar(Gtk.Grid):
+
+    __gtype_name__ = 'FindBar'
+
+    arrow_left = Template.Child()
+    arrow_right = Template.Child()
+    find_entry = Template.Child()
+    find_next_button = Template.Child()
+    find_previous_button = Template.Child()
+    hbuttonbox2 = Template.Child()
+    match_case = Template.Child()
+    regex = Template.Child()
+    replace_entry = Template.Child()
+    replace_label = Template.Child()
+    whole_word = Template.Child()
+    wrap_box = Template.Child()
+
     def __init__(self, parent):
-        super().__init__("findbar.ui", "findbar",
-                         ["arrow_left", "arrow_right"])
+        super().__init__()
+        self.init_template()
+
         self.set_text_view(None)
         self.arrow_left.show()
         self.arrow_right.show()
@@ -38,18 +57,15 @@ class FindBar(gnomeglade.Component):
 
     def on_focus_child(self, container, widget):
         if widget is not None:
-            visible = self.widget.props.visible
-            if widget is not self.widget and visible:
+            visible = self.props.visible
+            if widget is not self and visible:
                 self.hide()
         return False
 
     def hide(self):
         self.set_text_view(None)
         self.wrap_box.set_visible(False)
-        self.widget.hide()
-
-    def on_stop_search(self, search_entry):
-        self.hide()
+        Gtk.Widget.hide(self)
 
     def set_text_view(self, textview):
         self.textview = textview
@@ -68,8 +84,8 @@ class FindBar(gnomeglade.Component):
         self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
-        self.widget.set_row_spacing(0)
-        self.widget.show()
+        self.set_row_spacing(0)
+        self.show()
         self.find_entry.grab_focus()
 
     def start_find_next(self, textview):
@@ -91,17 +107,20 @@ class FindBar(gnomeglade.Component):
         self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
-        self.widget.set_row_spacing(6)
-        self.widget.show_all()
+        self.set_row_spacing(6)
+        self.show_all()
         self.find_entry.grab_focus()
         self.wrap_box.set_visible(False)
 
+    @Template.Callback()
     def on_find_next_button_clicked(self, button):
         self._find_text()
 
+    @Template.Callback()
     def on_find_previous_button_clicked(self, button):
         self._find_text(backwards=True)
 
+    @Template.Callback()
     def on_replace_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         oldsel = buf.get_selection_bounds()
@@ -114,6 +133,7 @@ class FindBar(gnomeglade.Component):
                 newsel[0], newsel[1], self.replace_entry.get_text(), -1)
             self._find_text(0)
 
+    @Template.Callback()
     def on_replace_all_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         saved_insert = buf.create_mark(
@@ -124,9 +144,14 @@ class FindBar(gnomeglade.Component):
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
 
+    @Template.Callback()
     def on_find_entry_changed(self, entry):
         self.find_entry.get_style_context().remove_class("not-found")
         self._find_text(0)
+
+    @Template.Callback()
+    def on_stop_search(self, search_entry):
+        self.hide()
 
     def _find_text(self, start_offset=1, backwards=False):
         assert self.textview

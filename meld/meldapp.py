@@ -25,11 +25,10 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.conf
-import meld.preferences
-import meld.ui.util
 from meld.conf import _
 from meld.filediff import FileDiff
 from meld.meldwindow import MeldWindow
+from meld.preferences import PreferencesDialog
 
 log = logging.getLogger(__name__)
 
@@ -65,11 +64,6 @@ class MeldApp(Gtk.Application):
             action.connect('activate', callback)
             self.add_action(action)
 
-        # TODO: Should not be necessary but Builder doesn't understand Menus
-        builder = meld.ui.util.get_builder("application.ui")
-        menu = builder.get_object("app-menu")
-        self.set_app_menu(menu)
-        # self.set_menubar()
         self.new_window()
 
     def do_activate(self):
@@ -89,19 +83,13 @@ class MeldApp(Gtk.Application):
 
             self.hold()
             tab.command_line = command_line
-            tab.connect('close', done)
+            tab.close_signal.connect(done)
 
-        window = self.get_active_window().meldwindow
+        window = self.get_active_window()
         if not window.has_pages():
             window.append_new_comparison()
         self.activate()
         return 0
-
-    def do_window_removed(self, widget):
-        widget.meldwindow = None
-        Gtk.Application.do_window_removed(self, widget)
-        if not len(self.get_windows()):
-            self.quit()
 
     # We can't override do_local_command_line because it has no introspection
     # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912
@@ -110,7 +98,9 @@ class MeldApp(Gtk.Application):
     #     return False
 
     def preferences_callback(self, action, parameter):
-        meld.preferences.PreferencesDialog(self.get_active_window())
+        parent = self.get_active_window()
+        dialog = PreferencesDialog(transient_for=parent)
+        dialog.present()
 
     def help_callback(self, action, parameter):
         if meld.conf.DATADIR_IS_UNINSTALLED:
@@ -121,11 +111,13 @@ class MeldApp(Gtk.Application):
             Gdk.Screen.get_default(), uri, Gtk.get_current_event_time())
 
     def about_callback(self, action, parameter):
-        about = meld.ui.util.get_widget("application.ui", "aboutdialog")
-        about.set_version(meld.conf.__version__)
-        about.set_transient_for(self.get_active_window())
-        about.run()
-        about.destroy()
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/about-dialog.ui')
+        dialog = builder.get_object('about-dialog')
+        dialog.set_version(meld.conf.__version__)
+        dialog.set_transient_for(self.get_active_window())
+        dialog.run()
+        dialog.destroy()
 
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
@@ -138,12 +130,8 @@ class MeldApp(Gtk.Application):
 
     def new_window(self):
         window = MeldWindow()
-        self.add_window(window.widget)
-        window.widget.meldwindow = window
+        self.add_window(window)
         return window
-
-    def get_meld_window(self):
-        return self.get_active_window().meldwindow
 
     def open_files(
             self, gfiles, *, window=None, close_on_error=False, **kwargs):
@@ -154,12 +142,12 @@ class MeldApp(Gtk.Application):
             None, the current window is used
         :param close_on_error: if true, close window if an error occurs
         """
-        window = window or self.get_meld_window()
+        window = window or self.get_active_window()
         try:
             return window.open_paths(gfiles, **kwargs)
         except ValueError:
             if close_on_error:
-                self.remove_window(window.widget)
+                self.remove_window(window)
             raise
 
     def diff_files_callback(self, option, opt_str, value, parser):

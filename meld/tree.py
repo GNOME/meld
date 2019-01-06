@@ -220,6 +220,59 @@ class DiffTreeStore(SearchableTreeStore):
             self.set(treeiter, safe_keys_values)
 
 
+class TreeviewCommon:
+
+    def on_treeview_popup_menu(self, treeview):
+        cursor_path, cursor_col = treeview.get_cursor()
+        if not cursor_path:
+            self.popup_menu.popup_at_pointer(None)
+            return True
+
+        # We always want to pop up to the right of the first column,
+        # ignoring the actual cursor column location.
+        rect = treeview.get_background_area(
+            cursor_path, treeview.get_column(0))
+
+        self.popup_menu.popup_at_rect(
+            treeview.get_bin_window(),
+            rect,
+            Gdk.Gravity.SOUTH_EAST,
+            Gdk.Gravity.NORTH_WEST,
+            None,
+        )
+        return True
+
+    def on_treeview_button_press_event(self, treeview, event):
+
+        # If we have multiple treeviews, unselect clear other tree selections
+        num_panes = getattr(self, 'num_panes', 1)
+        if num_panes > 1:
+            for t in self.treeview[:self.num_panes]:
+                if t != treeview:
+                    t.get_selection().unselect_all()
+
+        if (event.triggers_context_menu() and
+                event.type == Gdk.EventType.BUTTON_PRESS):
+
+            treeview.grab_focus()
+
+            path = treeview.get_path_at_pos(int(event.x), int(event.y))
+            if path is None:
+                return False
+
+            selection = treeview.get_selection()
+            model, rows = selection.get_selected_rows()
+
+            if path[0] not in rows:
+                selection.unselect_all()
+                selection.select_path(path[0])
+                treeview.set_cursor(path[0])
+
+            self.popup_menu.popup_at_pointer(event)
+            return True
+        return False
+
+
 def treeview_search_cb(model, column, key, it, data):
     # If the key contains a path separator, search the whole path,
     # otherwise just use the filename. If the key is all lower-case, do a

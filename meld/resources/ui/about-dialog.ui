@@ -2,7 +2,7 @@
 <!--*- mode: xml -*-->
 <interface>
   <!-- interface-requires gtk+ 3.6 -->
-  <object class="GtkAboutDialog" id="aboutdialog">
+  <object class="GtkAboutDialog" id="about-dialog">
     <property name="can_focus">False</property>
     <property name="border_width">5</property>
     <property name="title" translatable="yes">About Meld</property>
@@ -44,32 +44,4 @@ Josef Vybíral</property>
       </object>
     </child>
   </object>
-  <menu id="app-menu">
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">_Preferences</attribute>
-        <attribute name="action">app.preferences</attribute>
-      </item>
-    </section>
-    <section>
-      <item>
-        <attribute name="label" translatable="yes">_Help</attribute>
-        <attribute name="action">app.help</attribute>
-        <attribute name="accel">F1</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
-        <attribute name="action">win.show-help-overlay</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_About</attribute>
-        <attribute name="action">app.about</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_Quit</attribute>
-        <attribute name="action">app.quit</attribute>
-        <attribute name="accel">&lt;Primary&gt;q</attribute>
-      </item>
-    </section>
-  </menu>
 </interface>

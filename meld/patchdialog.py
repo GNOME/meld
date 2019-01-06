@@ -28,15 +28,26 @@ from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
 from meld.settings import meldsettings
 from meld.sourceview import LanguageManager
-from meld.ui.gnomeglade import Component
+from meld.ui._gtktemplate import Template
 
 
-class PatchDialog(Component):
+@Template(resource_path='/org/gnome/meld/ui/patch-dialog.ui')
+class PatchDialog(Gtk.Dialog):
+
+    __gtype_name__ = "PatchDialog"
+
+    left_radiobutton = Template.Child("left_radiobutton")
+    reverse_checkbutton = Template.Child("reverse_checkbutton")
+    right_radiobutton = Template.Child("right_radiobutton")
+    side_selection_box = Template.Child("side_selection_box")
+    side_selection_label = Template.Child("side_selection_label")
+    textview = Template.Child("textview")
 
     def __init__(self, filediff):
-        super().__init__("patch-dialog.ui", "patchdialog")
+        super().__init__()
+        self.init_template()
 
-        self.widget.set_transient_for(filediff.widget.get_toplevel())
+        self.set_transient_for(filediff.get_toplevel())
         self.filediff = filediff
 
         buf = GtkSource.Buffer()
@@ -135,9 +146,9 @@ class PatchDialog(Component):
     def run(self):
         self.update_patch()
 
-        result = self.widget.run()
+        result = super().run()
         if result < 0:
-            self.widget.hide()
+            self.hide()
             return
 
         # Copy patch to clipboard
@@ -153,4 +164,4 @@ class PatchDialog(Component):
             if gfile:
                 self.save_patch(gfile)
 
-        self.widget.hide()
+        self.hide()

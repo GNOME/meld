@@ -21,9 +21,10 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from meld.conf import _
-from meld.melddoc import LabeledObjectMixin
+from meld.melddoc import LabeledObjectMixin, MeldDoc
 from meld.recent import recent_comparisons
-from meld.ui import gnomeglade
+from meld.ui._gtktemplate import Template
+from meld.ui.util import map_widgets_into_lists
 
 
 class DiffType(enum.IntEnum):
@@ -37,29 +38,46 @@ class DiffType(enum.IntEnum):
         return self in (self.File, self.Folder)
 
 
-class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
+@Template(resource_path='/org/gnome/meld/ui/new-diff-tab.ui')
+class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
 
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
         'diff-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
+    close_signal = MeldDoc.close_signal
+    label_changed_signal = LabeledObjectMixin.label_changed
+
     label_text = _("New comparison")
 
+    button_compare = Template.Child()
+    button_new_blank = Template.Child()
+    button_type_dir = Template.Child()
+    button_type_file = Template.Child()
+    button_type_vc = Template.Child()
+    choosers_notebook = Template.Child()
+    dir_chooser0 = Template.Child()
+    dir_chooser1 = Template.Child()
+    dir_chooser2 = Template.Child()
+    dir_three_way_checkbutton = Template.Child()
+    file_chooser0 = Template.Child()
+    file_chooser1 = Template.Child()
+    file_chooser2 = Template.Child()
+    file_three_way_checkbutton = Template.Child()
+    filechooserdialog0 = Template.Child()
+    filechooserdialog1 = Template.Child()
+    filechooserdialog2 = Template.Child()
+    vc_chooser0 = Template.Child()
+
     def __init__(self, parentapp):
-        GObject.GObject.__init__(self)
-        gnomeglade.Component.__init__(
-            self, "tab-placeholder.ui", "new_comparison_tab",
-            [
-                "filechooserdialog0",
-                "filechooserdialog1",
-                "filechooserdialog2",
-            ]
+        super().__init__()
+        self.init_template()
+        map_widgets_into_lists(
+            self,
+            ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"]
         )
-        self.map_widgets_into_lists(
-            ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"])
         self.button_types = [
             self.button_type_file,
             self.button_type_dir,
@@ -76,8 +94,9 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         for chooser in self.file_chooser:
             chooser.set_current_folder(default_path)
 
-        self.widget.show()
+        self.show()
 
+    @Template.Callback()
     def on_button_type_toggled(self, button, *args):
         if not button.get_active():
             if not any([b.get_active() for b in self.button_types]):
@@ -95,12 +114,14 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
             self.diff_type.supports_blank())
         self.button_compare.set_sensitive(True)
 
+    @Template.Callback()
     def on_three_way_checkbutton_toggled(self, button, *args):
         if button is self.file_three_way_checkbutton:
             self.file_chooser2.set_sensitive(button.get_active())
         else:  # button is self.dir_three_way_checkbutton
             self.dir_chooser2.set_sensitive(button.get_active())
 
+    @Template.Callback()
     def on_file_set(self, filechooser, *args):
         gfile = filechooser.get_file()
         if not gfile:
@@ -132,6 +153,7 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
             num_paths = 1
         return num_paths
 
+    @Template.Callback()
     def on_button_compare_clicked(self, *args):
         type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
         choosers = type_choosers[self.diff_type][:self._get_num_paths()]
@@ -148,6 +170,7 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         recent_comparisons.add(tab)
         self.emit('diff-created', tab)
 
+    @Template.Callback()
     def on_button_new_blank_clicked(self, *args):
         # TODO: This doesn't work the way I'd like for DirDiff and VCView.
         # It should do something similar to FileDiff; give a tab with empty
@@ -163,11 +186,11 @@ class NewDiffTab(LabeledObjectMixin, GObject.GObject, gnomeglade.Component):
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, *args):
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def on_container_switch_out_event(self, *args):
         pass
 
     def on_delete_event(self, *args):
-        self.emit('close', 0)
+        self.close_signal.emit(0)
         return Gtk.ResponseType.OK

@@ -102,13 +102,8 @@ except locale.Error as e:
     locale.setlocale(locale.LC_ALL, 'C')
 gettext.textdomain(locale_domain)
 trans = gettext.translation(locale_domain, localedir=locale_dir, fallback=True)
-try:
-    _ = meld.conf._ = trans.ugettext
-    meld.conf.ngettext = trans.ungettext
-except AttributeError:
-    # py3k
-    _ = meld.conf._ = trans.gettext
-    meld.conf.ngettext = trans.ngettext
+_ = meld.conf._ = trans.gettext
+meld.conf.ngettext = trans.ngettext
 
 try:
     if os.name == 'nt':
@@ -227,10 +222,20 @@ def check_requirements():
 
 
 def setup_resources():
+    from gi.repository import Gio
     from gi.repository import GLib
     from gi.repository import Gtk
     from gi.repository import Gdk
     from gi.repository import GtkSource
+
+    resource_file = os.path.join(meld.conf.DATADIR, "meld.gresource")
+    try:
+        resources = Gio.resource_load(resource_file)
+        Gio.resources_register(resources)
+    except Exception:
+        # Allow resources to be missing when running uninstalled
+        if not uninstalled:
+            raise
 
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)

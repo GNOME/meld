@@ -1,20 +1,22 @@
 
 import os
 import sys
+from pathlib import Path
 
 __package__ = "meld"
 __version__ = "3.21.0"
 
 APPLICATION_ID = "org.gnome.meld"
+RESOURCE_BASE = '/org/gnome/meld'
 
 # START; these paths are clobbered on install by meld.build_helpers
-DATADIR = os.path.join(sys.prefix, "share", "meld")
-LOCALEDIR = os.path.join(sys.prefix, "share", "locale")
+DATADIR = Path(sys.prefix) / "share" / "meld"
+LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 # END
 
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
-PYTHON_REQUIREMENT_TUPLE = (3, 3)
+PYTHON_REQUIREMENT_TUPLE = (3, 4)
 
 
 # Installed from main script
@@ -38,12 +40,15 @@ def frozen():
 
 def uninstalled():
     global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
-    melddir = os.path.abspath(os.path.join(
-        os.path.dirname(os.path.realpath(__file__)), ".."))
 
-    DATADIR = os.path.join(melddir, "data")
-    LOCALEDIR = os.path.join(melddir, "build", "mo")
+    melddir = Path(__file__).resolve().parent.parent
+
+    DATADIR = melddir / "data"
+    LOCALEDIR = melddir / "build" / "mo"
     DATADIR_IS_UNINSTALLED = True
+
+    resource_path = melddir / "meld" / "resources"
+    os.environ['G_RESOURCE_OVERLAYS'] = f'{RESOURCE_BASE}={resource_path}'
 
 
 def ui_file(filename):

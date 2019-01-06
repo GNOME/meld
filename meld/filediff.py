@@ -27,7 +27,7 @@ from gi.repository import GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -42,8 +42,9 @@ from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings
 from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
+from meld.ui._gtktemplate import Template
 from meld.ui.findbar import FindBar
-from meld.ui.gnomeglade import Component, ui_file
+from meld.ui.util import map_widgets_into_lists
 from meld.undo import UndoSequence
 
 
@@ -89,10 +90,18 @@ class CursorDetails:
             setattr(self, var, None)
 
 
-class FileDiff(MeldDoc, Component):
+@Template(resource_path='/org/gnome/meld/ui/filediff.ui')
+class FileDiff(Gtk.VBox, MeldDoc):
     """Two or three way comparison of text files"""
 
     __gtype_name__ = "FileDiff"
+
+    close_signal = MeldDoc.close_signal
+    create_diff_signal = MeldDoc.create_diff_signal
+    file_changed_signal = MeldDoc.file_changed_signal
+    label_changed = MeldDoc.label_changed
+    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
+    tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
         ('ignore-blank-lines', 'ignore-blank-lines'),
@@ -104,6 +113,53 @@ class FileDiff(MeldDoc, Component):
         blurb="Whether to ignore blank lines when comparing file contents",
         default=False,
     )
+
+    actiongroup = Template.Child('FilediffActions')
+    diffmap0 = Template.Child()
+    diffmap1 = Template.Child()
+    dummy_toolbar_diffmap0 = Template.Child()
+    dummy_toolbar_diffmap1 = Template.Child()
+    dummy_toolbar_linkmap0 = Template.Child()
+    dummy_toolbar_linkmap1 = Template.Child()
+    fileentry0 = Template.Child()
+    fileentry1 = Template.Child()
+    fileentry2 = Template.Child()
+    fileentry_toolitem0 = Template.Child()
+    fileentry_toolitem1 = Template.Child()
+    fileentry_toolitem2 = Template.Child()
+    file_save_button0 = Template.Child()
+    file_save_button1 = Template.Child()
+    file_save_button2 = Template.Child()
+    file_toolbar0 = Template.Child()
+    file_toolbar1 = Template.Child()
+    file_toolbar2 = Template.Child()
+    filelabel0 = Template.Child()
+    filelabel1 = Template.Child()
+    filelabel2 = Template.Child()
+    filelabel_toolitem0 = Template.Child()
+    filelabel_toolitem1 = Template.Child()
+    filelabel_toolitem2 = Template.Child()
+    grid = Template.Child()
+    msgarea_mgr0 = Template.Child()
+    msgarea_mgr1 = Template.Child()
+    msgarea_mgr2 = Template.Child()
+    readonlytoggle0 = Template.Child()
+    readonlytoggle1 = Template.Child()
+    readonlytoggle2 = Template.Child()
+    scrolledwindow0 = Template.Child()
+    scrolledwindow1 = Template.Child()
+    scrolledwindow2 = Template.Child()
+    statusbar0 = Template.Child()
+    statusbar1 = Template.Child()
+    statusbar2 = Template.Child()
+    linkmap0 = Template.Child()
+    linkmap1 = Template.Child()
+    textview0 = Template.Child()
+    textview1 = Template.Child()
+    textview2 = Template.Child()
+    vbox0 = Template.Child()
+    vbox1 = Template.Child()
+    vbox2 = Template.Child()
 
     differ = Differ
 
@@ -128,28 +184,27 @@ class FileDiff(MeldDoc, Component):
     }
 
     def __init__(self, num_panes):
-        """Start up an filediff with num_panes empty contents.
-        """
+        super().__init__()
+        # FIXME:
+        # This unimaginable hack exists because GObject (or GTK+?)
+        # doesn't actually correctly chain init calls, even if they're
+        # not to GObjects. As a workaround, we *should* just be able to
+        # put our class first, but because of Gtk.Template we can't do
+        # that if it's a GObject, because GObject doesn't support
+        # multiple inheritance and we need to inherit from our Widget
+        # parent to make Template work.
         MeldDoc.__init__(self)
-        Component.__init__(
-            self, "filediff.ui", "filediff", ["FilediffActions"])
+        self.init_template()
         bind_settings(self)
 
         widget_lists = [
             "diffmap", "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
-            "scrolledwindow", "selector_hbox", "textview", "vbox",
+            "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
             "fileentry_toolitem", "dummy_toolbar_diffmap", "statusbar",
         ]
-        self.map_widgets_into_lists(widget_lists)
-
-        # This SizeGroup isn't actually necessary for FileDiff; it's for
-        # handling non-homogenous selectors in FileComp. It's also fragile.
-        column_sizes = Gtk.SizeGroup(mode=Gtk.SizeGroupMode.HORIZONTAL)
-        column_sizes.set_ignore_hidden(True)
-        for widget in self.selector_hbox:
-            column_sizes.add_widget(widget)
+        map_widgets_into_lists(self, widget_lists)
 
         self.warned_bad_comparison = False
         self._keymask = 0
@@ -185,10 +240,9 @@ class FileDiff(MeldDoc, Component):
             buf.undo_sequence = self.undosequence
             buf.connect("notify::has-selection",
                         self.update_text_actions_sensitivity)
-            buf.data.connect('file-changed', self.notify_file_changed)
+            buf.data.file_changed_signal.connect(self.notify_file_changed)
 
         self.ui_file = ui_file("filediff-ui.xml")
-        self.actiongroup = self.FilediffActions
         self.actiongroup.set_translation_domain("meld")
 
         # Alternate keybindings for a few commands.
@@ -197,11 +251,10 @@ class FileDiff(MeldDoc, Component):
         )
 
         self.findbar = FindBar(self.grid)
-        self.grid.attach(self.findbar.widget, 1, 2, 5, 1)
+        self.grid.attach(self.findbar, 1, 2, 5, 1)
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
-        self.connect("current-diff-changed", self.on_current_diff_changed)
         for t in self.textview:
             t.connect("focus-in-event", self.on_current_diff_changed)
             t.connect("focus-out-event", self.on_current_diff_changed)
@@ -316,6 +369,7 @@ class FileDiff(MeldDoc, Component):
         self.emit("action-mode-changed", mode)
     keymask = property(get_keymask, set_keymask)
 
+    @Template.Callback()
     def on_key_event(self, object, event):
         keymap = Gdk.Keymap.get_default()
         ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
@@ -329,9 +383,6 @@ class FileDiff(MeldDoc, Component):
             if event.keyval == Gdk.KEY_Return and self.keymask & MASK_SHIFT:
                 self.findbar.start_find_previous(self.focus_pane)
             self.keymask &= ~mod_key
-
-    def on_focus_change(self):
-        self.keymask = 0
 
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
@@ -388,10 +439,10 @@ class FileDiff(MeldDoc, Component):
             chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)
             if chunk != self.cursor.chunk or force:
                 self.cursor.chunk = chunk
-                self.emit("current-diff-changed")
+                self.on_current_diff_changed()
             if prev != self.cursor.prev or next_ != self.cursor.next or force:
-                self.emit(
-                    "next-diff-changed", prev is not None, next_ is not None)
+                self.next_diff_changed_signal.emit(
+                    prev is not None, next_ is not None)
 
             prev_conflict, next_conflict = None, None
             for conflict in self.linediffer.conflicts:
@@ -410,7 +461,7 @@ class FileDiff(MeldDoc, Component):
             self.cursor.next_conflict = next_conflict
         self.cursor.line, self.cursor.offset = line, offset
 
-    def on_current_diff_changed(self, widget, *args):
+    def on_current_diff_changed(self, *args):
         pane = self._get_focused_pane()
         if pane != -1:
             # While this *should* be redundant, it's possible for focus pane
@@ -531,6 +582,7 @@ class FileDiff(MeldDoc, Component):
             mark0, mark1, 'focus-highlight', 400000, starting_alpha=0.3,
             anim_type=TextviewLineAnimationType.stroke)
 
+    @Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
 
@@ -539,9 +591,11 @@ class FileDiff(MeldDoc, Component):
                   else self.cursor.prev)
         self.go_to_chunk(target, centered=centered)
 
+    @Template.Callback()
     def action_previous_conflict(self, *args):
         self.go_to_chunk(self.cursor.prev_conflict, self.cursor.pane)
 
+    @Template.Callback()
     def action_next_conflict(self, *args):
         self.go_to_chunk(self.cursor.next_conflict, self.cursor.pane)
 
@@ -567,37 +621,45 @@ class FileDiff(MeldDoc, Component):
         dst = src + direction
         return (dst, src) if reverse else (src, dst)
 
+    @Template.Callback()
     def action_push_change_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
+    @Template.Callback()
     def action_push_change_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
+    @Template.Callback()
     def action_pull_change_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
+    @Template.Callback()
     def action_pull_change_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
+    @Template.Callback()
     def action_copy_change_left_up(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
+    @Template.Callback()
     def action_copy_change_right_up(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
+    @Template.Callback()
     def action_copy_change_left_down(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
+    @Template.Callback()
     def action_copy_change_right_down(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
@@ -619,14 +681,17 @@ class FileDiff(MeldDoc, Component):
             self._sync_vscroll(self.scrolledwindow[src].get_vadjustment(), src)
         self.scheduler.add_task(resync)
 
+    @Template.Callback()
     def action_pull_all_changes_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
+    @Template.Callback()
     def action_pull_all_changes_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
+    @Template.Callback()
     def merge_all_non_conflicting_changes(self, *args):
         dst = 1
         merger = Merger()
@@ -644,6 +709,7 @@ class FileDiff(MeldDoc, Component):
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
         self.scheduler.add_task(resync)
 
+    @Template.Callback()
     @with_focused_pane
     def delete_change(self, pane, *args):
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
@@ -752,11 +818,13 @@ class FileDiff(MeldDoc, Component):
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
         self.move_cursor(new_pane, new_line)
 
+    @Template.Callback()
     def action_prev_pane(self, *args):
         pane = self._get_focused_pane()
         new_pane = (pane - 1) % self.num_panes
         self.move_cursor_pane(pane, new_pane)
 
+    @Template.Callback()
     def action_next_pane(self, *args):
         pane = self._get_focused_pane()
         new_pane = (pane + 1) % self.num_panes
@@ -786,6 +854,7 @@ class FileDiff(MeldDoc, Component):
                     self.set_file(pane, gfiles[0])
             return True
 
+    @Template.Callback()
     def on_textview_focus_in_event(self, view, event):
         self.focus_pane = view
         self.findbar.textview = view
@@ -795,7 +864,9 @@ class FileDiff(MeldDoc, Component):
         self._set_external_action_sensitivity()
         self.update_text_actions_sensitivity()
 
+    @Template.Callback()
     def on_textview_focus_out_event(self, view, event):
+        self.keymask = 0
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
 
@@ -857,9 +928,12 @@ class FileDiff(MeldDoc, Component):
         response = Gtk.ResponseType.OK
         buffers = buffers or self.textbuffer[:self.num_panes]
         if any(b.get_modified() for b in buffers):
-            dialog = Component("filediff.ui", "check_save_dialog")
-            dialog.widget.set_transient_for(self.widget.get_toplevel())
-            message_area = dialog.widget.get_message_area()
+            builder = Gtk.Builder.new_from_resource(
+                '/org/gnome/meld/ui/save-confirm-dialog.ui')
+            dialog = builder.get_object('save-confirm-dialog')
+            dialog.set_transient_for(self.get_toplevel())
+            message_area = dialog.get_message_area()
+
             buttons = []
             for buf in buffers:
                 button = Gtk.CheckButton.new_with_label(buf.data.label)
@@ -871,9 +945,9 @@ class FileDiff(MeldDoc, Component):
                 buttons.append(button)
             message_area.show_all()
 
-            response = dialog.widget.run()
+            response = dialog.run()
             try_save = [b.get_active() for b in buttons]
-            dialog.widget.destroy()
+            dialog.destroy()
 
             if response == Gtk.ResponseType.OK:
                 for i, buf in enumerate(buffers):
@@ -909,7 +983,7 @@ class FileDiff(MeldDoc, Component):
             buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
                        (_("Mark _Resolved"), Gtk.ResponseType.OK))
             resolve_response = misc.modal_dialog(
-                primary, secondary, buttons, parent=self.widget,
+                primary, secondary, buttons, parent=self,
                 messagetype=Gtk.MessageType.QUESTION)
 
             if resolve_response == Gtk.ResponseType.OK:
@@ -931,7 +1005,7 @@ class FileDiff(MeldDoc, Component):
             # figure out what's keeping MeldDocs alive for too long.
             del self._cached_match
             # TODO: Base the return code on something meaningful for VC tools
-            self.emit('close', 0)
+            self.close_signal.emit(0)
         return response
 
     def _scroll_to_actions(self, actions):
@@ -1023,6 +1097,7 @@ class FileDiff(MeldDoc, Component):
     def on_go_to_line_activate(self, pane, *args):
         self.statusbar[pane].emit('start-go-to-line')
 
+    @Template.Callback()
     def on_scrolledwindow_size_allocate(self, scrolledwindow, allocation):
         index = self.scrolledwindow.index(scrolledwindow)
         if index == 0 or index == 1:
@@ -1030,16 +1105,30 @@ class FileDiff(MeldDoc, Component):
         if index == 1 or index == 2:
             self.linkmap[1].queue_draw()
 
+    @Template.Callback()
     def on_textview_popup_menu(self, textview):
-        self.popup_menu.popup(None, None, None, None, 0,
-                              Gtk.get_current_event_time())
+        buffer = textview.get_buffer()
+        cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
+        location = textview.get_iter_location(cursor_it)
+
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = textview.buffer_to_window_coords(
+            Gtk.TextWindowType.WIDGET, location.x, location.y)
+
+        self.popup_menu.popup_at_rect(
+            Gtk.Widget.get_window(textview),
+            rect,
+            Gdk.Gravity.SOUTH_EAST,
+            Gdk.Gravity.NORTH_WEST,
+            None,
+        )
         return True
 
+    @Template.Callback()
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
-            self.popup_menu.popup(
-                None, None, None, None, event.button, event.time)
+            self.popup_menu.popup_at_pointer(event)
             return True
         return False
 
@@ -1087,7 +1176,7 @@ class FileDiff(MeldDoc, Component):
         else:
             self.label_text = " — ".join(shortnames)
         self.tooltip_text = self.label_text
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def pre_comparison_init(self):
         self._disconnect_buffer_handlers()
@@ -1560,7 +1649,7 @@ class FileDiff(MeldDoc, Component):
                 prompt = _("Save Middle Pane As")
             else:
                 prompt = _("Save Right Pane As")
-            gfile = prompt_save_filename(prompt, self.widget)
+            gfile = prompt_save_filename(prompt, self)
             if not gfile:
                 return False
             bufdata.label = gfile.get_path()
@@ -1634,7 +1723,7 @@ class FileDiff(MeldDoc, Component):
             self.state = ComparisonState.SavingError
             return
 
-        self.emit('file-changed', gfile.get_path())
+        self.file_changed_signal.emit(gfile.get_path())
         self.undosequence.checkpoint(buf)
         buf.data.update_mtime()
         if pane == 1 and self.num_panes == 3:
@@ -1646,6 +1735,7 @@ class FileDiff(MeldDoc, Component):
         else:
             self.state = ComparisonState.Normal
 
+    @Template.Callback()
     def make_patch(self, *extra):
         dialog = PatchDialog(self)
         dialog.run()
@@ -1676,15 +1766,18 @@ class FileDiff(MeldDoc, Component):
     def save_as(self, pane):
         self.save_file(pane, saveas=True)
 
+    @Template.Callback()
     def on_save_all_activate(self, action):
         for i in range(self.num_panes):
             if self.textbuffer[i].get_modified():
                 self.save_file(i)
 
+    @Template.Callback()
     def on_file_save_button_clicked(self, button):
         idx = self.file_save_button.index(button)
         self.save_file(idx)
 
+    @Template.Callback()
     def on_fileentry_file_set(self, entry):
         pane = self.fileentry[:self.num_panes].index(entry)
         buffer = self.textbuffer[pane]
@@ -1715,19 +1808,22 @@ class FileDiff(MeldDoc, Component):
         if not unsaved:
             return True
 
-        dialog = Component("filediff.ui", "revert_dialog")
-        dialog.widget.set_transient_for(self.widget.get_toplevel())
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/revert-dialog.ui')
+        dialog = builder.get_object('revert_dialog')
+        dialog.set_transient_for(self.get_toplevel())
 
         filelist = Gtk.Label("\n".join(["\t• " + f for f in unsaved]))
         filelist.props.xalign = 0.0
         filelist.show()
-        message_area = dialog.widget.get_message_area()
+        message_area = dialog.get_message_area()
         message_area.pack_start(filelist, expand=False, fill=True, padding=0)
 
-        response = dialog.widget.run()
-        dialog.widget.destroy()
+        response = dialog.run()
+        dialog.destroy()
         return response == Gtk.ResponseType.OK
 
+    @Template.Callback()
     def on_revert_activate(self, *extra):
         if not self.check_unsaved_changes():
             return
@@ -1748,6 +1844,7 @@ class FileDiff(MeldDoc, Component):
         self.diffmap0.queue_draw()
         self.diffmap1.queue_draw()
 
+    @Template.Callback()
     def on_action_lock_scrolling_toggled(self, action):
         self.toggle_scroll_lock(action.get_active())
 
@@ -1755,6 +1852,7 @@ class FileDiff(MeldDoc, Component):
         self.actiongroup.get_action("LockScrolling").set_active(locked)
         self._scroll_lock = not locked
 
+    @Template.Callback()
     def on_readonly_button_toggled(self, button):
         index = self.readonlytoggle.index(button)
         buf = self.textbuffer[index]
@@ -1971,6 +2069,7 @@ class FileDiff(MeldDoc, Component):
         self.textview[src].add_fading_highlight(
             mark0, mark1, 'conflict', 500000)
 
+    @Template.Callback()
     @with_focused_pane
     def add_sync_point(self, pane, action):
         # Find a non-complete syncpoint, or create a new one
@@ -2021,6 +2120,7 @@ class FileDiff(MeldDoc, Component):
 
         self.refresh_comparison()
 
+    @Template.Callback()
     def clear_sync_points(self, action):
         self.syncpoints = []
         self.linediffer.syncpoints = []

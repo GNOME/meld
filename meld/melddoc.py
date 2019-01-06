@@ -59,38 +59,40 @@ class ComparisonState(enum.IntEnum):
 
 
 class LabeledObjectMixin(GObject.GObject):
-    __gsignals__ = {
-        'label-changed': (
-            GObject.SignalFlags.RUN_FIRST, None,
-            (GObject.TYPE_STRING, GObject.TYPE_STRING)),
-    }
 
     label_text = _("untitled")
     tooltip_text = None
 
-    def label_changed(self):
-        self.emit("label-changed", self.label_text, self.tooltip_text)
+    @GObject.Signal
+    def label_changed(self, label_text: str, tooltip_text: str) -> None:
+        ...
 
 
 class MeldDoc(LabeledObjectMixin, GObject.GObject):
     """Base class for documents in the meld application.
     """
 
-    __gsignals__ = {
-        'file-changed':         (GObject.SignalFlags.RUN_FIRST, None,
-                                 (GObject.TYPE_STRING,)),
-        'create-diff':          (GObject.SignalFlags.RUN_FIRST, None,
-                                 (GObject.TYPE_PYOBJECT,
-                                  GObject.TYPE_PYOBJECT)),
-        'status-changed':       (GObject.SignalFlags.RUN_FIRST, None,
-                                 (GObject.TYPE_PYOBJECT,)),
-        'current-diff-changed': (GObject.SignalFlags.RUN_FIRST, None,
-                                 ()),
-        'next-diff-changed':    (GObject.SignalFlags.RUN_FIRST, None,
-                                 (bool, bool)),
-        'close': (GObject.SignalFlags.RUN_FIRST, None, (bool,)),
-        'state-changed': (GObject.SignalFlags.RUN_FIRST, None, (int, int)),
-    }
+    @GObject.Signal(name='close')
+    def close_signal(self, exit_code: int) -> None:
+        ...
+
+    @GObject.Signal(name='create-diff')
+    def create_diff_signal(
+            self, gfiles: object, options: object) -> None:
+        ...
+
+    @GObject.Signal('file-changed')
+    def file_changed_signal(self, path: str) -> None:
+        ...
+
+    @GObject.Signal('next-diff-changed')
+    def next_diff_changed_signal(
+            self, have_prev: bool, have_next: bool) -> None:
+        ...
+
+    @GObject.Signal
+    def tab_state_changed(self, old_state: int, new_state: int) -> None:
+        ...
 
     def __init__(self):
         super().__init__()
@@ -107,7 +109,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def state(self, value):
         if value == self._state:
             return
-        self.emit('state-changed', self._state, value)
+        self.tab_state_changed.emit(self._state, value)
         self._state = value
 
     def get_comparison(self) -> RecentType:
@@ -119,10 +121,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     def save_as(self):
         pass
-
-    def stop(self):
-        if self.scheduler.tasks_pending():
-            self.scheduler.remove_task(self.scheduler.get_current_task())
 
     def _open_files(self, selected, line=0):
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,

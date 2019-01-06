@@ -78,6 +78,11 @@ class build_data(distutils.cmd.Command):
         ('share/meld', ['data/gschemas.compiled']),
     ]
 
+    # FIXME: This is way too much hard coding, but I really hope
+    # it also doesn't last that long.
+    resource_source = "meld/resources/meld.gresource.xml"
+    resource_target = "org.gnome.meld.gresource"
+
     def initialize_options(self):
         pass
 
@@ -85,10 +90,31 @@ class build_data(distutils.cmd.Command):
         pass
 
     def get_data_files(self):
+        data_files = []
+
+        build_path = os.path.join('build', 'data')
+        if not os.path.exists(build_path):
+            os.makedirs(build_path)
+
+        info("compiling gresources")
+        resource_dir = os.path.dirname(self.resource_source)
+        target = os.path.join(build_path, self.resource_target)
+        self.spawn([
+            "glib-compile-resources",
+            "--target={}".format(target),
+            "--sourcedir={}".format(resource_dir),
+            self.resource_source,
+        ])
+
+        data_files.append(('share/meld', [target]))
+
         if os.name == 'nt':
-            return self.frozen_gschemas
+            gschemas = self.frozen_gschemas
         else:
-            return self.gschemas
+            gschemas = self.gschemas
+        data_files.extend(gschemas)
+
+        return data_files
 
     def run(self):
         data_files = self.distribution.data_files

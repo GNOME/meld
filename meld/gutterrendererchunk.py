@@ -205,9 +205,13 @@ class GutterRendererChunkAction(
             self.filediff.delete_chunk(self.from_pane, chunk)
         elif action == MODE_INSERT:
             copy_menu = self._make_copy_menu(chunk)
-            # TODO: Need a custom GtkMenuPositionFunc to position this next to
-            # the clicked gutter, not where the cursor is
-            copy_menu.popup(None, None, None, None, 0, event.time)
+            copy_menu.popup_at_rect(
+                self.get_view().get_window(self.get_window_type()),
+                area,
+                Gdk.Gravity.SOUTH_WEST,
+                Gdk.Gravity.NORTH_WEST,
+                None,
+            )
         elif action == MODE_REPLACE:
             self.filediff.replace_chunk(self.from_pane, self.to_pane, chunk)
 
@@ -220,8 +224,7 @@ class GutterRendererChunkAction(
         copy_menu.show_all()
 
         # FIXME: This is horrible
-        widget = self.filediff.widget
-        copy_menu.attach_to_widget(widget, None)
+        copy_menu.attach_to_widget(self.filediff, None)
 
         def copy_chunk(widget, chunk, copy_up):
             self.filediff.copy_chunk(self.from_pane, self.to_pane, chunk,

@@ -35,17 +35,18 @@ from gi.repository import Gtk
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld import tree
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, meldsettings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
+from meld.ui._gtktemplate import Template
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
-from meld.ui.gnomeglade import Component, ui_file
+from meld.ui.util import map_widgets_into_lists
 
 
 class StatItem(namedtuple('StatItem', 'mode size time')):
@@ -285,10 +286,17 @@ class CanonicalListing:
         return element.lower()
 
 
-class DirDiff(MeldDoc, Component):
-    """Two or three way folder comparison"""
+@Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
+class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "DirDiff"
+
+    close_signal = MeldDoc.close_signal
+    create_diff_signal = MeldDoc.create_diff_signal
+    file_changed_signal = MeldDoc.file_changed_signal
+    label_changed = MeldDoc.label_changed
+    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
+    tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
         ('folder-ignore-symlinks', 'ignore-symlinks'),
@@ -339,6 +347,33 @@ class DirDiff(MeldDoc, Component):
         default=100,
     )
 
+    actiongroup = Template.Child('DirdiffActions')
+
+    treeview0 = Template.Child()
+    treeview1 = Template.Child()
+    treeview2 = Template.Child()
+    fileentry0 = Template.Child()
+    fileentry1 = Template.Child()
+    fileentry2 = Template.Child()
+    scrolledwindow0 = Template.Child()
+    scrolledwindow1 = Template.Child()
+    scrolledwindow2 = Template.Child()
+    diffmap0 = Template.Child()
+    diffmap1 = Template.Child()
+    linkmap0 = Template.Child()
+    linkmap1 = Template.Child()
+    msgarea_mgr0 = Template.Child()
+    msgarea_mgr1 = Template.Child()
+    msgarea_mgr2 = Template.Child()
+    vbox0 = Template.Child()
+    vbox1 = Template.Child()
+    vbox2 = Template.Child()
+    dummy_toolbar_linkmap0 = Template.Child()
+    dummy_toolbar_linkmap1 = Template.Child()
+    file_toolbar0 = Template.Child()
+    file_toolbar1 = Template.Child()
+    file_toolbar2 = Template.Child()
+
     """Dictionary mapping tree states to corresponding difflib-like terms"""
     chunk_type_map = {
         tree.STATE_NORMAL: None,
@@ -359,12 +394,20 @@ class DirDiff(MeldDoc, Component):
     }
 
     def __init__(self, num_panes):
+        super().__init__()
+        # FIXME:
+        # This unimaginable hack exists because GObject (or GTK+?)
+        # doesn't actually correctly chain init calls, even if they're
+        # not to GObjects. As a workaround, we *should* just be able to
+        # put our class first, but because of Gtk.Template we can't do
+        # that if it's a GObject, because GObject doesn't support
+        # multiple inheritance and we need to inherit from our Widget
+        # parent to make Template work.
         MeldDoc.__init__(self)
-        Component.__init__(self, "dirdiff.ui", "dirdiff", ["DirdiffActions"])
+        self.init_template()
         bind_settings(self)
 
         self.ui_file = ui_file("dirdiff-ui.xml")
-        self.actiongroup = self.DirdiffActions
         self.actiongroup.set_translation_domain("meld")
 
         self.name_filters = []
@@ -378,18 +421,22 @@ class DirDiff(MeldDoc, Component):
                                  self.on_text_filters_changed)
         ]
 
-        self.map_widgets_into_lists(["treeview", "fileentry", "scrolledwindow",
-                                     "diffmap", "linkmap", "msgarea_mgr",
-                                     "vbox", "dummy_toolbar_linkmap",
-                                     "file_toolbar"])
+        map_widgets_into_lists(
+            self,
+            [
+                "treeview", "fileentry", "scrolledwindow", "diffmap",
+                "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
+                "file_toolbar",
+            ]
+        )
 
-        self.widget.ensure_style()
+        self.ensure_style()
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
-        self.widget.connect("style-updated", self.model.on_style_updated)
-        self.model.on_style_updated(self.widget)
+        self.connect("style-updated", self.model.on_style_updated)
+        self.model.on_style_updated(self)
 
         self.do_to_others_lock = False
         for treeview in self.treeview:
@@ -513,14 +560,17 @@ class DirDiff(MeldDoc, Component):
                 last_column = current_column
             treeview.set_headers_visible(extra_cols)
 
+    @Template.Callback()
     def on_custom_filter_menu_toggled(self, item):
         if item.get_active():
-            self.custom_popup.connect("deactivate",
-                                      lambda popup: item.set_active(False))
-            self.custom_popup.popup(None, None,
-                                    misc.position_menu_under_widget,
-                                    self.filter_menu_button, 1,
-                                    Gtk.get_current_event_time())
+            self.custom_popup.connect(
+                "deactivate", lambda popup: item.set_active(False))
+            self.custom_popup.popup_at_widget(
+                self.filter_menu_button,
+                Gdk.Gravity.SOUTH_WEST,
+                Gdk.Gravity.NORTH_WEST,
+                None,
+            )
 
     def _cleanup_filter_menu_button(self, ui):
         if self.custom_merge_id:
@@ -657,6 +707,7 @@ class DirDiff(MeldDoc, Component):
             it = self.model.iter_parent(it)
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_fileentry_file_set(self, entry):
         files = [e.get_file() for e in self.fileentry[:self.num_panes]]
         paths = [f.get_path() for f in files]
@@ -1050,7 +1101,16 @@ class DirDiff(MeldDoc, Component):
     def on_treeview_selection_changed(self, selection, pane):
         if not self.treeview[pane].is_focus():
             return
-        have_selection = bool(selection.count_selected_rows())
+        self.update_action_sensitivity()
+
+    def update_action_sensitivity(self):
+        pane = self._get_focused_pane()
+        if pane is not None:
+            selection = self.treeview[pane].get_selection()
+            have_selection = bool(selection.count_selected_rows())
+        else:
+            have_selection = False
+
         get_action = self.actiongroup.get_action
 
         if have_selection:
@@ -1094,6 +1154,7 @@ class DirDiff(MeldDoc, Component):
                 act = self.main_actiongroup.get_action("OpenExternal")
                 act.set_sensitive(False)
 
+    @Template.Callback()
     def on_treeview_cursor_changed(self, *args):
         pane = self._get_focused_pane()
         if pane is None or len(self.model) == 0:
@@ -1101,7 +1162,7 @@ class DirDiff(MeldDoc, Component):
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
         if not cursor_path:
-            self.emit("next-diff-changed", False, False)
+            self.next_diff_changed_signal.emit(False, False)
             self.current_path = cursor_path
             return
 
@@ -1138,9 +1199,19 @@ class DirDiff(MeldDoc, Component):
             prev, next = self.model._find_next_prev_diff(cursor_path)
             self.prev_path, self.next_path = prev, next
             have_next_diffs = (prev is not None, next is not None)
-            self.emit("next-diff-changed", *have_next_diffs)
+            self.next_diff_changed_signal.emit(*have_next_diffs)
         self.current_path = cursor_path
 
+    @Template.Callback()
+    def on_treeview_popup_menu(self, treeview):
+        tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
+
+    @Template.Callback()
+    def on_treeview_button_press_event(self, treeview, event):
+        tree.TreeviewCommon.on_treeview_button_press_event(
+            self, treeview, event)
+
+    @Template.Callback()
     def on_treeview_key_press_event(self, view, event):
         pane = self.treeview.index(view)
         tree = None
@@ -1162,6 +1233,7 @@ class DirDiff(MeldDoc, Component):
             tree.emit("cursor-changed")
         return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right)  # handled
 
+    @Template.Callback()
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
         rows = self.model.value_paths(self.model.get_iter(path))
@@ -1175,14 +1247,17 @@ class DirDiff(MeldDoc, Component):
         if not rows[pane]:
             return
         if os.path.isfile(rows[pane]):
-            self.emit("create-diff", [Gio.File.new_for_path(r)
-                      for r in rows if os.path.isfile(r)], {})
+            self.create_diff_signal.emit(
+                [Gio.File.new_for_path(r) for r in rows if os.path.isfile(r)],
+                {}
+            )
         elif os.path.isdir(rows[pane]):
             if view.row_expanded(path):
                 view.collapse_row(path)
             else:
                 view.expand_row(path, False)
 
+    @Template.Callback()
     def on_treeview_row_expanded(self, view, it, path):
         self.row_expansions.add(str(path))
         for row in self.model[path].iterchildren():
@@ -1192,23 +1267,25 @@ class DirDiff(MeldDoc, Component):
         self._do_to_others(view, self.treeview, "expand_row", (path, False))
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_treeview_row_collapsed(self, view, me, path):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_treeview_focus_in_event(self, tree, event):
         self.focus_pane = tree
-        pane = self.treeview.index(tree)
-        self.on_treeview_selection_changed(tree.get_selection(), pane)
+        self.update_action_sensitivity()
         tree.emit("cursor-changed")
 
     def run_diff_from_iter(self, it):
         row_paths = self.model.value_paths(it)
         gfiles = [Gio.File.new_for_path(p)
                   for p in row_paths if os.path.exists(p)]
-        self.emit("create-diff", gfiles, {})
+        self.create_diff_signal.emit(gfiles, {})
 
+    @Template.Callback()
     def on_button_diff_clicked(self, button):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1218,6 +1295,7 @@ class DirDiff(MeldDoc, Component):
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
 
+    @Template.Callback()
     def on_collapse_recursive_clicked(self, action):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1238,6 +1316,7 @@ class DirDiff(MeldDoc, Component):
         path = filter_model.convert_path_to_child_path(filter_path)
         paths_to_collapse.append(path)
 
+    @Template.Callback()
     def on_expand_recursive_clicked(self, action):
         pane = self._get_focused_pane()
         if pane is None:
@@ -1247,12 +1326,15 @@ class DirDiff(MeldDoc, Component):
         for path in paths:
             self.treeview[pane].expand_row(path, True)
 
+    @Template.Callback()
     def on_button_copy_left_clicked(self, button):
         self.copy_selected(-1)
 
+    @Template.Callback()
     def on_button_copy_right_clicked(self, button):
         self.copy_selected(1)
 
+    @Template.Callback()
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
@@ -1268,9 +1350,11 @@ class DirDiff(MeldDoc, Component):
         if files:
             self._open_files(files)
 
+    @Template.Callback()
     def on_button_ignore_case_toggled(self, button):
         self.refresh()
 
+    @Template.Callback()
     def on_filter_state_toggled(self, button):
         active_filters = [
             state for state, (_, action_name) in self.state_actions.items()
@@ -1290,6 +1374,7 @@ class DirDiff(MeldDoc, Component):
         self.name_filters[idx].active = button.get_active()
         self.refresh()
 
+    @Template.Callback()
     def on_filter_hide_current_clicked(self, button):
         pane = self._get_focused_pane()
         if pane is not None:
@@ -1443,44 +1528,6 @@ class DirDiff(MeldDoc, Component):
                 })
         return different
 
-    def popup_in_pane(self, pane, event):
-        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(
-            pane + 1 < self.num_panes)
-        if event:
-            button = event.button
-            time = event.time
-        else:
-            button = 0
-            time = Gtk.get_current_event_time()
-        self.popup_menu.popup(None, None, None, None, button, time)
-
-    def on_treeview_popup_menu(self, treeview):
-        self.popup_in_pane(self.treeview.index(treeview), None)
-        return True
-
-    def on_treeview_button_press_event(self, treeview, event):
-        # Unselect any selected files in other panes
-        for t in [v for v in self.treeview[:self.num_panes] if v != treeview]:
-            t.get_selection().unselect_all()
-
-        if event.button == 3:
-            treeview.grab_focus()
-            path = treeview.get_path_at_pos(int(event.x), int(event.y))
-            if path is None:
-                return False
-            selection = treeview.get_selection()
-            model, rows = selection.get_selected_rows()
-
-            if path[0] not in rows:
-                selection.unselect_all()
-                selection.select_path(path[0])
-                treeview.set_cursor(path[0])
-
-            self.popup_in_pane(self.treeview.index(treeview), event)
-            return True
-        return False
-
     def get_state_traversal(self, diffmapindex):
         def tree_state_iter():
             treeindex = (0, self.num_panes-1)[diffmapindex]
@@ -1551,7 +1598,7 @@ class DirDiff(MeldDoc, Component):
             shortnames = misc.shorten_names(*filenames)
         self.label_text = " : ".join(shortnames)
         self.tooltip_text = self.label_text
-        self.label_changed()
+        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -1607,6 +1654,7 @@ class DirDiff(MeldDoc, Component):
         self._update_diffmaps()
         self.force_cursor_recalculate = True
 
+    @Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
 
@@ -1629,7 +1677,7 @@ class DirDiff(MeldDoc, Component):
     def on_delete_event(self):
         for h in self.settings_handlers:
             meldsettings.disconnect(h)
-        self.emit('close', 0)
+        self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
     def on_find_activate(self, *extra):

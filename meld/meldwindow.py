@@ -22,26 +22,35 @@ from gi.repository import GLib
 from gi.repository import Gtk
 
 import meld.ui.util
-from meld.conf import _
+from meld.conf import _, ui_file
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
-from meld.settings import interface_settings, settings
 from meld.task import LifoScheduler
-from meld.ui.gnomeglade import Component, ui_file
+from meld.ui._gtktemplate import Template
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 
-class MeldWindow(Component):
+@Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
+class MeldWindow(Gtk.ApplicationWindow):
+
+    __gtype_name__ = 'MeldWindow'
+
+    appvbox = Template.Child("appvbox")
+    gear_menu_button = Template.Child("gear_menu_button")
+    notebook = Template.Child("notebook")
+    spinner = Template.Child("spinner")
+    toolbar_holder = Template.Child("toolbar_holder")
 
     def __init__(self):
-        super().__init__("meldapp.ui", "meldapp")
-        self.widget.set_name("meldapp")
+        super().__init__()
+
+        MeldWindow.init_template(self)
 
         actions = (
             ("FileMenu", None, _("_File")),
@@ -114,9 +123,6 @@ class MeldWindow(Component):
             ("Fullscreen", None, _("Fullscreen"), "F11",
                 _("View the comparison in fullscreen"),
                 self.on_action_fullscreen_toggled, False),
-            ("ToolbarVisible", None, _("_Toolbar"), None,
-                _("Show or hide the toolbar"),
-                None, True),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
@@ -136,52 +142,13 @@ class MeldWindow(Component):
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file("meldapp-ui.xml"))
 
-        # Manually handle shells that don't show an application menu
-        gtk_settings = Gtk.Settings.get_default()
-        if not gtk_settings.props.gtk_shell_shows_app_menu:
-            from meld.meldapp import app
-
-            def make_app_action(name):
-                def app_action(*args):
-                    app.lookup_action(name).activate(None)
-                return app_action
-
-            app_actions = (
-                ("AppMenu", None, _("_Meld")),
-                ("Quit", Gtk.STOCK_QUIT, None, None, _("Quit the program"),
-                 make_app_action('quit')),
-                ("Preferences", Gtk.STOCK_PREFERENCES, _("Prefere_nces"), None,
-                 _("Configure the application"),
-                 make_app_action('preferences')),
-                ("Help", Gtk.STOCK_HELP, _("_Contents"), "F1",
-                 _("Open the Meld manual"), make_app_action('help')),
-                ("About", Gtk.STOCK_ABOUT, None, None,
-                 _("About this application"), make_app_action('about')),
-            )
-
-            app_actiongroup = Gtk.ActionGroup(name="AppActions")
-            app_actiongroup.set_translation_domain("meld")
-            app_actiongroup.add_actions(app_actions)
-            self.ui.insert_action_group(app_actiongroup, 0)
-
-            self.ui.add_ui_from_file(ui_file("appmenu-fallback.xml"))
-            self.widget.set_show_menubar(False)
-
         for menuitem in ("Save", "Undo"):
             self.actiongroup.get_action(menuitem).props.is_important = True
-        self.widget.add_accel_group(self.ui.get_accel_group())
+        self.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
-
-        settings.bind('toolbar-visible',
-                      self.actiongroup.get_action('ToolbarVisible'), 'active',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('toolbar-visible', self.toolbar, 'visible',
-                      Gio.SettingsBindFlags.DEFAULT)
-        interface_settings.bind('toolbar-style', self.toolbar, 'toolbar-style',
-                                Gio.SettingsBindFlags.DEFAULT)
 
         # Alternate keybindings for a few commands.
         extra_accels = (
@@ -204,11 +171,14 @@ class MeldWindow(Component):
         self.appvbox.pack_start(self.menubar, False, True, 0)
         self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
 
-        # Double toolbars to work around UIManager integration issues
+        # This double toolbar works around integrating non-UIManager widgets
+        # into the toolbar. It's no longer used, but kept as a possible
+        # GAction porting helper.
         self.secondary_toolbar = Gtk.Toolbar()
         self.secondary_toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
         self.toolbar_holder.pack_end(self.secondary_toolbar, False, True, 0)
+        self.secondary_toolbar.show_all()
 
         # Manually handle GAction additions
         actions = (
@@ -217,31 +187,23 @@ class MeldWindow(Component):
         for (name, callback, accel) in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
-            self.widget.add_action(action)
+            self.add_action(action)
 
-        # Create a secondary toolbar, just to hold our progress spinner
-        toolbutton = Gtk.ToolItem()
-        self.spinner = Gtk.Spinner()
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
-        toolbutton.add(self.spinner)
-        self.secondary_toolbar.insert(toolbutton, -1)
-        # Set a minimum size because the spinner requests nothing
-        self.secondary_toolbar.set_size_request(30, -1)
-        self.secondary_toolbar.show_all()
 
-        self.widget.drag_dest_set(
+        self.drag_dest_set(
             Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
             Gtk.DestDefaults.DROP,
             None, Gdk.DragAction.COPY)
-        self.widget.drag_dest_add_uri_targets()
-        self.widget.connect("drag_data_received",
-                            self.on_widget_drag_data_received)
+        self.drag_dest_add_uri_targets()
+        self.connect(
+            "drag_data_received", self.on_widget_drag_data_received)
 
         self.window_state = SavedWindowState()
-        self.window_state.bind(self.widget)
+        self.window_state.bind(self)
 
         self.should_close = False
         self.idle_hooked = 0
@@ -251,28 +213,24 @@ class MeldWindow(Component):
         self.ui.ensure_update()
         self.diff_handler = None
         self.undo_handlers = tuple()
-        self.widget.connect('focus_in_event', self.on_focus_change)
-        self.widget.connect('focus_out_event', self.on_focus_change)
 
         # Set tooltip on map because the recentmenu is lazily created
         rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
         rmenu.connect("map", self._on_recentmenu_map)
 
-        builder = meld.ui.util.get_builder("shortcuts.ui")
-        shortcut_window = builder.get_object("shortcuts-meld")
-        self.widget.set_help_overlay(shortcut_window)
+    def do_realize(self):
+        Gtk.ApplicationWindow.do_realize(self)
+
+        app = self.get_application()
+        menu = app.get_menu_by_id("gear-menu")
+        self.gear_menu_button.set_popover(
+            Gtk.Popover.new_from_model(self.gear_menu_button, menu))
+
+        meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
     def _on_recentmenu_map(self, recentmenu):
         for imagemenuitem in recentmenu.get_children():
             imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
-
-    def on_focus_change(self, widget, event, callback_data=None):
-        for idx in range(self.notebook.get_n_pages()):
-            w = self.notebook.get_nth_page(idx)
-            if hasattr(w.pyobject, 'on_focus_change'):
-                w.pyobject.on_focus_change()
-        # Let the rest of the stack know about this event
-        return False
 
     def on_widget_drag_data_received(
             self, wid, context, x, y, selection_data, info, time):
@@ -302,13 +260,13 @@ class MeldWindow(Component):
             self.actiongroup.get_action("Stop").set_sensitive(True)
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
+    @Template.Callback()
     def on_delete_event(self, *extra):
         should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
-        for c in reversed(self.notebook.get_children()):
-            page = c.pyobject
-            self.notebook.set_current_page(self.notebook.page_num(page.widget))
+        for page in reversed(self.notebook.get_children()):
+            self.notebook.set_current_page(self.notebook.page_num(page))
             response = page.on_delete_event()
             if response == Gtk.ResponseType.CANCEL:
                 should_cancel = True
@@ -325,7 +283,7 @@ class MeldWindow(Component):
         current_page = self.notebook.get_current_page()
 
         if current_page != -1:
-            page = self.notebook.get_nth_page(current_page).pyobject
+            page = self.notebook.get_nth_page(current_page)
         else:
             page = None
 
@@ -353,13 +311,14 @@ class MeldWindow(Component):
                 undoseq.disconnect(handler)
             self.undo_handlers = tuple()
 
+    @Template.Callback()
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
-            olddoc = notebook.get_nth_page(oldidx).pyobject
+            olddoc = notebook.get_nth_page(oldidx)
             self.handle_current_doc_switch(olddoc)
 
-        newdoc = notebook.get_nth_page(which).pyobject if which >= 0 else None
+        newdoc = notebook.get_nth_page(which) if which >= 0 else None
         try:
             undoseq = newdoc.undosequence
             can_undo = undoseq.can_undo()
@@ -380,28 +339,32 @@ class MeldWindow(Component):
             self.actiongroup.get_action("SaveAs").set_sensitive(True)
 
         if newdoc:
-            nbl = self.notebook.get_tab_label(newdoc.widget)
-            self.widget.set_title(nbl.get_label_text())
-            newdoc.on_container_switch_in_event(self.ui)
+            nbl = self.notebook.get_tab_label(newdoc)
+            self.set_title(nbl.get_label_text())
         else:
-            self.widget.set_title("Meld")
+            self.set_title("Meld")
 
         if isinstance(newdoc, MeldDoc):
-            self.diff_handler = newdoc.connect("next-diff-changed",
-                                               self.on_next_diff_changed)
+            self.diff_handler = newdoc.next_diff_changed_signal.connect(
+                self.on_next_diff_changed)
         else:
             self.diff_handler = None
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
+    @Template.Callback()
     def after_switch_page(self, notebook, page, which):
+        newdoc = notebook.get_nth_page(which)
+        newdoc.on_container_switch_in_event(self.ui)
         self._update_page_action_sensitivity()
 
+    @Template.Callback()
     def after_page_reordered(self, notebook, page, page_num):
         self._update_page_action_sensitivity()
 
+    @Template.Callback()
     def on_page_label_changed(self, notebook, label_text):
-        self.widget.set_title(label_text)
+        self.set_title(label_text)
 
     def on_can_undo(self, undosequence, can):
         self.actiongroup.get_action("Undo").set_sensitive(can)
@@ -435,7 +398,7 @@ class MeldWindow(Component):
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
-            page = self.notebook.get_nth_page(i).pyobject
+            page = self.notebook.get_nth_page(i)
             page.on_delete_event()
 
     def on_menu_undo_activate(self, *extra):
@@ -463,33 +426,33 @@ class MeldWindow(Component):
         self.current_doc().on_go_to_line_activate()
 
     def on_menu_copy_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.copy_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("copy-clipboard")
 
     def on_menu_cut_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.cut_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("cut-clipboard")
 
     def on_menu_paste_activate(self, *extra):
-        widget = self.widget.get_focus()
+        widget = self.get_focus()
         if isinstance(widget, Gtk.Editable):
             widget.paste_clipboard()
         elif isinstance(widget, Gtk.TextView):
             widget.emit("paste-clipboard")
 
     def on_action_fullscreen_toggled(self, widget):
-        window_state = self.widget.get_window().get_state()
+        window_state = self.get_window().get_state()
         is_full = window_state & Gdk.WindowState.FULLSCREEN
         if widget.get_active() and not is_full:
-            self.widget.fullscreen()
+            self.fullscreen()
         elif is_full:
-            self.widget.unfullscreen()
+            self.unfullscreen()
 
     def on_menu_edit_down_activate(self, *args):
         self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)
@@ -501,13 +464,15 @@ class MeldWindow(Component):
         self.current_doc().open_external()
 
     def on_toolbar_stop_clicked(self, *args):
-        self.current_doc().stop()
+        doc = self.current_doc()
+        if doc.scheduler.tasks_pending():
+            doc.scheduler.remove_task(doc.scheduler.get_current_task())
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):
             self.scheduler.remove_scheduler(page.scheduler)
 
-        page_num = self.notebook.page_num(page.widget)
+        page_num = self.notebook.page_num(page)
 
         if self.notebook.get_current_page() == page_num:
             self.handle_current_doc_switch(page)
@@ -522,10 +487,10 @@ class MeldWindow(Component):
             # but upstream aren't touching UIManager bugs.
             self.ui.ensure_update()
             if self.should_close:
-                cancelled = self.widget.emit(
+                cancelled = self.emit(
                     'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
                 if not cancelled:
-                    self.widget.emit('destroy')
+                    self.emit('destroy')
 
     def on_page_state_changed(self, page, old_state, new_state):
         if self.should_close and old_state == ComparisonState.Closing:
@@ -533,14 +498,13 @@ class MeldWindow(Component):
             self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
-        for c in self.notebook.get_children():
-            page = c.pyobject
+        for page in self.notebook.get_children():
             if page != srcpage:
                 page.on_file_changed(filename)
 
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon, "", lambda b: page.on_delete_event())
-        self.notebook.append_page(page.widget, nbl)
+        self.notebook.append_page(page, nbl)
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
@@ -548,18 +512,18 @@ class MeldWindow(Component):
         if isinstance(self.current_doc(), DirDiff) or \
            isinstance(self.current_doc(), VcView) or \
            isinstance(page, NewDiffTab):
-            self.notebook.set_current_page(self.notebook.page_num(page.widget))
+            self.notebook.set_current_page(self.notebook.page_num(page))
 
         if hasattr(page, 'scheduler'):
             self.scheduler.add_scheduler(page.scheduler)
         if isinstance(page, MeldDoc):
-            page.connect("file-changed", self.on_file_changed)
-            page.connect("create-diff", lambda obj, arg, kwargs:
-                         self.append_diff(arg, **kwargs))
-            page.connect("state-changed", self.on_page_state_changed)
-        page.connect("close", self.page_removed)
+            page.file_changed_signal.connect(self.on_file_changed)
+            page.create_diff_signal.connect(
+                lambda obj, arg, kwargs: self.append_diff(arg, **kwargs))
+            page.tab_state_changed.connect(self.on_page_state_changed)
+        page.close_signal.connect(self.page_removed)
 
-        self.notebook.set_tab_reorderable(page.widget, True)
+        self.notebook.set_tab_reorderable(page, True)
 
     def append_new_comparison(self):
         doc = NewDiffTab(self)
@@ -568,7 +532,7 @@ class MeldWindow(Component):
 
         def diff_created_cb(doc, newdoc):
             doc.on_delete_event()
-            idx = self.notebook.page_num(newdoc.widget)
+            idx = self.notebook.page_num(newdoc)
             self.notebook.set_current_page(idx)
 
         doc.connect("diff-created", diff_created_cb)
@@ -648,7 +612,7 @@ class MeldWindow(Component):
             RecentType.VersionControl: self.append_vcview,
         }
         tab = comparison_method[comparison_type](gfiles)
-        self.notebook.set_current_page(self.notebook.page_num(tab.widget))
+        self.notebook.set_current_page(self.notebook.page_num(tab))
         recent_comparisons.add(tab)
         return tab
 
@@ -661,8 +625,8 @@ class MeldWindow(Component):
         self.scheduler.add_scheduler(doc.scheduler)
         path = gfile.get_path()
         doc.set_location(path)
-        doc.connect("create-diff", lambda obj, arg, kwargs:
-                    self.append_diff(arg, **kwargs))
+        doc.create_diff_signal.connect(
+            lambda obj, arg, kwargs: self.append_diff(arg, **kwargs))
         doc.run_diff(path)
 
     def open_paths(self, gfiles, auto_compare=False, auto_merge=False,
@@ -682,8 +646,7 @@ class MeldWindow(Component):
         if tab:
             recent_comparisons.add(tab)
             if focus:
-                self.notebook.set_current_page(
-                    self.notebook.page_num(tab.widget))
+                self.notebook.set_current_page(self.notebook.page_num(tab))
 
         return tab
 
@@ -691,7 +654,7 @@ class MeldWindow(Component):
         "Get the current doc or a dummy object if there is no current"
         index = self.notebook.get_current_page()
         if index >= 0:
-            page = self.notebook.get_nth_page(index).pyobject
+            page = self.notebook.get_nth_page(index)
             if isinstance(page, MeldDoc):
                 return page
 
