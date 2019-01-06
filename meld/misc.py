@@ -28,15 +28,15 @@ from pathlib import PurePath
 from typing import (
     AnyStr,
     Callable,
-    List,
     Generator,
-    Union,
+    List,
     Mapping,
     Optional,
     Pattern,
     Sequence,
     Tuple,
     TYPE_CHECKING,
+    Union,
 )
 
 from gi.repository import Gdk
@@ -243,7 +243,10 @@ def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
     return colour
 
 
-def get_common_theme() -> Tuple[Mapping[str, Gdk.RGBA], Mapping[str, Gdk.RGBA]]:
+ColourMap = Mapping[str, Gdk.RGBA]
+
+
+def get_common_theme() -> Tuple[ColourMap, ColourMap]:
     lookup = colour_lookup_with_fallback
     fill_colours = {
         "insert": lookup("meld:insert", "background"),
