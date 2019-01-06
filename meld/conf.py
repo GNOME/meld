@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 
 __package__ = "meld"
-__version__ = "3.19.2"
+__version__ = "3.21.0"
 
 APPLICATION_ID = "org.gnome.meld"
 RESOURCE_BASE = '/org/gnome/meld'

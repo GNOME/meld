@@ -845,12 +845,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             gfiles = [Gio.File.new_for_uri(uri) for uri in uris]
 
             if len(gfiles) == self.num_panes:
-                if self.check_save_modified() == Gtk.ResponseType.OK:
+                if self.check_unsaved_changes():
                     self.set_files(gfiles)
             elif len(gfiles) == 1:
                 pane = self.textview.index(widget)
                 buffer = self.textbuffer[pane]
-                if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
+                if self.check_unsaved_changes([buffer]):
                     self.set_file(pane, gfiles[0])
             return True
 
@@ -927,9 +927,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def check_save_modified(self, buffers=None):
         response = Gtk.ResponseType.OK
         buffers = buffers or self.textbuffer[:self.num_panes]
-        modified = [b.get_modified() for b in buffers]
-        labels = [b.data.label for b in buffers]
-        if any(modified):
+        if any(b.get_modified() for b in buffers):
             builder = Gtk.Builder.new_from_resource(
                 '/org/gnome/meld/ui/save-confirm-dialog.ui')
             dialog = builder.get_object('save-confirm-dialog')
@@ -937,55 +935,65 @@ class FileDiff(Gtk.VBox, MeldDoc):
             message_area = dialog.get_message_area()
 
             buttons = []
-            for label, should_save in zip(labels, modified):
-                button = Gtk.CheckButton.new_with_label(label)
-                button.set_sensitive(should_save)
-                button.set_active(should_save)
+            for buf in buffers:
+                button = Gtk.CheckButton.new_with_label(buf.data.label)
+                needs_save = buf.get_modified()
+                button.set_sensitive(needs_save)
+                button.set_active(needs_save)
                 message_area.pack_start(
                     button, expand=False, fill=True, padding=0)
                 buttons.append(button)
             message_area.show_all()
+
             response = dialog.run()
             try_save = [b.get_active() for b in buttons]
             dialog.destroy()
-            if response == Gtk.ResponseType.OK and any(try_save):
-                for i in range(self.num_panes):
-                    if try_save[i]:
-                        self.save_file(i)
-                return Gtk.ResponseType.CANCEL
 
-        if response == Gtk.ResponseType.DELETE_EVENT:
-            response = Gtk.ResponseType.CANCEL
-        elif response == Gtk.ResponseType.CLOSE:
-            response = Gtk.ResponseType.OK
+            if response == Gtk.ResponseType.OK:
+                for i, buf in enumerate(buffers):
+                    if try_save[i]:
+                        self.save_file(self.textbuffer.index(buf))
+
+                # Regardless of whether these saves are successful or not,
+                # we return a cancel here, so that other closing logic
+                # doesn't run. Instead, the file-saved callback from
+                # save_file() handles closing files and setting state.
+                return Gtk.ResponseType.CANCEL
+            elif response == Gtk.ResponseType.DELETE_EVENT:
+                response = Gtk.ResponseType.CANCEL
+            elif response == Gtk.ResponseType.CLOSE:
+                response = Gtk.ResponseType.OK
 
         if response == Gtk.ResponseType.OK and self.meta:
-            parent = self.meta.get('parent', None)
-            saved = self.meta.get('middle_saved', False)
-            prompt_resolve = self.meta.get('prompt_resolve', False)
-            if prompt_resolve and saved and parent.has_command('resolve'):
-                primary = _("Mark conflict as resolved?")
-                secondary = _(
-                    "If the conflict was resolved successfully, you may mark "
-                    "it as resolved now.")
-                buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
-                           (_("Mark _Resolved"), Gtk.ResponseType.OK))
-                resolve_response = misc.modal_dialog(
-                    primary, secondary, buttons, parent=self,
-                    messagetype=Gtk.MessageType.QUESTION)
-
-                if resolve_response == Gtk.ResponseType.OK:
-                    bufdata = self.textbuffer[1].data
-                    conflict_gfile = bufdata.savefile or bufdata.gfile
-                    # It's possible that here we're in a quit callback,
-                    # so we can't schedule the resolve action to an
-                    # idle loop; it might never happen.
-                    parent.command(
-                        'resolve', [conflict_gfile.get_path()], sync=True)
+            self.prompt_resolve_conflict()
         elif response == Gtk.ResponseType.CANCEL:
             self.state = ComparisonState.Normal
 
         return response
+
+    def prompt_resolve_conflict(self):
+        parent = self.meta.get('parent', None)
+        saved = self.meta.get('middle_saved', False)
+        prompt_resolve = self.meta.get('prompt_resolve', False)
+        if prompt_resolve and saved and parent.has_command('resolve'):
+            primary = _("Mark conflict as resolved?")
+            secondary = _(
+                "If the conflict was resolved successfully, you may mark "
+                "it as resolved now.")
+            buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
+                       (_("Mark _Resolved"), Gtk.ResponseType.OK))
+            resolve_response = misc.modal_dialog(
+                primary, secondary, buttons, parent=self,
+                messagetype=Gtk.MessageType.QUESTION)
+
+            if resolve_response == Gtk.ResponseType.OK:
+                bufdata = self.textbuffer[1].data
+                conflict_gfile = bufdata.savefile or bufdata.gfile
+                # It's possible that here we're in a quit callback,
+                # so we can't schedule the resolve action to an
+                # idle loop; it might never happen.
+                parent.command(
+                    'resolve', [conflict_gfile.get_path()], sync=True)
 
     def on_delete_event(self):
         self.state = ComparisonState.Closing
@@ -1773,7 +1781,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def on_fileentry_file_set(self, entry):
         pane = self.fileentry[:self.num_panes].index(entry)
         buffer = self.textbuffer[pane]
-        if self.check_save_modified([buffer]) == Gtk.ResponseType.OK:
+        if self.check_unsaved_changes():
             # TODO: Use encoding file selectors in FileDiff
             self.set_file(pane, entry.get_file())
         else:
@@ -1787,6 +1795,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
         return -1
 
     def check_unsaved_changes(self, buffers=None):
+        """Confirm discard of any unsaved changes
+
+        Unlike `check_save_modified`, this does *not* prompt the user
+        to save, but rather just confirms whether they want to discard
+        changes. This simplifies call sites a *lot* because they don't
+        then need to deal with the async state/callback issues
+        associated with saving a file.
+        """
         buffers = buffers or self.textbuffer
         unsaved = [b.data.label for b in buffers if b.get_modified()]
         if not unsaved:

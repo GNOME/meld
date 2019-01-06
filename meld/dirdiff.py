@@ -439,19 +439,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.model.on_style_updated(self)
 
         self.do_to_others_lock = False
-        self.focus_in_events = []
-        self.focus_out_events = []
         for treeview in self.treeview:
-            handler_id = treeview.connect(
-                "focus-in-event", self.on_treeview_focus_in_event)
-            self.focus_in_events.append(handler_id)
-            handler_id = treeview.connect(
-                "focus-out-event", self.on_treeview_focus_out_event)
-            self.focus_out_events.append(handler_id)
             treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.force_cursor_recalculate = False
         self.current_path, self.prev_path, self.next_path = None, None, None
-        self.on_treeview_focus_out_event(None, None)
         self.focus_pane = None
         self.row_expansions = set()
 
@@ -1282,13 +1273,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
         self._update_diffmaps()
 
+    @Template.Callback()
     def on_treeview_focus_in_event(self, tree, event):
         self.focus_pane = tree
         self.update_action_sensitivity()
         tree.emit("cursor-changed")
-
-    def on_treeview_focus_out_event(self, tree, event):
-        self.update_action_sensitivity()
 
     def run_diff_from_iter(self, it):
         row_paths = self.model.value_paths(it)
