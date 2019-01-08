@@ -101,7 +101,7 @@ def register_template(cls):
 
 
 def init_template(self, cls, base_init_template):
-    self.init_template = lambda: None
+    self.init_template = lambda *args: None
 
     if self.__class__ is not cls:
         raise TypeError(
