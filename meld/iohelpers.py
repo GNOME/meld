@@ -23,9 +23,15 @@ def trash_or_confirm(gfile: Gio.File):
         gfile.trash(None)
         return True
     except GLib.GError as e:
-        # Only handle not-supported, as that's due to trashing
-        # the target mount-point, not an underlying problem.
-        if e.code != Gio.IOErrorEnum.NOT_SUPPORTED:
+        # Handle not-supported, as that's due to the trashing target
+        # being a (probably network) mount-point, not an underlying
+        # problem. We also have to handle the generic FAILED code
+        # because that's what we get with NFS mounts.
+        expected_error = (
+            e.code == Gio.IOErrorEnum.NOT_SUPPORTED or
+            e.code == Gio.IOErrorEnum.FAILED
+        )
+        if not expected_error:
             raise RuntimeError(str(e))
 
     file_type = gfile.query_file_type(
