@@ -74,6 +74,7 @@ class PatchDialog(Gtk.Dialog):
         if key == "font":
             self.textview.modify_font(meldsettings.font)
 
+    @Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):
         if not radiobutton.get_active():
             return
