@@ -50,7 +50,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def __init__(self):
         super().__init__()
 
-        MeldWindow.init_template(self)
+        self.init_template()
 
         actions = (
             ("FileMenu", None, _("_File")),

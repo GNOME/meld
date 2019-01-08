@@ -81,6 +81,7 @@ class PatchDialog(Gtk.Dialog):
         self.left_patch = radiobutton == self.left_radiobutton
         self.update_patch()
 
+    @Template.Callback()
     def on_reverse_checkbutton_toggled(self, checkbutton):
         self.reverse_patch = checkbutton.get_active()
         self.update_patch()
