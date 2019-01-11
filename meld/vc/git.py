@@ -47,8 +47,8 @@ class Vc(_vc.Vc):
     NAME = "Git"
     VC_DIR = ".git"
 
-    GIT_DIFF_FILES_RE = ":(\d+) (\d+) ([a-z0-9]+) ([a-z0-9]+) ([XADMTU])\t(.*)"
-    DIFF_RE = re.compile(GIT_DIFF_FILES_RE)
+    DIFF_FILES_RE = r":(\d+) (\d+) ([a-z0-9]+) ([a-z0-9]+) ([XADMTU])\t(.*)"
+    DIFF_RE = re.compile(DIFF_FILES_RE)
 
     conflict_map = {
         # These are the arguments for git-show
