@@ -230,6 +230,18 @@ def setup_resources():
     from gi.repository import GtkSource
 
     resource_file = os.path.join(meld.conf.DATADIR, "meld.gresource")
+
+    if not os.path.exists(resource_file) and uninstalled:
+        subprocess.call(
+            [
+                "glib-compile-resources",
+                "--target={}/meld.gresource".format(meld.conf.DATADIR),
+                "--sourcedir=meld/resources",
+                "meld/resources/meld.gresource.xml",
+            ],
+            cwd=melddir
+        )
+
     try:
         resources = Gio.resource_load(resource_file)
         Gio.resources_register(resources)
