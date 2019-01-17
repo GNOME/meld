@@ -229,13 +229,14 @@ def setup_resources():
     from gi.repository import Gdk
     from gi.repository import GtkSource
 
-    resource_file = os.path.join(meld.conf.DATADIR, "meld.gresource")
+    resource_filename = meld.conf.APPLICATION_ID + ".gresource"
+    resource_file = os.path.join(meld.conf.DATADIR, resource_filename)
 
     if not os.path.exists(resource_file) and uninstalled:
         subprocess.call(
             [
                 "glib-compile-resources",
-                "--target={}/meld.gresource".format(meld.conf.DATADIR),
+                "--target={}".format(resource_file),
                 "--sourcedir=meld/resources",
                 "meld/resources/meld.gresource.xml",
             ],
