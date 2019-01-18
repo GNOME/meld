@@ -239,6 +239,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # Set up property actions for statusbar toggles
         sourceview_prop_actions = [
+            'draw-spaces-bool',
             'highlight-current-line-local',
             'show-line-numbers',
             'wrap-mode-bool',

@@ -132,6 +132,15 @@ class MeldSourceView(GtkSource.View):
         ),
     )
 
+    draw_spaces_bool = GObject.Property(
+        type=bool, default=False,
+        nick="Draw spaces (Boolean version)",
+        blurb=(
+            "Mirror of the draw-spaces GtkSourceView property, "
+            "reduced to a single Boolean for UI ease-of-use."
+        ),
+    )
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
@@ -259,6 +268,21 @@ class MeldSourceView(GtkSource.View):
             wrap_mode_to_bool,
         )
         self.wrap_mode_bool = wrap_mode_to_bool(None, self.props.wrap_mode)
+
+        def draw_spaces_from_bool(binding, from_value):
+            return GtkSource.DrawSpacesFlags.ALL if from_value else 0
+
+        def draw_spaces_to_bool(binding, from_value):
+            return bool(from_value)
+
+        self.bind_property(
+            'draw-spaces-bool', self, 'draw-spaces',
+            GObject.BindingFlags.BIDIRECTIONAL,
+            draw_spaces_from_bool,
+            draw_spaces_to_bool,
+        )
+        self.draw_spaces_bool = draw_spaces_to_bool(
+            None, self.props.draw_spaces)
 
         self.on_setting_changed(meldsettings, 'font')
         self.on_setting_changed(meldsettings, 'style-scheme')
