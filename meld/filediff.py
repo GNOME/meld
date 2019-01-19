@@ -1522,9 +1522,9 @@ class FileDiff(melddoc.MeldDoc, gnomeglade.Component):
         if pane == 1 and self.num_panes == 3:
             self.meta['middle_saved'] = True
 
-        if (self.state == melddoc.STATE_CLOSING and
-                not any(b.get_modified() for b in self.textbuffer)):
-            self.on_delete_event()
+        if self.state == melddoc.STATE_CLOSING:
+            if not any(b.get_modified() for b in self.textbuffer):
+                self.on_delete_event()
         else:
             self.state = melddoc.STATE_NORMAL
 
