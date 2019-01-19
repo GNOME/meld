@@ -244,7 +244,8 @@ COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
 
 class DirDiffTreeStore(tree.DiffTreeStore):
     def __init__(self, ntree):
-        super().__init__(ntree, [str, str, int, float, int])
+        # FIXME: size should be a GObject.TYPE_UINT64, but we use -1 as a flag
+        super().__init__(ntree, [str, str, GObject.TYPE_INT64, float, int])
 
     def add_error(self, parent, msg, pane):
         defaults = {
@@ -1512,9 +1513,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                     COL_EMBLEM: emblem,
                     COL_EMBLEM_SECONDARY: link_emblem,
                     COL_TIME: times[j],
-                    COL_SIZE: sizes[j],
                     COL_PERMS: perms[j]
                 })
+                # Size is handled independently, because unsafe_set
+                # can't correctly box GObject.TYPE_INT64.
+                self.model.set(
+                    it, self.model.column_index(COL_SIZE, j), sizes[j])
             else:
                 self.model.set_path_state(
                     it, j, tree.STATE_NONEXIST, any(isdir))
