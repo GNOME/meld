@@ -575,7 +575,7 @@ class MeldWindow(Component):
         return doc
 
     def append_dirdiff(self, gfiles, auto_compare=False):
-        dirs = [d.get_path() for d in gfiles if d]
+        dirs = [d.get_path() if d else None for d in gfiles]
         assert len(dirs) in (1, 2, 3)
         doc = DirDiff(len(dirs))
         self._append_page(doc, "folder")

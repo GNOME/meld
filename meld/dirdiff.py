@@ -669,7 +669,7 @@ class DirDiff(MeldDoc, Component):
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
         for i, l in enumerate(locations):
-            if not isinstance(l, str):
+            if l and not isinstance(l, str):
                 locations[i] = l.decode(sys.getfilesystemencoding())
         locations = [os.path.abspath(l) if l else '' for l in locations]
         self.current_path = None
@@ -1384,7 +1384,7 @@ class DirDiff(MeldDoc, Component):
         ]
 
         existing_times = [s.st_mtime for s in stats if s]
-        newest_time = max(existing_times)
+        newest_time = max(existing_times) if existing_times else 0
         if existing_times.count(newest_time) == len(existing_times):
             # If all actually-present files have the same mtime, don't
             # pretend that any are "newer", and do the same if e.g.,
