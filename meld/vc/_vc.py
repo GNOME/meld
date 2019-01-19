@@ -29,6 +29,7 @@ import re
 import shutil
 import subprocess
 import tempfile
+from typing import ClassVar
 
 from gi.repository import Gio
 from gi.repository import GLib
@@ -126,12 +127,12 @@ class Entry:
 
 class Vc:
 
-    VC_DIR = None
+    VC_DIR: ClassVar[str]
 
     #: Whether to walk the current location's parents to find a
     #: repository root. Only used in legacy version control systems
     #: (e.g., old SVN, CVS, RCS).
-    VC_ROOT_WALK = True
+    VC_ROOT_WALK: ClassVar[bool] = True
 
     def __init__(self, path):
         # Save the requested comparison location. The location may be a

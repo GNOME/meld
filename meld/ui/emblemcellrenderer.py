@@ -14,8 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import Dict, Tuple
+
 import cairo
 from gi.repository import Gdk
+from gi.repository import GdkPixbuf
 from gi.repository import GObject
 from gi.repository import Gtk
 
@@ -24,7 +27,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
 
     __gtype_name__ = "EmblemCellRenderer"
 
-    icon_cache = {}
+    icon_cache: Dict[Tuple[str, int], GdkPixbuf.Pixbuf] = {}
 
     icon_name = GObject.Property(
         type=str,
