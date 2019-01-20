@@ -277,6 +277,8 @@ class MeldStatusBar(Gtk.Statusbar):
         pop.set_position(Gtk.PositionType.TOP)
 
         button = MeldStatusMenuButton()
+        # TRANSLATORS: This is the status bar label for a group of settings,
+        # such as text wrapping, show line numbers, whitespace, etc.
         button.set_label(_('Display'))
         button.set_popover(pop)
         button.show()
