@@ -606,27 +606,48 @@
           </packing>
         </child>
         <child>
-          <object class="GtkBox" id="sourcemap_hbox">
+          <object class="GtkToolbar" id="dummy_toolbar_sourcemap">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="orientation">horizontal</property>
-            <property name="spacing">2</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">9</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="sourcemap_revealer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="reveal-child">True</property>
+            <property name="transition-type">GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT</property>
             <child>
-              <object class="MeldSourceMap" id="sourcemap0">
-                <property name="view">textview0</property>
+              <object class="GtkBox" id="sourcemap_hbox">
                 <property name="visible">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="MeldSourceMap" id="sourcemap1">
-                <property name="view">textview1</property>
-                <property name="visible">True</property>
-              </object>
-            </child>
-            <child>
-              <object class="MeldSourceMap" id="sourcemap2">
-                <property name="view">textview2</property>
-                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="orientation">horizontal</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="MeldSourceMap" id="sourcemap0">
+                    <property name="view">textview0</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="MeldSourceMap" id="sourcemap1">
+                    <property name="view">textview1</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
+                <child>
+                  <object class="MeldSourceMap" id="sourcemap2">
+                    <property name="view">textview2</property>
+                    <property name="visible">True</property>
+                  </object>
+                </child>
               </object>
             </child>
           </object>

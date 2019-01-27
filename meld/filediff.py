@@ -130,6 +130,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     dummy_toolbar_actiongutter3 = Template.Child()
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
+    dummy_toolbar_sourcemap = Template.Child()
     fileentry0 = Template.Child()
     fileentry1 = Template.Child()
     fileentry2 = Template.Child()
@@ -158,7 +159,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     scrolledwindow0 = Template.Child()
     scrolledwindow1 = Template.Child()
     scrolledwindow2 = Template.Child()
-    sourcemap_hbox = Template.Child()
+    sourcemap_revealer = Template.Child()
     sourcemap0 = Template.Child()
     sourcemap1 = Template.Child()
     sourcemap2 = Template.Child()
@@ -271,7 +272,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
         action = Gio.PropertyAction.new(
-            'show-overview-map', self.sourcemap_hbox, 'visible')
+            'show-overview-map', self.sourcemap_revealer, 'reveal-child')
+        self.sourcemap_revealer.bind_property(
+            'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
         self.view_action_group.add_action(action)
 
         for buf in self.textbuffer:
