@@ -15,6 +15,22 @@
         <property name="show-close-button">true</property>
         <property name="visible">true</property>
         <child>
+          <object class="GtkButton">
+            <property name="action-name">win.new-tab</property>
+            <property name="visible">true</property>
+            <property name="tooltip-text">Start a new comparison</property>
+            <child>
+              <object class="GtkImage">
+                <property name="icon-name">document-new-symbolic</property>
+                <property name="visible">true</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkMenuButton" id="gear_menu_button">
             <property name="visible">true</property>
             <property name="can_focus">False</property>

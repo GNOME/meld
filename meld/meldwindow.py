@@ -57,9 +57,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("New", Gtk.STOCK_NEW, _("_New Comparison…"), "<Primary>N",
-                _("Start a new comparison"),
-                self.on_menu_file_new_activate),
             ("Save", Gtk.STOCK_SAVE, None, None,
                 _("Save the current file"),
                 self.on_menu_save_activate),
@@ -185,9 +182,10 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         # Manually handle GAction additions
         actions = (
-            ("close", self.on_menu_close_activate, None),
+            ("close", self.on_menu_close_activate),
+            ("new-tab", self.on_action_new_tab_activate),
         )
-        for (name, callback, accel) in actions:
+        for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
             self.add_action(action)
@@ -379,7 +377,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
         self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
-    def on_menu_file_new_activate(self, menuitem):
+    def on_action_new_tab_activate(self, action, parameter):
         self.append_new_comparison()
 
     def on_menu_save_activate(self, menuitem):
