@@ -158,6 +158,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     scrolledwindow0 = Template.Child()
     scrolledwindow1 = Template.Child()
     scrolledwindow2 = Template.Child()
+    sourcemap_hbox = Template.Child()
     sourcemap0 = Template.Child()
     sourcemap1 = Template.Child()
     sourcemap2 = Template.Child()
