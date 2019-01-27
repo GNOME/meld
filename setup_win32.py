@@ -89,15 +89,15 @@ build_exe_options = {
 
 # Create our registry key, and fill with install directory and exe
 registry_table = [
-    ('MeldKLM', 2, 'SOFTWARE\Meld', '*', None, 'TARGETDIR'),
-    ('MeldInstallDir', 2, 'SOFTWARE\Meld', 'InstallDir', '[TARGETDIR]', 'TARGETDIR'),
-    ('MeldExecutable', 2, 'SOFTWARE\Meld', 'Executable', '[TARGETDIR]Meld.exe', 'TARGETDIR'),
+    ('MeldKLM', 2, r'SOFTWARE\Meld', '*', None, 'TARGETDIR'),
+    ('MeldInstallDir', 2, r'SOFTWARE\Meld', 'InstallDir', '[TARGETDIR]', 'TARGETDIR'),
+    ('MeldExecutable', 2, r'SOFTWARE\Meld', 'Executable', '[TARGETDIR]Meld.exe', 'TARGETDIR'),
 ]
 
 # Provide the locator and app search to give MSI the existing install directory
 # for future upgrades
 reg_locator_table = [
-    ('MeldInstallDirLocate', 2, 'SOFTWARE\Meld', 'InstallDir', 0)
+    ('MeldInstallDirLocate', 2, r'SOFTWARE\Meld', 'InstallDir', 0)
 ]
 app_search_table = [('TARGETDIR', 'MeldInstallDirLocate')]
 
