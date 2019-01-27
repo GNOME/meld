@@ -304,7 +304,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def handle_current_doc_switch(self, page):
         if self.diff_handler is not None:
             page.disconnect(self.diff_handler)
-        page.on_container_switch_out_event(self.ui)
+        page.on_container_switch_out_event(self.ui, self)
         if self.undo_handlers:
             undoseq = page.undosequence
             for handler in self.undo_handlers:
@@ -355,7 +355,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     @Template.Callback()
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
-        newdoc.on_container_switch_in_event(self.ui)
+        newdoc.on_container_switch_in_event(self.ui, self)
         self._update_page_action_sensitivity()
 
     @Template.Callback()

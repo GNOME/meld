@@ -591,14 +591,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.filter_menu_button.props.label)
         self.filter_menu_button.set_label_widget(label)
 
-    def on_container_switch_in_event(self, ui):
-        MeldDoc.on_container_switch_in_event(self, ui)
+    def on_container_switch_in_event(self, ui, window):
+        MeldDoc.on_container_switch_in_event(self, ui, window)
         self._create_filter_menu_button(ui)
         self.ui_manager = ui
 
-    def on_container_switch_out_event(self, ui):
+    def on_container_switch_out_event(self, ui, window):
         self._cleanup_filter_menu_button(ui)
-        MeldDoc.on_container_switch_out_event(self, ui)
+        MeldDoc.on_container_switch_out_event(self, ui, window)
 
     def on_file_filters_changed(self, app):
         self._cleanup_filter_menu_button(self.ui_manager)

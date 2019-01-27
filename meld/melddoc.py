@@ -200,7 +200,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def set_labels(self, lst):
         pass
 
-    def on_container_switch_in_event(self, uimanager):
+    def on_container_switch_in_event(self, uimanager, window):
         """Called when the container app switches to this tab.
         """
         self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
@@ -213,7 +213,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
 
-    def on_container_switch_out_event(self, uimanager):
+    def on_container_switch_out_event(self, uimanager, window):
         """Called when the container app switches away from this tab.
         """
         uimanager.remove_action_group(self.actiongroup)

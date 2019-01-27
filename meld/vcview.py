@@ -246,14 +246,14 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         except AttributeError:
             pass
 
-    def on_container_switch_in_event(self, ui):
-        super().on_container_switch_in_event(ui)
+    def on_container_switch_in_event(self, ui, window):
+        super().on_container_switch_in_event(ui, window)
         self._set_external_action_sensitivity(True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
-    def on_container_switch_out_event(self, ui):
+    def on_container_switch_out_event(self, ui, window):
         self._set_external_action_sensitivity(False)
-        super().on_container_switch_out_event(ui)
+        super().on_container_switch_out_event(ui, window)
 
     def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""

@@ -350,21 +350,21 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
-    def on_container_switch_in_event(self, ui):
-        MeldDoc.on_container_switch_in_event(self, ui)
+    def on_container_switch_in_event(self, ui, window):
+        MeldDoc.on_container_switch_in_event(self, ui, window)
 
         accel_group = ui.get_accel_group()
         for accel, callback in self.extra_accels:
             keyval, mask = Gtk.accelerator_parse(accel)
             accel_group.connect(keyval, mask, 0, callback)
 
-    def on_container_switch_out_event(self, ui):
+    def on_container_switch_out_event(self, ui, window):
         accel_group = ui.get_accel_group()
         for accel, callback in self.extra_accels:
             keyval, mask = Gtk.accelerator_parse(accel)
             accel_group.disconnect_key(keyval, mask)
 
-        MeldDoc.on_container_switch_out_event(self, ui)
+        MeldDoc.on_container_switch_out_event(self, ui, window)
 
     def get_keymask(self):
         return self._keymask
