@@ -268,6 +268,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             prop_action_group.add_action(action)
         self.insert_action_group('view', prop_action_group)
 
+        # Set up per-view action group for top-level menu insertion
+        self.view_action_group = Gio.SimpleActionGroup()
+        action = Gio.PropertyAction.new(
+            'show-overview-map', self.sourcemap_hbox, 'visible')
+        self.view_action_group.add_action(action)
+
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
             buf.connect("notify::has-selection",

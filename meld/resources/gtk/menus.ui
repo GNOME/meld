@@ -2,6 +2,18 @@
 <interface>
   <menu id="gear-menu">
     <section>
+      <submenu>
+        <attribute name="label" translatable="yes">View</attribute>
+        <section>
+          <attribute name="id">view-section</attribute>
+          <item>
+            <attribute name="label" translatable="yes">Overview Map</attribute>
+            <attribute name="action">view.show-overview-map</attribute>
+          </item>
+        </section>
+      </submenu>
+    </section>
+    <section>
       <attribute name="id">preferences-section</attribute>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>
