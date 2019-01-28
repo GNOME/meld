@@ -119,15 +119,9 @@ class MeldWindow(Gtk.ApplicationWindow):
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
         )
-        toggleactions = (
-            ("Fullscreen", None, _("Fullscreen"), "F11",
-                _("View the comparison in fullscreen"),
-                self.on_action_fullscreen_toggled, False),
-        )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
-        self.actiongroup.add_toggle_actions(toggleactions)
 
         recent_action = Gtk.RecentAction(
             name="Recent",  label=_("Open Recent"),
@@ -188,6 +182,17 @@ class MeldWindow(Gtk.ApplicationWindow):
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
+            self.add_action(action)
+
+        state_actions = (
+            (
+                "fullscreen", self.on_action_fullscreen_change_state,
+                GLib.Variant.new_boolean(False)
+            ),
+        )
+        for (name, callback, state) in state_actions:
+            action = Gio.SimpleAction.new_stateful(name, None, state)
+            action.connect('change-state', callback)
             self.add_action(action)
 
         # Fake out the spinner on Windows. See Gitlab issue #133.
@@ -447,10 +452,11 @@ class MeldWindow(Gtk.ApplicationWindow):
         elif isinstance(widget, Gtk.TextView):
             widget.emit("paste-clipboard")
 
-    def on_action_fullscreen_toggled(self, widget):
+    def on_action_fullscreen_change_state(self, action, state):
         window_state = self.get_window().get_state()
         is_full = window_state & Gdk.WindowState.FULLSCREEN
-        if widget.get_active() and not is_full:
+        action.set_state(state)
+        if state and not is_full:
             self.fullscreen()
         elif is_full:
             self.unfullscreen()
