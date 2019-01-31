@@ -620,39 +620,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 return
 
 
-            #Count the down top and bottom 25% of the window
-            topedge = text_area.y
-            bottomedge = text_area.y+text_area.height
+            halfscreen = text_area.y+text_area.height / 2
+            halfline = self.textview[pane].get_line_at_y(
+                halfscreen).target_iter.get_line()
 
-            topline = self.textview[pane].get_line_at_y(
-                topedge).target_iter.get_line()
-            bottomline = self.textview[pane].get_line_at_y(
-                bottomedge).target_iter.get_line()
+            (current, prev, next) = self.linediffer.locate_chunk(1, halfline)
 
-            topquarter = self.textview[pane].get_line_at_y(
-                topedge + text_area.height / 4).target_iter.get_line()
-            bottomquarter = self.textview[pane].get_line_at_y(
-                bottomedge - text_area.height / 4).target_iter.get_line()
-
-            while chunk[1] < topquarter and direction == Gdk.ScrollDirection.DOWN:
-                target += 1
-                if(target > self.linediffer.diff_count()):
-                    return
-
-                chunk = self.linediffer.get_chunk(target, pane)
-                if not chunk:
-                    return
-
-            while chunk[1] > bottomquarter and direction == Gdk.ScrollDirection.UP:
-                target -= 1
-                if target < 0:
-                    return
-
-                chunk = self.linediffer.get_chunk(target, pane)
-                if not chunk:
-                    return
+            if direction == Gdk.ScrollDirection.DOWN:
+                target = next
+            else:
+                target = prev
 
         self.go_to_chunk(target, centered=centered)
+
 
     @Template.Callback()
     def action_previous_conflict(self, *args):
