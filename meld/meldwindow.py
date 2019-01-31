@@ -471,9 +471,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.current_doc().open_external()
 
     def on_toolbar_stop_clicked(self, *args):
-        doc = self.current_doc()
-        if doc.scheduler.tasks_pending():
-            doc.scheduler.remove_task(doc.scheduler.get_current_task())
+        self.current_doc().on_action_cancel()
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):
