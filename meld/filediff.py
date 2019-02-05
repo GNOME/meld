@@ -898,7 +898,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if focused_pane != -1:
                 self.on_cursor_position_changed(self.textbuffer[focused_pane],
                                                 None, True)
-            self.queue_draw()
 
     def _filter_text(self, txt, buf, txt_start_iter, txt_end_iter):
         dimmed_tag = buf.get_tag_table().lookup("dimmed")
