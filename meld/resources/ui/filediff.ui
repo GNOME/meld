@@ -1,7 +1,556 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-requires meld.ui.gladesupport 0.0 -->
+  <requires lib="gtk+" version="3.0"/>
+  <requires lib="meld.ui.gladesupport" version="0.0"/>
+  <template class="FileDiff" parent="GtkVBox">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
+    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+    <child>
+      <object class="DiffGrid" id="grid">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkToolbar" id="file_toolbar2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
+            <child>
+              <object class="GtkToggleToolButton" id="readonlytoggle2">
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                <property name="icon_name">changes-prevent-symbolic</property>
+                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="file_save_button2">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="icon_name">document-save</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="fileentry_toolitem2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="local_only">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="filelabel_toolitem2">
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <child>
+                  <object class="GtkLabel" id="filelabel2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 3</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="file_toolbar1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
+            <child>
+              <object class="GtkToggleToolButton" id="readonlytoggle1">
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                <property name="icon_name">emblem-readonly</property>
+                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="file_save_button1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="icon_name">document-save-symbolic</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="fileentry_toolitem1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="local_only">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="filelabel_toolitem1">
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <child>
+                  <object class="GtkLabel" id="filelabel1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 2</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="file_toolbar0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
+            <child>
+              <object class="GtkToggleToolButton" id="readonlytoggle0">
+                <property name="can_focus">False</property>
+                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
+                <property name="icon_name">emblem-readonly</property>
+                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolButton" id="file_save_button0">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="icon_name">document-save-symbolic</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="fileentry_toolitem0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <object class="GtkFileChooserButton" id="fileentry0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="local_only">False</property>
+                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToolItem" id="filelabel_toolitem0">
+                <property name="can_focus">False</property>
+                <property name="margin_start">12</property>
+                <child>
+                  <object class="GtkLabel" id="filelabel0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 1</property>
+                    <property name="xalign">0</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="homogeneous">False</property>
+              </packing>
+            </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vbox0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="MsgAreaController" id="msgarea_mgr0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="vscrollbar_policy">always</property>
+                <property name="window_placement">top-right</property>
+                <property name="overlay_scrolling">False</property>
+                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                <child>
+                  <object class="MeldSourceView" id="textview0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
+                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vbox2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="MsgAreaController" id="msgarea_mgr2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="vscrollbar_policy">always</property>
+                <property name="overlay_scrolling">False</property>
+                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                <child>
+                  <object class="MeldSourceView" id="textview2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
+                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkVBox" id="vbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="MsgAreaController" id="msgarea_mgr1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="hexpand">True</property>
+                <property name="vexpand">True</property>
+                <property name="vscrollbar_policy">always</property>
+                <property name="overlay_scrolling">False</property>
+                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
+                <child>
+                  <object class="MeldSourceView" id="textview1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
+                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
+                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
+                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
+                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_diffmap1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">6</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="DiffMap" id="diffmap1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">6</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_linkmap0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="LinkMap" id="linkmap0">
+            <property name="width_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
+            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">2</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_diffmap0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="DiffMap" id="diffmap0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+          </object>
+          <packing>
+            <property name="left_attach">0</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_linkmap1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">4</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="LinkMap" id="linkmap1">
+            <property name="width_request">50</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
+            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
+          </object>
+          <packing>
+            <property name="left_attach">4</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MeldStatusBar" id="statusbar0">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MeldStatusBar" id="statusbar1">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <object class="MeldStatusBar" id="statusbar2">
+            <property name="visible">True</property>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">3</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">True</property>
+        <property name="fill">True</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
+  </template>
   <object class="GtkActionGroup" id="FilediffActions">
     <child>
       <object class="GtkAction" id="MakePatch">
@@ -81,7 +630,7 @@
         <property name="stock_id">gtk-goto-last</property>
         <signal name="activate" handler="action_pull_change_left" swapped="no"/>
       </object>
-      <accelerator key="Right" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      <accelerator key="Right" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
     </child>
     <child>
       <object class="GtkAction" id="PullRight">
@@ -90,7 +639,7 @@
         <property name="stock_id">gtk-goto-first</property>
         <signal name="activate" handler="action_pull_change_right" swapped="no"/>
       </object>
-      <accelerator key="Left" modifiers="GDK_MOD1_MASK | GDK_SHIFT_MASK"/>
+      <accelerator key="Left" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
     </child>
     <child>
       <object class="GtkAction" id="CopyLeftUp">
@@ -122,7 +671,7 @@
         <property name="tooltip" translatable="yes">Copy change below the right chunk</property>
         <signal name="activate" handler="action_copy_change_right_down" swapped="no"/>
       </object>
-      <accelerator key="quoteright" modifiers="GDK_MOD1_MASK"/>
+      <accelerator key="apostrophe" modifiers="GDK_MOD1_MASK"/>
     </child>
     <child>
       <object class="GtkAction" id="Delete">
@@ -179,553 +728,4 @@
       </object>
     </child>
   </object>
-  <template class="FileDiff" parent="GtkVBox">
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
-    <child>
-      <object class="DiffGrid" id="grid">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="margin_top">0</property>
-        <property name="row_spacing">0</property>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <placeholder/>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="file_toolbar2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-            <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle2">
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">changes-prevent-symbolic</property>
-                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button2">
-                <property name="icon-name">document-save</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="fileentry_toolitem2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local-only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem2">
-                <property name="visible">False</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="margin-start">12</property>
-                <child>
-                  <object class="GtkLabel" id="filelabel2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">File 3</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">5</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="file_toolbar1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-            <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle1">
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">emblem-readonly</property>
-                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button1">
-                <property name="icon-name">document-save-symbolic</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="fileentry_toolitem1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local-only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem1">
-                <property name="visible">False</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="margin-start">12</property>
-                <child>
-                  <object class="GtkLabel" id="filelabel1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">File 2</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="file_toolbar0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-            <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle0">
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">emblem-readonly</property>
-                <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button0">
-                <property name="icon-name">document-save-symbolic</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="fileentry_toolitem0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local-only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem0">
-                <property name="visible">False</property>
-                <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
-                <property name="margin-start">12</property>
-                <child>
-                  <object class="GtkLabel" id="filelabel0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="xalign">0</property>
-                    <property name="label" translatable="yes">File 1</property>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="vbox0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="MsgAreaController" id="msgarea_mgr0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="overlay-scrolling">False</property>
-                <property name="window_placement">top-right</property>
-                <property name="window_placement_set">True</property>
-                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
-                <child>
-                  <object class="MeldSourceView" id="textview0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
-                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="vbox2">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="MsgAreaController" id="msgarea_mgr2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="overlay-scrolling">False</property>
-                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
-                <child>
-                  <object class="MeldSourceView" id="textview2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
-                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">5</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkVBox" id="vbox1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="MsgAreaController" id="msgarea_mgr1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkScrolledWindow" id="scrolledwindow1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="vexpand">True</property>
-                <property name="hexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="overlay-scrolling">False</property>
-                <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
-                <child>
-                  <object class="MeldSourceView" id="textview1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
-                    <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_diffmap1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="DiffMap" id="diffmap1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_linkmap0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="LinkMap" id="linkmap0">
-            <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
-            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">2</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_diffmap0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="DiffMap" id="diffmap0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_linkmap1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="LinkMap" id="linkmap1">
-            <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="events">GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK | GDK_KEY_PRESS_MASK | GDK_KEY_RELEASE_MASK | GDK_SCROLL_MASK</property>
-            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
-          </object>
-          <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="MeldStatusBar" id="statusbar0">
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">1</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="MeldStatusBar" id="statusbar1">
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">3</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="MeldStatusBar" id="statusbar2">
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">5</property>
-            <property name="top_attach">3</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
-          </packing>
-        </child>
-      </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
-    </child>
-  </template>
 </interface>
