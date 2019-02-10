@@ -117,10 +117,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     )
 
     actiongroup = Template.Child('FilediffActions')
-    diffmap0 = Template.Child()
-    diffmap1 = Template.Child()
-    dummy_toolbar_diffmap0 = Template.Child()
-    dummy_toolbar_diffmap1 = Template.Child()
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
     fileentry0 = Template.Child()
@@ -200,11 +196,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
-            "diffmap", "file_save_button", "file_toolbar", "fileentry",
+            "file_save_button", "file_toolbar", "fileentry",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
-            "fileentry_toolitem", "dummy_toolbar_diffmap", "statusbar",
+            "fileentry_toolitem", "statusbar",
         ]
         map_widgets_into_lists(self, widget_lists)
 
@@ -287,9 +283,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
-
-        for diffmap in self.diffmap:
-            self.linediffer.connect('diffs-changed', diffmap.on_diffs_changed)
 
         for statusbar, buf in zip(self.statusbar, self.textbuffer):
             buf.bind_property(
@@ -1833,8 +1826,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.queue_draw()
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
-        self.diffmap0.queue_draw()
-        self.diffmap1.queue_draw()
 
     @Template.Callback()
     def on_action_lock_scrolling_toggled(self, action):
@@ -1938,15 +1929,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.num_panes = n
         for widget in (
-                self.vbox[:n] + self.file_toolbar[:n] + self.diffmap[:n] +
+                self.vbox[:n] + self.file_toolbar[:n] +
                 self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
-                self.dummy_toolbar_diffmap[:n - 1] + self.statusbar[:n]):
+                self.statusbar[:n]
+                ):
             widget.show()
 
         for widget in (
-                self.vbox[n:] + self.file_toolbar[n:] + self.diffmap[n:] +
+                self.vbox[n:] + self.file_toolbar[n:] +
                 self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
-                self.dummy_toolbar_diffmap[n - 1:] + self.statusbar[n:]):
+                self.statusbar[n:]
+                ):
             widget.hide()
 
         self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
@@ -1984,10 +1977,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
                         y, h = get_line_yrange(get_iter_at_line(c[2] - 1))
                     yield c[0], y0 / max_y, (y + h) / max_y
             return coords_by_chunk
-
-        for (w, i) in zip(self.diffmap, (0, self.num_panes - 1)):
-            scroll = self.scrolledwindow[i].get_vscrollbar()
-            w.setup(scroll, coords_iter(i))
 
         for (w, i) in zip(self.linkmap, (0, self.num_panes - 2)):
             w.associate(self, self.textview[i], self.textview[i + 1])
