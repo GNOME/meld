@@ -1,12 +1,17 @@
 
+import enum
+
 from gi.repository import GtkSource
 
 from meld.conf import _
 
-# Chunk action mode, set by filediff and used in gutterrendererchunk
-MODE_REPLACE = 0
-MODE_DELETE = 1
-MODE_INSERT = 2
+
+class ActionMode(enum.IntEnum):
+    """Action mode for chunk change actions"""
+    Replace = 0
+    Delete = 1
+    Insert = 2
+
 
 NEWLINES = {
     GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),

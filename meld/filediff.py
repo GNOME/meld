@@ -28,7 +28,7 @@ from gi.repository import GtkSource
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _, ui_file
-from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
+from meld.const import ActionMode, NEWLINES
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -177,9 +177,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
     __gsignals__ = {
         'next-conflict-changed': (
             GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
-        'action-mode-changed': (
-            GObject.SignalFlags.RUN_FIRST, None, (int,)),
     }
+
+    action_mode = GObject.Property(
+        type=int,
+        nick='Action mode for chunk change actions',
+        default=ActionMode.Replace,
+    )
 
     def __init__(self, num_panes):
         super().__init__()
@@ -346,13 +350,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def set_keymask(self, value):
         if value & MASK_SHIFT:
-            mode = MODE_DELETE
+            mode = ActionMode.Delete
         elif value & MASK_CTRL:
-            mode = MODE_INSERT
+            mode = ActionMode.Insert
         else:
-            mode = MODE_REPLACE
+            mode = ActionMode.Replace
         self._keymask = value
-        self.emit("action-mode-changed", mode)
+        self.action_mode = mode
+
     keymask = property(get_keymask, set_keymask)
 
     @Template.Callback()
