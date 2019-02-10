@@ -29,6 +29,7 @@ from gi.repository import GtkSource
 from meld import misc
 from meld.conf import _, ui_file
 from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE, NEWLINES
+from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
@@ -313,32 +314,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
             statusbar.connect('go-to-line', go_to_line, pane)
 
         # Prototype implementation
-
-        from meld.gutterrendererchunk import (
-            GutterRendererChunkAction, GutterRendererChunkLines)
-
         for pane, t in enumerate(self.textview):
             # FIXME: set_num_panes will break this good
             direction = t.get_direction()
-
-            if pane == 0 or (pane == 1 and self.num_panes == 3):
-                window = Gtk.TextWindowType.RIGHT
-                if direction == Gtk.TextDirection.RTL:
-                    window = Gtk.TextWindowType.LEFT
-                views = [self.textview[pane], self.textview[pane + 1]]
-                renderer = GutterRendererChunkAction(
-                    pane, pane + 1, views, self, self.linediffer)
-                gutter = t.get_gutter(window)
-                gutter.insert(renderer, 10)
-            if pane in (1, 2):
-                window = Gtk.TextWindowType.LEFT
-                if direction == Gtk.TextDirection.RTL:
-                    window = Gtk.TextWindowType.RIGHT
-                views = [self.textview[pane], self.textview[pane - 1]]
-                renderer = GutterRendererChunkAction(
-                    pane, pane - 1, views, self, self.linediffer)
-                gutter = t.get_gutter(window)
-                gutter.insert(renderer, -40)
 
             # TODO: This renderer handling should all be part of
             # MeldSourceView, but our current diff-chunk-handling makes
