@@ -1745,8 +1745,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             'changes-prevent-symbolic')
         self.textview[index].set_editable(editable)
         self.on_cursor_position_changed(buf, None, True)
-        for linkmap in self.linkmap:
-            linkmap.queue_draw()
 
     @with_focused_pane
     def save(self, pane):
