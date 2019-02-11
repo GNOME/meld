@@ -3,6 +3,7 @@
 # module, allowing editing of our UI files without having widgets that
 # can't be instantiated everywhere.
 
+from meld import actiongutter  # noqa: F401
 from meld import diffgrid  # noqa: F401
 from meld import diffmap  # noqa: F401
 from meld import linkmap  # noqa: F401
