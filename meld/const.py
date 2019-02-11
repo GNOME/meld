@@ -13,6 +13,14 @@ class ActionMode(enum.IntEnum):
     Insert = 2
 
 
+class ChunkAction(enum.Enum):
+
+    delete = 'delete'
+    replace = 'replace'
+    copy_down = 'copy_down'
+    copy_up = 'copy_up'
+
+
 NEWLINES = {
     GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),
     GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),
