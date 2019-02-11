@@ -97,7 +97,8 @@ class LinkMap(Gtk.DrawingArea):
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
                 if f0 == f1:
                     continue
-                context.arc(x_steps[0], f0 - 0.5 + RADIUS, RADIUS, q_rad * 3, 0)
+                context.arc(
+                    x_steps[0], f0 - 0.5 + RADIUS, RADIUS, q_rad * 3, 0)
                 context.arc(x_steps[0], f1 - 0.5 - RADIUS, RADIUS, 0, q_rad)
                 context.close_path()
             elif (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
