@@ -16,6 +16,7 @@
 
 import copy
 import functools
+import logging
 import math
 
 from gi.repository import Gdk
@@ -28,7 +29,7 @@ from gi.repository import GtkSource
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _, ui_file
-from meld.const import ActionMode, NEWLINES
+from meld.const import ActionMode, ChunkAction, NEWLINES
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -48,6 +49,8 @@ from meld.ui.findbar import FindBar
 from meld.ui.util import (
     make_multiobject_property_action, map_widgets_into_lists)
 from meld.undo import UndoSequence
+
+log = logging.getLogger(__name__)
 
 
 def with_scroll_lock(lock_attr):
@@ -117,6 +120,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
     )
 
     actiongroup = Template.Child('FilediffActions')
+    actiongutter0 = Template.Child()
+    actiongutter1 = Template.Child()
+    actiongutter2 = Template.Child()
+    actiongutter3 = Template.Child()
+    dummy_toolbar_actiongutter0 = Template.Child()
+    dummy_toolbar_actiongutter1 = Template.Child()
+    dummy_toolbar_actiongutter2 = Template.Child()
+    dummy_toolbar_actiongutter3 = Template.Child()
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
     fileentry0 = Template.Child()
@@ -205,6 +216,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
             "fileentry_toolitem", "statusbar",
+            "actiongutter", "dummy_toolbar_actiongutter",
         ]
         map_widgets_into_lists(self, widget_lists)
 
@@ -283,6 +295,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.bind_property(
                 'overwrite', self.textview[0], 'overwrite',
                 GObject.BindingFlags.BIDIRECTIONAL)
+
+        for gutter in self.actiongutter:
+            self.bind_property('action_mode', gutter, 'action_mode')
+            gutter.connect(
+                'chunk_action_activated', self.on_chunk_action_activated)
 
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
@@ -611,6 +628,29 @@ class FileDiff(Gtk.VBox, MeldDoc):
         src = self._get_focused_pane()
         dst = src + direction
         return (dst, src) if reverse else (src, dst)
+
+    def on_chunk_action_activated(
+            self, gutter, action, from_view, to_view, chunk):
+
+        try:
+            chunk_action = ChunkAction(action)
+        except ValueError:
+            log.error('Invalid chunk action %s', action)
+            return
+
+        # TODO: There's no reason the replace_chunk(), etc. calls should take
+        # an index instead of just taking the views themselves.
+        from_pane = self.textview.index(from_view)
+        to_pane = self.textview.index(to_view)
+
+        if chunk_action == ChunkAction.replace:
+            self.replace_chunk(from_pane, to_pane, chunk)
+        elif chunk_action == ChunkAction.delete:
+            self.delete_chunk(from_pane, chunk)
+        elif chunk_action == ChunkAction.copy_up:
+            self.copy_chunk(from_pane, to_pane, chunk, copy_up=True)
+        elif chunk_action == ChunkAction.copy_down:
+            self.copy_chunk(from_pane, to_pane, chunk, copy_up=False)
 
     @Template.Callback()
     def action_push_change_left(self, *args):
@@ -1413,6 +1453,15 @@ class FileDiff(Gtk.VBox, MeldDoc):
         set_action_enabled("MergeAll", mergeable[0] or mergeable[1])
 
     def on_diffs_changed(self, linediffer, chunk_changes):
+
+        # TODO: Break out highlight recalculation to its own method,
+        # and just update chunk lists in children here.
+        for gutter in self.actiongutter:
+            from_pane = self.textview.index(gutter.source_view)
+            to_pane = self.textview.index(gutter.target_view)
+            gutter.chunks = list(linediffer.paired_all_single_changes(
+                from_pane, to_pane))
+
         removed_chunks, added_chunks, modified_chunks = chunk_changes
 
         # We need to clear removed and modified chunks, and need to
@@ -1829,6 +1878,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.queue_draw()
         for i in range(self.num_panes-1):
             self.linkmap[i].queue_draw()
+        for gutter in self.actiongutter:
+            gutter.queue_draw()
 
     @Template.Callback()
     def on_action_lock_scrolling_toggled(self, action):
@@ -1923,8 +1974,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if i == 1:
                 master, target_line = 1, other_line
 
+        # FIXME: We should really hook into the adjustments directly on
+        # the widgets instead of doing this.
         for lm in self.linkmap:
             lm.queue_draw()
+        for gutter in self.actiongutter:
+            gutter.queue_draw()
 
     def set_num_panes(self, n):
         if n == self.num_panes or n not in (1, 2, 3):
@@ -1934,15 +1989,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
         for widget in (
                 self.vbox[:n] + self.file_toolbar[:n] +
                 self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
-                self.statusbar[:n]
-                ):
+                self.statusbar[:n] +
+                self.actiongutter[:(n - 1) * 2] +
+                self.dummy_toolbar_actiongutter[:(n - 1) * 2]):
             widget.show()
 
         for widget in (
                 self.vbox[n:] + self.file_toolbar[n:] +
                 self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
-                self.statusbar[n:]
-                ):
+                self.statusbar[n:] +
+                self.actiongutter[(n - 1) * 2:] +
+                self.dummy_toolbar_actiongutter[(n - 1) * 2:]):
             widget.hide()
 
         self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)

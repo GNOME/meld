@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Generated with glade 3.22.1 -->
 <interface>
-  <requires lib="gtk+" version="3.0"/>
+  <requires lib="gtk+" version="3.20"/>
   <requires lib="meld.ui.gladesupport" version="0.0"/>
   <template class="FileDiff" parent="GtkVBox">
     <property name="visible">True</property>
@@ -9,7 +9,7 @@
     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
     <child>
-      <object class="DiffGrid" id="grid">
+      <object class="GtkGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <child>
@@ -83,7 +83,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">5</property>
+            <property name="left_attach">8</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -158,7 +158,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">4</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -233,7 +233,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">0</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -258,9 +258,6 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="window_placement">top-right</property>
-                <property name="overlay_scrolling">False</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview0">
@@ -283,7 +280,7 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">0</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -308,8 +305,6 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="overlay_scrolling">False</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview2">
@@ -332,7 +327,7 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">5</property>
+            <property name="left_attach">8</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -357,8 +352,6 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
-                <property name="vscrollbar_policy">always</property>
-                <property name="overlay_scrolling">False</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview1">
@@ -381,7 +374,7 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">4</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -420,7 +413,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">4</property>
+            <property name="left_attach">6</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -433,7 +426,7 @@
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">4</property>
+            <property name="left_attach">6</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -446,7 +439,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">0</property>
             <property name="top_attach">3</property>
           </packing>
         </child>
@@ -459,7 +452,8 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">2</property>
+            <property name="left_attach">1</property>
+            <property name="width">3</property>
             <property name="top_attach">3</property>
           </packing>
         </child>
@@ -472,7 +466,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">4</property>
             <property name="top_attach">3</property>
           </packing>
         </child>
@@ -485,7 +479,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">4</property>
+            <property name="left_attach">5</property>
             <property name="width">3</property>
             <property name="top_attach">3</property>
           </packing>
@@ -499,9 +493,129 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">5</property>
+            <property name="left_attach">8</property>
             <property name="top_attach">3</property>
           </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_actiongutter0">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_actiongutter1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_actiongutter2">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_actiongutter3">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">7</property>
+            <property name="top_attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="ActionGutter" id="actiongutter0">
+            <property name="width_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="source_view">textview0</property>
+            <property name="target_view">textview1</property>
+            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_LTR</property>
+          </object>
+          <packing>
+            <property name="left_attach">1</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="ActionGutter" id="actiongutter1">
+            <property name="width_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="source_view">textview1</property>
+            <property name="target_view">textview0</property>
+            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_RTL</property>
+          </object>
+          <packing>
+            <property name="left_attach">3</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="ActionGutter" id="actiongutter2">
+            <property name="width_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="source_view">textview1</property>
+            <property name="target_view">textview2</property>
+            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_LTR</property>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="ActionGutter" id="actiongutter3">
+            <property name="width_request">20</property>
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="source_view">textview2</property>
+            <property name="target_view">textview1</property>
+            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_RTL</property>
+          </object>
+          <packing>
+            <property name="left_attach">7</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+        <child>
+          <placeholder/>
         </child>
         <child>
           <placeholder/>
