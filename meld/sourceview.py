@@ -407,6 +407,10 @@ class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
 
     __gtype_name__ = "MeldSourceMap"
 
+    __gsettings_bindings_view__ = (
+        ('use-compact-sourcemap', 'compact-view'),
+    )
+
     compact_view = GObject.Property(
         type=bool,
         nick="Limit the view to a fixed width",
@@ -414,6 +418,14 @@ class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
     )
 
     COMPACT_MODE_WIDTH = 40
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.connect('notify::compact-view', lambda *args: self.queue_resize())
+
+    def do_realize(self):
+        bind_settings(self)
+        return GtkSource.Map.do_realize(self)
 
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
