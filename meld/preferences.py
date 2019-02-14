@@ -259,33 +259,33 @@ class PreferencesDialog(Gtk.Dialog):
 
     __gtype_name__ = "PreferencesDialog"
 
-    checkbutton_break_commit_lines = Template.Child("checkbutton_break_commit_lines")  # noqa: E501
-    checkbutton_default_font = Template.Child("checkbutton_default_font")
-    checkbutton_folder_filter_text = Template.Child("checkbutton_folder_filter_text")  # noqa: E501
-    checkbutton_highlight_current_line = Template.Child("checkbutton_highlight_current_line")  # noqa: E501
-    checkbutton_ignore_blank_lines = Template.Child("checkbutton_ignore_blank_lines")  # noqa: E501
-    checkbutton_ignore_symlinks = Template.Child("checkbutton_ignore_symlinks")
-    checkbutton_shallow_compare = Template.Child("checkbutton_shallow_compare")
-    checkbutton_show_commit_margin = Template.Child("checkbutton_show_commit_margin")  # noqa: E501
-    checkbutton_show_line_numbers = Template.Child("checkbutton_show_line_numbers")  # noqa: E501
-    checkbutton_show_whitespace = Template.Child("checkbutton_show_whitespace")
-    checkbutton_spaces_instead_of_tabs = Template.Child("checkbutton_spaces_instead_of_tabs")  # noqa: E501
-    checkbutton_use_syntax_highlighting = Template.Child("checkbutton_use_syntax_highlighting")  # noqa: E501
-    checkbutton_wrap_text = Template.Child("checkbutton_wrap_text")
-    checkbutton_wrap_word = Template.Child("checkbutton_wrap_word")
-    column_list_vbox = Template.Child("column_list_vbox")
-    combo_file_order = Template.Child("combo_file_order")
-    combo_merge_order = Template.Child("combo_merge_order")
-    combo_timestamp = Template.Child("combo_timestamp")
-    combobox_style_scheme = Template.Child("combobox_style_scheme")
-    custom_edit_command_entry = Template.Child("custom_edit_command_entry")
-    file_filters_vbox = Template.Child("file_filters_vbox")
-    fontpicker = Template.Child("fontpicker")
-    spinbutton_commit_margin = Template.Child("spinbutton_commit_margin")
-    spinbutton_tabsize = Template.Child("spinbutton_tabsize")
-    syntaxschemestore = Template.Child("syntaxschemestore")
-    system_editor_checkbutton = Template.Child("system_editor_checkbutton")
-    text_filters_vbox = Template.Child("text_filters_vbox")
+    checkbutton_break_commit_lines = Template.Child()
+    checkbutton_default_font = Template.Child()
+    checkbutton_folder_filter_text = Template.Child()
+    checkbutton_highlight_current_line = Template.Child()
+    checkbutton_ignore_blank_lines = Template.Child()
+    checkbutton_ignore_symlinks = Template.Child()
+    checkbutton_shallow_compare = Template.Child()
+    checkbutton_show_commit_margin = Template.Child()
+    checkbutton_show_line_numbers = Template.Child()
+    checkbutton_show_whitespace = Template.Child()
+    checkbutton_spaces_instead_of_tabs = Template.Child()
+    checkbutton_use_syntax_highlighting = Template.Child()
+    checkbutton_wrap_text = Template.Child()
+    checkbutton_wrap_word = Template.Child()
+    column_list_vbox = Template.Child()
+    combo_file_order = Template.Child()
+    combo_merge_order = Template.Child()
+    combo_timestamp = Template.Child()
+    combobox_style_scheme = Template.Child()
+    custom_edit_command_entry = Template.Child()
+    file_filters_vbox = Template.Child()
+    fontpicker = Template.Child()
+    spinbutton_commit_margin = Template.Child()
+    spinbutton_tabsize = Template.Child()
+    syntaxschemestore = Template.Child()
+    system_editor_checkbutton = Template.Child()
+    text_filters_vbox = Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
