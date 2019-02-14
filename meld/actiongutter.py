@@ -119,7 +119,7 @@ class ActionGutter(Gtk.DrawingArea):
             self._source_view.disconnect(self._source_editable_connect_id)
 
         self._source_editable_connect_id = view.connect(
-            'notify::editable', lambda *args: self.queue_draw)
+            'notify::editable', lambda *args: self.queue_draw())
         self._source_view = view
         self.queue_draw()
 
@@ -140,7 +140,7 @@ class ActionGutter(Gtk.DrawingArea):
             self._target_view.disconnect(self._target_editable_connect_id)
 
         self._target_editable_connect_id = view.connect(
-            'notify::editable', lambda *args: self.queue_draw)
+            'notify::editable', lambda *args: self.queue_draw())
         self._target_view = view
         self.queue_draw()
 
