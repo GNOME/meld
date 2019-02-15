@@ -108,8 +108,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     next_diff_changed_signal = MeldDoc.next_diff_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
 
-    __gsettings_bindings__ = (
+    __gsettings_bindings_view__ = (
         ('ignore-blank-lines', 'ignore-blank-lines'),
+        ('show-sourcemap', 'show-sourcemap'),
     )
 
     ignore_blank_lines = GObject.Property(
@@ -118,6 +119,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         blurb="Whether to ignore blank lines when comparing file contents",
         default=False,
     )
+    show_sourcemap = GObject.Property(type=bool, default=True)
 
     actiongroup = Template.Child('FilediffActions')
     actiongutter0 = Template.Child()
@@ -272,7 +274,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
         action = Gio.PropertyAction.new(
-            'show-overview-map', self.sourcemap_revealer, 'reveal-child')
+            'show-sourcemap', self, 'show-sourcemap')
+        self.bind_property(
+            'show-sourcemap', self.sourcemap_revealer, 'reveal-child',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
         self.sourcemap_revealer.bind_property(
             'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
         self.view_action_group.add_action(action)
