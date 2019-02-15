@@ -21,6 +21,9 @@ from gi.repository import Gtk
 class DiffGrid(Gtk.Grid):
     __gtype_name__ = "DiffGrid"
 
+    column_count = 10
+    handle_columns = (2, 6)
+
     def __init__(self):
         super().__init__()
         self._in_drag = False
@@ -41,13 +44,11 @@ class DiffGrid(Gtk.Grid):
 
     def do_map(self):
         Gtk.Grid.do_map(self)
-        drag = self.get_child_at(2, 0)
-        if drag and drag.get_visible():
-            self._handle1.set_visible(True)
 
-        drag = self.get_child_at(4, 0)
-        if drag and drag.get_visible():
-            self._handle2.set_visible(True)
+        drag = self.get_child_at(2, 0)
+        self._handle1.set_visible(drag and drag.get_visible())
+        drag = self.get_child_at(6, 0)
+        self._handle2.set_visible(drag and drag.get_visible())
 
     def do_unmap(self):
         self._handle1.set_visible(False)
@@ -92,11 +93,12 @@ class DiffGrid(Gtk.Grid):
                 return True
         return False
 
-    def _calculate_positions(self, xmin, xmax, wlink1, wlink2,
-                             wpane1, wpane2, wpane3):
-        wremain = max(0, xmax - xmin - wlink1 - wlink2)
+    def _calculate_positions(
+            self, xmin, xmax, pane_sep_width_1, pane_sep_width_2,
+            wpane1, wpane2, wpane3):
+        wremain = max(0, xmax - xmin - pane_sep_width_1 - pane_sep_width_2)
         pos1 = self._handle1.get_position(wremain, xmin)
-        pos2 = self._handle2.get_position(wremain, xmin + wlink1)
+        pos2 = self._handle2.get_position(wremain, xmin + pane_sep_width_1)
 
         if not self._drag_handle:
             npanes = 0
@@ -115,8 +117,8 @@ class DiffGrid(Gtk.Grid):
                 wpane3 = wpane
 
         xminlink1 = xmin + wpane1
-        xmaxlink2 = xmax - wpane3 - wlink2
-        wlinkpane = wlink1 + wpane2
+        xmaxlink2 = xmax - wpane3 - pane_sep_width_2
+        wlinkpane = pane_sep_width_1 + wpane2
 
         if wpane1 == 0:
             pos1 = xminlink1
@@ -124,9 +126,9 @@ class DiffGrid(Gtk.Grid):
             pos2 = xmaxlink2
         if wpane2 == 0:
             if wpane3 == 0:
-                pos1 = pos2 - wlink2
+                pos1 = pos2 - pane_sep_width_2
             else:
-                pos2 = pos1 + wlink1
+                pos2 = pos1 + pane_sep_width_1
 
         if self._drag_handle == self._handle2:
             xminlink2 = xminlink1 + wlinkpane
@@ -158,17 +160,22 @@ class DiffGrid(Gtk.Grid):
                  allocation.y + (allocation.height - hrows[3]),
                  allocation.y + allocation.height]
 
-        wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2 = wcols
-        xmin = allocation.x + wmap1
-        xmax = allocation.x + allocation.width - wmap2
-        pos1, pos2 = self._calculate_positions(xmin, xmax,
-                                               wlink1, wlink2,
-                                               wpane1, wpane2, wpane3)
-        wpane1 = pos1 - (allocation.x + wmap1)
-        wpane2 = pos2 - (pos1 + wlink1)
-        wpane3 = xmax - (pos2 + wlink2)
+        (wpane1, wgutter1, wlink1, wgutter2, wpane2, wgutter3, wlink2,
+            wgutter4, wpane3, wmap) = wcols
+        xmin = allocation.x
+        xmax = allocation.x + allocation.width - wmap
+        pane_sep_width_1 = wgutter1 + wlink1 + wgutter2
+        pane_sep_width_2 = wgutter3 + wlink2 + wgutter4
+        pos1, pos2 = self._calculate_positions(
+            xmin, xmax, pane_sep_width_1, pane_sep_width_2,
+            wpane1, wpane2, wpane3
+        )
+        wpane1 = pos1 - allocation.x
+        wpane2 = pos2 - (pos1 + pane_sep_width_1)
+        wpane3 = xmax - (pos2 + pane_sep_width_2)
         wcols = (
-            allocation.x, wmap1, wpane1, wlink1, wpane2, wlink2, wpane3, wmap2)
+            allocation.x, wpane1, wgutter1, wlink1, wgutter2, wpane2,
+            wgutter3, wlink2, wgutter4, wpane3, wmap)
         columns = [sum(wcols[:i + 1]) for i in range(len(wcols))]
 
         def child_allocate(child):
@@ -198,16 +205,16 @@ class DiffGrid(Gtk.Grid):
             mapped = self.get_mapped()
             ydrag = yrows[0]
             hdrag = yrows[1] - yrows[0]
-            self._handle1.set_visible(mapped and wlink1 > 0)
-            self._handle1.move_resize(pos1, ydrag, wlink1, hdrag)
-            self._handle2.set_visible(mapped and wlink2 > 0)
-            self._handle2.move_resize(pos2, ydrag, wlink2, hdrag)
+            self._handle1.set_visible(mapped and pane_sep_width_1 > 0)
+            self._handle1.move_resize(pos1, ydrag, pane_sep_width_1, hdrag)
+            self._handle2.set_visible(mapped and pane_sep_width_2 > 0)
+            self._handle2.move_resize(pos2, ydrag, pane_sep_width_2, hdrag)
 
     def _get_min_sizes(self):
         hrows = [0] * 4
-        wcols = [0] * 7
-        for row in range(0, 4):
-            for col in range(0, 7):
+        wcols = [0] * self.column_count
+        for row in range(4):
+            for col in range(self.column_count):
                 child = self.get_child_at(col, row)
                 if child and child.get_visible():
                     msize, nsize = child.get_preferred_size()
