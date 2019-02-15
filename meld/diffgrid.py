@@ -58,16 +58,17 @@ class DiffGrid(Gtk.Grid):
     def _handle_set_prelight(self, window, flag):
         if hasattr(window, "handle"):
             window.handle.set_prelight(flag)
-            return True
-        return False
 
     def do_enter_notify_event(self, event):
-        return self._handle_set_prelight(event.window, True)
+        if hasattr(event.window, "handle"):
+            event.window.handle.set_prelight(True)
 
     def do_leave_notify_event(self, event):
-        if not self._in_drag:
-            return self._handle_set_prelight(event.window, False)
-        return False
+        if self._in_drag:
+            return
+
+        if hasattr(event.window, "handle"):
+            event.window.handle.set_prelight(False)
 
     def do_button_press_event(self, event):
         if event.button & Gdk.BUTTON_PRIMARY:
@@ -241,6 +242,11 @@ class DiffGrid(Gtk.Grid):
 
 
 class HandleWindow():
+
+    # We restrict the handle width because render_handle doesn't pay
+    # attention to orientation.
+    handle_width = 10
+
     def __init__(self):
         self._widget = None
         self._window = None
@@ -330,10 +336,13 @@ class HandleWindow():
             stylecontext.save()
             stylecontext.set_state(state)
             stylecontext.add_class(Gtk.STYLE_CLASS_PANE_SEPARATOR)
+            stylecontext.add_class(Gtk.STYLE_CLASS_VERTICAL)
             color = stylecontext.get_background_color(state)
             if color.alpha > 0.0:
-                Gtk.render_handle(stylecontext, cairocontext,
-                                  x, y, width, height)
+                xcenter = x + width / 2.0 - self.handle_width / 2.0
+                Gtk.render_handle(
+                    stylecontext, cairocontext,
+                    xcenter, y, self.handle_width, height)
             else:
                 xcenter = x + width / 2.0
                 Gtk.render_line(stylecontext, cairocontext,
