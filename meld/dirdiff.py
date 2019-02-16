@@ -1156,9 +1156,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 act.set_sensitive(False)
 
     @Template.Callback()
-    def on_treeview_cursor_changed(self, *args):
-        pane = self._get_focused_pane()
-        if pane is None or len(self.model) == 0:
+    def on_treeview_cursor_changed(self, view):
+        pane = self.treeview.index(view)
+        if len(self.model) == 0:
             return
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
