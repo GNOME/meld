@@ -215,8 +215,8 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             a for a in action_groups if a.get_name() == "MainActions"][0]
         uimanager.ensure_update()
 
-        if hasattr(self, "view_action_group"):
-            window.insert_action_group('view', self.view_action_group)
+        window.insert_action_group(
+            'view', getattr(self, 'view_action_group', None))
 
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
@@ -230,8 +230,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         self.popup_menu = None
         self.ui_merge_id = None
 
-        if hasattr(self, "view_action_group"):
-            window.insert_action_group('view', None)
+        window.insert_action_group('view', None)
 
     def on_delete_event(self):
         """Called when the docs container is about to close.
