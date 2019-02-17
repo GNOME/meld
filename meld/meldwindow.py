@@ -57,9 +57,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("Close", Gtk.STOCK_CLOSE, None, None,
-                _("Close the current file"),
-                self.on_menu_close_activate),
 
             ("EditMenu", None, _("_Edit")),
             ("Undo", Gtk.STOCK_UNDO, None, "<Primary>Z",
@@ -138,7 +135,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         # Manually handle GAction additions
         actions = (
-            ("close", self.on_menu_close_activate),
+            ("close", self.action_close),
             ("new-tab", self.on_action_new_tab_activate),
             ("stop", self.action_stop),
         )
@@ -259,7 +256,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         else:
             page = None
 
-        self.actiongroup.get_action("Close").set_sensitive(bool(page))
+        self.lookup_action('close').set_enabled(bool(page))
         if not isinstance(page, MeldDoc):
             for action in ("Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
@@ -343,7 +340,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             # FIXME: Need error handling, but no sensible display location
             log.exception(f'Error opening recent file {uri}')
 
-    def on_menu_close_activate(self, *extra):
+    def action_close(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
             page = self.notebook.get_nth_page(i)

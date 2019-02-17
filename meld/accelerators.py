@@ -10,6 +10,7 @@ def register_accels(app: Gtk.Application):
         ('view.save', '<Primary>S'),
         ('view.save-all', '<Primary><Shift>L'),
         ('view.save-as', '<Primary><Shift>S'),
+        ('win.close', '<Primary>W'),
         ("win.stop", "Escape"),
     )
     for (name, accel) in view_accels:
