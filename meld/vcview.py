@@ -134,7 +134,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
 
     status_filters = GObject.Property(
@@ -193,6 +192,18 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.ui_file = ui_file("vcview-ui.xml")
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
+
+        # Manually handle GAction additions
+        actions = (
+            ('next-change', self.action_next_change),
+            ('previous-change', self.action_previous_change),
+        )
+        self.view_action_group = Gio.SimpleActionGroup()
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
+
         self.model = VcTreeStore()
         self.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self)
@@ -821,7 +832,8 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def on_treeview_cursor_changed(self, *args):
         cursor_path, cursor_col = self.treeview.get_cursor()
         if not cursor_path:
-            self.next_diff_changed_signal.emit(False, False)
+            self.set_action_enabled("previous-change", False)
+            self.set_action_enabled("next-change", False)
             self.current_path = cursor_path
             return
 
@@ -851,10 +863,10 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                         skip = self.prev_path < cursor_path < self.next_path
 
         if not skip:
-            prev, next = self.model._find_next_prev_diff(cursor_path)
-            self.prev_path, self.next_path = prev, next
-            have_next_diffs = (prev is not None, next is not None)
-            self.next_diff_changed_signal.emit(*have_next_diffs)
+            prev, next_ = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev, next_
+            self.set_action_enabled("previous-change", prev is not None)
+            self.set_action_enabled("next-change", next_ is not None)
         self.current_path = cursor_path
 
     def next_diff(self, direction):
@@ -865,6 +877,12 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if path:
             self.treeview.expand_to_path(path)
             self.treeview.set_cursor(path)
+
+    def action_previous_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.UP)
+
+    def action_next_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.DOWN)
 
     def on_refresh_activate(self, *extra):
         self.on_fileentry_file_set(self.fileentry)

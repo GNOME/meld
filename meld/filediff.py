@@ -105,7 +105,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings_view__ = (
@@ -275,13 +274,25 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.view_action_group = Gio.SimpleActionGroup()
         action = Gio.PropertyAction.new(
             'show-sourcemap', self, 'show-sourcemap')
+        self.view_action_group.add_action(action)
+
+        # Manually handle GAction additions
+        actions = (
+            ('next-change', self.action_next_change),
+            ('previous-change', self.action_previous_change),
+        )
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
+
+        # Handle sourcemap visibility binding
         self.bind_property(
             'show-sourcemap', self.sourcemap_revealer, 'reveal-child',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
         self.sourcemap_revealer.bind_property(
             'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
-        self.view_action_group.add_action(action)
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
@@ -466,8 +477,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.cursor.chunk = chunk
                 self.on_current_diff_changed()
             if prev != self.cursor.prev or next_ != self.cursor.next or force:
-                self.next_diff_changed_signal.emit(
-                    prev is not None, next_ is not None)
+                self.set_action_enabled("previous-change", prev is not None)
+                self.set_action_enabled("next-change", next_ is not None)
 
             prev_conflict, next_conflict = None, None
             for conflict in self.linediffer.conflicts:
@@ -615,6 +626,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
                   else self.cursor.prev)
         self.go_to_chunk(target, centered=centered)
+
+    def action_previous_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.UP)
+
+    def action_next_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.DOWN)
 
     @Template.Callback()
     def action_previous_conflict(self, *args):

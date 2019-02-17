@@ -97,12 +97,6 @@ class MeldWindow(Gtk.ApplicationWindow):
                 self.on_menu_go_to_line_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-            ("NextChange", Gtk.STOCK_GO_DOWN, _("Next Change"), "<Alt>Down",
-                _("Go to the next change"),
-                self.on_menu_edit_down_activate),
-            ("PrevChange", Gtk.STOCK_GO_UP, _("Previous Change"), "<Alt>Up",
-                _("Go to the previous change"),
-                self.on_menu_edit_up_activate),
             ("OpenExternal", None, _("Open Externally"), None,
                 _("Open selected file or directory in the default external "
                   "application"),
@@ -146,10 +140,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         # Alternate keybindings for a few commands.
         extra_accels = (
-            ("<Primary>D", self.on_menu_edit_down_activate),
-            ("<Primary>E", self.on_menu_edit_up_activate),
-            ("<Alt>KP_Down", self.on_menu_edit_down_activate),
-            ("<Alt>KP_Up", self.on_menu_edit_up_activate),
             ("F5", self.on_menu_refresh_activate),
         )
 
@@ -217,7 +207,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
 
         self.ui.ensure_update()
-        self.diff_handler = None
         self.undo_handlers = tuple()
 
         # Set tooltip on map because the recentmenu is lazily created
@@ -295,7 +284,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         self.actiongroup.get_action("Close").set_sensitive(bool(page))
         if not isinstance(page, MeldDoc):
-            for action in ("PrevChange", "NextChange", "Cut", "Copy", "Paste",
+            for action in ("Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
                            "Refresh", "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(False)
@@ -308,8 +297,6 @@ class MeldWindow(Gtk.ApplicationWindow):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def handle_current_doc_switch(self, page):
-        if self.diff_handler is not None:
-            page.disconnect(self.diff_handler)
         page.on_container_switch_out_event(self.ui, self)
         if self.undo_handlers:
             undoseq = page.undosequence
@@ -350,11 +337,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         else:
             self.set_title("Meld")
 
-        if isinstance(newdoc, MeldDoc):
-            self.diff_handler = newdoc.next_diff_changed_signal.connect(
-                self.on_next_diff_changed)
-        else:
-            self.diff_handler = None
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
@@ -377,10 +359,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_can_redo(self, undosequence, can):
         self.actiongroup.get_action("Redo").set_sensitive(can)
-
-    def on_next_diff_changed(self, doc, have_prev, have_next):
-        self.actiongroup.get_action("PrevChange").set_sensitive(have_prev)
-        self.actiongroup.get_action("NextChange").set_sensitive(have_next)
 
     def on_action_new_tab_activate(self, action, parameter):
         self.append_new_comparison()

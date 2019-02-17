@@ -296,7 +296,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -410,6 +409,17 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self.ui_file = ui_file("dirdiff-ui.xml")
         self.actiongroup.set_translation_domain("meld")
+
+        # Manually handle GAction additions
+        actions = (
+            ('next-change', self.action_next_change),
+            ('previous-change', self.action_previous_change),
+        )
+        self.view_action_group = Gio.SimpleActionGroup()
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
 
         self.name_filters = []
         self.text_filters = []
@@ -1163,7 +1173,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
         if not cursor_path:
-            self.next_diff_changed_signal.emit(False, False)
+            self.set_action_enabled("previous-change", False)
+            self.set_action_enabled("next-change", False)
             self.current_path = cursor_path
             return
 
@@ -1197,10 +1208,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                         skip = self.prev_path < cursor_path < self.next_path
 
         if not skip:
-            prev, next = self.model._find_next_prev_diff(cursor_path)
-            self.prev_path, self.next_path = prev, next
-            have_next_diffs = (prev is not None, next is not None)
-            self.next_diff_changed_signal.emit(*have_next_diffs)
+            prev, next_ = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev, next_
+            self.set_action_enabled("previous-change", prev is not None)
+            self.set_action_enabled("next-change", next_ is not None)
+
         self.current_path = cursor_path
 
     @Template.Callback()
@@ -1674,6 +1686,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if path:
             self.treeview[pane].expand_to_path(path)
             self.treeview[pane].set_cursor(path)
+
+    def action_previous_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.UP)
+
+    def action_next_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.DOWN)
 
     def on_refresh_activate(self, *extra):
         self.on_fileentry_file_set(None)

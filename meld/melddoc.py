@@ -85,11 +85,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def file_changed_signal(self, path: str) -> None:
         ...
 
-    @GObject.Signal('next-diff-changed')
-    def next_diff_changed_signal(
-            self, have_prev: bool, have_next: bool) -> None:
-        ...
-
     @GObject.Signal
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
@@ -203,6 +198,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     def set_labels(self, lst):
         pass
+
+    def set_action_enabled(self, action, enabled):
+        self.view_action_group.lookup_action(action).set_enabled(enabled)
 
     def on_container_switch_in_event(self, uimanager, window):
         """Called when the container app switches to this tab.
