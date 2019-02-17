@@ -278,6 +278,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('format-as-patch', self.action_format_as_patch),
             ('next-change', self.action_next_change),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
@@ -1809,8 +1810,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         else:
             self.state = ComparisonState.Normal
 
-    @Template.Callback()
-    def make_patch(self, *extra):
+    def action_format_as_patch(self, *extra):
         dialog = PatchDialog(self)
         dialog.run()
 
@@ -2037,7 +2037,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.dummy_toolbar_actiongutter[(n - 1) * 2:]):
             widget.hide()
 
-        self.actiongroup.get_action("MakePatch").set_sensitive(n > 1)
+        self.set_action_enabled('format-as-patch', n > 1)
 
         def chunk_iter(i):
             def chunks(bounds):
