@@ -268,7 +268,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         for prop in sourceview_prop_actions:
             action = make_multiobject_property_action(self.textview, prop)
             prop_action_group.add_action(action)
-        self.insert_action_group('view', prop_action_group)
+        self.insert_action_group('view-local', prop_action_group)
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()

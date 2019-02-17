@@ -273,7 +273,7 @@ class MeldStatusBar(Gtk.Statusbar):
         menu = builder.get_object('statusbar-menu')
 
         pop = Gtk.Popover()
-        pop.bind_model(menu, 'view')
+        pop.bind_model(menu, 'view-local')
         pop.set_position(Gtk.PositionType.TOP)
 
         button = MeldStatusMenuButton()
