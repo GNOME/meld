@@ -731,21 +731,6 @@
   </template>
   <object class="GtkActionGroup" id="FilediffActions">
     <child>
-      <object class="GtkAction" id="SaveAll">
-        <property name="label" translatable="yes">Save A_ll</property>
-        <property name="tooltip" translatable="yes">Save all files in the current comparison</property>
-        <signal name="activate" handler="on_save_all_activate" swapped="no"/>
-      </object>
-      <accelerator key="L" modifiers="GDK_SHIFT_MASK | GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="Revert">
-        <property name="tooltip" translatable="yes">Revert files to their saved versions</property>
-        <property name="stock_id">gtk-revert-to-saved</property>
-        <signal name="activate" handler="on_revert_activate" swapped="no"/>
-      </object>
-    </child>
-    <child>
       <object class="GtkAction" id="SplitAdd">
         <property name="label" translatable="yes">Add Synchronization Point</property>
         <property name="tooltip" translatable="yes">Add a synchronization point for changes between files</property>

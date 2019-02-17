@@ -282,6 +282,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('next-change', self.action_next_change),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
+            ('revert', self.action_revert),
+            ('save', self.action_save),
+            ('save-all', self.action_save_all),
+            ('save-as', self.action_save_as),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -1216,12 +1220,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def _set_save_action_sensitivity(self):
         pane = self._get_focused_pane()
-        modified = (
-            False if pane == -1 else self.textbuffer[pane].get_modified())
-        if self.main_actiongroup:
-            self.main_actiongroup.get_action("Save").set_sensitive(modified)
-        any_modified = any(b.get_modified() for b in self.textbuffer)
-        self.actiongroup.get_action("SaveAll").set_sensitive(any_modified)
+        modified_panes = [b.get_modified() for b in self.textbuffer]
+        self.set_action_enabled('save', pane != -1 and modified_panes[pane])
+        self.set_action_enabled('save-all', any(modified_panes))
 
     def recompute_label(self):
         self._set_save_action_sensitivity()
@@ -1459,7 +1460,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         secondary = _("Do you want to reload the file?")
         self.msgarea_mgr[pane].add_action_msg(
             'dialog-warning-symbolic', primary, secondary, _("_Reload"),
-            self.on_revert_activate)
+            self.action_revert)
 
     def refresh_comparison(self, *args):
         """Refresh the view by clearing and redoing all comparisons"""
@@ -1831,15 +1832,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.on_cursor_position_changed(buf, None, True)
 
     @with_focused_pane
-    def save(self, pane):
+    def action_save(self, pane, *args):
         self.save_file(pane)
 
     @with_focused_pane
-    def save_as(self, pane):
+    def action_save_as(self, pane, *args):
         self.save_file(pane, saveas=True)
 
-    @Template.Callback()
-    def on_save_all_activate(self, action):
+    def action_save_all(self, *args):
         for i in range(self.num_panes):
             if self.textbuffer[i].get_modified():
                 self.save_file(i)
@@ -1895,8 +1895,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         dialog.destroy()
         return response == Gtk.ResponseType.OK
 
-    @Template.Callback()
-    def on_revert_activate(self, *extra):
+    def action_revert(self, *extra):
         if not self.check_unsaved_changes():
             return
 

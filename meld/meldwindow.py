@@ -57,12 +57,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         actions = (
             ("FileMenu", None, _("_File")),
-            ("Save", Gtk.STOCK_SAVE, None, None,
-                _("Save the current file"),
-                self.on_menu_save_activate),
-            ("SaveAs", Gtk.STOCK_SAVE_AS, _("Save As…"), "<Primary><shift>S",
-                _("Save the current file with a different name"),
-                self.on_menu_save_as_activate),
             ("Close", Gtk.STOCK_CLOSE, None, None,
                 _("Close the current file"),
                 self.on_menu_close_activate),
@@ -124,8 +118,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.ui.insert_action_group(self.actiongroup, 0)
         self.ui.add_ui_from_file(ui_file("meldapp-ui.xml"))
 
-        for menuitem in ("Save", "Undo"):
-            self.actiongroup.get_action(menuitem).props.is_important = True
         self.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
         self.toolbar = self.ui.get_widget('/Toolbar')
@@ -309,13 +301,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.actiongroup.get_action("Undo").set_sensitive(can_undo)
         self.actiongroup.get_action("Redo").set_sensitive(can_redo)
 
-        # FileDiff handles save sensitivity; it makes no sense for other modes
-        if not isinstance(newdoc, FileDiff):
-            self.actiongroup.get_action("Save").set_sensitive(False)
-            self.actiongroup.get_action("SaveAs").set_sensitive(False)
-        else:
-            self.actiongroup.get_action("SaveAs").set_sensitive(True)
-
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc)
             self.set_title(nbl.props.label_text)
@@ -347,12 +332,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_action_new_tab_activate(self, action, parameter):
         self.append_new_comparison()
-
-    def on_menu_save_activate(self, menuitem):
-        self.current_doc().save()
-
-    def on_menu_save_as_activate(self, menuitem):
-        self.current_doc().save_as()
 
     def on_action_recent(self, action):
         uri = action.get_current_uri()

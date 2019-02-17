@@ -115,12 +115,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         if self.scheduler.tasks_pending():
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
-    def save(self):
-        pass
-
-    def save_as(self):
-        pass
-
     def _open_files(self, selected, line=0):
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
                                 Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
