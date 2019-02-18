@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 
 from gi.repository import Gdk
@@ -34,6 +35,8 @@ from meld.ui._gtktemplate import Template
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
+
+log = logging.getLogger(__name__)
 
 
 @Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
@@ -393,7 +396,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.append_recent(uri)
         except (IOError, ValueError):
             # FIXME: Need error handling, but no sensible display location
-            pass
+            log.exception(f'Error opening recent file {uri}')
 
     def on_menu_close_activate(self, *extra):
         i = self.notebook.get_current_page()
