@@ -10,28 +10,28 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld 1.7.3\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2018-11-18 12:06+0000\n"
-"PO-Revision-Date: 2018-11-28 22:56+0300\n"
-"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
+"POT-Creation-Date: 2019-02-09 16:25+0000\n"
+"PO-Revision-Date: 2019-02-10 09:20+0200\n"
+"Last-Translator: Sabri Ünal <libreajans@gmail.com>\n"
 "Language-Team: Türkçe <gnome-turk@gnome.org>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 3.30.1\n"
+"X-Generator: Poedit 2.0.6\n"
 "X-POOTLE-MTIME: 1428188634.000000\n"
 
-#: ../bin/meld:194
+#: ../bin/meld:190
 msgid "Cannot import: "
 msgstr "İçe aktarılamıyor: "
 
-#: ../bin/meld:197
+#: ../bin/meld:193
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld %s veya üstünü gerektirir."
 
-#: ../bin/meld:243
+#: ../bin/meld:262
 #, c-format
 msgid ""
 "Couldn’t load Meld-specific CSS (%s)\n"
@@ -41,7 +41,8 @@ msgstr ""
 "%s"
 
 #: ../data/org.gnome.meld.desktop.in.h:1
-#: ../data/org.gnome.meld.appdata.xml.in.h:1 ../data/ui/meldapp.ui.h:1
+#: ../data/org.gnome.meld.appdata.xml.in.h:1
+#: ../meld/resources/ui/appwindow.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
@@ -109,26 +110,10 @@ msgid "Default window fullscreen state"
 msgstr "Öntanımlı pencere tam ekran durumu"
 
 #: ../data/org.gnome.meld.gschema.xml.h:5
-msgid "Show toolbar"
-msgstr "Araç çubuğunu göster"
-
-#: ../data/org.gnome.meld.gschema.xml.h:6
-msgid "If true, the window toolbar is visible."
-msgstr "Eğer doğruysa, pencere araç çubuğu görünürdür."
-
-#: ../data/org.gnome.meld.gschema.xml.h:7
-msgid "Show statusbar"
-msgstr "Durum çubuğu göster"
-
-#: ../data/org.gnome.meld.gschema.xml.h:8
-msgid "If true, the window statusbar is visible."
-msgstr "Eğer doğruysa, pencere durum çubuğu görünürdür."
-
-#: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Additional automatically detected text encodings"
 msgstr "Kendiliğinden saptanan ek metin kodlamaları"
 
-#: ../data/org.gnome.meld.gschema.xml.h:10
+#: ../data/org.gnome.meld.gschema.xml.h:6
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -140,37 +125,38 @@ msgstr ""
 "ek olarak, UTF-8 ve geçerli yerel-öntanımlı kodlamayı her zaman kullanacak; "
 "kullanıcının yereline bağlı olarak diğer kodlamalar da denenebilir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:11
+#: ../data/org.gnome.meld.gschema.xml.h:7
 msgid "Width of an indentation step"
 msgstr "Girinti genişliği"
 
-#: ../data/org.gnome.meld.gschema.xml.h:12
+#: ../data/org.gnome.meld.gschema.xml.h:8
 msgid "The number of spaces to use for a single indent step"
 msgstr "Tek bir girinti için kullanılacak boşluk sayısı"
 
-#: ../data/org.gnome.meld.gschema.xml.h:13
+#: ../data/org.gnome.meld.gschema.xml.h:9
 msgid "Whether to indent using spaces or tabs"
 msgstr "Girinti için boşluk ya da sekme kullanılıp kullanılmaması"
 
-#: ../data/org.gnome.meld.gschema.xml.h:14
+#: ../data/org.gnome.meld.gschema.xml.h:10
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr "Eğer doğruysa, her yeni girinti sekme yerine boşluk kullanacak."
 
-#: ../data/org.gnome.meld.gschema.xml.h:15
+#: ../data/org.gnome.meld.gschema.xml.h:11
+#: ../meld/resources/ui/statusbar-menu.ui.h:1
 msgid "Show line numbers"
 msgstr "Satır numaralarını göster"
 
-#: ../data/org.gnome.meld.gschema.xml.h:16
+#: ../data/org.gnome.meld.gschema.xml.h:12
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr ""
 "Eğer seçiliyse, satır numaraları dosya karşılaştırmalarının kolon arasında "
 "gösterilecektir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:17
+#: ../data/org.gnome.meld.gschema.xml.h:13
 msgid "Highlight syntax"
 msgstr "Söz dizimini vurgula"
 
-#: ../data/org.gnome.meld.gschema.xml.h:18
+#: ../data/org.gnome.meld.gschema.xml.h:14
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
@@ -179,21 +165,21 @@ msgstr ""
 "uygulamasının kendi renk vurgulaması yüzünden öntanımlı olarak bu özellik "
 "kapalıdır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:19
+#: ../data/org.gnome.meld.gschema.xml.h:15
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Söz dizimi vurgulaması için kullanılacak renk şeması"
 
-#: ../data/org.gnome.meld.gschema.xml.h:20
+#: ../data/org.gnome.meld.gschema.xml.h:16
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr ""
 "Söz dizimi vurgulamasının renklerini tespit etmek için GtkSourceView "
 "tarafından kullanıldı"
 
-#: ../data/org.gnome.meld.gschema.xml.h:21
+#: ../data/org.gnome.meld.gschema.xml.h:17
 msgid "Displayed whitespace"
 msgstr "Boşluk görüntülendi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:22
+#: ../data/org.gnome.meld.gschema.xml.h:18
 msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
@@ -201,11 +187,11 @@ msgstr ""
 "Gösterilecek tekil boşluk karakter türleri için seçici. Olası değerler "
 "şunlardır: 'space' (boşluk), 'tab' (sekme), 'newline' (yeni satır) ve 'nbsp'."
 
-#: ../data/org.gnome.meld.gschema.xml.h:23
+#: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Wrap mode"
 msgstr "Kaydırma kipi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:24
+#: ../data/org.gnome.meld.gschema.xml.h:20
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -215,11 +201,12 @@ msgstr ""
 "herhangi bir karakterden ('char') ya da yalnızca sözcüklerin sonundan "
 "('word') kaydırılacaktır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:25
+#: ../data/org.gnome.meld.gschema.xml.h:21
+#: ../meld/resources/ui/statusbar-menu.ui.h:3
 msgid "Highlight current line"
 msgstr "Şu anki satırı vurgula"
 
-#: ../data/org.gnome.meld.gschema.xml.h:26
+#: ../data/org.gnome.meld.gschema.xml.h:22
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
@@ -227,22 +214,22 @@ msgstr ""
 "Eğer seçiliyse, dosya karşılaştırmalarında imleç içeren satır "
 "vurgulanacaktır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:27
+#: ../data/org.gnome.meld.gschema.xml.h:23
 msgid "Use the system default monospace font"
 msgstr "Sistem öntanımlı eşaralıklı yazı tipini kullan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:28
+#: ../data/org.gnome.meld.gschema.xml.h:24
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
 "Eğer yanlışsa, sistem eşaralıklı yazı tipi yerine özel-yazı tipi "
 "kullanılacaktır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:29
+#: ../data/org.gnome.meld.gschema.xml.h:25
 msgid "Custom font"
 msgstr "Özel yazı tipi"
 
-#: ../data/org.gnome.meld.gschema.xml.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:26
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
@@ -250,22 +237,22 @@ msgstr ""
 "Kullanılacak özel yazı tipi, bir karakter dizisi olarak depolandı ve Pango "
 "yazı tipi tanımlaması olarak çözümlendi."
 
-#: ../data/org.gnome.meld.gschema.xml.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:27
 msgid "Ignore blank lines when comparing files"
 msgstr "Dosyalar karşılaştırılırken boş satırları yoksay"
 
-#: ../data/org.gnome.meld.gschema.xml.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:28
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Eğer seçiliyse, boş satırlar dosyalar arasındaki değişiklikler vurgulanırken "
 "kırpılacaktır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:33
+#: ../data/org.gnome.meld.gschema.xml.h:29
 msgid "Use the system default editor"
 msgstr "Öntanımlı sistem düzenleyiciyi kullan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:34
+#: ../data/org.gnome.meld.gschema.xml.h:30
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -273,11 +260,11 @@ msgstr ""
 "Eğer yanlışsa, dosyalar harici bir şekilde açılırken sistem düzenleyici "
 "yerine özel-düzenleyici-komut kullanılacaktır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:35
+#: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "The custom editor launch command"
 msgstr "Özel düzenleyici başlatma komutu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:36
+#: ../data/org.gnome.meld.gschema.xml.h:32
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -286,11 +273,11 @@ msgstr ""
 "seviyede şablonlama desteklenir; şu an '{dosya}' ve '{satır}' tanınan "
 "belirteçlerdir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:37
+#: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "Columns to display"
 msgstr "Görüntülenecek sütunlar"
 
-#: ../data/org.gnome.meld.gschema.xml.h:38
+#: ../data/org.gnome.meld.gschema.xml.h:34
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
@@ -298,11 +285,12 @@ msgstr ""
 "Klasör karşılaştırmasındaki sütun adları listesi ve onların "
 "görüntülenmesinin gerekliliği."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
+#: ../data/org.gnome.meld.gschema.xml.h:35
+#: ../meld/resources/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
 msgstr "Simgesel bağlantıları yoksay"
 
-#: ../data/org.gnome.meld.gschema.xml.h:40
+#: ../data/org.gnome.meld.gschema.xml.h:36
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -310,11 +298,11 @@ msgstr ""
 "Eğer seçiliyse, klasör ağacı gezilirken, klasör karşılaştırmaları simgesel "
 "bağlantıları takip etmez."
 
-#: ../data/org.gnome.meld.gschema.xml.h:41
+#: ../data/org.gnome.meld.gschema.xml.h:37
 msgid "Use shallow comparison"
 msgstr "Düşük düzeyde karşılaştırma kullan"
 
-#: ../data/org.gnome.meld.gschema.xml.h:42
+#: ../data/org.gnome.meld.gschema.xml.h:38
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -324,11 +312,11 @@ msgstr ""
 "boyutuna bağlı olarak karşılaştırır, eğer mtime ve boyutları eşleşirse aynı, "
 "diğer türlü farklı olduğunu düşünür."
 
-#: ../data/org.gnome.meld.gschema.xml.h:43
+#: ../data/org.gnome.meld.gschema.xml.h:39
 msgid "File timestamp resolution"
 msgstr "Dosya zaman damgası çözünürlüğü"
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:40
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -340,11 +328,12 @@ msgstr ""
 "farktır. Bu, farklı zaman damgalı dosya sistemleri arasında dosyalar "
 "karşılaştırılırken yararlıdır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
+#: ../data/org.gnome.meld.gschema.xml.h:41
+#: ../meld/resources/ui/preferences.ui.h:22
 msgid "Apply text filters during folder comparisons"
 msgstr "Klasör karşılaştırmaları sırasında metin süzgeçleri uygula"
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:42
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -354,21 +343,21 @@ msgstr ""
 "etkin metin süzgeçlerini ve boş satır kırpma seçeneğini uygulayacak, yeni "
 "satır farklılıklarını gözardı edecek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:43
 msgid "File status filters"
 msgstr "Dosya durumu süzgeçleri"
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:44
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Durum listesi klasör karşılaştırmasında görünür dosyaların süzülmesinde "
 "kullanılırdı."
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:45
 msgid "Show the version control console output"
 msgstr "Sürüm denetimi konsol çıktısını göster"
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -376,22 +365,22 @@ msgstr ""
 "Eğer seçiliyse, sürüm denetimi işlemlerinde çalıştırılan komutları gösteren "
 "bir konsol çıktı bölümü sürüm denetim görünümünde gösterilecektir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "Version control pane position"
 msgstr "Sürüm denetimi bölümü konumu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr ""
 "Bu, konsol bölümü gösterilirken, ana sürüm denetimi ağacının yüksekliğidir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Sürüm karşılaştırmalarını sol-yerel/sağ-uzak olacak şekilde göster"
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -401,12 +390,12 @@ msgstr ""
 "dosyaları tespit için sol-lokal, sağ-uzak şemasını kullanacak. Ayrıca sol-"
 "onların, sağ-benim şeması kullanılır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Order for files in three-way version control merge comparisons"
 msgstr ""
 "Üç-yollu sürüm denetimi birleştirme karşılaştırmalarında dosyaları sırala"
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -417,11 +406,11 @@ msgstr ""
 "karşılaştırma başlatıldığında etki eder, bu yüzden Meld içinde yalnızca "
 "birleştirmeler/çatışma çözümü için kullanılır."
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Show margin in commit message editor"
 msgstr "İleti gönderim düzenleyicisinde kenar boşluğu göster"
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -429,11 +418,11 @@ msgstr ""
 "Eğer seçiliyse, bir rehber sürüm denetim, ileti gönderim düzenleyicisinde "
 "kenar boşluğu sütununu göstermek için görüntülenecektir."
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Margin column in commit message editor"
 msgstr "İleti gönderim düzenleyicisinde sütun kenar boşluğu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -441,11 +430,11 @@ msgstr ""
 "Sürüm denetimi ileti gönderim düzenleyicisinde kenar boşluğu gösterilecek "
 "sütun."
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Automatically hard-wrap commit messages"
 msgstr "Gönderim iletilerini kendiliğinden kaydır"
 
-#: ../data/org.gnome.meld.gschema.xml.h:62
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -453,22 +442,22 @@ msgstr ""
 "Eğer seçiliyse, sürüm denetimi ileti gönderim düzenleyicisi gönderimden "
 "önce, gönderim kenar boşluğunda (yani satır sonları ekleyerek) kaydıracak."
 
-#: ../data/org.gnome.meld.gschema.xml.h:63
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Version control status filters"
 msgstr "Sürüm denetimi durumu süzgeçleri"
 
-#: ../data/org.gnome.meld.gschema.xml.h:64
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Durum listesi sürüm denetimi karşılaştırmasında görünür dosyaları süzmek "
 "için kullanılırdı."
 
-#: ../data/org.gnome.meld.gschema.xml.h:65
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Filename-based filters"
 msgstr "Dosya adı tabanlı süzgeçler"
 
-#: ../data/org.gnome.meld.gschema.xml.h:66
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -476,11 +465,11 @@ msgstr ""
 "Önceden tanımlanmış dosya adı tabanlı süzgeçlerin listesi, eğer etkin ise, "
 "klasör karşılaştırmadan eşleşen dosyaları silecek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:67
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Text-based filters"
 msgstr "Metin tabanlı süzgeçler"
 
-#: ../data/org.gnome.meld.gschema.xml.h:68
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -507,11 +496,276 @@ msgstr "Meld koyu şeması"
 msgid "Dark color scheme for Meld highlighting"
 msgstr "Meld vurgulaması için koyu renk şeması"
 
-#: ../data/ui/application.ui.h:1
+#: ../meld/resources/gtk/help-overlay.ui.h:1
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Genel"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:2
+msgctxt "shortcut window"
+msgid "New comparison"
+msgstr "Yeni karşılaştırma"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:3
+msgctxt "shortcut window"
+msgid "Close a comparison"
+msgstr "Karşılaştırmayı kapat"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:4
+msgctxt "shortcut window"
+msgid "Quit Meld"
+msgstr "Meld’i kapat"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:5
+msgctxt "shortcut window"
+msgid "Stop the current action"
+msgstr "Geçerli eylemi durdur"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:6
+msgctxt "shortcut window"
+msgid "Refresh comparison"
+msgstr "Karşılaştırmayı yenile"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:7
+msgctxt "shortcut window"
+msgid "Fullscreen"
+msgstr "Tam Ekran"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:8
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr "Sekmeler"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:9
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Önceki sekmeye git"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:10
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Sonraki sekmeye git"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:11
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr "Sekmeye geçiş yap"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:12
+msgctxt "shortcut window"
+msgid "Move tab left"
+msgstr "Sekmeyi sola taşı"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:13
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Sekmeyi sağa taşı"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:14
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "Değişiklikler"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:15
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Önceki değişikliğe git"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:16
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Sonraki değişikliğe git"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:17
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "Düzenleme"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:18
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr "Geri Al"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:19
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr "Yinele"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:20
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr "Kes"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:21
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:22
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr "Yapıştır"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:23
+msgctxt "shortcut window"
+msgid "Find"
+msgstr "Bul"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:24
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Sonrakini Bul"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:25
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Öncekini Bul"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:26
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "Değiştir"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:27
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Dosya karşılaştırma"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:28
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Geçerli dosyayı kaydet"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:29
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Geçerli dosyayı yeni yere kaydet"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:30
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Karşılaştırmadaki tüm dosyaları kaydet"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:31
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Önceki çakışma"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:32
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Sonraki çakışma"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:33
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Değişikliği sola gönder"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:34
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Değişikliği sağa gönder"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:35
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Değişikliği soldan iste"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:36
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Sağdan değişiklik iste"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:37
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Sol yığın üstüne değişiklik kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:38
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Sol yığın altına değişiklik kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:39
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Sağ yığın üstüne değişiklik kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:40
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Sağ yığın altına değişiklik kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:41
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Değişiklik sil"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:42
+msgctxt "shortcut window"
+msgid "Previous comparison pane"
+msgstr "Önceki karşılaştırma bölmesi"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:43
+msgctxt "shortcut window"
+msgid "Next comparison pane"
+msgstr "Sonraki karşılaştırma bölmesi"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:44
+msgctxt "shortcut window"
+msgid "Folder comparison"
+msgstr "Klasör karşılaştırması"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:45
+msgctxt "shortcut window"
+msgid "Copy to left"
+msgstr "Sola kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:46
+msgctxt "shortcut window"
+msgid "Copy to right"
+msgstr "Sağa kopyala"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:47
+msgctxt "shortcut window"
+msgid "Version control comparison"
+msgstr "Sürüm denetimi karşılaştırması"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:48
+msgctxt "shortcut window"
+msgid "Commit to version control"
+msgstr "Sürüm denetimine gönder"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:49
+msgctxt "shortcut window"
+msgid "Show/hide console output"
+msgstr "Konsol çıktısını göster/gizle"
+
+#: ../meld/resources/gtk/menus.ui.h:1
+msgid "_Preferences"
+msgstr "_Tercihler"
+
+#: ../meld/resources/gtk/menus.ui.h:2
+msgid "_Help"
+msgstr "_Yardım"
+
+#: ../meld/resources/gtk/menus.ui.h:3
+msgid "Keyboard Shortcuts"
+msgstr "Klavye Kısayolları"
+
+#: ../meld/resources/gtk/menus.ui.h:4
+msgid "_About"
+msgstr "_Hakkında"
+
+#: ../meld/resources/gtk/menus.ui.h:5
+msgid "_Quit"
+msgstr "_Çık"
+
+#: ../meld/resources/ui/about-dialog.ui.h:1
 msgid "About Meld"
 msgstr "Meld Hakkında"
 
-#: ../data/ui/application.ui.h:2
+#: ../meld/resources/ui/about-dialog.ui.h:2
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
 "Copyright © 2009-2017 Kai Willadsen"
@@ -519,91 +773,127 @@ msgstr ""
 "Telif Hakkı © 2002-2009 Stephen Kennedy\n"
 "Telif Hakkı © 2009-2017 Kai Willadsen"
 
-#: ../data/ui/application.ui.h:4
+#: ../meld/resources/ui/about-dialog.ui.h:4
 msgid "Website"
 msgstr "Web sitesi"
 
-#: ../data/ui/application.ui.h:5
+#: ../meld/resources/ui/about-dialog.ui.h:5
 msgid "translator-credits"
 msgstr "Simge Sezgin <simge.szgn@gmail.com>"
 
-#: ../data/ui/application.ui.h:6
-msgid "_Preferences"
-msgstr "_Tercihler"
+#: ../meld/resources/ui/column-list.ui.h:1
+#: ../meld/resources/ui/filter-list.ui.h:1
+msgid "Active"
+msgstr "Etkin"
 
-#: ../data/ui/application.ui.h:7
-msgid "_Help"
-msgstr "_Yardım"
+#: ../meld/resources/ui/column-list.ui.h:2
+msgid "Column Name"
+msgstr "Sütun Adı"
 
-#: ../data/ui/application.ui.h:8
-msgid "Keyboard Shortcuts"
-msgstr "Klavye Kısayolları"
+#: ../meld/resources/ui/column-list.ui.h:3
+#: ../meld/resources/ui/filter-list.ui.h:7 ../meld/resources/ui/vcview.ui.h:11
+#: ../meld/vcview.py:694
+msgid "_Remove"
+msgstr "_Kaldır"
 
-#: ../data/ui/application.ui.h:9
-msgid "_About"
-msgstr "_Hakkında"
+#: ../meld/resources/ui/column-list.ui.h:4
+#: ../meld/resources/ui/filter-list.ui.h:8
+msgid "Move item up"
+msgstr "Ögeyi yukarı taşı"
 
-#: ../data/ui/application.ui.h:10
-msgid "_Quit"
-msgstr "_Çık"
+#: ../meld/resources/ui/column-list.ui.h:5
+#: ../meld/resources/ui/filter-list.ui.h:9
+msgid "Move _Up"
+msgstr "_Yukarı Taşı"
 
-#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+#: ../meld/resources/ui/column-list.ui.h:6
+#: ../meld/resources/ui/filter-list.ui.h:10
+msgid "Move item down"
+msgstr "Ögeyi aşağı taşı"
+
+#: ../meld/resources/ui/column-list.ui.h:7
+#: ../meld/resources/ui/filter-list.ui.h:11
+msgid "Move _Down"
+msgstr "_Aşağı Taşı"
+
+#: ../meld/resources/ui/commit-dialog.ui.h:1
+msgid "Commit"
+msgstr "Gönder"
+
+#: ../meld/resources/ui/commit-dialog.ui.h:2
+msgid "Commit Files"
+msgstr "Dosyaları Gönder"
+
+#: ../meld/resources/ui/commit-dialog.ui.h:3
+msgid "Log Message"
+msgstr "Günlük İletisi"
+
+#: ../meld/resources/ui/commit-dialog.ui.h:4
+msgid "Previous logs:"
+msgstr "Önceki kayıtlar:"
+
+#: ../meld/resources/ui/commit-dialog.ui.h:5
+msgid "Co_mmit"
+msgstr "Gö_nder"
+
+#: ../meld/resources/ui/dirdiff.ui.h:1 ../meld/resources/ui/vcview.ui.h:1
 msgid "_Compare"
 msgstr "_Karşılaştır"
 
-#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+#: ../meld/resources/ui/dirdiff.ui.h:2 ../meld/resources/ui/vcview.ui.h:2
 msgid "Compare selected files"
 msgstr "Seçilen dosyaları karşılaştır"
 
-#: ../data/ui/dirdiff.ui.h:3
+#: ../meld/resources/ui/dirdiff.ui.h:3
 msgid "Collapse Recursively"
 msgstr "Özyinelemeli Daralt"
 
-#: ../data/ui/dirdiff.ui.h:4
+#: ../meld/resources/ui/dirdiff.ui.h:4
 msgid "Collapse selected folder and all subfolders"
 msgstr "Seçili klasörü ve tüm alt klasörlerini daralt"
 
-#: ../data/ui/dirdiff.ui.h:5
+#: ../meld/resources/ui/dirdiff.ui.h:5
 msgid "Expand Recursively"
 msgstr "Özyinelemeli Genişlet"
 
-#: ../data/ui/dirdiff.ui.h:6
+#: ../meld/resources/ui/dirdiff.ui.h:6
 msgid "Expand selected folder and all subfolders"
 msgstr "Seçili klasörü ve tüm alt klasörlerini genişlet"
 
-#: ../data/ui/dirdiff.ui.h:7
+#: ../meld/resources/ui/dirdiff.ui.h:7
 msgid "Copy to _Left"
 msgstr "_Sola Kopyala"
 
-#: ../data/ui/dirdiff.ui.h:8
+#: ../meld/resources/ui/dirdiff.ui.h:8
 msgid "Copy to left"
 msgstr "Sola kopyala"
 
-#: ../data/ui/dirdiff.ui.h:9
+#: ../meld/resources/ui/dirdiff.ui.h:9
 msgid "Copy to _Right"
 msgstr "_Sağa Kopyala"
 
-#: ../data/ui/dirdiff.ui.h:10
+#: ../meld/resources/ui/dirdiff.ui.h:10
 msgid "Copy to right"
 msgstr "Sağa kopyala"
 
-#: ../data/ui/dirdiff.ui.h:11
+#: ../meld/resources/ui/dirdiff.ui.h:11
 msgid "Delete selected"
 msgstr "Seçileni Sil"
 
-#: ../data/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:920 ../meld/filediff.py:1489
+#: ../meld/resources/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:959
+#: ../meld/filediff.py:1601
 msgid "Hide"
 msgstr "Gizle"
 
-#: ../data/ui/dirdiff.ui.h:13
+#: ../meld/resources/ui/dirdiff.ui.h:13
 msgid "Hide selected"
 msgstr "Seçileni gizle"
 
-#: ../data/ui/dirdiff.ui.h:14
+#: ../meld/resources/ui/dirdiff.ui.h:14
 msgid "Ignore Filename Case"
 msgstr "Dosya adı Büyük Küçük Harf Durumunu Yoksay"
 
-#: ../data/ui/dirdiff.ui.h:15
+#: ../meld/resources/ui/dirdiff.ui.h:15
 msgid ""
 "Consider differently-cased filenames that are otherwise-identical to be the "
 "same"
@@ -611,291 +901,215 @@ msgstr ""
 "Farklı harf duyarlılığındaki dosya adlarının başka bir şekilde aynı "
 "olacağını da dikkate alın"
 
-#: ../data/ui/dirdiff.ui.h:16
+#: ../meld/resources/ui/dirdiff.ui.h:16
 msgid "Same"
 msgstr "Benzer"
 
-#: ../data/ui/dirdiff.ui.h:17
+#: ../meld/resources/ui/dirdiff.ui.h:17
 msgid "Show identical"
 msgstr "Özdeş olanları göster"
 
-#: ../data/ui/dirdiff.ui.h:18
+#: ../meld/resources/ui/dirdiff.ui.h:18
 msgid "New"
 msgstr "Yeni"
 
-#: ../data/ui/dirdiff.ui.h:19
+#: ../meld/resources/ui/dirdiff.ui.h:19
 msgid "Show new"
 msgstr "Yeniyi göster"
 
-#: ../data/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:76
+#: ../meld/resources/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Değiştirilmiş"
 
-#: ../data/ui/dirdiff.ui.h:21
+#: ../meld/resources/ui/dirdiff.ui.h:21
 msgid "Show modified"
 msgstr "Değiştirilmişi göster"
 
-#: ../data/ui/dirdiff.ui.h:22
+#: ../meld/resources/ui/dirdiff.ui.h:22
 msgid "Filters"
 msgstr "Süzgeçler"
 
-#: ../data/ui/dirdiff.ui.h:23
+#: ../meld/resources/ui/dirdiff.ui.h:23
 msgid "Set active filters"
 msgstr "Etkin süzgeçleri ayarla"
 
-#: ../data/ui/EditableList.ui.h:1
-msgid "Editable List"
-msgstr "Düzenlenebilir Liste"
-
-#: ../data/ui/EditableList.ui.h:2
-msgid "Active"
-msgstr "Etkin"
-
-#: ../data/ui/EditableList.ui.h:3
-msgid "Column Name"
-msgstr "Sütun Adı"
-
-#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
-msgid "_Add"
-msgstr "_Ekle"
-
-#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
-#: ../meld/vcview.py:680
-msgid "_Remove"
-msgstr "_Kaldır"
-
-#: ../data/ui/EditableList.ui.h:6
-msgid "Move item up"
-msgstr "Ögeyi yukarı taşı"
-
-#: ../data/ui/EditableList.ui.h:7
-msgid "Move _Up"
-msgstr "_Yukarı Taşı"
-
-#: ../data/ui/EditableList.ui.h:8
-msgid "Move item down"
-msgstr "Ögeyi aşağı taşı"
-
-#: ../data/ui/EditableList.ui.h:9
-msgid "Move _Down"
-msgstr "_Aşağı Taşı"
-
-#. Create icon and filename CellRenderer
-#: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
-#: ../meld/dirdiff.py:416
-msgid "Name"
-msgstr "Ad"
-
-#: ../data/ui/EditableList.ui.h:11
-msgid "Pattern"
-msgstr "Örüntü"
-
-#: ../data/ui/EditableList.ui.h:12
-msgid "Add new filter"
-msgstr "Yeni süzgeç ekle"
-
-#: ../data/ui/EditableList.ui.h:13
-msgid "Remove selected filter"
-msgstr "Seçili süzgeci kaldır"
-
-#: ../data/ui/encoding-selector.ui.h:1
+#: ../meld/resources/ui/encoding-selector.ui.h:1
 msgid "Search text encoding…"
 msgstr "Metin kodlaması ara…"
 
-#: ../data/ui/filediff.ui.h:1
+#: ../meld/resources/ui/filediff.ui.h:1
 msgid "Format as Patch…"
 msgstr "Yama Olarak Biçimlendir…"
 
-#: ../data/ui/filediff.ui.h:2
+#: ../meld/resources/ui/filediff.ui.h:2
 msgid "Create a patch using differences between files"
 msgstr "Dosyalar arasındaki farklılıkları kullanan bir yama oluştur"
 
-#: ../data/ui/filediff.ui.h:3
+#: ../meld/resources/ui/filediff.ui.h:3
 msgid "Save A_ll"
 msgstr "T_ümünü Kaydet"
 
-#: ../data/ui/filediff.ui.h:4
+#: ../meld/resources/ui/filediff.ui.h:4
 msgid "Save all files in the current comparison"
 msgstr "Şu anki karşılaştırmadaki tüm dosyaları kaydet"
 
-#: ../data/ui/filediff.ui.h:5
+#: ../meld/resources/ui/filediff.ui.h:5
 msgid "Revert files to their saved versions"
 msgstr "Dosyaları onların kaydedilmiş sürümlerine çevir"
 
-#: ../data/ui/filediff.ui.h:6
+#: ../meld/resources/ui/filediff.ui.h:6
 msgid "Add Synchronization Point"
 msgstr "Eşzamanlama Noktası Ekle"
 
-#: ../data/ui/filediff.ui.h:7
+#: ../meld/resources/ui/filediff.ui.h:7
 msgid "Add a synchronization point for changes between files"
 msgstr "Dosyalar arasındaki değişiklikler için bir eşzamanlama noktası ekle"
 
-#: ../data/ui/filediff.ui.h:8
+#: ../meld/resources/ui/filediff.ui.h:8
 msgid "Clear Synchronization Points"
 msgstr "Eşzamanlama Noktalarını Temizle"
 
-#: ../data/ui/filediff.ui.h:9
+#: ../meld/resources/ui/filediff.ui.h:9
 msgid "Clear sychronization points for changes between files"
 msgstr "Dosyalar arasındaki değişiklikler için eşzamanlama noktalarını temizle"
 
-#: ../data/ui/filediff.ui.h:10
+#: ../meld/resources/ui/filediff.ui.h:10
 msgid "Previous Conflict"
 msgstr "Önceki Çakışma"
 
-#: ../data/ui/filediff.ui.h:11
+#: ../meld/resources/ui/filediff.ui.h:11
 msgid "Go to the previous conflict"
 msgstr "Önceki çakışmaya git"
 
-#: ../data/ui/filediff.ui.h:12
+#: ../meld/resources/ui/filediff.ui.h:12
 msgid "Next Conflict"
 msgstr "Sonraki Çakışma"
 
-#: ../data/ui/filediff.ui.h:13
+#: ../meld/resources/ui/filediff.ui.h:13
 msgid "Go to the next conflict"
 msgstr "Sonraki çakışmaya git"
 
-#: ../data/ui/filediff.ui.h:14
+#: ../meld/resources/ui/filediff.ui.h:14
 msgid "Push to Left"
 msgstr "Sola Gönder"
 
-#: ../data/ui/filediff.ui.h:15
+#: ../meld/resources/ui/filediff.ui.h:15
 msgid "Push current change to the left"
 msgstr "Geçerli değişikliği sola gönder"
 
-#: ../data/ui/filediff.ui.h:16
+#: ../meld/resources/ui/filediff.ui.h:16
 msgid "Push to Right"
 msgstr "Sağa Gönder"
 
-#: ../data/ui/filediff.ui.h:17
+#: ../meld/resources/ui/filediff.ui.h:17
 msgid "Push current change to the right"
 msgstr "Geçerli değişikliği sağa gönder"
 
-#: ../data/ui/filediff.ui.h:18
+#: ../meld/resources/ui/filediff.ui.h:18
 msgid "Pull from Left"
 msgstr "Soldan İste"
 
-#: ../data/ui/filediff.ui.h:19
+#: ../meld/resources/ui/filediff.ui.h:19
 msgid "Pull change from the left"
 msgstr "Değişikliği soldan iste"
 
-#: ../data/ui/filediff.ui.h:20
+#: ../meld/resources/ui/filediff.ui.h:20
 msgid "Pull from Right"
 msgstr "Sağdan İste"
 
-#: ../data/ui/filediff.ui.h:21
+#: ../meld/resources/ui/filediff.ui.h:21
 msgid "Pull change from the right"
 msgstr "Sağdan değişiklik iste"
 
-#: ../data/ui/filediff.ui.h:22
+#: ../meld/resources/ui/filediff.ui.h:22
 msgid "Copy Above Left"
 msgstr "Üst Sola Kopyala"
 
-#: ../data/ui/filediff.ui.h:23
+#: ../meld/resources/ui/filediff.ui.h:23
 msgid "Copy change above the left chunk"
 msgstr "Sol yığın üstüne değişiklik kopyala"
 
-#: ../data/ui/filediff.ui.h:24
+#: ../meld/resources/ui/filediff.ui.h:24
 msgid "Copy Below Left"
 msgstr "Sol Aşağıya Kopyala"
 
-#: ../data/ui/filediff.ui.h:25
+#: ../meld/resources/ui/filediff.ui.h:25
 msgid "Copy change below the left chunk"
 msgstr "Sol yığın altına değişiklik kopyala"
 
-#: ../data/ui/filediff.ui.h:26
+#: ../meld/resources/ui/filediff.ui.h:26
 msgid "Copy Above Right"
 msgstr "Sağ Yukarıya Kopyala"
 
-#: ../data/ui/filediff.ui.h:27
+#: ../meld/resources/ui/filediff.ui.h:27
 msgid "Copy change above the right chunk"
 msgstr "Sağ yığın üstüne değişiklik kopyala"
 
-#: ../data/ui/filediff.ui.h:28
+#: ../meld/resources/ui/filediff.ui.h:28
 msgid "Copy Below Right"
 msgstr "Sağ Aşağıya Kopyala"
 
-#: ../data/ui/filediff.ui.h:29
+#: ../meld/resources/ui/filediff.ui.h:29
 msgid "Copy change below the right chunk"
 msgstr "Sağ yığın altına değişiklik kopyala"
 
-#: ../data/ui/filediff.ui.h:30
+#: ../meld/resources/ui/filediff.ui.h:30
 msgid "Delete"
 msgstr "Sil"
 
-#: ../data/ui/filediff.ui.h:31
+#: ../meld/resources/ui/filediff.ui.h:31
 msgid "Delete change"
 msgstr "Değişikliği sil"
 
-#: ../data/ui/filediff.ui.h:32
+#: ../meld/resources/ui/filediff.ui.h:32
 msgid "Merge All from Left"
 msgstr "Solun Tümünü Birleştir"
 
-#: ../data/ui/filediff.ui.h:33
+#: ../meld/resources/ui/filediff.ui.h:33
 msgid "Merge all non-conflicting changes from the left"
 msgstr "Soldan tüm çakışma olmayan değişiklikleri birleştir"
 
-#: ../data/ui/filediff.ui.h:34
+#: ../meld/resources/ui/filediff.ui.h:34
 msgid "Merge All from Right"
 msgstr "Sağdan Tümünü Birleştir"
 
-#: ../data/ui/filediff.ui.h:35
+#: ../meld/resources/ui/filediff.ui.h:35
 msgid "Merge all non-conflicting changes from the right"
 msgstr "Tüm çakışmayan değişiklikleri sağdan birleştir"
 
-#: ../data/ui/filediff.ui.h:36
+#: ../meld/resources/ui/filediff.ui.h:36
 msgid "Merge All"
 msgstr "Tümünü Birleştir"
 
-#: ../data/ui/filediff.ui.h:37
+#: ../meld/resources/ui/filediff.ui.h:37
 msgid "Merge all non-conflicting changes from left and right panes"
 msgstr "Sol ve sağ bölümlerden çakışmayan değişikliklerin tümünü birleştir"
 
-#: ../data/ui/filediff.ui.h:38
+#: ../meld/resources/ui/filediff.ui.h:38
 msgid "Previous Pane"
 msgstr "Önceki Bölme"
 
-#: ../data/ui/filediff.ui.h:39
+#: ../meld/resources/ui/filediff.ui.h:39
 msgid "Move keyboard focus to the previous document in this comparison"
 msgstr "Klavye odağını bu karşılaştırmadaki önceki belgeye taşı"
 
-#: ../data/ui/filediff.ui.h:40
+#: ../meld/resources/ui/filediff.ui.h:40
 msgid "Next Pane"
 msgstr "Sonraki Bölme"
 
-#: ../data/ui/filediff.ui.h:41
+#: ../meld/resources/ui/filediff.ui.h:41
 msgid "Move keyboard focus to the next document in this comparison"
 msgstr "Klavye odağını bu karşılaştırmadaki sonraki belgeye taşı"
 
-#: ../data/ui/filediff.ui.h:42
+#: ../meld/resources/ui/filediff.ui.h:42
 msgid "Lock Scrolling"
 msgstr "Kaydırmayı Kilitle"
 
-#: ../data/ui/filediff.ui.h:43
+#: ../meld/resources/ui/filediff.ui.h:43
 msgid "Lock scrolling of all panes"
 msgstr "Tüm panellerin kaydırmalarını kilitle"
 
-#: ../data/ui/filediff.ui.h:44
-msgid "Save changes to documents before closing?"
-msgstr "Kapatmadan önce değişiklikleri belgeye kaydet?"
-
-#: ../data/ui/filediff.ui.h:45
-msgid "If you don’t save, changes will be permanently lost."
-msgstr "Eğer kaydetmezseniz, değişiklikler kalıcı olarak kaybolacaktır."
-
-#: ../data/ui/filediff.ui.h:46
-msgid "Close _without Saving"
-msgstr "Kaydet_meden Kapat"
-
-#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:1001 ../meld/iohelpers.py:50
-#: ../meld/iohelpers.py:100
-msgid "_Cancel"
-msgstr "_İptal"
-
-#: ../data/ui/filediff.ui.h:48
-msgid "_Save"
-msgstr "_Kaydet"
-
-#: ../data/ui/filediff.ui.h:49
+#: ../meld/resources/ui/filediff.ui.h:44
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -904,237 +1118,311 @@ msgstr ""
 "rağmen değişiklikler yapabilirsiniz, fakat bu değişikler yeni bir dosyaya "
 "kaydedilmek zorundadır."
 
-#: ../data/ui/filediff.ui.h:50
+#: ../meld/resources/ui/filediff.ui.h:45
 msgid "File 3"
 msgstr "Dosya 3"
 
-#: ../data/ui/filediff.ui.h:51
+#: ../meld/resources/ui/filediff.ui.h:46
 msgid "File 2"
 msgstr "Dosya 2"
 
-#: ../data/ui/filediff.ui.h:52
+#: ../meld/resources/ui/filediff.ui.h:47
 msgid "File 1"
 msgstr "Dosya 1"
 
-#: ../data/ui/filediff.ui.h:53
-msgid "Discard unsaved changes to documents?"
-msgstr "Belgelere yapılan kaydedilmemiş değişiklikleri at?"
+#. Create icon and filename CellRenderer
+#: ../meld/resources/ui/filter-list.ui.h:2 ../meld/resources/ui/vcview.ui.h:30
+#: ../meld/dirdiff.py:455
+msgid "Name"
+msgstr "Ad"
 
-#: ../data/ui/filediff.ui.h:54
-msgid "Changes made to the following documents will be permanently lost:"
-msgstr "Aşağıdaki belgelere yapılan değişiklikler kalıcı olarak kaybedilecek:"
+#: ../meld/resources/ui/filter-list.ui.h:3
+msgid "Pattern"
+msgstr "Örüntü"
 
-#: ../data/ui/filediff.ui.h:55
-msgid "_Discard"
-msgstr "_At"
+#: ../meld/resources/ui/filter-list.ui.h:4
+msgid "Add new filter"
+msgstr "Yeni süzgeç ekle"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:1002 ../meld/iohelpers.py:101
+#: ../meld/resources/ui/filter-list.ui.h:5 ../meld/resources/ui/vcview.ui.h:9
+msgid "_Add"
+msgstr "_Ekle"
+
+#: ../meld/resources/ui/filter-list.ui.h:6
+msgid "Remove selected filter"
+msgstr "Seçili süzgeci kaldır"
+
+#: ../meld/resources/ui/findbar.ui.h:1 ../meld/dirdiff.py:1041
+#: ../meld/iohelpers.py:113
 msgid "_Replace"
 msgstr "_Değiştir"
 
-#: ../data/ui/findbar.ui.h:2
+#: ../meld/resources/ui/findbar.ui.h:2
 msgid "Replace _All"
 msgstr "_Tümünü Değiştir"
 
-#: ../data/ui/findbar.ui.h:3
+#: ../meld/resources/ui/findbar.ui.h:3
 msgid "_Previous"
 msgstr "_Önceki"
 
-#: ../data/ui/findbar.ui.h:4
+#: ../meld/resources/ui/findbar.ui.h:4
 msgid "_Next"
 msgstr "_Sonraki"
 
-#: ../data/ui/findbar.ui.h:5
+#: ../meld/resources/ui/findbar.ui.h:5
 msgid "Find:"
 msgstr "Bul:"
 
-#: ../data/ui/findbar.ui.h:6
+#: ../meld/resources/ui/findbar.ui.h:6
 msgid "Replace _with:"
 msgstr "İle _değiştir:"
 
-#: ../data/ui/findbar.ui.h:7
+#: ../meld/resources/ui/findbar.ui.h:7
 msgid "_Match case"
 msgstr "Büyük küçük harf _eşleştir"
 
-#: ../data/ui/findbar.ui.h:8
+#: ../meld/resources/ui/findbar.ui.h:8
 msgid "Who_le word"
 msgstr "T_üm sözcük"
 
-#: ../data/ui/findbar.ui.h:9
+#: ../meld/resources/ui/findbar.ui.h:9
 msgid "Regular e_xpression"
 msgstr "Düzenli i_fade"
 
-#: ../data/ui/findbar.ui.h:10
+#: ../meld/resources/ui/findbar.ui.h:10
 msgid "Wrapped"
 msgstr "Kaydırılmış"
 
-#: ../data/ui/language-selector.ui.h:1
+#: ../meld/resources/ui/language-selector.ui.h:1
 msgid "Search highlight mode…"
 msgstr "Vurgu kipi ara…"
 
-#: ../data/ui/patch-dialog.ui.h:1
+#: ../meld/resources/ui/new-diff-tab.ui.h:1 ../meld/meldwindow.py:532
+#: ../meld/newdifftab.py:53
+msgid "New comparison"
+msgstr "Yeni karşılaştırma"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:2
+msgid "File comparison"
+msgstr "Dosya karşılaştırma"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:3
+msgid "Directory comparison"
+msgstr "Dizin karşılaştırma"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:4
+msgid "Version control view"
+msgstr "Sürüm denetimi görünümü"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:5
+msgid "_3-way comparison"
+msgstr "_3-yollu karşılaştırma"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:6
+msgid "Select Third File"
+msgstr "Üçüncü Dosyayı Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:7
+msgid "Select Second File"
+msgstr "İkinci Dosyayı Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:8
+msgid "Select First File"
+msgstr "Birinci Dosyayı Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:9
+msgid "Select First Folder"
+msgstr "Birinci Klasörü Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:10
+msgid "Select Second Folder"
+msgstr "İkinci Klasörü Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:11
+msgid "Select Third Folder"
+msgstr "Üçüncü Klasörü Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:12
+msgid "Select A Version-Controlled Folder"
+msgstr "Bir Sürüm Denetimi Klasörü Seç"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:13
+msgid "_Blank comparison"
+msgstr "_Boşluk karşılaştırma"
+
+#: ../meld/resources/ui/new-diff-tab.ui.h:14
+msgid "C_ompare"
+msgstr "K_arşılaştır"
+
+#: ../meld/resources/ui/notebook-label.ui.h:1
+msgid "Close Tab"
+msgstr "Sekmeyi Kapat"
+
+#: ../meld/resources/ui/patch-dialog.ui.h:1
 msgid "Format as Patch"
 msgstr "Yama olarak Biçimlendir"
 
-#: ../data/ui/patch-dialog.ui.h:2
+#: ../meld/resources/ui/patch-dialog.ui.h:2
 msgid "Copy to Clipboard"
 msgstr "Panoya Kopyala"
 
-#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:152
+#: ../meld/resources/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:165
 msgid "Save Patch"
 msgstr "Yamayı Kaydet"
 
-#: ../data/ui/patch-dialog.ui.h:4
+#: ../meld/resources/ui/patch-dialog.ui.h:4
 msgid "Use differences between:"
 msgstr "Farkları kullan:"
 
-#: ../data/ui/patch-dialog.ui.h:5
+#: ../meld/resources/ui/patch-dialog.ui.h:5
 msgid "Left and middle panes"
 msgstr "Sol ve orta bölmeler"
 
-#: ../data/ui/patch-dialog.ui.h:6
+#: ../meld/resources/ui/patch-dialog.ui.h:6
 msgid "Middle and right panes"
 msgstr "Orta ve sağ bölmeler"
 
-#: ../data/ui/patch-dialog.ui.h:7
+#: ../meld/resources/ui/patch-dialog.ui.h:7
 msgid "_Reverse patch direction"
 msgstr "Yama yönünü _terse çevir"
 
-#: ../data/ui/preferences.ui.h:1
-msgid "Meld Preferences"
-msgstr "Meld Tercihleri"
+#: ../meld/resources/ui/preferences.ui.h:1
+msgid "Preferences"
+msgstr "Tercihler"
 
-#: ../data/ui/preferences.ui.h:2
+#: ../meld/resources/ui/preferences.ui.h:2
 msgid "Font"
 msgstr "Yazı tipi"
 
-#: ../data/ui/preferences.ui.h:3
+#: ../meld/resources/ui/preferences.ui.h:3
 msgid "_Use the system fixed width font"
 msgstr "Sabit genişlikli sistem yazı tipini _kullan"
 
-#: ../data/ui/preferences.ui.h:4
+#: ../meld/resources/ui/preferences.ui.h:4
 msgid "_Editor font:"
 msgstr "_Düzenleyici yazı tipi:"
 
-#: ../data/ui/preferences.ui.h:5
+#. TRANSLATORS: This is the status bar label for a group of settings,
+#. such as text wrapping, show line numbers, whitespace, etc.
+#: ../meld/resources/ui/preferences.ui.h:5 ../meld/ui/statusbar.py:282
 msgid "Display"
 msgstr "Görünüm"
 
-#: ../data/ui/preferences.ui.h:6
+#: ../meld/resources/ui/preferences.ui.h:6
 msgid "_Tab width:"
 msgstr "_Sekme genişliği:"
 
-#: ../data/ui/preferences.ui.h:7
+#: ../meld/resources/ui/preferences.ui.h:7
 msgid "_Insert spaces instead of tabs"
 msgstr "Sekme yerine boşluk _ekle"
 
-#: ../data/ui/preferences.ui.h:8
+#: ../meld/resources/ui/preferences.ui.h:8
 msgid "Enable text _wrapping"
 msgstr "Metin _kaydırmayı etkinleştir"
 
-#: ../data/ui/preferences.ui.h:9
+#: ../meld/resources/ui/preferences.ui.h:9
 msgid "Do not _split words over two lines"
 msgstr "Sözcükleri iki satıra _bölme"
 
-#: ../data/ui/preferences.ui.h:10
+#: ../meld/resources/ui/preferences.ui.h:10
 msgid "Highlight _current line"
 msgstr "_Geçerli satırı vurgula"
 
-#: ../data/ui/preferences.ui.h:11
+#: ../meld/resources/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "_Satır numaralarını göster"
 
-#: ../data/ui/preferences.ui.h:12
+#: ../meld/resources/ui/preferences.ui.h:12
 msgid "Show w_hitespace"
 msgstr "B_oşluğu göster"
 
-#: ../data/ui/preferences.ui.h:13
+#: ../meld/resources/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "S_öz dizimi vurgulama kullan"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../meld/resources/ui/preferences.ui.h:14
 msgid "Syntax highlighting color scheme:"
 msgstr "Söz dizimi vurgulama renk şeması:"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../meld/resources/ui/preferences.ui.h:15
 msgid "External Editor"
 msgstr "Dış Düzenleyici"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../meld/resources/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "_Öntanımlı sistem düzenleyici kullan"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../meld/resources/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "Düzenleyic_i komutu:"
 
-#: ../data/ui/preferences.ui.h:18
+#: ../meld/resources/ui/preferences.ui.h:18
 msgid "Editor"
 msgstr "Düzenleyici"
 
-#: ../data/ui/preferences.ui.h:19
+#: ../meld/resources/ui/preferences.ui.h:19
 msgid "Shallow Comparison"
 msgstr "Düşük Düzeyde Karşılaştırma"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../meld/resources/ui/preferences.ui.h:20
 msgid "C_ompare files based only on size and timestamp"
 msgstr "Dosyaları yalnızca boyutlarına ve zaman damgalarına göre k_arşılaştır"
 
-#: ../data/ui/preferences.ui.h:21
+#: ../meld/resources/ui/preferences.ui.h:21
 msgid "_Timestamp resolution:"
 msgstr "_Zaman damgası çözümü:"
 
-#: ../data/ui/preferences.ui.h:23
+#: ../meld/resources/ui/preferences.ui.h:23
 msgid "Note: enabling text filters may make comparing large files much slower"
 msgstr ""
 "Not: metin süzgeçlerini etkinleştirmek büyük dosya karşılaştırmalarını "
 "yavaşlatabilir"
 
-#: ../data/ui/preferences.ui.h:24
+#: ../meld/resources/ui/preferences.ui.h:24
 msgid "Symbolic Links"
 msgstr "Simgesel Bağlantılar"
 
-#: ../data/ui/preferences.ui.h:26
+#: ../meld/resources/ui/preferences.ui.h:26
 msgid "Visible Columns"
 msgstr "Görünür Sütunlar"
 
-#: ../data/ui/preferences.ui.h:27
+#: ../meld/resources/ui/preferences.ui.h:27
 msgid "Folder Comparisons"
 msgstr "Klasör Karşılaştırmaları"
 
-#: ../data/ui/preferences.ui.h:28
+#: ../meld/resources/ui/preferences.ui.h:28
 msgid "Version Comparisons"
 msgstr "Sürüm Karşılaştırmaları"
 
-#: ../data/ui/preferences.ui.h:29
+#: ../meld/resources/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
 msgstr "Dosya düzeltmeleri karşılaştırılırken _sırala:"
 
-#: ../data/ui/preferences.ui.h:30
+#: ../meld/resources/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
 msgstr "Dosyalar _birleştirilirken sırala:"
 
-#: ../data/ui/preferences.ui.h:31
+#: ../meld/resources/ui/preferences.ui.h:31
 msgid "Commit Messages"
 msgstr "Gönderim İletileri"
 
-#: ../data/ui/preferences.ui.h:32
+#: ../meld/resources/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
 msgstr "_Sağ kenar boşluğunda göster:"
 
-#: ../data/ui/preferences.ui.h:33
+#: ../meld/resources/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Gönderimde sağ kenar boşluğunda satırları kendiliğinden _bitir"
 
-#: ../data/ui/preferences.ui.h:34
+#: ../meld/resources/ui/preferences.ui.h:34
 msgid "Version Control"
 msgstr "Sürüm Denetimi"
 
-#: ../data/ui/preferences.ui.h:35
+#: ../meld/resources/ui/preferences.ui.h:35
 msgid "Filename filters"
 msgstr "Dosya adı süzgeçleri"
 
-#: ../data/ui/preferences.ui.h:36
+#: ../meld/resources/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1144,23 +1432,23 @@ msgstr ""
 "süzebilirsiniz. Her kalıp boşluklara göre ayrılmış kabuk biçemi özel "
 "sembollerin listesidir."
 
-#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:105
+#: ../meld/resources/ui/preferences.ui.h:37 ../meld/meldwindow.py:114
 msgid "File Filters"
 msgstr "Dosya Süzgeçleri"
 
-#: ../data/ui/preferences.ui.h:38
+#: ../meld/resources/ui/preferences.ui.h:38
 msgid "Change trimming"
 msgstr "Kırpma işlemini değiştir"
 
-#: ../data/ui/preferences.ui.h:39
+#: ../meld/resources/ui/preferences.ui.h:39
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Değişikliklerin baştan sona boş satır farklılıklarını kırp"
 
-#: ../data/ui/preferences.ui.h:40
+#: ../meld/resources/ui/preferences.ui.h:40
 msgid "Text filters"
 msgstr "Metin süzgeçleri"
 
-#: ../data/ui/preferences.ui.h:41
+#: ../meld/resources/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1174,493 +1462,212 @@ msgstr ""
 "ifadesidir. Eğer ifade gruplar içeriyorsa, yalnızca gruplar yer değiştirir. "
 "Daha fazla ayrıntı için kullanıcı kılavuzunu inceleyin."
 
-#: ../data/ui/preferences.ui.h:42
+#: ../meld/resources/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Metin Süzgeçleri"
 
-#: ../data/ui/preferences.ui.h:43
+#: ../meld/resources/ui/preferences.ui.h:43
 msgid "Left is remote, right is local"
 msgstr "Sol uzak, sağ yereldir"
 
-#: ../data/ui/preferences.ui.h:44
+#: ../meld/resources/ui/preferences.ui.h:44
 msgid "Left is local, right is remote"
 msgstr "Sol yerel, sağ uzaktır"
 
-#: ../data/ui/preferences.ui.h:45
+#: ../meld/resources/ui/preferences.ui.h:45
 msgid "Remote, merge, local"
 msgstr "Uzak, birleştir, yerel"
 
-#: ../data/ui/preferences.ui.h:46
+#: ../meld/resources/ui/preferences.ui.h:46
 msgid "Local, merge, remote"
 msgstr "Yerel, birleştir, uzak"
 
-#: ../data/ui/preferences.ui.h:47
+#: ../meld/resources/ui/preferences.ui.h:47
 msgid "1ns (ext4)"
 msgstr "1ns (ext4)"
 
-#: ../data/ui/preferences.ui.h:48
+#: ../meld/resources/ui/preferences.ui.h:48
 msgid "100ns (NTFS)"
 msgstr "100ns (NTFS)"
 
-#: ../data/ui/preferences.ui.h:49
+#: ../meld/resources/ui/preferences.ui.h:49
 msgid "1s (ext2/ext3)"
 msgstr "1s (ext2/ext3)"
 
-#: ../data/ui/preferences.ui.h:50
+#: ../meld/resources/ui/preferences.ui.h:50
 msgid "2s (VFAT)"
 msgstr "2s (VFAT)"
 
-#: ../data/ui/shortcuts.ui.h:1
-msgctxt "shortcut window"
-msgid "General"
-msgstr "Genel"
-
-#: ../data/ui/shortcuts.ui.h:2
-msgctxt "shortcut window"
-msgid "New comparison"
-msgstr "Yeni karşılaştırma"
-
-#: ../data/ui/shortcuts.ui.h:3
-msgctxt "shortcut window"
-msgid "Close a comparison"
-msgstr "Karşılaştırmayı kapat"
-
-#: ../data/ui/shortcuts.ui.h:4
-msgctxt "shortcut window"
-msgid "Quit Meld"
-msgstr "Meld’i kapat"
-
-#: ../data/ui/shortcuts.ui.h:5
-msgctxt "shortcut window"
-msgid "Stop the current action"
-msgstr "Geçerli eylemi durdur"
-
-#: ../data/ui/shortcuts.ui.h:6
-msgctxt "shortcut window"
-msgid "Refresh comparison"
-msgstr "Karşılaştırmayı yenile"
-
-#: ../data/ui/shortcuts.ui.h:7
-msgctxt "shortcut window"
-msgid "Fullscreen"
-msgstr "Tam Ekran"
-
-#: ../data/ui/shortcuts.ui.h:8
-msgctxt "shortcut window"
-msgid "Tabs"
-msgstr "Sekmeler"
-
-#: ../data/ui/shortcuts.ui.h:9
-msgctxt "shortcut window"
-msgid "Go to previous tab"
-msgstr "Önceki sekmeye git"
-
-#: ../data/ui/shortcuts.ui.h:10
-msgctxt "shortcut window"
-msgid "Go to next tab"
-msgstr "Sonraki sekmeye git"
-
-#: ../data/ui/shortcuts.ui.h:11
-msgctxt "shortcut window"
-msgid "Switch to tab"
-msgstr "Sekmeye geçiş yap"
-
-#: ../data/ui/shortcuts.ui.h:12
-msgctxt "shortcut window"
-msgid "Move tab left"
-msgstr "Sekmeyi sola taşı"
-
-#: ../data/ui/shortcuts.ui.h:13
-msgctxt "shortcut window"
-msgid "Move tab right"
-msgstr "Sekmeyi sağa taşı"
-
-#: ../data/ui/shortcuts.ui.h:14
-msgctxt "shortcut window"
-msgid "Changes"
-msgstr "Değişiklikler"
-
-#: ../data/ui/shortcuts.ui.h:15
-msgctxt "shortcut window"
-msgid "Go to previous change"
-msgstr "Önceki değişikliğe git"
-
-#: ../data/ui/shortcuts.ui.h:16
-msgctxt "shortcut window"
-msgid "Go to next change"
-msgstr "Sonraki değişikliğe git"
-
-#: ../data/ui/shortcuts.ui.h:17
-msgctxt "shortcut window"
-msgid "Editing"
-msgstr "Düzenleme"
-
-#: ../data/ui/shortcuts.ui.h:18
-msgctxt "shortcut window"
-msgid "Undo"
-msgstr "Geri Al"
-
-#: ../data/ui/shortcuts.ui.h:19
-msgctxt "shortcut window"
-msgid "Redo"
-msgstr "Yinele"
-
-#: ../data/ui/shortcuts.ui.h:20
-msgctxt "shortcut window"
-msgid "Cut"
-msgstr "Kes"
-
-#: ../data/ui/shortcuts.ui.h:21
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Kopyala"
-
-#: ../data/ui/shortcuts.ui.h:22
-msgctxt "shortcut window"
-msgid "Paste"
-msgstr "Yapıştır"
-
-#: ../data/ui/shortcuts.ui.h:23
-msgctxt "shortcut window"
-msgid "Find"
-msgstr "Bul"
-
-#: ../data/ui/shortcuts.ui.h:24
-msgctxt "shortcut window"
-msgid "Find Next"
-msgstr "Sonrakini Bul"
-
-#: ../data/ui/shortcuts.ui.h:25
-msgctxt "shortcut window"
-msgid "Find Previous"
-msgstr "Öncekini Bul"
-
-#: ../data/ui/shortcuts.ui.h:26
-msgctxt "shortcut window"
-msgid "Replace"
-msgstr "Değiştir"
-
-#: ../data/ui/shortcuts.ui.h:27
-msgctxt "shortcut window"
-msgid "File comparison"
-msgstr "Dosya karşılaştırma"
-
-#: ../data/ui/shortcuts.ui.h:28
-msgctxt "shortcut window"
-msgid "Save current file"
-msgstr "Geçerli dosyayı kaydet"
-
-#: ../data/ui/shortcuts.ui.h:29
-msgctxt "shortcut window"
-msgid "Save current file to new path"
-msgstr "Geçerli dosyayı yeni yere kaydet"
-
-#: ../data/ui/shortcuts.ui.h:30
-msgctxt "shortcut window"
-msgid "Save all files in comparison"
-msgstr "Karşılaştırmadaki tüm dosyaları kaydet"
-
-#: ../data/ui/shortcuts.ui.h:31
-msgctxt "shortcut window"
-msgid "Previous conflict"
-msgstr "Önceki çakışma"
-
-#: ../data/ui/shortcuts.ui.h:32
-msgctxt "shortcut window"
-msgid "Next conflict"
-msgstr "Sonraki çakışma"
-
-#: ../data/ui/shortcuts.ui.h:33
-msgctxt "shortcut window"
-msgid "Push change to left"
-msgstr "Değişikliği sola gönder"
-
-#: ../data/ui/shortcuts.ui.h:34
-msgctxt "shortcut window"
-msgid "Push change to right"
-msgstr "Değişikliği sağa gönder"
-
-#: ../data/ui/shortcuts.ui.h:35
-msgctxt "shortcut window"
-msgid "Pull change from left"
-msgstr "Değişikliği soldan iste"
-
-#: ../data/ui/shortcuts.ui.h:36
-msgctxt "shortcut window"
-msgid "Pull change from right"
-msgstr "Sağdan değişiklik iste"
-
-#: ../data/ui/shortcuts.ui.h:37
-msgctxt "shortcut window"
-msgid "Copy change above left"
-msgstr "Sol yığın üstüne değişiklik kopyala"
-
-#: ../data/ui/shortcuts.ui.h:38
-msgctxt "shortcut window"
-msgid "Copy change below left"
-msgstr "Sol yığın altına değişiklik kopyala"
-
-#: ../data/ui/shortcuts.ui.h:39
-msgctxt "shortcut window"
-msgid "Copy change above right"
-msgstr "Sağ yığın üstüne değişiklik kopyala"
-
-#: ../data/ui/shortcuts.ui.h:40
-msgctxt "shortcut window"
-msgid "Copy change below right"
-msgstr "Sağ yığın altına değişiklik kopyala"
-
-#: ../data/ui/shortcuts.ui.h:41
-msgctxt "shortcut window"
-msgid "Delete change"
-msgstr "Değişiklik sil"
-
-#: ../data/ui/shortcuts.ui.h:42
-msgctxt "shortcut window"
-msgid "Previous comparison pane"
-msgstr "Önceki karşılaştırma bölmesi"
-
-#: ../data/ui/shortcuts.ui.h:43
-msgctxt "shortcut window"
-msgid "Next comparison pane"
-msgstr "Sonraki karşılaştırma bölmesi"
-
-#: ../data/ui/shortcuts.ui.h:44
-msgctxt "shortcut window"
-msgid "Folder comparison"
-msgstr "Klasör karşılaştırması"
-
-#: ../data/ui/shortcuts.ui.h:45
-msgctxt "shortcut window"
-msgid "Copy to left"
-msgstr "Sola kopyala"
-
-#: ../data/ui/shortcuts.ui.h:46
-msgctxt "shortcut window"
-msgid "Copy to right"
-msgstr "Sağa kopyala"
-
-#: ../data/ui/shortcuts.ui.h:47
-msgctxt "shortcut window"
-msgid "Version control comparison"
-msgstr "Sürüm denetimi karşılaştırması"
-
-#: ../data/ui/shortcuts.ui.h:48
-msgctxt "shortcut window"
-msgid "Commit to version control"
-msgstr "Sürüm denetimine gönder"
-
-#: ../data/ui/shortcuts.ui.h:49
-msgctxt "shortcut window"
-msgid "Show/hide console output"
-msgstr "Konsol çıktısını göster/gizle"
-
-#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:567
-#: ../meld/newdifftab.py:49
-msgid "New comparison"
-msgstr "Yeni karşılaştırma"
-
-#: ../data/ui/tab-placeholder.ui.h:2
-msgid "File comparison"
-msgstr "Dosya karşılaştırma"
-
-#: ../data/ui/tab-placeholder.ui.h:3
-msgid "Directory comparison"
-msgstr "Dizin karşılaştırma"
-
-#: ../data/ui/tab-placeholder.ui.h:4
-msgid "Version control view"
-msgstr "Sürüm denetimi görünümü"
-
-#: ../data/ui/tab-placeholder.ui.h:5
-msgid "_3-way comparison"
-msgstr "_3-yollu karşılaştırma"
-
-#: ../data/ui/tab-placeholder.ui.h:6
-msgid "Select Third File"
-msgstr "Üçüncü Dosyayı Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:7
-msgid "Select Second File"
-msgstr "İkinci Dosyayı Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:8
-msgid "Select First File"
-msgstr "Birinci Dosyayı Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:9
-msgid "Select First Folder"
-msgstr "Birinci Klasörü Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:10
-msgid "Select Second Folder"
-msgstr "İkinci Klasörü Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:11
-msgid "Select Third Folder"
-msgstr "Üçüncü Klasörü Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:12
-msgid "Select A Version-Controlled Folder"
-msgstr "Bir Sürüm Denetimi Klasörü Seç"
-
-#: ../data/ui/tab-placeholder.ui.h:13
-msgid "_Blank comparison"
-msgstr "_Boşluk karşılaştırma"
-
-#: ../data/ui/tab-placeholder.ui.h:14
-msgid "C_ompare"
-msgstr "K_arşılaştır"
-
-#: ../data/ui/vcview.ui.h:3
-msgid "Co_mmit…"
-msgstr "Gö_nder…"
-
-#: ../data/ui/vcview.ui.h:4
-msgid "Commit changes to version control"
-msgstr "Değişiklikleri sürüm denetimine gönder"
-
-#: ../data/ui/vcview.ui.h:5
-msgid "_Update"
-msgstr "_Güncelle"
-
-#: ../data/ui/vcview.ui.h:6
-msgid "Update working copy from version control"
-msgstr "Sürüm denetiminden çalışma kopyasını güncelle"
-
-#: ../data/ui/vcview.ui.h:7
-msgid "_Push"
-msgstr "_Gönder"
-
-#: ../data/ui/vcview.ui.h:8
-msgid "Push local changes to remote"
-msgstr "Yerel değişiklikleri uzak sunucuya gönder"
-
-#: ../data/ui/vcview.ui.h:10
-msgid "Add to version control"
-msgstr "Sürüm denetimine ekle"
-
-#: ../data/ui/vcview.ui.h:12
-msgid "Remove from version control"
-msgstr "Sürüm denetiminden sil"
-
-#: ../data/ui/vcview.ui.h:13
-msgid "Mar_k as Resolved"
-msgstr "Çözüldü olarak işaret_le"
-
-#: ../data/ui/vcview.ui.h:14
-msgid "Mark as resolved in version control"
-msgstr "Sürüm denetiminde çözüldü olarak işaretle"
-
-#: ../data/ui/vcview.ui.h:15
-msgid "Re_vert"
-msgstr "Geri _al"
-
-#: ../data/ui/vcview.ui.h:16
-msgid "Revert working copy to original state"
-msgstr "Çalışma kopyasını özgün durumuna geri döndür"
-
-#: ../data/ui/vcview.ui.h:17
-msgid "Delete from working copy"
-msgstr "Çalışma kopyasından sil"
-
-#: ../data/ui/vcview.ui.h:18
-msgid "Console"
-msgstr "Konsol"
-
-#: ../data/ui/vcview.ui.h:19
-msgid "Show or hide the version control console output pane"
-msgstr "Sürüm denetimi konsol çıktısı bölümünü göster ya da gizle"
-
-#: ../data/ui/vcview.ui.h:20
-msgid "_Flatten"
-msgstr "_Düzleştir"
-
-#: ../data/ui/vcview.ui.h:21
-msgid "Flatten directories"
-msgstr "Dizinleri düzleştir"
-
-#: ../data/ui/vcview.ui.h:22
-msgid "_Modified"
-msgstr "_Değiştirilmiş"
-
-#: ../data/ui/vcview.ui.h:23
-msgid "Show modified files"
-msgstr "Değiştirilmiş dosyaları göster"
-
-#: ../data/ui/vcview.ui.h:24
-msgid "_Normal"
-msgstr "_Olağan"
-
-#: ../data/ui/vcview.ui.h:25
-msgid "Show normal files"
-msgstr "Olağan dosyaları göster"
-
-#: ../data/ui/vcview.ui.h:26
-msgid "Un_versioned"
-msgstr "Sü_rümlendirilmemiş"
-
-#: ../data/ui/vcview.ui.h:27
-msgid "Show unversioned files"
-msgstr "Sürümlendirilmemiş dosyaları göster"
-
-#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
-msgid "Ignored"
-msgstr "Yoksayılmış"
-
-#: ../data/ui/vcview.ui.h:29
-msgid "Show ignored files"
-msgstr "Yoksayılan dosyaları göster"
-
-#: ../data/ui/vcview.ui.h:30
-msgid "Commit"
-msgstr "Gönder"
-
-#: ../data/ui/vcview.ui.h:31
-msgid "Commit Files"
-msgstr "Dosyaları Gönder"
-
-#: ../data/ui/vcview.ui.h:32
-msgid "Log Message"
-msgstr "Günlük İletisi"
-
-#: ../data/ui/vcview.ui.h:33
-msgid "Previous logs:"
-msgstr "Önceki kayıtlar:"
-
-#: ../data/ui/vcview.ui.h:34
-msgid "Co_mmit"
-msgstr "Gö_nder"
-
-#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:331
-msgid "Location"
-msgstr "Konum"
-
-#: ../data/ui/vcview.ui.h:37
-msgid "Status"
-msgstr "Durum"
-
-#: ../data/ui/vcview.ui.h:38
-msgid "Extra"
-msgstr "Ek"
-
-#: ../data/ui/vcview.ui.h:39
-msgid "Console output"
-msgstr "Konsol çıktısı"
-
-#: ../data/ui/vcview.ui.h:40
+#: ../meld/resources/ui/push-dialog.ui.h:1
 msgid "Push local commits to remote?"
 msgstr "Yerel gönderimler uzağa gönderilsin mi?"
 
-#: ../data/ui/vcview.ui.h:41
+#: ../meld/resources/ui/push-dialog.ui.h:2
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Sürüm denetimi sisteminiz tarafından uzağa gönderilecek gönderimler tespit "
 "edildi."
 
-#: ../data/ui/vcview.ui.h:42
+#: ../meld/resources/ui/push-dialog.ui.h:3
 msgid "_Push commits"
 msgstr "Gönderimleri _Uzağa Gönder"
+
+#: ../meld/resources/ui/revert-dialog.ui.h:1
+msgid "Discard unsaved changes to documents?"
+msgstr "Belgelere yapılan kaydedilmemiş değişiklikleri at?"
+
+#: ../meld/resources/ui/revert-dialog.ui.h:2
+msgid "Changes made to the following documents will be permanently lost:"
+msgstr "Aşağıdaki belgelere yapılan değişiklikler kalıcı olarak kaybedilecek:"
+
+#: ../meld/resources/ui/revert-dialog.ui.h:3
+msgid "_Discard"
+msgstr "_At"
+
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:1
+msgid "Save changes to documents before closing?"
+msgstr "Kapatmadan önce değişiklikleri belgeye kaydet?"
+
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:2
+msgid "If you don’t save, changes will be permanently lost."
+msgstr "Eğer kaydetmezseniz, değişiklikler kalıcı olarak kaybolacaktır."
+
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:3
+msgid "Close _without Saving"
+msgstr "Kaydet_meden Kapat"
+
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:4 ../meld/dirdiff.py:1040
+#: ../meld/iohelpers.py:58 ../meld/iohelpers.py:112
+msgid "_Cancel"
+msgstr "_İptal"
+
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:5
+msgid "_Save"
+msgstr "_Kaydet"
+
+#: ../meld/resources/ui/statusbar-menu.ui.h:2
+msgid "Show whitespace"
+msgstr "Boşluğu göster"
+
+#: ../meld/resources/ui/statusbar-menu.ui.h:4
+msgid "Text wrapping"
+msgstr "Metin kaydırma"
+
+#: ../meld/resources/ui/vcview.ui.h:3
+msgid "Co_mmit…"
+msgstr "Gö_nder…"
+
+#: ../meld/resources/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Değişiklikleri sürüm denetimine gönder"
+
+#: ../meld/resources/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "_Güncelle"
+
+#: ../meld/resources/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Sürüm denetiminden çalışma kopyasını güncelle"
+
+#: ../meld/resources/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Gönder"
+
+#: ../meld/resources/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Yerel değişiklikleri uzak sunucuya gönder"
+
+#: ../meld/resources/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Sürüm denetimine ekle"
+
+#: ../meld/resources/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Sürüm denetiminden sil"
+
+#: ../meld/resources/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "Çözüldü olarak işaret_le"
+
+#: ../meld/resources/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Sürüm denetiminde çözüldü olarak işaretle"
+
+#: ../meld/resources/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "Geri _al"
+
+#: ../meld/resources/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Çalışma kopyasını özgün durumuna geri döndür"
+
+#: ../meld/resources/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Çalışma kopyasından sil"
+
+#: ../meld/resources/ui/vcview.ui.h:18
+msgid "Console"
+msgstr "Konsol"
+
+#: ../meld/resources/ui/vcview.ui.h:19
+msgid "Show or hide the version control console output pane"
+msgstr "Sürüm denetimi konsol çıktısı bölümünü göster ya da gizle"
+
+#: ../meld/resources/ui/vcview.ui.h:20
+msgid "_Flatten"
+msgstr "_Düzleştir"
+
+#: ../meld/resources/ui/vcview.ui.h:21
+msgid "Flatten directories"
+msgstr "Dizinleri düzleştir"
+
+#: ../meld/resources/ui/vcview.ui.h:22
+msgid "_Modified"
+msgstr "_Değiştirilmiş"
+
+#: ../meld/resources/ui/vcview.ui.h:23
+msgid "Show modified files"
+msgstr "Değiştirilmiş dosyaları göster"
+
+#: ../meld/resources/ui/vcview.ui.h:24
+msgid "_Normal"
+msgstr "_Olağan"
+
+#: ../meld/resources/ui/vcview.ui.h:25
+msgid "Show normal files"
+msgstr "Olağan dosyaları göster"
+
+#: ../meld/resources/ui/vcview.ui.h:26
+msgid "Un_versioned"
+msgstr "Sü_rümlendirilmemiş"
+
+#: ../meld/resources/ui/vcview.ui.h:27
+msgid "Show unversioned files"
+msgstr "Sürümlendirilmemiş dosyaları göster"
+
+#: ../meld/resources/ui/vcview.ui.h:28 ../meld/vc/_vc.py:70
+msgid "Ignored"
+msgstr "Yoksayılmış"
+
+#: ../meld/resources/ui/vcview.ui.h:29
+msgid "Show ignored files"
+msgstr "Yoksayılan dosyaları göster"
+
+#: ../meld/resources/ui/vcview.ui.h:31 ../meld/vcview.py:366
+msgid "Location"
+msgstr "Konum"
+
+#: ../meld/resources/ui/vcview.ui.h:32
+msgid "Status"
+msgstr "Durum"
+
+#: ../meld/resources/ui/vcview.ui.h:33
+msgid "Extra"
+msgstr "Ek"
+
+#: ../meld/resources/ui/vcview.ui.h:34
+msgid "Console output"
+msgstr "Konsol çıktısı"
 
 #: ../meld/const.py:12
 msgid "UNIX (LF)"
@@ -1675,82 +1682,82 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:437 ../meld/preferences.py:81
+#: ../meld/dirdiff.py:476 ../meld/preferences.py:138
 msgid "Size"
 msgstr "Boyut"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:445 ../meld/preferences.py:82
+#: ../meld/dirdiff.py:484 ../meld/preferences.py:139
 msgid "Modification time"
 msgstr "Değiştirilme zamanı"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:453 ../meld/preferences.py:83
+#: ../meld/dirdiff.py:492 ../meld/preferences.py:140
 msgid "Permissions"
 msgstr "İzinler"
 
-#: ../meld/dirdiff.py:588
+#: ../meld/dirdiff.py:626
 #, python-format
 msgid "Hide %s"
 msgstr "Sakla %s"
 
-#: ../meld/dirdiff.py:729 ../meld/dirdiff.py:752
+#: ../meld/dirdiff.py:768 ../meld/dirdiff.py:791
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Taranıyor %s"
 
-#: ../meld/dirdiff.py:887
+#: ../meld/dirdiff.py:926
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Yapıldı"
 
-#: ../meld/dirdiff.py:895
+#: ../meld/dirdiff.py:934
 msgid "Folders have no differences"
 msgstr "Klasörlerde fark yok"
 
-#: ../meld/dirdiff.py:897
+#: ../meld/dirdiff.py:936
 msgid "Contents of scanned files in folders are identical."
 msgstr "Klasörlerdeki taranan dosyaların içerikleri aynı."
 
-#: ../meld/dirdiff.py:899
+#: ../meld/dirdiff.py:938
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 "Klasördeki taranan dosyalar aynı gözüküyor fakat içerikleri taranmamış."
 
-#: ../meld/dirdiff.py:902
+#: ../meld/dirdiff.py:941
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Dosya süzgeçleri kullanımda, bu yüzden tüm dosyalar taranamamış."
 
-#: ../meld/dirdiff.py:904
+#: ../meld/dirdiff.py:943
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Metin süzgeçleri kullanımda ve içerik farklılıklarını maskeleyebilir."
 
-#: ../meld/dirdiff.py:922 ../meld/filediff.py:1491 ../meld/filediff.py:1521
-#: ../meld/filediff.py:1523 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+#: ../meld/dirdiff.py:961 ../meld/filediff.py:1603 ../meld/filediff.py:1633
+#: ../meld/filediff.py:1635 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "Gi_zle"
 
-#: ../meld/dirdiff.py:931
+#: ../meld/dirdiff.py:970
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Bu dizinler taranırken birçok hata oluştu"
 
-#: ../meld/dirdiff.py:932
+#: ../meld/dirdiff.py:971
 msgid "Files with invalid encodings found"
 msgstr "Geçersiz kodlamada dosyalar bulundu"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:934
+#: ../meld/dirdiff.py:973
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Bazı dosyalar yanlış kodlamadaydı. Adları şu şekildedir:"
 
-#: ../meld/dirdiff.py:936
+#: ../meld/dirdiff.py:975
 msgid "Files hidden by case insensitive comparison"
 msgstr "Büyük küçük harf duyarsız karşılaştırmaya göre gizli dosyalar"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:938
+#: ../meld/dirdiff.py:977
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1758,17 +1765,17 @@ msgstr ""
 "Büyük/küçük harf duyarlı bir dosya sisteminde büyük/küçük harf duyarsız bir "
 "karşılaştırma yapmaktasınız. Bu klasördeki bazı dosyalar gizlidir:"
 
-#: ../meld/dirdiff.py:949
+#: ../meld/dirdiff.py:988
 #, python-format
 msgid "“%s” hidden by “%s”"
 msgstr "“%s”, “%s” tarafından gizlendi"
 
-#: ../meld/dirdiff.py:1005
+#: ../meld/dirdiff.py:1044
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "“%s” klasörü değiştirilsin mi?"
 
-#: ../meld/dirdiff.py:1007
+#: ../meld/dirdiff.py:1046
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1777,11 +1784,11 @@ msgstr ""
 "“%s” içinde aynı ad ile başka klasör zaten var.\n"
 "Eğer var olan klasörü değiştirirseniz, içindeki tüm dosyalar kaybolacaktır."
 
-#: ../meld/dirdiff.py:1020
+#: ../meld/dirdiff.py:1059
 msgid "Error copying file"
 msgstr "Dosya kopyalamada hata"
 
-#: ../meld/dirdiff.py:1021
+#: ../meld/dirdiff.py:1060
 #, python-format
 msgid ""
 "Couldn’t copy %s\n"
@@ -1794,19 +1801,19 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:1046 ../meld/vcview.py:703
+#: ../meld/dirdiff.py:1085 ../meld/vcview.py:720
 msgid "Error deleting {}"
 msgstr "{} silinirken hata"
 
-#: ../meld/dirdiff.py:1577
+#: ../meld/dirdiff.py:1597
 msgid "No folder"
 msgstr "Klasör yok"
 
-#: ../meld/filediff.py:834
+#: ../meld/filediff.py:920
 msgid "Comparison results will be inaccurate"
 msgstr "Karşılaştırma sonuçları hatalı olacak"
 
-#: ../meld/filediff.py:836
+#: ../meld/filediff.py:922
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1814,66 +1821,66 @@ msgstr ""
 "Bir süzgeç dosyadaki satır numaralarını desteklenmeyen şekilde değiştirdi. "
 "Karşılaştırma doğru olmayacaktır."
 
-#: ../meld/filediff.py:893
+#: ../meld/filediff.py:994
 msgid "Mark conflict as resolved?"
 msgstr "Çakışma çözüldü olarak işaretlensin mi?"
 
-#: ../meld/filediff.py:895
+#: ../meld/filediff.py:996
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Eğer çakışma başarıyla çözüldüyse, o zaman çözüldü olarak "
 "işaretleyebilirsiniz."
 
-#: ../meld/filediff.py:897
+#: ../meld/filediff.py:998
 msgid "Cancel"
 msgstr "İptal Et"
 
-#: ../meld/filediff.py:898
+#: ../meld/filediff.py:999
 msgid "Mark _Resolved"
 msgstr "_Çözümlendi olarak işaretle"
 
-#: ../meld/filediff.py:1206
+#: ../meld/filediff.py:1318
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "“%s” dosyası açılırken bir sorun var."
 
-#: ../meld/filediff.py:1214
+#: ../meld/filediff.py:1326
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "%s dosyası ikili bir dosya olarak görünüyor."
 
-#: ../meld/filediff.py:1216
+#: ../meld/filediff.py:1328
 msgid "Do you want to open the file using the default application?"
 msgstr "Dosyayı öntanımlı uygulamayı kullanarak açmak istiyor musunuz?"
 
-#: ../meld/filediff.py:1218
+#: ../meld/filediff.py:1330
 msgid "Open"
 msgstr "Aç"
 
-#: ../meld/filediff.py:1234
+#: ../meld/filediff.py:1346
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Farklılıklar hesaplanıyor"
 
-#: ../meld/filediff.py:1295
+#: ../meld/filediff.py:1407
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Disk üzerindeki %s dosyası değiştirildi"
 
-#: ../meld/filediff.py:1296
+#: ../meld/filediff.py:1408
 msgid "Do you want to reload the file?"
 msgstr "Dosyayı yeniden yüklemek istiyor musunuz?"
 
-#: ../meld/filediff.py:1298
+#: ../meld/filediff.py:1410
 msgid "_Reload"
 msgstr "_Yeniden yükle"
 
-#: ../meld/filediff.py:1454
+#: ../meld/filediff.py:1566
 msgid "Files are identical"
 msgstr "Dosyalar birbiri ile aynı"
 
-#: ../meld/filediff.py:1467
+#: ../meld/filediff.py:1579
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1881,11 +1888,11 @@ msgstr ""
 "Metin süzgeçleri kullanılmakta ve dosyalar arasındaki farklılıkları "
 "maskeliyor olabilir. Süzülmemiş dosyaları karşılaştırmak ister misiniz?"
 
-#: ../meld/filediff.py:1472
+#: ../meld/filediff.py:1584
 msgid "Files differ in line endings only"
 msgstr "Dosyalar yalnızca satır sonlarında farklılaşıyor"
 
-#: ../meld/filediff.py:1474
+#: ../meld/filediff.py:1586
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1894,15 +1901,15 @@ msgstr ""
 "Dosyalar satır sonları dışında özdeş:\n"
 "%s"
 
-#: ../meld/filediff.py:1494
+#: ../meld/filediff.py:1606
 msgid "Show without filters"
 msgstr "Süzgeçsiz göster"
 
-#: ../meld/filediff.py:1516
+#: ../meld/filediff.py:1628
 msgid "Change highlighting incomplete"
 msgstr "Vurgulama değişikliği tamamlanamadı"
 
-#: ../meld/filediff.py:1517
+#: ../meld/filediff.py:1629
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1911,19 +1918,19 @@ msgstr ""
 "daha büyük değişiklikleri daha uzun sürede ve daha yavaş olmasına rağmen "
 "vurgulaması için zorlayabilirsiniz."
 
-#: ../meld/filediff.py:1525
+#: ../meld/filediff.py:1637
 msgid "Keep highlighting"
 msgstr "Vurgulamayı koru"
 
-#: ../meld/filediff.py:1527
+#: ../meld/filediff.py:1639
 msgid "_Keep highlighting"
 msgstr "Vurgulamayı _koru"
 
-#: ../meld/filediff.py:1540
+#: ../meld/filediff.py:1652
 msgid "Saving failed"
 msgstr "Kaydetme başarısız"
 
-#: ../meld/filediff.py:1541
+#: ../meld/filediff.py:1653
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1931,39 +1938,36 @@ msgstr ""
 "Veri kaybını önlemek için lütfen ciddi değişiklikleri başka programa veya "
 "dosyaya kopyalayın."
 
-#: ../meld/filediff.py:1550
+#: ../meld/filediff.py:1662
 msgid "Save Left Pane As"
 msgstr "Sol Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1552
+#: ../meld/filediff.py:1664
 msgid "Save Middle Pane As"
 msgstr "Orta Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1554
+#: ../meld/filediff.py:1666
 msgid "Save Right Pane As"
 msgstr "Sağ Bölme Olarak Kaydet"
 
-#: ../meld/filediff.py:1567
+#: ../meld/filediff.py:1679
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "%s dosyası açıldığından beri diskte değişti"
 
-#: ../meld/filediff.py:1569
+#: ../meld/filediff.py:1681
 msgid "If you save it, any external changes will be lost."
 msgstr "Eğer onu kaydederseniz, harici değişiklikler kaybolacaktır."
 
-#: ../meld/filediff.py:1572
+#: ../meld/filediff.py:1684
 msgid "Save Anyway"
 msgstr "Yine De Kaydet"
 
-#: ../meld/filediff.py:1573
+#: ../meld/filediff.py:1685
 msgid "Don’t Save"
 msgstr "Kaydetme"
 
-#: ../meld/filediff.py:1615
-#| msgid ""
-#| "File “%s” contains characters that can’t be encoded using encoding “%s”.\n"
-#| "Would you like to save as UTF-8?"
+#: ../meld/filediff.py:1727
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1971,7 +1975,7 @@ msgstr ""
 "“{}” dosyası, kendisinin şu anki “{}” kodlaması kullanılarak kodlanamayacak "
 "karakterler içeriyor."
 
-#: ../meld/filediff.py:1619 ../meld/patchdialog.py:131
+#: ../meld/filediff.py:1731 ../meld/patchdialog.py:144
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1980,16 +1984,16 @@ msgstr ""
 "Şu nedenle dosya kaydedilemedi:\n"
 "%s"
 
-#: ../meld/filediff.py:1623 ../meld/patchdialog.py:130
+#: ../meld/filediff.py:1735 ../meld/patchdialog.py:143
 #, python-format
 msgid "Could not save file %s."
 msgstr "%s dosyası kaydedilemedi."
 
-#: ../meld/filediff.py:1998
+#: ../meld/filediff.py:2128
 msgid "Live comparison updating disabled"
 msgstr "Canlı karşılaştırma güncellemesi devre dışı bırakıldı"
 
-#: ../meld/filediff.py:1999
+#: ../meld/filediff.py:2129
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2005,40 +2009,40 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Dosyalar birleştiriliyor"
 
-#: ../meld/gutterrendererchunk.py:216
+#: ../meld/gutterrendererchunk.py:220
 msgid "Copy _up"
 msgstr "_Yukarı kopyala"
 
-#: ../meld/gutterrendererchunk.py:217
+#: ../meld/gutterrendererchunk.py:221
 msgid "Copy _down"
 msgstr "_Aşağı kopyala"
 
-#: ../meld/iohelpers.py:35
+#: ../meld/iohelpers.py:43
 msgid "Deleting remote folders is not supported"
 msgstr "Uzak klasörlerin silinmesi desteklenmiyor"
 
-#: ../meld/iohelpers.py:37
+#: ../meld/iohelpers.py:45
 msgid "Not a file or directory"
 msgstr "Bir dosya veya dizin değil"
 
-#: ../meld/iohelpers.py:41
+#: ../meld/iohelpers.py:49
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr "“{}” çöpe konulamaz. Hemen silmek ister misiniz?"
 
-#: ../meld/iohelpers.py:46
+#: ../meld/iohelpers.py:54
 msgid "This remote location does not support sending items to the trash."
 msgstr "Bu uzak konum ögelerin çöpe gönderilmesini desteklemiyor."
 
-#: ../meld/iohelpers.py:51
+#: ../meld/iohelpers.py:59
 msgid "_Delete Permanently"
 msgstr "Kalıcı Olarak _Sil"
 
-#: ../meld/iohelpers.py:94
+#: ../meld/iohelpers.py:106
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "“%s” dosyası değiştirilsin mi?"
 
-#: ../meld/iohelpers.py:96
+#: ../meld/iohelpers.py:108
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2047,313 +2051,277 @@ msgstr ""
 "“%s” içinde bu ad ile bir dosya zaten var.\n"
 "Eğer var olan dosyayı değiştirirseniz, içerikleri kaybolacaktır."
 
-#: ../meld/meldapp.py:181
+#: ../meld/meldapp.py:169
 msgid "wrong number of arguments supplied to --diff"
 msgstr "--diff komutuna yanlış sayıda değişken verildi"
 
-#: ../meld/meldapp.py:186
+#: ../meld/meldapp.py:174
 msgid "Start with an empty window"
 msgstr "Boş bir pencere ile başla"
 
-#: ../meld/meldapp.py:187 ../meld/meldapp.py:189
+#: ../meld/meldapp.py:175 ../meld/meldapp.py:177
 msgid "file"
 msgstr "dosya"
 
-#: ../meld/meldapp.py:187 ../meld/meldapp.py:191
+#: ../meld/meldapp.py:175 ../meld/meldapp.py:179
 msgid "folder"
 msgstr "klasör"
 
-#: ../meld/meldapp.py:188
+#: ../meld/meldapp.py:176
 msgid "Start a version control comparison"
 msgstr "Sürüm denetimi karşılaştırmasına başla"
 
-#: ../meld/meldapp.py:190
+#: ../meld/meldapp.py:178
 msgid "Start a 2- or 3-way file comparison"
 msgstr "2- ya da 3-yollu dosya karşılaştırmasına başla"
 
-#: ../meld/meldapp.py:192
+#: ../meld/meldapp.py:180
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "2- ya da 3- yollu klasör karşılaştırmasına başla"
 
-#: ../meld/meldapp.py:235
+#: ../meld/meldapp.py:223
 #, python-format
 msgid "Error: %s\n"
 msgstr "Hata: %s\n"
 
-#: ../meld/meldapp.py:242
+#: ../meld/meldapp.py:230
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld bir dosya ve dizin karşılaştırma aracıdır."
 
-#: ../meld/meldapp.py:246
+#: ../meld/meldapp.py:234
 msgid "Set label to use instead of file name"
 msgstr "Dosya adı yerine kullanmak istediğiniz etiketi ayarlayın"
 
-#: ../meld/meldapp.py:249
+#: ../meld/meldapp.py:237
 msgid "Open a new tab in an already running instance"
 msgstr "Zaten çalışan bir örnekte yeni bir sekme aç"
 
-#: ../meld/meldapp.py:252
+#: ../meld/meldapp.py:240
 msgid "Automatically compare all differing files on startup"
 msgstr "Başlangıçta tüm farklı dosyaları kendiliğinden karşılaştır"
 
-#: ../meld/meldapp.py:255
+#: ../meld/meldapp.py:243
 msgid "Ignored for compatibility"
 msgstr "Uyumluluk için yoksayıldı"
 
-#: ../meld/meldapp.py:259
+#: ../meld/meldapp.py:247
 msgid "Set the target file for saving a merge result"
 msgstr "Birleştirme sonucunu kaydetmek için hedef dosya ayarla"
 
-#: ../meld/meldapp.py:262
+#: ../meld/meldapp.py:250
 msgid "Automatically merge files"
 msgstr "Dosyaları kendiliğinden birleştir"
 
-#: ../meld/meldapp.py:266
+#: ../meld/meldapp.py:254
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr ""
 "Bir Meld karşılaştırma dosyasından kaydedilmiş bir karşılaştırmayı yükle"
 
-#: ../meld/meldapp.py:270
+#: ../meld/meldapp.py:258
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Verilen dosya ve klasörler için fark sekmesi oluştur"
 
-#: ../meld/meldapp.py:290
+#: ../meld/meldapp.py:278
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "çok sayıda değişken (istenen sayı 0-3, verilen %d)"
 
-#: ../meld/meldapp.py:293
+#: ../meld/meldapp.py:281
 msgid "can’t auto-merge less than 3 files"
 msgstr "3 dosyadan daha azı kendiliğinden birleştirilemiyor"
 
-#: ../meld/meldapp.py:295
+#: ../meld/meldapp.py:283
 msgid "can’t auto-merge directories"
 msgstr "dizinler kendiliğinden birleştirilemiyor"
 
-#: ../meld/meldapp.py:309
+#: ../meld/meldapp.py:297
 msgid "Error reading saved comparison file"
 msgstr "Kaydedilmiş karşılaştırma dosyaları okunurken hata"
 
-#: ../meld/meldapp.py:326
+#: ../meld/meldapp.py:314
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "geçersiz yol ya da URI “%s”"
 
-#: ../meld/meldapp.py:332
+#: ../meld/meldapp.py:320
 msgid "remote folder “{}” not supported"
 msgstr "uzak klasör “{}” desteklenmiyor"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:124
+#: ../meld/meldbuffer.py:123
 msgid "<unnamed>"
 msgstr "<adsiz>"
 
-#: ../meld/melddoc.py:68
+#: ../meld/melddoc.py:63
 msgid "untitled"
 msgstr "başlıksız"
 
-#: ../meld/meldwindow.py:47
+#: ../meld/meldwindow.py:56
 msgid "_File"
 msgstr "_Dosya"
 
-#: ../meld/meldwindow.py:48
+#: ../meld/meldwindow.py:57
 msgid "_New Comparison…"
 msgstr "_Yeni Karşılaştırma…"
 
-#: ../meld/meldwindow.py:49
+#: ../meld/meldwindow.py:58
 msgid "Start a new comparison"
 msgstr "Yeni bir karşılaştırma başlat"
 
-#: ../meld/meldwindow.py:52
+#: ../meld/meldwindow.py:61
 msgid "Save the current file"
 msgstr "Geçerli dosyayı kaydet"
 
-#: ../meld/meldwindow.py:54
+#: ../meld/meldwindow.py:63
 msgid "Save As…"
 msgstr "Farklı Kaydet…"
 
-#: ../meld/meldwindow.py:55
+#: ../meld/meldwindow.py:64
 msgid "Save the current file with a different name"
 msgstr "Geçerli dosyayı farklı bir adla kaydet"
 
-#: ../meld/meldwindow.py:58
+#: ../meld/meldwindow.py:67
 msgid "Close the current file"
 msgstr "Geçerli dosyayı kapat"
 
-#: ../meld/meldwindow.py:61
+#: ../meld/meldwindow.py:70
 msgid "_Edit"
 msgstr "_Düzenle"
 
-#: ../meld/meldwindow.py:63
+#: ../meld/meldwindow.py:72
 msgid "Undo the last action"
 msgstr "Son eylemi geri al"
 
-#: ../meld/meldwindow.py:66
+#: ../meld/meldwindow.py:75
 msgid "Redo the last undone action"
 msgstr "Geri alınan son eylemi yinele"
 
-#: ../meld/meldwindow.py:68
+#: ../meld/meldwindow.py:77
 msgid "Cut the selection"
 msgstr "Seçimi kes"
 
-#: ../meld/meldwindow.py:70
+#: ../meld/meldwindow.py:79
 msgid "Copy the selection"
 msgstr "Seçimi kopyala"
 
-#: ../meld/meldwindow.py:72
+#: ../meld/meldwindow.py:81
 msgid "Paste the clipboard"
 msgstr "Geçici taşıma panosunu yapıştır"
 
-#: ../meld/meldwindow.py:74
+#: ../meld/meldwindow.py:83
 msgid "Find…"
 msgstr "Bul…"
 
-#: ../meld/meldwindow.py:74
+#: ../meld/meldwindow.py:83
 msgid "Search for text"
 msgstr "Metin ara"
 
-#: ../meld/meldwindow.py:76
+#: ../meld/meldwindow.py:85
 msgid "Find Ne_xt"
 msgstr "So_nrakini Bul"
 
-#: ../meld/meldwindow.py:77
+#: ../meld/meldwindow.py:86
 msgid "Search forwards for the same text"
 msgstr "Aynı metni ileriye doğru ara"
 
-#: ../meld/meldwindow.py:79
+#: ../meld/meldwindow.py:88
 msgid "Find _Previous"
 msgstr "_Öncekileri Bul"
 
-#: ../meld/meldwindow.py:80
+#: ../meld/meldwindow.py:89
 msgid "Search backwards for the same text"
 msgstr "Aynı metin için geriye doğru ara"
 
-#: ../meld/meldwindow.py:83
+#: ../meld/meldwindow.py:92
 msgid "_Replace…"
 msgstr "_Değiştir…"
 
-#: ../meld/meldwindow.py:84
+#: ../meld/meldwindow.py:93
 msgid "Find and replace text"
 msgstr "Metni bul ve değiştir"
 
-#: ../meld/meldwindow.py:86
+#: ../meld/meldwindow.py:95
 msgid "Go to _Line"
 msgstr "_Satıra Git"
 
-#: ../meld/meldwindow.py:87
+#: ../meld/meldwindow.py:96
 msgid "Go to a specific line"
 msgstr "Belirli bir satıra git"
 
-#: ../meld/meldwindow.py:90
+#: ../meld/meldwindow.py:99
 msgid "_Changes"
 msgstr "_Değişiklikler"
 
-#: ../meld/meldwindow.py:91
+#: ../meld/meldwindow.py:100
 msgid "Next Change"
 msgstr "Sonraki Değişiklik"
 
-#: ../meld/meldwindow.py:92
+#: ../meld/meldwindow.py:101
 msgid "Go to the next change"
 msgstr "Sonraki değişikliğe git"
 
-#: ../meld/meldwindow.py:94
+#: ../meld/meldwindow.py:103
 msgid "Previous Change"
 msgstr "Önceki Değişiklik"
 
-#: ../meld/meldwindow.py:95
+#: ../meld/meldwindow.py:104
 msgid "Go to the previous change"
 msgstr "Önceki değişikliğe git"
 
-#: ../meld/meldwindow.py:97
+#: ../meld/meldwindow.py:106
 msgid "Open Externally"
 msgstr "Harici Olarak Aç"
 
-#: ../meld/meldwindow.py:98
+#: ../meld/meldwindow.py:107
 msgid "Open selected file or directory in the default external application"
 msgstr "Öntanımlı harici bir uygulamada seçilen dosya ya da dizini aç"
 
-#: ../meld/meldwindow.py:102
+#: ../meld/meldwindow.py:111
 msgid "_View"
 msgstr "_Görünüm"
 
-#: ../meld/meldwindow.py:103
+#: ../meld/meldwindow.py:112
 msgid "File Status"
 msgstr "Dosya Durumu"
 
-#: ../meld/meldwindow.py:104
+#: ../meld/meldwindow.py:113
 msgid "Version Status"
 msgstr "Sürüm Durumu"
 
-#: ../meld/meldwindow.py:107
+#: ../meld/meldwindow.py:116
 msgid "Stop the current action"
 msgstr "Geçerli işlemi durdur"
 
-#: ../meld/meldwindow.py:110
+#: ../meld/meldwindow.py:119
 msgid "Refresh the view"
 msgstr "Görünümü yenile"
 
-#: ../meld/meldwindow.py:114
+#: ../meld/meldwindow.py:123
 msgid "Fullscreen"
 msgstr "Tam Ekran"
 
-#: ../meld/meldwindow.py:115
+#: ../meld/meldwindow.py:124
 msgid "View the comparison in fullscreen"
 msgstr "Karşılaştırmayı tam ekran görüntüle"
 
-#: ../meld/meldwindow.py:117
-msgid "_Toolbar"
-msgstr "_Araç çubuğu"
-
-#: ../meld/meldwindow.py:118
-msgid "Show or hide the toolbar"
-msgstr "Araç çubuğunu göster ya da gizle"
-
-#: ../meld/meldwindow.py:127
+#: ../meld/meldwindow.py:133
 msgid "Open Recent"
 msgstr "En Son Açılanlar"
 
-#: ../meld/meldwindow.py:128
+#: ../meld/meldwindow.py:134
 msgid "Open recent files"
 msgstr "Son açılan dosyaları aç"
 
-#: ../meld/meldwindow.py:150
-msgid "_Meld"
-msgstr "_Meld"
-
-#: ../meld/meldwindow.py:151
-msgid "Quit the program"
-msgstr "Programdan çık"
-
-#: ../meld/meldwindow.py:153
-msgid "Prefere_nces"
-msgstr "Tercih_ler"
-
-#: ../meld/meldwindow.py:154
-msgid "Configure the application"
-msgstr "Uygulamayı yapılandır"
-
-#: ../meld/meldwindow.py:156
-msgid "_Contents"
-msgstr "_İçerikler"
-
-#: ../meld/meldwindow.py:157
-msgid "Open the Meld manual"
-msgstr "Meld kılavuzunu aç"
-
-#: ../meld/meldwindow.py:159
-msgid "About this application"
-msgstr "Bu uygulama hakkında"
-
-#: ../meld/meldwindow.py:602
+#: ../meld/meldwindow.py:567
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Kendiliğinden birleştirme için üç dosya gerekiyor, var olan: %r"
 
-#: ../meld/meldwindow.py:623
+#: ../meld/meldwindow.py:588
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Dosya ve dizinlerin karışımı karşılaştırılamıyor"
 
-#: ../meld/misc.py:135
+#: ../meld/misc.py:155
 msgid ""
 "{}\n"
 "\n"
@@ -2365,39 +2333,35 @@ msgstr ""
 "Meld şunu çalıştırırken ciddi bir hatayla karşılaştı:\n"
 "<tt>{}</tt>"
 
-#: ../meld/misc.py:254
+#: ../meld/misc.py:237
 #, python-format
 msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr "%s-%s için renk şeması ayrıntıları bulunamadı; bu kötü bir kurulum"
 
-#: ../meld/misc.py:325
+#: ../meld/misc.py:311
 msgid "[None]"
 msgstr "[Hiçbiri]"
 
-#: ../meld/preferences.py:33
+#: ../meld/preferences.py:42 ../meld/preferences.py:135
 msgid "label"
 msgstr "etiket"
 
-#: ../meld/preferences.py:33
+#: ../meld/preferences.py:42 ../meld/preferences.py:135
 msgid "pattern"
 msgstr "örüntü"
 
-#: ../meld/recent.py:105
+#: ../meld/recent.py:106
 msgid "Version control:"
 msgstr "Sürüm denetimi:"
 
-#: ../meld/ui/bufferselectors.py:32
+#: ../meld/ui/bufferselectors.py:114
 #, python-brace-format
 msgid "{name} ({charset})"
 msgstr "{name} ({charset})"
 
-#: ../meld/ui/bufferselectors.py:65 ../meld/ui/bufferselectors.py:73
+#: ../meld/ui/bufferselectors.py:144 ../meld/ui/bufferselectors.py:152
 msgid "Plain Text"
 msgstr "Düz Metin"
-
-#: ../meld/ui/notebooklabel.py:63
-msgid "Close tab"
-msgstr "Sekmeyi kapat"
 
 #. Abbreviation for line, column so that it will fit in the status bar
 #: ../meld/ui/statusbar.py:124
@@ -2405,11 +2369,11 @@ msgstr "Sekmeyi kapat"
 msgid "Ln %i, Col %i"
 msgstr "Satır %i, Sütun %i"
 
-#: ../meld/ui/statusbar.py:177
+#: ../meld/ui/statusbar.py:182
 msgid "Line you want to move the cursor to"
 msgstr "İmleci taşımak istediğiniz satır"
 
-#: ../meld/ui/vcdialogs.py:48
+#: ../meld/ui/vcdialogs.py:55
 msgid "No files will be committed"
 msgstr "Hiçbir dosya gönderilemeyecektir"
 
@@ -2458,141 +2422,141 @@ msgstr "Hiçbiri"
 msgid "Rev %s"
 msgstr "Rev %s"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Merged"
 msgstr "Birleştirilmiş"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Base"
 msgstr "Taban"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Local"
 msgstr "Yerel"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Remote"
 msgstr "Uzak"
 
-#: ../meld/vc/_vc.py:70
+#: ../meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Sürümlendirilmemiş"
 
-#: ../meld/vc/_vc.py:73
+#: ../meld/vc/_vc.py:74
 msgid "Error"
 msgstr "Hata"
 
-#: ../meld/vc/_vc.py:75
+#: ../meld/vc/_vc.py:76
 msgid "Newly added"
 msgstr "Yakın zamanda eklenmiş"
 
-#: ../meld/vc/_vc.py:77
+#: ../meld/vc/_vc.py:78
 msgid "Renamed"
 msgstr "Yeniden Adlandırılmış"
 
-#: ../meld/vc/_vc.py:78
+#: ../meld/vc/_vc.py:79
 msgid "Conflict"
 msgstr "Çakışma"
 
-#: ../meld/vc/_vc.py:79
+#: ../meld/vc/_vc.py:80
 msgid "Removed"
 msgstr "Silindi"
 
-#: ../meld/vc/_vc.py:80
+#: ../meld/vc/_vc.py:81
 msgid "Missing"
 msgstr "Eksik"
 
-#: ../meld/vc/_vc.py:81
+#: ../meld/vc/_vc.py:82
 msgid "Not present"
 msgstr "Mevcut değil"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:248
+#: ../meld/vcview.py:282
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s yüklü değil)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:252
+#: ../meld/vcview.py:286
 #, python-format
 msgid "%(name)s (Invalid repository)"
 msgstr "%(name)s (Geçersiz depo)"
 
-#: ../meld/vcview.py:273
+#: ../meld/vcview.py:307
 msgid "No valid version control system found in this folder"
 msgstr "Bu klasörde geçerli bir sürüm denetimi sistemi bulunamadı"
 
-#: ../meld/vcview.py:275
+#: ../meld/vcview.py:309
 msgid "Only one version control system found in this folder"
 msgstr "Bu klasörde yalnızca bir sürüm denetimi sistemi bulundu"
 
-#: ../meld/vcview.py:277
+#: ../meld/vcview.py:311
 msgid "Choose which version control system to use"
 msgstr "Hangi sürüm denetimi sistemini kullanacağınızı seçin"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:331
+#: ../meld/vcview.py:366
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: ../meld/vcview.py:338
+#: ../meld/vcview.py:373
 msgid "Scanning repository"
 msgstr "Depo taranıyor"
 
-#: ../meld/vcview.py:367
+#: ../meld/vcview.py:402
 #, python-format
 msgid "Scanning %s"
 msgstr "%s taranıyor"
 
-#: ../meld/vcview.py:406
+#: ../meld/vcview.py:441
 msgid "(Empty)"
 msgstr "(Boş)"
 
-#: ../meld/vcview.py:450
+#: ../meld/vcview.py:487
 #, python-format
 msgid "%s — local"
 msgstr "%s — yerel"
 
-#: ../meld/vcview.py:451
+#: ../meld/vcview.py:488
 #, python-format
 msgid "%s — remote"
 msgstr "%s — uzak"
 
-#: ../meld/vcview.py:459
+#: ../meld/vcview.py:496
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (yerel, birleştir, uzak)"
 
-#: ../meld/vcview.py:464
+#: ../meld/vcview.py:501
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (uzak, birleştir, yerel)"
 
-#: ../meld/vcview.py:475
+#: ../meld/vcview.py:512
 #, python-format
 msgid "%s — repository"
 msgstr "%s — depo"
 
-#: ../meld/vcview.py:481
+#: ../meld/vcview.py:518
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (çalışma dizini, depo)"
 
-#: ../meld/vcview.py:485
+#: ../meld/vcview.py:522
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (depo, çalışma dizini)"
 
-#: ../meld/vcview.py:674
+#: ../meld/vcview.py:688
 msgid "Remove folder and all its files?"
 msgstr "Klasör ve dosyaları silinsin mi?"
 
-#: ../meld/vcview.py:676
+#: ../meld/vcview.py:690
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2600,9 +2564,54 @@ msgstr ""
 "Bu işlem, sürüm denetimi sisteminden tüm seçili dosya ve klasörleri, ve "
 "seçili herhangi bir klasör içindeki tüm dosyaları kaldıracak."
 
-#: ../meld/vcview.py:785
+#: ../meld/vcview.py:804
 msgid "Clear"
 msgstr "Temizle"
+
+#~ msgid "Show toolbar"
+#~ msgstr "Araç çubuğunu göster"
+
+#~ msgid "If true, the window toolbar is visible."
+#~ msgstr "Eğer doğruysa, pencere araç çubuğu görünürdür."
+
+#~ msgid "Show statusbar"
+#~ msgstr "Durum çubuğu göster"
+
+#~ msgid "If true, the window statusbar is visible."
+#~ msgstr "Eğer doğruysa, pencere durum çubuğu görünürdür."
+
+#~ msgid "Editable List"
+#~ msgstr "Düzenlenebilir Liste"
+
+#~ msgid "Meld Preferences"
+#~ msgstr "Meld Tercihleri"
+
+#~ msgid "_Toolbar"
+#~ msgstr "_Araç çubuğu"
+
+#~ msgid "Show or hide the toolbar"
+#~ msgstr "Araç çubuğunu göster ya da gizle"
+
+#~ msgid "_Meld"
+#~ msgstr "_Meld"
+
+#~ msgid "Quit the program"
+#~ msgstr "Programdan çık"
+
+#~ msgid "Prefere_nces"
+#~ msgstr "Tercih_ler"
+
+#~ msgid "Configure the application"
+#~ msgstr "Uygulamayı yapılandır"
+
+#~ msgid "_Contents"
+#~ msgstr "_İçerikler"
+
+#~ msgid "Open the Meld manual"
+#~ msgstr "Meld kılavuzunu aç"
+
+#~ msgid "About this application"
+#~ msgstr "Bu uygulama hakkında"
 
 #~ msgid "_Save as UTF-8"
 #~ msgstr "UTF-8 Olarak _kaydet"
