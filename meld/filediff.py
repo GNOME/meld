@@ -68,7 +68,8 @@ def with_scroll_lock(lock_attr):
     def wrap(function):
         @functools.wraps(function)
         def wrap_function(locked, *args, **kwargs):
-            if getattr(locked, lock_attr, False) or locked._scroll_lock:
+            force_locked = locked.props.lock_scrolling
+            if getattr(locked, lock_attr, False) or force_locked:
                 return
 
             try:
@@ -202,6 +203,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=ActionMode.Replace,
     )
 
+    lock_scrolling = GObject.property(
+        type=bool,
+        nick='Lock scrolling of all panes',
+        default=False,
+    )
+
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -249,7 +256,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._connect_buffer_handlers()
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
-        self._scroll_lock = False
         self.linediffer = self.differ()
         self.force_highlight = False
         self.syncpoints = []
@@ -272,9 +278,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
-        action = Gio.PropertyAction.new(
-            'show-sourcemap', self, 'show-sourcemap')
-        self.view_action_group.add_action(action)
+
+        property_actions = (
+            ('show-sourcemap', self, 'show-sourcemap'),
+            ('lock-scrolling', self, 'lock_scrolling'),
+        )
+        for action_name, obj, prop_name in property_actions:
+            action = Gio.PropertyAction.new(action_name, obj, prop_name)
+            self.view_action_group.add_action(action)
 
         # Manually handle GAction additions
         actions = (
@@ -1929,14 +1940,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.linkmap[i].queue_draw()
         for gutter in self.actiongutter:
             gutter.queue_draw()
-
-    @Template.Callback()
-    def on_action_lock_scrolling_toggled(self, action):
-        self.toggle_scroll_lock(action.get_active())
-
-    def toggle_scroll_lock(self, locked):
-        self.actiongroup.get_action("LockScrolling").set_active(locked)
-        self._scroll_lock = not locked
 
     @Template.Callback()
     def on_readonly_button_toggled(self, button):
