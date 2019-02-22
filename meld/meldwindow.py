@@ -58,12 +58,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         actions = (
             ("EditMenu", None, _("_Edit")),
-            ("Undo", Gtk.STOCK_UNDO, None, "<Primary>Z",
-                _("Undo the last action"),
-                self.on_menu_undo_activate),
-            ("Redo", Gtk.STOCK_REDO, None, "<Primary><shift>Z",
-                _("Redo the last undone action"),
-                self.on_menu_redo_activate),
             ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
                 self.on_menu_cut_activate),
             ("Copy", Gtk.STOCK_COPY, None, None, _("Copy the selection"),
@@ -167,7 +161,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
 
         self.ui.ensure_update()
-        self.undo_handlers = tuple()
 
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
@@ -254,11 +247,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def handle_current_doc_switch(self, page):
         page.on_container_switch_out_event(self.ui, self)
-        if self.undo_handlers:
-            undoseq = page.undosequence
-            for handler in self.undo_handlers:
-                undoseq.disconnect(handler)
-            self.undo_handlers = tuple()
 
     @Template.Callback()
     def on_switch_page(self, notebook, page, which):
@@ -268,17 +256,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.handle_current_doc_switch(olddoc)
 
         newdoc = notebook.get_nth_page(which) if which >= 0 else None
-        try:
-            undoseq = newdoc.undosequence
-            can_undo = undoseq.can_undo()
-            can_redo = undoseq.can_redo()
-            undo_handler = undoseq.connect("can-undo", self.on_can_undo)
-            redo_handler = undoseq.connect("can-redo", self.on_can_redo)
-            self.undo_handlers = (undo_handler, redo_handler)
-        except AttributeError:
-            can_undo, can_redo = False, False
-        self.actiongroup.get_action("Undo").set_sensitive(can_undo)
-        self.actiongroup.get_action("Redo").set_sensitive(can_redo)
 
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc)
@@ -303,12 +280,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_page_label_changed(self, notebook, label_text):
         self.set_title(label_text)
 
-    def on_can_undo(self, undosequence, can):
-        self.actiongroup.get_action("Undo").set_sensitive(can)
-
-    def on_can_redo(self, undosequence, can):
-        self.actiongroup.get_action("Redo").set_sensitive(can)
-
     def on_action_new_tab_activate(self, action, parameter):
         self.append_new_comparison()
 
@@ -317,12 +288,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         if i >= 0:
             page = self.notebook.get_nth_page(i)
             page.on_delete_event()
-
-    def on_menu_undo_activate(self, *extra):
-        self.current_doc().on_undo_activate()
-
-    def on_menu_redo_activate(self, *extra):
-        self.current_doc().on_redo_activate()
 
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()

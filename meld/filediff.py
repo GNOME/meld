@@ -282,11 +282,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('next-change', self.action_next_change),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('redo', self.action_redo),
             ('refresh', self.action_refresh),
             ('revert', self.action_revert),
             ('save', self.action_save),
             ('save-all', self.action_save_all),
             ('save-as', self.action_save_as),
+            ('undo', self.action_undo),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -340,7 +342,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.linediffer.connect("diffs-changed", self.on_diffs_changed)
         self.undosequence.connect("checkpointed", self.on_undo_checkpointed)
+        self.undosequence.connect("can-undo", self.on_can_undo)
+        self.undosequence.connect("can-redo", self.on_can_redo)
         self.connect("next-conflict-changed", self.on_next_conflict_changed)
+
+        # TODO: If UndoSequence expose can_undo and can_redo as
+        # GProperties instead, this would be much, much nicer.
+        self.set_action_enabled('redo', self.undosequence.can_redo())
+        self.set_action_enabled('undo', self.undosequence.can_undo())
 
         for statusbar, buf in zip(self.statusbar, self.textbuffer):
             buf.bind_property(
@@ -1087,15 +1096,15 @@ class FileDiff(Gtk.VBox, MeldDoc):
             view = self.textview[buf_index]
             view.scroll_mark_onscreen(buf.get_insert())
 
-    def on_undo_activate(self):
+    def action_undo(self, *args):
         if self.undosequence.can_undo():
             actions = self.undosequence.undo()
-        self._scroll_to_actions(actions)
+            self._scroll_to_actions(actions)
 
-    def on_redo_activate(self):
+    def action_redo(self, *args):
         if self.undosequence.can_redo():
             actions = self.undosequence.redo()
-        self._scroll_to_actions(actions)
+            self._scroll_to_actions(actions)
 
     def on_text_insert_text(self, buf, it, text, textlen):
         self.undosequence.add_action(
@@ -1111,6 +1120,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def on_undo_checkpointed(self, undosequence, buf, checkpointed):
         buf.set_modified(not checkpointed)
         self.recompute_label()
+
+    def on_can_undo(self, undosequence, can_undo):
+        self.set_action_enabled('undo', can_undo)
+
+    def on_can_redo(self, undosequence, can_redo):
+        self.set_action_enabled('redo', can_redo)
 
     @with_focused_pane
     def action_open_external(self, pane, *args):
