@@ -106,9 +106,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             ("FileStatus", None, _("File Status")),
             ("VcStatus", None, _("Version Status")),
             ("FileFilters", None, _("File Filters")),
-            ("Stop", Gtk.STOCK_STOP, None, "Escape",
-                _("Stop the current action"),
-                self.on_toolbar_stop_clicked),
             ("Refresh", Gtk.STOCK_REFRESH, None, "<Primary>R",
                 _("Refresh the view"),
                 self.on_menu_refresh_activate),
@@ -149,7 +146,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             accel_group.connect(keyval, mask, 0, callback)
 
         # Initialise sensitivity for important actions
-        self.actiongroup.get_action("Stop").set_sensitive(False)
         self._update_page_action_sensitivity()
 
         self.appvbox.pack_start(self.menubar, False, True, 0)
@@ -168,6 +164,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         actions = (
             ("close", self.on_menu_close_activate),
             ("new-tab", self.on_action_new_tab_activate),
+            ("stop", self.action_stop),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -184,6 +181,9 @@ class MeldWindow(Gtk.ApplicationWindow):
             action = Gio.SimpleAction.new_stateful(name, None, state)
             action.connect('change-state', callback)
             self.add_action(action)
+
+        # Initialise sensitivity for important actions
+        self.lookup_action('stop').set_enabled(False)
 
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
@@ -245,14 +245,14 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.spinner.hide()
             self.spinner.set_tooltip_text("")
             self.idle_hooked = None
-            self.actiongroup.get_action("Stop").set_sensitive(False)
+            self.lookup_action('stop').set_enabled(False)
         return pending
 
     def on_scheduler_runnable(self, sched):
         if not self.idle_hooked:
             self.spinner.show()
             self.spinner.start()
-            self.actiongroup.get_action("Stop").set_sensitive(True)
+            self.lookup_action('stop').set_enabled(True)
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
     @Template.Callback()
@@ -448,8 +448,8 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_open_external(self, *args):
         self.current_doc().open_external()
 
-    def on_toolbar_stop_clicked(self, *args):
-        self.current_doc().on_action_cancel()
+    def action_stop(self, *args):
+        self.current_doc().action_stop()
 
     def page_removed(self, page, status):
         if hasattr(page, 'scheduler'):

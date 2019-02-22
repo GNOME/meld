@@ -111,7 +111,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         """Get the comparison type and URI(s) being compared"""
         pass
 
-    def on_action_cancel(self, *args):
+    def action_stop(self, *args):
         if self.scheduler.tasks_pending():
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
