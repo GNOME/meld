@@ -21,14 +21,6 @@
         <signal name="activate" handler="on_expand_recursive_clicked" swapped="no"/>
       </object>
     </child>
-    <child>
-      <object class="GtkToggleAction" id="CustomFilterMenu">
-        <property name="label" translatable="yes">Filters</property>
-        <property name="tooltip" translatable="yes">Set active filters</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_custom_filter_menu_toggled" swapped="no"/>
-      </object>
-    </child>
   </object>
   <template class="DirDiff" parent="GtkVBox">
     <property name="visible">True</property>

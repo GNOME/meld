@@ -36,6 +36,7 @@ from gi.repository import Gtk
 from meld import misc
 from meld import tree
 from meld.conf import _, ui_file
+from meld.const import FILE_FILTER_ACTION_FORMAT
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
@@ -593,49 +594,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 last_column = current_column
             treeview.set_headers_visible(extra_cols)
 
-    @Template.Callback()
-    def on_custom_filter_menu_toggled(self, item):
-        if item.get_active():
-            self.custom_popup.connect(
-                "deactivate", lambda popup: item.set_active(False))
-            self.custom_popup.popup_at_widget(
-                self.filter_menu_button,
-                Gdk.Gravity.SOUTH_WEST,
-                Gdk.Gravity.NORTH_WEST,
-                None,
-            )
-
-    def _cleanup_filter_menu_button(self, ui):
-        if self.custom_merge_id:
-            ui.remove_ui(self.custom_merge_id)
-        if self.filter_actiongroup in ui.get_action_groups():
-            ui.remove_action_group(self.filter_actiongroup)
-
-    def _create_filter_menu_button(self, ui):
-        ui.insert_action_group(self.filter_actiongroup, -1)
-        self.custom_merge_id = ui.new_merge_id()
-        for x in self.filter_ui:
-            ui.add_ui(self.custom_merge_id, *x)
-        self.custom_popup = ui.get_widget("/CustomPopup")
-        self.filter_menu_button = ui.get_widget(
-            "/Toolbar/FilterActions/CustomFilterMenu")
-        label = misc.make_tool_button_widget(
-            self.filter_menu_button.props.label)
-        self.filter_menu_button.set_label_widget(label)
-
-    def on_container_switch_in_event(self, ui, window):
-        MeldDoc.on_container_switch_in_event(self, ui, window)
-        self._create_filter_menu_button(ui)
-        self.ui_manager = ui
-
-    def on_container_switch_out_event(self, ui, window):
-        self._cleanup_filter_menu_button(ui)
-        MeldDoc.on_container_switch_out_event(self, ui, window)
-
     def on_file_filters_changed(self, app):
-        self._cleanup_filter_menu_button(self.ui_manager)
         relevant_change = self.create_name_filters()
-        self._create_filter_menu_button(self.ui_manager)
         if relevant_change:
             self.refresh()
 
@@ -647,32 +607,20 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                           if f.active])
         active_filters_changed = old_active != new_active
 
+        # TODO: Rework name_filters to use a map-like structure so that we
+        # don't need _action_name_filter_map.
+        self._action_name_filter_map = {}
         self.name_filters = [copy.copy(f) for f in meldsettings.file_filters]
-        actions = []
-        disabled_actions = []
-        self.filter_ui = []
-        for i, f in enumerate(self.name_filters):
-            name = "Hide%d" % i
-            callback = functools.partial(self._update_name_filter, idx=i)
-            actions.append((
-                name, None, f.label, None, _("Hide %s") % f.label,
-                callback, f.active
-            ))
-            self.filter_ui.append([
-                "/CustomPopup", name, name,
-                Gtk.UIManagerItemType.MENUITEM, False
-            ])
-            self.filter_ui.append([
-                "/Menubar/ViewMenu/FileFilters", name, name,
-                Gtk.UIManagerItemType.MENUITEM, False
-            ])
-            if f.filter is None:
-                disabled_actions.append(name)
-
-        self.filter_actiongroup = Gtk.ActionGroup(name="DirdiffFilterActions")
-        self.filter_actiongroup.add_toggle_actions(actions)
-        for name in disabled_actions:
-            self.filter_actiongroup.get_action(name).set_sensitive(False)
+        for i, filt in enumerate(self.name_filters):
+            action = Gio.SimpleAction.new_stateful(
+                name=FILE_FILTER_ACTION_FORMAT.format(i),
+                parameter_type=None,
+                state=GLib.Variant.new_boolean(filt.active),
+            )
+            action.connect('change-state', self._update_name_filter)
+            action.set_enabled(filt.filter is not None)
+            self.view_action_group.add_action(action)
+            self._action_name_filter_map[action] = filt
 
         return active_filters_changed
 
@@ -1403,8 +1351,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.props.status_filters = state_strs
         self.refresh()
 
-    def _update_name_filter(self, button, idx):
-        self.name_filters[idx].active = button.get_active()
+    def _update_name_filter(self, action, state):
+        self._action_name_filter_map[action].active = state.get_boolean()
+        action.set_state(state)
         self.refresh()
 
         #

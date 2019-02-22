@@ -26,3 +26,5 @@ NEWLINES = {
     GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),
     GtkSource.NewlineType.CR: ('\r', _("Mac OS (CR)")),
 }
+
+FILE_FILTER_ACTION_FORMAT = 'folder-custom-filter-{}'

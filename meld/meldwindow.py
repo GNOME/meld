@@ -36,6 +36,12 @@ from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
+
+from meld.const import FILE_FILTER_ACTION_FORMAT
+from meld.settings import meldsettings
+from meld.menuhelpers import replace_menu_section
+
+
 log = logging.getLogger(__name__)
 
 
@@ -86,7 +92,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             ("ViewMenu", None, _("_View")),
             ("FileStatus", None, _("File Status")),
             ("VcStatus", None, _("Version Status")),
-            ("FileFilters", None, _("File Filters")),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
@@ -179,7 +184,25 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.vc_filter_button.set_popover(
             Gtk.Popover.new_from_model(self.vc_filter_button, vc_filter_model))
 
+        self.update_filename_filters()
+        self.settings_handlers = [
+            meldsettings.connect(
+                "file-filters-changed", self.update_filename_filters),
+        ]
+
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
+
+    def update_filename_filters(self, *args):
+        filter_items_model = Gio.Menu()
+        for i, filt in enumerate(meldsettings.file_filters):
+            name = FILE_FILTER_ACTION_FORMAT.format(i)
+            filter_items_model.append(
+                label=filt.label, detailed_action=f'view.{name}')
+        section = Gio.MenuItem.new_section(_("Filename"), filter_items_model)
+        section.set_attribute([("id", "s", "custom-filter-section")])
+        app = self.get_application()
+        filter_model = app.get_menu_by_id("folder-status-filter-menu")
+        replace_menu_section(filter_model, section)
 
     def on_widget_drag_data_received(
             self, wid, context, x, y, selection_data, info, time):
