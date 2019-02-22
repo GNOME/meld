@@ -196,6 +196,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # Manually handle GAction additions
         actions = (
             ('next-change', self.action_next_change),
+            ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
         )
@@ -251,20 +252,14 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 self.actiongroup.get_action(
                     self.state_actions[s][0]).set_active(True)
 
-    def _set_external_action_sensitivity(self, focused):
-        try:
-            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
-                focused)
-        except AttributeError:
-            pass
-
     def on_container_switch_in_event(self, ui, window):
         super().on_container_switch_in_event(ui, window)
-        self._set_external_action_sensitivity(True)
+        # FIXME: open-external should be tied to having a treeview selection
+        self.set_action_enabled("open-external", True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def on_container_switch_out_event(self, ui, window):
-        self._set_external_action_sensitivity(False)
+        self.set_action_enabled("open-external", False)
         super().on_container_switch_out_event(ui, window)
 
     def populate_vcs_for_location(self, location):
@@ -744,7 +739,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for f in files:
             self.run_diff(f)
 
-    def open_external(self):
+    def action_open_external(self, *args):
         self._open_files(self._get_selected_files())
 
     def refresh(self):

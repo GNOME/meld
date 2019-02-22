@@ -413,6 +413,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # Manually handle GAction additions
         actions = (
             ('next-change', self.action_next_change),
+            ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
         )
@@ -1155,16 +1156,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 is_valid and not busy and pane > 0)
             get_action("DirCopyRight").set_sensitive(
                 is_valid and not busy and pane + 1 < self.num_panes)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenExternal")
-                act.set_sensitive(is_valid)
+            self.set_action_enabled("open-external", is_valid)
         else:
             for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
                            "DirDelete", "Hide"):
                 get_action(action).set_sensitive(False)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenExternal")
-                act.set_sensitive(False)
+            self.set_action_enabled("open-external", False)
 
     @Template.Callback()
     def on_treeview_cursor_changed(self, view):
@@ -1352,7 +1349,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def on_button_delete_clicked(self, button):
         self.delete_selected()
 
-    def open_external(self):
+    def action_open_external(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return

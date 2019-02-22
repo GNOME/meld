@@ -86,10 +86,6 @@ class MeldWindow(Gtk.ApplicationWindow):
                 self.on_menu_go_to_line_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-            ("OpenExternal", None, _("Open Externally"), None,
-                _("Open selected file or directory in the default external "
-                  "application"),
-                self.on_open_external),
 
             ("ViewMenu", None, _("_View")),
             ("FileStatus", None, _("File Status")),
@@ -373,9 +369,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_menu_edit_up_activate(self, *args):
         self.current_doc().next_diff(Gdk.ScrollDirection.UP)
-
-    def on_open_external(self, *args):
-        self.current_doc().open_external()
 
     def action_stop(self, *args):
         self.current_doc().action_stop()

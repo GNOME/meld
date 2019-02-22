@@ -280,6 +280,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('format-as-patch', self.action_format_as_patch),
             ('next-change', self.action_next_change),
+            ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
             ('revert', self.action_revert),
@@ -902,12 +903,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.move_cursor_pane(pane, new_pane)
 
     def _set_external_action_sensitivity(self):
+        # FIXME: This sensitivity is very confused. Essentially, it's always
+        # enabled because we don't unset focus_pane, but the action uses the
+        # current pane focus (i.e., _get_focused_pane) instead of focus_pane.
         have_file = self.focus_pane is not None
-        try:
-            self.main_actiongroup.get_action("OpenExternal").set_sensitive(
-                have_file)
-        except AttributeError:
-            pass
+        self.set_action_enabled("open-external", have_file)
 
     def on_textview_drag_data_received(
             self, widget, context, x, y, selection_data, info, time):
@@ -1113,7 +1113,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.recompute_label()
 
     @with_focused_pane
-    def open_external(self, pane):
+    def action_open_external(self, pane, *args):
         if not self.textbuffer[pane].data.gfile:
             return
         pos = self.textbuffer[pane].props.cursor_position
