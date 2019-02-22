@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.24 -->
+  <!-- interface-requires meld.ui.gladesupport 0.0 -->
   <template class="MeldWindow" parent="GtkApplicationWindow">
     <property name="name">meldapp</property>
     <property name="height_request">400</property>
@@ -15,20 +16,47 @@
         <property name="show-close-button">true</property>
         <property name="visible">true</property>
         <child>
-          <object class="GtkButton">
-            <property name="action-name">win.new-tab</property>
-            <property name="visible">true</property>
-            <property name="tooltip-text">Start a new comparison</property>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">True</property>
+            <style>
+              <class name="linked"/>
+            </style>
             <child>
-              <object class="GtkImage">
-                <property name="icon-name">document-new-symbolic</property>
+              <object class="GtkButton">
+                <property name="action-name">win.new-tab</property>
                 <property name="visible">true</property>
+                <property name="tooltip-text">Start a new comparison</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">tab-new-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
               </object>
+              <packing>
+                <property name="pack-type">start</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkMenuButton" id="recent_menu_button">
+                <property name="visible">true</property>
+                <property name="tooltip-text">Open a recent comparison</property>
+                <property name="use_popover">True</property>
+                <property name="popover">recent_popover</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">document-open-recent-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="pack-type">start</property>
+              </packing>
             </child>
           </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
         </child>
         <child>
           <object class="GtkBox">
@@ -141,4 +169,17 @@
       </object>
     </child>
   </template>
+  <object class="GtkPopover" id="recent_popover">
+    <property name="can_focus">True</property>
+    <property name="visible">False</property>
+    <property name="width-request">400</property>
+    <property name="height-request">500</property>
+    <child>
+      <object class="RecentSelector" id="recent_selector">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <signal name="open-recent" handler="on_open_recent" swapped="no"/>
+      </object>
+    </child>
+  </object>
 </interface>

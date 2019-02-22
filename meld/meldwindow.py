@@ -56,8 +56,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.init_template()
 
         actions = (
-            ("FileMenu", None, _("_File")),
-
             ("EditMenu", None, _("_Edit")),
             ("Undo", Gtk.STOCK_UNDO, None, "<Primary>Z",
                 _("Undo the last action"),
@@ -101,15 +99,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
         self.actiongroup.add_actions(actions)
-
-        recent_action = Gtk.RecentAction(
-            name="Recent",  label=_("Open Recent"),
-            tooltip=_("Open recent files"), stock_id=None)
-        recent_action.set_show_private(True)
-        recent_action.set_filter(recent_comparisons.recent_filter)
-        recent_action.set_sort_type(Gtk.RecentSortType.MRU)
-        recent_action.connect("item-activated", self.on_action_recent)
-        self.actiongroup.add_action(recent_action)
 
         self.ui = Gtk.UIManager()
         self.ui.insert_action_group(self.actiongroup, 0)
@@ -183,10 +172,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.ui.ensure_update()
         self.undo_handlers = tuple()
 
-        # Set tooltip on map because the recentmenu is lazily created
-        rmenu = self.ui.get_widget('/Menubar/FileMenu/Recent').get_submenu()
-        rmenu.connect("map", self._on_recentmenu_map)
-
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
 
@@ -196,10 +181,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             Gtk.Popover.new_from_model(self.gear_menu_button, menu))
 
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
-
-    def _on_recentmenu_map(self, recentmenu):
-        for imagemenuitem in recentmenu.get_children():
-            imagemenuitem.set_tooltip_text(imagemenuitem.get_label())
 
     def on_widget_drag_data_received(
             self, wid, context, x, y, selection_data, info, time):
@@ -330,16 +311,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_action_new_tab_activate(self, action, parameter):
         self.append_new_comparison()
 
-    def on_action_recent(self, action):
-        uri = action.get_current_uri()
-        if not uri:
-            return
-        try:
-            self.append_recent(uri)
-        except (IOError, ValueError):
-            # FIXME: Need error handling, but no sensible display location
-            log.exception(f'Error opening recent file {uri}')
-
     def action_close(self, *extra):
         i = self.notebook.get_current_page()
         if i >= 0:
@@ -442,6 +413,14 @@ class MeldWindow(Gtk.ApplicationWindow):
         for page in self.notebook.get_children():
             if page != srcpage:
                 page.on_file_changed(filename)
+
+    @Template.Callback()
+    def on_open_recent(self, recent_selector, uri):
+        try:
+            self.append_recent(uri)
+        except (IOError, ValueError):
+            # FIXME: Need error handling, but no sensible display location
+            log.exception(f'Error opening recent file {uri}')
 
     def _append_page(self, page, icon):
         nbl = NotebookLabel(icon_name=icon, page=page)
