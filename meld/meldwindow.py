@@ -106,9 +106,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             ("FileStatus", None, _("File Status")),
             ("VcStatus", None, _("Version Status")),
             ("FileFilters", None, _("File Filters")),
-            ("Refresh", Gtk.STOCK_REFRESH, None, "<Primary>R",
-                _("Refresh the view"),
-                self.on_menu_refresh_activate),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")
@@ -134,19 +131,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.toolbar = self.ui.get_widget('/Toolbar')
         self.toolbar.get_style_context().add_class(
             Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
-
-        # Alternate keybindings for a few commands.
-        extra_accels = (
-            ("F5", self.on_menu_refresh_activate),
-        )
-
-        accel_group = self.ui.get_accel_group()
-        for accel, callback in extra_accels:
-            keyval, mask = Gtk.accelerator_parse(accel)
-            accel_group.connect(keyval, mask, 0, callback)
-
-        # Initialise sensitivity for important actions
-        self._update_page_action_sensitivity()
 
         self.appvbox.pack_start(self.menubar, False, True, 0)
         self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
@@ -184,6 +168,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         # Initialise sensitivity for important actions
         self.lookup_action('stop').set_enabled(False)
+        self._update_page_action_sensitivity()
 
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
@@ -286,10 +271,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         if not isinstance(page, MeldDoc):
             for action in ("Cut", "Copy", "Paste",
                            "Find", "FindNext", "FindPrevious", "Replace",
-                           "Refresh", "GoToLine"):
+                           "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(False)
         else:
-            for action in ("Find", "Refresh"):
+            for action in ("Find",):
                 self.actiongroup.get_action(action).set_sensitive(True)
             is_filediff = isinstance(page, FileDiff)
             for action in ("Cut", "Copy", "Paste", "FindNext", "FindPrevious",
@@ -390,9 +375,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_menu_redo_activate(self, *extra):
         self.current_doc().on_redo_activate()
-
-    def on_menu_refresh_activate(self, *extra):
-        self.current_doc().on_refresh_activate()
 
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()

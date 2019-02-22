@@ -414,6 +414,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         actions = (
             ('next-change', self.action_next_change),
             ('previous-change', self.action_previous_change),
+            ('refresh', self.action_refresh),
         )
         self.view_action_group = Gio.SimpleActionGroup()
         for name, callback in actions:
@@ -1693,7 +1694,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def action_next_change(self, *args):
         self.next_diff(Gdk.ScrollDirection.DOWN)
 
-    def on_refresh_activate(self, *extra):
+    def action_refresh(self, *extra):
         self.on_fileentry_file_set(None)
 
     def on_delete_event(self):

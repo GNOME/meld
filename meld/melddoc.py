@@ -178,9 +178,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def open_external(self):
         pass
 
-    def on_refresh_activate(self, *extra):
-        pass
-
     def on_find_activate(self, *extra):
         pass
 

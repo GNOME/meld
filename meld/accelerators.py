@@ -6,6 +6,7 @@ def register_accels(app: Gtk.Application):
     view_accels = (
         ("view.next-change", ("<Alt>Down", "<Alt>KP_Down", "<Primary>D")),
         ("view.previous-change", ("<Alt>Up", "<Alt>KP_Up", "<Primary>E")),
+        ("view.refresh", ("<control>R", "F5")),
         ("win.stop", "Escape"),
     )
     for (name, accel) in view_accels:

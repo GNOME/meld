@@ -280,6 +280,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('next-change', self.action_next_change),
             ('previous-change', self.action_previous_change),
+            ('refresh', self.action_refresh),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -1904,7 +1905,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         encodings = [b.data.encoding for b in buffers]
         self.set_files(gfiles, encodings=encodings)
 
-    def on_refresh_activate(self, *extra):
+    def action_refresh(self, *extra):
         self.refresh_comparison()
 
     def queue_draw(self, junk=None):
