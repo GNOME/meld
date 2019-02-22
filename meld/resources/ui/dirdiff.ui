@@ -69,41 +69,6 @@
       </object>
     </child>
     <child>
-      <object class="GtkToggleAction" id="IgnoreCase">
-        <property name="label" translatable="yes">Ignore Filename Case</property>
-        <property name="tooltip" translatable="yes">Consider differently-cased filenames that are otherwise-identical to be the same</property>
-        <property name="stock_id">gtk-italic</property>
-        <signal name="toggled" handler="on_button_ignore_case_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="ShowSame">
-        <property name="label" translatable="yes">Same</property>
-        <property name="tooltip" translatable="yes">Show identical</property>
-        <property name="stock_id">gtk-apply</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="ShowNew">
-        <property name="label" translatable="yes">New</property>
-        <property name="tooltip" translatable="yes">Show new</property>
-        <property name="stock_id">gtk-add</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="ShowModified">
-        <property name="label" translatable="yes">Modified</property>
-        <property name="tooltip" translatable="yes">Show modified</property>
-        <property name="stock_id">gtk-remove</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
       <object class="GtkToggleAction" id="CustomFilterMenu">
         <property name="label" translatable="yes">Filters</property>
         <property name="tooltip" translatable="yes">Set active filters</property>

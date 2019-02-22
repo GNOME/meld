@@ -387,10 +387,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     }
 
     state_actions = {
-        tree.STATE_NORMAL: ("normal", "ShowSame"),
-        tree.STATE_NOCHANGE: ("normal", "ShowSame"),
-        tree.STATE_NEW: ("new", "ShowNew"),
-        tree.STATE_MODIFIED: ("modified", "ShowModified"),
+        tree.STATE_NORMAL: ("normal", "folder-status-same"),
+        tree.STATE_NOCHANGE: ("normal", "folder-status-same"),
+        tree.STATE_NEW: ("new", "folder-status-new"),
+        tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
     def __init__(self, num_panes):
@@ -421,6 +421,21 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
+            self.view_action_group.add_action(action)
+
+        actions = (
+            ("folder-status-same", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-status-new", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-status-modified", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-ignore-case", self.action_ignore_case_change,
+                GLib.Variant.new_boolean(False)),
+        )
+        for (name, callback, state) in actions:
+            action = Gio.SimpleAction.new_stateful(name, None, state)
+            action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
         self.name_filters = []
@@ -533,11 +548,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # toggled callback modifies the state while we're constructing it.
         self.state_filters = []
         state_filters = []
-        status_filters = list(self.props.status_filters)
-        for state, (filter_name, action_name) in self.state_actions.items():
-            if filter_name in status_filters:
-                state_filters.append(state)
-                self.actiongroup.get_action(action_name).set_active(True)
+        for s in self.state_actions:
+            if self.state_actions[s][0] in self.props.status_filters:
+                state_filters.append(s)
+                action_name = self.state_actions[s][1]
+                self.set_action_state(
+                    action_name, GLib.Variant.new_boolean(True))
         self.state_filters = state_filters
 
         self._scan_in_progress = 0
@@ -806,7 +822,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             encoding_errors = []
 
             canonicalize = None
-            if self.actiongroup.get_action("IgnoreCase").get_active():
+            # TODO: Map this to a GObject prop instead?
+            if self.get_action_state('folder-ignore-case'):
                 canonicalize = CanonicalListing.canonicalize_lower
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
@@ -1361,15 +1378,16 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if files:
             self._open_files(files)
 
-    @Template.Callback()
-    def on_button_ignore_case_toggled(self, button):
+    def action_ignore_case_change(self, action, value):
+        action.set_state(value)
         self.refresh()
 
-    @Template.Callback()
-    def on_filter_state_toggled(self, button):
+    def action_filter_state_change(self, action, value):
+        action.set_state(value)
+
         active_filters = [
-            state for state, (_, action_name) in self.state_actions.items()
-            if self.actiongroup.get_action(action_name).get_active()
+            a for a in self.state_actions
+            if self.get_action_state(self.state_actions[a][1])
         ]
 
         if set(active_filters) == set(self.state_filters):

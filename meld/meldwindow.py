@@ -45,6 +45,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'MeldWindow'
 
     appvbox = Template.Child("appvbox")
+    folder_filter_button = Template.Child()
     gear_menu_button = Template.Child("gear_menu_button")
     notebook = Template.Child("notebook")
     spinner = Template.Child("spinner")
@@ -175,6 +176,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         menu = app.get_menu_by_id("gear-menu")
         self.gear_menu_button.set_popover(
             Gtk.Popover.new_from_model(self.gear_menu_button, menu))
+
+        filter_menu = app.get_menu_by_id("folder-status-filter-menu")
+        self.folder_filter_button.set_popover(
+            Gtk.Popover.new_from_model(self.folder_filter_button, filter_menu))
 
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 

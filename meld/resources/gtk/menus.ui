@@ -65,7 +65,7 @@
         <section>
           <attribute name="id">tool-section</attribute>
           <item>
-            <attribute name="label">Format as Patch…</attribute>
+            <attribute name="label" translatable="yes">Format as Patch…</attribute>
             <attribute name="action">view.format-as-patch</attribute>
           </item>
         </section>
@@ -101,6 +101,31 @@
         <attribute name="label" translatable="yes">_Quit</attribute>
         <attribute name="action">app.quit</attribute>
         <attribute name="accel">&lt;Primary&gt;q</attribute>
+      </item>
+    </section>
+  </menu>
+  <menu id="folder-status-filter-menu">
+    <section>
+      <attribute name="id">status-section</attribute>
+      <attribute name="label" translatable="yes">File status</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Same</attribute>
+        <attribute name="action">view.folder-status-same</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">New</attribute>
+        <attribute name="action">view.folder-status-new</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Modified</attribute>
+        <attribute name="action">view.folder-status-modified</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">options-section</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Ignore filename case</attribute>
+        <attribute name="action">view.folder-ignore-case</attribute>
       </item>
     </section>
   </menu>

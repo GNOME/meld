@@ -187,6 +187,14 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def set_labels(self, lst):
         pass
 
+    def get_action_state(self, action_name: str):
+        action = self.view_action_group.lookup_action(action_name)
+        return action.get_state().unpack()
+
+    def set_action_state(self, action_name: str, state):
+        # TODO: Try to do GLib.Variant things here instead of in callers
+        self.view_action_group.lookup_action(action_name).set_state(state)
+
     def set_action_enabled(self, action, enabled):
         self.view_action_group.lookup_action(action).set_enabled(enabled)
 
