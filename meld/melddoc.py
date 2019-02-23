@@ -189,14 +189,25 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     def get_action_state(self, action_name: str):
         action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
         return action.get_state().unpack()
 
     def set_action_state(self, action_name: str, state):
         # TODO: Try to do GLib.Variant things here instead of in callers
-        self.view_action_group.lookup_action(action_name).set_state(state)
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_state(state)
 
-    def set_action_enabled(self, action, enabled):
-        self.view_action_group.lookup_action(action).set_enabled(enabled)
+    def set_action_enabled(self, action_name, enabled):
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_enabled(enabled)
 
     def on_container_switch_in_event(self, uimanager, window):
         """Called when the container app switches to this tab.
