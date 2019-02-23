@@ -12,6 +12,7 @@ def register_accels(app: Gtk.Application):
         ('view.save-all', '<Primary><Shift>L'),
         ('view.save-as', '<Primary><Shift>S'),
         ('view.undo', '<Primary>Z'),
+        ('view.vc-console-visible', 'F9'),
         ('win.close', '<Primary>W'),
         ("win.stop", "Escape"),
     )

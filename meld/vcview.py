@@ -193,6 +193,16 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.actiongroup = self.VcviewActions
         self.actiongroup.set_translation_domain("meld")
 
+        # Set up per-view action group for top-level menu insertion
+        self.view_action_group = Gio.SimpleActionGroup()
+
+        property_actions = (
+            ('vc-console-visible', self.console_vbox, 'visible'),
+        )
+        for action_name, obj, prop_name in property_actions:
+            action = Gio.PropertyAction.new(action_name, obj, prop_name)
+            self.view_action_group.add_action(action)
+
         # Manually handle GAction additions
         actions = (
             ('next-change', self.action_next_change),
@@ -200,7 +210,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
         )
-        self.view_action_group = Gio.SimpleActionGroup()
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
@@ -239,9 +248,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.location = None
         self.vc = None
 
-        settings.bind('vc-console-visible',
-                      self.actiongroup.get_action('VcConsoleVisible'),
-                      'active', Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-visible', self.console_vbox, 'visible',
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
