@@ -137,4 +137,32 @@
       </item>
     </section>
   </menu>
+  <menu id="vc-status-filter-menu">
+    <section>
+      <attribute name="id">status-section</attribute>
+      <item>
+        <attribute name="label">Modified</attribute>
+        <attribute name="action">view.vc-status-modified</attribute>
+      </item>
+      <item>
+        <attribute name="label">Normal</attribute>
+        <attribute name="action">view.vc-status-normal</attribute>
+      </item>
+      <item>
+        <attribute name="label">Unversioned</attribute>
+        <attribute name="action">view.vc-status-unknown</attribute>
+      </item>
+      <item>
+        <attribute name="label">Ignored</attribute>
+        <attribute name="action">view.vc-status-ignored</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">view-section</attribute>
+      <item>
+        <attribute name="label">Flatten folders</attribute>
+        <attribute name="action">view.vc-flatten</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>

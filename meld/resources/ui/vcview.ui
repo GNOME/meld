@@ -76,51 +76,6 @@
         <signal name="activate" handler="on_button_delete_clicked" swapped="no"/>
       </object>
     </child>
-    <child>
-      <object class="GtkToggleAction" id="VcFlatten">
-        <property name="label" translatable="yes">_Flatten</property>
-        <property name="tooltip" translatable="yes">Flatten directories</property>
-        <property name="stock_id">gtk-goto-bottom</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="VcShowModified">
-        <property name="label" translatable="yes">_Modified</property>
-        <property name="tooltip" translatable="yes">Show modified files</property>
-        <property name="icon_name">filter-modified-24</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="VcShowNormal">
-        <property name="label" translatable="yes">_Normal</property>
-        <property name="tooltip" translatable="yes">Show normal files</property>
-        <property name="icon_name">filter-normal-24</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="VcShowNonVC">
-        <property name="label" translatable="yes">Un_versioned</property>
-        <property name="tooltip" translatable="yes">Show unversioned files</property>
-        <property name="icon_name">filter-nonvc-24</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkToggleAction" id="VcShowIgnored">
-        <property name="label" translatable="yes">Ignored</property>
-        <property name="tooltip" translatable="yes">Show ignored files</property>
-        <property name="icon_name">filter-ignored-24</property>
-        <property name="is_important">True</property>
-        <signal name="toggled" handler="on_filter_state_toggled" swapped="no"/>
-      </object>
-    </child>
   </object>
   <template class="VcView" parent="GtkVBox">
     <property name="visible">True</property>

@@ -150,11 +150,11 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     }
 
     state_actions = {
-        "flatten": ("VcFlatten", None),
-        "modified": ("VcShowModified", Entry.is_modified),
-        "normal": ("VcShowNormal", Entry.is_normal),
-        "unknown": ("VcShowNonVC", Entry.is_nonvc),
-        "ignored": ("VcShowIgnored", Entry.is_ignored),
+        'flatten': ('vc-flatten', None),
+        'modified': ('vc-status-modified', Entry.is_modified),
+        'normal': ('vc-status-normal', Entry.is_normal),
+        'unknown': ('vc-status-unknown', Entry.is_nonvc),
+        'ignored': ('vc-status-ignored', Entry.is_ignored),
     }
 
     combobox_vcs = Template.Child()
@@ -215,6 +215,24 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             action.connect('activate', callback)
             self.view_action_group.add_action(action)
 
+        new_boolean = GLib.Variant.new_boolean
+        stateful_actions = (
+            ('vc-flatten', self.action_filter_state_change,
+                new_boolean('flatten' in self.props.status_filters)),
+            ('vc-status-modified', self.action_filter_state_change,
+                new_boolean('modified' in self.props.status_filters)),
+            ('vc-status-normal', self.action_filter_state_change,
+                new_boolean('normal' in self.props.status_filters)),
+            ('vc-status-unknown', self.action_filter_state_change,
+                new_boolean('unknown' in self.props.status_filters)),
+            ('vc-status-ignored', self.action_filter_state_change,
+                new_boolean('ignored' in self.props.status_filters)),
+        )
+        for (name, callback, state) in stateful_actions:
+            action = Gio.SimpleAction.new_stateful(name, None, state)
+            action.connect('change-state', callback)
+            self.view_action_group.add_action(action)
+
         self.model = VcTreeStore()
         self.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self)
@@ -241,8 +259,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.status_renderer, markup=COL_STATUS)
         self.extra_column.set_attributes(
             self.extra_renderer, markup=COL_OPTIONS)
-        self.location_column.bind_property(
-            'visible', self.actiongroup.get_action("VcFlatten"), 'active')
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
@@ -252,11 +268,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
                       'position', Gio.SettingsBindFlags.DEFAULT)
-
-        for s in self.props.status_filters:
-            if s in self.state_actions:
-                self.actiongroup.get_action(
-                    self.state_actions[s][0]).set_active(True)
 
     def on_container_switch_in_event(self, ui, window):
         super().on_container_switch_in_event(ui, window)
@@ -545,11 +556,12 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             kwargs,
         )
 
-    @Template.Callback()
-    def on_filter_state_toggled(self, button):
+    def action_filter_state_change(self, action, value):
+        action.set_state(value)
+
         active_filters = [
             k for k, (action_name, fn) in self.state_actions.items()
-            if self.actiongroup.get_action(action_name).get_active()
+            if self.get_action_state(action_name)
         ]
 
         if set(active_filters) == set(self.props.status_filters):
@@ -755,7 +767,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.set_location(self.model.get_file_path(root))
 
     def refresh_partial(self, where):
-        if not self.actiongroup.get_action("VcFlatten").get_active():
+        if not self.get_action_state('vc-flatten'):
             it = self.find_iter_by_name(where)
             if not it:
                 return

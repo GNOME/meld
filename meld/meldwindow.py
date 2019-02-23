@@ -50,6 +50,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     notebook = Template.Child("notebook")
     spinner = Template.Child("spinner")
     toolbar_holder = Template.Child("toolbar_holder")
+    vc_filter_button = Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -173,6 +174,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         filter_menu = app.get_menu_by_id("folder-status-filter-menu")
         self.folder_filter_button.set_popover(
             Gtk.Popover.new_from_model(self.folder_filter_button, filter_menu))
+
+        vc_filter_model = app.get_menu_by_id('vc-status-filter-menu')
+        self.vc_filter_button.set_popover(
+            Gtk.Popover.new_from_model(self.vc_filter_button, vc_filter_model))
 
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
