@@ -173,7 +173,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     status_renderer = Template.Child()
     treeview = Template.Child()
     vc_console_vpaned = Template.Child()
-    VcviewActions = Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -189,10 +188,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.init_template()
         bind_settings(self)
 
-        self.ui_file = ui_file("vcview-ui.xml")
-        self.actiongroup = self.VcviewActions
-        self.actiongroup.set_translation_domain("meld")
-
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
 
@@ -205,10 +200,19 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('compare', self.action_diff),
             ('next-change', self.action_next_change),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
+            ('vc-add', self.action_add),
+            ('vc-commit', self.action_commit),
+            ('vc-delete-locally', self.action_delete),
+            ('vc-push', self.action_push),
+            ('vc-remove', self.action_remove),
+            ('vc-resolve', self.action_resolved),
+            ('vc-revert', self.action_revert),
+            ('vc-update', self.action_update),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -580,18 +584,18 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         valid_actions = self.vc.get_valid_actions(path_states)
         action_sensitivity = {
-            "VcCompare": 'compare' in valid_actions,
-            "VcCommit": 'commit' in valid_actions,
-            "VcUpdate": 'update' in valid_actions,
-            "VcPush": 'push' in valid_actions,
-            "VcAdd": 'add' in valid_actions,
-            "VcResolved": 'resolve' in valid_actions,
-            "VcRemove": 'remove' in valid_actions,
-            "VcRevert": 'revert' in valid_actions,
-            "VcDeleteLocally": bool(paths) and self.vc.root not in paths,
+            'compare': 'compare' in valid_actions,
+            'vc-add': 'add' in valid_actions,
+            'vc-commit': 'commit' in valid_actions,
+            'vc-delete-locally': bool(paths) and self.vc.root not in paths,
+            'vc-push': 'push' in valid_actions,
+            'vc-remove': 'remove' in valid_actions,
+            'vc-resolve': 'resolve' in valid_actions,
+            'vc-revert': 'revert' in valid_actions,
+            'vc-update': 'update' in valid_actions,
         }
         for action, sensitivity in action_sensitivity.items():
-            self.actiongroup.get_action(action).set_sensitive(sensitivity)
+            self.set_action_enabled(action, sensitivity)
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()
@@ -679,29 +683,24 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for it in self._command_iter(command, files, refresh, working_dir):
             pass
 
-    @Template.Callback()
-    def on_button_update_clicked(self, obj):
+    def action_update(self, *args):
         self.vc.update(self.runner)
 
-    @Template.Callback()
-    def on_button_push_clicked(self, obj):
+    def action_push(self, *args):
         response = PushDialog(self).run()
         if response == Gtk.ResponseType.OK:
             self.vc.push(self.runner)
 
-    @Template.Callback()
-    def on_button_commit_clicked(self, obj):
+    def action_commit(self, *args):
         response, commit_msg = CommitDialog(self).run()
         if response == Gtk.ResponseType.OK:
             self.vc.commit(
                 self.runner, self._get_selected_files(), commit_msg)
 
-    @Template.Callback()
-    def on_button_add_clicked(self, obj):
+    def action_add(self, *args):
         self.vc.add(self.runner, self._get_selected_files())
 
-    @Template.Callback()
-    def on_button_remove_clicked(self, obj):
+    def action_remove(self, *args):
         selected = self._get_selected_files()
         if any(os.path.isdir(p) for p in selected):
             # TODO: Improve and reuse this dialog for the non-VC delete action
@@ -724,16 +723,13 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self.vc.remove(self.runner, selected)
 
-    @Template.Callback()
-    def on_button_resolved_clicked(self, obj):
+    def action_resolved(self, *args):
         self.vc.resolve(self.runner, self._get_selected_files())
 
-    @Template.Callback()
-    def on_button_revert_clicked(self, obj):
+    def action_revert(self, *args):
         self.vc.revert(self.runner, self._get_selected_files())
 
-    @Template.Callback()
-    def on_button_delete_clicked(self, obj):
+    def action_delete(self, *args):
         files = self._get_selected_files()
         for name in files:
             gfile = Gio.File.new_for_path(name)
@@ -751,8 +747,10 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         workdir = os.path.dirname(os.path.commonprefix(files))
         self.refresh_partial(workdir)
 
-    @Template.Callback()
-    def on_button_diff_clicked(self, obj):
+    def action_diff(self, *args):
+        # TODO: Review the compare/diff action. It doesn't really add much
+        # over activate, since the folder compare doesn't work and hasn't
+        # for... a long time.
         files = self._get_selected_files()
         for f in files:
             self.run_diff(f)
