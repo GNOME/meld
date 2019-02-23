@@ -289,6 +289,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('add-sync-point', self.add_sync_point),
+            ('clear-sync-point', self.clear_sync_points),
             ('format-as-patch', self.action_format_as_patch),
             ('next-change', self.action_next_change),
             ('open-external', self.action_open_external),
@@ -2162,9 +2164,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.textview[src].add_fading_highlight(
             mark0, mark1, 'conflict', 500000)
 
-    @Template.Callback()
     @with_focused_pane
-    def add_sync_point(self, pane, action):
+    def add_sync_point(self, pane, *args):
         # Find a non-complete syncpoint, or create a new one
         if self.syncpoints and None in self.syncpoints[-1]:
             syncpoint = self.syncpoints.pop()
@@ -2213,8 +2214,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.refresh_comparison()
 
-    @Template.Callback()
-    def clear_sync_points(self, action):
+    def clear_sync_points(self, *args):
         self.syncpoints = []
         self.linediffer.syncpoints = []
         for t in self.textview:
