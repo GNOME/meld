@@ -412,6 +412,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('folder-compare', self.action_diff),
+            ('folder-copy-left', self.action_copy_left),
+            ('folder-copy-right', self.action_copy_right),
+            ('folder-delete', self.action_delete),
             ('next-change', self.action_next_change),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
@@ -1152,6 +1156,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                     break
 
             busy = self._scan_in_progress > 0
+            is_valid = is_valid and not busy
 
             is_single_foldable_row = False
             if (selection.count_selected_rows() == 1):
@@ -1161,24 +1166,27 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 is_single_foldable_row = self.model.is_folder(
                     it, pane, os_path)
 
-            get_action("DirCompare").set_sensitive(True)
             get_action("DirCollapseRecursively").set_sensitive(
                 is_single_foldable_row)
             get_action("DirExpandRecursively").set_sensitive(
                 is_single_foldable_row)
-            get_action("Hide").set_sensitive(True)
-            get_action("DirDelete").set_sensitive(
-                is_valid and not busy)
-            get_action("DirCopyLeft").set_sensitive(
-                is_valid and not busy and pane > 0)
-            get_action("DirCopyRight").set_sensitive(
-                is_valid and not busy and pane + 1 < self.num_panes)
-            self.set_action_enabled("open-external", is_valid)
+
+            self.set_action_enabled('folder-compare', True)
+            self.set_action_enabled('folder-delete', is_valid)
+            self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
+            self.set_action_enabled(
+                'folder-copy-right', is_valid and pane + 1 < self.num_panes)
+            self.set_action_enabled('open-external', is_valid)
         else:
-            for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
-                           "DirDelete", "Hide"):
-                get_action(action).set_sensitive(False)
-            self.set_action_enabled("open-external", False)
+            actions = (
+                'folder-compare',
+                'folder-copy-left',
+                'folder-copy-right',
+                'folder-delete',
+                'open-external',
+            )
+            for action in actions:
+                self.set_action_enabled(action, False)
 
     @Template.Callback()
     def on_treeview_cursor_changed(self, view):
@@ -1313,8 +1321,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                   for p in row_paths if os.path.exists(p)]
         self.create_diff_signal.emit(gfiles, {})
 
-    @Template.Callback()
-    def on_button_diff_clicked(self, button):
+    def action_diff(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1354,16 +1361,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for path in paths:
             self.treeview[pane].expand_row(path, True)
 
-    @Template.Callback()
-    def on_button_copy_left_clicked(self, button):
+    def action_copy_left(self, *args):
         self.copy_selected(-1)
 
-    @Template.Callback()
-    def on_button_copy_right_clicked(self, button):
+    def action_copy_right(self, *args):
         self.copy_selected(1)
 
-    @Template.Callback()
-    def on_button_delete_clicked(self, button):
+    def action_delete(self, *args):
         self.delete_selected()
 
     def action_open_external(self, *args):
@@ -1402,15 +1406,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def _update_name_filter(self, button, idx):
         self.name_filters[idx].active = button.get_active()
         self.refresh()
-
-    @Template.Callback()
-    def on_filter_hide_current_clicked(self, button):
-        pane = self._get_focused_pane()
-        if pane is not None:
-            paths = self._get_selected_paths(pane)
-            paths.reverse()
-            for p in paths:
-                self.model.remove(self.model.get_iter(p))
 
         #
         # Selection

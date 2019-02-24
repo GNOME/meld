@@ -4,16 +4,6 @@
   <!-- interface-requires meld.ui.gladesupport 0.0 -->
   <object class="GtkActionGroup" id="DirdiffActions">
     <child>
-      <object class="GtkAction" id="DirCompare">
-        <property name="label" translatable="yes">_Compare</property>
-        <property name="tooltip" translatable="yes">Compare selected files</property>
-        <property name="stock_id">gtk-dialog-info</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_button_diff_clicked" swapped="no"/>
-      </object>
-      <accelerator key="Return"/>
-    </child>
-    <child>
       <object class="GtkAction" id="DirCollapseRecursively">
         <property name="label" translatable="yes">Collapse Recursively</property>
         <property name="tooltip" translatable="yes">Collapse selected folder and all subfolders</property>
@@ -32,43 +22,6 @@
       </object>
     </child>
     <child>
-      <object class="GtkAction" id="DirCopyLeft">
-        <property name="label" translatable="yes">Copy to _Left</property>
-        <property name="tooltip" translatable="yes">Copy to left</property>
-        <property name="stock_id">gtk-go-back</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_button_copy_left_clicked" swapped="no"/>
-      </object>
-      <accelerator key="Left" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="DirCopyRight">
-        <property name="label" translatable="yes">Copy to _Right</property>
-        <property name="tooltip" translatable="yes">Copy to right</property>
-        <property name="stock_id">gtk-go-forward</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_button_copy_right_clicked" swapped="no"/>
-      </object>
-      <accelerator key="Right" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="DirDelete">
-        <property name="tooltip" translatable="yes">Delete selected</property>
-        <property name="stock_id">gtk-delete</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_button_delete_clicked" swapped="no"/>
-      </object>
-      <accelerator key="Delete"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="Hide">
-        <property name="label" translatable="yes">Hide</property>
-        <property name="tooltip" translatable="yes">Hide selected</property>
-        <property name="stock_id">gtk-no</property>
-        <signal name="activate" handler="on_filter_hide_current_clicked" swapped="no"/>
-      </object>
-    </child>
-    <child>
       <object class="GtkToggleAction" id="CustomFilterMenu">
         <property name="label" translatable="yes">Filters</property>
         <property name="tooltip" translatable="yes">Set active filters</property>
@@ -80,6 +33,98 @@
   <template class="DirDiff" parent="GtkVBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
+    <child>
+      <object class="GtkActionBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action_name">view.folder-compare</property>
+            <!-- <property name="label" translatable="yes">Compare</property> -->
+            <property name="tooltip_text" translatable="yes">Compare selected files</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">document-new-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">True</property>
+            <style>
+              <class name="linked"/>
+            </style>
+            <child>
+              <object class="GtkButton">
+                <property name="visible">True</property>
+                <property name="action_name">view.folder-copy-left</property>
+                <!-- <property name="label" translatable="yes">Copy to Left</property> -->
+                <property name="tooltip_text" translatable="yes">Copy to left</property>
+                <property name="focus_on_click">False</property>
+                <style>
+                  <class name="image-button"/>
+                </style>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="icon-name">go-previous-symbolic</property>
+                    <property name="icon-size">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="visible">True</property>
+                <property name="action_name">view.folder-copy-right</property>
+                <!-- <property name="label" translatable="yes">Copy to Right</property> -->
+                <property name="tooltip_text" translatable="yes">Copy to right</property>
+                <property name="focus_on_click">False</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="visible">True</property>
+                    <property name="icon-name">go-next-symbolic</property>
+                    <property name="icon-size">1</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action_name">view.folder-delete</property>
+            <!-- <property name="label" translatable="yes">Delete</property> -->
+            <property name="tooltip_text" translatable="yes">Delete selected</property>
+            <property name="focus_on_click">False</property>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">user-trash-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+        </child>
+      </object>
+      <packing>
+        <property name="expand">False</property>
+        <property name="fill">True</property>
+        <property name="pack_type">start</property>
+        <property name="position">0</property>
+      </packing>
+    </child>
     <child>
       <object class="GtkGrid" id="grid">
         <property name="visible">True</property>

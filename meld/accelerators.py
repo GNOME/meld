@@ -4,6 +4,10 @@ from gi.repository import Gtk
 
 def register_accels(app: Gtk.Application):
     view_accels = (
+        ('view.folder-compare', 'Return'),
+        ('view.folder-copy-left', '<Alt>Left'),
+        ('view.folder-copy-right', '<Alt>Right'),
+        ('view.folder-delete', 'Delete'),
         ("view.next-change", ("<Alt>Down", "<Alt>KP_Down", "<Primary>D")),
         ("view.previous-change", ("<Alt>Up", "<Alt>KP_Up", "<Primary>E")),
         ('view.redo', '<Primary><Shift>Z'),
