@@ -55,7 +55,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     gear_menu_button = Template.Child("gear_menu_button")
     notebook = Template.Child("notebook")
     spinner = Template.Child("spinner")
-    toolbar_holder = Template.Child("toolbar_holder")
     vc_filter_button = Template.Child()
 
     def __init__(self):
@@ -103,21 +102,8 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         self.add_accel_group(self.ui.get_accel_group())
         self.menubar = self.ui.get_widget('/Menubar')
-        self.toolbar = self.ui.get_widget('/Toolbar')
-        self.toolbar.get_style_context().add_class(
-            Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
 
         self.appvbox.pack_start(self.menubar, False, True, 0)
-        self.toolbar_holder.pack_start(self.toolbar, True, True, 0)
-
-        # This double toolbar works around integrating non-UIManager widgets
-        # into the toolbar. It's no longer used, but kept as a possible
-        # GAction porting helper.
-        self.secondary_toolbar = Gtk.Toolbar()
-        self.secondary_toolbar.get_style_context().add_class(
-            Gtk.STYLE_CLASS_PRIMARY_TOOLBAR)
-        self.toolbar_holder.pack_end(self.secondary_toolbar, False, True, 0)
-        self.secondary_toolbar.show_all()
 
         # Manually handle GAction additions
         actions = (
