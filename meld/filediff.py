@@ -293,8 +293,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('clear-sync-point', self.clear_sync_points),
             ('format-as-patch', self.action_format_as_patch),
             ('next-change', self.action_next_change),
+            ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('previous-pane', self.action_prev_pane),
             ('redo', self.action_redo),
             ('refresh', self.action_refresh),
             ('revert', self.action_revert),
@@ -591,10 +593,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.actiongroup.get_action("CopyRightUp").set_sensitive(copy_right)
         self.actiongroup.get_action("CopyRightDown").set_sensitive(copy_right)
 
-        prev_pane = pane > 0
-        next_pane = pane < self.num_panes - 1
-        self.actiongroup.get_action("PrevPane").set_sensitive(prev_pane)
-        self.actiongroup.get_action("NextPane").set_sensitive(next_pane)
+        self.set_action_enabled('previous-pane', pane > 0)
+        self.set_action_enabled('next-pane', pane < self.num_panes - 1)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
@@ -912,13 +912,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
         self.move_cursor(new_pane, new_line)
 
-    @Template.Callback()
     def action_prev_pane(self, *args):
         pane = self._get_focused_pane()
         new_pane = (pane - 1) % self.num_panes
         self.move_cursor_pane(pane, new_pane)
 
-    @Template.Callback()
     def action_next_pane(self, *args):
         pane = self._get_focused_pane()
         new_pane = (pane + 1) % self.num_panes

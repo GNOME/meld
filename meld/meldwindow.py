@@ -87,10 +87,6 @@ class MeldWindow(Gtk.ApplicationWindow):
                 self.on_menu_go_to_line_activate),
 
             ("ChangesMenu", None, _("_Changes")),
-
-            ("ViewMenu", None, _("_View")),
-            ("FileStatus", None, _("File Status")),
-            ("VcStatus", None, _("Version Status")),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
         self.actiongroup.set_translation_domain("meld")

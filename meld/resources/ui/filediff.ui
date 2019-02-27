@@ -845,21 +845,5 @@
         <signal name="activate" handler="merge_all_non_conflicting_changes" swapped="no"/>
       </object>
     </child>
-    <child>
-      <object class="GtkAction" id="PrevPane">
-        <property name="label" translatable="yes">Previous Pane</property>
-        <property name="tooltip" translatable="yes">Move keyboard focus to the previous document in this comparison</property>
-        <signal name="activate" handler="action_prev_pane" swapped="no"/>
-      </object>
-      <accelerator key="Page_Up" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="NextPane">
-        <property name="label" translatable="yes">Next Pane</property>
-        <property name="tooltip" translatable="yes">Move keyboard focus to the next document in this comparison</property>
-        <signal name="activate" handler="action_next_pane" swapped="no"/>
-      </object>
-      <accelerator key="Page_Down" modifiers="GDK_MOD1_MASK"/>
-    </child>
   </object>
 </interface>
