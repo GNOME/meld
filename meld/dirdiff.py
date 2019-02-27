@@ -418,8 +418,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('folder-copy-right', self.action_copy_right),
             ('folder-delete', self.action_delete),
             ('next-change', self.action_next_change),
+            ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
         )
         self.view_action_group = Gio.SimpleActionGroup()
@@ -1195,27 +1197,42 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
 
+    @with_focused_pane
+    def action_prev_pane(self, pane, *args):
+        new_pane = (pane - 1) % self.num_panes
+        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+
+    @with_focused_pane
+    def action_next_pane(self, pane, *args):
+        new_pane = (pane + 1) % self.num_panes
+        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+
     @Template.Callback()
     def on_treeview_key_press_event(self, view, event):
+        if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
+            return False
+
         pane = self.treeview.index(view)
-        tree = None
-        if Gdk.KEY_Right == event.keyval:
-            if pane+1 < self.num_panes:
-                tree = self.treeview[pane+1]
-        elif Gdk.KEY_Left == event.keyval:
-            if pane-1 >= 0:
-                tree = self.treeview[pane-1]
-        if tree is not None:
-            paths = self._get_selected_paths(pane)
-            view.get_selection().unselect_all()
-            tree.grab_focus()
-            tree.get_selection().unselect_all()
-            if len(paths):
-                tree.set_cursor(paths[0])
-                for p in paths:
-                    tree.get_selection().select_path(p)
-            tree.emit("cursor-changed")
-        return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right)  # handled
+        target_pane = pane + 1 if event.keyval == Gdk.KEY_Right else pane - 1
+        if 0 <= target_pane < self.num_panes:
+            self.change_focused_tree(view, self.treeview[target_pane])
+
+        return True
+
+    def change_focused_tree(
+            self, old_view: Gtk.TreeView, new_view: Gtk.TreeView):
+
+        paths = old_view.get_selection().get_selected_rows()[1]
+        old_view.get_selection().unselect_all()
+
+        new_view.grab_focus()
+        new_view.get_selection().unselect_all()
+        if paths:
+            new_view.set_cursor(paths[0])
+            for p in paths:
+                new_view.get_selection().select_path(p)
+
+        new_view.emit("cursor-changed")
 
     @Template.Callback()
     def on_treeview_row_activated(self, view, path, column):
