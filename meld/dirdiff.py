@@ -408,6 +408,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('find', self.action_find),
             ('folder-collapse', self.action_folder_collapse),
             ('folder-compare', self.action_diff),
             ('folder-copy-left', self.action_copy_left),
@@ -1662,7 +1663,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def action_next_change(self, *args):
         self.next_diff(Gdk.ScrollDirection.DOWN)
 
-    def action_refresh(self, *extra):
+    def action_refresh(self, *args):
         self.on_fileentry_file_set(None)
 
     def on_delete_event(self):
@@ -1671,7 +1672,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
-    def on_find_activate(self, *extra):
+    def action_find(self, *args):
         self.focus_pane.emit("start-interactive-search")
 
     def auto_compare(self):

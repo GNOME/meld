@@ -291,8 +291,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
+            ('find', self.action_find),
             ('find-next', self.action_find_next),
             ('find-previous', self.action_find_previous),
+            ('find-replace', self.action_find_replace),
             ('format-as-patch', self.action_format_as_patch),
             ('go-to-line', self.action_go_to_line),
             ('merge-all-left', self.action_pull_all_changes_left),
@@ -1157,12 +1159,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if sel:
             return buf.get_text(sel[0], sel[1], False)
 
-    def on_find_activate(self, *args):
+    def action_find(self, *args):
         selected_text = self.get_selected_text()
         self.findbar.start_find(
             textview=self.focus_pane, replace=False, text=selected_text)
 
-    def on_replace_activate(self, *args):
+    def action_find_replace(self, *args):
         selected_text = self.get_selected_text()
         self.findbar.start_find(
             textview=self.focus_pane, replace=True, text=selected_text)

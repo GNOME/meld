@@ -60,14 +60,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.init_template()
 
         actions = (
-            ("EditMenu", None, _("_Edit")),
-            ("Find", Gtk.STOCK_FIND, _("Find…"), None, _("Search for text"),
-                self.on_menu_find_activate),
-            ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
-                _("_Replace…"), "<Primary>H",
-                _("Find and replace text"),
-                self.on_menu_replace_activate),
-
             ("ChangesMenu", None, _("_Changes")),
         )
         self.actiongroup = Gtk.ActionGroup(name='MainActions')
@@ -224,17 +216,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             page = None
 
         self.lookup_action('close').set_enabled(bool(page))
-        if not isinstance(page, MeldDoc):
-            for action in (
-                           "Find", "Replace",
-                           ):
-                self.actiongroup.get_action(action).set_sensitive(False)
-        else:
-            for action in ("Find",):
-                self.actiongroup.get_action(action).set_sensitive(True)
-            is_filediff = isinstance(page, FileDiff)
-            for action in ("Replace",):
-                self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def handle_current_doc_switch(self, page):
         page.on_container_switch_out_event(self.ui, self)
@@ -279,12 +260,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         if i >= 0:
             page = self.notebook.get_nth_page(i)
             page.on_delete_event()
-
-    def on_menu_find_activate(self, *extra):
-        self.current_doc().on_find_activate()
-
-    def on_menu_replace_activate(self, *extra):
-        self.current_doc().on_replace_activate()
 
     def on_action_fullscreen_change_state(self, action, state):
         window_state = self.get_window().get_state()

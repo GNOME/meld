@@ -168,12 +168,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
                                open_cb, None)
 
-    def on_find_activate(self, *extra):
-        pass
-
-    def on_replace_activate(self, *extra):
-        pass
-
     def on_file_changed(self, filename):
         pass
 
