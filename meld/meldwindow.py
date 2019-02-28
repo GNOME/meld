@@ -24,23 +24,20 @@ from gi.repository import Gtk
 
 import meld.ui.util
 from meld.conf import _, ui_file
+from meld.const import FILE_FILTER_ACTION_FORMAT
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
+from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
+from meld.settings import meldsettings
 from meld.task import LifoScheduler
 from meld.ui._gtktemplate import Template
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
-
-
-from meld.const import FILE_FILTER_ACTION_FORMAT
-from meld.settings import meldsettings
-from meld.menuhelpers import replace_menu_section
-
 
 log = logging.getLogger(__name__)
 
