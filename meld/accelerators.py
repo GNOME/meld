@@ -4,6 +4,8 @@ from gi.repository import Gtk
 
 def register_accels(app: Gtk.Application):
     view_accels = (
+        ('view.find-next', '<Primary>G'),
+        ('view.find-previous', '<Primary><Shift>G'),
         ('view.folder-compare', 'Return'),
         ('view.folder-copy-left', '<Alt>Left'),
         ('view.folder-copy-right', '<Alt>Right'),

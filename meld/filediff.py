@@ -291,6 +291,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
+            ('find-next', self.action_find_next),
+            ('find-previous', self.action_find_previous),
             ('format-as-patch', self.action_format_as_patch),
             ('go-to-line', self.action_go_to_line),
             ('merge-all-left', self.action_pull_all_changes_left),
@@ -1165,10 +1167,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.findbar.start_find(
             textview=self.focus_pane, replace=True, text=selected_text)
 
-    def on_find_next_activate(self, *args):
+    def action_find_next(self, *args):
         self.findbar.start_find_next(self.focus_pane)
 
-    def on_find_previous_activate(self, *args):
+    def action_find_previous(self, *args):
         self.findbar.start_find_previous(self.focus_pane)
 
     @with_focused_pane

@@ -63,12 +63,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             ("EditMenu", None, _("_Edit")),
             ("Find", Gtk.STOCK_FIND, _("Find…"), None, _("Search for text"),
                 self.on_menu_find_activate),
-            ("FindNext", None, _("Find Ne_xt"), "<Primary>G",
-                _("Search forwards for the same text"),
-                self.on_menu_find_next_activate),
-            ("FindPrevious", None, _("Find _Previous"), "<Primary><shift>G",
-                _("Search backwards for the same text"),
-                self.on_menu_find_previous_activate),
             ("Replace", Gtk.STOCK_FIND_AND_REPLACE,
                 _("_Replace…"), "<Primary>H",
                 _("Find and replace text"),
@@ -232,15 +226,14 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.lookup_action('close').set_enabled(bool(page))
         if not isinstance(page, MeldDoc):
             for action in (
-                           "Find", "FindNext", "FindPrevious", "Replace",
+                           "Find", "Replace",
                            ):
                 self.actiongroup.get_action(action).set_sensitive(False)
         else:
             for action in ("Find",):
                 self.actiongroup.get_action(action).set_sensitive(True)
             is_filediff = isinstance(page, FileDiff)
-            for action in ("FindNext", "FindPrevious",
-                           "Replace"):
+            for action in ("Replace",):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def handle_current_doc_switch(self, page):
@@ -289,12 +282,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_menu_find_activate(self, *extra):
         self.current_doc().on_find_activate()
-
-    def on_menu_find_next_activate(self, *extra):
-        self.current_doc().on_find_next_activate()
-
-    def on_menu_find_previous_activate(self, *extra):
-        self.current_doc().on_find_previous_activate()
 
     def on_menu_replace_activate(self, *extra):
         self.current_doc().on_replace_activate()
