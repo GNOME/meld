@@ -61,6 +61,21 @@
       <submenu>
         <attribute name="label" translatable="yes">Comparison</attribute>
         <section>
+          <attribute name="id">merge-section</attribute>
+          <item>
+            <attribute name="label">Merge All from Left</attribute>
+            <attribute name="action">view.merge-all-left</attribute>
+          </item>
+          <item>
+            <attribute name="label">Merge All from Reft</attribute>
+            <attribute name="action">view.merge-all-right</attribute>
+          </item>
+          <item>
+            <attribute name="label">Merge All</attribute>
+            <attribute name="action">view.merge-all</attribute>
+          </item>
+        </section>
+        <section>
           <attribute name="id">synchronisation-section</attribute>
           <item>
             <attribute name="label">Add Synchronization Point</attribute>

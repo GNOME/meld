@@ -824,26 +824,5 @@
       </object>
       <accelerator key="Delete" modifiers="GDK_MOD1_MASK"/>
     </child>
-    <child>
-      <object class="GtkAction" id="MergeFromLeft">
-        <property name="label" translatable="yes">Merge All from Left</property>
-        <property name="tooltip" translatable="yes">Merge all non-conflicting changes from the left</property>
-        <signal name="activate" handler="action_pull_all_changes_left" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="MergeFromRight">
-        <property name="label" translatable="yes">Merge All from Right</property>
-        <property name="tooltip" translatable="yes">Merge all non-conflicting changes from the right</property>
-        <signal name="activate" handler="action_pull_all_changes_right" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="MergeAll">
-        <property name="label" translatable="yes">Merge All</property>
-        <property name="tooltip" translatable="yes">Merge all non-conflicting changes from left and right panes</property>
-        <signal name="activate" handler="merge_all_non_conflicting_changes" swapped="no"/>
-      </object>
-    </child>
   </object>
 </interface>

@@ -292,6 +292,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
             ('format-as-patch', self.action_format_as_patch),
+            ('merge-all-left', self.action_pull_all_changes_left),
+            ('merge-all-right', self.action_pull_all_changes_right),
+            ('merge-all', self.action_merge_all_changes),
             ('next-change', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
@@ -773,18 +776,15 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self._sync_vscroll(self.scrolledwindow[src].get_vadjustment(), src)
         self.scheduler.add_task(resync)
 
-    @Template.Callback()
     def action_pull_all_changes_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
-    @Template.Callback()
     def action_pull_all_changes_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.pull_all_non_conflicting_changes(src, dst)
 
-    @Template.Callback()
-    def merge_all_non_conflicting_changes(self, *args):
+    def action_merge_all_changes(self, *args):
         dst = 1
         merger = Merger()
         merger.differ = self.linediffer
@@ -1476,25 +1476,23 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.scheduler.add_task(self._diff_files(refresh=True))
 
     def _set_merge_action_sensitivity(self):
-        pane = self._get_focused_pane()
-        if pane != -1:
-            editable = self.textview[pane].get_editable()
-            mergeable = self.linediffer.has_mergeable_changes(pane)
+        if self.focus_pane:
+            editable = self.focus_pane.get_editable()
+            pane_idx = self.textview.index(self.focus_pane)
+            mergeable = self.linediffer.has_mergeable_changes(pane_idx)
         else:
             editable = False
             mergeable = (False, False)
 
-        # TODO: We need this helper everywhere.
-        def set_action_enabled(action, enabled):
-            self.actiongroup.get_action(action).set_sensitive(enabled)
+        self.set_action_enabled('merge-all-left', mergeable[0] and editable)
+        self.set_action_enabled('merge-all-right', mergeable[1] and editable)
 
-        set_action_enabled("MergeFromLeft", mergeable[0] and editable)
-        set_action_enabled("MergeFromRight", mergeable[1] and editable)
         if self.num_panes == 3 and self.textview[1].get_editable():
             mergeable = self.linediffer.has_mergeable_changes(1)
         else:
             mergeable = (False, False)
-        set_action_enabled("MergeAll", mergeable[0] or mergeable[1])
+
+        self.set_action_enabled('merge-all', mergeable[0] or mergeable[1])
 
     def on_diffs_changed(self, linediffer, chunk_changes):
 
