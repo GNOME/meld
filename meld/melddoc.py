@@ -93,7 +93,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
-        self.main_actiongroup = None
         self._state = ComparisonState.Normal
 
     @property
@@ -217,9 +216,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         if hasattr(self, 'actiongroup'):
             uimanager.insert_action_group(self.actiongroup, -1)
         self.popup_menu = uimanager.get_widget("/Popup")
-        action_groups = uimanager.get_action_groups()
-        self.main_actiongroup = [
-            a for a in action_groups if a.get_name() == "MainActions"][0]
         uimanager.ensure_update()
 
         window.insert_action_group(
@@ -235,7 +231,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             uimanager.remove_action_group(self.actiongroup)
         if hasattr(self, 'ui_file'):
             uimanager.remove_ui(self.ui_merge_id)
-        self.main_actiongroup = None
         self.popup_menu = None
         self.ui_merge_id = None
 
