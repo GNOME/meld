@@ -320,8 +320,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
-            buf.connect("notify::has-selection",
-                        self.update_text_actions_sensitivity)
             buf.data.file_changed_signal.connect(self.notify_file_changed)
 
         self.ui_file = ui_file("filediff-ui.xml")
@@ -953,7 +951,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
-        self.update_text_actions_sensitivity()
 
     @Template.Callback()
     def on_textview_focus_out_event(self, view, event):
@@ -1148,22 +1145,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # TODO: Support URI-based opens
         path = self.textbuffer[pane].data.gfile.get_path()
         self._open_files([path], line)
-
-    def update_text_actions_sensitivity(self, *args):
-        widget = self.focus_pane
-        if not widget:
-            cut, copy, paste = False, False, False
-        else:
-            cut = copy = widget.get_buffer().get_has_selection()
-            # Ideally, this would check whether the clipboard included
-            # something pasteable. However, there is no changed signal.
-            # widget.get_clipboard(
-            #    Gdk.SELECTION_CLIPBOARD).wait_is_text_available()
-            paste = widget.get_editable()
-        if self.main_actiongroup:
-            for action, sens in zip(
-                    ("Cut", "Copy", "Paste"), (cut, copy, paste)):
-                self.main_actiongroup.get_action(action).set_sensitive(sens)
 
     @with_focused_pane
     def get_selected_text(self, pane):

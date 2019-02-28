@@ -64,12 +64,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         actions = (
             ("EditMenu", None, _("_Edit")),
-            ("Cut", Gtk.STOCK_CUT, None, None, _("Cut the selection"),
-                self.on_menu_cut_activate),
-            ("Copy", Gtk.STOCK_COPY, None, None, _("Copy the selection"),
-                self.on_menu_copy_activate),
-            ("Paste", Gtk.STOCK_PASTE, None, None, _("Paste the clipboard"),
-                self.on_menu_paste_activate),
             ("Find", Gtk.STOCK_FIND, _("Find…"), None, _("Search for text"),
                 self.on_menu_find_activate),
             ("FindNext", None, _("Find Ne_xt"), "<Primary>G",
@@ -243,7 +237,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         self.lookup_action('close').set_enabled(bool(page))
         if not isinstance(page, MeldDoc):
-            for action in ("Cut", "Copy", "Paste",
+            for action in (
                            "Find", "FindNext", "FindPrevious", "Replace",
                            "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(False)
@@ -251,7 +245,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             for action in ("Find",):
                 self.actiongroup.get_action(action).set_sensitive(True)
             is_filediff = isinstance(page, FileDiff)
-            for action in ("Cut", "Copy", "Paste", "FindNext", "FindPrevious",
+            for action in ("FindNext", "FindPrevious",
                            "Replace", "GoToLine"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
@@ -313,27 +307,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_menu_go_to_line_activate(self, *extra):
         self.current_doc().on_go_to_line_activate()
-
-    def on_menu_copy_activate(self, *extra):
-        widget = self.get_focus()
-        if isinstance(widget, Gtk.Editable):
-            widget.copy_clipboard()
-        elif isinstance(widget, Gtk.TextView):
-            widget.emit("copy-clipboard")
-
-    def on_menu_cut_activate(self, *extra):
-        widget = self.get_focus()
-        if isinstance(widget, Gtk.Editable):
-            widget.cut_clipboard()
-        elif isinstance(widget, Gtk.TextView):
-            widget.emit("cut-clipboard")
-
-    def on_menu_paste_activate(self, *extra):
-        widget = self.get_focus()
-        if isinstance(widget, Gtk.Editable):
-            widget.paste_clipboard()
-        elif isinstance(widget, Gtk.TextView):
-            widget.emit("paste-clipboard")
 
     def on_action_fullscreen_change_state(self, action, state):
         window_state = self.get_window().get_state()
