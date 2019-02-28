@@ -292,6 +292,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
             ('format-as-patch', self.action_format_as_patch),
+            ('go-to-line', self.action_go_to_line),
             ('merge-all-left', self.action_pull_all_changes_left),
             ('merge-all-right', self.action_pull_all_changes_right),
             ('merge-all', self.action_merge_all_changes),
@@ -1171,7 +1172,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.findbar.start_find_previous(self.focus_pane)
 
     @with_focused_pane
-    def on_go_to_line_activate(self, pane, *args):
+    def action_go_to_line(self, pane, *args):
         self.statusbar[pane].emit('start-go-to-line')
 
     @Template.Callback()

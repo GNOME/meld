@@ -76,9 +76,6 @@ class MeldWindow(Gtk.ApplicationWindow):
                 _("_Replace…"), "<Primary>H",
                 _("Find and replace text"),
                 self.on_menu_replace_activate),
-            ("GoToLine", None, _("Go to _Line"), "<Primary>I",
-                _("Go to a specific line"),
-                self.on_menu_go_to_line_activate),
 
             ("ChangesMenu", None, _("_Changes")),
         )
@@ -239,14 +236,14 @@ class MeldWindow(Gtk.ApplicationWindow):
         if not isinstance(page, MeldDoc):
             for action in (
                            "Find", "FindNext", "FindPrevious", "Replace",
-                           "GoToLine"):
+                           ):
                 self.actiongroup.get_action(action).set_sensitive(False)
         else:
             for action in ("Find",):
                 self.actiongroup.get_action(action).set_sensitive(True)
             is_filediff = isinstance(page, FileDiff)
             for action in ("FindNext", "FindPrevious",
-                           "Replace", "GoToLine"):
+                           "Replace"):
                 self.actiongroup.get_action(action).set_sensitive(is_filediff)
 
     def handle_current_doc_switch(self, page):
@@ -304,9 +301,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def on_menu_replace_activate(self, *extra):
         self.current_doc().on_replace_activate()
-
-    def on_menu_go_to_line_activate(self, *extra):
-        self.current_doc().on_go_to_line_activate()
 
     def on_action_fullscreen_change_state(self, action, state):
         window_state = self.get_window().get_state()

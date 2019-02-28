@@ -8,6 +8,7 @@ def register_accels(app: Gtk.Application):
         ('view.folder-copy-left', '<Alt>Left'),
         ('view.folder-copy-right', '<Alt>Right'),
         ('view.folder-delete', 'Delete'),
+        ('view.go-to-line', '<Primary>I'),
         ("view.next-change", ("<Alt>Down", "<Alt>KP_Down", "<Primary>D")),
         ('view.next-pane', '<Alt>Page_Down'),
         ("view.previous-change", ("<Alt>Up", "<Alt>KP_Up", "<Primary>E")),
