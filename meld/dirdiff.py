@@ -348,8 +348,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         default=100,
     )
 
-    actiongroup = Template.Child('DirdiffActions')
-
     treeview0 = Template.Child()
     treeview1 = Template.Child()
     treeview2 = Template.Child()
@@ -408,15 +406,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.init_template()
         bind_settings(self)
 
-        self.ui_file = ui_file("dirdiff-ui.xml")
-        self.actiongroup.set_translation_domain("meld")
-
         # Manually handle GAction additions
         actions = (
+            ('folder-collapse', self.action_folder_collapse),
             ('folder-compare', self.action_diff),
             ('folder-copy-left', self.action_copy_left),
             ('folder-copy-right', self.action_copy_right),
             ('folder-delete', self.action_delete),
+            ('folder-expand', self.action_folder_expand),
             ('next-change', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
@@ -1095,8 +1092,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         else:
             have_selection = False
 
-        get_action = self.actiongroup.get_action
-
         if have_selection:
             is_valid = True
             for path in selection.get_selected_rows()[1]:
@@ -1116,11 +1111,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 is_single_foldable_row = self.model.is_folder(
                     it, pane, os_path)
 
-            get_action("DirCollapseRecursively").set_sensitive(
-                is_single_foldable_row)
-            get_action("DirExpandRecursively").set_sensitive(
-                is_single_foldable_row)
-
+            self.set_action_enabled('folder-collapse', is_single_foldable_row)
+            self.set_action_enabled('folder-expand', is_single_foldable_row)
             self.set_action_enabled('folder-compare', True)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
@@ -1129,10 +1121,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled('open-external', is_valid)
         else:
             actions = (
+                'folder-collapse',
                 'folder-compare',
                 'folder-copy-left',
                 'folder-copy-right',
                 'folder-delete',
+                'folder-expand',
                 'open-external',
             )
             for action in actions:
@@ -1295,8 +1289,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
 
-    @Template.Callback()
-    def on_collapse_recursive_clicked(self, action):
+    def action_folder_collapse(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1316,8 +1309,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         path = filter_model.convert_path_to_child_path(filter_path)
         paths_to_collapse.append(path)
 
-    @Template.Callback()
-    def on_expand_recursive_clicked(self, action):
+    def action_folder_expand(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return

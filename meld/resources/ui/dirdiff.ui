@@ -2,26 +2,6 @@
 <interface>
   <!-- interface-requires gtk+ 3.0 -->
   <!-- interface-requires meld.ui.gladesupport 0.0 -->
-  <object class="GtkActionGroup" id="DirdiffActions">
-    <child>
-      <object class="GtkAction" id="DirCollapseRecursively">
-        <property name="label" translatable="yes">Collapse Recursively</property>
-        <property name="tooltip" translatable="yes">Collapse selected folder and all subfolders</property>
-        <property name="stock_id">gtk-dialog-info</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_collapse_recursive_clicked" swapped="no"/>
-      </object>
-    </child>
-    <child>
-      <object class="GtkAction" id="DirExpandRecursively">
-        <property name="label" translatable="yes">Expand Recursively</property>
-        <property name="tooltip" translatable="yes">Expand selected folder and all subfolders</property>
-        <property name="stock_id">gtk-dialog-info</property>
-        <property name="is_important">True</property>
-        <signal name="activate" handler="on_expand_recursive_clicked" swapped="no"/>
-      </object>
-    </child>
-  </object>
   <template class="DirDiff" parent="GtkVBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
