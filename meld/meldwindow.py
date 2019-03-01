@@ -22,8 +22,10 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 
+# Import support module to get all builder-constructed widgets in the namespace
+import meld.ui.gladesupport  # noqa: F401
 import meld.ui.util
-from meld.conf import _, ui_file
+from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
@@ -58,22 +60,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         super().__init__()
 
         self.init_template()
-
-        actions = (
-            ("ChangesMenu", None, _("_Changes")),
-        )
-        self.actiongroup = Gtk.ActionGroup(name='MainActions')
-        self.actiongroup.set_translation_domain("meld")
-        self.actiongroup.add_actions(actions)
-
-        self.ui = Gtk.UIManager()
-        self.ui.insert_action_group(self.actiongroup, 0)
-        self.ui.add_ui_from_file(ui_file("meldapp-ui.xml"))
-
-        self.add_accel_group(self.ui.get_accel_group())
-        self.menubar = self.ui.get_widget('/Menubar')
-
-        self.appvbox.pack_start(self.menubar, False, True, 0)
 
         # Manually handle GAction additions
         actions = (
@@ -120,8 +106,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.idle_hooked = 0
         self.scheduler = LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
-
-        self.ui.ensure_update()
 
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
@@ -207,7 +191,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         return self.notebook.get_n_pages() > 0
 
     def handle_current_doc_switch(self, page):
-        page.on_container_switch_out_event(self.ui, self)
+        page.on_container_switch_out_event(self)
 
     @Template.Callback()
     def on_switch_page(self, notebook, page, which):
@@ -232,7 +216,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     @Template.Callback()
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
-        newdoc.on_container_switch_in_event(self.ui, self)
+        newdoc.on_container_switch_in_event(self)
 
     @Template.Callback()
     def on_page_label_changed(self, notebook, label_text):
@@ -279,9 +263,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         # last page from a notebook.
         if not self.has_pages():
             self.on_switch_page(self.notebook, page, -1)
-            # Synchronise UIManager state; this shouldn't be necessary,
-            # but upstream aren't touching UIManager bugs.
-            self.ui.ensure_update()
             if self.should_close:
                 cancelled = self.emit(
                     'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))

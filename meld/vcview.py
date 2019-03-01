@@ -31,7 +31,7 @@ from gi.repository import Gtk
 from gi.repository import Pango
 
 from meld import tree
-from meld.conf import _, ui_file
+from meld.conf import _
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
@@ -274,15 +274,15 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
                       'position', Gio.SettingsBindFlags.DEFAULT)
 
-    def on_container_switch_in_event(self, ui, window):
-        super().on_container_switch_in_event(ui, window)
+    def on_container_switch_in_event(self, window):
+        super().on_container_switch_in_event(window)
         # FIXME: open-external should be tied to having a treeview selection
         self.set_action_enabled("open-external", True)
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
-    def on_container_switch_out_event(self, ui, window):
+    def on_container_switch_out_event(self, window):
         self.set_action_enabled("open-external", False)
-        super().on_container_switch_out_event(ui, window)
+        super().on_container_switch_out_event(window)
 
     def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""

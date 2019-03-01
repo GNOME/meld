@@ -196,32 +196,20 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             return
         action.set_enabled(enabled)
 
-    def on_container_switch_in_event(self, uimanager, window):
-        """Called when the container app switches to this tab.
-        """
-        if hasattr(self, 'ui_file'):
-            self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
-        if hasattr(self, 'actiongroup'):
-            uimanager.insert_action_group(self.actiongroup, -1)
-        self.popup_menu = uimanager.get_widget("/Popup")
-        uimanager.ensure_update()
+    def on_container_switch_in_event(self, window):
+        """Called when the container app switches to this tab"""
 
+        self.popup_menu = Gtk.Menu()
         window.insert_action_group(
             'view', getattr(self, 'view_action_group', None))
 
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
 
-    def on_container_switch_out_event(self, uimanager, window):
-        """Called when the container app switches away from this tab.
-        """
-        if hasattr(self, 'actiongroup'):
-            uimanager.remove_action_group(self.actiongroup)
-        if hasattr(self, 'ui_file'):
-            uimanager.remove_ui(self.ui_merge_id)
-        self.popup_menu = None
-        self.ui_merge_id = None
+    def on_container_switch_out_event(self, window):
+        """Called when the container app switches away from this tab"""
 
+        self.popup_menu = None
         window.insert_action_group('view', None)
 
     def on_delete_event(self):

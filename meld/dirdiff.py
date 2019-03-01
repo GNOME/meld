@@ -35,7 +35,7 @@ from gi.repository import Gtk
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld import tree
-from meld.conf import _, ui_file
+from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
