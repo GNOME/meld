@@ -13,12 +13,12 @@ def register_accels(app: Gtk.Application):
         ('view.folder-copy-right', '<Alt>Right'),
         ('view.folder-delete', 'Delete'),
         ('view.go-to-line', '<Primary>I'),
-        ("view.next-change", ("<Alt>Down", "<Alt>KP_Down", "<Primary>D")),
+        ('view.next-change', ('<Alt>Down', '<Alt>KP_Down', '<Primary>D')),
         ('view.next-pane', '<Alt>Page_Down'),
-        ("view.previous-change", ("<Alt>Up", "<Alt>KP_Up", "<Primary>E")),
+        ('view.previous-change', ('<Alt>Up', '<Alt>KP_Up', '<Primary>E')),
         ('view.previous-pane', '<Alt>Page_Up'),
         ('view.redo', '<Primary><Shift>Z'),
-        ("view.refresh", ("<control>R", "F5")),
+        ('view.refresh', ('<control>R', 'F5')),
         ('view.save', '<Primary>S'),
         ('view.save-all', '<Primary><Shift>L'),
         ('view.save-as', '<Primary><Shift>S'),
@@ -27,7 +27,7 @@ def register_accels(app: Gtk.Application):
         ('view.vc-console-visible', 'F9'),
         ('win.close', '<Primary>W'),
         ('win.new-tab', '<Primary>N'),
-        ("win.stop", "Escape"),
+        ('win.stop', 'Escape'),
     )
     for (name, accel) in view_accels:
         accel = accel if isinstance(accel, tuple) else (accel,)
