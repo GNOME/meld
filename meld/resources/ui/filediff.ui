@@ -9,6 +9,256 @@
     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
     <child>
+      <object class="GtkActionBar">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-previous-conflict</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Go to the previous conflict</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-next-conflict</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Go to the next conflict</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-push-left</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Push current change to the left</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">go-previous-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-push-right</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Push current change to the right</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">go-next-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-pull-left</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Pull change from the left</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <!-- FIXME: icon abuse -->
+                <property name="icon-name">go-last-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-pull-right</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Pull change from the right</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <!-- FIXME: icon abuse -->
+                <property name="icon-name">go-first-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-copy-left-up</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Copy change above the left chunk</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-copy-left-down</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Copy change below the left chunk</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-copy-right-up</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Copy change above the right chunk</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-copy-right-down</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Copy change below the right chunk</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">view-list-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButton">
+            <property name="visible">True</property>
+            <property name="action-name">view.file-delete</property>
+            <property name="use-action-appearance">False</property>
+            <property name="tooltip-text">Delete change</property>
+            <property name="focus_on_click">False</property>
+            <style>
+              <class name="image-button"/>
+            </style>
+            <child>
+              <object class="GtkImage">
+                <property name="visible">True</property>
+                <property name="icon-name">edit-delete-symbolic</property>
+                <property name="icon-size">1</property>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="pack-type">start</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child>
       <object class="DiffGrid" id="grid">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
@@ -725,104 +975,8 @@
       <packing>
         <property name="expand">True</property>
         <property name="fill">True</property>
-        <property name="position">0</property>
+        <property name="position">1</property>
       </packing>
     </child>
   </template>
-  <object class="GtkActionGroup" id="FilediffActions">
-    <child>
-      <object class="GtkAction" id="PrevConflict">
-        <property name="label" translatable="yes">Previous Conflict</property>
-        <property name="tooltip" translatable="yes">Go to the previous conflict</property>
-        <signal name="activate" handler="action_previous_conflict" swapped="no"/>
-      </object>
-      <accelerator key="I" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="NextConflict">
-        <property name="label" translatable="yes">Next Conflict</property>
-        <property name="tooltip" translatable="yes">Go to the next conflict</property>
-        <signal name="activate" handler="action_next_conflict" swapped="no"/>
-      </object>
-      <accelerator key="K" modifiers="GDK_CONTROL_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="PushLeft">
-        <property name="label" translatable="yes">Push to Left</property>
-        <property name="tooltip" translatable="yes">Push current change to the left</property>
-        <property name="stock_id">gtk-go-back</property>
-        <signal name="activate" handler="action_push_change_left" swapped="no"/>
-      </object>
-      <accelerator key="Left" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="PushRight">
-        <property name="label" translatable="yes">Push to Right</property>
-        <property name="tooltip" translatable="yes">Push current change to the right</property>
-        <property name="stock_id">gtk-go-forward</property>
-        <signal name="activate" handler="action_push_change_right" swapped="no"/>
-      </object>
-      <accelerator key="Right" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <!-- FIXME: using LAST and FIRST is terrible and unreliable icon abuse -->
-    <child>
-      <object class="GtkAction" id="PullLeft">
-        <property name="label" translatable="yes">Pull from Left</property>
-        <property name="tooltip" translatable="yes">Pull change from the left</property>
-        <property name="stock_id">gtk-goto-last</property>
-        <signal name="activate" handler="action_pull_change_left" swapped="no"/>
-      </object>
-      <accelerator key="Right" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="PullRight">
-        <property name="label" translatable="yes">Pull from Right</property>
-        <property name="tooltip" translatable="yes">Pull change from the right</property>
-        <property name="stock_id">gtk-goto-first</property>
-        <signal name="activate" handler="action_pull_change_right" swapped="no"/>
-      </object>
-      <accelerator key="Left" modifiers="GDK_SHIFT_MASK | GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="CopyLeftUp">
-        <property name="label" translatable="yes">Copy Above Left</property>
-        <property name="tooltip" translatable="yes">Copy change above the left chunk</property>
-        <signal name="activate" handler="action_copy_change_left_up" swapped="no"/>
-      </object>
-      <accelerator key="bracketleft" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="CopyLeftDown">
-        <property name="label" translatable="yes">Copy Below Left</property>
-        <property name="tooltip" translatable="yes">Copy change below the left chunk</property>
-        <signal name="activate" handler="action_copy_change_left_down" swapped="no"/>
-      </object>
-      <accelerator key="semicolon" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="CopyRightUp">
-        <property name="label" translatable="yes">Copy Above Right</property>
-        <property name="tooltip" translatable="yes">Copy change above the right chunk</property>
-        <signal name="activate" handler="action_copy_change_right_up" swapped="no"/>
-      </object>
-      <accelerator key="bracketright" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="CopyRightDown">
-        <property name="label" translatable="yes">Copy Below Right</property>
-        <property name="tooltip" translatable="yes">Copy change below the right chunk</property>
-        <signal name="activate" handler="action_copy_change_right_down" swapped="no"/>
-      </object>
-      <accelerator key="apostrophe" modifiers="GDK_MOD1_MASK"/>
-    </child>
-    <child>
-      <object class="GtkAction" id="Delete">
-        <property name="label" translatable="yes">Delete</property>
-        <property name="tooltip" translatable="yes">Delete change</property>
-        <property name="stock_id">gtk-delete</property>
-        <signal name="activate" handler="delete_change" swapped="no"/>
-      </object>
-      <accelerator key="Delete" modifiers="GDK_MOD1_MASK"/>
-    </child>
-  </object>
 </interface>

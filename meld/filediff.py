@@ -28,7 +28,7 @@ from gi.repository import GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
-from meld.conf import _, ui_file
+from meld.conf import _
 from meld.const import ActionMode, ChunkAction, NEWLINES
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
@@ -121,7 +121,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     )
     show_sourcemap = GObject.Property(type=bool, default=True)
 
-    actiongroup = Template.Child('FilediffActions')
     actiongutter0 = Template.Child()
     actiongutter1 = Template.Child()
     actiongutter2 = Template.Child()
@@ -291,6 +290,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
+            ('file-previous-conflict', self.action_previous_conflict),
+            ('file-next-conflict', self.action_next_conflict),
+            ('file-push-left', self.action_push_change_left),
+            ('file-push-right', self.action_push_change_right),
+            ('file-pull-left', self.action_pull_change_left),
+            ('file-pull-right', self.action_pull_change_right),
+            ('file-copy-left-up', self.action_copy_change_left_up),
+            ('file-copy-right-up', self.action_copy_change_right_up),
+            ('file-copy-left-down', self.action_copy_change_left_down),
+            ('file-copy-right-down', self.action_copy_change_right_down),
+            ('file-delete', self.action_delete_change),
             ('find', self.action_find),
             ('find-next', self.action_find_next),
             ('find-previous', self.action_find_previous),
@@ -329,14 +339,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
             buf.data.file_changed_signal.connect(self.notify_file_changed)
-
-        self.ui_file = ui_file("filediff-ui.xml")
-        self.actiongroup.set_translation_domain("meld")
-
-        # Alternate keybindings for a few commands.
-        self.extra_accels = (
-            ("<Alt>KP_Delete", self.delete_change),
-        )
 
         self.findbar = FindBar(self.grid)
         self.grid.attach(self.findbar, 0, 2, 10, 1)
@@ -412,22 +414,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.line_renderer = renderer
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
-
-    def on_container_switch_in_event(self, ui, window):
-        MeldDoc.on_container_switch_in_event(self, ui, window)
-
-        accel_group = ui.get_accel_group()
-        for accel, callback in self.extra_accels:
-            keyval, mask = Gtk.accelerator_parse(accel)
-            accel_group.connect(keyval, mask, 0, callback)
-
-    def on_container_switch_out_event(self, ui, window):
-        accel_group = ui.get_accel_group()
-        for accel, callback in self.extra_accels:
-            keyval, mask = Gtk.accelerator_parse(accel)
-            accel_group.disconnect_key(keyval, mask)
-
-        MeldDoc.on_container_switch_out_event(self, ui, window)
 
     def get_keymask(self):
         return self._keymask
@@ -589,24 +575,24 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 copy_left = editable_left and left_mid_exists and left_exists
                 copy_right = (
                     editable_right and right_mid_exists and right_exists)
-        self.actiongroup.get_action("PushLeft").set_sensitive(push_left)
-        self.actiongroup.get_action("PushRight").set_sensitive(push_right)
-        self.actiongroup.get_action("PullLeft").set_sensitive(pull_left)
-        self.actiongroup.get_action("PullRight").set_sensitive(pull_right)
-        self.actiongroup.get_action("Delete").set_sensitive(delete)
-        self.actiongroup.get_action("CopyLeftUp").set_sensitive(copy_left)
-        self.actiongroup.get_action("CopyLeftDown").set_sensitive(copy_left)
-        self.actiongroup.get_action("CopyRightUp").set_sensitive(copy_right)
-        self.actiongroup.get_action("CopyRightDown").set_sensitive(copy_right)
 
+        self.set_action_enabled('file-push-left', push_left)
+        self.set_action_enabled('file-push-right', push_right)
+        self.set_action_enabled('file-pull-left', pull_left)
+        self.set_action_enabled('file-pull-right', pull_right)
+        self.set_action_enabled('file-delete', delete)
+        self.set_action_enabled('file-copy-left-up', copy_left)
+        self.set_action_enabled('file-copy-left-down', copy_left)
+        self.set_action_enabled('file-copy-right-up', copy_right)
+        self.set_action_enabled('file-copy-right-down', copy_right)
         self.set_action_enabled('previous-pane', pane > 0)
         self.set_action_enabled('next-pane', pane < self.num_panes - 1)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
     def on_next_conflict_changed(self, doc, have_prev, have_next):
-        self.actiongroup.get_action("PrevConflict").set_sensitive(have_prev)
-        self.actiongroup.get_action("NextConflict").set_sensitive(have_next)
+        self.set_action_enabled('file-previous-conflict', have_prev)
+        self.set_action_enabled('file-next-conflict', have_next)
 
     def scroll_to_chunk_index(self, chunk_index, tolerance):
         """Scrolls chunks with the given index on screen in all panes"""
@@ -668,11 +654,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def action_next_change(self, *args):
         self.next_diff(Gdk.ScrollDirection.DOWN)
 
-    @Template.Callback()
     def action_previous_conflict(self, *args):
         self.go_to_chunk(self.cursor.prev_conflict, self.cursor.pane)
 
-    @Template.Callback()
     def action_next_conflict(self, *args):
         self.go_to_chunk(self.cursor.next_conflict, self.cursor.pane)
 
@@ -721,45 +705,37 @@ class FileDiff(Gtk.VBox, MeldDoc):
         elif chunk_action == ChunkAction.copy_down:
             self.copy_chunk(from_pane, to_pane, chunk, copy_up=False)
 
-    @Template.Callback()
     def action_push_change_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
-    @Template.Callback()
     def action_push_change_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
-    @Template.Callback()
     def action_pull_change_left(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
-    @Template.Callback()
     def action_pull_change_right(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT, reverse=True)
         self.replace_chunk(src, dst, self.get_action_chunk(src, dst))
 
-    @Template.Callback()
     def action_copy_change_left_up(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
-    @Template.Callback()
     def action_copy_change_right_up(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=True)
 
-    @Template.Callback()
     def action_copy_change_left_down(self, *args):
         src, dst = self.get_action_panes(PANE_LEFT)
         self.copy_chunk(
             src, dst, self.get_action_chunk(src, dst), copy_up=False)
 
-    @Template.Callback()
     def action_copy_change_right_down(self, *args):
         src, dst = self.get_action_panes(PANE_RIGHT)
         self.copy_chunk(
@@ -806,9 +782,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self._sync_vscroll(self.scrolledwindow[0].get_vadjustment(), 0)
         self.scheduler.add_task(resync)
 
-    @Template.Callback()
     @with_focused_pane
-    def delete_change(self, pane, *args):
+    def action_delete_change(self, pane, *args):
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
         assert(self.cursor.chunk is not None)
         assert(chunk is not None)
