@@ -78,7 +78,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         # Manually handle GAction additions
         actions = (
             ("close", self.action_close),
-            ("new-tab", self.on_action_new_tab_activate),
+            ("new-tab", self.action_new_tab),
             ("stop", self.action_stop),
         )
         for name, callback in actions:
@@ -238,7 +238,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def on_page_label_changed(self, notebook, label_text):
         self.set_title(label_text)
 
-    def on_action_new_tab_activate(self, action, parameter):
+    def action_new_tab(self, action, parameter):
         self.append_new_comparison()
 
     def action_close(self, *extra):

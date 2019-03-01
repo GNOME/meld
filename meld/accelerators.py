@@ -26,6 +26,7 @@ def register_accels(app: Gtk.Application):
         ('view.vc-commit', '<Primary>M'),
         ('view.vc-console-visible', 'F9'),
         ('win.close', '<Primary>W'),
+        ('win.new-tab', '<Primary>N'),
         ("win.stop", "Escape"),
     )
     for (name, accel) in view_accels:
