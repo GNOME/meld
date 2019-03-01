@@ -74,7 +74,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         state_actions = (
             (
-                "fullscreen", self.on_action_fullscreen_change_state,
+                "fullscreen", self.action_fullscreen_change,
                 GLib.Variant.new_boolean(False)
             ),
         )
@@ -231,7 +231,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             page = self.notebook.get_nth_page(i)
             page.on_delete_event()
 
-    def on_action_fullscreen_change_state(self, action, state):
+    def action_fullscreen_change(self, action, state):
         window_state = self.get_window().get_state()
         is_full = window_state & Gdk.WindowState.FULLSCREEN
         action.set_state(state)
@@ -240,13 +240,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         elif is_full:
             self.unfullscreen()
 
-    def on_menu_edit_down_activate(self, *args):
-        self.current_doc().next_diff(Gdk.ScrollDirection.DOWN)
-
-    def on_menu_edit_up_activate(self, *args):
-        self.current_doc().next_diff(Gdk.ScrollDirection.UP)
-
     def action_stop(self, *args):
+        # TODO: This is the only window-level action we have that still
+        # works on the "current" document like this.
         self.current_doc().action_stop()
 
     def page_removed(self, page, status):
