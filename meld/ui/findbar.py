@@ -43,6 +43,9 @@ class FindBar(Gtk.Grid):
         super().__init__()
         self.init_template()
 
+        self.search_context = None
+        self.notify_id = None
+
         self.set_text_view(None)
         parent.connect('set-focus-child', self.on_focus_child)
 
@@ -73,19 +76,35 @@ class FindBar(Gtk.Grid):
         self.wrap_box.set_visible(False)
         Gtk.Widget.hide(self)
 
+    def update_match_state(self, *args):
+        # Note that -1 here implies that the search is still running
+        no_matches = (
+            self.search_context.props.occurrences_count == 0 and
+            self.search_settings.props.search_text
+        )
+        style_context = self.find_entry.get_style_context()
+        if no_matches:
+            style_context.add_class(Gtk.STYLE_CLASS_ERROR)
+        else:
+            style_context.remove_class(Gtk.STYLE_CLASS_ERROR)
+
     def set_text_view(self, textview):
         self.textview = textview
         if textview is not None:
             self.search_context = GtkSource.SearchContext.new(
                 textview.get_buffer(), self.search_settings)
             self.search_context.set_highlight(True)
+            self.notify_id = self.search_context.connect(
+                'notify::occurrences-count', self.update_match_state)
         else:
+            if self.notify_id:
+                self.search_context.disconnect(self.notify_id)
+                self.notify_id = None
             self.search_context = None
 
     def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str):
         self.replace_mode = replace
         self.set_text_view(textview)
-        self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
         self.show()
@@ -137,7 +156,6 @@ class FindBar(Gtk.Grid):
 
     @Template.Callback()
     def on_find_entry_changed(self, entry):
-        self.find_entry.get_style_context().remove_class("not-found")
         self._find_text(0)
 
     @Template.Callback()
@@ -167,11 +185,9 @@ class FindBar(Gtk.Grid):
             buf.move_mark(buf.get_selection_bound(), end_iter)
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
-            self.find_entry.get_style_context().remove_class("not-found")
             return True
         else:
             buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
-            self.find_entry.get_style_context().add_class("not-found")
             self.wrap_box.set_visible(False)
 
 
