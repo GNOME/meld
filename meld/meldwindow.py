@@ -99,7 +99,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         # Initialise sensitivity for important actions
         self.lookup_action('stop').set_enabled(False)
-        self._update_page_action_sensitivity()
 
         # Fake out the spinner on Windows. See Gitlab issue #133.
         if os.name == 'nt':
@@ -207,16 +206,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
 
-    def _update_page_action_sensitivity(self):
-        current_page = self.notebook.get_current_page()
-
-        if current_page != -1:
-            page = self.notebook.get_nth_page(current_page)
-        else:
-            page = None
-
-        self.lookup_action('close').set_enabled(bool(page))
-
     def handle_current_doc_switch(self, page):
         page.on_container_switch_out_event(self.ui, self)
 
@@ -228,6 +217,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.handle_current_doc_switch(olddoc)
 
         newdoc = notebook.get_nth_page(which) if which >= 0 else None
+
+        self.lookup_action('close').set_enabled(bool(newdoc))
 
         if newdoc:
             nbl = self.notebook.get_tab_label(newdoc)
@@ -242,11 +233,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
         newdoc.on_container_switch_in_event(self.ui, self)
-        self._update_page_action_sensitivity()
-
-    @Template.Callback()
-    def after_page_reordered(self, notebook, page, page_num):
-        self._update_page_action_sensitivity()
 
     @Template.Callback()
     def on_page_label_changed(self, notebook, label_text):
@@ -293,7 +279,6 @@ class MeldWindow(Gtk.ApplicationWindow):
         # last page from a notebook.
         if not self.has_pages():
             self.on_switch_page(self.notebook, page, -1)
-            self._update_page_action_sensitivity()
             # Synchronise UIManager state; this shouldn't be necessary,
             # but upstream aren't touching UIManager bugs.
             self.ui.ensure_update()
