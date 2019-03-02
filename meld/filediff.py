@@ -521,7 +521,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.cursor.line, self.cursor.offset = line, offset
 
     def on_current_diff_changed(self, *args):
-        pane = self._get_focused_pane()
+        try:
+            pane = self.textview.index(self.focus_pane)
+        except ValueError:
+            pane = -1
+
         if pane != -1:
             # While this *should* be redundant, it's possible for focus pane
             # and cursor pane to be different in several situations.
