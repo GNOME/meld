@@ -181,3 +181,6 @@ class FindBar(Gtk.Grid):
             buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
             self.find_entry.get_style_context().add_class("not-found")
             self.wrap_box.set_visible(False)
+
+
+FindBar.set_css_name('find-bar')
