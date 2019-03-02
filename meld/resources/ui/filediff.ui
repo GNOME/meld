@@ -151,86 +151,19 @@
           </packing>
         </child>
         <child>
-          <object class="GtkButton">
-            <property name="visible">True</property>
-            <property name="action-name">view.file-copy-left-up</property>
-            <property name="use-action-appearance">False</property>
-            <property name="tooltip-text">Copy change above the left chunk</property>
+          <object class="GtkMenuButton" id="copy_action_button">
+            <property name="visible">true</property>
             <property name="focus_on_click">False</property>
+            <property name="tooltip-text">Copy chunks</property>
+            <property name="use_popover">True</property>
             <style>
               <class name="image-button"/>
             </style>
             <child>
               <object class="GtkImage">
                 <property name="visible">True</property>
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="icon-size">1</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="visible">True</property>
-            <property name="action-name">view.file-copy-left-down</property>
-            <property name="use-action-appearance">False</property>
-            <property name="tooltip-text">Copy change below the left chunk</property>
-            <property name="focus_on_click">False</property>
-            <style>
-              <class name="image-button"/>
-            </style>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="icon-size">1</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="visible">True</property>
-            <property name="action-name">view.file-copy-right-up</property>
-            <property name="use-action-appearance">False</property>
-            <property name="tooltip-text">Copy change above the right chunk</property>
-            <property name="focus_on_click">False</property>
-            <style>
-              <class name="image-button"/>
-            </style>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="icon-size">1</property>
-              </object>
-            </child>
-          </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkButton">
-            <property name="visible">True</property>
-            <property name="action-name">view.file-copy-right-down</property>
-            <property name="use-action-appearance">False</property>
-            <property name="tooltip-text">Copy change below the right chunk</property>
-            <property name="focus_on_click">False</property>
-            <style>
-              <class name="image-button"/>
-            </style>
-            <child>
-              <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="icon-name">view-list-symbolic</property>
-                <property name="icon-size">1</property>
+                <property name="icon-name">edit-copy-symbolic</property>
+                <property name="visible">true</property>
               </object>
             </child>
           </object>
@@ -983,4 +916,25 @@
       </packing>
     </child>
   </template>
+  <menu id="file-copy-actions-menu">
+    <section>
+      <attribute name="id">status-section</attribute>
+      <item>
+        <attribute name="label">Copy change above the left chunk</attribute>
+        <attribute name="action">view.file-copy-left-up</attribute>
+      </item>
+      <item>
+        <attribute name="label">Copy change below the left chunk</attribute>
+        <attribute name="action">view.file-copy-left-down</attribute>
+      </item>
+      <item>
+        <attribute name="label">Copy change above the right chunk</attribute>
+        <attribute name="action">view.file-copy-right-up</attribute>
+      </item>
+      <item>
+        <attribute name="label">Copy change below the right chunk</attribute>
+        <attribute name="action">view.file-copy-right-down</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>

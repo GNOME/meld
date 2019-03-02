@@ -125,6 +125,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     actiongutter1 = Template.Child()
     actiongutter2 = Template.Child()
     actiongutter3 = Template.Child()
+    copy_action_button = Template.Child()
     dummy_toolbar_actiongutter0 = Template.Child()
     dummy_toolbar_actiongutter1 = Template.Child()
     dummy_toolbar_actiongutter2 = Template.Child()
@@ -414,6 +415,16 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.line_renderer = renderer
 
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
+
+    def do_realize(self):
+        Gtk.VBox().do_realize(self)
+
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/filediff-menus.ui')
+        filter_menu = builder.get_object('file-copy-actions-menu')
+
+        self.copy_action_button.set_popover(
+            Gtk.Popover.new_from_model(self.copy_action_button, filter_menu))
 
     def get_keymask(self):
         return self._keymask
