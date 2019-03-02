@@ -34,6 +34,7 @@ def register_accels(app: Gtk.Application):
         ('view.file-copy-left-down', '<Alt>semicolon'),
         ('view.file-copy-right-down', '<Alt>quoteright'),
         ('view.file-delete', ('<Alt>Delete', '<Alt>KP_Delete')),
+        ('view.show-sourcemap', 'F9'),
         # Folder comparison actions
         ('view.folder-compare', 'Return'),
         ('view.folder-copy-left', '<Alt>Left'),
