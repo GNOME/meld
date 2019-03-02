@@ -1527,7 +1527,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 textn = bufs[1].get_text(starts[1], ends[1], False)
 
                 # Bail on long sequences, rather than try a slow comparison
-                inline_limit = 10000
+                inline_limit = 20000
                 if len(text1) + len(textn) > inline_limit and \
                         not self.force_highlight:
                     for i in range(2):
