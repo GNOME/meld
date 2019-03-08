@@ -44,6 +44,7 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
             self.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
 
         self.encoding_store = Gtk.ListStore(str, str)
+        self.action_changed_cb()
         self.connect("notify::action", self.action_changed_cb)
 
         # We only have sufficient Gio support for remote operations in
