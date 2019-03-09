@@ -45,6 +45,7 @@ from meld.settings import bind_settings, meldsettings
 from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
 from meld.ui._gtktemplate import Template
+from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
     make_multiobject_property_action, map_widgets_into_lists)
@@ -133,12 +134,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
     dummy_toolbar_sourcemap = Template.Child()
-    fileentry0 = Template.Child()
-    fileentry1 = Template.Child()
-    fileentry2 = Template.Child()
-    fileentry_toolitem0 = Template.Child()
-    fileentry_toolitem1 = Template.Child()
-    fileentry_toolitem2 = Template.Child()
+    file_open_button0 = Template.Child()
+    file_open_button1 = Template.Child()
+    file_open_button2 = Template.Child()
     file_save_button0 = Template.Child()
     file_save_button1 = Template.Child()
     file_save_button2 = Template.Child()
@@ -224,11 +222,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
-            "sourcemap", "file_save_button", "file_toolbar", "fileentry",
+            "sourcemap", "file_save_button", "file_toolbar",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "textview", "vbox",
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
-            "fileentry_toolitem", "statusbar",
+            "file_open_button", "statusbar",
             "actiongutter", "dummy_toolbar_actiongutter",
         ]
         map_widgets_into_lists(self, widget_lists)
@@ -1217,7 +1215,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buf.data.savefile = gfile
         buf.data.label = gfile.get_path()
         self.update_buffer_writable(buf)
-        self.fileentry[1].set_file(gfile)
+        self.filelabel[1].set_text(buf.data.savefile)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
@@ -1308,12 +1306,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         duplicate handlers, etc. if you don't do this thing.
         """
 
-        self.fileentry[pane].set_file(gfile)
-
         self.msgarea_mgr[pane].clear()
 
         buf = self.textbuffer[pane]
         buf.data.reset(gfile)
+
+        self.filelabel[pane].set_text(self.textbuffer[pane].data.label)
 
         if buf.data.is_special:
             loader = GtkSource.FileLoader.new_from_stream(
@@ -1448,8 +1446,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             for i, l in enumerate(labels):
                 if l:
                     self.filelabel[i].set_text(l)
-                    self.filelabel_toolitem[i].set_visible(True)
-                    self.fileentry_toolitem[i].set_visible(False)
 
     def notify_file_changed(self, data):
         try:
@@ -1731,9 +1727,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             bufdata.label = gfile.get_path()
             bufdata.gfile = gfile
             bufdata.savefile = None
-            self.fileentry[pane].set_file(gfile)
-            self.filelabel_toolitem[pane].set_visible(False)
-            self.fileentry_toolitem[pane].set_visible(True)
+            self.filelabel[pane].set_text(bufdata.label)
 
         if not force_overwrite and not bufdata.current_on_disk():
             primary = (
@@ -1850,15 +1844,26 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.save_file(idx)
 
     @Template.Callback()
-    def on_fileentry_file_set(self, entry):
-        pane = self.fileentry[:self.num_panes].index(entry)
-        buffer = self.textbuffer[pane]
-        if self.check_unsaved_changes():
-            # TODO: Use encoding file selectors in FileDiff
-            self.set_file(pane, entry.get_file())
-        else:
-            entry.set_file(buffer.data.gfile)
-        return True
+    def on_file_open_button_clicked(self, button):
+        pane = self.file_open_button.index(button)
+
+        dialog = MeldFileChooserDialog(
+            title=_("Open File"),
+            transient_for=self.get_toplevel(),
+        )
+        dialog.set_file(self.textbuffer[pane].data.gfile)
+        response = dialog.run()
+        gfile = dialog.get_file()
+        encoding = dialog.get_encoding()
+        dialog.destroy()
+
+        if response != Gtk.ResponseType.ACCEPT:
+            return
+
+        if not self.check_unsaved_changes():
+            return
+
+        self.set_file(pane, gfile, encoding)
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):

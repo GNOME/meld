@@ -182,6 +182,14 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="file_open_button2">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">document-open-symbolic</property>
+                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkToolButton" id="file_save_button2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -194,25 +202,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolItem" id="fileentry_toolitem2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local_only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkToolItem" id="filelabel_toolitem2">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_start">12</property>
                 <child>
@@ -257,6 +248,14 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="file_open_button1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">document-open-symbolic</property>
+                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkToolButton" id="file_save_button1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -269,25 +268,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkToolItem" id="fileentry_toolitem1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local_only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="homogeneous">False</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkToolItem" id="filelabel_toolitem1">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_start">12</property>
                 <child>
@@ -332,37 +314,24 @@
               </packing>
             </child>
             <child>
+              <object class="GtkToolButton" id="file_open_button0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="icon_name">document-open-symbolic</property>
+                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
+              </object>
+            </child>
+            <child>
               <object class="GtkToolButton" id="file_save_button0">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="icon_name">document-save-symbolic</property>
                 <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="fileentry_toolitem0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <child>
-                  <object class="GtkFileChooserButton" id="fileentry0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="local_only">False</property>
-                    <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
-                  </object>
-                </child>
-              </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="homogeneous">False</property>
-              </packing>
             </child>
             <child>
               <object class="GtkToolItem" id="filelabel_toolitem0">
+                <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="margin_start">12</property>
                 <child>
