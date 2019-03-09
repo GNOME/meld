@@ -55,7 +55,7 @@
         </child>
       </object>
       <packing>
-        <property name="left_attach">2</property>
+        <property name="left_attach">1</property>
         <property name="top_attach">1</property>
       </packing>
     </child>
@@ -102,21 +102,7 @@
         </child>
       </object>
       <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="find_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Find:</property>
-        <property name="use_underline">True</property>
-        <property name="mnemonic_widget">find_entry</property>
-        <property name="xalign">0</property>
-      </object>
-      <packing>
-        <property name="left_attach">0</property>
+        <property name="left_attach">1</property>
         <property name="top_attach">0</property>
       </packing>
     </child>
@@ -132,22 +118,8 @@
         <signal name="stop-search" handler="on_stop_search" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">0</property>
-      </packing>
-    </child>
-    <child>
-      <object class="GtkLabel" id="replace_label">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="label" translatable="yes">Replace _with:</property>
-        <property name="use_underline">True</property>
-        <property name="mnemonic_widget">replace_entry</property>
-        <property name="xalign">0</property>
-      </object>
-      <packing>
         <property name="left_attach">0</property>
-        <property name="top_attach">1</property>
+        <property name="top_attach">0</property>
       </packing>
     </child>
     <child>
@@ -155,12 +127,13 @@
         <property name="visible">True</property>
         <property name="can_focus">True</property>
         <property name="width_chars">32</property>
+        <property name="primary_icon_name">edit-find-replace-symbolic</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
         <signal name="activate" handler="on_replace_button_clicked" swapped="no"/>
       </object>
       <packing>
-        <property name="left_attach">1</property>
+        <property name="left_attach">0</property>
         <property name="top_attach">1</property>
       </packing>
     </child>
@@ -219,7 +192,7 @@
         </child>
       </object>
       <packing>
-        <property name="left_attach">3</property>
+        <property name="left_attach">2</property>
         <property name="top_attach">0</property>
       </packing>
     </child>
@@ -255,7 +228,7 @@
         </child>
       </object>
       <packing>
-        <property name="left_attach">4</property>
+        <property name="left_attach">3</property>
         <property name="top_attach">0</property>
       </packing>
     </child>

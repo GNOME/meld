@@ -34,7 +34,6 @@ class FindBar(Gtk.Grid):
     match_case = Template.Child()
     regex = Template.Child()
     replace_entry = Template.Child()
-    replace_label = Template.Child()
     whole_word = Template.Child()
     wrap_box = Template.Child()
 
@@ -78,7 +77,6 @@ class FindBar(Gtk.Grid):
 
     def start_find(self, textview, text=None):
         self.set_text_view(textview)
-        self.replace_label.hide()
         self.replace_entry.hide()
         self.hbuttonbox2.hide()
         self.find_entry.get_style_context().remove_class("not-found")
