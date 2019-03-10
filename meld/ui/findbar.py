@@ -93,17 +93,11 @@ class FindBar(Gtk.Grid):
 
     def start_find_next(self, textview):
         self.set_text_view(textview)
-        if self.find_entry.get_text():
-            self.on_find_next_button_clicked(self.find_next_button)
-        else:
-            self.start_find(self.textview)
+        self._find_text()
 
-    def start_find_previous(self, textview, text=None):
+    def start_find_previous(self, textview):
         self.set_text_view(textview)
-        if self.find_entry.get_text():
-            self.on_find_previous_button_clicked(self.find_previous_button)
-        else:
-            self.start_find(self.textview)
+        self._find_text(backwards=True)
 
     def start_replace(self, textview, text=None):
         self.replace_mode = True
@@ -160,8 +154,9 @@ class FindBar(Gtk.Grid):
         self.hide()
 
     def _find_text(self, start_offset=1, backwards=False):
-        assert self.textview
-        assert self.search_context
+        if not self.textview or not self.search_context:
+            return
+
         buf = self.textview.get_buffer()
         insert = buf.get_iter_at_mark(buf.get_insert())
 
