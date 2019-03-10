@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -25,25 +26,24 @@ class FindBar(Gtk.Grid):
 
     __gtype_name__ = 'FindBar'
 
-    arrow_left = Template.Child()
-    arrow_right = Template.Child()
     find_entry = Template.Child()
     find_next_button = Template.Child()
     find_previous_button = Template.Child()
-    hbuttonbox2 = Template.Child()
     match_case = Template.Child()
     regex = Template.Child()
+    replace_all_button = Template.Child()
+    replace_button = Template.Child()
     replace_entry = Template.Child()
     whole_word = Template.Child()
     wrap_box = Template.Child()
+
+    replace_mode = GObject.Property(type=bool, default=False)
 
     def __init__(self, parent):
         super().__init__()
         self.init_template()
 
         self.set_text_view(None)
-        self.arrow_left.show()
-        self.arrow_right.show()
         parent.connect('set-focus-child', self.on_focus_child)
 
         settings = GtkSource.SearchSettings()
@@ -53,6 +53,13 @@ class FindBar(Gtk.Grid):
         self.find_entry.bind_property('text', settings, 'search-text')
         settings.set_wrap_around(True)
         self.search_settings = settings
+
+        self.bind_property('replace_mode', self.replace_entry, 'visible')
+        self.bind_property('replace_mode', self.replace_all_button, 'visible')
+        self.bind_property('replace_mode', self.replace_button, 'visible')
+        self.bind_property(
+            'replace_mode', self, 'row-spacing', GObject.BindingFlags.DEFAULT,
+            lambda binding, replace_mode: 6 if replace_mode else 0)
 
     def on_focus_child(self, container, widget):
         if widget is not None:
@@ -76,13 +83,11 @@ class FindBar(Gtk.Grid):
             self.search_context = None
 
     def start_find(self, textview, text=None):
+        self.replace_mode = False
         self.set_text_view(textview)
-        self.replace_entry.hide()
-        self.hbuttonbox2.hide()
         self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
-        self.set_row_spacing(0)
         self.show()
         self.find_entry.grab_focus()
 
@@ -101,14 +106,13 @@ class FindBar(Gtk.Grid):
             self.start_find(self.textview)
 
     def start_replace(self, textview, text=None):
+        self.replace_mode = True
         self.set_text_view(textview)
         self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
-        self.set_row_spacing(6)
-        self.show_all()
+        self.show()
         self.find_entry.grab_focus()
-        self.wrap_box.set_visible(False)
 
     @Template.Callback()
     def on_find_next_button_clicked(self, button):
@@ -141,6 +145,10 @@ class FindBar(Gtk.Grid):
             buf.place_cursor(buf.get_iter_at_mark(saved_insert))
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
+
+    @Template.Callback()
+    def on_toggle_replace_button_clicked(self, button):
+        self.replace_mode = not self.replace_mode
 
     @Template.Callback()
     def on_find_entry_changed(self, entry):
