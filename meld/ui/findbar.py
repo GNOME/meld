@@ -82,8 +82,8 @@ class FindBar(Gtk.Grid):
         else:
             self.search_context = None
 
-    def start_find(self, textview, text=None):
-        self.replace_mode = False
+    def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str):
+        self.replace_mode = replace
         self.set_text_view(textview)
         self.find_entry.get_style_context().remove_class("not-found")
         if text:
@@ -98,15 +98,6 @@ class FindBar(Gtk.Grid):
     def start_find_previous(self, textview):
         self.set_text_view(textview)
         self._find_text(backwards=True)
-
-    def start_replace(self, textview, text=None):
-        self.replace_mode = True
-        self.set_text_view(textview)
-        self.find_entry.get_style_context().remove_class("not-found")
-        if text:
-            self.find_entry.set_text(text)
-        self.show()
-        self.find_entry.grab_focus()
 
     @Template.Callback()
     def on_find_next_button_clicked(self, button):
