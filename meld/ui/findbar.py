@@ -45,10 +45,12 @@ class FindBar(Gtk.Grid):
 
         self.search_context = None
         self.notify_id = None
-
         self.set_text_view(None)
+
+        # Setup a signal for when the find bar loses focus
         parent.connect('set-focus-child', self.on_focus_child)
 
+        # Create and bind our GtkSourceSearchSettings
         settings = GtkSource.SearchSettings()
         self.match_case.bind_property('active', settings, 'case-sensitive')
         self.whole_word.bind_property('active', settings, 'at-word-boundaries')
@@ -57,6 +59,7 @@ class FindBar(Gtk.Grid):
         settings.set_wrap_around(True)
         self.search_settings = settings
 
+        # Bind visibility and layout for find-and-replace mode
         self.bind_property('replace_mode', self.replace_entry, 'visible')
         self.bind_property('replace_mode', self.replace_all_button, 'visible')
         self.bind_property('replace_mode', self.replace_button, 'visible')
