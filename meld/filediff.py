@@ -1130,13 +1130,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         selected_text = self.get_selected_text()
         self.findbar.start_find(
             textview=self.focus_pane, replace=False, text=selected_text)
-        self.keymask = 0
 
     def on_replace_activate(self, *args):
         selected_text = self.get_selected_text()
         self.findbar.start_find(
             textview=self.focus_pane, replace=True, text=selected_text)
-        self.keymask = 0
 
     def on_find_next_activate(self, *args):
         self.findbar.start_find_next(self.focus_pane)
