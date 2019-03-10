@@ -29,7 +29,13 @@ action-gutter {
     background-color: @theme_bg_color;
 }
 
-find-bar {
+@binding-set MeldFindbarBindings {
+    bind "<Shift>Return" { "activate-secondary" () };
+}
+
+meld-find-bar {
+    -gtk-key-bindings: MeldFindbarBindings;
+
     padding: 6px;
     border-width: 1px 0 0 0;
     border-style: solid;

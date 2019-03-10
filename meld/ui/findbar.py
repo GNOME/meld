@@ -39,6 +39,16 @@ class FindBar(Gtk.Grid):
 
     replace_mode = GObject.Property(type=bool, default=False)
 
+    @GObject.Signal(
+        name='activate-secondary',
+        flags=(
+            GObject.SignalFlags.RUN_FIRST |
+            GObject.SignalFlags.ACTION
+        ),
+    )
+    def activate_secondary(self) -> None:
+        self._find_text(backwards=True)
+
     def __init__(self, parent):
         super().__init__()
         self.init_template()
@@ -194,4 +204,4 @@ class FindBar(Gtk.Grid):
             self.wrap_box.set_visible(False)
 
 
-FindBar.set_css_name('find-bar')
+FindBar.set_css_name('meld-find-bar')
