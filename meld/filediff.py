@@ -327,6 +327,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             action.connect('activate', callback)
             self.view_action_group.add_action(action)
 
+        self.popup_menu = Gtk.Menu()
+
         # Handle sourcemap visibility binding
         self.bind_property(
             'show-sourcemap', self.sourcemap_revealer, 'reveal-child',

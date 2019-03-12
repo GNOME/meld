@@ -199,7 +199,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def on_container_switch_in_event(self, window):
         """Called when the container app switches to this tab"""
 
-        self.popup_menu = Gtk.Menu()
         window.insert_action_group(
             'view', getattr(self, 'view_action_group', None))
 
@@ -209,7 +208,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def on_container_switch_out_event(self, window):
         """Called when the container app switches away from this tab"""
 
-        self.popup_menu = None
         window.insert_action_group('view', None)
 
     def on_delete_event(self):

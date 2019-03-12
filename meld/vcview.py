@@ -238,6 +238,8 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
+        self.popup_menu = Gtk.Menu()
+
         self.model = VcTreeStore()
         self.connect("style-updated", self.model.on_style_updated)
         self.model.on_style_updated(self)
