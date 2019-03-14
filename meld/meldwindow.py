@@ -55,6 +55,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     notebook = Template.Child("notebook")
     spinner = Template.Child("spinner")
     vc_filter_button = Template.Child()
+    view_toolbar = Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -212,6 +213,10 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
+
+        self.view_toolbar.foreach(self.view_toolbar.remove)
+        if hasattr(newdoc, 'toolbar_actions'):
+            self.view_toolbar.add(newdoc.toolbar_actions)
 
     @Template.Callback()
     def after_switch_page(self, notebook, page, which):

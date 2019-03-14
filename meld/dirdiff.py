@@ -449,6 +449,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.popup_menu = Gtk.Menu.new_from_model(context_menu)
         self.popup_menu.attach_to_widget(self)
 
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/dirdiff-actions.ui')
+        self.toolbar_actions = builder.get_object('view-toolbar')
+
         self.name_filters = []
         self.text_filters = []
         self.create_name_filters()
