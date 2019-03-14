@@ -126,7 +126,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     actiongutter1 = Template.Child()
     actiongutter2 = Template.Child()
     actiongutter3 = Template.Child()
-    copy_action_button = Template.Child()
     dummy_toolbar_actiongutter0 = Template.Child()
     dummy_toolbar_actiongutter1 = Template.Child()
     dummy_toolbar_actiongutter2 = Template.Child()
@@ -328,6 +327,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.view_action_group.add_action(action)
 
         self.popup_menu = Gtk.Menu()
+
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/filediff-actions.ui')
+        self.toolbar_actions = builder.get_object('view-toolbar')
+        self.copy_action_button = builder.get_object('copy_action_button')
 
         # Handle sourcemap visibility binding
         self.bind_property(
