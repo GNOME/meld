@@ -21,4 +21,43 @@
       </item>
     </section>
   </menu>
+  <menu id="filediff-context-menu">
+    <section>
+      <attribute name="id">undo-section</attribute>
+      <item>
+        <attribute name="label">_Undo</attribute>
+        <attribute name="action">view.undo</attribute>
+      </item>
+      <item>
+        <attribute name="label">_Redo</attribute>
+        <attribute name="action">view.redo</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">text-section</attribute>
+      <item>
+        <attribute name="label">Cu_t</attribute>
+        <attribute name="action">view.cut</attribute>
+      </item>
+      <item>
+        <attribute name="label">_Copy</attribute>
+        <attribute name="action">view.copy</attribute>
+      </item>
+      <item>
+        <attribute name="label">_Paste</attribute>
+        <attribute name="action">view.paste</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">syncpoint-section</attribute>
+      <item>
+        <attribute name="label">Add Synchronization Point</attribute>
+        <attribute name="action">view.add-sync-point</attribute>
+      </item>
+      <item>
+        <attribute name="label">Clear Synchronization Points</attribute>
+        <attribute name="action">view.clear-sync-point</attribute>
+      </item>
+    </section>
+  </menu>
 </interface>
