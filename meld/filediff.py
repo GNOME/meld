@@ -288,6 +288,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         actions = (
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
+            ('copy', self.action_copy),
+            ('cut', self.action_cut),
             ('file-previous-conflict', self.action_previous_conflict),
             ('file-next-conflict', self.action_next_conflict),
             ('file-push-left', self.action_push_change_left),
@@ -311,6 +313,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('next-change', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
+            ('paste', self.action_paste),
             ('previous-change', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('redo', self.action_redo),
@@ -343,7 +346,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
+            buf.connect(
+                'notify::has-selection', self.update_text_actions_sensitivity)
             buf.data.file_changed_signal.connect(self.notify_file_changed)
+        self.update_text_actions_sensitivity()
 
         self.findbar = FindBar(self.grid)
         self.grid.attach(self.findbar, 0, 2, 10, 1)
@@ -1144,6 +1150,18 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # TODO: Support URI-based opens
         path = self.textbuffer[pane].data.gfile.get_path()
         self._open_files([path], line)
+
+    def update_text_actions_sensitivity(self, *args):
+        widget = self.focus_pane
+        if not widget:
+            cut, copy, paste = False, False, False
+        else:
+            cut = copy = widget.get_buffer().get_has_selection()
+            paste = widget.get_editable()
+
+        for action, enabled in zip(
+                ('cut', 'copy', 'paste'), (cut, copy, paste)):
+            self.set_action_enabled(action, enabled)
 
     @with_focused_pane
     def get_selected_text(self, pane):
@@ -2083,6 +2101,32 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.textbuffer[i].get_modified())
         self.queue_draw()
         self.recompute_label()
+
+    @with_focused_pane
+    def action_cut(self, pane, *args):
+        buffer = self.textbuffer[pane]
+        view = self.textview[pane]
+
+        clipboard = view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+        buffer.cut_clipboard(clipboard, view.get_editable())
+        view.scroll_to_mark(buffer.get_insert(), 0.1, False, 0, 0)
+
+    @with_focused_pane
+    def action_copy(self, pane, *args):
+        buffer = self.textbuffer[pane]
+        view = self.textview[pane]
+
+        clipboard = view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+        buffer.copy_clipboard(clipboard)
+
+    @with_focused_pane
+    def action_paste(self, pane, *args):
+        buffer = self.textbuffer[pane]
+        view = self.textview[pane]
+
+        clipboard = view.get_clipboard(Gdk.SELECTION_CLIPBOARD)
+        buffer.paste_clipboard(clipboard, None, view.get_editable())
+        view.scroll_to_mark(buffer.get_insert(), 0.1, False, 0, 0)
 
     def copy_chunk(self, src, dst, chunk, copy_up):
         b0, b1 = self.textbuffer[src], self.textbuffer[dst]
