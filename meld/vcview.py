@@ -286,6 +286,28 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.set_action_enabled("open-external", False)
         super().on_container_switch_out_event(window)
 
+    def get_default_vc(self, vcs):
+        target_name = self.vc.NAME if self.vc else None
+
+        for i, (name, vc, enabled) in enumerate(vcs):
+            if not enabled:
+                continue
+
+            if target_name and name == target_name:
+                return i
+
+        depths = [len(getattr(vc, 'root', [])) for name, vc, enabled in vcs]
+        target_depth = max(depths, default=0)
+
+        for i, (name, vc, enabled) in enumerate(vcs):
+            if not enabled:
+                continue
+
+            if target_depth and len(vc.root) == target_depth:
+                return i
+
+        return 0
+
     def populate_vcs_for_location(self, location):
         """Display VC plugin(s) that can handle the location"""
         vcs_model = self.combobox_vcs.get_model()
@@ -303,18 +325,22 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             location = parent_location
         else:
             # existing parent directory was found
-            for avc in get_vcs(location):
+            for avc, enabled in get_vcs(location):
                 err_str = ''
                 vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
 
-                if not avc.is_installed():
+                if not enabled:
+                    # Translators: This error message is shown when no
+                    # repository of this type is found.
+                    err_str = _("%(name)s (not found)")
+                elif not avc.is_installed():
                     # Translators: This error message is shown when a version
                     # control binary isn't installed.
                     err_str = _("%(name)s (%(cmd)s not installed)")
                 elif not avc.valid_repo(location):
                     # Translators: This error message is shown when a version
                     # controlled repository is invalid.
-                    err_str = _("%(name)s (Invalid repository)")
+                    err_str = _("%(name)s (invalid repository)")
 
                 if err_str:
                     vcs_model.append([err_str % vc_details, avc, False])
@@ -322,27 +348,17 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
                 vcs_model.append([avc.NAME, avc(location), True])
 
-        valid_vcs = [(i, r[1].NAME) for i, r in enumerate(vcs_model) if r[2]]
-        default_active = min(valid_vcs)[0] if valid_vcs else 0
+        default_active = self.get_default_vc(vcs_model)
 
-        # Keep the same VC plugin active on refresh, otherwise use the first
-        current_vc_name = self.vc.NAME if self.vc else None
-        same_vc = [i for i, name in valid_vcs if name == current_vc_name]
-        if same_vc:
-            default_active = same_vc[0]
-
-        if not valid_vcs:
+        if not any(enabled for _, _, enabled in vcs_model):
             # If we didn't get any valid vcs then fallback to null
             null_vcs = _null.Vc(location)
             vcs_model.insert(0, [null_vcs.NAME, null_vcs, True])
             tooltip = _("No valid version control system found in this folder")
-        elif len(vcs_model) == 1:
-            tooltip = _("Only one version control system found in this folder")
         else:
             tooltip = _("Choose which version control system to use")
 
         self.combobox_vcs.set_tooltip_text(tooltip)
-        self.combobox_vcs.set_sensitive(len(vcs_model) > 1)
         self.combobox_vcs.set_active(default_active)
 
     @Template.Callback()
