@@ -238,7 +238,11 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
-        self.popup_menu = Gtk.Menu()
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/vcview-menus.ui')
+        context_menu = builder.get_object('vcview-context-menu')
+        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
+        self.popup_menu.attach_to_widget(self)
 
         self.model = VcTreeStore()
         self.connect("style-updated", self.model.on_style_updated)
