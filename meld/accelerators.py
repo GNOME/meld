@@ -4,6 +4,7 @@ from gi.repository import Gtk
 
 def register_accels(app: Gtk.Application):
     view_accels = (
+        ('app.quit', '<Primary>Q'),
         ('view.find', '<Primary>F'),
         ('view.find-next', '<Primary>G'),
         ('view.find-previous', '<Primary><Shift>G'),

@@ -120,17 +120,14 @@
       </submenu>
     </section>
     <section>
-      <attribute name="id">window-section</attribute>
-      <item>
-        <attribute name="label" translatable="yes">_Close</attribute>
-        <attribute name="action">win.close</attribute>
-      </item>
-    </section>
-    <section>
       <attribute name="id">application-section</attribute>
       <item>
         <attribute name="label" translatable="yes">_Preferences</attribute>
         <attribute name="action">app.preferences</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
+        <attribute name="action">win.show-help-overlay</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Help</attribute>
@@ -138,17 +135,8 @@
         <attribute name="accel">F1</attribute>
       </item>
       <item>
-        <attribute name="label" translatable="yes">Keyboard Shortcuts</attribute>
-        <attribute name="action">win.show-help-overlay</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_About</attribute>
+        <attribute name="label" translatable="yes">_About Meld</attribute>
         <attribute name="action">app.about</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">_Quit</attribute>
-        <attribute name="action">app.quit</attribute>
-        <attribute name="accel">&lt;Primary&gt;q</attribute>
       </item>
     </section>
   </menu>
