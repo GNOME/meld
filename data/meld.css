@@ -47,7 +47,11 @@ meld-find-bar {
     border-color: @borders;
 }
 
-.meld-notebook-child {
+/* Default Adwaita notebook styling gives a much lighter background to
+ * notebook children when there's more than one, but we definitely don't
+ * want this.
+ */
+.meld-notebook > stack:not(:only-child) {
     background-color: @theme_bg_color;
 }
 
