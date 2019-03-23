@@ -53,7 +53,6 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 
     label = GObject.Property(
         type=str,
-        nick="The GtkSourceLanguage displayed in the status bar",
         default=None,
         getter=get_label,
         setter=set_label,
