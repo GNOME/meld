@@ -166,6 +166,8 @@ class MeldStatusBar(Gtk.Statusbar):
             line, offset = self.props.cursor_position
             entry.set_text(str(line + 1))
 
+        # This handler causes a failed assertion due to the `position`
+        # out param (see pygobject#12), but we don't need it here.
         def line_entry_insert_text(entry, new_text, length, position):
             if not new_text.isdigit():
                 GObject.signal_stop_emission_by_name(entry, 'insert-text')
