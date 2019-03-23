@@ -166,14 +166,6 @@ class ActionGutter(Gtk.DrawingArea):
         self.pointer_chunk = None
         self.pressed_chunk = None
 
-        self.set_events(
-            Gdk.EventMask.LEAVE_NOTIFY_MASK |
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK
-        )
-        self.connect('notify::action-mode', lambda *args: self.queue_draw())
-
     def on_setting_changed(self, meldsettings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
@@ -184,6 +176,13 @@ class ActionGutter(Gtk.DrawingArea):
             }
 
     def do_realize(self):
+        self.set_events(
+            Gdk.EventMask.LEAVE_NOTIFY_MASK |
+            Gdk.EventMask.POINTER_MOTION_MASK |
+            Gdk.EventMask.BUTTON_PRESS_MASK |
+            Gdk.EventMask.BUTTON_RELEASE_MASK
+        )
+        self.connect('notify::action-mode', lambda *args: self.queue_draw())
         meldsettings.connect('changed', self.on_setting_changed)
         self.on_setting_changed(meldsettings, 'style-scheme')
         return Gtk.DrawingArea.do_realize(self)
