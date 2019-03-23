@@ -93,7 +93,7 @@ class MeldBufferData(GObject.GObject):
     encoding = GObject.Property(
         type=GtkSource.Encoding,
         nick="The file encoding of the linked GtkSourceFile",
-        default=None,
+        default=GtkSource.Encoding.get_utf8(),
     )
 
     def __init__(self):

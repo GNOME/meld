@@ -111,7 +111,7 @@ class MeldStatusBar(Gtk.Statusbar):
     source_encoding = GObject.Property(
         type=GtkSource.Encoding,
         nick="The file encoding displayed in the status bar",
-        default=None,
+        default=GtkSource.Encoding.get_utf8(),
     )
 
     source_language = GObject.Property(
@@ -230,7 +230,8 @@ class MeldStatusBar(Gtk.Statusbar):
 
         button = MeldStatusMenuButton()
         self.bind_property(
-            'source-encoding', button, 'label', GObject.BindingFlags.DEFAULT,
+            'source-encoding', button, 'label',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             lambda binding, enc: selector.get_value_label(enc))
         button.set_popover(pop)
         button.show()
@@ -260,7 +261,8 @@ class MeldStatusBar(Gtk.Statusbar):
 
         button = MeldStatusMenuButton()
         self.bind_property(
-            'source-language', button, 'label', GObject.BindingFlags.DEFAULT,
+            'source-language', button, 'label',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             lambda binding, enc: selector.get_value_label(enc))
         button.set_popover(pop)
         button.show()
