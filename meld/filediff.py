@@ -397,6 +397,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         for statusbar, buf in zip(self.statusbar, self.textbuffer):
             buf.bind_property(
+                'cursor-position', statusbar, 'cursor_position',
+                GObject.BindingFlags.DEFAULT,
+                self.bind_adapt_cursor_position,
+            )
+
+            buf.bind_property(
                 'language', statusbar, 'source-language',
                 GObject.BindingFlags.BIDIRECTIONAL)
 
@@ -530,6 +536,16 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 "notify::cursor-position", self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
 
+    def bind_adapt_cursor_position(self, binding, from_value):
+        buf = binding.get_source()
+        textview = self.textview[self.textbuffer.index(buf)]
+
+        cursor_it = buf.get_iter_at_offset(from_value)
+        offset = textview.get_visual_column(cursor_it)
+        line = cursor_it.get_line()
+
+        return (line, offset)
+
     def on_cursor_position_changed(self, buf, pspec, force=False):
         pane = self.textbuffer.index(buf)
         pos = buf.props.cursor_position
@@ -538,10 +554,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.cursor.pane, self.cursor.pos = pane, pos
 
         cursor_it = buf.get_iter_at_offset(pos)
-        offset = self.textview[pane].get_visual_column(cursor_it)
         line = cursor_it.get_line()
-
-        self.statusbar[pane].props.cursor_position = (line, offset)
 
         if line != self.cursor.line or force:
             chunk, prev, next_ = self.linediffer.locate_chunk(pane, line)
