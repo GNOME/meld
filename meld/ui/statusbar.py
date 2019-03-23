@@ -72,6 +72,7 @@ class MeldStatusMenuButton(Gtk.MenuButton):
         label.props.single_line_mode = True
         label.props.halign = Gtk.Align.START
         label.props.valign = Gtk.Align.BASELINE
+        label.props.xalign = 1.0
 
         arrow = Gtk.Image.new_from_icon_name(
             'pan-down-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
@@ -87,6 +88,9 @@ class MeldStatusMenuButton(Gtk.MenuButton):
         self.add(box)
 
         self._label = label
+
+    def set_label_width(self, width):
+        self._label.set_width_chars(width)
 
 
 class MeldStatusBar(Gtk.Statusbar):
@@ -209,6 +213,9 @@ class MeldStatusBar(Gtk.Statusbar):
             format_cursor_position)
         self.connect('start-go-to-line', lambda *args: button.clicked())
         button.set_popover(pop)
+        # Set a label width to avoid other widgets moving on cursor change
+        reasonable_width = len(format_cursor_position(None, (1000, 100))) - 2
+        button.set_label_width(reasonable_width)
         button.show()
 
         return button
