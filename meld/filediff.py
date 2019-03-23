@@ -1384,7 +1384,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buf.data.savefile = gfile
         buf.data.label = gfile.get_path()
         self.update_buffer_writable(buf)
-        self.filelabel[1].set_text(buf.data.label)
+        self.filelabel[1].props.gfile = gfile
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
@@ -1480,7 +1480,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buf = self.textbuffer[pane]
         buf.data.reset(gfile)
 
-        self.filelabel[pane].set_text(self.textbuffer[pane].data.label)
+        # FIXME: this was self.textbuffer[pane].data.label, which could be
+        # either a custom label or the fallback
+        self.filelabel[pane].props.gfile = gfile
 
         if buf.data.is_special:
             loader = GtkSource.FileLoader.new_from_stream(
@@ -1634,8 +1636,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         labels = meta.get('labels', ())
         if labels:
             for i, l in enumerate(labels):
-                if l:
-                    self.filelabel[i].set_text(l)
+                self.filelabel[i].props.custom_label = l
 
     def notify_file_changed(self, data):
         try:
@@ -1932,7 +1933,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             bufdata.label = gfile.get_path()
             bufdata.gfile = gfile
             bufdata.savefile = None
-            self.filelabel[pane].set_text(bufdata.label)
+            self.filelabel[pane].props.gfile = gfile
 
         if not force_overwrite and not bufdata.current_on_disk():
             primary = (

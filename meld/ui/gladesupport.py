@@ -13,5 +13,6 @@ from meld.ui import emblemcellrenderer  # noqa: F401
 from meld.ui import historyentry  # noqa: F401
 from meld.ui import msgarea  # noqa: F401
 from meld.ui import notebook  # noqa: F401
+from meld.ui import pathlabel  # noqa: F401
 from meld.ui import recentselector  # noqa: F401
 from meld.ui import statusbar  # noqa: F401
