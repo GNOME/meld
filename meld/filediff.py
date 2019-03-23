@@ -417,6 +417,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.set_file(pane, buffer.data.gfile, encoding)
 
             def go_to_line(widget, line, pane):
+                if self.cursor.pane == pane and self.cursor.line == line:
+                    return
                 self.move_cursor(pane, line, focus=False)
 
             pane = self.statusbar.index(statusbar)
