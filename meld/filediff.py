@@ -93,7 +93,7 @@ PANE_LEFT, PANE_RIGHT = -1, +1
 
 class CursorDetails:
     __slots__ = (
-        "pane", "pos", "line", "offset", "chunk", "prev", "next",
+        "pane", "pos", "line", "chunk", "prev", "next",
         "prev_conflict", "next_conflict",
     )
 
@@ -567,7 +567,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.cursor.prev, self.cursor.next = prev, next_
             self.cursor.prev_conflict = prev_conflict
             self.cursor.next_conflict = next_conflict
-        self.cursor.line, self.cursor.offset = line, offset
+
+        self.cursor.line = line
 
     def on_current_diff_changed(self, *args):
         try:
