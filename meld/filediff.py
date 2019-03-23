@@ -1293,9 +1293,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         pos = self.textbuffer[pane].props.cursor_position
         cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
         line = cursor_it.get_line() + 1
-        # TODO: Support URI-based opens
-        path = self.textbuffer[pane].data.gfile.get_path()
-        open_files_external([path], line=line)
+        gfiles = [self.textbuffer[pane].data.gfile]
+        open_files_external(gfiles=gfiles, line=line)
 
     def update_text_actions_sensitivity(self, *args):
         widget = self.focus_pane
@@ -1551,12 +1550,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
         start, end = buf.get_bounds()
         buffer_text = buf.get_text(start, end, False)
         if not loader.get_encoding() and '\\00' in buffer_text:
+            filename = GLib.markup_escape_text(gfile.get_parse_name())
             primary = _("File %s appears to be a binary file.") % filename
             secondary = _(
                 "Do you want to open the file using the default application?")
             self.msgarea_mgr[pane].add_action_msg(
                 'dialog-warning-symbolic', primary, secondary, _("Open"),
-                functools.partial(open_files_external, [gfile.get_path()]))
+                functools.partial(open_files_external, gfiles=[gfile]))
 
         self.update_buffer_writable(buf)
 

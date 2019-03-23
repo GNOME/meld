@@ -22,7 +22,7 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import Iterable, Sequence
+from typing import Iterable, List, Optional, Sequence
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -50,9 +50,9 @@ def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
 
 
 def open_files_external(
-        self, selected: Iterable[str], *, line: int = 0) -> None:
-    query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-                            Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+        paths: Optional[List[str]] = None, *,
+        gfiles: Optional[List[Gio.File]] = None,
+        line: int = 0) -> None:
 
     def os_open(path: str, uri: str):
         if not path:
@@ -100,7 +100,13 @@ def open_files_external(
             # TODO: Add some kind of 'failed to open' notification
             pass
 
-    for f in [Gio.File.new_for_path(s) for s in selected]:
+    query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+                            Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
+
+    if not gfiles:
+        gfiles = [Gio.File.new_for_path(s) for s in paths]
+
+    for f in gfiles:
         f.query_info_async(
             query_attrs, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW,
             None, open_cb, None)
