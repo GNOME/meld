@@ -29,7 +29,12 @@ from gi.repository import GtkSource
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _
-from meld.const import ActionMode, ChunkAction, NEWLINES
+from meld.const import (
+    ActionMode,
+    ChunkAction,
+    NEWLINES,
+    TEXT_FILTER_ACTION_FORMAT,
+)
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -239,7 +244,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
         self.undosequence = UndoSequence(self.textbuffer)
         self.text_filters = []
-        self.create_text_filters()
         self.settings_handlers = [
             meldsettings.connect(
                 "text-filters-changed", self.on_text_filters_changed)
@@ -339,6 +343,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             '/org/gnome/meld/ui/filediff-actions.ui')
         self.toolbar_actions = builder.get_object('view-toolbar')
         self.copy_action_button = builder.get_object('copy_action_button')
+
+        self.create_text_filters()
 
         # Handle sourcemap visibility binding
         self.bind_property(
@@ -473,6 +479,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if relevant_change:
             self.refresh_comparison()
 
+    def _update_text_filter(self, action, state):
+        self._action_text_filter_map[action].active = state.get_boolean()
+        action.set_state(state)
+        self.refresh_comparison()
+
     def create_text_filters(self):
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
@@ -481,7 +492,20 @@ class FileDiff(Gtk.VBox, MeldDoc):
         ]
         active_filters_changed = old_active != new_active
 
+        # TODO: Rework text_filters to use a map-like structure so that we
+        # don't need _action_text_filter_map.
+        self._action_text_filter_map = {}
         self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
+        for i, filt in enumerate(self.text_filters):
+            action = Gio.SimpleAction.new_stateful(
+                name=TEXT_FILTER_ACTION_FORMAT.format(i),
+                parameter_type=None,
+                state=GLib.Variant.new_boolean(filt.active),
+            )
+            action.connect('change-state', self._update_text_filter)
+            action.set_enabled(filt.filter is not None)
+            self.view_action_group.add_action(action)
+            self._action_text_filter_map[action] = filt
 
         return active_filters_changed
 

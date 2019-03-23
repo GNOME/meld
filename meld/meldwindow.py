@@ -26,7 +26,7 @@ from gi.repository import Gtk
 import meld.ui.gladesupport  # noqa: F401
 import meld.ui.util
 from meld.conf import _
-from meld.const import FILE_FILTER_ACTION_FORMAT
+from meld.const import FILE_FILTER_ACTION_FORMAT, TEXT_FILTER_ACTION_FORMAT
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.filemerge import FileMerge
@@ -51,6 +51,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     appvbox = Template.Child("appvbox")
     folder_filter_button = Template.Child()
+    text_filter_button = Template.Child()
     gear_menu_button = Template.Child("gear_menu_button")
     notebook = Template.Child("notebook")
     spinner = Template.Child("spinner")
@@ -116,6 +117,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.gear_menu_button.set_popover(
             Gtk.Popover.new_from_model(self.gear_menu_button, menu))
 
+        filter_model = app.get_menu_by_id("text-filter-menu")
+        self.text_filter_button.set_popover(
+            Gtk.Popover.new_from_model(self.text_filter_button, filter_model))
+
         filter_menu = app.get_menu_by_id("folder-status-filter-menu")
         self.folder_filter_button.set_popover(
             Gtk.Popover.new_from_model(self.folder_filter_button, filter_menu))
@@ -124,8 +129,11 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.vc_filter_button.set_popover(
             Gtk.Popover.new_from_model(self.vc_filter_button, vc_filter_model))
 
+        self.update_text_filters()
         self.update_filename_filters()
         self.settings_handlers = [
+            meldsettings.connect(
+                "text-filters-changed", self.update_text_filters),
             meldsettings.connect(
                 "file-filters-changed", self.update_filename_filters),
         ]
@@ -142,6 +150,18 @@ class MeldWindow(Gtk.ApplicationWindow):
         section.set_attribute([("id", "s", "custom-filter-section")])
         app = self.get_application()
         filter_model = app.get_menu_by_id("folder-status-filter-menu")
+        replace_menu_section(filter_model, section)
+
+    def update_text_filters(self, *args):
+        filter_items_model = Gio.Menu()
+        for i, filt in enumerate(meldsettings.text_filters):
+            name = TEXT_FILTER_ACTION_FORMAT.format(i)
+            filter_items_model.append(
+                label=filt.label, detailed_action=f'view.{name}')
+        section = Gio.MenuItem.new_section(None, filter_items_model)
+        section.set_attribute([("id", "s", "custom-filter-section")])
+        app = self.get_application()
+        filter_model = app.get_menu_by_id("text-filter-menu")
         replace_menu_section(filter_model, section)
 
     def on_widget_drag_data_received(
