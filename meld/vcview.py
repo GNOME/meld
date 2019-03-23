@@ -28,7 +28,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.melddoc import MeldDoc, open_files_external
 from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
 from meld.settings import bind_settings, settings
@@ -774,7 +774,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.run_diff(f)
 
     def action_open_external(self, *args):
-        self._open_files(self._get_selected_files())
+        open_files_external(self._get_selected_files())
 
     def refresh(self):
         root = self.model.get_iter_first()

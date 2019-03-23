@@ -42,7 +42,7 @@ from meld.meldbuffer import (
     BufferInsertionAction,
     BufferLines,
 )
-from meld.melddoc import ComparisonState, MeldDoc
+from meld.melddoc import ComparisonState, MeldDoc, open_files_external
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
@@ -1295,7 +1295,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         line = cursor_it.get_line() + 1
         # TODO: Support URI-based opens
         path = self.textbuffer[pane].data.gfile.get_path()
-        self._open_files([path], line)
+        open_files_external([path], line=line)
 
     def update_text_actions_sensitivity(self, *args):
         widget = self.focus_pane
@@ -1556,7 +1556,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 "Do you want to open the file using the default application?")
             self.msgarea_mgr[pane].add_action_msg(
                 'dialog-warning-symbolic', primary, secondary, _("Open"),
-                functools.partial(self._open_files, [gfile.get_path()]))
+                functools.partial(open_files_external, [gfile.get_path()]))
 
         self.update_buffer_writable(buf)
 

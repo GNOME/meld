@@ -33,7 +33,7 @@ from meld import misc, tree
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
 from meld.iohelpers import trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.melddoc import MeldDoc, open_files_external
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
@@ -1366,7 +1366,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         ]
         files = [f for f in files if f]
         if files:
-            self._open_files(files)
+            open_files_external(files)
 
     def action_copy_file_paths(self, *args):
         pane = self._get_focused_pane()
