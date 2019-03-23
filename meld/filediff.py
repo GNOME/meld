@@ -1903,7 +1903,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             title=_("Open File"),
             transient_for=self.get_toplevel(),
         )
-        dialog.set_file(self.textbuffer[pane].data.gfile)
+        if self.textbuffer[pane].data.gfile:
+            dialog.set_file(self.textbuffer[pane].data.gfile)
         response = dialog.run()
         gfile = dialog.get_file()
         encoding = dialog.get_encoding()
