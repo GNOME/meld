@@ -60,12 +60,13 @@ def test_classify_change_actions(mode, editable, chunk, expected_action):
 
     source_editable, target_editable = editable
 
-    renderer = ActionGutter()
-    renderer._source_view = mock.Mock()
-    renderer._source_view.get_editable.return_value = source_editable
-    renderer._target_view = mock.Mock()
-    renderer._target_view.get_editable.return_value = target_editable
-    renderer.action_mode = mode
+    with mock.patch.object(ActionGutter, 'icon_direction'):
+        renderer = ActionGutter()
+        renderer._source_view = mock.Mock()
+        renderer._source_view.get_editable.return_value = source_editable
+        renderer._target_view = mock.Mock()
+        renderer._target_view.get_editable.return_value = target_editable
+        renderer.action_mode = mode
 
-    action = renderer._classify_change_actions(chunk)
-    assert action == expected_action
+        action = renderer._classify_change_actions(chunk)
+        assert action == expected_action
