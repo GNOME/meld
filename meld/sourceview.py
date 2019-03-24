@@ -1,5 +1,5 @@
 # Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
-# Copyright (C) 2010-2011, 2013-2015 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2011, 2013-2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
