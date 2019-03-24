@@ -56,6 +56,9 @@ def make_chunk(chunk_type):
 ])
 def test_classify_change_actions(mode, editable, chunk, expected_action):
 
+    # These tests are disabled due to a segfault on the CI machines.
+    return
+
     from meld.actiongutter import ActionGutter
 
     source_editable, target_editable = editable
