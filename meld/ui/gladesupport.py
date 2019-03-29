@@ -4,6 +4,7 @@
 # can't be instantiated everywhere.
 
 from meld import actiongutter  # noqa: F401
+from meld import chunkmap  # noqa: F401
 from meld import diffgrid  # noqa: F401
 from meld import diffmap  # noqa: F401
 from meld import linkmap  # noqa: F401
