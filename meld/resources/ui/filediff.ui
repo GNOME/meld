@@ -3,6 +3,12 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <requires lib="meld.ui.gladesupport" version="0.0"/>
+  <object class="GtkAdjustment" id="pane_adjustment0">
+  </object>
+  <object class="GtkAdjustment" id="pane_adjustment1">
+  </object>
+  <object class="GtkAdjustment" id="pane_adjustment2">
+  </object>
   <template class="FileDiff" parent="GtkVBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -230,6 +236,7 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="vadjustment">pane_adjustment0</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview0">
@@ -277,6 +284,7 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="vadjustment">pane_adjustment2</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview2">
@@ -324,6 +332,7 @@
                 <property name="can_focus">False</property>
                 <property name="hexpand">True</property>
                 <property name="vexpand">True</property>
+                <property name="vadjustment">pane_adjustment1</property>
                 <signal name="size-allocate" handler="on_scrolledwindow_size_allocate" swapped="no"/>
                 <child>
                   <object class="MeldSourceView" id="textview1">
@@ -597,30 +606,70 @@
             <property name="reveal-child">True</property>
             <property name="transition-type">GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT</property>
             <child>
-              <object class="GtkBox" id="sourcemap_hbox">
+              <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <property name="orientation">horizontal</property>
-                <property name="spacing">2</property>
-                <style>
-                  <class name="sourcemap-container"/>
-                </style>
                 <child>
-                  <object class="MeldSourceMap" id="sourcemap0">
-                    <property name="view">textview0</property>
-                    <property name="visible">True</property>
+                  <object class="GtkBox" id="sourcemap_hbox">
+                    <property name="visible">False</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">2</property>
+                    <style>
+                      <class name="sourcemap-container"/>
+                    </style>
+                    <child>
+                      <object class="MeldSourceMap" id="sourcemap0">
+                        <property name="view">textview0</property>
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="MeldSourceMap" id="sourcemap1">
+                        <property name="view">textview1</property>
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="MeldSourceMap" id="sourcemap2">
+                        <property name="view">textview2</property>
+                        <property name="visible">True</property>
+                      </object>
+                    </child>
                   </object>
-                </child>
-                <child>
-                  <object class="MeldSourceMap" id="sourcemap1">
-                    <property name="view">textview1</property>
+                  <object class="GtkBox" id="chunkmap_hbox">
                     <property name="visible">True</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="MeldSourceMap" id="sourcemap2">
-                    <property name="view">textview2</property>
-                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="orientation">horizontal</property>
+                    <property name="spacing">2</property>
+                    <style>
+                      <class name="sourcemap-container"/>
+                    </style>
+                    <child>
+                      <object class="ChunkMap" id="chunkmap0">
+                        <property name="visible">True</property>
+                        <property name="width_request">15</property>
+                        <property name="adjustment">pane_adjustment0</property>
+                        <property name="textview">textview0</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ChunkMap" id="chunkmap1">
+                        <property name="visible">True</property>
+                        <property name="width_request">15</property>
+                        <property name="adjustment">pane_adjustment1</property>
+                        <property name="textview">textview1</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="ChunkMap" id="chunkmap2">
+                        <property name="visible">True</property>
+                        <property name="width_request">15</property>
+                        <property name="adjustment">pane_adjustment2</property>
+                        <property name="textview">textview2</property>
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>

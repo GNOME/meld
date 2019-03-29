@@ -131,6 +131,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     actiongutter1 = Template.Child()
     actiongutter2 = Template.Child()
     actiongutter3 = Template.Child()
+    chunkmap0 = Template.Child()
+    chunkmap1 = Template.Child()
+    chunkmap2 = Template.Child()
     dummy_toolbar_actiongutter0 = Template.Child()
     dummy_toolbar_actiongutter1 = Template.Child()
     dummy_toolbar_actiongutter2 = Template.Child()
@@ -232,6 +235,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
             "file_open_button", "statusbar",
             "actiongutter", "dummy_toolbar_actiongutter",
+            "chunkmap",
         ]
         map_widgets_into_lists(self, widget_lists)
 
@@ -1555,6 +1559,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def on_diffs_changed(self, linediffer, chunk_changes):
 
+        for pane in range(self.num_panes):
+            pane_changes = list(self.linediffer.single_changes(pane))
+            self.chunkmap[pane].chunks = pane_changes
+
         # TODO: Break out highlight recalculation to its own method,
         # and just update chunk lists in children here.
         for gutter in self.actiongutter:
@@ -2090,6 +2098,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.vbox[:n] + self.file_toolbar[:n] + self.sourcemap[:n] +
                 self.linkmap[:n - 1] + self.dummy_toolbar_linkmap[:n - 1] +
                 self.statusbar[:n] +
+                self.chunkmap[:n] +
                 self.actiongutter[:(n - 1) * 2] +
                 self.dummy_toolbar_actiongutter[:(n - 1) * 2]):
             widget.show()
@@ -2098,6 +2107,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.vbox[n:] + self.file_toolbar[n:] + self.sourcemap[n:] +
                 self.linkmap[n - 1:] + self.dummy_toolbar_linkmap[n - 1:] +
                 self.statusbar[n:] +
+                self.chunkmap[n:] +
                 self.actiongutter[(n - 1) * 2:] +
                 self.dummy_toolbar_actiongutter[(n - 1) * 2:]):
             widget.hide()
