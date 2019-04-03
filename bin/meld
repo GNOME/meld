@@ -219,7 +219,7 @@ def check_requirements():
         assert hasattr(GtkSource, 'SearchSettings')
         assert hasattr(GtkSource, 'Tag')
     except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GtkSourceView", gtksourceview_requirement, e)
+        missing_reqs("GtkSourceView 3", gtksourceview_requirement, e)
 
 
 def setup_resources():
