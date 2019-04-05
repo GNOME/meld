@@ -277,6 +277,7 @@ class PreferencesDialog(Gtk.Dialog):
     column_list_vbox = Template.Child()
     combo_file_order = Template.Child()
     combo_merge_order = Template.Child()
+    combo_overview_map = Template.Child()
     combo_timestamp = Template.Child()
     combobox_style_scheme = Template.Child()
     custom_edit_command_entry = Template.Child()
@@ -357,6 +358,7 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
+        self.combo_overview_map.bind_to('overview-map-style')
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes

@@ -519,19 +519,49 @@
                               </packing>
                             </child>
                             <child>
-                              <object class="GtkCheckButton" id="checkbutton_use_compact_sourcemap">
-                                <property name="label" translatable="yes">Use compact overview map</property>
+                              <object class="GtkHBox">
                                 <property name="visible">True</property>
-                                <property name="can_focus">True</property>
-                                <property name="receives_default">False</property>
-                                <property name="use_underline">True</property>
-                                <property name="active">True</property>
-                                <property name="draw_indicator">True</property>
+                                <property name="can_focus">False</property>
+                                <property name="spacing">6</property>
+                                <child>
+                                  <object class="GtkLabel">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Overview map style:</property>
+                                    <property name="use_underline">True</property>
+                                    <property name="xalign">0</property>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">False</property>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GSettingsStringComboBox" id="combo_overview_map">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="model">overviewstylestore</property>
+                                    <property name="active">0</property>
+                                    <property name="gsettings-column">0</property>
+                                    <child>
+                                      <object class="GtkCellRendererText" id="overview_style_renderer"/>
+                                      <attributes>
+                                        <attribute name="text">1</attribute>
+                                      </attributes>
+                                    </child>
+                                  </object>
+                                  <packing>
+                                    <property name="expand">False</property>
+                                    <property name="fill">True</property>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
-                                <property name="fill">True</property>
-                                <property name="position">1</property>
+                                <property name="fill">False</property>
+                                <property name="position">0</property>
                               </packing>
                             </child>
                           </object>
@@ -1660,6 +1690,28 @@
       <row>
         <col id="0">True</col>
         <col id="1" translatable="yes">Left is local, right is remote</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="overviewstylestore">
+    <columns>
+      <!-- column-name id -->
+      <column type="gchararray"/>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0">chunkmap</col>
+        <col id="1" translatable="yes">Simple change map</col>
+      </row>
+      <row>
+        <col id="0">compact-sourcemap</col>
+        <col id="1" translatable="yes">Compact source map</col>
+      </row>
+      <row>
+        <col id="0">full-sourcemap</col>
+        <col id="1" translatable="yes">Full source map</col>
       </row>
     </data>
   </object>

@@ -117,6 +117,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     __gsettings_bindings_view__ = (
         ('ignore-blank-lines', 'ignore-blank-lines'),
         ('show-sourcemap', 'show-sourcemap'),
+        ('overview-map-style', 'overview-map-style'),
     )
 
     ignore_blank_lines = GObject.Property(
@@ -126,6 +127,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=False,
     )
     show_sourcemap = GObject.Property(type=bool, default=True)
+    overview_map_style = GObject.Property(type=str, default='chunkmap')
 
     actiongutter0 = Template.Child()
     actiongutter1 = Template.Child()
@@ -134,6 +136,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     chunkmap0 = Template.Child()
     chunkmap1 = Template.Child()
     chunkmap2 = Template.Child()
+    chunkmap_hbox = Template.Child()
     dummy_toolbar_actiongutter0 = Template.Child()
     dummy_toolbar_actiongutter1 = Template.Child()
     dummy_toolbar_actiongutter2 = Template.Child()
@@ -170,6 +173,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     sourcemap0 = Template.Child()
     sourcemap1 = Template.Child()
     sourcemap2 = Template.Child()
+    sourcemap_hbox = Template.Child()
     statusbar0 = Template.Child()
     statusbar1 = Template.Child()
     statusbar2 = Template.Child()
@@ -350,13 +354,18 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.create_text_filters()
 
-        # Handle sourcemap visibility binding
+        # Handle overview map visibility binding
         self.bind_property(
             'show-sourcemap', self.sourcemap_revealer, 'reveal-child',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
         self.sourcemap_revealer.bind_property(
             'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
+
+        # Handle overview map style mapping manually
+        self.connect(
+            'notify::overview-map-style', self.on_overview_map_style_changed)
+        self.on_overview_map_style_changed()
 
         for buf in self.textbuffer:
             buf.undo_sequence = self.undosequence
@@ -485,6 +494,14 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 self.findbar.hide()
         elif event.type == Gdk.EventType.KEY_RELEASE:
             self.keymask &= ~mod_key
+
+    def on_overview_map_style_changed(self, *args):
+        style = self.props.overview_map_style
+        self.chunkmap_hbox.set_visible(style == 'chunkmap')
+        self.sourcemap_hbox.set_visible(
+            style in ('compact-sourcemap', 'full-sourcemap'))
+        for sourcemap in self.sourcemap:
+            sourcemap.props.compact_view = style == 'compact-sourcemap'
 
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
