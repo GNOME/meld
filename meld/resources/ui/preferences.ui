@@ -22,13 +22,21 @@
     <property name="title" translatable="yes">Preferences</property>
     <property name="resizable">False</property>
     <property name="modal">True</property>
+    <property name="destroy_with_parent">True</property>
     <property name="type_hint">dialog</property>
+    <property name="use-header-bar">1</property>
     <signal name="response" handler="on_response" swapped="no"/>
-    <child>
-      <placeholder/>
+    <child type="titlebar">
+      <object class="GtkHeaderBar" id="header_bar">
+        <property name="title" translatable="yes">Preferences</property>
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="show-close-button">True</property>
+       </object>
     </child>
     <child internal-child="vbox">
       <object class="GtkBox" id="dialog-vbox4">
+        <property name="border-width">0</property>
         <property name="visible">True</property>
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
