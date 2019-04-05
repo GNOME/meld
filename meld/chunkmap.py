@@ -109,6 +109,7 @@ class ChunkMap(Gtk.DrawingArea):
     def on_setting_changed(self, meldsettings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
+            self._cached_map = None
 
     def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
