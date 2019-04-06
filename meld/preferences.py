@@ -268,7 +268,7 @@ class PreferencesDialog(Gtk.Dialog):
     checkbutton_shallow_compare = Template.Child()
     checkbutton_show_commit_margin = Template.Child()
     checkbutton_show_line_numbers = Template.Child()
-    checkbutton_show_sourcemap = Template.Child()
+    checkbutton_show_overview_map = Template.Child()
     checkbutton_show_whitespace = Template.Child()
     checkbutton_spaces_instead_of_tabs = Template.Child()
     checkbutton_use_syntax_highlighting = Template.Child()
@@ -307,7 +307,7 @@ class PreferencesDialog(Gtk.Dialog):
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
-            ('show-sourcemap', self.checkbutton_show_sourcemap, 'active'),
+            ('show-overview-map', self.checkbutton_show_overview_map, 'active'),
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
             ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),  # noqa: E501
             ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),  # noqa: E501

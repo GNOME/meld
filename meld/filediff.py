@@ -116,7 +116,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     __gsettings_bindings_view__ = (
         ('ignore-blank-lines', 'ignore-blank-lines'),
-        ('show-sourcemap', 'show-sourcemap'),
+        ('show-overview-map', 'show-overview-map'),
         ('overview-map-style', 'overview-map-style'),
     )
 
@@ -126,7 +126,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         blurb="Whether to ignore blank lines when comparing file contents",
         default=False,
     )
-    show_sourcemap = GObject.Property(type=bool, default=True)
+    show_overview_map = GObject.Property(type=bool, default=True)
     overview_map_style = GObject.Property(type=str, default='chunkmap')
 
     actiongutter0 = Template.Child()
@@ -289,7 +289,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.view_action_group = Gio.SimpleActionGroup()
 
         property_actions = (
-            ('show-sourcemap', self, 'show-sourcemap'),
+            ('show-overview-map', self, 'show-overview-map'),
             ('lock-scrolling', self, 'lock_scrolling'),
         )
         for action_name, obj, prop_name in property_actions:
@@ -356,7 +356,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # Handle overview map visibility binding
         self.bind_property(
-            'show-sourcemap', self.sourcemap_revealer, 'reveal-child',
+            'show-overview-map', self.sourcemap_revealer, 'reveal-child',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
         self.sourcemap_revealer.bind_property(
