@@ -908,7 +908,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
-        elif not expanded:
+        elif rootpath == Gtk.TreePath.new_first() and not expanded:
             self._show_identical_status()
 
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
