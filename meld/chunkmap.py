@@ -34,16 +34,7 @@ class ChunkMap(Gtk.DrawingArea):
 
     adjustment = GObject.Property(
         type=Gtk.Adjustment,
-        nick='Adjustment used for scrolling the mapped textview',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
-    )
-
-    textview = GObject.Property(
-        type=Gtk.TextView,
-        nick='Textview being mapped',
+        nick='Adjustment used for scrolling the mapped view',
         flags=(
             GObject.ParamFlags.READWRITE |
             GObject.ParamFlags.CONSTRUCT_ONLY
@@ -64,7 +55,7 @@ class ChunkMap(Gtk.DrawingArea):
 
     @GObject.Property(
         type=GObject.TYPE_PYOBJECT,
-        nick='Chunks defining regions in the mapped textview',
+        nick='Chunks defining regions in the mapped view',
     )
     def chunks(self):
         return self._chunks
@@ -113,29 +104,10 @@ class ChunkMap(Gtk.DrawingArea):
 
     def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
-
-        buf = self.textview.get_buffer()
-
-        tagged_diffs: Mapping[str, List[Tuple[float, float]]]
-        tagged_diffs = collections.defaultdict(list)
-
-        y, h = self.textview.get_line_yrange(buf.get_end_iter())
-        max_y = float(y + h)
-        for chunk in self.chunks:
-            start_iter = buf.get_iter_at_line(chunk.start_a)
-            y0, _ = self.textview.get_line_yrange(start_iter)
-            if chunk.start_a == chunk.end_a:
-                y, h = y0, 0
-            else:
-                end_iter = buf.get_iter_at_line(chunk.end_a - 1)
-                y, h = self.textview.get_line_yrange(end_iter)
-
-            tagged_diffs[chunk.tag].append((y0 / max_y, (y + h) / max_y))
-
-        return tagged_diffs
+        raise NotImplementedError()
 
     def do_draw(self, context: cairo.Context) -> bool:
-        if not self.adjustment or not self.textview:
+        if not self.adjustment:
             return False
 
         height = self.get_allocated_height()
@@ -186,6 +158,9 @@ class ChunkMap(Gtk.DrawingArea):
 
         return True
 
+    def _scroll_to_location(self, location: float):
+        raise NotImplementedError()
+
     def _scroll_fraction(self, position: float):
         """Scroll the mapped textview to the given position
 
@@ -201,8 +176,7 @@ class ChunkMap(Gtk.DrawingArea):
         adj = self.adjustment
         location = fraction * (adj.get_upper() - adj.get_lower())
 
-        _, it = self.textview.get_iter_at_location(0, location)
-        self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+        self._scroll_to_location(location)
 
     def do_button_press_event(self, event: Gdk.EventButton) -> bool:
         if event.button == 1:
@@ -222,7 +196,56 @@ class ChunkMap(Gtk.DrawingArea):
         return False
 
     def do_motion_notify_event(self, event: Gdk.EventMotion) -> bool:
-        if self._have_grab and self.textview:
+        if self._have_grab:
             self._scroll_fraction(event.y)
 
         return True
+
+
+class TextViewChunkMap(ChunkMap):
+
+    __gtype_name__ = 'TextViewChunkMap'
+
+    textview = GObject.Property(
+        type=Gtk.TextView,
+        nick='Textview being mapped',
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    def chunk_coords_by_tag(self):
+
+        buf = self.textview.get_buffer()
+
+        tagged_diffs: Mapping[str, List[Tuple[float, float]]]
+        tagged_diffs = collections.defaultdict(list)
+
+        y, h = self.textview.get_line_yrange(buf.get_end_iter())
+        max_y = float(y + h)
+        for chunk in self.chunks:
+            start_iter = buf.get_iter_at_line(chunk.start_a)
+            y0, _ = self.textview.get_line_yrange(start_iter)
+            if chunk.start_a == chunk.end_a:
+                y, h = y0, 0
+            else:
+                end_iter = buf.get_iter_at_line(chunk.end_a - 1)
+                y, h = self.textview.get_line_yrange(end_iter)
+
+            tagged_diffs[chunk.tag].append((y0 / max_y, (y + h) / max_y))
+
+        return tagged_diffs
+
+    def do_draw(self, context: cairo.Context) -> bool:
+        if not self.textview:
+            return False
+
+        return ChunkMap.do_draw(self, context)
+
+    def _scroll_to_location(self, location: float):
+        if not self.textview:
+            return
+
+        _, it = self.textview.get_iter_at_location(0, location)
+        self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
