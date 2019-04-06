@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
 <interface>
-  <!-- interface-requires gtk+ 3.0 -->
-  <!-- interface-requires meld.ui.gladesupport 0.0 -->
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="meld.ui.gladesupport" version="0.0"/>
   <template class="DirDiff" parent="GtkVBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -13,16 +14,12 @@
           <object class="GtkToolbar" id="file_toolbar0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
             <child>
               <object class="GtkToolItem" id="fileentry_toolitem0">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
                 <child>
                   <object class="GtkFileChooserButton" id="fileentry0">
                     <property name="visible">True</property>
@@ -35,30 +32,28 @@
               </object>
               <packing>
                 <property name="expand">True</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
           </object>
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkToolbar" id="file_toolbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
             <child>
               <object class="GtkToolItem" id="fileentry_toolitem1">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
                 <child>
                   <object class="GtkFileChooserButton" id="fileentry1">
                     <property name="visible">True</property>
@@ -71,30 +66,28 @@
               </object>
               <packing>
                 <property name="expand">True</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
           </object>
           <packing>
             <property name="left_attach">3</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
           <object class="GtkToolbar" id="file_toolbar2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show-arrow">False</property>
-            <property name="icon-size">1</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
+            <property name="show_arrow">False</property>
+            <property name="icon_size">1</property>
             <child>
               <object class="GtkToolItem" id="fileentry_toolitem2">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="receives_default">False</property>
                 <child>
                   <object class="GtkFileChooserButton" id="fileentry2">
                     <property name="visible">True</property>
@@ -107,14 +100,16 @@
               </object>
               <packing>
                 <property name="expand">True</property>
+                <property name="homogeneous">False</property>
               </packing>
             </child>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
           </object>
           <packing>
             <property name="left_attach">5</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -128,8 +123,6 @@
           <packing>
             <property name="left_attach">6</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -141,8 +134,6 @@
           <packing>
             <property name="left_attach">6</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -156,8 +147,6 @@
           <packing>
             <property name="left_attach">4</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -172,8 +161,6 @@
           <packing>
             <property name="left_attach">4</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -187,8 +174,6 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -200,8 +185,6 @@
           <packing>
             <property name="left_attach">0</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -215,8 +198,6 @@
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">0</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -231,8 +212,6 @@
           <packing>
             <property name="left_attach">2</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -259,9 +238,8 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="overlay-scrolling">False</property>
                 <property name="window_placement">top-right</property>
-                <property name="window_placement_set">True</property>
+                <property name="overlay_scrolling">False</property>
                 <child>
                   <object class="GtkTreeView" id="treeview0">
                     <property name="visible">True</property>
@@ -270,11 +248,11 @@
                     <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
                     <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
                     <signal name="focus-in-event" handler="on_treeview_focus_in_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
                     <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
                     <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="treeview-selection1"/>
                     </child>
@@ -291,8 +269,6 @@
           <packing>
             <property name="left_attach">1</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -319,7 +295,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="overlay-scrolling">False</property>
+                <property name="overlay_scrolling">False</property>
                 <child>
                   <object class="GtkTreeView" id="treeview1">
                     <property name="visible">True</property>
@@ -328,11 +304,11 @@
                     <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
                     <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
                     <signal name="focus-in-event" handler="on_treeview_focus_in_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
                     <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
                     <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="treeview-selection2"/>
                     </child>
@@ -349,8 +325,6 @@
           <packing>
             <property name="left_attach">3</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
         <child>
@@ -377,7 +351,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="overlay-scrolling">False</property>
+                <property name="overlay_scrolling">False</property>
                 <child>
                   <object class="GtkTreeView" id="treeview2">
                     <property name="visible">True</property>
@@ -386,11 +360,11 @@
                     <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/>
                     <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
                     <signal name="focus-in-event" handler="on_treeview_focus_in_event" swapped="no"/>
-                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <signal name="key-press-event" handler="on_treeview_key_press_event" swapped="no"/>
+                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
                     <signal name="row-activated" handler="on_treeview_row_activated" swapped="no"/>
                     <signal name="row-collapsed" handler="on_treeview_row_collapsed" swapped="no"/>
-                    <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/>
+                    <signal name="row-expanded" handler="on_treeview_row_expanded" swapped="no"/>
                     <child internal-child="selection">
                       <object class="GtkTreeSelection" id="treeview-selection3"/>
                     </child>
@@ -407,8 +381,6 @@
           <packing>
             <property name="left_attach">5</property>
             <property name="top_attach">1</property>
-            <property name="width">1</property>
-            <property name="height">1</property>
           </packing>
         </child>
       </object>
