@@ -104,6 +104,9 @@ class ChunkMap(Gtk.DrawingArea):
             self.fill_colors, self.line_colors = get_common_theme()
             self._cached_map = None
 
+    def get_height_scale(self) -> float:
+        return 1.0
+
     def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
         raise NotImplementedError()
@@ -120,6 +123,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         x0 = self.overdraw_padding + 0.5
         x1 = width - 2 * x0
+        height_scale = height * self.get_height_scale()
 
         if self._cached_map is None:
             surface = cairo.Surface.create_similar(
@@ -134,7 +138,7 @@ class ChunkMap(Gtk.DrawingArea):
             for tag, diffs in tagged_diffs.items():
                 cache_ctx.set_source_rgba(*self.fill_colors[tag])
                 for y0, y1 in diffs:
-                    y0, y1 = round(y0 * height) + 0.5, round(y1 * height) - 0.5
+                    y0, y1 = round(y0 * height_scale) + 0.5, round(y1 * height_scale) - 0.5
                     cache_ctx.rectangle(x0, y0, x1, y1 - y0)
                 cache_ctx.fill_preserve()
                 cache_ctx.set_source_rgba(*self.line_colors[tag])
@@ -151,8 +155,8 @@ class ChunkMap(Gtk.DrawingArea):
         adj_y = self.adjustment.get_value() / self.adjustment.get_upper()
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
         context.rectangle(
-            x0 - self.overdraw_padding, round(height * adj_y) + 0.5,
-            x1 + 2 * self.overdraw_padding, round(height * adj_h) - 1,
+            x0 - self.overdraw_padding, round(height_scale * adj_y) + 0.5,
+            x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
         )
         context.fill_preserve()
         Gdk.cairo_set_source_rgba(context, self.handle_outline)
@@ -174,7 +178,8 @@ class ChunkMap(Gtk.DrawingArea):
         if not self.adjustment:
             return
 
-        fraction = position / self.get_allocated_height()
+        height = self.get_height_scale() * self.get_allocated_height()
+        fraction = position / height
         adj = self.adjustment
         location = fraction * (adj.get_upper() - adj.get_lower())
 
@@ -216,6 +221,36 @@ class TextViewChunkMap(ChunkMap):
             GObject.ParamFlags.CONSTRUCT_ONLY
         ),
     )
+
+    paired_adjustment_1 = GObject.Property(
+        type=Gtk.Adjustment,
+        nick='Paired adjustment used for scaling the map',
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    paired_adjustment_2 = GObject.Property(
+        type=Gtk.Adjustment,
+        nick='Paired adjustment used for scaling the map',
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    def get_height_scale(self):
+        adjustments = [
+            self.props.adjustment,
+            self.props.paired_adjustment_1,
+            self.props.paired_adjustment_2,
+        ]
+        heights = [
+            adj.get_upper() for adj in adjustments
+            if adj.get_upper() > 0
+        ]
+        return self.props.adjustment.get_upper() / max(heights)
 
     def chunk_coords_by_tag(self):
 
