@@ -138,7 +138,8 @@ class ChunkMap(Gtk.DrawingArea):
             for tag, diffs in tagged_diffs.items():
                 cache_ctx.set_source_rgba(*self.fill_colors[tag])
                 for y0, y1 in diffs:
-                    y0, y1 = round(y0 * height_scale) + 0.5, round(y1 * height_scale) - 0.5
+                    y0 = round(y0 * height_scale) + 0.5
+                    y1 = round(y1 * height_scale) - 0.5
                     cache_ctx.rectangle(x0, y0, x1, y1 - y0)
                 cache_ctx.fill_preserve()
                 cache_ctx.set_source_rgba(*self.line_colors[tag])
