@@ -494,6 +494,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                     self.treeview.expand_to_path(treepath)
 
         self.treeview.expand_row(Gtk.TreePath.new_first(), False)
+        self.treeview.set_cursor(Gtk.TreePath.new_first())
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     @Template.Callback()
