@@ -42,16 +42,16 @@ class ChunkMap(Gtk.DrawingArea):
         ),
     )
 
-    handle_overdraw = GObject.Property(
-        type=Gdk.RGBA,
-        nick='Color of the document handle overdraw',
-        default=Gdk.RGBA(0.0, 0.0, 0.0, 0.2)
+    handle_overdraw_alpha = GObject.Property(
+        type=float,
+        nick='Alpha of the document handle overdraw',
+        default=0.2,
     )
 
-    handle_outline = GObject.Property(
-        type=Gdk.RGBA,
-        nick='Color of the document handle outline',
-        default=Gdk.RGBA(0.0, 0.0, 0.0, 0.4)
+    handle_outline_alpha = GObject.Property(
+        type=float,
+        nick='Alpha of the document handle outline',
+        default=0.4,
     )
 
     @GObject.Property(
@@ -107,6 +107,33 @@ class ChunkMap(Gtk.DrawingArea):
     def get_height_scale(self) -> float:
         return 1.0
 
+    def get_map_base_colors(
+            self) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
+        raise NotImplementedError()
+
+    def _make_map_base_colors(
+            self, widget) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
+        stylecontext = widget.get_style_context()
+        base_set, base = (
+            stylecontext.lookup_color('theme_base_color'))
+        if not base_set:
+            base = Gdk.RGBA(1.0, 1.0, 1.0, 1.0)
+        text_set, text = (
+            stylecontext.lookup_color('theme_text_color'))
+        if not text_set:
+            base = Gdk.RGBA(0.0, 0.0, 0.0, 1.0)
+        border_set, border = (
+            stylecontext.lookup_color('borders'))
+        if not border_set:
+            base = Gdk.RGBA(0.95, 0.95, 0.95, 1.0)
+
+        handle_overdraw = text.copy()
+        handle_overdraw.alpha = self.handle_overdraw_alpha
+        handle_outline = text.copy()
+        handle_outline.alpha = self.handle_outline_alpha
+
+        return base, border, handle_overdraw, handle_outline
+
     def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
         raise NotImplementedError()
@@ -121,6 +148,9 @@ class ChunkMap(Gtk.DrawingArea):
         if width <= 0 or height <= 0:
             return False
 
+        base_bg, base_outline, handle_overdraw, handle_outline = (
+            self.get_map_base_colors())
+
         x0 = self.overdraw_padding + 0.5
         x1 = width - 2 * x0
         height_scale = height * self.get_height_scale()
@@ -130,6 +160,10 @@ class ChunkMap(Gtk.DrawingArea):
                 context.get_target(), cairo.CONTENT_COLOR_ALPHA, width, height)
             cache_ctx = cairo.Context(surface)
             cache_ctx.set_line_width(1)
+
+            cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
+            cache_ctx.set_source_rgba(*base_bg)
+            cache_ctx.fill()
 
             # We get drawing coordinates by tag to minimise our source
             # colour setting, and make this loop slightly cleaner.
@@ -145,6 +179,10 @@ class ChunkMap(Gtk.DrawingArea):
                 cache_ctx.set_source_rgba(*self.line_colors[tag])
                 cache_ctx.stroke()
 
+            cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
+            cache_ctx.set_source_rgba(*base_outline)
+            cache_ctx.stroke()
+
             self._cached_map = surface
 
         context.set_source_surface(self._cached_map, 0, 0)
@@ -152,7 +190,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         # Draw our scroll position indicator
         context.set_line_width(1)
-        Gdk.cairo_set_source_rgba(context, self.handle_overdraw)
+        context.set_source_rgba(*handle_overdraw)
         adj_y = self.adjustment.get_value() / self.adjustment.get_upper()
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
         context.rectangle(
@@ -160,7 +198,7 @@ class ChunkMap(Gtk.DrawingArea):
             x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
         )
         context.fill_preserve()
-        Gdk.cairo_set_source_rgba(context, self.handle_outline)
+        context.set_source_rgba(*handle_outline)
         context.stroke()
 
         return True
@@ -253,6 +291,9 @@ class TextViewChunkMap(ChunkMap):
         ]
         return self.props.adjustment.get_upper() / max(heights)
 
+    def get_map_base_colors(self):
+        return self._make_map_base_colors(self.textview)
+
     def chunk_coords_by_tag(self):
 
         buf = self.textview.get_buffer()
@@ -343,6 +384,9 @@ class TreeViewChunkMap(ChunkMap):
 
     def clear_cached_map(self, *args):
         self._cached_map = None
+
+    def get_map_base_colors(self):
+        return self._make_map_base_colors(self.treeview)
 
     def chunk_coords_by_tag(self):
         def recurse_tree_states(rowiter):
