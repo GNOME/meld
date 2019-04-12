@@ -3,6 +3,9 @@
 <interface>
   <requires lib="gtk+" version="3.20"/>
   <requires lib="meld.ui.gladesupport" version="0.0"/>
+  <object class="GtkAdjustment" id="pane_adjustment0"/>
+  <object class="GtkAdjustment" id="pane_adjustment1"/>
+  <object class="GtkAdjustment" id="pane_adjustment2"/>
   <template class="DirDiff" parent="GtkVBox">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
@@ -40,7 +43,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">0</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -74,7 +77,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -108,32 +111,8 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">5</property>
+            <property name="left_attach">4</property>
             <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_diffmap1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="DiffMap" id="diffmap1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="vexpand">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">6</property>
-            <property name="top_attach">1</property>
           </packing>
         </child>
         <child>
@@ -145,7 +124,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">4</property>
+            <property name="left_attach">3</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -159,31 +138,7 @@
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">4</property>
-            <property name="top_attach">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkToolbar" id="dummy_toolbar_diffmap0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
-            <property name="top_attach">0</property>
-          </packing>
-        </child>
-        <child>
-          <object class="DiffMap" id="diffmap0">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="vexpand">True</property>
-          </object>
-          <packing>
-            <property name="left_attach">0</property>
+            <property name="left_attach">3</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -196,7 +151,7 @@
             </style>
           </object>
           <packing>
-            <property name="left_attach">2</property>
+            <property name="left_attach">1</property>
             <property name="top_attach">0</property>
           </packing>
         </child>
@@ -210,7 +165,7 @@
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
-            <property name="left_attach">2</property>
+            <property name="left_attach">1</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -238,8 +193,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="window_placement">top-right</property>
-                <property name="overlay_scrolling">False</property>
+                <property name="vadjustment">pane_adjustment0</property>
                 <child>
                   <object class="GtkTreeView" id="treeview0">
                     <property name="visible">True</property>
@@ -267,7 +221,7 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">1</property>
+            <property name="left_attach">0</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -295,7 +249,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
-                <property name="overlay_scrolling">False</property>
+                <property name="vadjustment">pane_adjustment1</property>
                 <child>
                   <object class="GtkTreeView" id="treeview1">
                     <property name="visible">True</property>
@@ -323,7 +277,7 @@
             </child>
           </object>
           <packing>
-            <property name="left_attach">3</property>
+            <property name="left_attach">2</property>
             <property name="top_attach">1</property>
           </packing>
         </child>
@@ -351,6 +305,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="vexpand">True</property>
+                <property name="vadjustment">pane_adjustment2</property>
                 <property name="overlay_scrolling">False</property>
                 <child>
                   <object class="GtkTreeView" id="treeview2">
@@ -379,8 +334,85 @@
             </child>
           </object>
           <packing>
+            <property name="left_attach">4</property>
+            <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkRevealer" id="overview_map_revealer">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="transition_type">slide-right</property>
+            <property name="reveal_child">True</property>
+            <child>
+              <object class="GtkBox" id="chunkmap_hbox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="spacing">2</property>
+                <child>
+                  <object class="TreeViewChunkMap" id="chunkmap0">
+                    <property name="visible">True</property>
+                    <property name="width_request">15</property>
+                    <property name="adjustment">pane_adjustment0</property>
+                    <property name="treeview">treeview0</property>
+                    <property name="treeview_idx">0</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="TreeViewChunkMap" id="chunkmap1">
+                    <property name="visible">True</property>
+                    <property name="width_request">15</property>
+                    <property name="adjustment">pane_adjustment1</property>
+                    <property name="treeview">treeview1</property>
+                    <property name="treeview_idx">1</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="TreeViewChunkMap" id="chunkmap2">
+                    <property name="visible">True</property>
+                    <property name="width_request">15</property>
+                    <property name="adjustment">pane_adjustment2</property>
+                    <property name="treeview">treeview2</property>
+                    <property name="treeview_idx">2</property>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="fill">True</property>
+                    <property name="position">2</property>
+                  </packing>
+                </child>
+                <style>
+                  <class name="sourcemap-container"/>
+                </style>
+              </object>
+            </child>
+          </object>
+          <packing>
             <property name="left_attach">5</property>
             <property name="top_attach">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkToolbar" id="dummy_toolbar_overview_map">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <style>
+              <class name="meld-notebook-toolbar"/>
+            </style>
+          </object>
+          <packing>
+            <property name="left_attach">5</property>
+            <property name="top_attach">0</property>
           </packing>
         </child>
       </object>

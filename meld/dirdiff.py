@@ -348,6 +348,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         default=100,
     )
 
+    show_overview_map = GObject.Property(type=bool, default=True)
+
+    chunkmap0 = Template.Child()
+    chunkmap1 = Template.Child()
+    chunkmap2 = Template.Child()
     treeview0 = Template.Child()
     treeview1 = Template.Child()
     treeview2 = Template.Child()
@@ -357,33 +362,21 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     scrolledwindow0 = Template.Child()
     scrolledwindow1 = Template.Child()
     scrolledwindow2 = Template.Child()
-    diffmap0 = Template.Child()
-    diffmap1 = Template.Child()
     linkmap0 = Template.Child()
     linkmap1 = Template.Child()
     msgarea_mgr0 = Template.Child()
     msgarea_mgr1 = Template.Child()
     msgarea_mgr2 = Template.Child()
+    overview_map_revealer = Template.Child()
     vbox0 = Template.Child()
     vbox1 = Template.Child()
     vbox2 = Template.Child()
+    dummy_toolbar_overview_map = Template.Child()
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
     file_toolbar0 = Template.Child()
     file_toolbar1 = Template.Child()
     file_toolbar2 = Template.Child()
-
-    """Dictionary mapping tree states to corresponding difflib-like terms"""
-    chunk_type_map = {
-        tree.STATE_NORMAL: None,
-        tree.STATE_NOCHANGE: None,
-        tree.STATE_NEW: "insert",
-        tree.STATE_ERROR: "error",
-        tree.STATE_EMPTY: None,
-        tree.STATE_MODIFIED: "replace",
-        tree.STATE_MISSING: "delete",
-        tree.STATE_NONEXIST: "delete",
-    }
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
@@ -406,6 +399,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.init_template()
         bind_settings(self)
 
+        self.view_action_group = Gio.SimpleActionGroup()
+
+        property_actions = (
+            ('show-overview-map', self, 'show-overview-map'),
+        )
+        for action_name, obj, prop_name in property_actions:
+            action = Gio.PropertyAction.new(action_name, obj, prop_name)
+            self.view_action_group.add_action(action)
+
         # Manually handle GAction additions
         actions = (
             ('find', self.action_find),
@@ -422,7 +424,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
         )
-        self.view_action_group = Gio.SimpleActionGroup()
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
@@ -464,10 +465,18 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                                  self.on_text_filters_changed)
         ]
 
+        # Handle overview map visibility binding
+        self.bind_property(
+            'show-overview-map', self.overview_map_revealer, 'reveal-child',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+        self.overview_map_revealer.bind_property(
+            'child-revealed', self.dummy_toolbar_overview_map, 'visible')
+
         map_widgets_into_lists(
             self,
             [
-                "treeview", "fileentry", "scrolledwindow", "diffmap",
+                "treeview", "fileentry", "scrolledwindow", "chunkmap",
                 "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
                 "file_toolbar",
             ]
@@ -576,8 +585,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def queue_draw(self):
         for treeview in self.treeview:
             treeview.queue_draw()
-        for diffmap in self.diffmap:
-            diffmap.queue_draw()
 
     def update_comparator(self, *args):
         comparison_args = {
@@ -688,7 +695,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self._update_item_state(it)
         else:  # nope its gone
             self.model.remove(it)
-        self._update_diffmaps()
 
     def file_created(self, path, pane):
         it = self.model.get_iter(path)
@@ -696,7 +702,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         while it and self.model.get_path(it) != root:
             self._update_item_state(it)
             it = self.model.iter_parent(it)
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_fileentry_file_set(self, entry):
@@ -727,7 +732,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self.recursively_update(Gtk.TreePath.new_first())
-        self._update_diffmaps()
 
     def get_comparison(self):
         root = self.model.get_iter_first()
@@ -919,7 +923,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self._scan_in_progress -= 1
         self.force_cursor_recalculate = True
         self.treeview[0].set_cursor(Gtk.TreePath.new_first())
-        self._update_diffmaps()
 
     def _show_identical_status(self):
         primary = _("Folders have no differences")
@@ -1271,13 +1274,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 view.expand_row(row.path, False)
 
         self._do_to_others(view, self.treeview, "expand_row", (path, False))
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_treeview_row_collapsed(self, view, me, path):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_treeview_focus_in_event(self, tree, event):
@@ -1524,31 +1525,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 })
         return different
 
-    def get_state_traversal(self, diffmapindex):
-        def tree_state_iter():
-            treeindex = (0, self.num_panes-1)[diffmapindex]
-            treeview = self.treeview[treeindex]
-            row_states = []
-
-            def recurse_tree_states(rowiter):
-                row_states.append(
-                    self.model.get_state(rowiter.iter, treeindex))
-                if treeview.row_expanded(rowiter.path):
-                    for row in rowiter.iterchildren():
-                        recurse_tree_states(row)
-            recurse_tree_states(next(iter(self.model)))
-            row_states.append(None)
-
-            numlines = float(len(row_states) - 1)
-            chunkstart, laststate = 0, row_states[0]
-            for index, state in enumerate(row_states):
-                if state != laststate:
-                    action = self.chunk_type_map[laststate]
-                    if action is not None:
-                        yield (action, chunkstart / numlines, index / numlines)
-                    chunkstart, laststate = index, state
-        return tree_state_iter
-
     def set_num_panes(self, num_panes):
         if num_panes == self.num_panes or num_panes not in (1, 2, 3):
             return
@@ -1558,20 +1534,16 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for treeview in self.treeview:
             treeview.set_model(self.model)
 
-        for (w, i) in zip(self.diffmap, (0, num_panes - 1)):
-            scroll = self.scrolledwindow[i].get_vscrollbar()
-            idx = 1 if i else 0
-            w.setup(scroll, self.get_state_traversal(idx))
 
         for widget in (
                 self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
-                self.diffmap[:num_panes] + self.linkmap[:num_panes - 1] +
+                self.chunkmap[:num_panes] + self.linkmap[:num_panes - 1] +
                 self.dummy_toolbar_linkmap[:num_panes - 1]):
             widget.show()
 
         for widget in (
                 self.vbox[num_panes:] + self.file_toolbar[num_panes:] +
-                self.diffmap[num_panes:] + self.linkmap[num_panes - 1:] +
+                self.chunkmap[num_panes:] + self.linkmap[num_panes - 1:] +
                 self.dummy_toolbar_linkmap[num_panes - 1:]):
             widget.hide()
 
@@ -1603,11 +1575,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             labels.extend([""] * extra)
         self.custom_labels = labels
         self.recompute_label()
-
-    def _update_diffmaps(self):
-        for diffmap in self.diffmap:
-            diffmap.on_diffs_changed()
-            diffmap.queue_draw()
 
     def on_file_changed(self, changed_filename):
         """When a file has changed, try to find it in our tree
@@ -1647,7 +1614,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # do the update
         for path in changed_paths:
             self._update_item_state(model.get_iter(path))
-        self._update_diffmaps()
         self.force_cursor_recalculate = True
 
     @Template.Callback()

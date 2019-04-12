@@ -24,6 +24,7 @@ from gi.repository import Gtk
 
 from meld.misc import get_common_theme
 from meld.settings import meldsettings
+from meld.tree import STATE_ERROR, STATE_MODIFIED, STATE_NEW
 
 log = logging.getLogger(__name__)
 
@@ -250,3 +251,101 @@ class TextViewChunkMap(ChunkMap):
 
         _, it = self.textview.get_iter_at_location(0, location)
         self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+
+
+class TreeViewChunkMap(ChunkMap):
+
+    __gtype_name__ = 'TreeViewChunkMap'
+
+    treeview = GObject.Property(
+        type=Gtk.TreeView,
+        nick='Treeview being mapped',
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    treeview_idx = GObject.Property(
+        type=int,
+        nick='Index of the Treeview within the store',
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT_ONLY
+        ),
+    )
+
+    chunk_type_map = {
+        STATE_NEW: "insert",
+        STATE_ERROR: "error",
+        STATE_MODIFIED: "replace",
+    }
+
+    def __init__(self):
+        super().__init__()
+        self.model_signal_ids = []
+
+    def do_realize(self):
+        self.treeview.connect('row-collapsed', self.clear_cached_map)
+        self.treeview.connect('row-expanded', self.clear_cached_map)
+        self.treeview.connect('notify::model', self.connect_model)
+        self.connect_model()
+
+        return ChunkMap.do_realize(self)
+
+    def connect_model(self, *args):
+        for model, signal_id in self.model_signal_ids:
+            model.disconnect(signal_id)
+
+        model = self.treeview.get_model()
+        self.model_signal_ids = [
+            (model, model.connect('row-changed', self.clear_cached_map)),
+            (model, model.connect('row-deleted', self.clear_cached_map)),
+            (model, model.connect('row-inserted', self.clear_cached_map)),
+            (model, model.connect('rows-reordered', self.clear_cached_map)),
+        ]
+
+    def clear_cached_map(self, *args):
+        self._cached_map = None
+
+    def chunk_coords_by_tag(self):
+        def recurse_tree_states(rowiter):
+            row_states.append(
+                model.get_state(rowiter.iter, self.treeview_idx))
+            if self.treeview.row_expanded(rowiter.path):
+                for row in rowiter.iterchildren():
+                    recurse_tree_states(row)
+
+        row_states = []
+        model = self.treeview.get_model()
+        recurse_tree_states(next(iter(model)))
+        # Terminating mark to force the last chunk to be added
+        row_states.append(None)
+
+        tagged_diffs: Mapping[str, List[Tuple[float, float]]]
+        tagged_diffs = collections.defaultdict(list)
+
+        numlines = len(row_states) - 1
+        chunkstart, laststate = 0, row_states[0]
+        for index, state in enumerate(row_states):
+            if state != laststate:
+                action = self.chunk_type_map.get(laststate)
+                if action is not None:
+                    chunk = (chunkstart / numlines, index / numlines)
+                    tagged_diffs[action].append(chunk)
+                chunkstart, laststate = index, state
+
+        return tagged_diffs
+
+    def do_draw(self, context: cairo.Context) -> bool:
+        if not self.treeview:
+            return False
+
+        return ChunkMap.do_draw(self, context)
+
+    def _scroll_to_location(self, location: float):
+        if not self.treeview or self.adjustment.get_upper() <= 0:
+            return
+
+        location -= self.adjustment.get_page_size() / 2
+        self.treeview.scroll_to_point(-1, location)
