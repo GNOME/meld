@@ -64,6 +64,7 @@ class ChunkMap(Gtk.DrawingArea):
     def chunks_set(self, chunks):
         self._chunks = chunks
         self._cached_map = None
+        self.queue_draw()
 
     overdraw_padding: int = 2
 
