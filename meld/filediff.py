@@ -1304,7 +1304,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buf.data.savefile = gfile
         buf.data.label = gfile.get_path()
         self.update_buffer_writable(buf)
-        self.filelabel[1].set_text(buf.data.savefile)
+        self.filelabel[1].set_text(buf.data.label)
         self.recompute_label()
 
     def _set_save_action_sensitivity(self):
