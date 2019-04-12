@@ -182,7 +182,12 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.spinner.hide()
             self.spinner.set_tooltip_text("")
             self.idle_hooked = None
-            self.lookup_action('stop').set_enabled(False)
+
+            # On window close, this idle loop races widget destruction,
+            # and so actions may already be gone at this point.
+            stop_action = self.lookup_action('stop')
+            if stop_action:
+                stop_action.set_enabled(False)
         return pending
 
     def on_scheduler_runnable(self, sched):
