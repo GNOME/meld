@@ -108,7 +108,7 @@ class ChunkMap(Gtk.DrawingArea):
         raise NotImplementedError()
 
     def do_draw(self, context: cairo.Context) -> bool:
-        if not self.adjustment:
+        if not self.adjustment or self.adjustment.get_upper() <= 0:
             return False
 
         height = self.get_allocated_height()
