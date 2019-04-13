@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+  <menu id="vcview-context-menu">
+    <section>
+      <attribute name="id">version-focused-section</attribute>
+      <item>
+        <attribute name="label" translatable="yes">_Compare</attribute>
+        <attribute name="action">view.compare</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Co_mmit...</attribute>
+        <attribute name="action">view.vc-commit</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Update</attribute>
+        <attribute name="action">view.vc-update</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">local-changes-section</attribute>
+      <item>
+        <attribute name="label" translatable="yes">_Add</attribute>
+        <attribute name="action">view.vc-add</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Remove</attribute>
+        <attribute name="action">view.vc-remove</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Re_vert</attribute>
+        <attribute name="action">view.vc-revert</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">Delete</attribute>
+        <attribute name="action">view.vc-delete-locally</attribute>
+      </item>
+    </section>
+    <section>
+      <attribute name="id">resolve-section</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Mar_k as Resolved</attribute>
+        <attribute name="action">view.vc-resolve</attribute>
+      </item>
+    </section>
+  </menu>
+</interface>

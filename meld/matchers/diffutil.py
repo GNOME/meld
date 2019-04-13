@@ -386,6 +386,19 @@ class Differ(GObject.GObject):
                 if c[seq]:
                     yield reverse_chunk(c[seq])
 
+    # FIXME: This is gratuitous copy-n-paste at this point
+    def paired_all_single_changes(self, fromindex, toindex):
+        if fromindex == 1:
+            seq = toindex // 2
+            for c in self._merge_cache:
+                if c[seq]:
+                    yield c[seq]
+        else:
+            seq = fromindex // 2
+            for c in self._merge_cache:
+                if c[seq]:
+                    yield reverse_chunk(c[seq])
+
     def single_changes(self, textindex, lines=(None, None)):
         """Give changes for single file only. do not return 'equal' hunks.
         """

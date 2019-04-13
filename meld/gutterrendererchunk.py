@@ -16,34 +16,11 @@
 import math
 
 from gi.repository import Gdk
-from gi.repository import Gtk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
-from meld.conf import _
-from meld.const import MODE_DELETE, MODE_INSERT, MODE_REPLACE
 from meld.misc import get_common_theme
 from meld.settings import meldsettings
-from meld.ui.gtkcompat import get_style
-
-# Fixed size of the renderer. Ideally this would be font-dependent and
-# would adjust to other textview attributes, but that's both quite difficult
-# and not necessarily desirable.
-LINE_HEIGHT = 16
-
-GTK_RENDERER_STATE_MAPPING = {
-    GtkSource.GutterRendererState.NORMAL: Gtk.StateFlags.NORMAL,
-    GtkSource.GutterRendererState.CURSOR: Gtk.StateFlags.FOCUSED,
-    GtkSource.GutterRendererState.PRELIT: Gtk.StateFlags.PRELIGHT,
-    GtkSource.GutterRendererState.SELECTED: Gtk.StateFlags.SELECTED,
-}
-
-ALIGN_MODE_FIRST = GtkSource.GutterRendererAlignmentMode.FIRST
-
-
-def load(icon_name):
-    icon_theme = Gtk.IconTheme.get_default()
-    return icon_theme.load_icon(icon_name, LINE_HEIGHT, 0)
 
 
 def get_background_rgba(renderer):
@@ -67,14 +44,6 @@ def get_background_rgba(renderer):
 
 
 _background_rgba = None
-
-
-def renderer_to_gtk_state(state):
-    gtk_state = Gtk.StateFlags(0)
-    for renderer_flag, gtk_flag in GTK_RENDERER_STATE_MAPPING.items():
-        if renderer_flag & state:
-            gtk_state |= gtk_flag
-    return gtk_state
 
 
 class MeldGutterRenderer:
@@ -145,196 +114,6 @@ class MeldGutterRenderer:
         self._chunk = chunk
         self.set_background(background_rgba)
         return in_chunk
-
-
-class GutterRendererChunkAction(
-        GtkSource.GutterRendererPixbuf, MeldGutterRenderer):
-    __gtype_name__ = "GutterRendererChunkAction"
-
-    ACTION_MAP = {
-        'LTR': {
-            MODE_REPLACE: load("meld-change-apply-right"),
-            MODE_DELETE: load("meld-change-delete"),
-            MODE_INSERT: load("meld-change-copy"),
-        },
-        'RTL': {
-            MODE_REPLACE: load("meld-change-apply-left"),
-            MODE_DELETE: load("meld-change-delete"),
-            MODE_INSERT: load("meld-change-copy"),
-        }
-    }
-
-    def __init__(self, from_pane, to_pane, views, filediff, linediffer):
-        super().__init__()
-        self.set_renderer_defaults()
-        self.from_pane = from_pane
-        self.to_pane = to_pane
-        # FIXME: Views are needed only for editable checking; connect to this
-        # in Filediff instead?
-        self.views = views
-        # FIXME: Don't pass in the linediffer; pass a generator like elsewhere
-        self.linediffer = linediffer
-        self.mode = MODE_REPLACE
-        self.set_size(LINE_HEIGHT)
-        direction = 'LTR' if from_pane < to_pane else 'RTL'
-        if self.views[0].get_direction() == Gtk.TextDirection.RTL:
-            direction = 'LTR' if direction == 'RTL' else 'RTL'
-
-        self.is_action = False
-        self.action_map = self.ACTION_MAP[direction]
-        self.filediff = filediff
-        self.filediff.connect("action-mode-changed",
-                              self.on_container_mode_changed)
-
-        meldsettings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meldsettings, 'style-scheme')
-
-    def do_activate(self, start, area, event):
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-        if chunk_index is None:
-            return
-
-        chunk = self.linediffer.get_chunk(
-            chunk_index, self.from_pane, self.to_pane)
-        if chunk[1] != line:
-            return
-
-        action = self._classify_change_actions(chunk)
-        if action == MODE_DELETE:
-            self.filediff.delete_chunk(self.from_pane, chunk)
-        elif action == MODE_INSERT:
-            copy_menu = self._make_copy_menu(chunk)
-            copy_menu.popup_at_rect(
-                self.get_view().get_window(self.get_window_type()),
-                area,
-                Gdk.Gravity.SOUTH_WEST,
-                Gdk.Gravity.NORTH_WEST,
-                None,
-            )
-        elif action == MODE_REPLACE:
-            self.filediff.replace_chunk(self.from_pane, self.to_pane, chunk)
-
-    def _make_copy_menu(self, chunk):
-        copy_menu = Gtk.Menu()
-        copy_up = Gtk.MenuItem.new_with_mnemonic(_("Copy _up"))
-        copy_down = Gtk.MenuItem.new_with_mnemonic(_("Copy _down"))
-        copy_menu.append(copy_up)
-        copy_menu.append(copy_down)
-        copy_menu.show_all()
-
-        # FIXME: This is horrible
-        copy_menu.attach_to_widget(self.filediff, None)
-
-        def copy_chunk(widget, chunk, copy_up):
-            self.filediff.copy_chunk(self.from_pane, self.to_pane, chunk,
-                                     copy_up)
-
-        copy_up.connect('activate', copy_chunk, chunk, True)
-        copy_down.connect('activate', copy_chunk, chunk, False)
-        return copy_menu
-
-    def do_begin(self, *args):
-        self.views_editable = [v.get_editable() for v in self.views]
-
-    def do_draw(self, context, background_area, cell_area, start, end, state):
-        GtkSource.GutterRendererPixbuf.do_draw(
-            self, context, background_area, cell_area, start, end, state)
-        if self.is_action:
-            # TODO: Fix padding and min-height in CSS and use
-            # draw_style_common
-            style_context = get_style(None, "button.flat.image-button")
-            style_context.set_state(renderer_to_gtk_state(state))
-
-            x = background_area.x + 1
-            y = background_area.y + 1
-            width = background_area.width - 2
-            height = background_area.height - 2
-
-            Gtk.render_background(style_context, context, x, y, width, height)
-            Gtk.render_frame(style_context, context, x, y, width, height)
-
-            pixbuf = self.props.pixbuf
-            pix_width, pix_height = pixbuf.props.width, pixbuf.props.height
-
-            xalign, yalign = self.get_alignment()
-            align_mode = self.get_alignment_mode()
-            if align_mode == GtkSource.GutterRendererAlignmentMode.CELL:
-                icon_x = x + (width - pix_width) // 2
-                icon_y = y + (height - pix_height) // 2
-            else:
-                line_iter = start if align_mode == ALIGN_MODE_FIRST else end
-                textview = self.get_view()
-                loc = textview.get_iter_location(line_iter)
-                line_x, line_y = textview.buffer_to_window_coords(
-                    self.get_window_type(), loc.x, loc.y)
-                icon_x = cell_area.x + (cell_area.width - pix_width) * xalign
-                icon_y = line_y + (loc.height - pix_height) * yalign
-
-            Gtk.render_icon(style_context, context, pixbuf, icon_x, icon_y)
-
-        self.draw_chunks(
-            context, background_area, cell_area, start, end, state)
-
-    def do_query_activatable(self, start, area, event):
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-        if chunk_index is not None:
-            # FIXME: This is all chunks, not just those shared with to_pane
-            chunk = self.linediffer.get_chunk(chunk_index, self.from_pane)
-            if chunk[1] == line:
-                return True
-        return False
-
-    def do_query_data(self, start, end, state):
-        self.query_chunks(start, end, state)
-        line = start.get_line()
-
-        if self._chunk and self._chunk[1] == line:
-            action = self._classify_change_actions(self._chunk)
-            pixbuf = self.action_map.get(action)
-        else:
-            pixbuf = None
-        self.is_action = bool(pixbuf)
-        self.props.pixbuf = pixbuf
-
-    def on_container_mode_changed(self, container, mode):
-        self.mode = mode
-        self.queue_draw()
-
-    def _classify_change_actions(self, change):
-        """Classify possible actions for the given change
-
-        Returns the action that can be performed given the content and
-        context of the change.
-        """
-        editable, other_editable = self.views_editable
-
-        if not editable and not other_editable:
-            return None
-
-        # Reclassify conflict changes, since we treat them the same as a
-        # normal two-way change as far as actions are concerned
-        change_type = change[0]
-        if change_type == "conflict":
-            if change[1] == change[2]:
-                change_type = "insert"
-            elif change[3] == change[4]:
-                change_type = "delete"
-            else:
-                change_type = "replace"
-
-        if change_type == 'insert':
-            return None
-
-        action = self.mode
-        if action == MODE_DELETE and not editable:
-            action = None
-        elif action == MODE_INSERT and change_type == 'delete':
-            action = MODE_REPLACE
-        if not other_editable:
-            action = MODE_DELETE
-        return action
 
 
 # GutterRendererChunkLines is an adaptation of GtkSourceGutterRendererLines

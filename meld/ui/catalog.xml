@@ -3,13 +3,13 @@
     <init-function>glade_python_init</init-function>
 
     <glade-widget-classes>
+        <glade-widget-class title="ActionGutter" name="ActionGutter" generic-name="actiongutter"/>
         <glade-widget-class title="DiffGrid" name="DiffGrid" generic-name="diffgrid">
             <properties>
                 <property id="n-rows" default="2" query="False"/>
                 <property id="n-columns" default="7" query="False"/>
             </properties>
         </glade-widget-class>
-        <glade-widget-class title="DiffMap" name="DiffMap" generic-name="diffmap"/>
         <glade-widget-class title="LinkMap" name="LinkMap" generic-name="linkmap"/>
         <glade-widget-class title="MeldSourceView" name="MeldSourceView" generic-name="meldsourceview"/>
         <glade-widget-class title="MeldStatusBar" name="MeldStatusBar" generic-name="meldstatusbar"/>
@@ -19,8 +19,8 @@
     </glade-widget-classes>
 
     <glade-widget-group name="meld" title="Meld">
-        <glade-widget-class-ref name="DiffMap"/>
         <glade-widget-class-ref name="LinkMap"/>
+        <glade-widget-class-ref name="ActionGutter"/>
         <glade-widget-class-ref name="MeldSourceView"/>
         <glade-widget-class-ref name="MsgAreaController"/>
         <glade-widget-class-ref name="MeldStatusBar"/>

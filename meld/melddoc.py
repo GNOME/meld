@@ -85,11 +85,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def file_changed_signal(self, path: str) -> None:
         ...
 
-    @GObject.Signal('next-diff-changed')
-    def next_diff_changed_signal(
-            self, have_prev: bool, have_next: bool) -> None:
-        ...
-
     @GObject.Signal
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
@@ -98,7 +93,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
-        self.main_actiongroup = None
         self._state = ComparisonState.Normal
 
     @property
@@ -116,11 +110,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         """Get the comparison type and URI(s) being compared"""
         pass
 
-    def save(self):
-        pass
-
-    def save_as(self):
-        pass
+    def action_stop(self, *args):
+        if self.scheduler.tasks_pending():
+            self.scheduler.remove_task(self.scheduler.get_current_task())
 
     def _open_files(self, selected, line=0):
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
@@ -176,51 +168,47 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
                                open_cb, None)
 
-    def open_external(self):
-        pass
-
-    def on_refresh_activate(self, *extra):
-        pass
-
-    def on_find_activate(self, *extra):
-        pass
-
-    def on_find_next_activate(self, *extra):
-        pass
-
-    def on_find_previous_activate(self, *extra):
-        pass
-
-    def on_replace_activate(self, *extra):
-        pass
-
     def on_file_changed(self, filename):
         pass
 
     def set_labels(self, lst):
         pass
 
-    def on_container_switch_in_event(self, uimanager):
-        """Called when the container app switches to this tab.
-        """
-        self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
-        uimanager.insert_action_group(self.actiongroup, -1)
-        self.popup_menu = uimanager.get_widget("/Popup")
-        action_groups = uimanager.get_action_groups()
-        self.main_actiongroup = [
-            a for a in action_groups if a.get_name() == "MainActions"][0]
-        uimanager.ensure_update()
+    def get_action_state(self, action_name: str):
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        return action.get_state().unpack()
+
+    def set_action_state(self, action_name: str, state):
+        # TODO: Try to do GLib.Variant things here instead of in callers
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_state(state)
+
+    def set_action_enabled(self, action_name, enabled):
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_enabled(enabled)
+
+    def on_container_switch_in_event(self, window):
+        """Called when the container app switches to this tab"""
+
+        window.insert_action_group(
+            'view', getattr(self, 'view_action_group', None))
+
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
 
-    def on_container_switch_out_event(self, uimanager):
-        """Called when the container app switches away from this tab.
-        """
-        uimanager.remove_action_group(self.actiongroup)
-        uimanager.remove_ui(self.ui_merge_id)
-        self.main_actiongroup = None
-        self.popup_menu = None
-        self.ui_merge_id = None
+    def on_container_switch_out_event(self, window):
+        """Called when the container app switches away from this tab"""
+
+        window.insert_action_group('view', None)
 
     def on_delete_event(self):
         """Called when the docs container is about to close.

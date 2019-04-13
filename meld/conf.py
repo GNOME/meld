@@ -49,7 +49,3 @@ def uninstalled():
 
     resource_path = melddir / "meld" / "resources"
     os.environ['G_RESOURCE_OVERLAYS'] = f'{RESOURCE_BASE}={resource_path}'
-
-
-def ui_file(filename):
-    return os.path.join(DATADIR, "ui", filename)

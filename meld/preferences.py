@@ -259,33 +259,35 @@ class PreferencesDialog(Gtk.Dialog):
 
     __gtype_name__ = "PreferencesDialog"
 
-    checkbutton_break_commit_lines = Template.Child("checkbutton_break_commit_lines")  # noqa: E501
-    checkbutton_default_font = Template.Child("checkbutton_default_font")
-    checkbutton_folder_filter_text = Template.Child("checkbutton_folder_filter_text")  # noqa: E501
-    checkbutton_highlight_current_line = Template.Child("checkbutton_highlight_current_line")  # noqa: E501
-    checkbutton_ignore_blank_lines = Template.Child("checkbutton_ignore_blank_lines")  # noqa: E501
-    checkbutton_ignore_symlinks = Template.Child("checkbutton_ignore_symlinks")
-    checkbutton_shallow_compare = Template.Child("checkbutton_shallow_compare")
-    checkbutton_show_commit_margin = Template.Child("checkbutton_show_commit_margin")  # noqa: E501
-    checkbutton_show_line_numbers = Template.Child("checkbutton_show_line_numbers")  # noqa: E501
-    checkbutton_show_whitespace = Template.Child("checkbutton_show_whitespace")
-    checkbutton_spaces_instead_of_tabs = Template.Child("checkbutton_spaces_instead_of_tabs")  # noqa: E501
-    checkbutton_use_syntax_highlighting = Template.Child("checkbutton_use_syntax_highlighting")  # noqa: E501
-    checkbutton_wrap_text = Template.Child("checkbutton_wrap_text")
-    checkbutton_wrap_word = Template.Child("checkbutton_wrap_word")
-    column_list_vbox = Template.Child("column_list_vbox")
-    combo_file_order = Template.Child("combo_file_order")
-    combo_merge_order = Template.Child("combo_merge_order")
-    combo_timestamp = Template.Child("combo_timestamp")
-    combobox_style_scheme = Template.Child("combobox_style_scheme")
-    custom_edit_command_entry = Template.Child("custom_edit_command_entry")
-    file_filters_vbox = Template.Child("file_filters_vbox")
-    fontpicker = Template.Child("fontpicker")
-    spinbutton_commit_margin = Template.Child("spinbutton_commit_margin")
-    spinbutton_tabsize = Template.Child("spinbutton_tabsize")
-    syntaxschemestore = Template.Child("syntaxschemestore")
-    system_editor_checkbutton = Template.Child("system_editor_checkbutton")
-    text_filters_vbox = Template.Child("text_filters_vbox")
+    checkbutton_break_commit_lines = Template.Child()
+    checkbutton_default_font = Template.Child()
+    checkbutton_folder_filter_text = Template.Child()
+    checkbutton_highlight_current_line = Template.Child()
+    checkbutton_ignore_blank_lines = Template.Child()
+    checkbutton_ignore_symlinks = Template.Child()
+    checkbutton_shallow_compare = Template.Child()
+    checkbutton_show_commit_margin = Template.Child()
+    checkbutton_show_line_numbers = Template.Child()
+    checkbutton_show_overview_map = Template.Child()
+    checkbutton_show_whitespace = Template.Child()
+    checkbutton_spaces_instead_of_tabs = Template.Child()
+    checkbutton_use_syntax_highlighting = Template.Child()
+    checkbutton_wrap_text = Template.Child()
+    checkbutton_wrap_word = Template.Child()
+    column_list_vbox = Template.Child()
+    combo_file_order = Template.Child()
+    combo_merge_order = Template.Child()
+    combo_overview_map = Template.Child()
+    combo_timestamp = Template.Child()
+    combobox_style_scheme = Template.Child()
+    custom_edit_command_entry = Template.Child()
+    file_filters_vbox = Template.Child()
+    fontpicker = Template.Child()
+    spinbutton_commit_margin = Template.Child()
+    spinbutton_tabsize = Template.Child()
+    syntaxschemestore = Template.Child()
+    system_editor_checkbutton = Template.Child()
+    text_filters_vbox = Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -305,6 +307,7 @@ class PreferencesDialog(Gtk.Dialog):
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
+            ('show-overview-map', self.checkbutton_show_overview_map, 'active'),  # noqa: E501
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
             ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),  # noqa: E501
             ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),  # noqa: E501
@@ -355,6 +358,7 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
+        self.combo_overview_map.bind_to('overview-map-style')
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes

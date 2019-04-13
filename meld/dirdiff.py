@@ -1,5 +1,5 @@
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2009-2013 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2009-2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,7 +35,8 @@ from gi.repository import Gtk
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld import tree
-from meld.conf import _, ui_file
+from meld.conf import _
+from meld.const import FILE_FILTER_ACTION_FORMAT
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
@@ -296,7 +297,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    next_diff_changed_signal = MeldDoc.next_diff_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -348,8 +348,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         default=100,
     )
 
-    actiongroup = Template.Child('DirdiffActions')
+    show_overview_map = GObject.Property(type=bool, default=True)
 
+    chunkmap0 = Template.Child()
+    chunkmap1 = Template.Child()
+    chunkmap2 = Template.Child()
     treeview0 = Template.Child()
     treeview1 = Template.Child()
     treeview2 = Template.Child()
@@ -359,39 +362,27 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     scrolledwindow0 = Template.Child()
     scrolledwindow1 = Template.Child()
     scrolledwindow2 = Template.Child()
-    diffmap0 = Template.Child()
-    diffmap1 = Template.Child()
     linkmap0 = Template.Child()
     linkmap1 = Template.Child()
     msgarea_mgr0 = Template.Child()
     msgarea_mgr1 = Template.Child()
     msgarea_mgr2 = Template.Child()
+    overview_map_revealer = Template.Child()
     vbox0 = Template.Child()
     vbox1 = Template.Child()
     vbox2 = Template.Child()
+    dummy_toolbar_overview_map = Template.Child()
     dummy_toolbar_linkmap0 = Template.Child()
     dummy_toolbar_linkmap1 = Template.Child()
     file_toolbar0 = Template.Child()
     file_toolbar1 = Template.Child()
     file_toolbar2 = Template.Child()
 
-    """Dictionary mapping tree states to corresponding difflib-like terms"""
-    chunk_type_map = {
-        tree.STATE_NORMAL: None,
-        tree.STATE_NOCHANGE: None,
-        tree.STATE_NEW: "insert",
-        tree.STATE_ERROR: "error",
-        tree.STATE_EMPTY: None,
-        tree.STATE_MODIFIED: "replace",
-        tree.STATE_MISSING: "delete",
-        tree.STATE_NONEXIST: "delete",
-    }
-
     state_actions = {
-        tree.STATE_NORMAL: ("normal", "ShowSame"),
-        tree.STATE_NOCHANGE: ("normal", "ShowSame"),
-        tree.STATE_NEW: ("new", "ShowNew"),
-        tree.STATE_MODIFIED: ("modified", "ShowModified"),
+        tree.STATE_NORMAL: ("normal", "folder-status-same"),
+        tree.STATE_NOCHANGE: ("normal", "folder-status-same"),
+        tree.STATE_NEW: ("new", "folder-status-new"),
+        tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
     def __init__(self, num_panes):
@@ -408,8 +399,60 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.init_template()
         bind_settings(self)
 
-        self.ui_file = ui_file("dirdiff-ui.xml")
-        self.actiongroup.set_translation_domain("meld")
+        self.view_action_group = Gio.SimpleActionGroup()
+
+        property_actions = (
+            ('show-overview-map', self, 'show-overview-map'),
+        )
+        for action_name, obj, prop_name in property_actions:
+            action = Gio.PropertyAction.new(action_name, obj, prop_name)
+            self.view_action_group.add_action(action)
+
+        # Manually handle GAction additions
+        actions = (
+            ('find', self.action_find),
+            ('folder-collapse', self.action_folder_collapse),
+            ('folder-compare', self.action_diff),
+            ('folder-copy-left', self.action_copy_left),
+            ('folder-copy-right', self.action_copy_right),
+            ('folder-delete', self.action_delete),
+            ('folder-expand', self.action_folder_expand),
+            ('next-change', self.action_next_change),
+            ('next-pane', self.action_next_pane),
+            ('open-external', self.action_open_external),
+            ('previous-change', self.action_previous_change),
+            ('previous-pane', self.action_prev_pane),
+            ('refresh', self.action_refresh),
+        )
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
+
+        actions = (
+            ("folder-status-same", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-status-new", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-status-modified", self.action_filter_state_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-ignore-case", self.action_ignore_case_change,
+                GLib.Variant.new_boolean(False)),
+        )
+        for (name, callback, state) in actions:
+            action = Gio.SimpleAction.new_stateful(name, None, state)
+            action.connect('change-state', callback)
+            self.view_action_group.add_action(action)
+
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/dirdiff-menus.ui')
+        context_menu = builder.get_object('dirdiff-context-menu')
+        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
+        self.popup_menu.attach_to_widget(self)
+
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/dirdiff-actions.ui')
+        self.toolbar_actions = builder.get_object('view-toolbar')
 
         self.name_filters = []
         self.text_filters = []
@@ -422,10 +465,18 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                                  self.on_text_filters_changed)
         ]
 
+        # Handle overview map visibility binding
+        self.bind_property(
+            'show-overview-map', self.overview_map_revealer, 'reveal-child',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+        self.overview_map_revealer.bind_property(
+            'child-revealed', self.dummy_toolbar_overview_map, 'visible')
+
         map_widgets_into_lists(
             self,
             [
-                "treeview", "fileentry", "scrolledwindow", "diffmap",
+                "treeview", "fileentry", "scrolledwindow", "chunkmap",
                 "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
                 "file_toolbar",
             ]
@@ -521,11 +572,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # toggled callback modifies the state while we're constructing it.
         self.state_filters = []
         state_filters = []
-        status_filters = list(self.props.status_filters)
-        for state, (filter_name, action_name) in self.state_actions.items():
-            if filter_name in status_filters:
-                state_filters.append(state)
-                self.actiongroup.get_action(action_name).set_active(True)
+        for s in self.state_actions:
+            if self.state_actions[s][0] in self.props.status_filters:
+                state_filters.append(s)
+                action_name = self.state_actions[s][1]
+                self.set_action_state(
+                    action_name, GLib.Variant.new_boolean(True))
         self.state_filters = state_filters
 
         self._scan_in_progress = 0
@@ -533,8 +585,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def queue_draw(self):
         for treeview in self.treeview:
             treeview.queue_draw()
-        for diffmap in self.diffmap:
-            diffmap.queue_draw()
 
     def update_comparator(self, *args):
         comparison_args = {
@@ -561,49 +611,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 last_column = current_column
             treeview.set_headers_visible(extra_cols)
 
-    @Template.Callback()
-    def on_custom_filter_menu_toggled(self, item):
-        if item.get_active():
-            self.custom_popup.connect(
-                "deactivate", lambda popup: item.set_active(False))
-            self.custom_popup.popup_at_widget(
-                self.filter_menu_button,
-                Gdk.Gravity.SOUTH_WEST,
-                Gdk.Gravity.NORTH_WEST,
-                None,
-            )
-
-    def _cleanup_filter_menu_button(self, ui):
-        if self.custom_merge_id:
-            ui.remove_ui(self.custom_merge_id)
-        if self.filter_actiongroup in ui.get_action_groups():
-            ui.remove_action_group(self.filter_actiongroup)
-
-    def _create_filter_menu_button(self, ui):
-        ui.insert_action_group(self.filter_actiongroup, -1)
-        self.custom_merge_id = ui.new_merge_id()
-        for x in self.filter_ui:
-            ui.add_ui(self.custom_merge_id, *x)
-        self.custom_popup = ui.get_widget("/CustomPopup")
-        self.filter_menu_button = ui.get_widget(
-            "/Toolbar/FilterActions/CustomFilterMenu")
-        label = misc.make_tool_button_widget(
-            self.filter_menu_button.props.label)
-        self.filter_menu_button.set_label_widget(label)
-
-    def on_container_switch_in_event(self, ui):
-        MeldDoc.on_container_switch_in_event(self, ui)
-        self._create_filter_menu_button(ui)
-        self.ui_manager = ui
-
-    def on_container_switch_out_event(self, ui):
-        self._cleanup_filter_menu_button(ui)
-        MeldDoc.on_container_switch_out_event(self, ui)
-
     def on_file_filters_changed(self, app):
-        self._cleanup_filter_menu_button(self.ui_manager)
         relevant_change = self.create_name_filters()
-        self._create_filter_menu_button(self.ui_manager)
         if relevant_change:
             self.refresh()
 
@@ -615,32 +624,20 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                           if f.active])
         active_filters_changed = old_active != new_active
 
+        # TODO: Rework name_filters to use a map-like structure so that we
+        # don't need _action_name_filter_map.
+        self._action_name_filter_map = {}
         self.name_filters = [copy.copy(f) for f in meldsettings.file_filters]
-        actions = []
-        disabled_actions = []
-        self.filter_ui = []
-        for i, f in enumerate(self.name_filters):
-            name = "Hide%d" % i
-            callback = functools.partial(self._update_name_filter, idx=i)
-            actions.append((
-                name, None, f.label, None, _("Hide %s") % f.label,
-                callback, f.active
-            ))
-            self.filter_ui.append([
-                "/CustomPopup", name, name,
-                Gtk.UIManagerItemType.MENUITEM, False
-            ])
-            self.filter_ui.append([
-                "/Menubar/ViewMenu/FileFilters", name, name,
-                Gtk.UIManagerItemType.MENUITEM, False
-            ])
-            if f.filter is None:
-                disabled_actions.append(name)
-
-        self.filter_actiongroup = Gtk.ActionGroup(name="DirdiffFilterActions")
-        self.filter_actiongroup.add_toggle_actions(actions)
-        for name in disabled_actions:
-            self.filter_actiongroup.get_action(name).set_sensitive(False)
+        for i, filt in enumerate(self.name_filters):
+            action = Gio.SimpleAction.new_stateful(
+                name=FILE_FILTER_ACTION_FORMAT.format(i),
+                parameter_type=None,
+                state=GLib.Variant.new_boolean(filt.active),
+            )
+            action.connect('change-state', self._update_name_filter)
+            action.set_enabled(filt.filter is not None)
+            self.view_action_group.add_action(action)
+            self._action_name_filter_map[action] = filt
 
         return active_filters_changed
 
@@ -698,7 +695,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self._update_item_state(it)
         else:  # nope its gone
             self.model.remove(it)
-        self._update_diffmaps()
 
     def file_created(self, path, pane):
         it = self.model.get_iter(path)
@@ -706,7 +702,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         while it and self.model.get_path(it) != root:
             self._update_item_state(it)
             it = self.model.iter_parent(it)
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_fileentry_file_set(self, entry):
@@ -737,7 +732,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self.recursively_update(Gtk.TreePath.new_first())
-        self._update_diffmaps()
 
     def get_comparison(self):
         root = self.model.get_iter_first()
@@ -794,7 +788,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             encoding_errors = []
 
             canonicalize = None
-            if self.actiongroup.get_action("IgnoreCase").get_active():
+            # TODO: Map this to a GObject prop instead?
+            if self.get_action_state('folder-ignore-case'):
                 canonicalize = CanonicalListing.canonicalize_lower
             dirs = CanonicalListing(self.num_panes, canonicalize)
             files = CanonicalListing(self.num_panes, canonicalize)
@@ -917,7 +912,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
-        elif not expanded:
+        elif rootpath == Gtk.TreePath.new_first() and not expanded:
             self._show_identical_status()
 
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
@@ -928,7 +923,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self._scan_in_progress -= 1
         self.force_cursor_recalculate = True
         self.treeview[0].set_cursor(Gtk.TreePath.new_first())
-        self._update_diffmaps()
 
     def _show_identical_status(self):
         primary = _("Folders have no differences")
@@ -1112,8 +1106,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         else:
             have_selection = False
 
-        get_action = self.actiongroup.get_action
-
         if have_selection:
             is_valid = True
             for path in selection.get_selected_rows()[1]:
@@ -1123,6 +1115,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                     break
 
             busy = self._scan_in_progress > 0
+            is_valid = is_valid and not busy
 
             is_single_foldable_row = False
             if (selection.count_selected_rows() == 1):
@@ -1132,38 +1125,37 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 is_single_foldable_row = self.model.is_folder(
                     it, pane, os_path)
 
-            get_action("DirCompare").set_sensitive(True)
-            get_action("DirCollapseRecursively").set_sensitive(
-                is_single_foldable_row)
-            get_action("DirExpandRecursively").set_sensitive(
-                is_single_foldable_row)
-            get_action("Hide").set_sensitive(True)
-            get_action("DirDelete").set_sensitive(
-                is_valid and not busy)
-            get_action("DirCopyLeft").set_sensitive(
-                is_valid and not busy and pane > 0)
-            get_action("DirCopyRight").set_sensitive(
-                is_valid and not busy and pane + 1 < self.num_panes)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenExternal")
-                act.set_sensitive(is_valid)
+            self.set_action_enabled('folder-collapse', is_single_foldable_row)
+            self.set_action_enabled('folder-expand', is_single_foldable_row)
+            self.set_action_enabled('folder-compare', True)
+            self.set_action_enabled('folder-delete', is_valid)
+            self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
+            self.set_action_enabled(
+                'folder-copy-right', is_valid and pane + 1 < self.num_panes)
+            self.set_action_enabled('open-external', is_valid)
         else:
-            for action in ("DirCompare", "DirCopyLeft", "DirCopyRight",
-                           "DirDelete", "Hide"):
-                get_action(action).set_sensitive(False)
-            if self.main_actiongroup:
-                act = self.main_actiongroup.get_action("OpenExternal")
-                act.set_sensitive(False)
+            actions = (
+                'folder-collapse',
+                'folder-compare',
+                'folder-copy-left',
+                'folder-copy-right',
+                'folder-delete',
+                'folder-expand',
+                'open-external',
+            )
+            for action in actions:
+                self.set_action_enabled(action, False)
 
     @Template.Callback()
-    def on_treeview_cursor_changed(self, *args):
-        pane = self._get_focused_pane()
-        if pane is None or len(self.model) == 0:
+    def on_treeview_cursor_changed(self, view):
+        pane = self.treeview.index(view)
+        if len(self.model) == 0:
             return
 
         cursor_path, cursor_col = self.treeview[pane].get_cursor()
         if not cursor_path:
-            self.next_diff_changed_signal.emit(False, False)
+            self.set_action_enabled("previous-change", False)
+            self.set_action_enabled("next-change", False)
             self.current_path = cursor_path
             return
 
@@ -1197,10 +1189,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                         skip = self.prev_path < cursor_path < self.next_path
 
         if not skip:
-            prev, next = self.model._find_next_prev_diff(cursor_path)
-            self.prev_path, self.next_path = prev, next
-            have_next_diffs = (prev is not None, next is not None)
-            self.next_diff_changed_signal.emit(*have_next_diffs)
+            prev, next_ = self.model._find_next_prev_diff(cursor_path)
+            self.prev_path, self.next_path = prev, next_
+            self.set_action_enabled("previous-change", prev is not None)
+            self.set_action_enabled("next-change", next_ is not None)
+
         self.current_path = cursor_path
 
     @Template.Callback()
@@ -1212,27 +1205,42 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
 
+    @with_focused_pane
+    def action_prev_pane(self, pane, *args):
+        new_pane = (pane - 1) % self.num_panes
+        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+
+    @with_focused_pane
+    def action_next_pane(self, pane, *args):
+        new_pane = (pane + 1) % self.num_panes
+        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+
     @Template.Callback()
     def on_treeview_key_press_event(self, view, event):
+        if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
+            return False
+
         pane = self.treeview.index(view)
-        tree = None
-        if Gdk.KEY_Right == event.keyval:
-            if pane+1 < self.num_panes:
-                tree = self.treeview[pane+1]
-        elif Gdk.KEY_Left == event.keyval:
-            if pane-1 >= 0:
-                tree = self.treeview[pane-1]
-        if tree is not None:
-            paths = self._get_selected_paths(pane)
-            view.get_selection().unselect_all()
-            tree.grab_focus()
-            tree.get_selection().unselect_all()
-            if len(paths):
-                tree.set_cursor(paths[0])
-                for p in paths:
-                    tree.get_selection().select_path(p)
-            tree.emit("cursor-changed")
-        return event.keyval in (Gdk.KEY_Left, Gdk.KEY_Right)  # handled
+        target_pane = pane + 1 if event.keyval == Gdk.KEY_Right else pane - 1
+        if 0 <= target_pane < self.num_panes:
+            self.change_focused_tree(view, self.treeview[target_pane])
+
+        return True
+
+    def change_focused_tree(
+            self, old_view: Gtk.TreeView, new_view: Gtk.TreeView):
+
+        paths = old_view.get_selection().get_selected_rows()[1]
+        old_view.get_selection().unselect_all()
+
+        new_view.grab_focus()
+        new_view.get_selection().unselect_all()
+        if paths:
+            new_view.set_cursor(paths[0])
+            for p in paths:
+                new_view.get_selection().select_path(p)
+
+        new_view.emit("cursor-changed")
 
     @Template.Callback()
     def on_treeview_row_activated(self, view, path, column):
@@ -1266,13 +1274,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 view.expand_row(row.path, False)
 
         self._do_to_others(view, self.treeview, "expand_row", (path, False))
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_treeview_row_collapsed(self, view, me, path):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
-        self._update_diffmaps()
 
     @Template.Callback()
     def on_treeview_focus_in_event(self, tree, event):
@@ -1286,8 +1292,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                   for p in row_paths if os.path.exists(p)]
         self.create_diff_signal.emit(gfiles, {})
 
-    @Template.Callback()
-    def on_button_diff_clicked(self, button):
+    def action_diff(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1296,8 +1301,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
 
-    @Template.Callback()
-    def on_collapse_recursive_clicked(self, action):
+    def action_folder_collapse(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1317,8 +1321,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         path = filter_model.convert_path_to_child_path(filter_path)
         paths_to_collapse.append(path)
 
-    @Template.Callback()
-    def on_expand_recursive_clicked(self, action):
+    def action_folder_expand(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1327,19 +1330,16 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for path in paths:
             self.treeview[pane].expand_row(path, True)
 
-    @Template.Callback()
-    def on_button_copy_left_clicked(self, button):
+    def action_copy_left(self, *args):
         self.copy_selected(-1)
 
-    @Template.Callback()
-    def on_button_copy_right_clicked(self, button):
+    def action_copy_right(self, *args):
         self.copy_selected(1)
 
-    @Template.Callback()
-    def on_button_delete_clicked(self, button):
+    def action_delete(self, *args):
         self.delete_selected()
 
-    def open_external(self):
+    def action_open_external(self, *args):
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1351,15 +1351,16 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if files:
             self._open_files(files)
 
-    @Template.Callback()
-    def on_button_ignore_case_toggled(self, button):
+    def action_ignore_case_change(self, action, value):
+        action.set_state(value)
         self.refresh()
 
-    @Template.Callback()
-    def on_filter_state_toggled(self, button):
+    def action_filter_state_change(self, action, value):
+        action.set_state(value)
+
         active_filters = [
-            state for state, (_, action_name) in self.state_actions.items()
-            if self.actiongroup.get_action(action_name).get_active()
+            a for a in self.state_actions
+            if self.get_action_state(self.state_actions[a][1])
         ]
 
         if set(active_filters) == set(self.state_filters):
@@ -1371,18 +1372,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.props.status_filters = state_strs
         self.refresh()
 
-    def _update_name_filter(self, button, idx):
-        self.name_filters[idx].active = button.get_active()
+    def _update_name_filter(self, action, state):
+        self._action_name_filter_map[action].active = state.get_boolean()
+        action.set_state(state)
         self.refresh()
-
-    @Template.Callback()
-    def on_filter_hide_current_clicked(self, button):
-        pane = self._get_focused_pane()
-        if pane is not None:
-            paths = self._get_selected_paths(pane)
-            paths.reverse()
-            for p in paths:
-                self.model.remove(self.model.get_iter(p))
 
         #
         # Selection
@@ -1532,31 +1525,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 })
         return different
 
-    def get_state_traversal(self, diffmapindex):
-        def tree_state_iter():
-            treeindex = (0, self.num_panes-1)[diffmapindex]
-            treeview = self.treeview[treeindex]
-            row_states = []
-
-            def recurse_tree_states(rowiter):
-                row_states.append(
-                    self.model.get_state(rowiter.iter, treeindex))
-                if treeview.row_expanded(rowiter.path):
-                    for row in rowiter.iterchildren():
-                        recurse_tree_states(row)
-            recurse_tree_states(next(iter(self.model)))
-            row_states.append(None)
-
-            numlines = float(len(row_states) - 1)
-            chunkstart, laststate = 0, row_states[0]
-            for index, state in enumerate(row_states):
-                if state != laststate:
-                    action = self.chunk_type_map[laststate]
-                    if action is not None:
-                        yield (action, chunkstart / numlines, index / numlines)
-                    chunkstart, laststate = index, state
-        return tree_state_iter
-
     def set_num_panes(self, num_panes):
         if num_panes == self.num_panes or num_panes not in (1, 2, 3):
             return
@@ -1566,20 +1534,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for treeview in self.treeview:
             treeview.set_model(self.model)
 
-        for (w, i) in zip(self.diffmap, (0, num_panes - 1)):
-            scroll = self.scrolledwindow[i].get_vscrollbar()
-            idx = 1 if i else 0
-            w.setup(scroll, self.get_state_traversal(idx))
-
         for widget in (
                 self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
-                self.diffmap[:num_panes] + self.linkmap[:num_panes - 1] +
+                self.chunkmap[:num_panes] + self.linkmap[:num_panes - 1] +
                 self.dummy_toolbar_linkmap[:num_panes - 1]):
             widget.show()
 
         for widget in (
                 self.vbox[num_panes:] + self.file_toolbar[num_panes:] +
-                self.diffmap[num_panes:] + self.linkmap[num_panes - 1:] +
+                self.chunkmap[num_panes:] + self.linkmap[num_panes - 1:] +
                 self.dummy_toolbar_linkmap[num_panes - 1:]):
             widget.hide()
 
@@ -1611,11 +1574,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             labels.extend([""] * extra)
         self.custom_labels = labels
         self.recompute_label()
-
-    def _update_diffmaps(self):
-        for diffmap in self.diffmap:
-            diffmap.on_diffs_changed()
-            diffmap.queue_draw()
 
     def on_file_changed(self, changed_filename):
         """When a file has changed, try to find it in our tree
@@ -1655,7 +1613,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # do the update
         for path in changed_paths:
             self._update_item_state(model.get_iter(path))
-        self._update_diffmaps()
         self.force_cursor_recalculate = True
 
     @Template.Callback()
@@ -1675,7 +1632,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.treeview[pane].expand_to_path(path)
             self.treeview[pane].set_cursor(path)
 
-    def on_refresh_activate(self, *extra):
+    def action_previous_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.UP)
+
+    def action_next_change(self, *args):
+        self.next_diff(Gdk.ScrollDirection.DOWN)
+
+    def action_refresh(self, *args):
         self.on_fileentry_file_set(None)
 
     def on_delete_event(self):
@@ -1684,7 +1647,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
-    def on_find_activate(self, *extra):
+    def action_find(self, *args):
         self.focus_pane.emit("start-interactive-search")
 
     def auto_compare(self):

@@ -1,5 +1,5 @@
 # Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
-# Copyright (C) 2010-2011, 2013-2015 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2011, 2013-2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -90,7 +90,21 @@ class TextviewLineAnimation:
         self.anim_type = anim_type
 
 
-class MeldSourceView(GtkSource.View):
+class SourceViewHelperMixin:
+
+    def get_y_for_line_num(self, line):
+        buf = self.get_buffer()
+        it = buf.get_iter_at_line(line)
+        y, h = self.get_line_yrange(it)
+        if line >= buf.get_line_count():
+            return y + h
+        return y
+
+    def get_line_num_for_y(self, y):
+        return self.get_line_at_y(y)[0].get_line()
+
+
+class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     __gtype_name__ = "MeldSourceView"
 
@@ -200,17 +214,6 @@ class MeldSourceView(GtkSource.View):
 
         clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
         clipboard.request_text(text_received_cb)
-
-    def get_y_for_line_num(self, line):
-        buf = self.get_buffer()
-        it = buf.get_iter_at_line(line)
-        y, h = self.get_line_yrange(it)
-        if line >= buf.get_line_count():
-            return y + h
-        return y
-
-    def get_line_num_for_y(self, y):
-        return self.get_line_at_y(y)[0].get_line()
 
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
@@ -398,3 +401,64 @@ class CommitMessageSourceView(GtkSource.View):
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
         ('draw-spaces', 'draw-spaces'),
     )
+
+
+class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
+
+    __gtype_name__ = "MeldSourceMap"
+
+    compact_view = GObject.Property(
+        type=bool,
+        nick="Limit the view to a fixed width",
+        default=False,
+    )
+
+    COMPACT_MODE_WIDTH = 40
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.connect('notify::compact-view', lambda *args: self.queue_resize())
+
+    def do_draw_layer(self, layer, context):
+        if layer != Gtk.TextViewLayer.BELOW_TEXT:
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        # Handle bad view assignments and partial initialisation
+        parent_view = self.props.view
+        if not hasattr(parent_view, 'chunk_iter'):
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        context.save()
+        context.set_line_width(1.0)
+
+        _, clip = Gdk.cairo_get_clip_rectangle(context)
+        x = clip.x - 0.5
+        width = clip.width + 1
+        bounds = (
+            self.get_line_num_for_y(clip.y),
+            self.get_line_num_for_y(clip.y + clip.height),
+        )
+
+        # Paint chunk backgrounds
+        for change in parent_view.chunk_iter(bounds):
+            if change[1] == change[2]:
+                # We don't have room to paint inserts in this widget
+                continue
+
+            ypos0 = self.get_y_for_line_num(change[1])
+            ypos1 = self.get_y_for_line_num(change[2])
+            height = max(0, ypos1 - ypos0 - 1)
+
+            context.rectangle(x, ypos0 + 0.5, width, height)
+            context.set_source_rgba(*parent_view.fill_colors[change[0]])
+            context.fill()
+
+        context.restore()
+
+        return GtkSource.Map.do_draw_layer(self, layer, context)
+
+    def do_get_preferred_width(self):
+        if self.props.compact_view:
+            return (self.COMPACT_MODE_WIDTH, self.COMPACT_MODE_WIDTH)
+        else:
+            return GtkSource.Map.do_get_preferred_width(self)

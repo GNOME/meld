@@ -24,6 +24,7 @@ from gi.repository import Gio
 from gi.repository import GLib
 from gi.repository import Gtk
 
+import meld.accelerators
 import meld.conf
 from meld.conf import _
 from meld.filediff import FileDiff
@@ -52,6 +53,7 @@ class MeldApp(Gtk.Application):
 
     def do_startup(self):
         Gtk.Application.do_startup(self)
+        meld.accelerators.register_accels(self)
 
         actions = (
             ("preferences", self.preferences_callback),

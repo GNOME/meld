@@ -101,6 +101,7 @@ class CommitDialog(Gtk.Dialog):
         self.destroy()
         return response, msg
 
+    @Template.Callback()
     def on_previousentry_activate(self, gentry):
         idx = gentry.get_active()
         if idx != -1:
