@@ -1534,7 +1534,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for treeview in self.treeview:
             treeview.set_model(self.model)
 
-
         for widget in (
                 self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
                 self.chunkmap[:num_panes] + self.linkmap[:num_panes - 1] +
