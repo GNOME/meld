@@ -99,6 +99,18 @@ Windows installer can be built with command
 
 that creates file `dist/Meld-VERSION-ARCH.msi`
 
+
+Developing
+----------
+
+It's easy to get started developing Meld. From a git checkout, just run
+`bin/meld`.
+
+We also support development using Flatpak via GNOME Builder. At the Builder
+"Clone..." dialog, enter https://gitlab.gnome.org/GNOME/meld.git, and the
+default build + run development flow using Flatpak should work.
+
+
 Contributing
 ------------
 
