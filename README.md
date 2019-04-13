@@ -16,7 +16,7 @@ Meld is licensed under the GPL v2 or later.
 Requirements
 ------------
 
-* Python 3.4
+* Python 3.6
 * pycairo (Python3 bindings for cairo without GObject layer)
 * PyGObject 3.20 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
@@ -27,7 +27,7 @@ And following packages with GObject introspection:
 * Pango
 * PangoCairo
 * GTK+ 3.20
-* GtkSourceView 3.20
+* GtkSourceView 3.20 (note that GtkSourceView 4 is not supported)
 
 
 Build requirements
