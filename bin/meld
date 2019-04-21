@@ -181,6 +181,7 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
 
+    cairo_requirement = (1, 15)
     gtk_requirement = (3, 20)
     glib_requirement = (2, 48)
     gtksourceview_requirement = (3, 20, 0)
@@ -220,6 +221,12 @@ def check_requirements():
         assert hasattr(GtkSource, 'Tag')
     except (ImportError, AssertionError, ValueError) as e:
         missing_reqs("GtkSourceView 3", gtksourceview_requirement, e)
+
+    try:
+        import cairo
+        assert cairo.version_info >= cairo_requirement
+    except (ImportError, AssertionError) as e:
+        missing_reqs("cairo", cairo_requirement, e)
 
 
 def setup_resources():
