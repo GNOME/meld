@@ -139,6 +139,10 @@ def _normalize(contents, ignore_blank_lines, regexes=()):
 
     if regexes:
         contents = (apply_text_filters(c, regexes) for c in contents)
+        if ignore_blank_lines:
+            # We re-remove blank lines here in case applying text
+            # filters has caused more lines to be blank.
+            contents = (remove_blank_lines(c) for c in contents)
 
     return contents
 
