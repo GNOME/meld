@@ -212,7 +212,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=ActionMode.Replace,
     )
 
-    lock_scrolling = GObject.property(
+    lock_scrolling = GObject.Property(
         type=bool,
         nick='Lock scrolling of all panes',
         default=False,
