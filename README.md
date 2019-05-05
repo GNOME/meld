@@ -33,9 +33,15 @@ And following packages with GObject introspection:
 Build requirements
 ------------------
 
+System packages:
+
 * intltool
 * itstool
 * xmllint
+
+Python packages:
+
+* distro
 
 Building Windows MSIs requires:
 
