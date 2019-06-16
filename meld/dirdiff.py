@@ -1077,9 +1077,9 @@ class DirDiff(MeldDoc, Component):
                     it, pane, os_path)
 
             get_action("DirCompare").set_sensitive(True)
-            get_action("DirCollapseRecursively").set_sensitive(
+            get_action("DirCollapseRecursively").set_visible(
                 is_single_foldable_row)
-            get_action("DirExpandRecursively").set_sensitive(
+            get_action("DirExpandRecursively").set_visible(
                 is_single_foldable_row)
             get_action("Hide").set_sensitive(True)
             get_action("DirDelete").set_sensitive(
