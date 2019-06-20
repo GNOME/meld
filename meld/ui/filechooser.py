@@ -15,6 +15,8 @@
 
 """This module provides file choosers that let users select a text encoding."""
 
+import sys
+
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
@@ -52,10 +54,19 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
 
     def make_encoding_combo(self):
         """Create the combo box for text encoding selection"""
-        codecs = []
-        current = GtkSource.encoding_get_current()
-        codecs.append((current.to_string(), current.get_charset()))
-        codecs.append((None, None))
+
+        # On Windows, the "current" encoding is the "system default
+        # ANSI code-page", which is probably not what the user wants,
+        # so we default to UTF-8.
+        if sys.platform == 'win32':
+            current = GtkSource.encoding_get_utf8()
+        else:
+            current = GtkSource.encoding_get_current()
+
+        codecs = [
+            (current.to_string(), current.get_charset()),
+            (None, None),
+        ]
         for encoding in GtkSource.encoding_get_all():
             codecs.append((encoding.to_string(), encoding.get_charset()))
 
