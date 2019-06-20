@@ -1072,9 +1072,7 @@ class DirDiff(MeldDoc, Component):
             if (selection.count_selected_rows() == 1):
                 path = selection.get_selected_rows()[1][0]
                 it = self.model.get_iter(path)
-                os_path = self.model.value_path(it, pane)
-                is_single_foldable_row = self.model.is_folder(
-                    it, pane, os_path)
+                is_single_foldable_row = self.model.iter_has_child(it)
 
             get_action("DirCompare").set_sensitive(True)
             get_action("DirCollapseRecursively").set_sensitive(
