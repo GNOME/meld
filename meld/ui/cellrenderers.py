@@ -74,7 +74,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
         self._bytesize = value
 
     bytesize = GObject.Property(
-        type=int,
+        type=GObject.TYPE_INT64,
         nick="Byte size to display",
         getter=get_bytesize,
         setter=set_bytesize,
