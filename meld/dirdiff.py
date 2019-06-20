@@ -1452,9 +1452,6 @@ class DirDiff(MeldDoc, Component):
         return different
 
     def popup_in_pane(self, pane, event):
-        self.actiongroup.get_action("DirCopyLeft").set_sensitive(pane > 0)
-        self.actiongroup.get_action("DirCopyRight").set_sensitive(
-            pane + 1 < self.num_panes)
         if event:
             button = event.button
             time = event.time
