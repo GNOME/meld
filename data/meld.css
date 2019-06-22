@@ -55,6 +55,11 @@ meld-find-bar {
     background-color: @theme_bg_color;
 }
 
+/* Work around bad close button styling; see Meld issue #344. */
+.meld-notebook > header tab  button.flat {
+        margin-right: 0;
+}
+
 .meld-notebook-child {
     background-color: @theme_bg_color;
 }
