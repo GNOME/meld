@@ -294,7 +294,8 @@ class MeldApp(Gtk.Application):
             comparison_file_path = os.path.expanduser(path)
             gio_file = Gio.File.new_for_path(comparison_file_path)
             try:
-                tab = self.get_meld_window().append_recent(gio_file.get_uri())
+                tab = self.get_active_window().append_recent(
+                    gio_file.get_uri())
             except (IOError, ValueError):
                 parser.local_error(_("Error reading saved comparison file"))
             if parser.should_exit:
