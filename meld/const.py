@@ -29,3 +29,6 @@ NEWLINES = {
 
 FILE_FILTER_ACTION_FORMAT = 'folder-custom-filter-{}'
 TEXT_FILTER_ACTION_FORMAT = 'text-custom-filter-{}'
+
+#: Sentinel value for mtimes on files that don't exist.
+MISSING_TIMESTAMP = -2147483648

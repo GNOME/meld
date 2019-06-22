@@ -36,7 +36,7 @@ from gi.repository import Gtk
 from meld import misc
 from meld import tree
 from meld.conf import _
-from meld.const import FILE_FILTER_ACTION_FORMAT
+from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
@@ -254,7 +254,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
 
     def add_error(self, parent, msg, pane):
         defaults = {
-            COL_TIME: -1.0,
+            COL_TIME: MISSING_TIMESTAMP,
             COL_SIZE: -1,
             COL_PERMS: -1
         }
@@ -1517,11 +1517,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             else:
                 self.model.set_path_state(
                     it, j, tree.STATE_NONEXIST, any(isdir))
-                # SET time, size and perms to -1 since None of GInt is 0
-                # TODO: change it to math.nan some day
-                # https://gitlab.gnome.org/GNOME/glib/issues/183
+                # Set sentinel values for time, size and perms
+                # TODO: change sentinels to float('nan'), pending:
+                #   https://gitlab.gnome.org/GNOME/glib/issues/183
                 self.model.unsafe_set(it, j, {
-                    COL_TIME: -1.0,
+                    COL_TIME: MISSING_TIMESTAMP,
                     COL_SIZE: -1,
                     COL_PERMS: -1
                 })
