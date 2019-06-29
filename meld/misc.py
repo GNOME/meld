@@ -163,18 +163,6 @@ def user_critical(
     return wrap
 
 
-def make_tool_button_widget(label_text: str) -> Gtk.HBox:
-    """Make a GtkToolButton label-widget suggestive of a menu dropdown"""
-    arrow = Gtk.Arrow(
-        arrow_type=Gtk.ArrowType.DOWN, shadow_type=Gtk.ShadowType.NONE)
-    label = Gtk.Label(label=label_text)
-    hbox = Gtk.HBox(spacing=3)
-    hbox.pack_end(arrow, True, True, 0)
-    hbox.pack_end(label, True, True, 0)
-    hbox.show_all()
-    return hbox
-
-
 MELD_STYLE_SCHEME = "meld-base"
 MELD_STYLE_SCHEME_DARK = "meld-dark"
 
