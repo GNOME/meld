@@ -25,8 +25,8 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.meldbuffer import MeldBuffer
-from meld.misc import colour_lookup_with_fallback, get_common_theme
 from meld.settings import bind_settings, meldsettings, settings
+from meld.style import colour_lookup_with_fallback, get_common_theme
 
 
 log = logging.getLogger(__name__)

@@ -23,8 +23,8 @@ from gi.repository import Gtk
 
 from meld.conf import _
 from meld.const import ActionMode, ChunkAction
-from meld.misc import get_common_theme
 from meld.settings import meldsettings
+from meld.style import get_common_theme
 from meld.ui.gtkcompat import get_style
 
 

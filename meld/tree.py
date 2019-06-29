@@ -22,7 +22,7 @@ from gi.repository import GLib
 from gi.repository import GObject
 from gi.repository import Pango
 
-from meld.misc import colour_lookup_with_fallback
+from meld.style import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import (  # noqa: F401
     CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_MERGED, CONFLICT_OTHER,

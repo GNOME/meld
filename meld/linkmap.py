@@ -20,8 +20,8 @@ import math
 from gi.repository import Gdk
 from gi.repository import Gtk
 
-from meld.misc import get_common_theme
 from meld.settings import meldsettings
+from meld.style import get_common_theme
 
 
 # Rounded rectangle corner radius for culled changes display

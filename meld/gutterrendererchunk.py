@@ -19,8 +19,8 @@ from gi.repository import Gdk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
-from meld.misc import get_common_theme
 from meld.settings import meldsettings
+from meld.style import get_common_theme
 
 
 def get_background_rgba(renderer):
