@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
+import enum
 from typing import (
     Mapping,
     Optional,
@@ -29,8 +29,10 @@ from gi.repository import GtkSource
 
 from meld.conf import _
 
-MELD_STYLE_SCHEME = "meld-base"
-MELD_STYLE_SCHEME_DARK = "meld-dark"
+
+class MeldStyleScheme(enum.Enum):
+    base = "meld-base"
+    dark = "meld-dark"
 
 
 base_style_scheme: Optional[GtkSource.StyleScheme] = None
@@ -63,7 +65,7 @@ def get_base_style_scheme() -> GtkSource.StyleScheme:
             use_dark = True
 
     base_scheme_name = (
-        MELD_STYLE_SCHEME_DARK if use_dark else MELD_STYLE_SCHEME)
+        MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
 
     manager = GtkSource.StyleSchemeManager.get_default()
     base_style_scheme = manager.get_scheme(base_scheme_name)
