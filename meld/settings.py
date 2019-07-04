@@ -113,6 +113,10 @@ def bind_settings(obj):
         settings.bind(settings_id, obj, property_id, bind_flags)
 
 
+def get_meld_settings() -> MeldSettings:
+    return meldsettings
+
+
 settings = None
 interface_settings = None
 meldsettings = None
