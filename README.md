@@ -18,7 +18,7 @@ Requirements
 
 * Python 3.6
 * pycairo (Python3 bindings for cairo without GObject layer)
-* PyGObject 3.20 (Python3 bindings for GObject introspection)
+* PyGObject 3.30 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
 
 And following packages with GObject introspection:

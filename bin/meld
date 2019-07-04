@@ -187,6 +187,7 @@ def check_requirements():
     gtk_requirement = (3, 20)
     glib_requirement = (2, 48)
     gtksourceview_requirement = (3, 20, 0)
+    pygobject_requirement = (3, 30, 0)
 
     def missing_reqs(mod, ver, exc=None):
         if isinstance(exc, ImportError):
@@ -197,6 +198,12 @@ def check_requirements():
 
     if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
         missing_reqs("Python", meld.conf.PYTHON_REQUIREMENT_TUPLE)
+
+    try:
+        import gi
+        assert gi.version_info >= pygobject_requirement
+    except (ImportError, AssertionError, ValueError) as e:
+        missing_reqs("pygobject", pygobject_requirement, e)
 
     # gtk+ and related imports
     try:
