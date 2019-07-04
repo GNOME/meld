@@ -232,7 +232,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     def on_setting_changed(self, settings, key):
         if key == 'font':
-            self.override_font(meldsettings.font)
+            self.override_font(settings.font)
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
                 "meld:current-line-highlight", "background")
