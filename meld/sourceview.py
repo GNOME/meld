@@ -25,7 +25,7 @@ from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.meldbuffer import MeldBuffer
-from meld.settings import bind_settings, meldsettings, settings
+from meld.settings import bind_settings, get_meld_settings, settings
 from meld.style import colour_lookup_with_fallback, get_common_theme
 
 
@@ -197,8 +197,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         buf.create_tag("dimmed")
         self.set_buffer(buf)
 
-        meldsettings.connect('changed', self.on_setting_changed)
-
     def do_paste_clipboard(self, *args):
         # This is an awful hack to replace another awful hack. The idea
         # here is to sanitise the clipboard contents so that it doesn't
@@ -287,8 +285,13 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.draw_spaces_bool = draw_spaces_to_bool(
             None, self.props.draw_spaces)
 
-        self.on_setting_changed(meldsettings, 'font')
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+
+        self.on_setting_changed(meld_settings, 'font')
+        self.on_setting_changed(meld_settings, 'style-scheme')
+
+        meld_settings.connect('changed', self.on_setting_changed)
+
         return GtkSource.View.do_realize(self)
 
     def do_draw_layer(self, layer, context):
