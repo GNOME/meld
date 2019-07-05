@@ -33,18 +33,17 @@ class MeldStyleScheme(enum.Enum):
     dark = "meld-dark"
 
 
+style_scheme: Optional[GtkSource.StyleScheme] = None
 base_style_scheme: Optional[GtkSource.StyleScheme] = None
 
 
-def get_base_style_scheme() -> GtkSource.StyleScheme:
+def set_base_style_scheme(
+        new_style_scheme: GtkSource.StyleScheme) -> GtkSource.StyleScheme:
 
     global base_style_scheme
+    global style_scheme
 
-    if base_style_scheme:
-        return base_style_scheme
-
-    from meld.settings import meldsettings
-    style_scheme = meldsettings.style_scheme
+    style_scheme = new_style_scheme
 
     # Get our text background colour by checking the 'text' style of
     # the user's selected style scheme, falling back to the GTK+ theme
@@ -72,21 +71,19 @@ def get_base_style_scheme() -> GtkSource.StyleScheme:
         MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
 
     manager = GtkSource.StyleSchemeManager.get_default()
-    base_style_scheme = manager.get_scheme(base_scheme_name)
+    base_style_scheme = manager.get_scheme(base_scheme_name.value)
+    if style_scheme.props.id in (MeldStyleScheme.dark.value, MeldStyleScheme.base.value):
+        style_scheme = base_style_scheme
 
     return base_style_scheme
 
 
 def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
-    from meld.settings import meldsettings
-    source_style = meldsettings.style_scheme
-
-    style = source_style.get_style(name) if source_style else None
+    style = style_scheme.get_style(name) if style_scheme else None
     style_attr = getattr(style.props, attribute) if style else None
     if not style or not style_attr:
-        base_style = get_base_style_scheme()
         try:
-            style = base_style.get_style(name)
+            style = base_style_scheme.get_style(name)
             style_attr = getattr(style.props, attribute)
         except AttributeError:
             pass
