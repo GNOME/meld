@@ -238,10 +238,13 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 "meld:syncpoint-outline", "foreground")
             self.fill_colors, self.line_colors = get_common_theme()
 
-            tag = self.get_buffer().get_tag_table().lookup("inline")
+            buf = self.get_buffer()
+            buf.set_style_scheme(settings.style_scheme)
+
+            tag = buf.get_tag_table().lookup("inline")
             tag.props.background_rgba = colour_lookup_with_fallback(
                 "meld:inline", "background")
-            tag = self.get_buffer().get_tag_table().lookup("dimmed")
+            tag = buf.get_tag_table().lookup("dimmed")
             tag.props.foreground_rgba = colour_lookup_with_fallback(
                 "meld:dimmed", "foreground")
 
@@ -289,6 +292,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         self.on_setting_changed(meld_settings, 'font')
         self.on_setting_changed(meld_settings, 'style-scheme')
+        self.get_buffer().set_style_scheme(meld_settings.style_scheme)
 
         meld_settings.connect('changed', self.on_setting_changed)
 
