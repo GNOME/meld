@@ -34,7 +34,7 @@ from distutils.log import info
 try:
     import distro
 except ImportError:
-    python_version = tuple(int(x) for x in platform.python_version_tuple())
+    python_version = tuple(int(x) for x in platform.python_version_tuple()[:2])
     if python_version >= (3, 8):
         print(
             'Missing build requirement "distro" Python module; '
