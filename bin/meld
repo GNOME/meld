@@ -154,11 +154,11 @@ def show_error_and_exit(error_text):
         import gi
         gi.require_version("Gtk", "3.0")
         from gi.repository import Gtk
-        toplevel = Gtk.Window(title="Meld")
-        toplevel.show()
         Gtk.MessageDialog(
-            toplevel, 0, Gtk.MessageType.ERROR,
-            Gtk.ButtonsType.CLOSE, error_text).run()
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.CLOSE,
+            text=error_text,
+        ).run()
     except Exception:
         # Although tkinter is imported here, it isn't meld's dependency:
         # if found it is used to show GUI error about lacking true dependecies.
