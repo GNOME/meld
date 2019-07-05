@@ -23,8 +23,6 @@ from typing import (
 )
 
 from gi.repository import Gdk
-from gi.repository import GLib
-from gi.repository import Gtk
 from gi.repository import GtkSource
 
 from meld.conf import _
@@ -45,12 +43,7 @@ def get_base_style_scheme() -> GtkSource.StyleScheme:
     if base_style_scheme:
         return base_style_scheme
 
-    env_theme = GLib.getenv('GTK_THEME')
-    if env_theme:
-        use_dark = env_theme.endswith(':dark')
-    else:
-        gtk_settings = Gtk.Settings.get_default()
-        use_dark = gtk_settings.props.gtk_application_prefer_dark_theme
+    use_dark = False
 
     # As of 3.28, the global dark theme switch is going away.
     if not use_dark:
