@@ -23,7 +23,7 @@ from gi.repository import Gtk
 
 from meld.conf import _
 from meld.const import ActionMode, ChunkAction
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.ui.gtkcompat import get_style
 
@@ -166,7 +166,7 @@ class ActionGutter(Gtk.DrawingArea):
         self.pointer_chunk = None
         self.pressed_chunk = None
 
-    def on_setting_changed(self, meldsettings, key):
+    def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
@@ -183,8 +183,11 @@ class ActionGutter(Gtk.DrawingArea):
             Gdk.EventMask.BUTTON_RELEASE_MASK
         )
         self.connect('notify::action-mode', lambda *args: self.queue_draw())
-        meldsettings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meldsettings, 'style-scheme')
+
+        meld_settings = get_meld_settings()
+        meld_settings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meld_settings, 'style-scheme')
+
         return Gtk.DrawingArea.do_realize(self)
 
     def do_motion_notify_event(self, event):
