@@ -94,11 +94,11 @@ def load_settings_schema(schema_id):
 
 
 def create_settings():
-    global settings, interface_settings, meldsettings
+    global settings, interface_settings, _meldsettings
 
     settings = load_settings_schema(meld.conf.APPLICATION_ID)
     interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
-    meldsettings = MeldSettings()
+    _meldsettings = MeldSettings()
 
 
 def bind_settings(obj):
@@ -117,9 +117,9 @@ def bind_settings(obj):
 
 
 def get_meld_settings() -> MeldSettings:
-    return meldsettings
+    return _meldsettings
 
 
 settings = None
 interface_settings = None
-meldsettings = None
+_meldsettings = None
