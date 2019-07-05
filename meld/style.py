@@ -43,19 +43,30 @@ def get_base_style_scheme() -> GtkSource.StyleScheme:
     if base_style_scheme:
         return base_style_scheme
 
-    use_dark = False
+    from meld.settings import meldsettings
+    style_scheme = meldsettings.style_scheme
 
-    # As of 3.28, the global dark theme switch is going away.
-    if not use_dark:
+    # Get our text background colour by checking the 'text' style of
+    # the user's selected style scheme, falling back to the GTK+ theme
+    # background if there is no style scheme background set.
+    style = style_scheme.get_style('text') if style_scheme else None
+    if style:
+        background = style.props.background
+        rgba = Gdk.RGBA()
+        rgba.parse(background)
+    else:
+        # This case will only be hit for GtkSourceView style schemes
+        # that don't set a text background, like the "Classic" scheme.
         from meld.sourceview import MeldSourceView
         stylecontext = MeldSourceView().get_style_context()
         background_set, rgba = (
             stylecontext.lookup_color('theme_bg_color'))
+        if not background_set:
+            rgba = Gdk.RGBA(1, 1, 1, 1)
 
-        # This heuristic is absolutely dire. I made it up. There's
-        # literally no basis to this.
-        if background_set and rgba.red + rgba.green + rgba.blue < 1.0:
-            use_dark = True
+    # This heuristic is absolutely dire. I made it up. There's
+    # literally no basis to this.
+    use_dark = (rgba.red + rgba.green + rgba.blue) < 1.0
 
     base_scheme_name = (
         MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
