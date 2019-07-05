@@ -20,7 +20,7 @@ import math
 from gi.repository import Gdk
 from gi.repository import Gtk
 
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 
 
@@ -35,7 +35,6 @@ class LinkMap(Gtk.DrawingArea):
     def __init__(self):
         self.filediff = None
         self.views = []
-        meldsettings.connect('changed', self.on_setting_changed)
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -44,7 +43,9 @@ class LinkMap(Gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+        self.on_setting_changed(meld_settings, 'style-scheme')
+        meld_settings.connect('changed', self.on_setting_changed)
 
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
