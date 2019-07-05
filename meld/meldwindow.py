@@ -34,7 +34,7 @@ from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
 from meld.ui._gtktemplate import Template
 from meld.ui.notebooklabel import NotebookLabel
@@ -129,20 +129,21 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.vc_filter_button.set_popover(
             Gtk.Popover.new_from_model(self.vc_filter_button, vc_filter_model))
 
-        self.update_text_filters()
-        self.update_filename_filters()
+        meld_settings = get_meld_settings()
+        self.update_text_filters(meld_settings)
+        self.update_filename_filters(meld_settings)
         self.settings_handlers = [
-            meldsettings.connect(
+            meld_settings.connect(
                 "text-filters-changed", self.update_text_filters),
-            meldsettings.connect(
+            meld_settings.connect(
                 "file-filters-changed", self.update_filename_filters),
         ]
 
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
-    def update_filename_filters(self, *args):
+    def update_filename_filters(self, settings):
         filter_items_model = Gio.Menu()
-        for i, filt in enumerate(meldsettings.file_filters):
+        for i, filt in enumerate(settings.file_filters):
             name = FILE_FILTER_ACTION_FORMAT.format(i)
             filter_items_model.append(
                 label=filt.label, detailed_action=f'view.{name}')
@@ -152,9 +153,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         filter_model = app.get_menu_by_id("folder-status-filter-menu")
         replace_menu_section(filter_model, section)
 
-    def update_text_filters(self, *args):
+    def update_text_filters(self, settings):
         filter_items_model = Gio.Menu()
-        for i, filt in enumerate(meldsettings.text_filters):
+        for i, filt in enumerate(settings.text_filters):
             name = TEXT_FILTER_ACTION_FORMAT.format(i)
             filter_items_model.append(
                 label=filt.label, detailed_action=f'view.{name}')
