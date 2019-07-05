@@ -22,7 +22,7 @@ from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.tree import STATE_ERROR, STATE_MODIFIED, STATE_NEW
 
@@ -90,8 +90,9 @@ class ChunkMap(Gtk.DrawingArea):
         self.adjustment.connect('changed', lambda w: self.queue_draw())
         self.adjustment.connect('value-changed', lambda w: self.queue_draw())
 
-        meldsettings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+        meld_settings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meld_settings, 'style-scheme')
 
         return Gtk.DrawingArea.do_realize(self)
 
@@ -99,7 +100,7 @@ class ChunkMap(Gtk.DrawingArea):
         self._cached_map = None
         return Gtk.DrawingArea.do_size_allocate(self, *args)
 
-    def on_setting_changed(self, meldsettings, key):
+    def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
             self._cached_map = None
