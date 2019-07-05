@@ -75,10 +75,10 @@ def test_filter_text(text, ignored_ranges, expected_text):
 
     filter_patterns = [
         '#.*',
-        '/\*.*\*/',
+        r'/\*.*\*/',
         'a(.*)b',
         'x(.*)y(.*)z',
-        '\$\w+:([^\n$]+)\$'
+        r'\$\w+:([^\n$]+)\$'
     ]
     filters = [
         FilterEntry.new_from_gsetting(("name", True, f), FilterEntry.REGEX)
