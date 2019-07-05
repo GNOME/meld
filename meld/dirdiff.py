@@ -41,7 +41,7 @@ from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
-from meld.settings import bind_settings, meldsettings, settings
+from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui._gtktemplate import Template
 from meld.ui.cellrenderers import (
@@ -462,11 +462,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.text_filters = []
         self.create_name_filters()
         self.create_text_filters()
+        meld_settings = get_meld_settings()
         self.settings_handlers = [
-            meldsettings.connect("file-filters-changed",
-                                 self.on_file_filters_changed),
-            meldsettings.connect("text-filters-changed",
-                                 self.on_text_filters_changed)
+            meld_settings.connect(
+                "file-filters-changed", self.on_file_filters_changed),
+            meld_settings.connect(
+                "text-filters-changed", self.on_text_filters_changed)
         ]
 
         # Handle overview map visibility binding
@@ -621,17 +622,19 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.refresh()
 
     def create_name_filters(self):
+        meld_settings = get_meld_settings()
+
         # Ordering of name filters is irrelevant
         old_active = set([f.filter_string for f in self.name_filters
                           if f.active])
-        new_active = set([f.filter_string for f in meldsettings.file_filters
+        new_active = set([f.filter_string for f in meld_settings.file_filters
                           if f.active])
         active_filters_changed = old_active != new_active
 
         # TODO: Rework name_filters to use a map-like structure so that we
         # don't need _action_name_filter_map.
         self._action_name_filter_map = {}
-        self.name_filters = [copy.copy(f) for f in meldsettings.file_filters]
+        self.name_filters = [copy.copy(f) for f in meld_settings.file_filters]
         for i, filt in enumerate(self.name_filters):
             action = Gio.SimpleAction.new_stateful(
                 name=FILE_FILTER_ACTION_FORMAT.format(i),
@@ -651,13 +654,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.refresh()
 
     def create_text_filters(self):
+        meld_settings = get_meld_settings()
+
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
-        new_active = [f.filter_string for f in meldsettings.text_filters
+        new_active = [f.filter_string for f in meld_settings.text_filters
                       if f.active]
         active_filters_changed = old_active != new_active
 
-        self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
+        self.text_filters = [copy.copy(f) for f in meld_settings.text_filters]
 
         return active_filters_changed
 
@@ -1644,8 +1649,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.on_fileentry_file_set(None)
 
     def on_delete_event(self):
+        meld_settings = get_meld_settings()
         for h in self.settings_handlers:
-            meldsettings.disconnect(h)
+            meld_settings.disconnect(h)
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
