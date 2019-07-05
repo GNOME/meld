@@ -19,7 +19,7 @@ from gi.repository import Gdk
 from gi.repository import GtkSource
 from gi.repository import Pango
 
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 
 
@@ -53,7 +53,7 @@ class MeldGutterRenderer:
         self.set_padding(3, 0)
         self.set_alignment(0.5, 0.5)
 
-    def on_setting_changed(self, meldsettings, key):
+    def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
@@ -137,8 +137,9 @@ class GutterRendererChunkLines(
         self.num_line_digits = 0
         self.changed_handler_id = None
 
-        meldsettings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+        meld_settings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meld_settings, 'style-scheme')
 
     def do_change_buffer(self, old_buffer):
         if old_buffer:
