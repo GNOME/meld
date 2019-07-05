@@ -37,13 +37,9 @@ text = ("""0
 ])
 def test_filter_text(line_start, line_end, expected_text):
 
-    import meld.meldbuffer
+    with mock.patch('meld.meldbuffer.bind_settings', mock.DEFAULT):
+        buf = MeldBuffer()
+        buf.set_text(text)
 
-    meld.meldbuffer.bind_settings = mock.MagicMock()
-    meld.meldbuffer.meldsettings = mock.MagicMock(style_scheme=None)
-
-    buf = MeldBuffer()
-    buf.set_text(text)
-
-    buffer_lines = BufferLines(buf)
-    assert buffer_lines[line_start:line_end] == expected_text
+        buffer_lines = BufferLines(buf)
+        assert buffer_lines[line_start:line_end] == expected_text
