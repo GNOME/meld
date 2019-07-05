@@ -26,7 +26,7 @@ from gi.repository import GtkSource
 from meld.conf import _
 from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
-from meld.settings import meldsettings
+from meld.settings import get_meld_settings
 from meld.sourceview import LanguageManager
 from meld.ui._gtktemplate import Template
 
@@ -56,9 +56,6 @@ class PatchDialog(Gtk.Dialog):
         buf.set_language(lang)
         buf.set_highlight_syntax(True)
 
-        self.textview.modify_font(meldsettings.font)
-        self.textview.set_editable(False)
-
         self.index_map = {self.left_radiobutton: (0, 1),
                           self.right_radiobutton: (1, 2)}
         self.left_patch = True
@@ -68,11 +65,14 @@ class PatchDialog(Gtk.Dialog):
             self.side_selection_label.hide()
             self.side_selection_box.hide()
 
-        meldsettings.connect('changed', self.on_setting_changed)
+        meld_settings = get_meld_settings()
+        self.textview.modify_font(meld_settings.font)
+        self.textview.set_editable(False)
+        meld_settings.connect('changed', self.on_setting_changed)
 
-    def on_setting_changed(self, setting, key):
+    def on_setting_changed(self, settings, key):
         if key == "font":
-            self.textview.modify_font(meldsettings.font)
+            self.textview.modify_font(settings.font)
 
     @Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):
