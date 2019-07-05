@@ -46,7 +46,7 @@ from meld.melddoc import ComparisonState, MeldDoc
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
-from meld.settings import bind_settings, meldsettings
+from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
 from meld.ui._gtktemplate import Template
@@ -252,8 +252,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.buffer_texts = [BufferLines(b) for b in self.textbuffer]
         self.undosequence = UndoSequence(self.textbuffer)
         self.text_filters = []
+        meld_settings = get_meld_settings()
         self.settings_handlers = [
-            meldsettings.connect(
+            meld_settings.connect(
                 "text-filters-changed", self.on_text_filters_changed)
         ]
         self.buffer_filtered = [
@@ -514,17 +515,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.refresh_comparison()
 
     def create_text_filters(self):
+        meld_settings = get_meld_settings()
+
         # In contrast to file filters, ordering of text filters can matter
         old_active = [f.filter_string for f in self.text_filters if f.active]
         new_active = [
-            f.filter_string for f in meldsettings.text_filters if f.active
+            f.filter_string for f in meld_settings.text_filters if f.active
         ]
         active_filters_changed = old_active != new_active
 
         # TODO: Rework text_filters to use a map-like structure so that we
         # don't need _action_text_filter_map.
         self._action_text_filter_map = {}
-        self.text_filters = [copy.copy(f) for f in meldsettings.text_filters]
+        self.text_filters = [copy.copy(f) for f in meld_settings.text_filters]
         for i, filt in enumerate(self.text_filters):
             action = Gio.SimpleAction.new_stateful(
                 name=TEXT_FILTER_ACTION_FORMAT.format(i),
@@ -1156,8 +1159,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.state = ComparisonState.Closing
         response = self.check_save_modified()
         if response == Gtk.ResponseType.OK:
+            meld_settings = get_meld_settings()
             for h in self.settings_handlers:
-                meldsettings.disconnect(h)
+                meld_settings.disconnect(h)
             # TODO: This should not be necessary; remove if and when we
             # figure out what's keeping MeldDocs alive for too long.
             del self._cached_match
