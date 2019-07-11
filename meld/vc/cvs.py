@@ -25,14 +25,15 @@
 
 import errno
 import os
+import shutil
 
 from . import _vc
 
 
 class Vc(_vc.Vc):
 
-    # CVSNT is? a drop-in replacement for CVS; if found, it is used instead
-    CMD = "cvs" if _vc.call(["which", "cvsnt"]) else "cvsnt"
+    # CVSNT is a drop-in replacement for CVS; if found, it is used instead
+    CMD = "cvsnt" if shutil.which("cvsnt") else "cvs"
     NAME = "CVS"
     VC_DIR = "CVS"
     VC_ROOT_WALK = False
