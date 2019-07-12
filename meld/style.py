@@ -72,7 +72,8 @@ def set_base_style_scheme(
 
     manager = GtkSource.StyleSchemeManager.get_default()
     base_style_scheme = manager.get_scheme(base_scheme_name.value)
-    if style_scheme.props.id in (MeldStyleScheme.dark.value, MeldStyleScheme.base.value):
+    base_schemes = (MeldStyleScheme.dark.value, MeldStyleScheme.base.value)
+    if style_scheme and style_scheme.props.id in base_schemes:
         style_scheme = base_style_scheme
 
     return base_style_scheme
