@@ -26,6 +26,8 @@
 import errno
 import os
 import shutil
+import re
+import functools
 
 from . import _vc
 
@@ -57,15 +59,15 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'update']
         runner(command, [], refresh=True, working_dir=self.root)
 
-    def add(self, runner, items):
-        # CVS needs to add folders from their immediate parent
-        diritems = [s for s in items if os.path.isdir(s)]
-        filitems = [s for s in items if os.path.isfile(s)]
+    def add(self, runner, afiles):
+        # CVS needs to add files together with all the parents (if those are Unversioned yet)
+        relfiles = [os.path.relpath(s,self.root) for s in afiles if os.path.isfile(s)]
         command = [self.CMD, 'add']
-        for dir1 in diritems:
-            runner(command, [dir1], refresh=True, working_dir=os.path.dirname(dir1))
-        if filitems:
-            runner(command, filitems, refresh=True)
+        if relfiles:
+            relargs = functools.reduce( (lambda a,b: a+b), [
+                              [f1[:sep] for sep in [m.start() for m in re.finditer(os.sep,f1+os.sep)]] for f1 in relfiles ])
+            absargs = [os.path.join(self.root, a1) for a1 in relargs]
+            runner(command, absargs, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
         command = [self.CMD, 'remove', '-f']
