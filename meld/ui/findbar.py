@@ -186,16 +186,14 @@ class FindBar(Gtk.Grid):
         self.wrap_box.set_visible(False)
         if not backwards:
             insert.forward_chars(start_offset)
-            match, start_iter, end_iter = self.search_context.forward(insert)
-            if match and (start_iter.get_offset() < insert.get_offset()):
-                self.wrap_box.set_visible(True)
+            match, start, end, wrapped = self.search_context.forward(insert)
         else:
-            match, start_iter, end_iter = self.search_context.backward(insert)
-            if match and (start_iter.get_offset() > insert.get_offset()):
-                self.wrap_box.set_visible(True)
+            match, start, end, wrapped = self.search_context.backward(insert)
+
         if match:
-            buf.place_cursor(start_iter)
-            buf.move_mark(buf.get_selection_bound(), end_iter)
+            self.wrap_box.set_visible(wrapped)
+            buf.place_cursor(start)
+            buf.move_mark(buf.get_selection_bound(), end)
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
             return True
