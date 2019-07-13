@@ -186,7 +186,7 @@ def check_requirements():
     cairo_requirement = (1, 15)
     gtk_requirement = (3, 20)
     glib_requirement = (2, 48)
-    gtksourceview_requirement = (3, 20, 0)
+    gtksourceview_requirement = (4, 0, 0)
     pygobject_requirement = (3, 30, 0)
 
     def missing_reqs(mod, ver, exc=None):
@@ -223,13 +223,11 @@ def check_requirements():
         missing_reqs("GLib", glib_requirement, e)
 
     try:
-        gi.require_version('GtkSource', '3.0')
+        gi.require_version('GtkSource', '4')
         from gi.repository import GtkSource
-        # TODO: There is no way to get at GtkSourceView's actual version
-        assert hasattr(GtkSource, 'SearchSettings')
-        assert hasattr(GtkSource, 'Tag')
+        GtkSource.init()
     except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GtkSourceView 3", gtksourceview_requirement, e)
+        missing_reqs("GtkSourceView 4", gtksourceview_requirement, e)
 
     try:
         import cairo
