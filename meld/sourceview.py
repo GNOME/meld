@@ -112,7 +112,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         ('highlight-current-line', 'highlight-current-line-local'),
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('draw-spaces', 'draw-spaces'),
+        ('enable-space-drawer', 'draw-spaces-bool'),
         ('wrap-mode', 'wrap-mode'),
         ('show-line-numbers', 'show-line-numbers'),
     )
@@ -273,20 +273,10 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         )
         self.wrap_mode_bool = wrap_mode_to_bool(None, self.props.wrap_mode)
 
-        def draw_spaces_from_bool(binding, from_value):
-            return GtkSource.DrawSpacesFlags.ALL if from_value else 0
-
-        def draw_spaces_to_bool(binding, from_value):
-            return bool(from_value)
-
         self.bind_property(
-            'draw-spaces-bool', self, 'draw-spaces',
-            GObject.BindingFlags.BIDIRECTIONAL,
-            draw_spaces_from_bool,
-            draw_spaces_to_bool,
+            'draw-spaces-bool', self.props.space_drawer, 'enable-matrix',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.draw_spaces_bool = draw_spaces_to_bool(
-            None, self.props.draw_spaces)
 
         meld_settings = get_meld_settings()
 
@@ -406,7 +396,6 @@ class CommitMessageSourceView(GtkSource.View):
     __gsettings_bindings__ = (
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('draw-spaces', 'draw-spaces'),
     )
 
 

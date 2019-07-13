@@ -301,6 +301,7 @@ class PreferencesDialog(Gtk.Dialog):
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
+            ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
@@ -332,10 +333,6 @@ class PreferencesDialog(Gtk.Dialog):
         self.checkbutton_wrap_text.bind_property(
             'active', self.checkbutton_wrap_word, 'sensitive',
             GObject.BindingFlags.DEFAULT)
-
-        # TODO: Fix once bind_with_mapping is available
-        self.checkbutton_show_whitespace.set_active(
-            bool(settings.get_flags('draw-spaces')))
 
         wrap_mode = settings.get_enum('wrap-mode')
         self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
@@ -379,11 +376,6 @@ class PreferencesDialog(Gtk.Dialog):
         else:
             wrap_mode = Gtk.WrapMode.CHAR
         settings.set_enum('wrap-mode', wrap_mode)
-
-    @Template.Callback()
-    def on_checkbutton_show_whitespace_toggled(self, widget):
-        value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
-        settings.set_flags('draw-spaces', value)
 
     @Template.Callback()
     def on_response(self, dialog, response_id):

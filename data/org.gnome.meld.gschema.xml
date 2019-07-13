@@ -86,10 +86,10 @@
           <summary>Color scheme to use for syntax highlighting</summary>
           <description>Used by GtkSourceView to determine colors for syntax highlighting</description>
       </key>
-      <key name="draw-spaces" flags='org.gnome.meld.spacesflags'>
-          <default>[]</default>
-          <summary>Displayed whitespace</summary>
-          <description>Selector for individual whitespace character types to be shown. Possible values are 'space', 'tab', 'newline' and 'nbsp'.</description>
+      <key name="enable-space-drawer" type='b'>
+          <default>false</default>
+          <summary>Draw whitespace</summary>
+          <description>If true, whitespace characters will be drawn in comparisons even if they are not in a changed area.</description>
       </key>
       <key name="wrap-mode" enum='org.gnome.meld.wrapmode'>
           <aliases>
