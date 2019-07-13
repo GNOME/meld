@@ -393,10 +393,23 @@ class CommitMessageSourceView(GtkSource.View):
 
     __gtype_name__ = "CommitMessageSourceView"
 
-    __gsettings_bindings__ = (
+    __gsettings_bindings_view__ = (
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
+        ('enable-space-drawer', 'enable-space-drawer'),
     )
+
+    enable_space_drawer = GObject.Property(type=bool, default=False)
+
+    def do_realize(self):
+        bind_settings(self)
+
+        self.bind_property(
+            'enable-space-drawer', self.props.space_drawer, 'enable-matrix',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+
+        return GtkSource.View.do_realize(self)
 
 
 class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
