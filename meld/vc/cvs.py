@@ -24,10 +24,10 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
-import os
-import shutil
-import re
 import functools
+import os
+import re
+import shutil
 
 from . import _vc
 
@@ -60,12 +60,14 @@ class Vc(_vc.Vc):
         runner(command, [], refresh=True, working_dir=self.root)
 
     def add(self, runner, afiles):
-        # CVS needs to add files together with all the parents (if those are Unversioned yet)
-        relfiles = [os.path.relpath(s,self.root) for s in afiles if os.path.isfile(s)]
+        # CVS needs to add files together with all the parents
+        # (if those are Unversioned yet)
+        relfiles = [os.path.relpath(s, self.root)
+                    for s in afiles if os.path.isfile(s)]
         command = [self.CMD, 'add']
         if relfiles:
-            relargs = functools.reduce( (lambda a,b: a+b), [
-                              [f1[:sep] for sep in [m.start() for m in re.finditer(os.sep,f1+os.sep)]] for f1 in relfiles ])
+            relargs = functools.reduce((lambda a, b: a+b), [
+                              [f1[:sep] for sep in [m.start() for m in re.finditer(os.sep, f1+os.sep)]] for f1 in relfiles])
             absargs = [os.path.join(self.root, a1) for a1 in relargs]
             runner(command, absargs, refresh=True, working_dir=self.root)
 
@@ -97,18 +99,20 @@ class Vc(_vc.Vc):
         while 1:
             try:
                 # Get the status of files
-    
+
                 if os.path.isdir(path):
                     _loc = os.path.join(self.location, path)
                     files = [os.path.relpath(os.path.join(x[0], y), _loc) for x in os.walk(_loc) if not x[0].endswith(self.VC_DIR) for y in x[2]]
-                    dirs = [os.path.realpath(os.path.join(x[0], y)) for x in os.walk(_loc) if not x[0].endswith(self.VC_DIR) for y in x[1] if y != self.VC_DIR]
+                    # dirs = [os.path.realpath(os.path.join(x[0], y)) for x in os.walk(_loc) if not x[0].endswith(self.VC_DIR) for y in x[1] if y != self.VC_DIR]
                 else:
                     files = [path]
-                    dirs = []
+                    # dirs = []
 
                 # Should suppress stderr here
-                proc = _vc.popen([self.CMD, "-Q", "status"] + files, cwd=self.location)
-                entries = [li for li in proc.read().splitlines() if li.startswith('File:')]
+                proc = _vc.popen([self.CMD, "-Q", "status"] +
+                                 files, cwd=self.location)
+                entries = [li for li in proc.read().splitlines()
+                           if li.startswith('File:')]
                 break
             except OSError as e:
                 if e.errno != errno.EAGAIN:
@@ -127,9 +131,10 @@ class Vc(_vc.Vc):
             for entry in zip(files, entries):
                 statekey = entry[1].split(':')[-1].strip()
                 name = entry[0].strip()
-                
+
                 if os.path.basename(name) not in entry[1]:
-                    # ? The short filename got from 'cvs -Q status <path/file>' does not match <file>
+                    # ? The short filename got from
+                    # 'cvs -Q status <path/file>' does not match <file>
                     raise
 
                 path = os.path.join(self.location, name)
@@ -137,10 +142,13 @@ class Vc(_vc.Vc):
                 self._tree_cache[path] = state
                 self._add_missing_cache_entry(path, state)
 
-        ## Setting the state of dirs in the tree cache might be relevant, but not sure
-        ## Heuristic to find out the state ('CVS' subdir exists or not)
-        # for entry in zip(dirs, [os.path.isdir(os.path.join(d1, self.VC_DIR)) for d1 in dirs]):
-        #   path = os.path.join(self.location, entry[0])
-        #   state = _vc.STATE_NORMAL if entry[1] else _vc.STATE_NONE
-        #   self._tree_cache[path] = state
-        #   self._add_missing_cache_entry(path, state)
+        """
+        # Setting the state of dirs also might be relevant, but not sure
+        # Heuristic to find out the state ('CVS' subdir exists or not)
+        for entry in zip(dirs, [os.path.isdir(os.path.join(d1, self.VC_DIR))
+                                for d1 in dirs]):
+            path = os.path.join(self.location, entry[0])
+            state = _vc.STATE_NORMAL if entry[1] else _vc.STATE_NONE
+            self._tree_cache[path] = state
+            self._add_missing_cache_entry(path, state)
+        """
