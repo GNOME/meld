@@ -111,7 +111,8 @@ class Vc(_vc.Vc):
             try:
                 # Get the status of files
 
-                files = self._find_files(path) if os.path.isdir(path) else [path]
+                path_isdir = os.path.isdir(path)
+                files = self._find_files(path) if path_isdir else [path]
 
                 # Should suppress stderr here
                 proc = _vc.popen([self.CMD, "-Q", "status"] + files,
