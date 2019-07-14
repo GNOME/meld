@@ -24,9 +24,7 @@
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import errno
-import functools
 import os
-import re
 import shutil
 
 from . import _vc
@@ -65,11 +63,15 @@ class Vc(_vc.Vc):
         relfiles = [os.path.relpath(s, self.root)
                     for s in afiles if os.path.isfile(s)]
         command = [self.CMD, 'add']
-        if relfiles:
-            relargs = functools.reduce((lambda a, b: a+b), [
-                              [f1[:sep] for sep in [m.start() for m in re.finditer(os.sep, f1+os.sep)]] for f1 in relfiles])
-            absargs = [os.path.join(self.root, a1) for a1 in relargs]
-            runner(command, absargs, refresh=True, working_dir=self.root)
+
+        relargs = []
+        for f1 in relfiles:
+            positions = [i for i, ch in enumerate(f1+os.sep) if ch == os.sep]
+            arg1 = [f1[:pos] for pos in positions]
+            relargs += arg1
+
+        absargs = [os.path.join(self.root, a1) for a1 in relargs]
+        runner(command, absargs, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
         command = [self.CMD, 'remove', '-f']
@@ -94,6 +96,15 @@ class Vc(_vc.Vc):
         args = [self.CMD, "-q", "update", "-p", path]
         return _vc.call_temp_output(args, cwd=self.root)
 
+    def _find_files(self, path):
+        relfiles = []
+        loc = os.path.join(self.location, path)
+        for step in os.walk(loc):
+            if not step[0].endswith(self.VC_DIR):
+                ff = [os.path.join(step[0], f1) for f1 in step[2]]
+                relfiles += [os.path.relpath(ff1, loc) for ff1 in ff]
+        return relfiles
+
     def _update_tree_state_cache(self, path):
         """ Update the state of the file(s) at self._tree_cache['path'] """
         while 1:
@@ -101,16 +112,13 @@ class Vc(_vc.Vc):
                 # Get the status of files
 
                 if os.path.isdir(path):
-                    _loc = os.path.join(self.location, path)
-                    files = [os.path.relpath(os.path.join(x[0], y), _loc) for x in os.walk(_loc) if not x[0].endswith(self.VC_DIR) for y in x[2]]
-                    # dirs = [os.path.realpath(os.path.join(x[0], y)) for x in os.walk(_loc) if not x[0].endswith(self.VC_DIR) for y in x[1] if y != self.VC_DIR]
+                    files = self._find_files(path)
                 else:
                     files = [path]
-                    # dirs = []
 
                 # Should suppress stderr here
-                proc = _vc.popen([self.CMD, "-Q", "status"] +
-                                 files, cwd=self.location)
+                proc = _vc.popen([self.CMD, "-Q", "status"] + files,
+                                 cwd=self.location)
                 entries = [li for li in proc.read().splitlines()
                            if li.startswith('File:')]
                 break
