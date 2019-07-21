@@ -5,7 +5,7 @@ About Meld
 Meld is a visual diff and merge tool targeted at developers. Meld helps you
 compare files, directories, and version controlled projects. It provides
 two- and three-way comparison of both files and directories, and supports
-many version control systems including Git, Mercurial, Bazaar and Subversion.
+many version control systems including Git, Mercurial, Bazaar, CVS and Subversion.
 
 Meld helps you review code changes, understand patches, and makes enormous
 merge conflicts slightly less painful.

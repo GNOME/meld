@@ -22,11 +22,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from . import bzr, darcs, git, mercurial, svn
+from . import bzr, cvs, darcs, git, mercurial, svn
 
 # Tuple of plugins, ordered according to best-guess as to which VC a
 # user is likely to want by default in a multiple-VC situation.
-VC_PLUGINS = (git, mercurial, bzr, svn, darcs)
+VC_PLUGINS = (git, mercurial, bzr, svn, darcs, cvs)
 
 
 def get_vcs(location):
