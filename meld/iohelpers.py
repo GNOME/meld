@@ -92,14 +92,18 @@ def prompt_save_filename(
 
     try:
         file_info = gfile.query_info(
-            'standard::name,standard::display-name', 0, None)
+            'standard::name,standard::display-name',
+            Gio.FileQueryInfoFlags.NONE,
+            None,
+        )
     except GLib.Error as err:
         if err.code == Gio.IOErrorEnum.NOT_FOUND:
             return gfile
         raise
 
     # The selected file exists, so we need to prompt for overwrite.
-    parent_name = gfile.get_parent().get_parse_name()
+    parent_folder = gfile.get_parent()
+    parent_name = parent_folder.get_parse_name() if parent_folder else ''
     file_name = file_info.get_display_name()
 
     replace = modal_dialog(
