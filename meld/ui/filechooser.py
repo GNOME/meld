@@ -20,6 +20,8 @@ import sys
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
+from meld.conf import _
+
 
 FILE_ACTIONS = {
     Gtk.FileChooserAction.OPEN,
@@ -64,7 +66,12 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
             current = GtkSource.encoding_get_current()
 
         codecs = [
-            (current.to_string(), current.get_charset()),
+            (_('Autodetect Encoding'), None),
+            (None, None),
+            (
+                _('Current Locale ({})').format(current.get_charset()),
+                current.get_charset()
+            ),
             (None, None),
         ]
         for encoding in GtkSource.encoding_get_all():
@@ -80,7 +87,7 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
         combo.pack_start(cell, True)
         combo.add_attribute(cell, 'text', 0)
         combo.set_row_separator_func(
-            lambda model, it, data: not model.get_value(it, 1), None)
+            lambda model, it, data: not model.get_value(it, 0), None)
         combo.props.active = 0
         return combo
 
@@ -90,6 +97,8 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
         if not combo:
             return None
         charset = self.encoding_store.get_value(combo.get_active_iter(), 1)
+        if not charset:
+            return None
         return GtkSource.Encoding.get_from_charset(charset)
 
     def action_changed_cb(self, *args):
