@@ -21,6 +21,7 @@ import shlex
 import string
 import subprocess
 import sys
+from typing import Iterable, Sequence
 
 from gi.repository import Gdk
 from gi.repository import Gio
@@ -36,7 +37,7 @@ from meld.task import FifoScheduler
 log = logging.getLogger(__name__)
 
 
-def make_custom_editor_command(path, line=0):
+def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
     custom_command = settings.get_string('custom-editor-command')
     fmt = string.Formatter()
     replacements = [tok[1] for tok in fmt.parse(custom_command)]
@@ -89,18 +90,19 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
+        self.view_action_group = Gio.SimpleActionGroup()
         self._state = ComparisonState.Normal
 
     @property
-    def state(self):
+    def state(self) -> ComparisonState:
         return self._state
 
     @state.setter
-    def state(self, value):
+    def state(self, value: ComparisonState) -> None:
         if value == self._state:
             return
         self.tab_state_changed.emit(self._state, value)
@@ -110,15 +112,15 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         """Get the comparison type and URI(s) being compared"""
         pass
 
-    def action_stop(self, *args):
+    def action_stop(self, *args) -> None:
         if self.scheduler.tasks_pending():
             self.scheduler.remove_task(self.scheduler.get_current_task())
 
-    def _open_files(self, selected, line=0):
+    def _open_files(self, selected: Iterable[str], line: int = 0) -> None:
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
                                 Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
-        def os_open(path, uri):
+        def os_open(path: str, uri: str):
             if not path:
                 return
             if sys.platform == "win32":
@@ -168,10 +170,10 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
                                open_cb, None)
 
-    def on_file_changed(self, filename):
+    def on_file_changed(self, filename: str):
         pass
 
-    def set_labels(self, lst):
+    def set_labels(self, lst: Sequence[str]) -> None:
         pass
 
     def get_action_state(self, action_name: str):
@@ -181,7 +183,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             return
         return action.get_state().unpack()
 
-    def set_action_state(self, action_name: str, state):
+    def set_action_state(self, action_name: str, state) -> None:
         # TODO: Try to do GLib.Variant things here instead of in callers
         action = self.view_action_group.lookup_action(action_name)
         if not action:
@@ -189,7 +191,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             return
         action.set_state(state)
 
-    def set_action_enabled(self, action_name, enabled):
+    def set_action_enabled(self, action_name: str, enabled: bool) -> None:
         action = self.view_action_group.lookup_action(action_name)
         if not action:
             log.error(f'No action {action_name!r} found')
@@ -210,7 +212,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
         window.insert_action_group('view', None)
 
-    def on_delete_event(self):
+    # FIXME: Here and in subclasses, on_delete_event are not real GTK+
+    # event handlers, and should be renamed.
+    def on_delete_event(self) -> Gtk.ResponseType:
         """Called when the docs container is about to close.
 
         A doc normally returns Gtk.ResponseType.OK, but may instead return
