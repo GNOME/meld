@@ -27,7 +27,7 @@ And following packages with GObject introspection:
 * Pango
 * PangoCairo
 * GTK+ 3.20
-* GtkSourceView 3.20 (note that GtkSourceView 4 is not supported)
+* GtkSourceView 4.0
 
 
 Build requirements
