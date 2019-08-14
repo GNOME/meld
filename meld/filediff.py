@@ -425,6 +425,8 @@ class FileDiff(MeldDoc, Component):
             push_left, push_right, pull_left, pull_right, delete, \
                 copy_left, copy_right = (True,) * 7
 
+            three_way = self.num_panes == 3
+
             # Push and Delete are active if the current pane has something to
             # act on, and the target pane exists and is editable. Pull is
             # sensitive if the source pane has something to get, and the
@@ -451,14 +453,14 @@ class FileDiff(MeldDoc, Component):
             elif pane == 1:
                 chunk0 = self.linediffer.get_chunk(chunk_id, 1, 0)
                 chunk2 = None
-                if self.num_panes == 3:
+                if three_way:
                     chunk2 = self.linediffer.get_chunk(chunk_id, 1, 2)
                 left_mid_exists = bool(chunk0 and chunk0[1] != chunk0[2])
                 left_exists = bool(chunk0 and chunk0[3] != chunk0[4])
                 right_mid_exists = bool(chunk2 and chunk2[1] != chunk2[2])
                 right_exists = bool(chunk2 and chunk2[3] != chunk2[4])
-                push_left = editable_left
-                push_right = editable_right
+                push_left = editable_left and bool(not three_way or chunk0)
+                push_right = editable_right and bool(not three_way or chunk2)
                 pull_left = editable and left_exists
                 pull_right = editable and right_exists
                 delete = editable and (left_mid_exists or right_mid_exists)
