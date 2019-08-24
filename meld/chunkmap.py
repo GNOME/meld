@@ -192,8 +192,10 @@ class ChunkMap(Gtk.DrawingArea):
         # Draw our scroll position indicator
         context.set_line_width(1)
         context.set_source_rgba(*handle_overdraw)
+
         adj_y = self.adjustment.get_value() / self.adjustment.get_upper()
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
+
         context.rectangle(
             x0 - self.overdraw_padding, round(height_scale * adj_y) + 0.5,
             x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
