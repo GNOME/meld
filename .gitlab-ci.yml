@@ -49,7 +49,7 @@ linux-build:
       - dist/
   before_script:
     - path C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%
-    - pacman --noconfirm -S --refresh --sysupgrade --needed mingw-w64-%MSYS2_ARCH%-python3-cx_Freeze mingw-w64-%MSYS2_ARCH%-python3-gobject mingw-w64-%MSYS2_ARCH%-python3-pytest mingw-w64-%MSYS2_ARCH%-gtksourceview3 mingw-w64-%MSYS2_ARCH%-gsettings-desktop-schemas glib2-devel intltool
+    - pacman --noconfirm -S --refresh --sysupgrade --needed mingw-w64-%MSYS2_ARCH%-python3-cx_Freeze mingw-w64-%MSYS2_ARCH%-python3-gobject mingw-w64-%MSYS2_ARCH%-python3-pytest mingw-w64-%MSYS2_ARCH%-gtksourceview4 mingw-w64-%MSYS2_ARCH%-gsettings-desktop-schemas glib2-devel intltool
   script:
     - glib-compile-schemas data
     - python3 setup_win32.py bdist_dumb --bdist-dir build\bdist.mingw\msi --keep-temp bdist_msi --keep-temp
