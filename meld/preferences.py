@@ -60,8 +60,7 @@ class FilterList(Gtk.Box, EditableListWidget):
     )
 
     def __init__(self, **kwargs):
-        super().__init__(self, **kwargs)
-        FilterList.init_template(self)
+        super().__init__(**kwargs)
         self.model = self.treeview.get_model()
 
         self.pattern_column.set_cell_data_func(
@@ -150,8 +149,7 @@ class ColumnList(Gtk.VBox, EditableListWidget):
     )
 
     def __init__(self, **kwargs):
-        super().__init__(self, **kwargs)
-        ColumnList.init_template(self)
+        super().__init__(**kwargs)
         self.model = self.treeview.get_model()
 
         # Unwrap the variant
@@ -291,7 +289,6 @@ class PreferencesDialog(Gtk.Dialog):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.init_template()
 
         bindings = [
             ('use-system-font', self.checkbutton_default_font, 'active'),
