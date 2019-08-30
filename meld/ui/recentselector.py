@@ -40,12 +40,12 @@ class RecentSelector(Gtk.Grid):
     search_entry = Template.Child()
     open_button = Template.Child()
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.init_template()
 
+    def do_realize(self):
         self.filter_text = ''
         self.recent_chooser.set_filter(self.make_recent_filter())
+
+        return Gtk.Grid.do_realize(self)
 
     def custom_recent_filter_func(
             self, filter_info: Gtk.RecentFilterInfo) -> bool:
