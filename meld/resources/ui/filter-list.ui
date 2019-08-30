@@ -13,7 +13,8 @@
       <column type="gboolean"/>
     </columns>
   </object>
-  <template class="FilterList" parent="GtkVBox">
+  <template class="FilterList" parent="GtkBox">
+    <property name="orientation">vertical</property>
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="homogeneous">False</property>
@@ -179,7 +180,7 @@
       </object>
       <packing>
         <property name="expand">False</property>
-        <property name="fill">True</property>
+        <property name="fill">False</property>
         <property name="position">1</property>
       </packing>
     </child>

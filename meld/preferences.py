@@ -28,7 +28,7 @@ from meld.ui.listwidget import EditableListWidget
 
 
 @Template(resource_path='/org/gnome/meld/ui/filter-list.ui')
-class FilterList(Gtk.VBox, EditableListWidget):
+class FilterList(Gtk.Box, EditableListWidget):
 
     __gtype_name__ = "FilterList"
 
