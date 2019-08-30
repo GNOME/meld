@@ -41,7 +41,7 @@ class PatchDialog(Gtk.Dialog):
     right_radiobutton = Template.Child("right_radiobutton")
     side_selection_box = Template.Child("side_selection_box")
     side_selection_label = Template.Child("side_selection_label")
-    textview = Template.Child("textview")
+    textview: Gtk.TextView = Template.Child("textview")
 
     def __init__(self, filediff):
         super().__init__()

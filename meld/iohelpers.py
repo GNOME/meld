@@ -24,7 +24,7 @@ def trash_or_confirm(gfile: Gio.File) -> bool:
     try:
         gfile.trash(None)
         return True
-    except GLib.GError as e:
+    except GLib.Error as e:
         # Handle not-supported, as that's due to the trashing target
         # being a (probably network) mount-point, not an underlying
         # problem. We also have to handle the generic FAILED code

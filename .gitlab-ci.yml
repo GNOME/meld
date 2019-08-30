@@ -3,9 +3,15 @@ stages:
   - build
 
 variables:
-  DEPENDENCIES: python3 pygobject3 gobject-introspection
-                python3-gobject gtk3 gtksourceview4
-                python3-pytest intltool glib2-devel
+  DEPENDENCIES: python3
+                python3-pip
+                python3-pytest
+                python3-gobject
+                gobject-introspection
+                gtk3
+                gtksourceview4
+                intltool
+                glib2-devel
 
 .linux-common: &linux-common
   image: fedora:rawhide

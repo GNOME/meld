@@ -167,8 +167,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
                 pass
 
         for f in [Gio.File.new_for_path(s) for s in selected]:
-            f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
-                               open_cb, None)
+            f.query_info_async(
+                query_attrs, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW,
+                None, open_cb, None)
 
     def on_file_changed(self, filename: str):
         pass
