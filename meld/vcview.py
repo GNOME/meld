@@ -37,7 +37,6 @@ from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
 from meld.settings import bind_settings, settings
-from meld.ui._gtktemplate import Template
 from meld.ui.vcdialogs import CommitDialog, PushDialog
 from meld.vc import _null, get_vcs
 from meld.vc._vc import Entry
@@ -119,7 +118,7 @@ class VcTreeStore(tree.DiffTreeStore):
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
 
 
-@Template(resource_path='/org/gnome/meld/ui/vcview.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/vcview.ui')
 class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "VcView"
@@ -157,22 +156,22 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         'ignored': ('vc-status-ignored', Entry.is_ignored),
     }
 
-    combobox_vcs = Template.Child()
-    console_vbox = Template.Child()
-    consoleview = Template.Child()
-    emblem_renderer = Template.Child()
-    extra_column = Template.Child()
-    extra_renderer = Template.Child()
-    fileentry = Template.Child()
-    liststore_vcs = Template.Child()
-    location_column = Template.Child()
-    location_renderer = Template.Child()
-    name_column = Template.Child()
-    name_renderer = Template.Child()
-    status_column = Template.Child()
-    status_renderer = Template.Child()
-    treeview = Template.Child()
-    vc_console_vpaned = Template.Child()
+    combobox_vcs = Gtk.Template.Child()
+    console_vbox = Gtk.Template.Child()
+    consoleview = Gtk.Template.Child()
+    emblem_renderer = Gtk.Template.Child()
+    extra_column = Gtk.Template.Child()
+    extra_renderer = Gtk.Template.Child()
+    fileentry = Gtk.Template.Child()
+    liststore_vcs = Gtk.Template.Child()
+    location_column = Gtk.Template.Child()
+    location_renderer = Gtk.Template.Child()
+    name_column = Gtk.Template.Child()
+    name_renderer = Gtk.Template.Child()
+    status_column = Gtk.Template.Child()
+    status_renderer = Gtk.Template.Child()
+    treeview = Gtk.Template.Child()
+    vc_console_vpaned = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -364,7 +363,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.combobox_vcs.set_tooltip_text(tooltip)
         self.combobox_vcs.set_active(default_active)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_vc_change(self, combobox_vcs):
         active_iter = combobox_vcs.get_active_iter()
         if active_iter is None:
@@ -496,7 +495,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.treeview.set_cursor(Gtk.TreePath.new_first())
 
     # TODO: This doesn't fire when the user selects a shortcut folder
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_fileentry_file_set(self, fileentry):
         directory = fileentry.get_file()
         path = directory.get_path()
@@ -507,7 +506,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_row_activated(self, treeview, path, tvc):
         it = self.model.get_iter(path)
         if self.model.iter_has_child(it):
@@ -844,7 +843,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 break
         return None
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_consoleview_populate_popup(self, textview, menu):
         buf = textview.get_buffer()
         clear_action = Gtk.MenuItem.new_with_label(_("Clear"))
@@ -854,16 +853,16 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         menu.insert(Gtk.SeparatorMenuItem(), 1)
         menu.show_all()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_popup_menu(self, treeview):
         tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_button_press_event(self, treeview, event):
         tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_cursor_changed(self, *args):
         cursor_path, cursor_col = self.treeview.get_cursor()
         if not cursor_path:
