@@ -43,7 +43,6 @@ from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
-from meld.ui._gtktemplate import Template
 from meld.ui.cellrenderers import (
     CellRendererByteSize, CellRendererDate, CellRendererFileMode)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
@@ -292,7 +291,7 @@ class CanonicalListing:
         return element.lower()
 
 
-@Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
 class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "DirDiff"
@@ -354,33 +353,33 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     show_overview_map = GObject.Property(type=bool, default=True)
 
-    chunkmap0 = Template.Child()
-    chunkmap1 = Template.Child()
-    chunkmap2 = Template.Child()
-    treeview0 = Template.Child()
-    treeview1 = Template.Child()
-    treeview2 = Template.Child()
-    fileentry0 = Template.Child()
-    fileentry1 = Template.Child()
-    fileentry2 = Template.Child()
-    scrolledwindow0 = Template.Child()
-    scrolledwindow1 = Template.Child()
-    scrolledwindow2 = Template.Child()
-    linkmap0 = Template.Child()
-    linkmap1 = Template.Child()
-    msgarea_mgr0 = Template.Child()
-    msgarea_mgr1 = Template.Child()
-    msgarea_mgr2 = Template.Child()
-    overview_map_revealer = Template.Child()
-    vbox0 = Template.Child()
-    vbox1 = Template.Child()
-    vbox2 = Template.Child()
-    dummy_toolbar_overview_map = Template.Child()
-    dummy_toolbar_linkmap0 = Template.Child()
-    dummy_toolbar_linkmap1 = Template.Child()
-    file_toolbar0 = Template.Child()
-    file_toolbar1 = Template.Child()
-    file_toolbar2 = Template.Child()
+    chunkmap0 = Gtk.Template.Child()
+    chunkmap1 = Gtk.Template.Child()
+    chunkmap2 = Gtk.Template.Child()
+    treeview0 = Gtk.Template.Child()
+    treeview1 = Gtk.Template.Child()
+    treeview2 = Gtk.Template.Child()
+    fileentry0 = Gtk.Template.Child()
+    fileentry1 = Gtk.Template.Child()
+    fileentry2 = Gtk.Template.Child()
+    scrolledwindow0 = Gtk.Template.Child()
+    scrolledwindow1 = Gtk.Template.Child()
+    scrolledwindow2 = Gtk.Template.Child()
+    linkmap0 = Gtk.Template.Child()
+    linkmap1 = Gtk.Template.Child()
+    msgarea_mgr0 = Gtk.Template.Child()
+    msgarea_mgr1 = Gtk.Template.Child()
+    msgarea_mgr2 = Gtk.Template.Child()
+    overview_map_revealer = Gtk.Template.Child()
+    vbox0 = Gtk.Template.Child()
+    vbox1 = Gtk.Template.Child()
+    vbox2 = Gtk.Template.Child()
+    dummy_toolbar_overview_map = Gtk.Template.Child()
+    dummy_toolbar_linkmap0 = Gtk.Template.Child()
+    dummy_toolbar_linkmap1 = Gtk.Template.Child()
+    file_toolbar0 = Gtk.Template.Child()
+    file_toolbar1 = Gtk.Template.Child()
+    file_toolbar2 = Gtk.Template.Child()
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
@@ -711,7 +710,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self._update_item_state(it)
             it = self.model.iter_parent(it)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_fileentry_file_set(self, entry):
         files = [e.get_file() for e in self.fileentry[:self.num_panes]]
         paths = [f.get_path() for f in files]
@@ -1152,7 +1151,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             for action in actions:
                 self.set_action_enabled(action, False)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_cursor_changed(self, view):
         pane = self.treeview.index(view)
         if len(self.model) == 0:
@@ -1202,11 +1201,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self.current_path = cursor_path
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_popup_menu(self, treeview):
         tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_button_press_event(self, treeview, event):
         tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
@@ -1221,7 +1220,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         new_pane = (pane + 1) % self.num_panes
         self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_key_press_event(self, view, event):
         if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
@@ -1248,7 +1247,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         new_view.emit("cursor-changed")
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_row_activated(self, view, path, column):
         pane = self.treeview.index(view)
         rows = self.model.value_paths(self.model.get_iter(path))
@@ -1272,7 +1271,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             else:
                 view.expand_row(path, False)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_row_expanded(self, view, it, path):
         self.row_expansions.add(str(path))
         for row in self.model[path].iterchildren():
@@ -1281,12 +1280,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self._do_to_others(view, self.treeview, "expand_row", (path, False))
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_row_collapsed(self, view, me, path):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_treeview_focus_in_event(self, tree, event):
         self.focus_pane = tree
         self.update_action_sensitivity()
@@ -1621,7 +1620,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self._update_item_state(model.get_iter(path))
         self.force_cursor_recalculate = True
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
 
