@@ -51,7 +51,6 @@ class FindBar(Gtk.Grid):
 
     def __init__(self, parent):
         super().__init__()
-        self.init_template()
 
         self.search_context = None
         self.notify_id = None

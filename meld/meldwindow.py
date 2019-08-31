@@ -61,8 +61,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def __init__(self):
         super().__init__()
 
-        self.init_template()
-
         # Manually handle GAction additions
         actions = (
             ("close", self.action_close),

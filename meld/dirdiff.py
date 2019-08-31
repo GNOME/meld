@@ -400,7 +400,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # multiple inheritance and we need to inherit from our Widget
         # parent to make Template work.
         MeldDoc.__init__(self)
-        self.init_template()
         bind_settings(self)
 
         self.view_action_group = Gio.SimpleActionGroup()

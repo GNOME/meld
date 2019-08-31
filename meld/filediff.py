@@ -229,7 +229,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # multiple inheritance and we need to inherit from our Widget
         # parent to make Template work.
         MeldDoc.__init__(self)
-        self.init_template()
         bind_settings(self)
 
         widget_lists = [

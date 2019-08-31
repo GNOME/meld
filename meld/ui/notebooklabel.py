@@ -49,7 +49,6 @@ class NotebookLabel(Gtk.EventBox):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.init_template()
 
         self.bind_property(
             'icon-name', self.icon, 'icon-name',

@@ -26,7 +26,6 @@ class FilteredListSelector:
 
     def __init__(self):
         super().__init__()
-        self.init_template()
 
         self.treeview_selection = self.treeview.get_selection()
         # FIXME: Should be able to access as a template child, but can't.

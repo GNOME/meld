@@ -73,7 +73,6 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
 
     def __init__(self, parentapp):
         super().__init__()
-        self.init_template()
         map_widgets_into_lists(
             self,
             ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"]
