@@ -18,10 +18,9 @@ from gi.repository import GObject
 from gi.repository import Gtk
 
 from meld.recent import RecentFiles
-from meld.ui._gtktemplate import Template
 
 
-@Template(resource_path='/org/gnome/meld/ui/recent-selector.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/recent-selector.ui')
 class RecentSelector(Gtk.Grid):
 
     __gtype_name__ = 'RecentSelector'
@@ -36,10 +35,9 @@ class RecentSelector(Gtk.Grid):
     def open_recent(self, uri: str) -> None:
         ...
 
-    recent_chooser = Template.Child()
-    search_entry = Template.Child()
-    open_button = Template.Child()
-
+    recent_chooser = Gtk.Template.Child()
+    search_entry = Gtk.Template.Child()
+    open_button = Gtk.Template.Child()
 
     def do_realize(self):
         self.filter_text = ''
@@ -75,7 +73,7 @@ class RecentSelector(Gtk.Grid):
         )
         return recent_filter
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_filter_text_changed(self, *args):
         self.filter_text = self.search_entry.get_text().lower()
 
@@ -83,12 +81,12 @@ class RecentSelector(Gtk.Grid):
         # the RecentChooser to re-evaluate the filter.
         self.recent_chooser.set_filter(self.make_recent_filter())
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_selection_changed(self, *args):
         have_selection = bool(self.recent_chooser.get_current_uri())
         self.open_button.set_sensitive(have_selection)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_activate(self, *args):
         uri = self.recent_chooser.get_current_uri()
         if uri:
