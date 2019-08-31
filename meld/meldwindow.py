@@ -36,7 +36,6 @@ from meld.newdifftab import NewDiffTab
 from meld.recent import recent_comparisons, RecentType
 from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
-from meld.ui._gtktemplate import Template
 from meld.ui.notebooklabel import NotebookLabel
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
@@ -44,19 +43,19 @@ from meld.windowstate import SavedWindowState
 log = logging.getLogger(__name__)
 
 
-@Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
 class MeldWindow(Gtk.ApplicationWindow):
 
     __gtype_name__ = 'MeldWindow'
 
-    appvbox = Template.Child("appvbox")
-    folder_filter_button = Template.Child()
-    text_filter_button = Template.Child()
-    gear_menu_button = Template.Child("gear_menu_button")
-    notebook = Template.Child("notebook")
-    spinner = Template.Child("spinner")
-    vc_filter_button = Template.Child()
-    view_toolbar = Template.Child()
+    appvbox = Gtk.Template.Child()
+    folder_filter_button = Gtk.Template.Child()
+    text_filter_button = Gtk.Template.Child()
+    gear_menu_button = Gtk.Template.Child()
+    notebook = Gtk.Template.Child()
+    spinner = Gtk.Template.Child()
+    vc_filter_button = Gtk.Template.Child()
+    view_toolbar = Gtk.Template.Child()
 
     def __init__(self):
         super().__init__()
@@ -196,7 +195,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.lookup_action('stop').set_enabled(True)
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_delete_event(self, *extra):
         should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
@@ -218,7 +217,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     def handle_current_doc_switch(self, page):
         page.on_container_switch_out_event(self)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_switch_page(self, notebook, page, which):
         oldidx = notebook.get_current_page()
         if oldidx >= 0:
@@ -242,12 +241,12 @@ class MeldWindow(Gtk.ApplicationWindow):
         if hasattr(newdoc, 'toolbar_actions'):
             self.view_toolbar.add(newdoc.toolbar_actions)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
         newdoc.on_container_switch_in_event(self)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_page_label_changed(self, notebook, label_text):
         self.set_title(label_text)
 
@@ -304,7 +303,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             if page != srcpage:
                 page.on_file_changed(filename)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_open_recent(self, recent_selector, uri):
         try:
             self.append_recent(uri)
