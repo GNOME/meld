@@ -70,9 +70,10 @@ class CommitDialog(Gtk.Dialog):
         # Try and make the textview wide enough for a standard 80-character
         # commit message.
         context = self.textview.get_pango_context()
-        metrics = context.get_metrics(font, context.get_language())
+        metrics = context.get_metrics(None, None)
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
-        self.scrolledwindow1.set_size_request(80 * char_width, -1)
+        width_request, height_request = self.scrolledwindow1.get_size_request()
+        self.scrolledwindow1.set_size_request(80 * char_width, height_request)
 
         settings.bind('vc-show-commit-margin', self.textview,
                       'show-right-margin', Gio.SettingsBindFlags.DEFAULT)
