@@ -24,20 +24,19 @@ from gi.repository import Pango
 
 from meld.conf import _
 from meld.settings import get_meld_settings, settings
-from meld.ui._gtktemplate import Template
 
 
-@Template(resource_path='/org/gnome/meld/ui/commit-dialog.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/commit-dialog.ui')
 class CommitDialog(Gtk.Dialog):
 
     __gtype_name__ = "CommitDialog"
 
     break_commit_message = GObject.Property(type=bool, default=False)
 
-    changedfiles = Template.Child("changedfiles")
-    textview = Template.Child("textview")
-    scrolledwindow1 = Template.Child("scrolledwindow1")
-    previousentry = Template.Child("previousentry")
+    changedfiles = Gtk.Template.Child()
+    textview = Gtk.Template.Child()
+    scrolledwindow1 = Gtk.Template.Child()
+    previousentry = Gtk.Template.Child()
 
     def __init__(self, parent):
         super().__init__()
@@ -102,7 +101,7 @@ class CommitDialog(Gtk.Dialog):
         self.destroy()
         return response, msg
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_previousentry_activate(self, gentry):
         idx = gentry.get_active()
         if idx != -1:
@@ -111,7 +110,7 @@ class CommitDialog(Gtk.Dialog):
             buf.set_text(model[idx][1])
 
 
-@Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
 class PushDialog(Gtk.MessageDialog):
 
     __gtype_name__ = "PushDialog"
