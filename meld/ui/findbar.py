@@ -18,24 +18,22 @@ from gi.repository import GObject
 from gi.repository import Gtk
 from gi.repository import GtkSource
 
-from meld.ui._gtktemplate import Template
 
-
-@Template(resource_path='/org/gnome/meld/ui/findbar.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/findbar.ui')
 class FindBar(Gtk.Grid):
 
     __gtype_name__ = 'FindBar'
 
-    find_entry = Template.Child()
-    find_next_button = Template.Child()
-    find_previous_button = Template.Child()
-    match_case = Template.Child()
-    regex = Template.Child()
-    replace_all_button = Template.Child()
-    replace_button = Template.Child()
-    replace_entry = Template.Child()
-    whole_word = Template.Child()
-    wrap_box = Template.Child()
+    find_entry = Gtk.Template.Child()
+    find_next_button = Gtk.Template.Child()
+    find_previous_button = Gtk.Template.Child()
+    match_case = Gtk.Template.Child()
+    regex = Gtk.Template.Child()
+    replace_all_button = Gtk.Template.Child()
+    replace_button = Gtk.Template.Child()
+    replace_entry = Gtk.Template.Child()
+    whole_word = Gtk.Template.Child()
+    wrap_box = Gtk.Template.Child()
 
     replace_mode = GObject.Property(type=bool, default=False)
 
@@ -130,15 +128,15 @@ class FindBar(Gtk.Grid):
         self.set_text_view(textview)
         self._find_text(backwards=True)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_find_next_button_clicked(self, button):
         self._find_text()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_find_previous_button_clicked(self, button):
         self._find_text(backwards=True)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_replace_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         oldsel = buf.get_selection_bounds()
@@ -151,7 +149,7 @@ class FindBar(Gtk.Grid):
                 newsel[0], newsel[1], self.replace_entry.get_text(), -1)
             self._find_text(0)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_replace_all_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         saved_insert = buf.create_mark(
@@ -162,15 +160,15 @@ class FindBar(Gtk.Grid):
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_toggle_replace_button_clicked(self, button):
         self.replace_mode = not self.replace_mode
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_find_entry_changed(self, entry):
         self._find_text(0)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_stop_search(self, search_entry):
         self.hide()
 
