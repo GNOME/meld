@@ -18,16 +18,14 @@ from gi.repository import Gdk
 from gi.repository import GObject
 from gi.repository import Gtk
 
-from meld.ui._gtktemplate import Template
 
-
-@Template(resource_path='/org/gnome/meld/ui/notebook-label.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/notebook-label.ui')
 class NotebookLabel(Gtk.EventBox):
 
     __gtype_name__ = 'NotebookLabel'
 
-    icon = Template.Child()
-    label = Template.Child()
+    icon = Gtk.Template.Child()
+    label = Gtk.Template.Child()
 
     icon_name = GObject.Property(
         type=str,
@@ -63,12 +61,12 @@ class NotebookLabel(Gtk.EventBox):
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_label_button_press_event(self, widget, event):
         # Middle-click on the tab closes the tab.
         if event.type == Gdk.EventType.BUTTON_PRESS and event.button == 2:
             self.page.on_delete_event()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_close_button_clicked(self, widget):
         self.page.on_delete_event()
