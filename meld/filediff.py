@@ -49,7 +49,6 @@ from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
     get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
-from meld.ui._gtktemplate import Template
 from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
@@ -102,7 +101,7 @@ class CursorDetails:
             setattr(self, var, None)
 
 
-@Template(resource_path='/org/gnome/meld/ui/filediff.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/filediff.ui')
 class FileDiff(Gtk.VBox, MeldDoc):
     """Two or three way comparison of text files"""
 
@@ -129,62 +128,62 @@ class FileDiff(Gtk.VBox, MeldDoc):
     show_overview_map = GObject.Property(type=bool, default=True)
     overview_map_style = GObject.Property(type=str, default='chunkmap')
 
-    actiongutter0 = Template.Child()
-    actiongutter1 = Template.Child()
-    actiongutter2 = Template.Child()
-    actiongutter3 = Template.Child()
-    chunkmap0 = Template.Child()
-    chunkmap1 = Template.Child()
-    chunkmap2 = Template.Child()
-    chunkmap_hbox = Template.Child()
-    dummy_toolbar_actiongutter0 = Template.Child()
-    dummy_toolbar_actiongutter1 = Template.Child()
-    dummy_toolbar_actiongutter2 = Template.Child()
-    dummy_toolbar_actiongutter3 = Template.Child()
-    dummy_toolbar_linkmap0 = Template.Child()
-    dummy_toolbar_linkmap1 = Template.Child()
-    dummy_toolbar_sourcemap = Template.Child()
-    file_open_button0 = Template.Child()
-    file_open_button1 = Template.Child()
-    file_open_button2 = Template.Child()
-    file_save_button0 = Template.Child()
-    file_save_button1 = Template.Child()
-    file_save_button2 = Template.Child()
-    file_toolbar0 = Template.Child()
-    file_toolbar1 = Template.Child()
-    file_toolbar2 = Template.Child()
-    filelabel0 = Template.Child()
-    filelabel1 = Template.Child()
-    filelabel2 = Template.Child()
-    filelabel_toolitem0 = Template.Child()
-    filelabel_toolitem1 = Template.Child()
-    filelabel_toolitem2 = Template.Child()
-    grid = Template.Child()
-    msgarea_mgr0 = Template.Child()
-    msgarea_mgr1 = Template.Child()
-    msgarea_mgr2 = Template.Child()
-    readonlytoggle0 = Template.Child()
-    readonlytoggle1 = Template.Child()
-    readonlytoggle2 = Template.Child()
-    scrolledwindow0 = Template.Child()
-    scrolledwindow1 = Template.Child()
-    scrolledwindow2 = Template.Child()
-    sourcemap_revealer = Template.Child()
-    sourcemap0 = Template.Child()
-    sourcemap1 = Template.Child()
-    sourcemap2 = Template.Child()
-    sourcemap_hbox = Template.Child()
-    statusbar0 = Template.Child()
-    statusbar1 = Template.Child()
-    statusbar2 = Template.Child()
-    linkmap0 = Template.Child()
-    linkmap1 = Template.Child()
-    textview0 = Template.Child()
-    textview1 = Template.Child()
-    textview2 = Template.Child()
-    vbox0 = Template.Child()
-    vbox1 = Template.Child()
-    vbox2 = Template.Child()
+    actiongutter0 = Gtk.Template.Child()
+    actiongutter1 = Gtk.Template.Child()
+    actiongutter2 = Gtk.Template.Child()
+    actiongutter3 = Gtk.Template.Child()
+    chunkmap0 = Gtk.Template.Child()
+    chunkmap1 = Gtk.Template.Child()
+    chunkmap2 = Gtk.Template.Child()
+    chunkmap_hbox = Gtk.Template.Child()
+    dummy_toolbar_actiongutter0 = Gtk.Template.Child()
+    dummy_toolbar_actiongutter1 = Gtk.Template.Child()
+    dummy_toolbar_actiongutter2 = Gtk.Template.Child()
+    dummy_toolbar_actiongutter3 = Gtk.Template.Child()
+    dummy_toolbar_linkmap0 = Gtk.Template.Child()
+    dummy_toolbar_linkmap1 = Gtk.Template.Child()
+    dummy_toolbar_sourcemap = Gtk.Template.Child()
+    file_open_button0 = Gtk.Template.Child()
+    file_open_button1 = Gtk.Template.Child()
+    file_open_button2 = Gtk.Template.Child()
+    file_save_button0 = Gtk.Template.Child()
+    file_save_button1 = Gtk.Template.Child()
+    file_save_button2 = Gtk.Template.Child()
+    file_toolbar0 = Gtk.Template.Child()
+    file_toolbar1 = Gtk.Template.Child()
+    file_toolbar2 = Gtk.Template.Child()
+    filelabel0 = Gtk.Template.Child()
+    filelabel1 = Gtk.Template.Child()
+    filelabel2 = Gtk.Template.Child()
+    filelabel_toolitem0 = Gtk.Template.Child()
+    filelabel_toolitem1 = Gtk.Template.Child()
+    filelabel_toolitem2 = Gtk.Template.Child()
+    grid = Gtk.Template.Child()
+    msgarea_mgr0 = Gtk.Template.Child()
+    msgarea_mgr1 = Gtk.Template.Child()
+    msgarea_mgr2 = Gtk.Template.Child()
+    readonlytoggle0 = Gtk.Template.Child()
+    readonlytoggle1 = Gtk.Template.Child()
+    readonlytoggle2 = Gtk.Template.Child()
+    scrolledwindow0 = Gtk.Template.Child()
+    scrolledwindow1 = Gtk.Template.Child()
+    scrolledwindow2 = Gtk.Template.Child()
+    sourcemap_revealer = Gtk.Template.Child()
+    sourcemap0 = Gtk.Template.Child()
+    sourcemap1 = Gtk.Template.Child()
+    sourcemap2 = Gtk.Template.Child()
+    sourcemap_hbox = Gtk.Template.Child()
+    statusbar0 = Gtk.Template.Child()
+    statusbar1 = Gtk.Template.Child()
+    statusbar2 = Gtk.Template.Child()
+    linkmap0 = Gtk.Template.Child()
+    linkmap1 = Gtk.Template.Child()
+    textview0 = Gtk.Template.Child()
+    textview1 = Gtk.Template.Child()
+    textview2 = Gtk.Template.Child()
+    vbox0 = Gtk.Template.Child()
+    vbox1 = Gtk.Template.Child()
+    vbox2 = Gtk.Template.Child()
 
     differ = Differ
 
@@ -482,7 +481,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     keymask = property(get_keymask, set_keymask)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_key_event(self, object, event):
         keymap = Gdk.Keymap.get_default()
         ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
@@ -733,7 +732,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             mark0, mark1, 'focus-highlight', 400000, starting_alpha=0.3,
             anim_type=TextviewLineAnimationType.stroke)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
         self.next_diff(event.direction)
 
@@ -1017,7 +1016,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                     self.set_file(pane, gfiles[0])
             return True
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_textview_focus_in_event(self, view, event):
         self.focus_pane = view
         self.findbar.textview = view
@@ -1026,7 +1025,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_textview_focus_out_event(self, view, event):
         self.keymask = 0
         self._set_merge_action_sensitivity()
@@ -1261,7 +1260,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def action_go_to_line(self, pane, *args):
         self.statusbar[pane].emit('start-go-to-line')
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_scrolledwindow_size_allocate(self, scrolledwindow, allocation):
         index = self.scrolledwindow.index(scrolledwindow)
         if index == 0 or index == 1:
@@ -1269,7 +1268,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if index == 1 or index == 2:
             self.linkmap[1].queue_draw()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_textview_popup_menu(self, textview):
         buffer = textview.get_buffer()
         cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
@@ -1288,7 +1287,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         )
         return True
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
@@ -1936,12 +1935,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if self.textbuffer[i].get_modified():
                 self.save_file(i)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_file_save_button_clicked(self, button):
         idx = self.file_save_button.index(button)
         self.save_file(idx)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_file_open_button_clicked(self, button):
         pane = self.file_open_button.index(button)
 
@@ -2019,7 +2018,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         for gutter in self.actiongutter:
             gutter.queue_draw()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_readonly_button_toggled(self, button):
         index = self.readonlytoggle.index(button)
         buf = self.textbuffer[index]
