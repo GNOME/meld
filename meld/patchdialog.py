@@ -28,20 +28,19 @@ from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
 from meld.settings import get_meld_settings
 from meld.sourceview import LanguageManager
-from meld.ui._gtktemplate import Template
 
 
-@Template(resource_path='/org/gnome/meld/ui/patch-dialog.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/patch-dialog.ui')
 class PatchDialog(Gtk.Dialog):
 
     __gtype_name__ = "PatchDialog"
 
-    left_radiobutton = Template.Child("left_radiobutton")
-    reverse_checkbutton = Template.Child("reverse_checkbutton")
-    right_radiobutton = Template.Child("right_radiobutton")
-    side_selection_box = Template.Child("side_selection_box")
-    side_selection_label = Template.Child("side_selection_label")
-    textview: Gtk.TextView = Template.Child("textview")
+    left_radiobutton = Gtk.Template.Child("left_radiobutton")
+    reverse_checkbutton = Gtk.Template.Child("reverse_checkbutton")
+    right_radiobutton = Gtk.Template.Child("right_radiobutton")
+    side_selection_box = Gtk.Template.Child("side_selection_box")
+    side_selection_label = Gtk.Template.Child("side_selection_label")
+    textview: Gtk.TextView = Gtk.Template.Child("textview")
 
     def __init__(self, filediff):
         super().__init__()
@@ -73,14 +72,14 @@ class PatchDialog(Gtk.Dialog):
         if key == "font":
             self.textview.modify_font(settings.font)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):
         if not radiobutton.get_active():
             return
         self.left_patch = radiobutton == self.left_radiobutton
         self.update_patch()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_reverse_checkbutton_toggled(self, checkbutton):
         self.reverse_patch = checkbutton.get_active()
         self.update_patch()
