@@ -175,6 +175,11 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         (Gdk.KEY_KP_Left, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_KP_Right, Gdk.ModifierType.MOD1_MASK),
+        # ...and Ctrl+Page Up/Down
+        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
     )
 
     def __init__(self, *args, **kwargs):
@@ -182,9 +187,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         self.drag_dest_add_uri_targets()
 
-        binding_set = Gtk.binding_set_find('GtkSourceView')
-        for key, modifiers in self.replaced_entries:
-            Gtk.binding_entry_remove(binding_set, key, modifiers)
+        # Most bindings are on SourceView, except the Page Up/Down ones
+        # which are on TextView.
+        binding_set_names = ('GtkSourceView', 'GtkTextView')
+        for set_name in binding_set_names:
+            binding_set = Gtk.binding_set_find(set_name)
+            for key, modifiers in self.replaced_entries:
+                Gtk.binding_entry_remove(binding_set, key, modifiers)
+
         self.anim_source_id = None
         self.animating_chunks = []
         self.syncpoints = []
