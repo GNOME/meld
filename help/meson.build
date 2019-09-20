@@ -1,20 +1,20 @@
 help_files = [
-    'C/command-line.page',
-    'C/file-changes.page',
-    'C/file-filters.page',
-    'C/file-mode.page',
-    'C/flattened-view.page',
-    'C/folder-mode.page',
-    'C/index.page',
-    'C/introduction.page',
-    'C/keyboard-shortcuts.page',
-    'C/legal.xml',
-    'C/missing-functionality.page',
-    'C/preferences.page',
-    'C/resolving-conflicts.page',
-    'C/text-filters.page',
-    'C/vc-mode.page',
-    'C/vc-supported.page'
+    'command-line.page',
+    'file-changes.page',
+    'file-filters.page',
+    'file-mode.page',
+    'flattened-view.page',
+    'folder-mode.page',
+    'index.page',
+    'introduction.page',
+    'keyboard-shortcuts.page',
+    'legal.xml',
+    'missing-functionality.page',
+    'preferences.page',
+    'resolving-conflicts.page',
+    'text-filters.page',
+    'vc-mode.page',
+    'vc-supported.page'
 ]
 
 
