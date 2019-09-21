@@ -66,6 +66,8 @@ folders = {
       'ui/vcdialogs.py',
     ],
     'vc': [
+      'vc/COPYING',
+      'vc/README',
       'vc/__init__.py',
       'vc/_null.py',
       'vc/_vc.py',
