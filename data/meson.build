@@ -54,7 +54,7 @@ if appstreamcli.found()
 endif
 
 # Install mimetypes
-appdata_file = i18n.merge_file(
+mimetype_file = i18n.merge_file(
   input: join_paths('mime', '@0@.xml.in'.format(application_id)),
   output: '@0@.xml'.format(application_id),
   po_dir: podir,
@@ -82,13 +82,21 @@ if compile_schemas.found()
 endif
 
 # Install GtkSourceview style files
-install_data(
-    [
-        'styles/meld-base.xml',
-        'styles/meld-dark.xml'
-    ],
+styles = [
+          'meld-base.style-scheme.xml',
+          'meld-dark.style-scheme.xml'
+         ]
+
+foreach style : styles
+  i18n.merge_file(
+    input: join_paths('styles', style + '.in'),
+    output: style,
+    po_dir: podir,
+    data_dirs: itsdir,
+    install: true,
     install_dir: join_paths(pkgdatadir, 'styles')
-)
+  )
+endforeach
 
 # Install icons
 icon_sizes = ['scalable']
