@@ -17,7 +17,7 @@ endif
 
 dependency('gtk+-3.0', version: '>= 3.20')
 dependency('glib-2.0', version: '>= 2.48')
-dependency('gtksourceview-3.0', version: '>= 3.20.0')
+dependency('gtksourceview-4', version: '>= 4.0.0')
 
 prefix = get_option('prefix')
 
