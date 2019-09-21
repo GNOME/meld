@@ -82,13 +82,21 @@ if compile_schemas.found()
 endif
 
 # Install GtkSourceview style files
-install_data(
-    [
-        'styles/meld-base.xml',
-        'styles/meld-dark.xml'
-    ],
+styles = [
+          'styles/meld-base.style-scheme.xml',
+          'styles/meld-dark.style-scheme.xml'
+         ]
+
+foreach style : styles
+  i18n.merge_file(
+    input: style + '.in',
+    output: style,
+    po_dir: podir,
+    data_dirs: itsdir,
+    install: true,
     install_dir: join_paths(pkgdatadir, 'styles')
-)
+  )
+endforeach
 
 # Install icons
 icon_sizes = ['scalable']
