@@ -54,7 +54,7 @@ if appstreamcli.found()
 endif
 
 # Install mimetypes
-appdata_file = i18n.merge_file(
+mimetype_file = i18n.merge_file(
   input: join_paths('mime', '@0@.xml.in'.format(application_id)),
   output: '@0@.xml'.format(application_id),
   po_dir: podir,
