@@ -24,14 +24,7 @@ class NotebookLabel(Gtk.EventBox):
 
     __gtype_name__ = 'NotebookLabel'
 
-    icon = Gtk.Template.Child()
     label = Gtk.Template.Child()
-
-    icon_name = GObject.Property(
-        type=str,
-        nick='Name of the icon to display',
-        default=None,
-    )
 
     label_text = GObject.Property(
         type=str,
@@ -48,10 +41,6 @@ class NotebookLabel(Gtk.EventBox):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
-        self.bind_property(
-            'icon-name', self.icon, 'icon-name',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
-        )
         self.bind_property(
             'label-text', self.label, 'label',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,

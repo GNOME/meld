@@ -311,8 +311,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             # FIXME: Need error handling, but no sensible display location
             log.exception(f'Error opening recent file {uri}')
 
-    def _append_page(self, page, icon):
-        nbl = NotebookLabel(icon_name=icon, page=page)
+    def _append_page(self, page):
+        nbl = NotebookLabel(page=page)
         self.notebook.append_page(page, nbl)
         self.notebook.child_set_property(page, 'tab-expand', True)
 
@@ -337,7 +337,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def append_new_comparison(self):
         doc = NewDiffTab(self)
-        self._append_page(doc, "document-new")
+        self._append_page(doc)
         self.notebook.on_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
@@ -352,7 +352,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         dirs = [d.get_path() if d else None for d in gfiles]
         assert len(dirs) in (1, 2, 3)
         doc = DirDiff(len(dirs))
-        self._append_page(doc, "folder")
+        self._append_page(doc)
         doc.set_locations(dirs)
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
@@ -362,7 +362,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self, gfiles, *, encodings=None, merge_output=None, meta=None):
         assert len(gfiles) in (1, 2, 3)
         doc = FileDiff(len(gfiles))
-        self._append_page(doc, "text-x-generic")
+        self._append_page(doc)
         doc.set_files(gfiles, encodings)
         if merge_output is not None:
             doc.set_merge_output_file(merge_output)
@@ -376,7 +376,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 _("Need three files to auto-merge, got: %r") %
                 [f.get_parse_name() for f in gfiles])
         doc = FileMerge(len(gfiles))
-        self._append_page(doc, "text-x-generic")
+        self._append_page(doc)
         doc.set_files(gfiles)
         if merge_output is not None:
             doc.set_merge_output_file(merge_output)
@@ -405,7 +405,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     def append_vcview(self, location, auto_compare=False):
         doc = VcView()
-        self._append_page(doc, "meld-version-control")
+        self._append_page(doc)
         if isinstance(location, (list, tuple)):
             location = location[0]
         doc.set_location(location.get_path())
