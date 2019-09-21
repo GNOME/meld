@@ -1,7 +1,7 @@
 project(
     'meld',
     version: '3.21.0',
-    meson_version: '>=0.46.0',
+    meson_version: '>=0.47.0',
 )
 
 application_id = 'org.gnome.meld'
@@ -36,20 +36,11 @@ schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
 itsdir = join_paths(meson.current_source_dir(), 'gettext')
 podir = join_paths(meson.current_source_dir(), 'po')
 
+subdir('meld')
 subdir('data')
 subdir('help')
 subdir('po')
 
-
-install_data(
-    [
-        'bin/meld'
-    ],
-    install_dir: get_option('bindir')
-)
-install_subdir(
-    meson.project_name(),
-    install_dir: python3.get_path('purelib')
-)
+install_data('bin/meld', install_dir: bindir)
 
 meson.add_install_script('meson_post_install.py')
