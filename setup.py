@@ -45,7 +45,7 @@ setup(
     scripts=['bin/meld'],
     data_files=[
         ('share/man/man1',
-         ['meld.1']
+         ['data/meld.1']
          ),
         ('share/doc/meld-' + meld.conf.__version__,
          ['COPYING', 'NEWS']
