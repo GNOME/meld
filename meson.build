@@ -25,6 +25,7 @@ bindir = join_paths(prefix, get_option('bindir'))
 datadir = join_paths(prefix, get_option('datadir'))
 libexecdir = join_paths(prefix, get_option('libexecdir'))
 localedir = join_paths(prefix, get_option('localedir'))
+mandir = join_paths(prefix, get_option('mandir'))
 
 appdatadir = join_paths(datadir, 'metainfo')
 desktopdir = join_paths(datadir, 'applications')

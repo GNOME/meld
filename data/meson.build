@@ -1,4 +1,10 @@
 
+# Install man page
+install_data(
+  'meld.1',
+  install_dir: join_paths(mandir, 'man1')
+)
+
 # Install schema file
 install_data(
   '@0@.gschema.xml'.format(application_id),
