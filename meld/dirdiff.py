@@ -239,7 +239,7 @@ def _files_same(files, regexes, comparison_args):
     return result
 
 
-EMBLEM_NEW = "emblem-meld-newer-file"
+EMBLEM_NEW = "emblem-new"
 EMBLEM_SYMLINK = "emblem-symbolic-link"
 
 COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
