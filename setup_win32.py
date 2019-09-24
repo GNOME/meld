@@ -119,7 +119,7 @@ executable_options = {
 
 if 'mingw' in sysconfig.get_platform():
     executable_options.update({
-         "base": "Win32GUI",  # comment to build cosole version to see stderr
+         "base": "Win32GUI",  # comment to build console version to see stderr
          "targetName": "Meld.exe",
          "shortcutName": "Meld",
          "shortcutDir": "ProgramMenuFolder",
