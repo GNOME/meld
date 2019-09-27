@@ -281,6 +281,16 @@ def setup_resources():
     style_path = os.path.join(meld.conf.DATADIR, "styles")
     GtkSource.StyleSchemeManager.get_default().append_search_path(style_path)
 
+    # Just copy style schemes to the file ending expected by
+    # GtkSourceView if we're uninstalled and they're missing
+    if uninstalled:
+        for style in {'meld-base', 'meld-dark'}:
+            path = os.path.join(
+                style_path, '{}.style-scheme.xml'.format(style))
+            if not os.path.exists(path):
+                import shutil
+                shutil.copyfile(path + '.in', path)
+
 
 def setup_settings():
     import meld.conf
