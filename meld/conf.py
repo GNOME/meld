@@ -16,7 +16,7 @@ LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
-PYTHON_REQUIREMENT_TUPLE = (3, 4)
+PYTHON_REQUIREMENT_TUPLE = (3, 6)
 
 
 # Installed from main script
