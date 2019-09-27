@@ -161,7 +161,7 @@ def show_error_and_exit(error_text):
         ).run()
     except Exception:
         # Although tkinter is imported here, it isn't meld's dependency:
-        # if found it is used to show GUI error about lacking true dependecies.
+        # if found it is used to show GUI error about lacking true dependencies.
         try:
             if sys.version_info < (3, 0):
                 from Tkinter import Tk

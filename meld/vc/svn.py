@@ -89,7 +89,7 @@ class Vc(_vc.Vc):
         SVN has two types of conflicts:
         Merge conflicts, which give 3 files:
            .left.r* (THIS)
-           .working (BASE... although this is a bit debateable)
+           .working (BASE... although this is a bit debatable)
            .right.r* (OTHER)
         Update conflicts which give 3 files:
            .mine (THIS)
