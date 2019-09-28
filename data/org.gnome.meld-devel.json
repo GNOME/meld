@@ -35,18 +35,16 @@
   ],
   "modules": [
     {
-      "name": "gtksourceview",
-      "build-options": {
-        "config-opts": [
-          "--enable-vala=no",
-          "--enable-gtk-doc=no"
-        ]
-      },
-      "sources": [
+      "name" : "gtksourceview",
+      "buildsystem" : "meson",
+      "config-opts" : [
+        "-Dgtk_doc=false"
+      ],
+      "sources" : [
         {
-          "type": "archive",
-          "url": "https://download.gnome.org/sources/gtksourceview/3.24/gtksourceview-3.24.9.tar.xz",
-          "sha256": "699d76a453e6a3d3331906346e3dbfa25f2cbc9ec090e46635e9c6bb595e07c2"
+          "type" : "archive",
+          "url" : "https://download.gnome.org/sources/gtksourceview/4.4/gtksourceview-4.4.0.tar.xz",
+          "sha256" : "9ddb914aef70a29a66acd93b4f762d5681202e44094d2d6370e51c9e389e689a"
         }
       ]
     },
