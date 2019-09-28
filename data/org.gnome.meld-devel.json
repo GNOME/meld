@@ -50,12 +50,7 @@
     },
     {
       "name": "meld",
-      "no-autogen": true,
-      "buildsystem": "simple",
-      "build-commands": [
-        "python3 setup.py build",
-        "python3 setup.py install --prefix /app"
-      ],
+      "buildsystem": "meson",
       "sources": [
         {
           "type": "git",
