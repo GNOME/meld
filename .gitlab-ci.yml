@@ -1,23 +1,32 @@
+include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+
+image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
+
 stages:
   - check
-  - build
+  - test
+  - deploy
+  - build-windows
 
 variables:
-  DEPENDENCIES: python3
-                python3-pip
-                python3-pytest
-                python3-gobject
-                gobject-introspection
-                gtk3
-                gtksourceview4
-                intltool
-                glib2-devel
+    BUNDLE: "meld-dev.flatpak"
+    DEPENDENCIES: python3
+                  python3-pip
+                  python3-pytest
+                  python3-gobject
+                  gobject-introspection
+                  gtk3
+                  gtksourceview4
+                  glib2-devel
 
-.linux-common: &linux-common
-  image: fedora:rawhide
-  before_script:
-    - dnf update -y
-    - dnf install -y $DEPENDENCIES
+flatpak:
+    variables:
+        MANIFEST_PATH: "data/org.gnome.meld-devel.json"
+        MESON_ARGS: "-Dprofile=Devel"
+        FLATPAK_MODULE: "meld"
+        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+        APP_ID: "org.gnome.meld-devel"
+    extends: .flatpak
 
 flake8:
   stage: check
@@ -25,22 +34,17 @@ flake8:
     - pip3 install -r dev-requirements.txt
     - flake8 bin/meld meld/
   allow_failure: true
-  <<: *linux-common
 
-linux-pytest:
+pytest:
   stage: check
+  before_script:
+    - dnf update -y
+    - dnf install -y $DEPENDENCIES
   script:
     - py.test-3 test/
-  <<: *linux-common
-
-linux-build:
-  stage: build
-  script:
-    - python3 setup.py build
-  <<: *linux-common
 
 .mingw-common: &mingw-common
-  stage: build
+  stage: build-windows
   tags: # select gitlab runners with specific tag (unrelated to git repo tags)
     - win32
   artifacts:
