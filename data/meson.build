@@ -48,6 +48,7 @@ if appstreamcli.found()
     appstreamcli,
     args: [
         'validate-relax',
+        '--nonet',
         appdata_file.full_path()
      ]
   )
