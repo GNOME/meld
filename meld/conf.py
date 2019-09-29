@@ -6,7 +6,7 @@ from pathlib import Path
 __package__ = "meld"
 __version__ = "3.21.0"
 
-APPLICATION_ID = "org.gnome.meld"
+APPLICATION_ID = "org.gnome.Meld"
 RESOURCE_BASE = '/org/gnome/meld'
 
 # START; these paths are clobbered on install by meld.build_helpers
