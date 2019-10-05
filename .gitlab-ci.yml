@@ -24,7 +24,7 @@ lint:
   script:
     - dnf install -y git
     - pip3 install -r dev-requirements.txt
-    - pre-commit run --all-files
+    - pre-commit run --all-files --show-diff-on-failure
   allow_failure: true
   <<: *linux-common
 
