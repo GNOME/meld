@@ -22,6 +22,7 @@ variables:
 lint:
   stage: check
   script:
+    - dnf install -y git
     - pip3 install -r dev-requirements.txt
     - pre-commit run --all-files
   allow_failure: true
