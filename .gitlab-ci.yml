@@ -1,3 +1,5 @@
+image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
+
 stages:
   - check
   - build
@@ -14,7 +16,6 @@ variables:
                 glib2-devel
 
 .linux-common: &linux-common
-  image: fedora:rawhide
   before_script:
     - dnf update -y
     - dnf install -y $DEPENDENCIES
@@ -25,8 +26,6 @@ lint:
     - dnf install -y git
     - pip3 install -r dev-requirements.txt
     - pre-commit run --all-files --show-diff-on-failure
-  allow_failure: true
-  <<: *linux-common
 
 linux-pytest:
   stage: check
