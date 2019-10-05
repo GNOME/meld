@@ -22,6 +22,8 @@ from meld.matchers.myers import (
     SyncPointMyersSequenceMatcher,
 )
 
+LO, HI = 1, 2
+
 opcode_reverse = {
     "replace": "replace",
     "insert": "delete",
@@ -425,7 +427,6 @@ class Differ(GObject.GObject):
         return self.diffs == [[], []] and self._initialised
 
     def _merge_blocks(self, using):
-        LO, HI = 1, 2
         lowc = min(using[0][0][LO], using[1][0][LO])
         highc = max(using[0][-1][HI], using[1][-1][HI])
         low = []

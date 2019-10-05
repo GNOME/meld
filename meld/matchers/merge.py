@@ -16,6 +16,8 @@
 from meld.matchers import diffutil
 from meld.matchers.myers import MyersSequenceMatcher
 
+LO, HI = 1, 2
+
 
 class AutoMergeDiffer(diffutil.Differ):
 
@@ -217,7 +219,6 @@ class Merger(diffutil.Differ):
         yield 1
 
     def _apply_change(self, text, change, mergedtext):
-        LO, HI = 1, 2
         if change[0] == 'insert':
             for i in range(change[LO + 2], change[HI + 2]):
                 mergedtext.append(text[i])
@@ -230,7 +231,6 @@ class Merger(diffutil.Differ):
             return change[HI] - change[LO]
 
     def merge_3_files(self, mark_conflicts=True):
-        LO, HI = 1, 2
         self.unresolved = []
         lastline = 0
         mergedline = 0
@@ -278,7 +278,6 @@ class Merger(diffutil.Differ):
         yield "\n".join(mergedtext)
 
     def merge_2_files(self, fromindex, toindex):
-        LO, HI = 1, 2
         self.unresolved = []
         lastline = 0
         mergedtext = []
