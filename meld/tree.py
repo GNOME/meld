@@ -17,18 +17,30 @@
 import os
 
 from gi.module import get_introspection_module
-from gi.repository import Gdk
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Pango
+from gi.repository import Gdk, GLib, GObject, Pango
 
 from meld.style import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
 from meld.vc._vc import (  # noqa: F401
-    CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_MERGED, CONFLICT_OTHER,
-    CONFLICT_REMOTE, CONFLICT_THIS, STATE_CONFLICT, STATE_EMPTY, STATE_ERROR,
-    STATE_IGNORED, STATE_MAX, STATE_MISSING, STATE_MODIFIED, STATE_NEW,
-    STATE_NOCHANGE, STATE_NONE, STATE_NONEXIST, STATE_NORMAL, STATE_REMOVED,
+    CONFLICT_BASE,
+    CONFLICT_LOCAL,
+    CONFLICT_MERGED,
+    CONFLICT_OTHER,
+    CONFLICT_REMOTE,
+    CONFLICT_THIS,
+    STATE_CONFLICT,
+    STATE_EMPTY,
+    STATE_ERROR,
+    STATE_IGNORED,
+    STATE_MAX,
+    STATE_MISSING,
+    STATE_MODIFIED,
+    STATE_NEW,
+    STATE_NOCHANGE,
+    STATE_NONE,
+    STATE_NONEXIST,
+    STATE_NORMAL,
+    STATE_REMOVED,
 )
 
 _GIGtk = None

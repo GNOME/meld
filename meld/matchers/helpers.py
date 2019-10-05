@@ -8,7 +8,6 @@ from gi.repository import GLib
 
 from meld.matchers import myers
 
-
 log = logging.getLogger(__name__)
 
 

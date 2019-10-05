@@ -31,8 +31,7 @@ import subprocess
 import tempfile
 from typing import ClassVar
 
-from gi.repository import Gio
-from gi.repository import GLib
+from gi.repository import Gio, GLib
 
 from meld.conf import _
 

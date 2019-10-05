@@ -1,7 +1,5 @@
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import GObject, Gtk, GtkSource
 
 from meld.conf import _
 

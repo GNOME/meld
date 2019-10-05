@@ -17,12 +17,10 @@
 
 import math
 
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
-
 
 # Rounded rectangle corner radius for culled changes display
 RADIUS = 3

@@ -31,9 +31,7 @@ import sys
 import tempfile
 from typing import List, Tuple
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, Gtk
 
 import meld.misc
 from meld.conf import _

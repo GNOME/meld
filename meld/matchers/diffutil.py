@@ -17,8 +17,10 @@
 from gi.repository import GObject
 
 from meld.matchers.myers import (
-    DiffChunk, MyersSequenceMatcher, SyncPointMyersSequenceMatcher)
-
+    DiffChunk,
+    MyersSequenceMatcher,
+    SyncPointMyersSequenceMatcher,
+)
 
 opcode_reverse = {
     "replace": "replace",

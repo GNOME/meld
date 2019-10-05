@@ -23,11 +23,7 @@ import subprocess
 import sys
 from typing import Iterable, Sequence
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 from meld.conf import _
 from meld.recent import RecentType

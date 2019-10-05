@@ -17,10 +17,7 @@
 import os
 import textwrap
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gio, GObject, Gtk, Pango
 
 from meld.conf import _
 from meld.settings import get_meld_settings, settings

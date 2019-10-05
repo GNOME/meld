@@ -16,10 +16,7 @@
 
 import logging
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import GtkSource
+from gi.repository import Gio, GLib, GObject, GtkSource
 
 from meld.conf import _
 from meld.settings import bind_settings

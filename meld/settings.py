@@ -13,10 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import GtkSource
-from gi.repository import Pango
+from gi.repository import Gio, GObject, GtkSource, Pango
 
 import meld.conf
 import meld.filters

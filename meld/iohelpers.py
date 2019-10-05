@@ -1,9 +1,7 @@
 
 from typing import Optional
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, Gtk
 
 from meld.conf import _
 from meld.misc import get_modal_parent, modal_dialog

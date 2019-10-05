@@ -16,10 +16,7 @@
 import bisect
 from typing import Dict, Optional
 
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 
 from meld.conf import _
 from meld.const import ActionMode, ChunkAction
