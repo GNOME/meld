@@ -19,11 +19,11 @@ variables:
     - dnf update -y
     - dnf install -y $DEPENDENCIES
 
-flake8:
+lint:
   stage: check
   script:
     - pip3 install -r dev-requirements.txt
-    - flake8 bin/meld meld/
+    - pre-commit run --all-files
   allow_failure: true
   <<: *linux-common
 
