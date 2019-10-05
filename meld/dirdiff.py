@@ -26,15 +26,10 @@ from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # TODO: Don't from-import whole modules
-from meld import misc
-from meld import tree
+from meld import misc, tree
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
 from meld.iohelpers import trash_or_confirm
@@ -44,7 +39,10 @@ from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui.cellrenderers import (
-    CellRendererByteSize, CellRendererDate, CellRendererFileMode)
+    CellRendererByteSize,
+    CellRendererDate,
+    CellRendererFileMode,
+)
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
 from meld.ui.util import map_widgets_into_lists
 

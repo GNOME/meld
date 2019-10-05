@@ -274,8 +274,8 @@ def render_template(template):
 def call_with_output(
         cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True,
         timeout=30):
-    PIPE = subprocess.PIPE
-    with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
+    pipe = subprocess.PIPE
+    with subprocess.Popen(cmd, stdin=pipe, stdout=pipe, stderr=pipe) as proc:
         stdout, stderr = proc.communicate(stdin_text, timeout=timeout)
     if stdout and echo_stdout:
         click.echo('\n' + stdout.decode('utf-8'))

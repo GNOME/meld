@@ -1,3 +1,5 @@
+image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
+
 stages:
   - check
   - build
@@ -14,18 +16,16 @@ variables:
                 glib2-devel
 
 .linux-common: &linux-common
-  image: fedora:rawhide
   before_script:
     - dnf update -y
     - dnf install -y $DEPENDENCIES
 
-flake8:
+lint:
   stage: check
   script:
+    - dnf install -y git
     - pip3 install -r dev-requirements.txt
-    - flake8 bin/meld meld/
-  allow_failure: true
-  <<: *linux-common
+    - pre-commit run --all-files --show-diff-on-failure
 
 linux-pytest:
   stage: check

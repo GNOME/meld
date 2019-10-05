@@ -16,9 +16,7 @@
 import logging
 from typing import List
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gio, GObject, Gtk
 
 log = logging.getLogger(__name__)
 

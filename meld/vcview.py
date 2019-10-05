@@ -23,12 +23,7 @@ import stat
 import sys
 import tempfile
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 
 from meld import tree
 from meld.conf import _

@@ -17,10 +17,7 @@
 import logging
 import os
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gtk
+from gi.repository import Gdk, Gio, GLib, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
@@ -33,7 +30,7 @@ from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
-from meld.recent import recent_comparisons, RecentType
+from meld.recent import RecentType, recent_comparisons
 from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
 from meld.ui.notebooklabel import NotebookLabel

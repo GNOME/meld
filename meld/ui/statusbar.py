@@ -13,14 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
-from gi.repository import Pango
+from gi.repository import GObject, Gtk, GtkSource, Pango
 
 from meld.conf import _
-from meld.ui.bufferselectors import EncodingSelector
-from meld.ui.bufferselectors import SourceLangSelector
+from meld.ui.bufferselectors import EncodingSelector, SourceLangSelector
 
 
 class MeldStatusMenuButton(Gtk.MenuButton):

@@ -15,9 +15,7 @@
 
 import math
 
-from gi.repository import Gdk
-from gi.repository import GtkSource
-from gi.repository import Pango
+from gi.repository import Gdk, GtkSource, Pango
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme

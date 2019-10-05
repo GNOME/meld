@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (C) 2002-2005 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2015 Kai Willadsen <kai.willadsen@gmail.com>
 

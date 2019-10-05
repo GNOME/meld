@@ -36,7 +36,6 @@ import weakref
 
 from gi.repository import GObject
 
-
 log = logging.getLogger(__name__)
 
 

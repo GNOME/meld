@@ -18,7 +18,6 @@ from gi.repository import Gdk, Gio, GObject
 
 from meld.settings import load_settings_schema
 
-
 WINDOW_STATE_SCHEMA = 'org.gnome.meld.WindowState'
 
 

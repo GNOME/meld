@@ -2,6 +2,7 @@
 from unittest import mock
 
 import pytest
+
 from meld.misc import all_same, calc_syncpoint, merge_intervals
 
 

@@ -5,7 +5,6 @@ import pytest
 
 from meld.meldbuffer import BufferLines, MeldBuffer
 
-
 text = ("""0
 1
 2

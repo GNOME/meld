@@ -18,7 +18,7 @@ def default_icon_theme():
 
 @pytest.fixture(autouse=True)
 def template_resources():
-    import gi
+    import gi  # noqa: F401
     with mock.patch(
             'gi._gtktemplate.validate_resource_path',
             mock.Mock(return_value=True)):

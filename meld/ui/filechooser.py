@@ -17,11 +17,9 @@
 
 import sys
 
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gtk, GtkSource
 
 from meld.conf import _
-
 
 FILE_ACTIONS = {
     Gtk.FileChooserAction.OPEN,
