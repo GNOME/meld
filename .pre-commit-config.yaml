@@ -22,6 +22,12 @@ repos:
         args: [--no-sort-keys, --indent=2]
     -   id: trailing-whitespace
 
+-   repo: https://github.com/timothycrosley/isort
+    rev: 4.3.21-2
+    hooks:
+    -   id: isort
+        args: [--filter-files]
+
 -   repo: https://gitlab.com/pycqa/flake8
     rev: 3.7.5
     hooks:
