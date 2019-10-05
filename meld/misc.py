@@ -26,6 +26,7 @@ import shutil
 import subprocess
 from pathlib import PurePath
 from typing import (
+    TYPE_CHECKING,
     AnyStr,
     Callable,
     Generator,
@@ -34,12 +35,10 @@ from typing import (
     Pattern,
     Sequence,
     Tuple,
-    TYPE_CHECKING,
     Union,
 )
 
-from gi.repository import GLib
-from gi.repository import Gtk
+from gi.repository import GLib, Gtk
 
 from meld.conf import _
 

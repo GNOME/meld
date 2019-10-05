@@ -17,11 +17,7 @@
 import difflib
 import os
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gdk, Gio, GLib, Gtk, GtkSource
 
 from meld.conf import _
 from meld.iohelpers import prompt_save_filename

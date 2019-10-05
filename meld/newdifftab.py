@@ -15,10 +15,7 @@
 
 import enum
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, GObject, Gtk
 
 from meld.conf import _
 from meld.melddoc import LabeledObjectMixin, MeldDoc

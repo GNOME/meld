@@ -17,17 +17,11 @@
 import logging
 from enum import Enum
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
 from meld.meldbuffer import MeldBuffer
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.style import colour_lookup_with_fallback, get_common_theme
-
 
 log = logging.getLogger(__name__)
 

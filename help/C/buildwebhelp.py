@@ -7,7 +7,6 @@ import sys
 
 from bs4 import BeautifulSoup
 
-
 JEKYLL_HEADER = """---
 layout: help
 title: Meld - Help

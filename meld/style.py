@@ -16,14 +16,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-from typing import (
-    Mapping,
-    Optional,
-    Tuple,
-)
+from typing import Mapping, Optional, Tuple
 
-from gi.repository import Gdk
-from gi.repository import GtkSource
+from gi.repository import Gdk, GtkSource
 
 from meld.conf import _
 

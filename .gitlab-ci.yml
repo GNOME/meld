@@ -28,12 +28,12 @@ flatpak:
         APP_ID: "org.gnome.Meld"
     extends: .flatpak
 
-flake8:
+lint:
   stage: check
   script:
+    - dnf install -y git
     - pip3 install -r dev-requirements.txt
-    - flake8 bin/meld meld/
-  allow_failure: true
+    - pre-commit run --all-files --show-diff-on-failure
 
 pytest:
   stage: check

@@ -17,10 +17,7 @@ import configparser
 import os
 import sys
 
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import GLib, GObject, Gtk, Pango
 
 # This file started off as a Python translation of:
 #  * gedit/gedit/gedit-history-entry.c

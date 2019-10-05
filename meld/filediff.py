@@ -19,21 +19,16 @@ import functools
 import logging
 import math
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _
 from meld.const import (
-    ActionMode,
-    ChunkAction,
     NEWLINES,
     TEXT_FILTER_ACTION_FORMAT,
+    ActionMode,
+    ChunkAction,
 )
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
@@ -41,18 +36,26 @@ from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import Merger
 from meld.meldbuffer import (
-    BufferDeletionAction, BufferInsertionAction, BufferLines)
+    BufferDeletionAction,
+    BufferInsertionAction,
+    BufferLines,
+)
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
-    get_custom_encoding_candidates, LanguageManager, TextviewLineAnimationType)
+    LanguageManager,
+    TextviewLineAnimationType,
+    get_custom_encoding_candidates,
+)
 from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
-    make_multiobject_property_action, map_widgets_into_lists)
+    make_multiobject_property_action,
+    map_widgets_into_lists,
+)
 from meld.undo import UndoSequence
 
 log = logging.getLogger(__name__)

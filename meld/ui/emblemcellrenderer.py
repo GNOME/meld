@@ -17,10 +17,7 @@
 from typing import Dict, Tuple
 
 import cairo
-from gi.repository import Gdk
-from gi.repository import GdkPixbuf
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
 
 
 class EmblemCellRenderer(Gtk.CellRenderer):
