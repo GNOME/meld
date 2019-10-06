@@ -6,8 +6,10 @@ from pathlib import Path
 __package__ = "meld"
 __version__ = "3.21.0"
 
-APPLICATION_ID = "org.gnome.Meld"
-RESOURCE_BASE = '/org/gnome/meld'
+APPLICATION_NAME = 'Meld'
+APPLICATION_ID = 'org.gnome.Meld'
+SETTINGS_SCHEMA_ID = 'org.gnome.meld'
+RESOURCE_BASE = '/org/gnome/Meld'
 
 # START; these paths are clobbered on install by meld.build_helpers
 DATADIR = Path(sys.prefix) / "share" / "meld"
