@@ -46,7 +46,7 @@ class MeldApp(Gtk.Application):
         )
         GLib.set_application_name(meld.conf.APPLICATION_NAME)
         GLib.set_prgname(meld.conf.APPLICATION_ID)
-        Gtk.Window.set_default_icon_name("org.gnome.meld")
+        Gtk.Window.set_default_icon_name(meld.conf.ICON_NAME)
         self.set_resource_base_path(meld.conf.RESOURCE_BASE)
 
     def do_startup(self):
@@ -115,6 +115,7 @@ class MeldApp(Gtk.Application):
             '/org/gnome/meld/ui/about-dialog.ui')
         dialog = builder.get_object('about-dialog')
         dialog.set_version(meld.conf.__version__)
+        dialog.set_logo_icon_name(meld.conf.ICON_NAME)
         dialog.set_transient_for(self.get_active_window())
         dialog.run()
         dialog.destroy()
