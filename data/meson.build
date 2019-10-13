@@ -63,14 +63,6 @@ mimetype_file = i18n.merge_file(
   install_dir: mimedatadir,
 )
 
-# Install CSS file
-install_data(
-    [
-        files('meld.css')
-    ],
-    install_dir: join_paths(pkgdatadir)
-)
-
 # Check GSettings schema
 compile_schemas = find_program('glib-compile-schemas', required: false)
 if compile_schemas.found()
