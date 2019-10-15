@@ -1,3 +1,10 @@
+# Install CSS file
+install_data(
+    [
+        files('meld.css')
+    ],
+    install_dir: join_paths(pkgdatadir)
+)
 
 gnome.compile_resources(
   application_id,
