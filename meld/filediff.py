@@ -737,11 +737,59 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     @Gtk.Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
-        self.next_diff(event.direction)
+        self.next_diff(event.direction, use_viewport=True)
 
-    def next_diff(self, direction, centered=False):
+    def next_diff(self, direction, centered=False, use_viewport=False):
+        # use_viewport: seek next and previous diffes based on where
+        # the user is currently scrolling at.
         target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
-                  else self.cursor.prev)
+                 else self.cursor.prev)
+
+        if use_viewport:
+
+            if target is None:
+                return
+
+            pane = self.cursor.pane
+            text_area = self.textview[pane].get_visible_rect()
+
+            chunk = self.linediffer.get_chunk(target, pane)
+            if not chunk:
+                return
+
+
+            #Count the down top and bottom 25% of the window
+            topedge = text_area.y
+            bottomedge = text_area.y+text_area.height
+
+            topline = self.textview[pane].get_line_at_y(
+                topedge).target_iter.get_line()
+            bottomline = self.textview[pane].get_line_at_y(
+                bottomedge).target_iter.get_line()
+
+            topquarter = self.textview[pane].get_line_at_y(
+                topedge + text_area.height / 4).target_iter.get_line()
+            bottomquarter = self.textview[pane].get_line_at_y(
+                bottomedge - text_area.height / 4).target_iter.get_line()
+
+            while chunk[1] < topquarter and direction == Gdk.ScrollDirection.DOWN:
+                target += 1
+                if(target > self.linediffer.diff_count()):
+                    return
+
+                chunk = self.linediffer.get_chunk(target, pane)
+                if not chunk:
+                    return
+
+            while chunk[1] > bottomquarter and direction == Gdk.ScrollDirection.UP:
+                target -= 1
+                if target < 0:
+                    return
+
+                chunk = self.linediffer.get_chunk(target, pane)
+                if not chunk:
+                    return
+
         self.go_to_chunk(target, centered=centered)
 
     def action_previous_change(self, *args):
