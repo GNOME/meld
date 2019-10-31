@@ -18,6 +18,7 @@ import copy
 import functools
 import logging
 import math
+from typing import Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -29,12 +30,13 @@ from meld.const import (
     TEXT_FILTER_ACTION_FORMAT,
     ActionMode,
     ChunkAction,
+    FileComparisonMode,
 )
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
-from meld.matchers.merge import Merger
+from meld.matchers.merge import AutoMergeDiffer, Merger
 from meld.meldbuffer import (
     BufferDeletionAction,
     BufferInsertionAction,
@@ -188,7 +190,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
 
-    differ = Differ
+    differ: Type[Differ]
+    comparison_mode: FileComparisonMode
 
     keylookup = {
         Gdk.KEY_Shift_L: MASK_SHIFT,
@@ -220,7 +223,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=False,
     )
 
-    def __init__(self, num_panes):
+    def __init__(
+        self,
+        num_panes,
+        *,
+        comparison_mode: FileComparisonMode = FileComparisonMode.Compare,
+    ):
         super().__init__()
         # FIXME:
         # This unimaginable hack exists because GObject (or GTK+?)
@@ -243,6 +251,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             "chunkmap",
         ]
         map_widgets_into_lists(self, widget_lists)
+
+        self.comparison_mode = comparison_mode
+        if comparison_mode == FileComparisonMode.AutoMerge:
+            self.differ = AutoMergeDiffer
+        else:
+            self.differ = Differ
 
         self.warned_bad_comparison = False
         self._keymask = 0
@@ -562,6 +576,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
             id4 = buf.connect(
                 "notify::cursor-position", self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
+
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            self.textview[0].set_editable(0)
+            self.textview[2].set_editable(0)
 
     def bind_adapt_cursor_position(self, binding, from_value):
         buf = binding.get_source()
@@ -1429,7 +1447,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def get_comparison(self):
         uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
-        return RecentType.File, uris
+
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            comparison_type = RecentType.Merge
+        else:
+            comparison_type = RecentType.File
+
+        return comparison_type, uris
 
     def file_loaded(self, loader, result, user_data):
 
@@ -1488,7 +1512,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.scheduler.add_task(self._compare_files_internal())
 
     def _merge_files(self):
-        yield 1
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            yield _("[%s] Merging files") % self.label_text
+            merger = Merger()
+            step = merger.initialize(self.buffer_filtered, self.buffer_texts)
+            while next(step) is None:
+                yield 1
+            for merged_text in merger.merge_3_files():
+                yield 1
+            self.linediffer.unresolved = merger.unresolved
+            self.textbuffer[1].set_text(merged_text)
+            self.recompute_label()
+        else:
+            yield 1
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text

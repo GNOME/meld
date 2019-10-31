@@ -21,6 +21,11 @@ class ChunkAction(enum.Enum):
     copy_up = 'copy_up'
 
 
+class FileComparisonMode(enum.Enum):
+    AutoMerge = 'AutoMerge'
+    Compare = 'Compare'
+
+
 NEWLINES = {
     GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),
     GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),
