@@ -605,7 +605,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # use_viewport: seek next and previous diffes based on where
         # the user is currently scrolling at.
         target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
-                 else self.cursor.prev)
+                  else self.cursor.prev)
 
         if use_viewport:
 
@@ -619,8 +619,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if not chunk:
                 return
 
-
-            halfscreen = text_area.y+text_area.height / 2
+            halfscreen = text_area.y + text_area.height / 2
             halfline = self.textview[pane].get_line_at_y(
                 halfscreen).target_iter.get_line()
 
@@ -632,7 +631,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 target = prev
 
         self.go_to_chunk(target, centered=centered)
-
 
     @Template.Callback()
     def action_previous_conflict(self, *args):
