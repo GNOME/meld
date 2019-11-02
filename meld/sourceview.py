@@ -17,7 +17,7 @@
 import logging
 from enum import Enum
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource, Pango
 
 from meld.meldbuffer import MeldBuffer
 from meld.settings import bind_settings, get_meld_settings, settings
@@ -149,6 +149,15 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         ),
     )
 
+    overscroll_num_lines = GObject.Property(
+        type=int, default=5, minimum=0, maximum=100,
+        nick="Overscroll line count",
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT
+        ),
+    )
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
@@ -200,6 +209,20 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         buf.get_tag_table().add(inline_tag)
         buf.create_tag("dimmed")
         self.set_buffer(buf)
+        self.connect('notify::overscroll-num-lines', self.notify_overscroll)
+
+    @property
+    def line_height(self) -> int:
+        if not getattr(self, '_approx_line_height', None):
+            context = self.get_pango_context()
+            layout = Pango.Layout(context)
+            layout.set_text('X')
+            _width, self._approx_line_height = layout.get_pixel_size()
+
+        return self._approx_line_height
+
+    def notify_overscroll(self, view, param):
+        self.props.bottom_margin = self.overscroll_num_lines * self.line_height
 
     def do_paste_clipboard(self, *args):
         # This is an awful hack to replace another awful hack. The idea
@@ -235,6 +258,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     def on_setting_changed(self, settings, key):
         if key == 'font':
             self.override_font(settings.font)
+            self._approx_line_height = None
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
                 "meld:current-line-highlight", "background")
