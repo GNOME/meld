@@ -2128,11 +2128,20 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
             fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
             other_line = obegin + fraction * (oend - obegin)
+
+            # At this point, we've identified the line within the
+            # corresponding chunk that we want to sync to.
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
             # Special case line-height adjustment for EOF
             line_factor = 1.0 if it.is_end() else other_line - int(other_line)
             val += line_factor * height
+            if syncpoint > 0.5:
+                # If we're in the last half page, gradually factor in
+                # the overscroll margin.
+                overscroll_scale = (syncpoint - 0.5) / 0.5
+                overscroll_height = self.textview[i].get_bottom_margin()
+                val += overscroll_height * overscroll_scale
             val -= adj.get_page_size() * syncpoint
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())
