@@ -604,8 +604,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def next_diff(self, direction, centered=False, use_viewport=False):
         # use_viewport: seek next and previous diffes based on where
         # the user is currently scrolling at.
-        target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
-                  else self.cursor.prev)
+        scroll_down = direction == Gdk.ScrollDirection.DOWN
+        target = self.cursor.next if scroll_down else self.cursor.prev
 
         if use_viewport:
 
@@ -623,12 +623,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             halfline = self.textview[pane].get_line_at_y(
                 halfscreen).target_iter.get_line()
 
-            (current, prev, next) = self.linediffer.locate_chunk(1, halfline)
-
-            if direction == Gdk.ScrollDirection.DOWN:
-                target = next
-            else:
-                target = prev
+            (current, prev, next_) = self.linediffer.locate_chunk(1, halfline)
+            target = next_ if scroll_down else prev
 
         self.go_to_chunk(target, centered=centered)
 
