@@ -324,9 +324,10 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         context.set_line_width(1.0)
 
         _, clip = Gdk.cairo_get_clip_rectangle(context)
+        clip_end = clip.y + clip.height
         bounds = (
             self.get_line_num_for_y(clip.y),
-            self.get_line_num_for_y(clip.y + clip.height),
+            self.get_line_num_for_y(clip_end),
         )
 
         x = clip.x - 0.5
@@ -351,6 +352,16 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             context.stroke()
 
         textbuffer = self.get_buffer()
+
+        # Check whether we're drawing past the last line in the buffer
+        # (i.e., the overscroll) and draw a custom background if so.
+        end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
+        end_y += end_height
+        visible_bottom_margin = clip_end - end_y
+        if visible_bottom_margin > 0:
+            context.rectangle(x + 1, end_y, width - 1, visible_bottom_margin)
+            context.set_source_rgba(*self.fill_colors['overscroll'])
+            context.fill()
 
         # Paint current line highlight
         if self.props.highlight_current_line_local and self.is_focus():
