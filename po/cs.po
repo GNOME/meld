@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2019-01-06 16:54+0000\n"
-"PO-Revision-Date: 2019-01-07 10:40+0100\n"
+"POT-Creation-Date: 2019-08-24 20:40+0000\n"
+"PO-Revision-Date: 2019-09-14 01:33+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: čeština <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -21,16 +21,16 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 "X-Generator: Gtranslator 2.91.7\n"
 
-#: ../bin/meld:190
+#: ../bin/meld:194
 msgid "Cannot import: "
 msgstr "Nelze importovat: "
 
-#: ../bin/meld:193
+#: ../bin/meld:197
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld vyžaduje %s nebo vyšší."
 
-#: ../bin/meld:249
+#: ../bin/meld:276
 #, c-format
 msgid ""
 "Couldn’t load Meld-specific CSS (%s)\n"
@@ -146,6 +146,7 @@ msgstr ""
 "tabulátorů."
 
 #: ../data/org.gnome.meld.gschema.xml.h:11
+#: ../meld/resources/ui/statusbar-menu.ui.h:1
 msgid "Show line numbers"
 msgstr "Zobrazovat čísla řádků"
 
@@ -176,17 +177,16 @@ msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr "Používá GtkSourceView k určení barev pro zvýraznění syntaxe"
 
 #: ../data/org.gnome.meld.gschema.xml.h:17
-msgid "Displayed whitespace"
-msgstr "Viditelné bílé znaky"
+msgid "Draw whitespace"
+msgstr "Vykreslovat mezery"
 
 #: ../data/org.gnome.meld.gschema.xml.h:18
 msgid ""
-"Selector for individual whitespace character types to be shown. Possible "
-"values are 'space', 'tab', 'newline' and 'nbsp'."
+"If true, whitespace characters will be drawn in comparisons even if they are "
+"not in a changed area."
 msgstr ""
-"Výběr typů jednotlivých bílých znaků, které se mají zobrazovat. Možné "
-"hodnoty jsou „space“ (mezera), „tab“ (tabulátor), „newline“ (odřádkování) a "
-"„nbsp“ (nezalomitelná mezera)."
+"Když je zapnuto, budou v porovnání vykreslované bílé znaky, i když nejsou ve "
+"změněné části."
 
 #: ../data/org.gnome.meld.gschema.xml.h:19
 msgid "Wrap mode"
@@ -202,6 +202,7 @@ msgstr ""
 "vůbec („none“), za libovolným znakem („char“) nebo na koncích slov („word“)."
 
 #: ../data/org.gnome.meld.gschema.xml.h:21
+#: ../meld/resources/ui/statusbar-menu.ui.h:3
 msgid "Highlight current line"
 msgstr "Zvýrazňovat aktuální řádek"
 
@@ -235,21 +236,39 @@ msgstr ""
 "popis písma Pango."
 
 #: ../data/org.gnome.meld.gschema.xml.h:27
+msgid "Show overview source map"
+msgstr "Zobrazovat přehledovou mapu"
+
+#: ../data/org.gnome.meld.gschema.xml.h:28
+msgid ""
+"If true, file comparisons will have paired source maps for compared files."
+msgstr ""
+"Když je zapnuto, budou u porovnání souborů dvě spárované přehledové mapy."
+
+#: ../data/org.gnome.meld.gschema.xml.h:29
+msgid "Style of overview map"
+msgstr "Styl přehledové mapy"
+
+#: ../data/org.gnome.meld.gschema.xml.h:30
+msgid "Style options for how the overview map is displayed."
+msgstr "Volba stylu, jak se má zobrazovat přehledová mapa."
+
+#: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "Ignore blank lines when comparing files"
 msgstr "Při porovnávání souborů ignorovat prázdné řádky"
 
-#: ../data/org.gnome.meld.gschema.xml.h:28
+#: ../data/org.gnome.meld.gschema.xml.h:32
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Když je zapnuto, budou prázdné řádky ve zvýrazňování změn mezi soubory "
 "vynechány."
 
-#: ../data/org.gnome.meld.gschema.xml.h:29
+#: ../data/org.gnome.meld.gschema.xml.h:33
 msgid "Use the system default editor"
 msgstr "Používat výchozí editor systému"
 
-#: ../data/org.gnome.meld.gschema.xml.h:30
+#: ../data/org.gnome.meld.gschema.xml.h:34
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -257,11 +276,11 @@ msgstr ""
 "Když je zapnuto, použije se při externím otevírání souborů vlastní editor "
 "namísto systémového editoru."
 
-#: ../data/org.gnome.meld.gschema.xml.h:31
+#: ../data/org.gnome.meld.gschema.xml.h:35
 msgid "The custom editor launch command"
 msgstr "Příkaz pro spuštění vlastního editoru"
 
-#: ../data/org.gnome.meld.gschema.xml.h:32
+#: ../data/org.gnome.meld.gschema.xml.h:36
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -270,22 +289,22 @@ msgstr ""
 "míry šablony – v tuto chvíli jsou rozpoznávány symboly „{file}“ (soubor) a "
 "„{line}“ (řádek)."
 
-#: ../data/org.gnome.meld.gschema.xml.h:33
+#: ../data/org.gnome.meld.gschema.xml.h:37
 msgid "Columns to display"
 msgstr "Zobrazované sloupce"
 
-#: ../data/org.gnome.meld.gschema.xml.h:34
+#: ../data/org.gnome.meld.gschema.xml.h:38
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr "Seznam názvů sloupců v porovnávání složek a zda by měly být zobrazeny."
 
-#: ../data/org.gnome.meld.gschema.xml.h:35
-#: ../meld/resources/ui/preferences.ui.h:25
+#: ../data/org.gnome.meld.gschema.xml.h:39
+#: ../meld/resources/ui/preferences.ui.h:28
 msgid "Ignore symbolic links"
 msgstr "Ignorovat symbolické odkazy"
 
-#: ../data/org.gnome.meld.gschema.xml.h:36
+#: ../data/org.gnome.meld.gschema.xml.h:40
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -293,11 +312,11 @@ msgstr ""
 "Když je zapnuto, nenásledují se při porovnávání složek symbolické odkazy "
 "během procházení stromu složek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:37
+#: ../data/org.gnome.meld.gschema.xml.h:41
 msgid "Use shallow comparison"
 msgstr "Používat povrchní porovnání"
 
-#: ../data/org.gnome.meld.gschema.xml.h:38
+#: ../data/org.gnome.meld.gschema.xml.h:42
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -307,11 +326,11 @@ msgstr ""
 "a času mtime. Soubory jsou považovány za identické, když mají stejnou "
 "velikost i čas, v opačném případě za rozdílné."
 
-#: ../data/org.gnome.meld.gschema.xml.h:39
+#: ../data/org.gnome.meld.gschema.xml.h:43
 msgid "File timestamp resolution"
 msgstr "Přesnost časového razítka"
 
-#: ../data/org.gnome.meld.gschema.xml.h:40
+#: ../data/org.gnome.meld.gschema.xml.h:44
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -323,12 +342,12 @@ msgstr ""
 "jejich časy považovány za rozdílné. To je užitečné při porovnávání souborů "
 "mezi souborovými systémy, které mají různou přesnost časových razítek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:41
-#: ../meld/resources/ui/preferences.ui.h:22
+#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../meld/resources/ui/preferences.ui.h:25
 msgid "Apply text filters during folder comparisons"
 msgstr "Použít textové filtry při porovnávání složek"
 
-#: ../data/org.gnome.meld.gschema.xml.h:42
+#: ../data/org.gnome.meld.gschema.xml.h:46
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -338,20 +357,20 @@ msgstr ""
 "použije aktivní textové filtry, volbu ořezávání prázdných řádků a ignorování "
 "rozdílů v zalomení řádků."
 
-#: ../data/org.gnome.meld.gschema.xml.h:43
+#: ../data/org.gnome.meld.gschema.xml.h:47
 msgid "File status filters"
 msgstr "Filtry stavu souboru"
 
-#: ../data/org.gnome.meld.gschema.xml.h:44
+#: ../data/org.gnome.meld.gschema.xml.h:48
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Seznam stavů použitých k filtrování viditelných souborů v porovnávání složek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:45
+#: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Show the version control console output"
 msgstr "Zobrazovat výstup konzole správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:46
+#: ../data/org.gnome.meld.gschema.xml.h:50
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -359,11 +378,11 @@ msgstr ""
 "Když je zapnuto, bude v zobrazení správy verzí zobrazen výstup konzole, na "
 "kterém uvidíte příkazy spouštěné pro jednotlivé operace správy verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:47
+#: ../data/org.gnome.meld.gschema.xml.h:51
 msgid "Version control pane position"
 msgstr "Umístění panelu správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:48
+#: ../data/org.gnome.meld.gschema.xml.h:52
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -371,11 +390,11 @@ msgstr ""
 "Jde o výšku hlavního stromu správy verzí v případě, že je zobrazen panel "
 "konzoly."
 
-#: ../data/org.gnome.meld.gschema.xml.h:49
+#: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Zobrazovat porovnání verzí jako vlevo-místní/vpravo-vzdálené"
 
-#: ../data/org.gnome.meld.gschema.xml.h:50
+#: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -385,11 +404,11 @@ msgstr ""
 "vpravo-vzdálené k určení pořadí, v jakém se mají soubory zobrazovat v "
 "panelech. V opačném případe je použito schéma vlevo-jejich, vpravo-moje."
 
-#: ../data/org.gnome.meld.gschema.xml.h:51
+#: ../data/org.gnome.meld.gschema.xml.h:55
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Pořadí pro soubory v trojcestném slučovacím porovnání ve správě verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:52
+#: ../data/org.gnome.meld.gschema.xml.h:56
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -401,11 +420,11 @@ msgstr ""
 "protože se používá výhradně pro řešení slučování/konfliktů v rámci aplikace "
 "Meld."
 
-#: ../data/org.gnome.meld.gschema.xml.h:53
+#: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Show margin in commit message editor"
 msgstr "Zobrazovat okraj v editoru zpráv k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:54
+#: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -413,11 +432,11 @@ msgstr ""
 "Když je zapnuto, bude zobrazeno vodítko, které ukazuje, na kterém sloupci je "
 "okraj editoru zpráv popisujících zařazení ve správě verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:55
+#: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Margin column in commit message editor"
 msgstr "Sloupec okraje v editoru zpráv k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:56
+#: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -425,11 +444,11 @@ msgstr ""
 "Sloupec, ve kterém se má zobrazit okraj v editoru zpráv popisujících "
 "zařazení ve správě verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:57
+#: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Automatically hard-wrap commit messages"
 msgstr "Automaticky natvrdo zalamovat zprávy k zařazení"
 
-#: ../data/org.gnome.meld.gschema.xml.h:58
+#: ../data/org.gnome.meld.gschema.xml.h:62
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -438,22 +457,22 @@ msgstr ""
 "zařazením zprávu natvrdo zalamovat (tj. vkládat zalomení řádku) na "
 "příslušném sloupci."
 
-#: ../data/org.gnome.meld.gschema.xml.h:59
+#: ../data/org.gnome.meld.gschema.xml.h:63
 msgid "Version control status filters"
 msgstr "Filtry stavu správy verzí"
 
-#: ../data/org.gnome.meld.gschema.xml.h:60
+#: ../data/org.gnome.meld.gschema.xml.h:64
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Seznam stavů použitých k filtrování viditelných souborů v porovnávání správy "
 "verzí."
 
-#: ../data/org.gnome.meld.gschema.xml.h:61
+#: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Filename-based filters"
 msgstr "Filtry názvů souborů"
 
-#: ../data/org.gnome.meld.gschema.xml.h:62
+#: ../data/org.gnome.meld.gschema.xml.h:66
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -461,11 +480,11 @@ msgstr ""
 "Seznam předdefinovaných filtrů názvů souborů. Když jsou aktivní, vynechají "
 "odpovídající soubory z porovnání složek."
 
-#: ../data/org.gnome.meld.gschema.xml.h:63
+#: ../data/org.gnome.meld.gschema.xml.h:67
 msgid "Text-based filters"
 msgstr "Filtry textu"
 
-#: ../data/org.gnome.meld.gschema.xml.h:64
+#: ../data/org.gnome.meld.gschema.xml.h:68
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -476,8 +495,8 @@ msgstr ""
 "bude sice i nadále zobrazen, ale nezasáhne do samotného porovnávání."
 
 #: ../data/styles/meld-base.xml.h:1
-msgid "Meld base scheme"
-msgstr "Základní schéma Meld"
+msgid "Classic (Meld)"
+msgstr "Klasik (Meld)"
 
 #: ../data/styles/meld-base.xml.h:2
 msgid "Base color scheme for Meld highlighting"
@@ -528,233 +547,352 @@ msgstr "Celá obrazovka"
 
 #: ../meld/resources/gtk/help-overlay.ui.h:8
 msgctxt "shortcut window"
-msgid "Tabs"
-msgstr "Karty"
+msgid "Panes"
+msgstr "Panely"
 
 #: ../meld/resources/gtk/help-overlay.ui.h:9
-msgctxt "shortcut window"
-msgid "Go to previous tab"
-msgstr "Přejít na předchozí kartu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:10
-msgctxt "shortcut window"
-msgid "Go to next tab"
-msgstr "Přejít na následující kartu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:11
-msgctxt "shortcut window"
-msgid "Switch to tab"
-msgstr "Přepnout na kartu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:12
-msgctxt "shortcut window"
-msgid "Move tab left"
-msgstr "Přesunout kartu doleva"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:13
-msgctxt "shortcut window"
-msgid "Move tab right"
-msgstr "Přesunout kartu doprava"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:14
-msgctxt "shortcut window"
-msgid "Changes"
-msgstr "Změny"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:15
-msgctxt "shortcut window"
-msgid "Go to previous change"
-msgstr "Přejít na předchozí změnu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:16
-msgctxt "shortcut window"
-msgid "Go to next change"
-msgstr "Přejít na následující změnu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:17
-msgctxt "shortcut window"
-msgid "Editing"
-msgstr "Úpravy"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:18
-msgctxt "shortcut window"
-msgid "Undo"
-msgstr "Zpět"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:19
-msgctxt "shortcut window"
-msgid "Redo"
-msgstr "Znovu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:20
-msgctxt "shortcut window"
-msgid "Cut"
-msgstr "Vyjmout"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:21
-msgctxt "shortcut window"
-msgid "Copy"
-msgstr "Kopírovat"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:22
-msgctxt "shortcut window"
-msgid "Paste"
-msgstr "Vložit"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:23
-msgctxt "shortcut window"
-msgid "Find"
-msgstr "Hledat"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:24
-msgctxt "shortcut window"
-msgid "Find Next"
-msgstr "Najít následující"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:25
-msgctxt "shortcut window"
-msgid "Find Previous"
-msgstr "Najít předchozí"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:26
-msgctxt "shortcut window"
-msgid "Replace"
-msgstr "Nahradit"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:27
-msgctxt "shortcut window"
-msgid "File comparison"
-msgstr "Porovnávání souborů"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:28
-msgctxt "shortcut window"
-msgid "Save current file"
-msgstr "Uložit aktuální soubor"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:29
-msgctxt "shortcut window"
-msgid "Save current file to new path"
-msgstr "Uložit aktuální soubor do nové cesty"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:30
-msgctxt "shortcut window"
-msgid "Save all files in comparison"
-msgstr "Uložit všechny soubory v porovnání"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:31
-msgctxt "shortcut window"
-msgid "Previous conflict"
-msgstr "Předchozí konflikt"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:32
-msgctxt "shortcut window"
-msgid "Next conflict"
-msgstr "Následující konflikt"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:33
-msgctxt "shortcut window"
-msgid "Push change to left"
-msgstr "Vnutit aktuální změnu doleva"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:34
-msgctxt "shortcut window"
-msgid "Push change to right"
-msgstr "Vnutit aktuální změnu doprava"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:35
-msgctxt "shortcut window"
-msgid "Pull change from left"
-msgstr "Vytáhnout změnu zleva"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:36
-msgctxt "shortcut window"
-msgid "Pull change from right"
-msgstr "Vytáhnout změnu zprava"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:37
-msgctxt "shortcut window"
-msgid "Copy change above left"
-msgstr "Kopírovat změnu nad levým blokem"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:38
-msgctxt "shortcut window"
-msgid "Copy change below left"
-msgstr "Kopírovat změnu pod levým blokem"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:39
-msgctxt "shortcut window"
-msgid "Copy change above right"
-msgstr "Kopírovat změnu nad pravým blokem"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:40
-msgctxt "shortcut window"
-msgid "Copy change below right"
-msgstr "Kopírovat změnu pod pravým blokem"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:41
-msgctxt "shortcut window"
-msgid "Delete change"
-msgstr "Smazat změnu"
-
-#: ../meld/resources/gtk/help-overlay.ui.h:42
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Předchozí panel s porovnáním"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:43
+#: ../meld/resources/gtk/help-overlay.ui.h:10
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Následující panel s porovnáním"
 
+#: ../meld/resources/gtk/help-overlay.ui.h:11
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "Změny"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:12
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Přejít na předchozí změnu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:13
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Přejít na následující změnu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:14
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr "Karty"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:15
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Přejít na předchozí kartu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:16
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Přejít na následující kartu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:17
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr "Přepnout na kartu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:18
+msgctxt "shortcut window"
+msgid "Move tab left"
+msgstr "Přesunout kartu doleva"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:19
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Přesunout kartu doprava"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:20
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "Úpravy"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:21
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr "Zpět"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:22
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr "Znovu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:23
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr "Vyjmout"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:24
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Kopírovat"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:25
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr "Vložit"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:26
+msgctxt "shortcut window"
+msgid "Find"
+msgstr "Hledat"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:27
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Najít následující"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:28
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Najít předchozí"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:29
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "Nahradit"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:30
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Porovnávání souborů"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:31
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Uložit aktuální soubor"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:32
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Uložit aktuální soubor do nové cesty"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:33
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Uložit všechny soubory v porovnání"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:34
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Předchozí konflikt"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:35
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Následující konflikt"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:36
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Vnutit aktuální změnu doleva"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:37
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Vnutit aktuální změnu doprava"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:38
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Vytáhnout změnu zleva"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:39
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Vytáhnout změnu zprava"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:40
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Kopírovat změnu nad levým blokem"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:41
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Kopírovat změnu pod levým blokem"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:42
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Kopírovat změnu nad pravým blokem"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:43
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Kopírovat změnu pod pravým blokem"
+
 #: ../meld/resources/gtk/help-overlay.ui.h:44
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Smazat změnu"
+
+#: ../meld/resources/gtk/help-overlay.ui.h:45
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Porovnávání složek"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:45
+#: ../meld/resources/gtk/help-overlay.ui.h:46
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Kopírovat doleva"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:46
+#: ../meld/resources/gtk/help-overlay.ui.h:47
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Kopírovat doprava"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:47
+#: ../meld/resources/gtk/help-overlay.ui.h:48
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Porovnávání správy verzí"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:48
+#: ../meld/resources/gtk/help-overlay.ui.h:49
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Zařadit změny do správy verzí"
 
-#: ../meld/resources/gtk/help-overlay.ui.h:49
+#: ../meld/resources/gtk/help-overlay.ui.h:50
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Zobrazit/skrýt výstup konzoly"
 
 #: ../meld/resources/gtk/menus.ui.h:1
+msgid "Refresh"
+msgstr "Aktualizovat"
+
+#: ../meld/resources/gtk/menus.ui.h:2
+msgid "Stop"
+msgstr "Zastavit"
+
+#: ../meld/resources/gtk/menus.ui.h:3
+msgid "Fullscreen"
+msgstr "Celá obrazovka"
+
+#: ../meld/resources/gtk/menus.ui.h:4
+msgid "Save As…"
+msgstr "Uložit jako…"
+
+#: ../meld/resources/gtk/menus.ui.h:5
+msgid "Save A_ll"
+msgstr "Uložit _vše"
+
+#: ../meld/resources/gtk/menus.ui.h:6
+msgid "Revert files…"
+msgstr "Vrátit změny souborů…"
+
+#: ../meld/resources/gtk/menus.ui.h:7
+msgid "Open Externally"
+msgstr "Otevřít externě"
+
+#: ../meld/resources/gtk/menus.ui.h:8
+msgid "_Find…"
+msgstr "_Hledat…"
+
+#: ../meld/resources/gtk/menus.ui.h:9
+msgid "_Replace…"
+msgstr "Nah_radit…"
+
+#: ../meld/resources/gtk/menus.ui.h:10
+msgid "View"
+msgstr "Zobrazit"
+
+#: ../meld/resources/gtk/menus.ui.h:11
+msgid "Overview Map"
+msgstr "Přehledovou mapu"
+
+#: ../meld/resources/gtk/menus.ui.h:12
+msgid "Version control console"
+msgstr "Konzola správy verzí"
+
+#: ../meld/resources/gtk/menus.ui.h:13
+msgid "Lock scrolling"
+msgstr "Uzamknout posouvání"
+
+#: ../meld/resources/gtk/menus.ui.h:14
+msgid "Comparison"
+msgstr "Porovnání"
+
+#: ../meld/resources/gtk/menus.ui.h:15
+msgid "Merge All from Left"
+msgstr "Sloučit vše zleva"
+
+#: ../meld/resources/gtk/menus.ui.h:16
+msgid "Merge All from Right"
+msgstr "Sloučit vše zprava"
+
+#: ../meld/resources/gtk/menus.ui.h:17
+msgid "Merge All"
+msgstr "Sloučit vše"
+
+#: ../meld/resources/gtk/menus.ui.h:18
+#: ../meld/resources/ui/filediff-menus.ui.h:10
+msgid "Add Synchronization Point"
+msgstr "Přidat synchronizační bod"
+
+#: ../meld/resources/gtk/menus.ui.h:19
+#: ../meld/resources/ui/filediff-menus.ui.h:11
+msgid "Clear Synchronization Points"
+msgstr "Vymazat synchronizační body"
+
+#: ../meld/resources/gtk/menus.ui.h:20
+msgid "Format as Patch…"
+msgstr "Formátovat jako záplatu…"
+
+#: ../meld/resources/gtk/menus.ui.h:21
 msgid "_Preferences"
 msgstr "_Předvolby"
 
-#: ../meld/resources/gtk/menus.ui.h:2
-msgid "_Help"
-msgstr "Nápo_věda"
-
-#: ../meld/resources/gtk/menus.ui.h:3
+#: ../meld/resources/gtk/menus.ui.h:22
 msgid "Keyboard Shortcuts"
 msgstr "Klávesové zkratky"
 
-#: ../meld/resources/gtk/menus.ui.h:4
-msgid "_About"
-msgstr "O _aplikaci"
+#: ../meld/resources/gtk/menus.ui.h:23
+msgid "_Help"
+msgstr "Nápo_věda"
 
-#: ../meld/resources/gtk/menus.ui.h:5
-msgid "_Quit"
-msgstr "U_končit"
+#: ../meld/resources/gtk/menus.ui.h:24
+msgid "_About Meld"
+msgstr "O _aplikaci Meld"
+
+#: ../meld/resources/gtk/menus.ui.h:25
+msgid "File status"
+msgstr "Stav souboru"
+
+#: ../meld/resources/gtk/menus.ui.h:26
+msgid "Same"
+msgstr "Stejné"
+
+#: ../meld/resources/gtk/menus.ui.h:27
+msgid "New"
+msgstr "Nové"
+
+#: ../meld/resources/gtk/menus.ui.h:28 ../meld/vc/_vc.py:77
+msgid "Modified"
+msgstr "Změněné"
+
+#: ../meld/resources/gtk/menus.ui.h:29
+msgid "Ignore filename case"
+msgstr "Ignorovat velikost písmen v názvu souboru"
+
+#: ../meld/resources/gtk/menus.ui.h:30
+msgid "Normal"
+msgstr "Normální"
+
+#: ../meld/resources/gtk/menus.ui.h:31 ../meld/vc/_vc.py:71
+msgid "Unversioned"
+msgstr "Neverzováno"
+
+#: ../meld/resources/gtk/menus.ui.h:32 ../meld/vc/_vc.py:70
+msgid "Ignored"
+msgstr "Ignorované"
+
+#: ../meld/resources/gtk/menus.ui.h:33
+msgid "Flatten folders"
+msgstr "Zploštit složky"
 
 #: ../meld/resources/ui/about-dialog.ui.h:1
 msgid "About Meld"
@@ -779,6 +917,44 @@ msgstr ""
 "Petr Kovář <pknbe@volny.cz>\n"
 "Marek Černocký <marek@manet.cz>"
 
+#: ../meld/resources/ui/appwindow.ui.h:2
+msgid "Start a new comparison"
+msgstr "Spustit nové porovnání"
+
+#: ../meld/resources/ui/appwindow.ui.h:3
+msgid "Open a recent comparison"
+msgstr "Otevřít nedávné porovnání"
+
+#: ../meld/resources/ui/appwindow.ui.h:4
+msgid "Go to the previous change"
+msgstr "Přejít na předchozí změnu"
+
+#: ../meld/resources/ui/appwindow.ui.h:5
+msgid "Go to the next change"
+msgstr "Přejít na následující změnu"
+
+#: ../meld/resources/ui/appwindow.ui.h:6
+msgid "Go to the previous conflict"
+msgstr "Přejít na předchozí konflikt"
+
+#: ../meld/resources/ui/appwindow.ui.h:7
+msgid "Go to the next conflict"
+msgstr "Přejít na následující konflikt"
+
+#: ../meld/resources/ui/appwindow.ui.h:8
+msgid "Version Filters"
+msgstr "Filtry verzí"
+
+#: ../meld/resources/ui/appwindow.ui.h:9
+#: ../meld/resources/ui/preferences.ui.h:40
+msgid "File Filters"
+msgstr "Filtry souborů"
+
+#: ../meld/resources/ui/appwindow.ui.h:10
+#: ../meld/resources/ui/preferences.ui.h:45
+msgid "Text Filters"
+msgstr "Filtry textu"
+
 #: ../meld/resources/ui/column-list.ui.h:1
 #: ../meld/resources/ui/filter-list.ui.h:1
 msgid "Active"
@@ -789,8 +965,8 @@ msgid "Column Name"
 msgstr "Název sloupce"
 
 #: ../meld/resources/ui/column-list.ui.h:3
-#: ../meld/resources/ui/filter-list.ui.h:7 ../meld/resources/ui/vcview.ui.h:11
-#: ../meld/vcview.py:694
+#: ../meld/resources/ui/filter-list.ui.h:7
+#: ../meld/resources/ui/vcview-menus.ui.h:5 ../meld/vcview.py:742
 msgid "_Remove"
 msgstr "_Odstranit"
 
@@ -834,280 +1010,103 @@ msgstr "Předchozí záznamy:"
 msgid "Co_mmit"
 msgstr "Co_mmit"
 
-#: ../meld/resources/ui/dirdiff.ui.h:1 ../meld/resources/ui/vcview.ui.h:1
-msgid "_Compare"
-msgstr "_Porovnat"
-
-#: ../meld/resources/ui/dirdiff.ui.h:2 ../meld/resources/ui/vcview.ui.h:2
-msgid "Compare selected files"
-msgstr "Porovnat vybrané soubory"
-
-#: ../meld/resources/ui/dirdiff.ui.h:3
-msgid "Collapse Recursively"
-msgstr "Sbalit včetně potomků"
-
-#: ../meld/resources/ui/dirdiff.ui.h:4
-msgid "Collapse selected folder and all subfolders"
-msgstr "Sbalit vybranou složku a všechny její podsložky"
-
-#: ../meld/resources/ui/dirdiff.ui.h:5
-msgid "Expand Recursively"
-msgstr "Rozbalit včetně potomků"
-
-#: ../meld/resources/ui/dirdiff.ui.h:6
-msgid "Expand selected folder and all subfolders"
-msgstr "Rozbalit vybranou složku a všechny její podsložky"
-
-#: ../meld/resources/ui/dirdiff.ui.h:7
-msgid "Copy to _Left"
-msgstr "Kopírovat do_leva"
-
-#: ../meld/resources/ui/dirdiff.ui.h:8
+#: ../meld/resources/ui/dirdiff-actions.ui.h:1
 msgid "Copy to left"
 msgstr "Kopírovat doleva"
 
-#: ../meld/resources/ui/dirdiff.ui.h:9
-msgid "Copy to _Right"
-msgstr "Kopírovat dop_rava"
-
-#: ../meld/resources/ui/dirdiff.ui.h:10
+#: ../meld/resources/ui/dirdiff-actions.ui.h:2
 msgid "Copy to right"
 msgstr "Kopírovat doprava"
 
-#: ../meld/resources/ui/dirdiff.ui.h:11
+#: ../meld/resources/ui/dirdiff-actions.ui.h:3
 msgid "Delete selected"
 msgstr "Odstranit vybrané"
 
-#: ../meld/resources/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:958
-#: ../meld/filediff.py:1586
-msgid "Hide"
-msgstr "Skrýt"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:1
+msgid "_Compare selected files"
+msgstr "_Porovnat vybrané soubory"
 
-#: ../meld/resources/ui/dirdiff.ui.h:13
-msgid "Hide selected"
-msgstr "Skrýt vybrané"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:2
+msgid "Copy to _left"
+msgstr "Kopírovat do_leva"
 
-#: ../meld/resources/ui/dirdiff.ui.h:14
-msgid "Ignore Filename Case"
-msgstr "Ignorovat velikost písmen v názvu souboru"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:3
+msgid "Copy to _right"
+msgstr "Kopírovat dop_rava"
 
-#: ../meld/resources/ui/dirdiff.ui.h:15
-msgid ""
-"Consider differently-cased filenames that are otherwise-identical to be the "
-"same"
-msgstr ""
-"Považovat názvy souborů, které se odlišují velikostí písmen, ale jinak jsou "
-"stejné, za shodné"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:4
+msgid "_Delete selected"
+msgstr "O_dstranit vybrané"
 
-#: ../meld/resources/ui/dirdiff.ui.h:16
-msgid "Same"
-msgstr "Stejné"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:5
+msgid "Collapse Recursively"
+msgstr "Sbalit včetně potomků"
 
-#: ../meld/resources/ui/dirdiff.ui.h:17
-msgid "Show identical"
-msgstr "Zobrazovat stejné"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:6
+msgid "Expand Recursively"
+msgstr "Rozbalit včetně potomků"
 
-#: ../meld/resources/ui/dirdiff.ui.h:18
-msgid "New"
-msgstr "Nové"
-
-#: ../meld/resources/ui/dirdiff.ui.h:19
-msgid "Show new"
-msgstr "Zobrazovat nové"
-
-#: ../meld/resources/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:76
-msgid "Modified"
-msgstr "Změněné"
-
-#: ../meld/resources/ui/dirdiff.ui.h:21
-msgid "Show modified"
-msgstr "Zobrazovat změněné"
-
-#: ../meld/resources/ui/dirdiff.ui.h:22
-msgid "Filters"
-msgstr "Filtry"
-
-#: ../meld/resources/ui/dirdiff.ui.h:23
-msgid "Set active filters"
-msgstr "Nastavte aktivní filtry"
+#: ../meld/resources/ui/dirdiff-menus.ui.h:7
+msgid "_Open Externally"
+msgstr "_Otevřít externě"
 
 #: ../meld/resources/ui/encoding-selector.ui.h:1
 msgid "Search text encoding…"
 msgstr "hledat kódování textu…"
 
-#: ../meld/resources/ui/filediff.ui.h:1
-msgid "Format as Patch…"
-msgstr "Formátovat jako záplatu…"
-
-#: ../meld/resources/ui/filediff.ui.h:2
-msgid "Create a patch using differences between files"
-msgstr "Vytvořit záplatu použitím rozdílů mezi soubory"
-
-#: ../meld/resources/ui/filediff.ui.h:3
-msgid "Save A_ll"
-msgstr "Uložit _vše"
-
-#: ../meld/resources/ui/filediff.ui.h:4
-msgid "Save all files in the current comparison"
-msgstr "Uložit všechny soubory v aktuálním porovnávání"
-
-#: ../meld/resources/ui/filediff.ui.h:5
-msgid "Revert files to their saved versions"
-msgstr "Vrátit soubory k jejich uloženým verzím"
-
-#: ../meld/resources/ui/filediff.ui.h:6
-msgid "Add Synchronization Point"
-msgstr "Přidat synchronizační bod"
-
-#: ../meld/resources/ui/filediff.ui.h:7
-msgid "Add a synchronization point for changes between files"
-msgstr "Přidat bod pro synchronizaci změn mezi soubory"
-
-#: ../meld/resources/ui/filediff.ui.h:8
-msgid "Clear Synchronization Points"
-msgstr "Vymazat synchronizační body"
-
-#: ../meld/resources/ui/filediff.ui.h:9
-msgid "Clear sychronization points for changes between files"
-msgstr "Smazat bod pro synchronizaci změn mezi soubory"
-
-#: ../meld/resources/ui/filediff.ui.h:10
-msgid "Previous Conflict"
-msgstr "Předchozí konflikt"
-
-#: ../meld/resources/ui/filediff.ui.h:11
-msgid "Go to the previous conflict"
-msgstr "Přejít na předchozí konflikt"
-
-#: ../meld/resources/ui/filediff.ui.h:12
-msgid "Next Conflict"
-msgstr "Následující konflikt"
-
-#: ../meld/resources/ui/filediff.ui.h:13
-msgid "Go to the next conflict"
-msgstr "Přejít na následující konflikt"
-
-#: ../meld/resources/ui/filediff.ui.h:14
-msgid "Push to Left"
-msgstr "Vnutit doleva"
-
-#: ../meld/resources/ui/filediff.ui.h:15
+#: ../meld/resources/ui/filediff-actions.ui.h:1
 msgid "Push current change to the left"
 msgstr "Vnutit aktuální změnu doleva"
 
-#: ../meld/resources/ui/filediff.ui.h:16
-msgid "Push to Right"
-msgstr "Vnutit doprava"
-
-#: ../meld/resources/ui/filediff.ui.h:17
+#: ../meld/resources/ui/filediff-actions.ui.h:2
 msgid "Push current change to the right"
 msgstr "Vnutit aktuální změnu doprava"
 
-#: ../meld/resources/ui/filediff.ui.h:18
-msgid "Pull from Left"
-msgstr "Vytáhnout zleva"
+#: ../meld/resources/ui/filediff-actions.ui.h:3
+msgid "Copy chunks"
+msgstr "Kopírovat úseky"
 
-#: ../meld/resources/ui/filediff.ui.h:19
-msgid "Pull change from the left"
-msgstr "Vytáhnout změnu zleva"
-
-#: ../meld/resources/ui/filediff.ui.h:20
-msgid "Pull from Right"
-msgstr "Vytáhnout zprava"
-
-#: ../meld/resources/ui/filediff.ui.h:21
-msgid "Pull change from the right"
-msgstr "Vytáhnout změnu zprava"
-
-#: ../meld/resources/ui/filediff.ui.h:22
-msgid "Copy Above Left"
-msgstr "Kopírovat z levé vrchní části"
-
-#: ../meld/resources/ui/filediff.ui.h:23
-msgid "Copy change above the left chunk"
-msgstr "Kopírovat změnu nad levým blokem"
-
-#: ../meld/resources/ui/filediff.ui.h:24
-msgid "Copy Below Left"
-msgstr "Kopírovat z levé spodní části"
-
-#: ../meld/resources/ui/filediff.ui.h:25
-msgid "Copy change below the left chunk"
-msgstr "Kopírovat změnu pod levým blokem"
-
-#: ../meld/resources/ui/filediff.ui.h:26
-msgid "Copy Above Right"
-msgstr "Kopírovat z pravé vrchní části"
-
-#: ../meld/resources/ui/filediff.ui.h:27
-msgid "Copy change above the right chunk"
-msgstr "Kopírovat změnu nad pravým blokem"
-
-#: ../meld/resources/ui/filediff.ui.h:28
-msgid "Copy Below Right"
-msgstr "Kopírovat z pravé spodní části"
-
-#: ../meld/resources/ui/filediff.ui.h:29
-msgid "Copy change below the right chunk"
-msgstr "Kopírovat změnu pod pravým blokem"
-
-#: ../meld/resources/ui/filediff.ui.h:30
-msgid "Delete"
-msgstr "Smazat"
-
-#: ../meld/resources/ui/filediff.ui.h:31
+#: ../meld/resources/ui/filediff-actions.ui.h:4
 msgid "Delete change"
 msgstr "Smazat změnu"
 
-#: ../meld/resources/ui/filediff.ui.h:32
-msgid "Merge All from Left"
-msgstr "Sloučit vše zleva"
+#: ../meld/resources/ui/filediff-menus.ui.h:1
+msgid "Copy change above the left chunk"
+msgstr "Kopírovat změnu nad levým blokem"
 
-#: ../meld/resources/ui/filediff.ui.h:33
-msgid "Merge all non-conflicting changes from the left"
-msgstr "Sloučit veškeré změny bez konfliktů zleva"
+#: ../meld/resources/ui/filediff-menus.ui.h:2
+msgid "Copy change below the left chunk"
+msgstr "Kopírovat změnu pod levým blokem"
 
-#: ../meld/resources/ui/filediff.ui.h:34
-msgid "Merge All from Right"
-msgstr "Sloučit vše zprava"
+#: ../meld/resources/ui/filediff-menus.ui.h:3
+msgid "Copy change above the right chunk"
+msgstr "Kopírovat změnu nad pravým blokem"
 
-#: ../meld/resources/ui/filediff.ui.h:35
-msgid "Merge all non-conflicting changes from the right"
-msgstr "Sloučit veškeré změny bez konfliktů zprava"
+#: ../meld/resources/ui/filediff-menus.ui.h:4
+msgid "Copy change below the right chunk"
+msgstr "Kopírovat změnu pod pravým blokem"
 
-#: ../meld/resources/ui/filediff.ui.h:36
-msgid "Merge All"
-msgstr "Sloučit vše"
+#: ../meld/resources/ui/filediff-menus.ui.h:5
+msgid "_Undo"
+msgstr "_Zpět"
 
-#: ../meld/resources/ui/filediff.ui.h:37
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr "Sloučit veškeré změny bez konfliktů z levého a pravého panelu"
+#: ../meld/resources/ui/filediff-menus.ui.h:6
+msgid "_Redo"
+msgstr "Z_novu"
 
-#: ../meld/resources/ui/filediff.ui.h:38
-msgid "Previous Pane"
-msgstr "Předchozí panel"
+#: ../meld/resources/ui/filediff-menus.ui.h:7
+msgid "Cu_t"
+msgstr "Vyjmou_t"
 
-#: ../meld/resources/ui/filediff.ui.h:39
-msgid "Move keyboard focus to the previous document in this comparison"
-msgstr "Přepnout zaměření klávesnice na předchozí dokument v tomto porovnání"
+#: ../meld/resources/ui/filediff-menus.ui.h:8
+msgid "_Copy"
+msgstr "_Kopírovat"
 
-#: ../meld/resources/ui/filediff.ui.h:40
-msgid "Next Pane"
-msgstr "Následující panel"
+#: ../meld/resources/ui/filediff-menus.ui.h:9
+msgid "_Paste"
+msgstr "V_ložit"
 
-#: ../meld/resources/ui/filediff.ui.h:41
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr "Přepnout zaměření klávesnice na následující dokument v tomto porovnání"
-
-#: ../meld/resources/ui/filediff.ui.h:42
-msgid "Lock Scrolling"
-msgstr "Uzamknout posouvání"
-
-#: ../meld/resources/ui/filediff.ui.h:43
-msgid "Lock scrolling of all panes"
-msgstr "Uzamknout posouvání všech panelů"
-
-#: ../meld/resources/ui/filediff.ui.h:44
+#: ../meld/resources/ui/filediff.ui.h:1
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -1116,21 +1115,21 @@ msgstr ""
 "odemknout a změny v něm provést, ale tyto změny budou muset být uloženy v "
 "novém souboru."
 
-#: ../meld/resources/ui/filediff.ui.h:45
+#: ../meld/resources/ui/filediff.ui.h:2
 msgid "File 3"
 msgstr "Soubor 3"
 
-#: ../meld/resources/ui/filediff.ui.h:46
+#: ../meld/resources/ui/filediff.ui.h:3
 msgid "File 2"
 msgstr "Soubor 2"
 
-#: ../meld/resources/ui/filediff.ui.h:47
+#: ../meld/resources/ui/filediff.ui.h:4
 msgid "File 1"
 msgstr "Soubor 1"
 
 #. Create icon and filename CellRenderer
-#: ../meld/resources/ui/filter-list.ui.h:2 ../meld/resources/ui/vcview.ui.h:30
-#: ../meld/dirdiff.py:454
+#: ../meld/resources/ui/filter-list.ui.h:2 ../meld/resources/ui/vcview.ui.h:17
+#: ../meld/dirdiff.py:511
 msgid "Name"
 msgstr "Název"
 
@@ -1142,7 +1141,8 @@ msgstr "Vzorek"
 msgid "Add new filter"
 msgstr "Přidat nový filtr"
 
-#: ../meld/resources/ui/filter-list.ui.h:5 ../meld/resources/ui/vcview.ui.h:9
+#: ../meld/resources/ui/filter-list.ui.h:5
+#: ../meld/resources/ui/vcview-menus.ui.h:4
 msgid "_Add"
 msgstr "_Přidat"
 
@@ -1150,83 +1150,71 @@ msgstr "_Přidat"
 msgid "Remove selected filter"
 msgstr "Odstranit vybraný filtr"
 
-#: ../meld/resources/ui/findbar.ui.h:1 ../meld/dirdiff.py:1040
-#: ../meld/iohelpers.py:107
-msgid "_Replace"
-msgstr "Nahradi_t"
-
-#: ../meld/resources/ui/findbar.ui.h:2
-msgid "Replace _All"
-msgstr "Nahradit _vše"
-
-#: ../meld/resources/ui/findbar.ui.h:3
-msgid "_Previous"
-msgstr "_Předchozí"
-
-#: ../meld/resources/ui/findbar.ui.h:4
-msgid "_Next"
-msgstr "_Následující"
-
-#: ../meld/resources/ui/findbar.ui.h:5
-msgid "Find:"
-msgstr "Najít:"
-
-#: ../meld/resources/ui/findbar.ui.h:6
-msgid "Replace _with:"
-msgstr "Nahra_dit za:"
-
-#: ../meld/resources/ui/findbar.ui.h:7
+#: ../meld/resources/ui/findbar.ui.h:1
 msgid "_Match case"
 msgstr "_Rozlišovat velikost písmen"
 
-#: ../meld/resources/ui/findbar.ui.h:8
+#: ../meld/resources/ui/findbar.ui.h:2
 msgid "Who_le word"
 msgstr "Ce_lé slovo"
 
-#: ../meld/resources/ui/findbar.ui.h:9
+#: ../meld/resources/ui/findbar.ui.h:3
 msgid "Regular e_xpression"
 msgstr "Re_gulární výraz"
 
-#: ../meld/resources/ui/findbar.ui.h:10
+#: ../meld/resources/ui/findbar.ui.h:4
 msgid "Wrapped"
 msgstr "Prošlo přes okraj"
+
+#: ../meld/resources/ui/findbar.ui.h:5
+msgid "Replace _All"
+msgstr "Nahradit _vše"
+
+#: ../meld/resources/ui/findbar.ui.h:6 ../meld/dirdiff.py:1044
+#: ../meld/iohelpers.py:117
+msgid "_Replace"
+msgstr "Nahradi_t"
+
+#: ../meld/resources/ui/findbar.ui.h:7
+msgid "Switch between Find and Find-and-Replace"
+msgstr "Přepnout mezi „Hledat“ a „Hledat a nahradit“"
 
 #: ../meld/resources/ui/language-selector.ui.h:1
 msgid "Search highlight mode…"
 msgstr "hledat režim zvýrazňování…"
 
-#: ../meld/resources/ui/new-diff-tab.ui.h:1 ../meld/meldwindow.py:532
+#: ../meld/resources/ui/new-diff-tab.ui.h:1 ../meld/meldwindow.py:344
 #: ../meld/newdifftab.py:53
 msgid "New comparison"
 msgstr "Nové porovnání"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:2
-msgid "File comparison"
-msgstr "Porovnávání souborů"
+msgid "File"
+msgstr "Soubor"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:3
-msgid "Directory comparison"
-msgstr "Porovnávání složek"
+msgid "Folder"
+msgstr "Složka"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:4
-msgid "Version control view"
-msgstr "Zobrazení správy verzí"
+msgid "Version control"
+msgstr "Správa verzí"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:5
 msgid "_3-way comparison"
 msgstr "_Trojcestné porovnání"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:6
-msgid "Select Third File"
-msgstr "Výběr třetího souboru"
+msgid "Select First File"
+msgstr "Výběr prvního souboru"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:7
 msgid "Select Second File"
 msgstr "Výběr druhého souboru"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:8
-msgid "Select First File"
-msgstr "Výběr prvního souboru"
+msgid "Select Third File"
+msgstr "Výběr třetího souboru"
 
 #: ../meld/resources/ui/new-diff-tab.ui.h:9
 msgid "Select First Folder"
@@ -1264,7 +1252,7 @@ msgstr "Formátovat jako záplatu"
 msgid "Copy to Clipboard"
 msgstr "Kopírovat do schránky"
 
-#: ../meld/resources/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:163
+#: ../meld/resources/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:165
 msgid "Save Patch"
 msgstr "Uložení záplaty"
 
@@ -1300,7 +1288,9 @@ msgstr "Po_užívat systémové písmo s pevnou šířkou"
 msgid "_Editor font:"
 msgstr "Písmo _editoru:"
 
-#: ../meld/resources/ui/preferences.ui.h:5
+#. TRANSLATORS: This is the status bar label for a group of settings,
+#. such as text wrapping, show line numbers, whitespace, etc.
+#: ../meld/resources/ui/preferences.ui.h:5 ../meld/ui/statusbar.py:292
 msgid "Display"
 msgstr "Zobrazení"
 
@@ -1341,84 +1331,96 @@ msgid "Syntax highlighting color scheme:"
 msgstr "Schéma barev pro zvýraznění syntaxe:"
 
 #: ../meld/resources/ui/preferences.ui.h:15
+msgid "Code Overview"
+msgstr "Přehled kódu"
+
+#: ../meld/resources/ui/preferences.ui.h:16
+msgid "Show overview map"
+msgstr "Zobrazovat přehledovou mapu"
+
+#: ../meld/resources/ui/preferences.ui.h:17
+msgid "Overview map style:"
+msgstr "Styl přehledové mapy:"
+
+#: ../meld/resources/ui/preferences.ui.h:18
 msgid "External Editor"
 msgstr "Externí editor"
 
-#: ../meld/resources/ui/preferences.ui.h:16
+#: ../meld/resources/ui/preferences.ui.h:19
 msgid "Use _default system editor"
 msgstr "Používat výchozí e_ditor systému"
 
-#: ../meld/resources/ui/preferences.ui.h:17
+#: ../meld/resources/ui/preferences.ui.h:20
 msgid "Edito_r command:"
 msgstr "Příkaz edito_ru:"
 
-#: ../meld/resources/ui/preferences.ui.h:18
+#: ../meld/resources/ui/preferences.ui.h:21
 msgid "Editor"
 msgstr "Editor"
 
-#: ../meld/resources/ui/preferences.ui.h:19
+#: ../meld/resources/ui/preferences.ui.h:22
 msgid "Shallow Comparison"
 msgstr "Povrchní porovnání"
 
-#: ../meld/resources/ui/preferences.ui.h:20
+#: ../meld/resources/ui/preferences.ui.h:23
 msgid "C_ompare files based only on size and timestamp"
 msgstr "P_orovnávat soubory jen na základě velikosti a časového razítka"
 
-#: ../meld/resources/ui/preferences.ui.h:21
+#: ../meld/resources/ui/preferences.ui.h:24
 msgid "_Timestamp resolution:"
 msgstr "Přesnos_t časového razítka:"
 
-#: ../meld/resources/ui/preferences.ui.h:23
+#: ../meld/resources/ui/preferences.ui.h:26
 msgid "Note: enabling text filters may make comparing large files much slower"
 msgstr ""
 "Poznámka: zapnutí textových filtrů může výrazně zpomalit porovnávání velkých "
 "souborů"
 
-#: ../meld/resources/ui/preferences.ui.h:24
+#: ../meld/resources/ui/preferences.ui.h:27
 msgid "Symbolic Links"
 msgstr "Symbolické odkazy"
 
-#: ../meld/resources/ui/preferences.ui.h:26
+#: ../meld/resources/ui/preferences.ui.h:29
 msgid "Visible Columns"
 msgstr "Viditelné sloupce"
 
-#: ../meld/resources/ui/preferences.ui.h:27
+#: ../meld/resources/ui/preferences.ui.h:30
 msgid "Folder Comparisons"
 msgstr "Porovnávání složek"
 
-#: ../meld/resources/ui/preferences.ui.h:28
+#: ../meld/resources/ui/preferences.ui.h:31
 msgid "Version Comparisons"
 msgstr "Porovnávání verzí"
 
-#: ../meld/resources/ui/preferences.ui.h:29
+#: ../meld/resources/ui/preferences.ui.h:32
 msgid "_Order when comparing file revisions:"
 msgstr "P_ořadí při porovnávání revizí souborů:"
 
-#: ../meld/resources/ui/preferences.ui.h:30
+#: ../meld/resources/ui/preferences.ui.h:33
 msgid "Order when _merging files:"
 msgstr "Pořadí při slučová_ní souborů:"
 
-#: ../meld/resources/ui/preferences.ui.h:31
+#: ../meld/resources/ui/preferences.ui.h:34
 msgid "Commit Messages"
 msgstr "Zprávy o zařazování"
 
-#: ../meld/resources/ui/preferences.ui.h:32
+#: ../meld/resources/ui/preferences.ui.h:35
 msgid "Show _right margin at:"
 msgstr "Zobrazit p_ravý okraj na:"
 
-#: ../meld/resources/ui/preferences.ui.h:33
+#: ../meld/resources/ui/preferences.ui.h:36
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Při zařazování automaticky za_lamovat řádky na pravém okraji"
 
-#: ../meld/resources/ui/preferences.ui.h:34
+#: ../meld/resources/ui/preferences.ui.h:37
 msgid "Version Control"
 msgstr "Správa verzí"
 
-#: ../meld/resources/ui/preferences.ui.h:35
+#: ../meld/resources/ui/preferences.ui.h:38
 msgid "Filename filters"
 msgstr "Filtry názvů souborů"
 
-#: ../meld/resources/ui/preferences.ui.h:36
+#: ../meld/resources/ui/preferences.ui.h:39
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1428,24 +1430,20 @@ msgstr ""
 "Každý vzorek je seznamem zástupných znaků ve stylu shellu oddělovaný "
 "mezerami."
 
-#: ../meld/resources/ui/preferences.ui.h:37 ../meld/meldwindow.py:114
-msgid "File Filters"
-msgstr "Filtry souborů"
-
-#: ../meld/resources/ui/preferences.ui.h:38
+#: ../meld/resources/ui/preferences.ui.h:41
 msgid "Change trimming"
 msgstr "Vynechávání změn"
 
-#: ../meld/resources/ui/preferences.ui.h:39
+#: ../meld/resources/ui/preferences.ui.h:42
 msgid "Trim blank line differences from the start and end of changes"
 msgstr ""
 "Vynechat od začátku do konce změn rozdíly spočívající v prázdných řádcích"
 
-#: ../meld/resources/ui/preferences.ui.h:40
+#: ../meld/resources/ui/preferences.ui.h:43
 msgid "Text filters"
 msgstr "Filtry textu"
 
-#: ../meld/resources/ui/preferences.ui.h:41
+#: ../meld/resources/ui/preferences.ui.h:44
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1458,39 +1456,47 @@ msgstr ""
 "řetězcem před provedením porovnání. Pokud výraz obsahuje skupiny, jsou "
 "nahrazeny jen skupiny. Více podrobností viz příručka uživatele."
 
-#: ../meld/resources/ui/preferences.ui.h:42
-msgid "Text Filters"
-msgstr "Filtry textu"
-
-#: ../meld/resources/ui/preferences.ui.h:43
+#: ../meld/resources/ui/preferences.ui.h:46
 msgid "Left is remote, right is local"
 msgstr "Levý je vzdálený, pravý je místní"
 
-#: ../meld/resources/ui/preferences.ui.h:44
+#: ../meld/resources/ui/preferences.ui.h:47
 msgid "Left is local, right is remote"
 msgstr "Levý je místní, pravý je vzdálený"
 
-#: ../meld/resources/ui/preferences.ui.h:45
+#: ../meld/resources/ui/preferences.ui.h:48
+msgid "Simple change map"
+msgstr "Jednoduchá mapa změn"
+
+#: ../meld/resources/ui/preferences.ui.h:49
+msgid "Compact source map"
+msgstr "Kompaktní mapa změn"
+
+#: ../meld/resources/ui/preferences.ui.h:50
+msgid "Full source map"
+msgstr "Úplná přehledová mapa"
+
+#: ../meld/resources/ui/preferences.ui.h:51
 msgid "Remote, merge, local"
 msgstr "Vzdálený, sloučený, místní"
 
-#: ../meld/resources/ui/preferences.ui.h:46
+#: ../meld/resources/ui/preferences.ui.h:52
 msgid "Local, merge, remote"
 msgstr "Místní, sloučený, vzdálený"
 
-#: ../meld/resources/ui/preferences.ui.h:47
+#: ../meld/resources/ui/preferences.ui.h:53
 msgid "1ns (ext4)"
 msgstr "1 ns (ext4)"
 
-#: ../meld/resources/ui/preferences.ui.h:48
+#: ../meld/resources/ui/preferences.ui.h:54
 msgid "100ns (NTFS)"
 msgstr "100 ns (NTFS)"
 
-#: ../meld/resources/ui/preferences.ui.h:49
+#: ../meld/resources/ui/preferences.ui.h:55
 msgid "1s (ext2/ext3)"
 msgstr "1 s (ext2/ext3)"
 
-#: ../meld/resources/ui/preferences.ui.h:50
+#: ../meld/resources/ui/preferences.ui.h:56
 msgid "2s (VFAT)"
 msgstr "2 s (VFAT)"
 
@@ -1506,6 +1512,10 @@ msgstr ""
 #: ../meld/resources/ui/push-dialog.ui.h:3
 msgid "_Push commits"
 msgstr "_Odeslat zařazené"
+
+#: ../meld/resources/ui/recent-selector.ui.h:1
+msgid "Search recent comparisons…"
+msgstr "hledat nedávná porovnání…"
 
 #: ../meld/resources/ui/revert-dialog.ui.h:1
 msgid "Discard unsaved changes to documents?"
@@ -1531,8 +1541,8 @@ msgstr "Pokud se změny neuloží, budou trvale ztraceny."
 msgid "Close _without Saving"
 msgstr "Zavřít _bez uložení"
 
-#: ../meld/resources/ui/save-confirm-dialog.ui.h:4 ../meld/dirdiff.py:1039
-#: ../meld/iohelpers.py:52 ../meld/iohelpers.py:106
+#: ../meld/resources/ui/save-confirm-dialog.ui.h:4 ../meld/dirdiff.py:1043
+#: ../meld/iohelpers.py:58 ../meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "_Zrušit"
 
@@ -1540,173 +1550,168 @@ msgstr "_Zrušit"
 msgid "_Save"
 msgstr "_Uložit"
 
-#: ../meld/resources/ui/vcview.ui.h:3
+#: ../meld/resources/ui/statusbar-menu.ui.h:2
+msgid "Show whitespace"
+msgstr "Zobrazovat mezery"
+
+#: ../meld/resources/ui/statusbar-menu.ui.h:4
+msgid "Text wrapping"
+msgstr "Zalamování textu"
+
+#: ../meld/resources/ui/vcview-menus.ui.h:1
+msgid "_Compare"
+msgstr "_Porovnat"
+
+#: ../meld/resources/ui/vcview-menus.ui.h:2
 msgid "Co_mmit…"
 msgstr "Zařa_dit…"
 
-#: ../meld/resources/ui/vcview.ui.h:4
-msgid "Commit changes to version control"
-msgstr "Zařadit změny do správy verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:5
+#: ../meld/resources/ui/vcview-menus.ui.h:3
 msgid "_Update"
 msgstr "Akt_ualizovat"
 
-#: ../meld/resources/ui/vcview.ui.h:6
-msgid "Update working copy from version control"
-msgstr "Aktualizovat pracovní kopii ze správy verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:7
-msgid "_Push"
-msgstr "_Odeslat"
-
-#: ../meld/resources/ui/vcview.ui.h:8
-msgid "Push local changes to remote"
-msgstr "Odeslat místní změny na server"
-
-#: ../meld/resources/ui/vcview.ui.h:10
-msgid "Add to version control"
-msgstr "Přidat do správy verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:12
-msgid "Remove from version control"
-msgstr "Odebrat ze správy verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:13
-msgid "Mar_k as Resolved"
-msgstr "Označi_t jako vyřešené"
-
-#: ../meld/resources/ui/vcview.ui.h:14
-msgid "Mark as resolved in version control"
-msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:15
+#: ../meld/resources/ui/vcview-menus.ui.h:6
 msgid "Re_vert"
 msgstr "_Vrátit zpět"
 
-#: ../meld/resources/ui/vcview.ui.h:16
+#: ../meld/resources/ui/vcview-menus.ui.h:7 ../meld/resources/ui/vcview.ui.h:15
+msgid "Delete"
+msgstr "Smazat"
+
+#: ../meld/resources/ui/vcview-menus.ui.h:8
+msgid "Mar_k as Resolved"
+msgstr "Označi_t jako vyřešené"
+
+#: ../meld/resources/ui/vcview.ui.h:1
+msgid "Commit…"
+msgstr "Zařadit…"
+
+#: ../meld/resources/ui/vcview.ui.h:2
+msgid "Commit changes to version control"
+msgstr "Zařadit změny do správy verzí"
+
+#: ../meld/resources/ui/vcview.ui.h:3
+msgid "Update"
+msgstr "Aktualizovat"
+
+#: ../meld/resources/ui/vcview.ui.h:4
+msgid "Update working copy from version control"
+msgstr "Aktualizovat pracovní kopii ze správy verzí"
+
+#: ../meld/resources/ui/vcview.ui.h:5
+msgid "Push"
+msgstr "Odeslat"
+
+#: ../meld/resources/ui/vcview.ui.h:6
+msgid "Push local changes to remote"
+msgstr "Odeslat místní změny na server"
+
+#: ../meld/resources/ui/vcview.ui.h:7
+msgid "Add"
+msgstr "Přidat"
+
+#: ../meld/resources/ui/vcview.ui.h:8
+msgid "Add to version control"
+msgstr "Přidat do správy verzí"
+
+#: ../meld/resources/ui/vcview.ui.h:9
+msgid "Remove"
+msgstr "Odebrat"
+
+#: ../meld/resources/ui/vcview.ui.h:10
+msgid "Remove from version control"
+msgstr "Odebrat ze správy verzí"
+
+#: ../meld/resources/ui/vcview.ui.h:11
+msgid "Mark as Resolved"
+msgstr "Označit jako vyřešené"
+
+#: ../meld/resources/ui/vcview.ui.h:12
+msgid "Mark as resolved in version control"
+msgstr "Označit jako vyřešené ve vztahu ke správě verzí"
+
+#: ../meld/resources/ui/vcview.ui.h:13
+msgid "Revert"
+msgstr "Vrátit zpět"
+
+#: ../meld/resources/ui/vcview.ui.h:14
 msgid "Revert working copy to original state"
 msgstr "Vrátit pracovní kopii do původního stavu"
 
-#: ../meld/resources/ui/vcview.ui.h:17
+#: ../meld/resources/ui/vcview.ui.h:16
 msgid "Delete from working copy"
 msgstr "Smazat z pracovní kopie"
 
-#: ../meld/resources/ui/vcview.ui.h:18
-msgid "Console"
-msgstr "Konzola"
-
-#: ../meld/resources/ui/vcview.ui.h:19
-msgid "Show or hide the version control console output pane"
-msgstr "Zobrazit nebo skrýt panel s výstupem konzoly správy verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:20
-msgid "_Flatten"
-msgstr "Z_ploštit"
-
-#: ../meld/resources/ui/vcview.ui.h:21
-msgid "Flatten directories"
-msgstr "Zploštit složky"
-
-#: ../meld/resources/ui/vcview.ui.h:22
-msgid "_Modified"
-msgstr "_Změněné"
-
-#: ../meld/resources/ui/vcview.ui.h:23
-msgid "Show modified files"
-msgstr "Zobrazovat změněné soubory"
-
-#: ../meld/resources/ui/vcview.ui.h:24
-msgid "_Normal"
-msgstr "_Normální"
-
-#: ../meld/resources/ui/vcview.ui.h:25
-msgid "Show normal files"
-msgstr "Zobrazovat normální soubory"
-
-#: ../meld/resources/ui/vcview.ui.h:26
-msgid "Un_versioned"
-msgstr "Ne_verzované"
-
-#: ../meld/resources/ui/vcview.ui.h:27
-msgid "Show unversioned files"
-msgstr "Zobrazovat soubory bez verzí"
-
-#: ../meld/resources/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
-msgid "Ignored"
-msgstr "Ignorované"
-
-#: ../meld/resources/ui/vcview.ui.h:29
-msgid "Show ignored files"
-msgstr "Zobrazovat ignorované soubory"
-
-#: ../meld/resources/ui/vcview.ui.h:31 ../meld/vcview.py:366
+#: ../meld/resources/ui/vcview.ui.h:18 ../meld/vcview.py:417
 msgid "Location"
 msgstr "Umístění"
 
-#: ../meld/resources/ui/vcview.ui.h:32
+#: ../meld/resources/ui/vcview.ui.h:19
 msgid "Status"
 msgstr "Stav"
 
-#: ../meld/resources/ui/vcview.ui.h:33
+#: ../meld/resources/ui/vcview.ui.h:20
 msgid "Extra"
 msgstr "Doplnění"
 
-#: ../meld/resources/ui/vcview.ui.h:34
+#: ../meld/resources/ui/vcview.ui.h:21
 msgid "Console output"
 msgstr "Výstup konzoly"
 
-#: ../meld/const.py:12
+#: ../meld/actiongutter.py:250
+msgid "Copy _up"
+msgstr "Kopírovat nahor_u"
+
+#: ../meld/actiongutter.py:251
+msgid "Copy _down"
+msgstr "Kopírovat _dolů"
+
+#: ../meld/const.py:25
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: ../meld/const.py:13
+#: ../meld/const.py:26
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR+LF)"
 
-#: ../meld/const.py:14
+#: ../meld/const.py:27
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: ../meld/dirdiff.py:475 ../meld/preferences.py:138
+#: ../meld/dirdiff.py:532 ../meld/preferences.py:138
 msgid "Size"
 msgstr "Velikost"
 
 #. Create date-time CellRenderer
-#: ../meld/dirdiff.py:483 ../meld/preferences.py:139
+#: ../meld/dirdiff.py:540 ../meld/preferences.py:139
 msgid "Modification time"
 msgstr "Čas změny"
 
 #. Create permissions CellRenderer
-#: ../meld/dirdiff.py:491 ../meld/preferences.py:140
+#: ../meld/dirdiff.py:548 ../meld/preferences.py:140
 msgid "Permissions"
 msgstr "Oprávnění"
 
-#: ../meld/dirdiff.py:625
-#, python-format
-msgid "Hide %s"
-msgstr "Skrýt %s"
-
-#: ../meld/dirdiff.py:767 ../meld/dirdiff.py:790
+#: ../meld/dirdiff.py:771 ../meld/dirdiff.py:794
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Prochází se %s"
 
-#: ../meld/dirdiff.py:925
+#: ../meld/dirdiff.py:930
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Hotovo"
 
-#: ../meld/dirdiff.py:933
+#: ../meld/dirdiff.py:937
 msgid "Folders have no differences"
 msgstr "Mezi složkami není žádný rozdíl"
 
-#: ../meld/dirdiff.py:935
+#: ../meld/dirdiff.py:939
 msgid "Contents of scanned files in folders are identical."
 msgstr "Obsah kontrolovaných souborů ve složkách je stejný."
 
-#: ../meld/dirdiff.py:937
+#: ../meld/dirdiff.py:941
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1714,42 +1719,46 @@ msgstr ""
 "Kontrolované soubory ve složkách vypadají stejně, ale nebyl kontrolován "
 "jejich obsah."
 
-#: ../meld/dirdiff.py:940
+#: ../meld/dirdiff.py:944
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Jsou používány filtry souborů, takže ne všechny soubory byly kontrolovány."
 
-#: ../meld/dirdiff.py:942
+#: ../meld/dirdiff.py:946
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory."
 
-#: ../meld/dirdiff.py:960 ../meld/filediff.py:1588 ../meld/filediff.py:1618
-#: ../meld/filediff.py:1620 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+#: ../meld/dirdiff.py:962 ../meld/filediff.py:1757
+msgid "Hide"
+msgstr "Skrýt"
+
+#: ../meld/dirdiff.py:964 ../meld/filediff.py:1759 ../meld/filediff.py:1789
+#: ../meld/filediff.py:1791 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "_Skrýt"
 
-#: ../meld/dirdiff.py:969
+#: ../meld/dirdiff.py:973
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Při skenování této složky došlo k několika chybám"
 
-#: ../meld/dirdiff.py:970
+#: ../meld/dirdiff.py:974
 msgid "Files with invalid encodings found"
 msgstr "Nalezeny soubory s neplatným kódováním"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:972
+#: ../meld/dirdiff.py:976
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Některé soubory měly neplatné kódování. Názvy jsou přibližně následující:"
 
-#: ../meld/dirdiff.py:974
+#: ../meld/dirdiff.py:978
 msgid "Files hidden by case insensitive comparison"
 msgstr "Soubory skryty porovnáním nerozlišujícím velikost písmen"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:976
+#: ../meld/dirdiff.py:980
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1757,17 +1766,17 @@ msgstr ""
 "Provádí se porovnání nerozlišující velikost písmen na systému souborů "
 "rozlišujícím velikost písmen. Některé soubory v této složce jsou skryté:"
 
-#: ../meld/dirdiff.py:987
+#: ../meld/dirdiff.py:991
 #, python-format
 msgid "“%s” hidden by “%s”"
 msgstr "„%s“ skryto v „%s“"
 
-#: ../meld/dirdiff.py:1043
+#: ../meld/dirdiff.py:1047
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Nahradit složku „%s“?"
 
-#: ../meld/dirdiff.py:1045
+#: ../meld/dirdiff.py:1049
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1776,11 +1785,11 @@ msgstr ""
 "V „%s“ již existuje jiná složka se stejným názvem.\n"
 "Pokud stávající složku nahradíte, budou všechny soubory v ní ztraceny."
 
-#: ../meld/dirdiff.py:1058
+#: ../meld/dirdiff.py:1062
 msgid "Error copying file"
 msgstr "Chyba při kopírování souboru"
 
-#: ../meld/dirdiff.py:1059
+#: ../meld/dirdiff.py:1063
 #, python-format
 msgid ""
 "Couldn’t copy %s\n"
@@ -1793,19 +1802,19 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../meld/dirdiff.py:1084 ../meld/vcview.py:720
+#: ../meld/dirdiff.py:1088 ../meld/vcview.py:765
 msgid "Error deleting {}"
 msgstr "Chyba při mazání {}"
 
-#: ../meld/dirdiff.py:1593
+#: ../meld/dirdiff.py:1567
 msgid "No folder"
 msgstr "Žádná složka"
 
-#: ../meld/filediff.py:905
+#: ../meld/filediff.py:1067
 msgid "Comparison results will be inaccurate"
 msgstr "Výsledky porovnávání budou nepřesné"
 
-#: ../meld/filediff.py:907
+#: ../meld/filediff.py:1069
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1813,64 +1822,64 @@ msgstr ""
 "Filtr změnil počet řádků v souboru, což není podporováno. Porovnání nebude "
 "správné."
 
-#: ../meld/filediff.py:979
+#: ../meld/filediff.py:1141
 msgid "Mark conflict as resolved?"
 msgstr "Označit konflikt jako vyřešený?"
 
-#: ../meld/filediff.py:981
+#: ../meld/filediff.py:1143
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Pokud byl konflikt vyřešen úspěšně, můžete jej označit za vyřešený."
 
-#: ../meld/filediff.py:983
+#: ../meld/filediff.py:1145
 msgid "Cancel"
 msgstr "Zrušit"
 
-#: ../meld/filediff.py:984
+#: ../meld/filediff.py:1146
 msgid "Mark _Resolved"
 msgstr "Označi_t za vyřešené"
 
-#: ../meld/filediff.py:1303
+#: ../meld/filediff.py:1465
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Vyskytl se problém při otevírání souboru „%s“."
 
-#: ../meld/filediff.py:1311
+#: ../meld/filediff.py:1473
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Soubor %s je zřejmě binární."
 
-#: ../meld/filediff.py:1313
+#: ../meld/filediff.py:1475
 msgid "Do you want to open the file using the default application?"
 msgstr "Chcete soubor otevřít pomocí výchozí aplikace?"
 
-#: ../meld/filediff.py:1315
+#: ../meld/filediff.py:1477
 msgid "Open"
 msgstr "Otevřít"
 
-#: ../meld/filediff.py:1331
+#: ../meld/filediff.py:1493
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Počítají se rozdíly"
 
-#: ../meld/filediff.py:1392
+#: ../meld/filediff.py:1552
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Soubor „%s“ byl změněn na disku."
 
-#: ../meld/filediff.py:1393
+#: ../meld/filediff.py:1553
 msgid "Do you want to reload the file?"
 msgstr "Chcete soubor znovu načíst?"
 
-#: ../meld/filediff.py:1395
+#: ../meld/filediff.py:1555
 msgid "_Reload"
 msgstr "Zno_vu načíst"
 
-#: ../meld/filediff.py:1551
+#: ../meld/filediff.py:1722
 msgid "Files are identical"
 msgstr "Soubory jsou stejné"
 
-#: ../meld/filediff.py:1564
+#: ../meld/filediff.py:1735
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1878,11 +1887,11 @@ msgstr ""
 "Jsou používány textové filtry a může dojít k zamaskování rozdílů mezi "
 "soubory. Chcete porovnat nefiltrované soubory?"
 
-#: ../meld/filediff.py:1569
+#: ../meld/filediff.py:1740
 msgid "Files differ in line endings only"
 msgstr "Soubory se liší pouze zakončením řádků"
 
-#: ../meld/filediff.py:1571
+#: ../meld/filediff.py:1742
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1891,15 +1900,15 @@ msgstr ""
 "Soubory jsou shodné, vyjma rozdílného zakončení řádků:\n"
 "%s"
 
-#: ../meld/filediff.py:1591
+#: ../meld/filediff.py:1762
 msgid "Show without filters"
 msgstr "Zobrazit bez filtrů"
 
-#: ../meld/filediff.py:1613
+#: ../meld/filediff.py:1784
 msgid "Change highlighting incomplete"
 msgstr "Změnit zvýraznění neúplných"
 
-#: ../meld/filediff.py:1614
+#: ../meld/filediff.py:1785
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1908,19 +1917,19 @@ msgstr ""
 "přimět k používání větší délky, aby se zvýraznily i rozsáhlé změny, ale může "
 "to pak být pomalé."
 
-#: ../meld/filediff.py:1622
+#: ../meld/filediff.py:1793
 msgid "Keep highlighting"
 msgstr "Zachovat zvýrazňování"
 
-#: ../meld/filediff.py:1624
+#: ../meld/filediff.py:1795
 msgid "_Keep highlighting"
 msgstr "Z_achovat zvýrazňování"
 
-#: ../meld/filediff.py:1637
+#: ../meld/filediff.py:1808
 msgid "Saving failed"
 msgstr "Ukládání selhalo"
 
-#: ../meld/filediff.py:1638
+#: ../meld/filediff.py:1809
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1928,36 +1937,36 @@ msgstr ""
 "Jestli jste provedli nějaký důležité změny, zvažte jejich zkopírování do "
 "jiné aplikace nebo souboru, abyste o ně nepřišli."
 
-#: ../meld/filediff.py:1647
+#: ../meld/filediff.py:1818
 msgid "Save Left Pane As"
 msgstr "Uložení levého panelu jako"
 
-#: ../meld/filediff.py:1649
+#: ../meld/filediff.py:1820
 msgid "Save Middle Pane As"
 msgstr "Uložení prostředního panelu jako"
 
-#: ../meld/filediff.py:1651
+#: ../meld/filediff.py:1822
 msgid "Save Right Pane As"
 msgstr "Uložení pravého panelu jako"
 
-#: ../meld/filediff.py:1664
+#: ../meld/filediff.py:1833
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Soubor „%s“ byl od doby, co jste jej otevřeli, změněn."
 
-#: ../meld/filediff.py:1666
+#: ../meld/filediff.py:1835
 msgid "If you save it, any external changes will be lost."
 msgstr "Pokud jej uložíte, budou vnější změny ztraceny."
 
-#: ../meld/filediff.py:1669
+#: ../meld/filediff.py:1838
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../meld/filediff.py:1670
+#: ../meld/filediff.py:1839
 msgid "Don’t Save"
 msgstr "Neukládat"
 
-#: ../meld/filediff.py:1712
+#: ../meld/filediff.py:1881
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1965,25 +1974,29 @@ msgstr ""
 "Soubor {} obsahuje znaky, které nelze zakódovat pomocí jeho akuálního "
 "kódování „{}“."
 
-#: ../meld/filediff.py:1716 ../meld/patchdialog.py:142
+#: ../meld/filediff.py:1885 ../meld/patchdialog.py:144
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
 "%s"
 msgstr ""
-"Nelze uložit soubor z důvodu:\n"
+"Nezdařilo se uložit soubor z důvodu:\n"
 "%s"
 
-#: ../meld/filediff.py:1720 ../meld/patchdialog.py:141
+#: ../meld/filediff.py:1889 ../meld/patchdialog.py:143
 #, python-format
 msgid "Could not save file %s."
-msgstr "Nelze uložit soubor %s."
+msgstr "Nezdařilo se uložit soubor %s."
 
-#: ../meld/filediff.py:2113
+#: ../meld/filediff.py:1950
+msgid "Open File"
+msgstr "Otevření souboru"
+
+#: ../meld/filediff.py:2294
 msgid "Live comparison updating disabled"
 msgstr "Živá aktualizace porovnání zakázána"
 
-#: ../meld/filediff.py:2114
+#: ../meld/filediff.py:2295
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1998,40 +2011,32 @@ msgstr ""
 msgid "[%s] Merging files"
 msgstr "[%s] Slučují se soubory"
 
-#: ../meld/gutterrendererchunk.py:220
-msgid "Copy _up"
-msgstr "Kopírovat nahor_u"
-
-#: ../meld/gutterrendererchunk.py:221
-msgid "Copy _down"
-msgstr "Kopírovat _dolů"
-
-#: ../meld/iohelpers.py:37
+#: ../meld/iohelpers.py:43
 msgid "Deleting remote folders is not supported"
 msgstr "Mazání vzdálených složení nen podporované"
 
-#: ../meld/iohelpers.py:39
+#: ../meld/iohelpers.py:45
 msgid "Not a file or directory"
 msgstr "Nejedná se o soubor nebo složku"
 
-#: ../meld/iohelpers.py:43
+#: ../meld/iohelpers.py:49
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr "„{}“ nelze umístit do koše. Chcete smazat trvale?"
 
-#: ../meld/iohelpers.py:48
+#: ../meld/iohelpers.py:54
 msgid "This remote location does not support sending items to the trash."
 msgstr "Vzdálené umístění nepodporuje přesouvání položek do koše."
 
-#: ../meld/iohelpers.py:53
+#: ../meld/iohelpers.py:59
 msgid "_Delete Permanently"
 msgstr "_Smazat trvale"
 
-#: ../meld/iohelpers.py:100
+#: ../meld/iohelpers.py:110
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Nahradit soubor „%s“?"
 
-#: ../meld/iohelpers.py:102
+#: ../meld/iohelpers.py:112
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2040,276 +2045,124 @@ msgstr ""
 "V „%s“ již existuje soubor se stejným názvem.\n"
 "Pokud stávající soubor nahradíte, jeho obsah bude ztracen."
 
-#: ../meld/meldapp.py:169
+#: ../meld/meldapp.py:171
 msgid "wrong number of arguments supplied to --diff"
 msgstr "poskytnut nesprávný počet argumentů pro --diff"
 
-#: ../meld/meldapp.py:174
+#: ../meld/meldapp.py:176
 msgid "Start with an empty window"
 msgstr "Spustit s prázdným oknem"
 
-#: ../meld/meldapp.py:175 ../meld/meldapp.py:177
+#: ../meld/meldapp.py:177 ../meld/meldapp.py:179
 msgid "file"
 msgstr "soubor"
 
-#: ../meld/meldapp.py:175 ../meld/meldapp.py:179
+#: ../meld/meldapp.py:177 ../meld/meldapp.py:181
 msgid "folder"
 msgstr "složka"
 
-#: ../meld/meldapp.py:176
+#: ../meld/meldapp.py:178
 msgid "Start a version control comparison"
 msgstr "Spustit nové porovnání správy verzí"
 
-#: ../meld/meldapp.py:178
+#: ../meld/meldapp.py:180
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání souborů"
 
-#: ../meld/meldapp.py:180
+#: ../meld/meldapp.py:182
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Spustit dvojcestné nebo trojcestné porovnání složek"
 
-#: ../meld/meldapp.py:223
+#: ../meld/meldapp.py:225
 #, python-format
 msgid "Error: %s\n"
 msgstr "Chyba: %s\n"
 
-#: ../meld/meldapp.py:230
+#: ../meld/meldapp.py:232
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld je nástroj porovnávající soubory a složky."
 
-#: ../meld/meldapp.py:234
+#: ../meld/meldapp.py:236
 msgid "Set label to use instead of file name"
 msgstr "Nastavit k použití popisek namísto názvu souboru"
 
-#: ../meld/meldapp.py:237
+#: ../meld/meldapp.py:239
 msgid "Open a new tab in an already running instance"
 msgstr "Otevřít novou kartu v již běžící instanci"
 
-#: ../meld/meldapp.py:240
+#: ../meld/meldapp.py:242
 msgid "Automatically compare all differing files on startup"
 msgstr "Automaticky při spuštění porovnat všechny lišící se soubory"
 
-#: ../meld/meldapp.py:243
+#: ../meld/meldapp.py:245
 msgid "Ignored for compatibility"
 msgstr "Ignorováno z důvodu kompatibility"
 
-#: ../meld/meldapp.py:247
+#: ../meld/meldapp.py:249
 msgid "Set the target file for saving a merge result"
 msgstr "Nastavit cílový soubor, do kterého se má uložit výsledek slučování"
 
-#: ../meld/meldapp.py:250
+#: ../meld/meldapp.py:252
 msgid "Automatically merge files"
 msgstr "Automaticky sloučit soubory"
 
-#: ../meld/meldapp.py:254
+#: ../meld/meldapp.py:256
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Načíst uložené porovnání ze srovnávacího souboru Meld"
 
-#: ../meld/meldapp.py:258
+#: ../meld/meldapp.py:260
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Vytvořit kartu s rozdílem pro zadané soubory nebo složky"
 
-#: ../meld/meldapp.py:278
+#: ../meld/meldapp.py:280
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "příliš mnoho argumentů (požadováno 0 – 3, obdrženo %d)"
 
-#: ../meld/meldapp.py:281
+#: ../meld/meldapp.py:283
 msgid "can’t auto-merge less than 3 files"
 msgstr "nelze automaticky sloučit méně než 3 soubory"
 
-#: ../meld/meldapp.py:283
+#: ../meld/meldapp.py:285
 msgid "can’t auto-merge directories"
 msgstr "nelze automaticky sloučit složky"
 
-#: ../meld/meldapp.py:297
+#: ../meld/meldapp.py:300
 msgid "Error reading saved comparison file"
 msgstr "Chyba při čtení uloženého srovnávacího souboru"
 
-#: ../meld/meldapp.py:314
+#: ../meld/meldapp.py:317
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "neplatná cesta nebo adresa URI „%s“"
 
-#: ../meld/meldapp.py:320
+#: ../meld/meldapp.py:323
 msgid "remote folder “{}” not supported"
 msgstr "vzdálená složka „{}“ není podporovaná"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: ../meld/meldbuffer.py:124
+#: ../meld/meldbuffer.py:117
 msgid "<unnamed>"
 msgstr "<bez názvu>"
 
-#: ../meld/melddoc.py:63
+#: ../meld/melddoc.py:64
 msgid "untitled"
 msgstr "nepojmenovaný"
 
-#: ../meld/meldwindow.py:56
-msgid "_File"
-msgstr "_Soubor"
+#: ../meld/meldwindow.py:150
+msgid "Filename"
+msgstr "Název souboru"
 
-#: ../meld/meldwindow.py:57
-msgid "_New Comparison…"
-msgstr "_Nové porovnávání…"
-
-#: ../meld/meldwindow.py:58
-msgid "Start a new comparison"
-msgstr "Spustit nové porovnání"
-
-#: ../meld/meldwindow.py:61
-msgid "Save the current file"
-msgstr "Uložit aktuální soubor"
-
-#: ../meld/meldwindow.py:63
-msgid "Save As…"
-msgstr "Uložit jako…"
-
-#: ../meld/meldwindow.py:64
-msgid "Save the current file with a different name"
-msgstr "Uložit aktuální soubor pod jiným názvem"
-
-#: ../meld/meldwindow.py:67
-msgid "Close the current file"
-msgstr "Zavřít aktuální soubor"
-
-#: ../meld/meldwindow.py:70
-msgid "_Edit"
-msgstr "_Upravit"
-
-#: ../meld/meldwindow.py:72
-msgid "Undo the last action"
-msgstr "Vrátit zpět poslední činnost"
-
-#: ../meld/meldwindow.py:75
-msgid "Redo the last undone action"
-msgstr "Zopakovat poslední činnost vrácenou zpět"
-
-#: ../meld/meldwindow.py:77
-msgid "Cut the selection"
-msgstr "Vyjmout výběr"
-
-#: ../meld/meldwindow.py:79
-msgid "Copy the selection"
-msgstr "Kopírovat výběr"
-
-#: ../meld/meldwindow.py:81
-msgid "Paste the clipboard"
-msgstr "Vložit obsah schránky"
-
-#: ../meld/meldwindow.py:83
-msgid "Find…"
-msgstr "Hledat…"
-
-#: ../meld/meldwindow.py:83
-msgid "Search for text"
-msgstr "Hledat text"
-
-#: ../meld/meldwindow.py:85
-msgid "Find Ne_xt"
-msgstr "_Najít následující"
-
-#: ../meld/meldwindow.py:86
-msgid "Search forwards for the same text"
-msgstr "Hledat tentýž text směrem vpřed"
-
-#: ../meld/meldwindow.py:88
-msgid "Find _Previous"
-msgstr "Najít _předchozí"
-
-#: ../meld/meldwindow.py:89
-msgid "Search backwards for the same text"
-msgstr "Hledat tentýž text směrem zpět"
-
-#: ../meld/meldwindow.py:92
-msgid "_Replace…"
-msgstr "Nah_radit…"
-
-#: ../meld/meldwindow.py:93
-msgid "Find and replace text"
-msgstr "Najít a nahradit text"
-
-#: ../meld/meldwindow.py:95
-msgid "Go to _Line"
-msgstr "Pře_jít na řádek"
-
-#: ../meld/meldwindow.py:96
-msgid "Go to a specific line"
-msgstr "Přejít na konkrétní řádek"
-
-#: ../meld/meldwindow.py:99
-msgid "_Changes"
-msgstr "_Změny"
-
-#: ../meld/meldwindow.py:100
-msgid "Next Change"
-msgstr "Následující změna"
-
-#: ../meld/meldwindow.py:101
-msgid "Go to the next change"
-msgstr "Přejít na následující změnu"
-
-#: ../meld/meldwindow.py:103
-msgid "Previous Change"
-msgstr "Předchozí změna"
-
-#: ../meld/meldwindow.py:104
-msgid "Go to the previous change"
-msgstr "Přejít na předchozí změnu"
-
-#: ../meld/meldwindow.py:106
-msgid "Open Externally"
-msgstr "Otevřít externě"
-
-#: ../meld/meldwindow.py:107
-msgid "Open selected file or directory in the default external application"
-msgstr "Otevřít vybraný soubor nebo složku ve výchozí externí aplikaci"
-
-#: ../meld/meldwindow.py:111
-msgid "_View"
-msgstr "_Zobrazit"
-
-#: ../meld/meldwindow.py:112
-msgid "File Status"
-msgstr "Stav souboru"
-
-#: ../meld/meldwindow.py:113
-msgid "Version Status"
-msgstr "Stav verze"
-
-#: ../meld/meldwindow.py:116
-msgid "Stop the current action"
-msgstr "Zastavit aktuální činnost"
-
-#: ../meld/meldwindow.py:119
-msgid "Refresh the view"
-msgstr "Obnovit zobrazení"
-
-#: ../meld/meldwindow.py:123
-msgid "Fullscreen"
-msgstr "Celá obrazovka"
-
-#: ../meld/meldwindow.py:124
-msgid "View the comparison in fullscreen"
-msgstr "Zobrazit porovnání na celou obrazovku"
-
-#: ../meld/meldwindow.py:133
-msgid "Open Recent"
-msgstr "Otevřít nedávné"
-
-#: ../meld/meldwindow.py:134
-msgid "Open recent files"
-msgstr "Otevřít nedávné soubory"
-
-#: ../meld/meldwindow.py:567
+#: ../meld/meldwindow.py:379
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Pro automatické sloučení jsou zapotřebí tři soubory, obdržen: %r"
 
-#: ../meld/meldwindow.py:588
+#: ../meld/meldwindow.py:400
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Nelze porovnávat směs souborů a složek"
 
-#: ../meld/misc.py:155
+#: ../meld/misc.py:152
 msgid ""
 "{}\n"
 "\n"
@@ -2321,13 +2174,7 @@ msgstr ""
 "Meld při běhu narazil na kritickou chybu:\n"
 "<tt>{}</tt>"
 
-#: ../meld/misc.py:237
-#, python-format
-msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
-msgstr ""
-"Ve schématu barev nelze najít údaj pro %s-%s. Jedná se o chybnou instalaci"
-
-#: ../meld/misc.py:311
+#: ../meld/misc.py:203
 msgid "[None]"
 msgstr "[Žádný]"
 
@@ -2343,6 +2190,12 @@ msgstr "vzorek"
 msgid "Version control:"
 msgstr "Správa verzí:"
 
+#: ../meld/style.py:95
+#, python-format
+msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
+msgstr ""
+"Ve schématu barev nelze najít údaj pro %s-%s. Jedná se o chybnou instalaci"
+
 #: ../meld/ui/bufferselectors.py:114
 #, python-brace-format
 msgid "{name} ({charset})"
@@ -2352,13 +2205,21 @@ msgstr "{name} ({charset})"
 msgid "Plain Text"
 msgstr "Prostý text"
 
+#: ../meld/ui/filechooser.py:70
+msgid "Autodetect Encoding"
+msgstr "Kódování zjistit automaticky"
+
+#: ../meld/ui/filechooser.py:73
+msgid "Current Locale ({})"
+msgstr "Současné národní prostředí ({})"
+
 #. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/ui/statusbar.py:124
+#: ../meld/ui/statusbar.py:127
 #, python-format
 msgid "Ln %i, Col %i"
 msgstr "Řád %i, sl %i"
 
-#: ../meld/ui/statusbar.py:177
+#: ../meld/ui/statusbar.py:187
 msgid "Line you want to move the cursor to"
 msgstr "Řádek, na který chcete přesunout kurzor"
 
@@ -2415,141 +2276,140 @@ msgstr "Žádný"
 msgid "Rev %s"
 msgstr "Revize %s"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Merged"
 msgstr "sloučené"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Base"
 msgstr "základní"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Local"
 msgstr "místní"
 
-#: ../meld/vc/_vc.py:54
+#: ../meld/vc/_vc.py:55
 msgid "Remote"
 msgstr "vzdálené"
 
-#: ../meld/vc/_vc.py:70
-msgid "Unversioned"
-msgstr "Neverzováno"
-
-#: ../meld/vc/_vc.py:73
+#: ../meld/vc/_vc.py:74
 msgid "Error"
 msgstr "Chyba"
 
-#: ../meld/vc/_vc.py:75
+#: ../meld/vc/_vc.py:76
 msgid "Newly added"
 msgstr "Nově přidáno"
 
-#: ../meld/vc/_vc.py:77
+#: ../meld/vc/_vc.py:78
 msgid "Renamed"
 msgstr "Přejmenováno"
 
-#: ../meld/vc/_vc.py:78
+#: ../meld/vc/_vc.py:79
 msgid "Conflict"
 msgstr "Konflikt"
 
-#: ../meld/vc/_vc.py:79
+#: ../meld/vc/_vc.py:80
 msgid "Removed"
 msgstr "Odstraněno"
 
-#: ../meld/vc/_vc.py:80
+#: ../meld/vc/_vc.py:81
 msgid "Missing"
 msgstr "Schází"
 
-#: ../meld/vc/_vc.py:81
+#: ../meld/vc/_vc.py:82
 msgid "Not present"
 msgstr "Není přítomno"
 
+#. Translators: This error message is shown when no
+#. repository of this type is found.
+#: ../meld/vcview.py:339
+#, python-format
+msgid "%(name)s (not found)"
+msgstr "%(name)s (nenalezeno)"
+
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: ../meld/vcview.py:282
+#: ../meld/vcview.py:343
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s není nainstalováno)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: ../meld/vcview.py:286
+#: ../meld/vcview.py:347
 #, python-format
-msgid "%(name)s (Invalid repository)"
+msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (neplatný repozitář)"
 
-#: ../meld/vcview.py:307
+#: ../meld/vcview.py:361
 msgid "No valid version control system found in this folder"
 msgstr "V této složce nebyl nalezen žádný platný systém správy verzí"
 
-#: ../meld/vcview.py:309
-msgid "Only one version control system found in this folder"
-msgstr "V této složce byl nalezen jen jeden systém správy verzí"
-
-#: ../meld/vcview.py:311
+#: ../meld/vcview.py:363
 msgid "Choose which version control system to use"
 msgstr "Vyberte, který systém správy verzí se má použít"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: ../meld/vcview.py:366
+#: ../meld/vcview.py:417
 #, python-format
 msgid "%s: %s"
 msgstr "%s: %s"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: ../meld/vcview.py:373
+#: ../meld/vcview.py:424
 msgid "Scanning repository"
 msgstr "Prochází se repozitář"
 
-#: ../meld/vcview.py:402
+#: ../meld/vcview.py:453
 #, python-format
 msgid "Scanning %s"
 msgstr "Prochází se %s"
 
-#: ../meld/vcview.py:441
+#: ../meld/vcview.py:492
 msgid "(Empty)"
 msgstr "(Prázdný)"
 
-#: ../meld/vcview.py:487
+#: ../meld/vcview.py:539
 #, python-format
 msgid "%s — local"
 msgstr "%s — místní"
 
-#: ../meld/vcview.py:488
+#: ../meld/vcview.py:540
 #, python-format
 msgid "%s — remote"
 msgstr "%s — vzdálený"
 
-#: ../meld/vcview.py:496
+#: ../meld/vcview.py:548
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (místní, sloučený, vzdálený)"
 
-#: ../meld/vcview.py:501
+#: ../meld/vcview.py:553
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (vzdálený, sloučený, místní)"
 
-#: ../meld/vcview.py:512
+#: ../meld/vcview.py:564
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repozitář"
 
-#: ../meld/vcview.py:518
+#: ../meld/vcview.py:570
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (pracovní, repozitář)"
 
-#: ../meld/vcview.py:522
+#: ../meld/vcview.py:574
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repozitář, pracovní)"
 
-#: ../meld/vcview.py:688
+#: ../meld/vcview.py:736
 msgid "Remove folder and all its files?"
 msgstr "Odstranit složku a všechny soubory v ní?"
 
-#: ../meld/vcview.py:690
+#: ../meld/vcview.py:738
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2557,6 +2417,6 @@ msgstr ""
 "Tímto se ze správy verzí odstraní všechny vybrané soubory a složky (a "
 "všechny soubory v těchto složkách)."
 
-#: ../meld/vcview.py:804
+#: ../meld/vcview.py:851
 msgid "Clear"
 msgstr "Vymazat"

@@ -1,9 +1,7 @@
 
 from typing import Optional
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import Gtk
+from gi.repository import Gio, GLib, Gtk
 
 from meld.conf import _
 from meld.misc import get_modal_parent, modal_dialog
@@ -24,7 +22,7 @@ def trash_or_confirm(gfile: Gio.File) -> bool:
     try:
         gfile.trash(None)
         return True
-    except GLib.GError as e:
+    except GLib.Error as e:
         # Handle not-supported, as that's due to the trashing target
         # being a (probably network) mount-point, not an underlying
         # problem. We also have to handle the generic FAILED code
@@ -92,14 +90,18 @@ def prompt_save_filename(
 
     try:
         file_info = gfile.query_info(
-            'standard::name,standard::display-name', 0, None)
+            'standard::name,standard::display-name',
+            Gio.FileQueryInfoFlags.NONE,
+            None,
+        )
     except GLib.Error as err:
         if err.code == Gio.IOErrorEnum.NOT_FOUND:
             return gfile
         raise
 
     # The selected file exists, so we need to prompt for overwrite.
-    parent_name = gfile.get_parent().get_parse_name()
+    parent_folder = gfile.get_parent()
+    parent_name = parent_folder.get_parse_name() if parent_folder else ''
     file_name = file_info.get_display_name()
 
     replace = modal_dialog(

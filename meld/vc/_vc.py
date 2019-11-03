@@ -31,8 +31,7 @@ import subprocess
 import tempfile
 from typing import ClassVar
 
-from gi.repository import Gio
-from gi.repository import GLib
+from gi.repository import Gio, GLib
 
 from meld.conf import _
 
@@ -183,7 +182,7 @@ class Vc:
         version control system has a (possibly partial) pre-filled
         message, or None if no such message exists.
 
-        This method should use pre-filled commit messages whereever
+        This method should use pre-filled commit messages wherever
         provided by the version control system, most commonly these are
         given in merging, revert or cherry-picking scenarios.
         """
@@ -326,7 +325,7 @@ class Vc:
         except GLib.Error as e:
             if e.domain != 'g-io-error-quark':
                 raise
-            # Handling for non-existant files (or other IO errors)
+            # Handling for non-existent files (or other IO errors)
             name = path
             isdir = False
 

@@ -17,15 +17,6 @@
           </object>
         </child>
         <child>
-          <object class="GtkImage" id="icon">
-            <property name="visible">True</property>
-            <property name="icon-size">1</property>
-          </object>
-          <packing>
-            <property name="pack_type">start</property>
-          </packing>
-        </child>
-        <child>
           <object class="GtkButton" id="close_button">
             <property name="visible">True</property>
             <property name="relief">none</property>
@@ -33,7 +24,7 @@
             <property name="tooltip_text" translatable="yes">Close Tab</property>
             <property name="image">close_symbolic_image</property>
             <signal name="clicked" handler="on_close_button_clicked" swapped="no"/>
-            <style>on_close_button_clicked
+            <style>
               <class name="small-button"/>
               <class name="flat"/>
             </style>

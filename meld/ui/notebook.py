@@ -1,4 +1,4 @@
-# Copyright (C) 2015-2016 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2015-2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,10 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, Gio, GObject, Gtk
 
 KEYBINDING_FLAGS = GObject.SignalFlags.RUN_LAST | GObject.SignalFlags.ACTION
 

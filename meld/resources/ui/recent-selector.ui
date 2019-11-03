@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <template class="RecentSelector" parent="GtkGrid">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">6</property>
+    <property name="row_spacing">6</property>
+    <child>
+      <object class="GtkSearchEntry" id="search_entry">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="has_focus">True</property>
+        <property name="activates_default">True</property>
+        <property name="placeholder_text" translatable="yes">Search recent comparisons…</property>
+        <signal name="changed" handler="on_filter_text_changed" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">0</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkRecentChooserWidget" id="recent_chooser">
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="hexpand">True</property>
+        <property name="show_icons">False</property>
+        <property name="show_not_found">False</property>
+        <property name="show_private">True</property>
+        <property name="sort_type">mru</property>
+        <signal name="item-activated" handler="on_activate" swapped="no"/>
+        <signal name="selection-changed" handler="on_selection_changed" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">1</property>
+      </packing>
+    </child>
+    <child>
+      <object class="GtkButton" id="open_button">
+        <property name="label">gtk-open</property>
+        <property name="visible">True</property>
+        <property name="can_focus">True</property>
+        <property name="can_default">True</property>
+        <property name="use_stock">True</property>
+        <signal name="clicked" handler="on_activate" swapped="no"/>
+      </object>
+      <packing>
+        <property name="left_attach">0</property>
+        <property name="top_attach">2</property>
+      </packing>
+    </child>
+  </template>
+</interface>

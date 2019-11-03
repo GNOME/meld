@@ -14,39 +14,48 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gtk
-from gi.repository import GtkSource
-
-from meld.ui._gtktemplate import Template
+from gi.repository import GObject, Gtk, GtkSource
 
 
-@Template(resource_path='/org/gnome/meld/ui/findbar.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/findbar.ui')
 class FindBar(Gtk.Grid):
 
     __gtype_name__ = 'FindBar'
 
-    arrow_left = Template.Child()
-    arrow_right = Template.Child()
-    find_entry = Template.Child()
-    find_next_button = Template.Child()
-    find_previous_button = Template.Child()
-    hbuttonbox2 = Template.Child()
-    match_case = Template.Child()
-    regex = Template.Child()
-    replace_entry = Template.Child()
-    replace_label = Template.Child()
-    whole_word = Template.Child()
-    wrap_box = Template.Child()
+    find_entry = Gtk.Template.Child()
+    find_next_button = Gtk.Template.Child()
+    find_previous_button = Gtk.Template.Child()
+    match_case = Gtk.Template.Child()
+    regex = Gtk.Template.Child()
+    replace_all_button = Gtk.Template.Child()
+    replace_button = Gtk.Template.Child()
+    replace_entry = Gtk.Template.Child()
+    whole_word = Gtk.Template.Child()
+    wrap_box = Gtk.Template.Child()
+
+    replace_mode = GObject.Property(type=bool, default=False)
+
+    @GObject.Signal(
+        name='activate-secondary',
+        flags=(
+            GObject.SignalFlags.RUN_FIRST |
+            GObject.SignalFlags.ACTION
+        ),
+    )
+    def activate_secondary(self) -> None:
+        self._find_text(backwards=True)
 
     def __init__(self, parent):
         super().__init__()
-        self.init_template()
 
+        self.search_context = None
+        self.notify_id = None
         self.set_text_view(None)
-        self.arrow_left.show()
-        self.arrow_right.show()
+
+        # Setup a signal for when the find bar loses focus
         parent.connect('set-focus-child', self.on_focus_child)
 
+        # Create and bind our GtkSourceSearchSettings
         settings = GtkSource.SearchSettings()
         self.match_case.bind_property('active', settings, 'case-sensitive')
         self.whole_word.bind_property('active', settings, 'at-word-boundaries')
@@ -54,6 +63,14 @@ class FindBar(Gtk.Grid):
         self.find_entry.bind_property('text', settings, 'search-text')
         settings.set_wrap_around(True)
         self.search_settings = settings
+
+        # Bind visibility and layout for find-and-replace mode
+        self.bind_property('replace_mode', self.replace_entry, 'visible')
+        self.bind_property('replace_mode', self.replace_all_button, 'visible')
+        self.bind_property('replace_mode', self.replace_button, 'visible')
+        self.bind_property(
+            'replace_mode', self, 'row-spacing', GObject.BindingFlags.DEFAULT,
+            lambda binding, replace_mode: 6 if replace_mode else 0)
 
     def on_focus_child(self, container, widget):
         if widget is not None:
@@ -67,60 +84,57 @@ class FindBar(Gtk.Grid):
         self.wrap_box.set_visible(False)
         Gtk.Widget.hide(self)
 
+    def update_match_state(self, *args):
+        # Note that -1 here implies that the search is still running
+        no_matches = (
+            self.search_context.props.occurrences_count == 0 and
+            self.search_settings.props.search_text
+        )
+        style_context = self.find_entry.get_style_context()
+        if no_matches:
+            style_context.add_class(Gtk.STYLE_CLASS_ERROR)
+        else:
+            style_context.remove_class(Gtk.STYLE_CLASS_ERROR)
+
     def set_text_view(self, textview):
         self.textview = textview
         if textview is not None:
             self.search_context = GtkSource.SearchContext.new(
                 textview.get_buffer(), self.search_settings)
             self.search_context.set_highlight(True)
+            self.notify_id = self.search_context.connect(
+                'notify::occurrences-count', self.update_match_state)
         else:
+            if self.notify_id:
+                self.search_context.disconnect(self.notify_id)
+                self.notify_id = None
             self.search_context = None
 
-    def start_find(self, textview, text=None):
+    def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str):
+        self.replace_mode = replace
         self.set_text_view(textview)
-        self.replace_label.hide()
-        self.replace_entry.hide()
-        self.hbuttonbox2.hide()
-        self.find_entry.get_style_context().remove_class("not-found")
         if text:
             self.find_entry.set_text(text)
-        self.set_row_spacing(0)
         self.show()
         self.find_entry.grab_focus()
 
     def start_find_next(self, textview):
         self.set_text_view(textview)
-        if self.find_entry.get_text():
-            self.on_find_next_button_clicked(self.find_next_button)
-        else:
-            self.start_find(self.textview)
+        self._find_text()
 
-    def start_find_previous(self, textview, text=None):
+    def start_find_previous(self, textview):
         self.set_text_view(textview)
-        if self.find_entry.get_text():
-            self.on_find_previous_button_clicked(self.find_previous_button)
-        else:
-            self.start_find(self.textview)
+        self._find_text(backwards=True)
 
-    def start_replace(self, textview, text=None):
-        self.set_text_view(textview)
-        self.find_entry.get_style_context().remove_class("not-found")
-        if text:
-            self.find_entry.set_text(text)
-        self.set_row_spacing(6)
-        self.show_all()
-        self.find_entry.grab_focus()
-        self.wrap_box.set_visible(False)
-
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_find_next_button_clicked(self, button):
         self._find_text()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_find_previous_button_clicked(self, button):
         self._find_text(backwards=True)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_replace_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         oldsel = buf.get_selection_bounds()
@@ -133,7 +147,7 @@ class FindBar(Gtk.Grid):
                 newsel[0], newsel[1], self.replace_entry.get_text(), -1)
             self._find_text(0)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_replace_all_button_clicked(self, entry):
         buf = self.textview.get_buffer()
         saved_insert = buf.create_mark(
@@ -144,18 +158,22 @@ class FindBar(Gtk.Grid):
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
+    def on_toggle_replace_button_clicked(self, button):
+        self.replace_mode = not self.replace_mode
+
+    @Gtk.Template.Callback()
     def on_find_entry_changed(self, entry):
-        self.find_entry.get_style_context().remove_class("not-found")
         self._find_text(0)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_stop_search(self, search_entry):
         self.hide()
 
     def _find_text(self, start_offset=1, backwards=False):
-        assert self.textview
-        assert self.search_context
+        if not self.textview or not self.search_context:
+            return
+
         buf = self.textview.get_buffer()
         insert = buf.get_iter_at_mark(buf.get_insert())
 
@@ -163,21 +181,20 @@ class FindBar(Gtk.Grid):
         self.wrap_box.set_visible(False)
         if not backwards:
             insert.forward_chars(start_offset)
-            match, start_iter, end_iter = self.search_context.forward(insert)
-            if match and (start_iter.get_offset() < insert.get_offset()):
-                self.wrap_box.set_visible(True)
+            match, start, end, wrapped = self.search_context.forward(insert)
         else:
-            match, start_iter, end_iter = self.search_context.backward(insert)
-            if match and (start_iter.get_offset() > insert.get_offset()):
-                self.wrap_box.set_visible(True)
+            match, start, end, wrapped = self.search_context.backward(insert)
+
         if match:
-            buf.place_cursor(start_iter)
-            buf.move_mark(buf.get_selection_bound(), end_iter)
+            self.wrap_box.set_visible(wrapped)
+            buf.place_cursor(start)
+            buf.move_mark(buf.get_selection_bound(), end)
             self.textview.scroll_to_mark(
                 buf.get_insert(), 0.25, True, 0.5, 0.5)
-            self.find_entry.get_style_context().remove_class("not-found")
             return True
         else:
             buf.place_cursor(buf.get_iter_at_mark(buf.get_insert()))
-            self.find_entry.get_style_context().add_class("not-found")
             self.wrap_box.set_visible(False)
+
+
+FindBar.set_css_name('meld-find-bar')

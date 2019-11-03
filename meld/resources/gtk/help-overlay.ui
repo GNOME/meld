@@ -60,6 +60,48 @@
           <object class="GtkShortcutsGroup">
             <property name="visible">True</property>
             <property name="view">tab</property>
+            <property name="title" translatable="yes" context="shortcut window">Panes</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Page_Up</property>
+                <property name="title" translatable="yes" context="shortcut window">Previous comparison pane</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Page_Down</property>
+                <property name="title" translatable="yes" context="shortcut window">Next comparison pane</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
+            <property name="view">tab</property>
+            <property name="title" translatable="yes" context="shortcut window">Changes</property>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Up</property>
+                <property name="title" translatable="yes" context="shortcut window">Go to previous change</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="accelerator">&lt;alt&gt;Down</property>
+                <property name="title" translatable="yes" context="shortcut window">Go to next change</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
+            <property name="view">tab</property>
             <property name="title" translatable="yes" context="shortcut window">Tabs</property>
             <child>
               <object class="GtkShortcutsShortcut">
@@ -94,27 +136,6 @@
                 <property name="visible">True</property>
                 <property name="accelerator">&lt;shift&gt;&lt;primary&gt;&lt;alt&gt;Page_Down</property>
                 <property name="title" translatable="yes" context="shortcut window">Move tab right</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkShortcutsGroup">
-            <property name="visible">True</property>
-            <property name="view">tab</property>
-            <property name="title" translatable="yes" context="shortcut window">Changes</property>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Up</property>
-                <property name="title" translatable="yes" context="shortcut window">Go to previous change</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Down</property>
-                <property name="title" translatable="yes" context="shortcut window">Go to next change</property>
               </object>
             </child>
           </object>
@@ -292,20 +313,6 @@
                 <property name="title" translatable="yes" context="shortcut window">Delete change</property>
               </object>
             </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Page_Up</property>
-                <property name="title" translatable="yes" context="shortcut window">Previous comparison pane</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Page_Down</property>
-                <property name="title" translatable="yes" context="shortcut window">Next comparison pane</property>
-              </object>
-            </child>
           </object>
         </child>
         <child>
@@ -362,4 +369,3 @@
   </object>
 
 </interface>
-

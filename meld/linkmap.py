@@ -17,12 +17,10 @@
 
 import math
 
-from gi.repository import Gdk
-from gi.repository import Gtk
+from gi.repository import Gdk, Gtk
 
-from meld.misc import get_common_theme
-from meld.settings import meldsettings
-
+from meld.settings import get_meld_settings
+from meld.style import get_common_theme
 
 # Rounded rectangle corner radius for culled changes display
 RADIUS = 3
@@ -35,7 +33,6 @@ class LinkMap(Gtk.DrawingArea):
     def __init__(self):
         self.filediff = None
         self.views = []
-        meldsettings.connect('changed', self.on_setting_changed)
 
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
@@ -44,7 +41,9 @@ class LinkMap(Gtk.DrawingArea):
             self.views.reverse()
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+        self.on_setting_changed(meld_settings, 'style-scheme')
+        meld_settings.connect('changed', self.on_setting_changed)
 
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
@@ -75,9 +74,8 @@ class LinkMap(Gtk.DrawingArea):
             self.views[1].get_line_num_for_y(pix_start[1] + height),
         ]
 
-        wtotal = allocation.width
         # For bezier control points
-        x_steps = [-0.5, wtotal / 2, wtotal / 2, wtotal + 0.5]
+        x_steps = [-0.5, allocation.width / 2, allocation.width + 0.5]
         q_rad = math.pi / 2
 
         left, right = self.view_indices
@@ -98,24 +96,25 @@ class LinkMap(Gtk.DrawingArea):
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
                 if f0 == f1:
                     continue
-                context.arc(x_steps[0], f0 - 0.5 + RADIUS, RADIUS, -q_rad, 0)
+                context.arc(
+                    x_steps[0], f0 - 0.5 + RADIUS, RADIUS, q_rad * 3, 0)
                 context.arc(x_steps[0], f1 - 0.5 - RADIUS, RADIUS, 0, q_rad)
                 context.close_path()
             elif (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
                 if t0 == t1:
                     continue
-                context.arc_negative(x_steps[3], t0 - 0.5 + RADIUS, RADIUS,
-                                     -q_rad, q_rad * 2)
-                context.arc_negative(x_steps[3], t1 - 0.5 - RADIUS, RADIUS,
+                context.arc_negative(x_steps[2], t0 - 0.5 + RADIUS, RADIUS,
+                                     q_rad * 3, q_rad * 2)
+                context.arc_negative(x_steps[2], t1 - 0.5 - RADIUS, RADIUS,
                                      q_rad * 2, q_rad)
                 context.close_path()
             else:
                 context.move_to(x_steps[0], f0 - 0.5)
                 context.curve_to(x_steps[1], f0 - 0.5,
-                                 x_steps[2], t0 - 0.5,
-                                 x_steps[3], t0 - 0.5)
-                context.line_to(x_steps[3], t1 - 0.5)
-                context.curve_to(x_steps[2], t1 - 0.5,
+                                 x_steps[1], t0 - 0.5,
+                                 x_steps[2], t0 - 0.5)
+                context.line_to(x_steps[2], t1 - 0.5)
+                context.curve_to(x_steps[1], t1 - 0.5,
                                  x_steps[1], f1 - 0.5,
                                  x_steps[0], f1 - 0.5)
                 context.close_path()

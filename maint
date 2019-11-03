@@ -42,6 +42,26 @@ NEWS_TEMPLATE = """
 
 """
 
+APPDATA_TEMPLATE = """
+    <release date="{{ utcdate }}" version="{{ version }}">
+      <description>
+        <p>
+          {%- if stable_release %}
+          This is a stable release in the {{ release_series }} series.
+          {%- else %}
+          This is an unstable release in the {{ release_series }} development series.
+          {%- endif %}
+        </p>
+        <ul>
+          <li></li>
+          {%- if translator_langs %}
+          <li>Updated translations</li>
+          {%- endif %}
+        </ul>
+      </description>
+    </release>
+"""
+
 EMAIL_TEMPLATE = """
 {{ app|title }} {{version}} has been released, and is now available at:
   https://download.gnome.org/sources/meld/{{ version|minor_version }}/{{ app }}-{{ version }}.tar.xz
@@ -77,7 +97,7 @@ Meld is a visual diff and merge tool. It lets you compare two or three files,
 and updates the comparisons while you edit them in-place. You can also compare
 folders, launching comparisons of individual files as desired. Last but by no
 means least, Meld lets you work with your current changes in a wide variety of
-version control systems, including Git, Bazaar, Mercurial and Subversion.
+version control systems, including Git, Bazaar, Mercurial, CVS and Subversion.
 
 """
 
@@ -223,10 +243,19 @@ def make_env():
 def get_tokens():
     news = get_last_news_entry()
     features, fixes, translators = parse_news_entry(news)
+    version = meld.conf.__version__
+    major, minor, *release = version.split('.')
+    stable_release = int(minor) % 2 == 0
+    release_series = '{}.{}'.format(major, minor)
+
     return {
         'date': datetime.date.today().isoformat(),
+        # Appstream appears to expect release dates in UTC.
+        'utcdate': datetime.datetime.utcnow().date().isoformat(),
         'app': meld.conf.__package__,
-        'version': meld.conf.__version__,
+        'version': version,
+        'release_series': release_series,
+        'stable_release': stable_release,
         'translator_langs': get_translator_langs(),
         'features': features,
         'fixes': fixes,
@@ -245,8 +274,8 @@ def render_template(template):
 def call_with_output(
         cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True,
         timeout=30):
-    PIPE = subprocess.PIPE
-    with subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=PIPE) as proc:
+    pipe = subprocess.PIPE
+    with subprocess.Popen(cmd, stdin=pipe, stdout=pipe, stderr=pipe) as proc:
         stdout, stderr = proc.communicate(stdin_text, timeout=timeout)
     if stdout and echo_stdout:
         click.echo('\n' + stdout.decode('utf-8'))
@@ -385,6 +414,31 @@ def news():
         f.write(new_news)
 
     message = click.edit(filename='NEWS')
+    return message
+
+
+@cli.command()
+def appdata():
+    filename = 'data/org.gnome.meld.appdata.xml.in'
+
+    rendered = render_template(APPDATA_TEMPLATE)
+    with open(filename, 'r') as f:
+        appdata = f.read()
+
+    insert_tag = '<releases>'
+    insert_idx = appdata.find(insert_tag)
+    if insert_idx == -1:
+        click.echo('Failed to find <releases> tag in appdata')
+        raise click.Abort()
+
+    insert_idx += len(insert_tag)
+
+    new_appdata = appdata[:insert_idx] + rendered + appdata[insert_idx:]
+
+    with open(filename, 'w') as f:
+        f.write(new_appdata)
+
+    message = click.edit(filename=filename)
     return message
 
 
@@ -564,7 +618,8 @@ def appveyor_build(account, tag):
 def make_release(ctx):
     pull()
     ctx.forward(news)
-    commit(message='Update NEWS')
+    ctx.forward(appdata)
+    commit(message='Update NEWS + appdata')
     push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)

@@ -15,9 +15,11 @@
 
 """This module provides file choosers that let users select a text encoding."""
 
-from gi.repository import Gtk
-from gi.repository import GtkSource
+import sys
 
+from gi.repository import Gtk, GtkSource
+
+from meld.conf import _
 
 FILE_ACTIONS = {
     Gtk.FileChooserAction.OPEN,
@@ -44,6 +46,7 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
             self.add_button(Gtk.STOCK_OPEN, Gtk.ResponseType.ACCEPT)
 
         self.encoding_store = Gtk.ListStore(str, str)
+        self.action_changed_cb()
         self.connect("notify::action", self.action_changed_cb)
 
         # We only have sufficient Gio support for remote operations in
@@ -52,10 +55,24 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
 
     def make_encoding_combo(self):
         """Create the combo box for text encoding selection"""
-        codecs = []
-        current = GtkSource.encoding_get_current()
-        codecs.append((current.to_string(), current.get_charset()))
-        codecs.append((None, None))
+
+        # On Windows, the "current" encoding is the "system default
+        # ANSI code-page", which is probably not what the user wants,
+        # so we default to UTF-8.
+        if sys.platform == 'win32':
+            current = GtkSource.encoding_get_utf8()
+        else:
+            current = GtkSource.encoding_get_current()
+
+        codecs = [
+            (_('Autodetect Encoding'), None),
+            (None, None),
+            (
+                _('Current Locale ({})').format(current.get_charset()),
+                current.get_charset()
+            ),
+            (None, None),
+        ]
         for encoding in GtkSource.encoding_get_all():
             codecs.append((encoding.to_string(), encoding.get_charset()))
 
@@ -69,7 +86,7 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
         combo.pack_start(cell, True)
         combo.add_attribute(cell, 'text', 0)
         combo.set_row_separator_func(
-            lambda model, it, data: not model.get_value(it, 1), None)
+            lambda model, it, data: not model.get_value(it, 0), None)
         combo.props.active = 0
         return combo
 
@@ -79,6 +96,8 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
         if not combo:
             return None
         charset = self.encoding_store.get_value(combo.get_active_iter(), 1)
+        if not charset:
+            return None
         return GtkSource.Encoding.get_from_charset(charset)
 
     def action_changed_cb(self, *args):

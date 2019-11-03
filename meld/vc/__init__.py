@@ -22,11 +22,11 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-from . import _null, bzr, darcs, git, mercurial, svn
+from . import bzr, cvs, darcs, git, mercurial, svn
 
 # Tuple of plugins, ordered according to best-guess as to which VC a
 # user is likely to want by default in a multiple-VC situation.
-VC_PLUGINS = (git, mercurial, bzr, svn, darcs)
+VC_PLUGINS = (git, mercurial, bzr, svn, darcs, cvs)
 
 
 def get_vcs(location):
@@ -42,23 +42,9 @@ def get_vcs(location):
     """
 
     vcs = []
-    max_depth = 0
     for plugin in VC_PLUGINS:
         root, location = plugin.Vc.is_in_repo(location)
-        if not root:
-            continue
-
-        # Choose the deepest root we find, unless it's from a VC that
-        # doesn't walk; these can be spurious as the real root may be
-        # much higher up in the tree.
-        depth = len(root)
-        if depth > max_depth and plugin.Vc.VC_ROOT_WALK:
-            vcs, max_depth = [], depth
-        if depth >= max_depth:
-            vcs.append(plugin.Vc)
-
-    if not vcs:
-        # No plugin recognized that location, fallback to _null
-        return [_null.Vc]
+        enabled = root is not None
+        vcs.append((plugin.Vc, enabled))
 
     return vcs

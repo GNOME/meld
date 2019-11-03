@@ -6,6 +6,12 @@
     <value nick="remote-merge-local" value="1"/>
   </enum>
 
+  <enum id="org.gnome.meld.overviewmapstyle">
+    <value nick="chunkmap" value="0"/>
+    <value nick="compact-sourcemap" value="1"/>
+    <value nick="full-sourcemap" value="2"/>
+  </enum>
+
   <enum id="org.gnome.meld.wrapmode">
     <value nick="none" value="0"/>
     <value nick="char" value="1"/>
@@ -80,10 +86,10 @@
           <summary>Color scheme to use for syntax highlighting</summary>
           <description>Used by GtkSourceView to determine colors for syntax highlighting</description>
       </key>
-      <key name="draw-spaces" flags='org.gnome.meld.spacesflags'>
-          <default>[]</default>
-          <summary>Displayed whitespace</summary>
-          <description>Selector for individual whitespace character types to be shown. Possible values are 'space', 'tab', 'newline' and 'nbsp'.</description>
+      <key name="enable-space-drawer" type='b'>
+          <default>false</default>
+          <summary>Draw whitespace</summary>
+          <description>If true, whitespace characters will be drawn in comparisons even if they are not in a changed area.</description>
       </key>
       <key name="wrap-mode" enum='org.gnome.meld.wrapmode'>
           <aliases>
@@ -114,6 +120,18 @@
           <description>The custom font to use, stored as a string and parsed as a Pango font description.</description>
       </key>
 
+      <!-- Overview map properties -->
+      <key name="show-overview-map" type="b">
+          <default>true</default>
+          <summary>Show overview source map</summary>
+          <description>If true, file comparisons will have paired source maps for compared files.</description>
+      </key>
+
+      <key name="overview-map-style" enum="org.gnome.meld.overviewmapstyle">
+          <default>"chunkmap"</default>
+          <summary>Style of overview map</summary>
+          <description>Style options for how the overview map is displayed.</description>
+      </key>
 
       <!-- File comparison settings -->
       <key name="ignore-blank-lines" type="b">
@@ -135,7 +153,7 @@
           <description>The command used to launch a custom editor. Some limited templating is supported here; at the moment '{file}' and '{line}' are recognised tokens.</description>
       </key>
 
-      <!-- Folder comparsion properties -->
+      <!-- Folder comparison properties -->
       <key name="folder-columns" type="a(sb)">
           <default>[("size", true), ("modification time", true), ("permissions", false)]</default>
           <summary>Columns to display</summary>

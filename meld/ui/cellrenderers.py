@@ -15,27 +15,31 @@
 
 import datetime
 
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import GObject, Gtk
 
 
 class CellRendererDate(Gtk.CellRendererText):
 
     __gtype_name__ = "CellRendererDate"
 
+    #: We use negative 32-bit Unix timestamp to threshold our valid values
+    MIN_TIMESTAMP = -2147483648
     DATETIME_FORMAT = "%a %d %b %Y %H:%M:%S"
 
     def get_timestamp(self):
-        return getattr(self, '_datetime', -1.0)
+        return getattr(self, '_datetime', self.MIN_TIMESTAMP)
 
     def set_timestamp(self, value):
         if value == self.get_timestamp():
             return
-        if value == -1.0:
+        if value <= self.MIN_TIMESTAMP:
             time_str = ''
         else:
-            mod_datetime = datetime.datetime.fromtimestamp(value)
-            time_str = mod_datetime.strftime(self.DATETIME_FORMAT)
+            try:
+                mod_datetime = datetime.datetime.fromtimestamp(value)
+                time_str = mod_datetime.strftime(self.DATETIME_FORMAT)
+            except Exception:
+                time_str = ''
         self.props.markup = time_str
         self._datetime = value
 
@@ -74,7 +78,7 @@ class CellRendererByteSize(Gtk.CellRendererText):
         self._bytesize = value
 
     bytesize = GObject.Property(
-        type=int,
+        type=GObject.TYPE_INT64,
         nick="Byte size to display",
         getter=get_bytesize,
         setter=set_bytesize,

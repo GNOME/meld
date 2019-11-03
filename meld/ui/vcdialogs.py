@@ -17,31 +17,26 @@
 import os
 import textwrap
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import Pango
+from gi.repository import Gio, GObject, Gtk, Pango
 
 from meld.conf import _
-from meld.settings import meldsettings, settings
-from meld.ui._gtktemplate import Template
+from meld.settings import get_meld_settings, settings
 
 
-@Template(resource_path='/org/gnome/meld/ui/commit-dialog.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/commit-dialog.ui')
 class CommitDialog(Gtk.Dialog):
 
     __gtype_name__ = "CommitDialog"
 
     break_commit_message = GObject.Property(type=bool, default=False)
 
-    changedfiles = Template.Child("changedfiles")
-    textview = Template.Child("textview")
-    scrolledwindow1 = Template.Child("scrolledwindow1")
-    previousentry = Template.Child("previousentry")
+    changedfiles = Gtk.Template.Child()
+    textview = Gtk.Template.Child()
+    scrolledwindow1 = Gtk.Template.Child()
+    previousentry = Gtk.Template.Child()
 
     def __init__(self, parent):
         super().__init__()
-        self.init_template()
 
         self.set_transient_for(parent.get_toplevel())
         selected = parent._get_selected_files()
@@ -59,7 +54,9 @@ class CommitDialog(Gtk.Dialog):
         self.changedfiles.set_text("(in %s)\n%s" %
                                    (topdir, "\n".join(to_commit)))
 
-        self.textview.modify_font(meldsettings.font)
+        font = get_meld_settings().font
+
+        self.textview.modify_font(font)
         commit_prefill = parent.vc.get_commit_message_prefill()
         if commit_prefill:
             buf = self.textview.get_buffer()
@@ -69,10 +66,10 @@ class CommitDialog(Gtk.Dialog):
         # Try and make the textview wide enough for a standard 80-character
         # commit message.
         context = self.textview.get_pango_context()
-        metrics = context.get_metrics(meldsettings.font,
-                                      context.get_language())
+        metrics = context.get_metrics(None, None)
         char_width = metrics.get_approximate_char_width() / Pango.SCALE
-        self.scrolledwindow1.set_size_request(80 * char_width, -1)
+        width_request, height_request = self.scrolledwindow1.get_size_request()
+        self.scrolledwindow1.set_size_request(80 * char_width, height_request)
 
         settings.bind('vc-show-commit-margin', self.textview,
                       'show-right-margin', Gio.SettingsBindFlags.DEFAULT)
@@ -101,6 +98,7 @@ class CommitDialog(Gtk.Dialog):
         self.destroy()
         return response, msg
 
+    @Gtk.Template.Callback()
     def on_previousentry_activate(self, gentry):
         idx = gentry.get_active()
         if idx != -1:
@@ -109,14 +107,13 @@ class CommitDialog(Gtk.Dialog):
             buf.set_text(model[idx][1])
 
 
-@Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
 class PushDialog(Gtk.MessageDialog):
 
     __gtype_name__ = "PushDialog"
 
     def __init__(self, parent):
         super().__init__()
-        self.init_template()
 
         self.set_transient_for(parent.get_toplevel())
         self.show_all()

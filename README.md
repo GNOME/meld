@@ -5,7 +5,7 @@ About Meld
 Meld is a visual diff and merge tool targeted at developers. Meld helps you
 compare files, directories, and version controlled projects. It provides
 two- and three-way comparison of both files and directories, and supports
-many version control systems including Git, Mercurial, Bazaar and Subversion.
+many version control systems including Git, Mercurial, Bazaar, CVS and Subversion.
 
 Meld helps you review code changes, understand patches, and makes enormous
 merge conflicts slightly less painful.
@@ -16,9 +16,9 @@ Meld is licensed under the GPL v2 or later.
 Requirements
 ------------
 
-* Python 3.4
+* Python 3.6
 * pycairo (Python3 bindings for cairo without GObject layer)
-* PyGObject 3.20 (Python3 bindings for GObject introspection)
+* PyGObject 3.30 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
 
 And following packages with GObject introspection:
@@ -27,15 +27,21 @@ And following packages with GObject introspection:
 * Pango
 * PangoCairo
 * GTK+ 3.20
-* GtkSourceView 3.20
+* GtkSourceView 4.0
 
 
 Build requirements
 ------------------
 
+System packages:
+
 * intltool
 * itstool
 * xmllint
+
+Python packages:
+
+* distro
 
 Building Windows MSIs requires:
 
@@ -98,6 +104,18 @@ Windows installer can be built with command
     C:\Python34\python.exe setup_win32.py bdist_msi
 
 that creates file `dist/Meld-VERSION-ARCH.msi`
+
+
+Developing
+----------
+
+It's easy to get started developing Meld. From a git checkout, just run
+`bin/meld`.
+
+We also support development using Flatpak via GNOME Builder. At the Builder
+"Clone..." dialog, enter https://gitlab.gnome.org/GNOME/meld.git, and the
+default build + run development flow using Flatpak should work.
+
 
 Contributing
 ------------

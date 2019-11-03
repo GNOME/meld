@@ -1,5 +1,5 @@
 # Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
-# Copyright (C) 2010-2011, 2013-2015 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2010-2011, 2013-2019 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,17 +17,11 @@
 import logging
 from enum import Enum
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource, Pango
 
 from meld.meldbuffer import MeldBuffer
-from meld.misc import colour_lookup_with_fallback, get_common_theme
-from meld.settings import bind_settings, meldsettings, settings
-
+from meld.settings import bind_settings, get_meld_settings, settings
+from meld.style import colour_lookup_with_fallback, get_common_theme
 
 log = logging.getLogger(__name__)
 
@@ -90,7 +84,21 @@ class TextviewLineAnimation:
         self.anim_type = anim_type
 
 
-class MeldSourceView(GtkSource.View):
+class SourceViewHelperMixin:
+
+    def get_y_for_line_num(self, line):
+        buf = self.get_buffer()
+        it = buf.get_iter_at_line(line)
+        y, h = self.get_line_yrange(it)
+        if line >= buf.get_line_count():
+            return y + h
+        return y
+
+    def get_line_num_for_y(self, y):
+        return self.get_line_at_y(y)[0].get_line()
+
+
+class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     __gtype_name__ = "MeldSourceView"
 
@@ -98,7 +106,7 @@ class MeldSourceView(GtkSource.View):
         ('highlight-current-line', 'highlight-current-line-local'),
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('draw-spaces', 'draw-spaces'),
+        ('enable-space-drawer', 'draw-spaces-bool'),
         ('wrap-mode', 'wrap-mode'),
         ('show-line-numbers', 'show-line-numbers'),
     )
@@ -141,6 +149,15 @@ class MeldSourceView(GtkSource.View):
         ),
     )
 
+    overscroll_num_lines = GObject.Property(
+        type=int, default=5, minimum=0, maximum=100,
+        nick="Overscroll line count",
+        flags=(
+            GObject.ParamFlags.READWRITE |
+            GObject.ParamFlags.CONSTRUCT
+        ),
+    )
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
@@ -161,6 +178,11 @@ class MeldSourceView(GtkSource.View):
         (Gdk.KEY_KP_Left, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK),
         (Gdk.KEY_KP_Right, Gdk.ModifierType.MOD1_MASK),
+        # ...and Ctrl+Page Up/Down
+        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
     )
 
     def __init__(self, *args, **kwargs):
@@ -168,9 +190,14 @@ class MeldSourceView(GtkSource.View):
 
         self.drag_dest_add_uri_targets()
 
-        binding_set = Gtk.binding_set_find('GtkSourceView')
-        for key, modifiers in self.replaced_entries:
-            Gtk.binding_entry_remove(binding_set, key, modifiers)
+        # Most bindings are on SourceView, except the Page Up/Down ones
+        # which are on TextView.
+        binding_set_names = ('GtkSourceView', 'GtkTextView')
+        for set_name in binding_set_names:
+            binding_set = Gtk.binding_set_find(set_name)
+            for key, modifiers in self.replaced_entries:
+                Gtk.binding_entry_remove(binding_set, key, modifiers)
+
         self.anim_source_id = None
         self.animating_chunks = []
         self.syncpoints = []
@@ -182,8 +209,20 @@ class MeldSourceView(GtkSource.View):
         buf.get_tag_table().add(inline_tag)
         buf.create_tag("dimmed")
         self.set_buffer(buf)
+        self.connect('notify::overscroll-num-lines', self.notify_overscroll)
 
-        meldsettings.connect('changed', self.on_setting_changed)
+    @property
+    def line_height(self) -> int:
+        if not getattr(self, '_approx_line_height', None):
+            context = self.get_pango_context()
+            layout = Pango.Layout(context)
+            layout.set_text('X')
+            _width, self._approx_line_height = layout.get_pixel_size()
+
+        return self._approx_line_height
+
+    def notify_overscroll(self, view, param):
+        self.props.bottom_margin = self.overscroll_num_lines * self.line_height
 
     def do_paste_clipboard(self, *args):
         # This is an awful hack to replace another awful hack. The idea
@@ -200,17 +239,6 @@ class MeldSourceView(GtkSource.View):
 
         clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
         clipboard.request_text(text_received_cb)
-
-    def get_y_for_line_num(self, line):
-        buf = self.get_buffer()
-        it = buf.get_iter_at_line(line)
-        y, h = self.get_line_yrange(it)
-        if line >= buf.get_line_count():
-            return y + h
-        return y
-
-    def get_line_num_for_y(self, y):
-        return self.get_line_at_y(y)[0].get_line()
 
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
@@ -229,7 +257,8 @@ class MeldSourceView(GtkSource.View):
 
     def on_setting_changed(self, settings, key):
         if key == 'font':
-            self.override_font(meldsettings.font)
+            self.override_font(settings.font)
+            self._approx_line_height = None
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
                 "meld:current-line-highlight", "background")
@@ -237,10 +266,13 @@ class MeldSourceView(GtkSource.View):
                 "meld:syncpoint-outline", "foreground")
             self.fill_colors, self.line_colors = get_common_theme()
 
-            tag = self.get_buffer().get_tag_table().lookup("inline")
+            buf = self.get_buffer()
+            buf.set_style_scheme(settings.style_scheme)
+
+            tag = buf.get_tag_table().lookup("inline")
             tag.props.background_rgba = colour_lookup_with_fallback(
                 "meld:inline", "background")
-            tag = self.get_buffer().get_tag_table().lookup("dimmed")
+            tag = buf.get_tag_table().lookup("dimmed")
             tag.props.foreground_rgba = colour_lookup_with_fallback(
                 "meld:dimmed", "foreground")
 
@@ -269,23 +301,19 @@ class MeldSourceView(GtkSource.View):
         )
         self.wrap_mode_bool = wrap_mode_to_bool(None, self.props.wrap_mode)
 
-        def draw_spaces_from_bool(binding, from_value):
-            return GtkSource.DrawSpacesFlags.ALL if from_value else 0
-
-        def draw_spaces_to_bool(binding, from_value):
-            return bool(from_value)
-
         self.bind_property(
-            'draw-spaces-bool', self, 'draw-spaces',
-            GObject.BindingFlags.BIDIRECTIONAL,
-            draw_spaces_from_bool,
-            draw_spaces_to_bool,
+            'draw-spaces-bool', self.props.space_drawer, 'enable-matrix',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
-        self.draw_spaces_bool = draw_spaces_to_bool(
-            None, self.props.draw_spaces)
 
-        self.on_setting_changed(meldsettings, 'font')
-        self.on_setting_changed(meldsettings, 'style-scheme')
+        meld_settings = get_meld_settings()
+
+        self.on_setting_changed(meld_settings, 'font')
+        self.on_setting_changed(meld_settings, 'style-scheme')
+        self.get_buffer().set_style_scheme(meld_settings.style_scheme)
+
+        meld_settings.connect('changed', self.on_setting_changed)
+
         return GtkSource.View.do_realize(self)
 
     def do_draw_layer(self, layer, context):
@@ -296,9 +324,10 @@ class MeldSourceView(GtkSource.View):
         context.set_line_width(1.0)
 
         _, clip = Gdk.cairo_get_clip_rectangle(context)
+        clip_end = clip.y + clip.height
         bounds = (
             self.get_line_num_for_y(clip.y),
-            self.get_line_num_for_y(clip.y + clip.height),
+            self.get_line_num_for_y(clip_end),
         )
 
         x = clip.x - 0.5
@@ -323,6 +352,16 @@ class MeldSourceView(GtkSource.View):
             context.stroke()
 
         textbuffer = self.get_buffer()
+
+        # Check whether we're drawing past the last line in the buffer
+        # (i.e., the overscroll) and draw a custom background if so.
+        end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
+        end_y += end_height
+        visible_bottom_margin = clip_end - end_y
+        if visible_bottom_margin > 0:
+            context.rectangle(x + 1, end_y, width - 1, visible_bottom_margin)
+            context.set_source_rgba(*self.fill_colors['overscroll'])
+            context.fill()
 
         # Paint current line highlight
         if self.props.highlight_current_line_local and self.is_focus():
@@ -393,8 +432,81 @@ class CommitMessageSourceView(GtkSource.View):
 
     __gtype_name__ = "CommitMessageSourceView"
 
-    __gsettings_bindings__ = (
+    __gsettings_bindings_view__ = (
         ('indent-width', 'tab-width'),
         ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('draw-spaces', 'draw-spaces'),
+        ('enable-space-drawer', 'enable-space-drawer'),
     )
+
+    enable_space_drawer = GObject.Property(type=bool, default=False)
+
+    def do_realize(self):
+        bind_settings(self)
+
+        self.bind_property(
+            'enable-space-drawer', self.props.space_drawer, 'enable-matrix',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        )
+
+        return GtkSource.View.do_realize(self)
+
+
+class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
+
+    __gtype_name__ = "MeldSourceMap"
+
+    compact_view = GObject.Property(
+        type=bool,
+        nick="Limit the view to a fixed width",
+        default=False,
+    )
+
+    COMPACT_MODE_WIDTH = 40
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.connect('notify::compact-view', lambda *args: self.queue_resize())
+
+    def do_draw_layer(self, layer, context):
+        if layer != Gtk.TextViewLayer.BELOW_TEXT:
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        # Handle bad view assignments and partial initialisation
+        parent_view = self.props.view
+        if not hasattr(parent_view, 'chunk_iter'):
+            return GtkSource.Map.do_draw_layer(self, layer, context)
+
+        context.save()
+        context.set_line_width(1.0)
+
+        _, clip = Gdk.cairo_get_clip_rectangle(context)
+        x = clip.x - 0.5
+        width = clip.width + 1
+        bounds = (
+            self.get_line_num_for_y(clip.y),
+            self.get_line_num_for_y(clip.y + clip.height),
+        )
+
+        # Paint chunk backgrounds
+        for change in parent_view.chunk_iter(bounds):
+            if change[1] == change[2]:
+                # We don't have room to paint inserts in this widget
+                continue
+
+            ypos0 = self.get_y_for_line_num(change[1])
+            ypos1 = self.get_y_for_line_num(change[2])
+            height = max(0, ypos1 - ypos0 - 1)
+
+            context.rectangle(x, ypos0 + 0.5, width, height)
+            context.set_source_rgba(*parent_view.fill_colors[change[0]])
+            context.fill()
+
+        context.restore()
+
+        return GtkSource.Map.do_draw_layer(self, layer, context)
+
+    def do_get_preferred_width(self):
+        if self.props.compact_view:
+            return (self.COMPACT_MODE_WIDTH, self.COMPACT_MODE_WIDTH)
+        else:
+            return GtkSource.Map.do_get_preferred_width(self)

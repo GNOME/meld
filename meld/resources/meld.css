@@ -1,0 +1,87 @@
+
+.meld-notebook-toolbar {
+    background-image: none;
+    background-color: @theme_bg_color;
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: @borders;
+
+    -GtkToolbar-button-relief: none;
+    padding: 3px 2px 2px 2px;
+}
+
+.meld-actionbar {
+  background-color: @theme_bg_color;
+  padding: 6px;
+}
+
+.prefs-list-widget-toolbar {
+    background-image: none;
+    background-color: @theme_bg_color;
+    border-width: 0 1px 1px 1px;
+    border-style: solid;
+    border-color: @borders;
+}
+
+link-map {
+    border-width: 0 0 1px 0;
+    border-style: solid;
+    border-color: @borders;
+    background-color: @theme_bg_color;
+}
+
+action-gutter {
+    background-color: @theme_bg_color;
+}
+
+@binding-set MeldFindbarBindings {
+    bind "<Shift>Return" { "activate-secondary" () };
+}
+
+meld-find-bar {
+    -gtk-key-bindings: MeldFindbarBindings;
+
+    padding: 6px;
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: @borders;
+}
+
+/* Default Adwaita notebook styling gives a much lighter background to
+ * notebook children when there's more than one, but we definitely don't
+ * want this.
+ */
+.meld-notebook > stack:not(:only-child) {
+    background-color: @theme_bg_color;
+}
+
+/* Work around bad close button styling; see Meld issue #344. */
+.meld-notebook > header tab  button.flat {
+        margin-right: 0;
+}
+
+.meld-notebook-child {
+    background-color: @theme_bg_color;
+}
+
+.meld-status-bar {
+    border-width: 1px 0 0 0;
+    border-style: solid;
+    border-color: @borders;
+}
+
+.sourcemap-container {
+    border-width: 0 0 0 1px;
+    border-style: solid;
+    border-color: @borders;
+    padding: 0 2px;
+}
+
+.new-diff-title {
+    opacity: 0.5;
+    font-size: 250%;
+}
+
+.new-diff-button {
+    font-size: 120%;
+}

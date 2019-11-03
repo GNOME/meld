@@ -16,7 +16,7 @@ LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
-PYTHON_REQUIREMENT_TUPLE = (3, 4)
+PYTHON_REQUIREMENT_TUPLE = (3, 6)
 
 
 # Installed from main script
@@ -49,7 +49,3 @@ def uninstalled():
 
     resource_path = melddir / "meld" / "resources"
     os.environ['G_RESOURCE_OVERLAYS'] = f'{RESOURCE_BASE}={resource_path}'
-
-
-def ui_file(filename):
-    return os.path.join(DATADIR, "ui", filename)

@@ -29,7 +29,7 @@ def get_non_python_libs():
 
     if 'mingw' in sysconfig.get_platform():
         # dll imported by dll dependencies expected to be auto-resolved later
-        inst_root = [os.path.join(local_bin, 'libgtksourceview-3.0-1.dll')]
+        inst_root = [os.path.join(local_bin, 'libgtksourceview-4-0.dll')]
 
         # gspawn-helper is needed for Gtk.show_uri function
         if platform.architecture()[0] == '32bit':
@@ -51,7 +51,7 @@ gtk_data_dirs = [
     'lib/girepository-1.0',
     'share/fontconfig',
     'share/glib-2.0',
-    'share/gtksourceview-3.0',
+    'share/gtksourceview-4',
     'share/icons',
 ]
 
@@ -89,15 +89,15 @@ build_exe_options = {
 
 # Create our registry key, and fill with install directory and exe
 registry_table = [
-    ('MeldKLM', 2, 'SOFTWARE\Meld', '*', None, 'TARGETDIR'),
-    ('MeldInstallDir', 2, 'SOFTWARE\Meld', 'InstallDir', '[TARGETDIR]', 'TARGETDIR'),
-    ('MeldExecutable', 2, 'SOFTWARE\Meld', 'Executable', '[TARGETDIR]Meld.exe', 'TARGETDIR'),
+    ('MeldKLM', 2, r'SOFTWARE\Meld', '*', None, 'TARGETDIR'),
+    ('MeldInstallDir', 2, r'SOFTWARE\Meld', 'InstallDir', '[TARGETDIR]', 'TARGETDIR'),
+    ('MeldExecutable', 2, r'SOFTWARE\Meld', 'Executable', '[TARGETDIR]Meld.exe', 'TARGETDIR'),
 ]
 
 # Provide the locator and app search to give MSI the existing install directory
 # for future upgrades
 reg_locator_table = [
-    ('MeldInstallDirLocate', 2, 'SOFTWARE\Meld', 'InstallDir', 0)
+    ('MeldInstallDirLocate', 2, r'SOFTWARE\Meld', 'InstallDir', 0)
 ]
 app_search_table = [('TARGETDIR', 'MeldInstallDirLocate')]
 
@@ -119,7 +119,7 @@ executable_options = {
 
 if 'mingw' in sysconfig.get_platform():
     executable_options.update({
-         "base": "Win32GUI",  # comment to build cosole version to see stderr
+         "base": "Win32GUI",  # comment to build console version to see stderr
          "targetName": "Meld.exe",
          "shortcutName": "Meld",
          "shortcutDir": "ProgramMenuFolder",
@@ -167,7 +167,7 @@ setup(
     scripts=['bin/meld'],
     data_files=[
         ('share/man/man1',
-         ['meld.1']
+         ['data/meld.1']
          ),
         ('share/doc/meld-' + meld.conf.__version__,
          ['COPYING', 'NEWS']

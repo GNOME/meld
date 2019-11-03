@@ -21,12 +21,9 @@ import shlex
 import string
 import subprocess
 import sys
+from typing import Iterable, Sequence
 
-from gi.repository import Gdk
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 from meld.conf import _
 from meld.recent import RecentType
@@ -36,7 +33,7 @@ from meld.task import FifoScheduler
 log = logging.getLogger(__name__)
 
 
-def make_custom_editor_command(path, line=0):
+def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
     custom_command = settings.get_string('custom-editor-command')
     fmt = string.Formatter()
     replacements = [tok[1] for tok in fmt.parse(custom_command)]
@@ -85,28 +82,23 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def file_changed_signal(self, path: str) -> None:
         ...
 
-    @GObject.Signal('next-diff-changed')
-    def next_diff_changed_signal(
-            self, have_prev: bool, have_next: bool) -> None:
-        ...
-
     @GObject.Signal
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
 
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
-        self.main_actiongroup = None
+        self.view_action_group = Gio.SimpleActionGroup()
         self._state = ComparisonState.Normal
 
     @property
-    def state(self):
+    def state(self) -> ComparisonState:
         return self._state
 
     @state.setter
-    def state(self, value):
+    def state(self, value: ComparisonState) -> None:
         if value == self._state:
             return
         self.tab_state_changed.emit(self._state, value)
@@ -116,17 +108,15 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         """Get the comparison type and URI(s) being compared"""
         pass
 
-    def save(self):
-        pass
+    def action_stop(self, *args) -> None:
+        if self.scheduler.tasks_pending():
+            self.scheduler.remove_task(self.scheduler.get_current_task())
 
-    def save_as(self):
-        pass
-
-    def _open_files(self, selected, line=0):
+    def _open_files(self, selected: Iterable[str], line: int = 0) -> None:
         query_attrs = ",".join((Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
                                 Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE))
 
-        def os_open(path, uri):
+        def os_open(path: str, uri: str):
             if not path:
                 return
             if sys.platform == "win32":
@@ -146,8 +136,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             elif file_type == Gio.FileType.REGULAR:
                 content_type = info.get_content_type()
                 # FIXME: Content types are broken on Windows with current gio
-                if Gio.content_type_is_a(content_type, "text/plain") or \
-                        sys.platform == "win32":
+                # If we can't access a content type, assume it's text.
+                if not content_type or Gio.content_type_is_a(
+                        content_type, "text/plain"):
                     if settings.get_boolean('use-system-editor'):
                         gfile = Gio.File.new_for_path(path)
                         if sys.platform == "win32":
@@ -172,56 +163,55 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
                 pass
 
         for f in [Gio.File.new_for_path(s) for s in selected]:
-            f.query_info_async(query_attrs, 0, GLib.PRIORITY_LOW, None,
-                               open_cb, None)
+            f.query_info_async(
+                query_attrs, Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW,
+                None, open_cb, None)
 
-    def open_external(self):
+    def on_file_changed(self, filename: str):
         pass
 
-    def on_refresh_activate(self, *extra):
+    def set_labels(self, lst: Sequence[str]) -> None:
         pass
 
-    def on_find_activate(self, *extra):
-        pass
+    def get_action_state(self, action_name: str):
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        return action.get_state().unpack()
 
-    def on_find_next_activate(self, *extra):
-        pass
+    def set_action_state(self, action_name: str, state) -> None:
+        # TODO: Try to do GLib.Variant things here instead of in callers
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_state(state)
 
-    def on_find_previous_activate(self, *extra):
-        pass
+    def set_action_enabled(self, action_name: str, enabled: bool) -> None:
+        action = self.view_action_group.lookup_action(action_name)
+        if not action:
+            log.error(f'No action {action_name!r} found')
+            return
+        action.set_enabled(enabled)
 
-    def on_replace_activate(self, *extra):
-        pass
+    def on_container_switch_in_event(self, window):
+        """Called when the container app switches to this tab"""
 
-    def on_file_changed(self, filename):
-        pass
+        window.insert_action_group(
+            'view', getattr(self, 'view_action_group', None))
 
-    def set_labels(self, lst):
-        pass
-
-    def on_container_switch_in_event(self, uimanager):
-        """Called when the container app switches to this tab.
-        """
-        self.ui_merge_id = uimanager.add_ui_from_file(self.ui_file)
-        uimanager.insert_action_group(self.actiongroup, -1)
-        self.popup_menu = uimanager.get_widget("/Popup")
-        action_groups = uimanager.get_action_groups()
-        self.main_actiongroup = [
-            a for a in action_groups if a.get_name() == "MainActions"][0]
-        uimanager.ensure_update()
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
 
-    def on_container_switch_out_event(self, uimanager):
-        """Called when the container app switches away from this tab.
-        """
-        uimanager.remove_action_group(self.actiongroup)
-        uimanager.remove_ui(self.ui_merge_id)
-        self.main_actiongroup = None
-        self.popup_menu = None
-        self.ui_merge_id = None
+    def on_container_switch_out_event(self, window):
+        """Called when the container app switches away from this tab"""
 
-    def on_delete_event(self):
+        window.insert_action_group('view', None)
+
+    # FIXME: Here and in subclasses, on_delete_event are not real GTK+
+    # event handlers, and should be renamed.
+    def on_delete_event(self) -> Gtk.ResponseType:
         """Called when the docs container is about to close.
 
         A doc normally returns Gtk.ResponseType.OK, but may instead return

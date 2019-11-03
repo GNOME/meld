@@ -37,7 +37,6 @@ from collections import defaultdict
 from meld.conf import _, ngettext
 from . import _vc
 
-
 NULL_SHA = "0000000000000000000000000000000000000000"
 
 

@@ -14,30 +14,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import Gtk
-from gi.repository import GtkSource
+from gi.repository import Gio, GLib, GObject, Gtk, GtkSource
 
 from meld.conf import _
 from meld.filters import FilterEntry
 from meld.settings import settings
-from meld.ui._gtktemplate import Template
 from meld.ui.listwidget import EditableListWidget
 
 
-@Template(resource_path='/org/gnome/meld/ui/filter-list.ui')
-class FilterList(Gtk.VBox, EditableListWidget):
+@Gtk.Template(resource_path='/org/gnome/meld/ui/filter-list.ui')
+class FilterList(Gtk.Box, EditableListWidget):
 
     __gtype_name__ = "FilterList"
 
-    treeview = Template.Child("treeview")
-    remove = Template.Child("remove")
-    move_up = Template.Child("move_up")
-    move_down = Template.Child("move_down")
-    pattern_column = Template.Child("pattern_column")
-    validity_renderer = Template.Child("validity_renderer")
+    treeview = Gtk.Template.Child()
+    remove = Gtk.Template.Child()
+    move_up = Gtk.Template.Child()
+    move_down = Gtk.Template.Child()
+    pattern_column = Gtk.Template.Child()
+    validity_renderer = Gtk.Template.Child()
 
     default_entry = [_("label"), False, _("pattern"), True]
 
@@ -60,8 +55,7 @@ class FilterList(Gtk.VBox, EditableListWidget):
     )
 
     def __init__(self, **kwargs):
-        super().__init__(self, **kwargs)
-        FilterList.init_template(self)
+        super().__init__(**kwargs)
         self.model = self.treeview.get_model()
 
         self.pattern_column.set_cell_data_func(
@@ -87,31 +81,31 @@ class FilterList(Gtk.VBox, EditableListWidget):
         icon_name = "gtk-dialog-warning" if not is_valid else None
         cell.set_property("stock-id", icon_name)
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_add_clicked(self, button):
         self.add_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_remove_clicked(self, button):
         self.remove_selected_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_move_up_clicked(self, button):
         self.move_up_selected_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_move_down_clicked(self, button):
         self.move_down_selected_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_name_edited(self, ren, path, text):
         self.model[path][0] = text
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_cellrenderertoggle_toggled(self, ren, path):
         self.model[path][1] = not ren.get_active()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_pattern_edited(self, ren, path, text):
         valid = FilterEntry.check_filter(text, self.filter_type)
         self.model[path][2] = text
@@ -122,15 +116,15 @@ class FilterList(Gtk.VBox, EditableListWidget):
         settings.set_value(self.settings_key, GLib.Variant('a(sbs)', value))
 
 
-@Template(resource_path='/org/gnome/meld/ui/column-list.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/column-list.ui')
 class ColumnList(Gtk.VBox, EditableListWidget):
 
     __gtype_name__ = "ColumnList"
 
-    treeview = Template.Child("treeview")
-    remove = Template.Child("remove")
-    move_up = Template.Child("move_up")
-    move_down = Template.Child("move_down")
+    treeview = Gtk.Template.Child()
+    remove = Gtk.Template.Child()
+    move_up = Gtk.Template.Child()
+    move_down = Gtk.Template.Child()
 
     default_entry = [_("label"), False, _("pattern"), True]
 
@@ -150,8 +144,7 @@ class ColumnList(Gtk.VBox, EditableListWidget):
     )
 
     def __init__(self, **kwargs):
-        super().__init__(self, **kwargs)
-        ColumnList.init_template(self)
+        super().__init__(**kwargs)
         self.model = self.treeview.get_model()
 
         # Unwrap the variant
@@ -179,15 +172,15 @@ class ColumnList(Gtk.VBox, EditableListWidget):
 
         self.setup_sensitivity_handling()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_move_up_clicked(self, button):
         self.move_up_selected_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_move_down_clicked(self, button):
         self.move_down_selected_entry()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_cellrenderertoggle_toggled(self, ren, path):
         self.model[path][0] = not ren.get_active()
 
@@ -254,42 +247,43 @@ class GSettingsStringComboBox(GSettingsComboBox):
     gsettings_value = GObject.Property(type=str, default="")
 
 
-@Template(resource_path='/org/gnome/meld/ui/preferences.ui')
+@Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
 class PreferencesDialog(Gtk.Dialog):
 
     __gtype_name__ = "PreferencesDialog"
 
-    checkbutton_break_commit_lines = Template.Child("checkbutton_break_commit_lines")  # noqa: E501
-    checkbutton_default_font = Template.Child("checkbutton_default_font")
-    checkbutton_folder_filter_text = Template.Child("checkbutton_folder_filter_text")  # noqa: E501
-    checkbutton_highlight_current_line = Template.Child("checkbutton_highlight_current_line")  # noqa: E501
-    checkbutton_ignore_blank_lines = Template.Child("checkbutton_ignore_blank_lines")  # noqa: E501
-    checkbutton_ignore_symlinks = Template.Child("checkbutton_ignore_symlinks")
-    checkbutton_shallow_compare = Template.Child("checkbutton_shallow_compare")
-    checkbutton_show_commit_margin = Template.Child("checkbutton_show_commit_margin")  # noqa: E501
-    checkbutton_show_line_numbers = Template.Child("checkbutton_show_line_numbers")  # noqa: E501
-    checkbutton_show_whitespace = Template.Child("checkbutton_show_whitespace")
-    checkbutton_spaces_instead_of_tabs = Template.Child("checkbutton_spaces_instead_of_tabs")  # noqa: E501
-    checkbutton_use_syntax_highlighting = Template.Child("checkbutton_use_syntax_highlighting")  # noqa: E501
-    checkbutton_wrap_text = Template.Child("checkbutton_wrap_text")
-    checkbutton_wrap_word = Template.Child("checkbutton_wrap_word")
-    column_list_vbox = Template.Child("column_list_vbox")
-    combo_file_order = Template.Child("combo_file_order")
-    combo_merge_order = Template.Child("combo_merge_order")
-    combo_timestamp = Template.Child("combo_timestamp")
-    combobox_style_scheme = Template.Child("combobox_style_scheme")
-    custom_edit_command_entry = Template.Child("custom_edit_command_entry")
-    file_filters_vbox = Template.Child("file_filters_vbox")
-    fontpicker = Template.Child("fontpicker")
-    spinbutton_commit_margin = Template.Child("spinbutton_commit_margin")
-    spinbutton_tabsize = Template.Child("spinbutton_tabsize")
-    syntaxschemestore = Template.Child("syntaxschemestore")
-    system_editor_checkbutton = Template.Child("system_editor_checkbutton")
-    text_filters_vbox = Template.Child("text_filters_vbox")
+    checkbutton_break_commit_lines = Gtk.Template.Child()
+    checkbutton_default_font = Gtk.Template.Child()
+    checkbutton_folder_filter_text = Gtk.Template.Child()
+    checkbutton_highlight_current_line = Gtk.Template.Child()
+    checkbutton_ignore_blank_lines = Gtk.Template.Child()
+    checkbutton_ignore_symlinks = Gtk.Template.Child()
+    checkbutton_shallow_compare = Gtk.Template.Child()
+    checkbutton_show_commit_margin = Gtk.Template.Child()
+    checkbutton_show_line_numbers = Gtk.Template.Child()
+    checkbutton_show_overview_map = Gtk.Template.Child()
+    checkbutton_show_whitespace = Gtk.Template.Child()
+    checkbutton_spaces_instead_of_tabs = Gtk.Template.Child()
+    checkbutton_use_syntax_highlighting = Gtk.Template.Child()
+    checkbutton_wrap_text = Gtk.Template.Child()
+    checkbutton_wrap_word = Gtk.Template.Child()
+    column_list_vbox = Gtk.Template.Child()
+    combo_file_order = Gtk.Template.Child()
+    combo_merge_order = Gtk.Template.Child()
+    combo_overview_map = Gtk.Template.Child()
+    combo_timestamp = Gtk.Template.Child()
+    combobox_style_scheme = Gtk.Template.Child()
+    custom_edit_command_entry = Gtk.Template.Child()
+    file_filters_vbox = Gtk.Template.Child()
+    fontpicker = Gtk.Template.Child()
+    spinbutton_commit_margin = Gtk.Template.Child()
+    spinbutton_tabsize = Gtk.Template.Child()
+    syntaxschemestore = Gtk.Template.Child()
+    system_editor_checkbutton = Gtk.Template.Child()
+    text_filters_vbox = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.init_template()
 
         bindings = [
             ('use-system-font', self.checkbutton_default_font, 'active'),
@@ -299,12 +293,14 @@ class PreferencesDialog(Gtk.Dialog):
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
+            ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
+            ('show-overview-map', self.checkbutton_show_overview_map, 'active'),  # noqa: E501
             ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
             ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),  # noqa: E501
             ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),  # noqa: E501
@@ -330,10 +326,6 @@ class PreferencesDialog(Gtk.Dialog):
             'active', self.checkbutton_wrap_word, 'sensitive',
             GObject.BindingFlags.DEFAULT)
 
-        # TODO: Fix once bind_with_mapping is available
-        self.checkbutton_show_whitespace.set_active(
-            bool(settings.get_flags('draw-spaces')))
-
         wrap_mode = settings.get_enum('wrap-mode')
         self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
         self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
@@ -355,6 +347,7 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
+        self.combo_overview_map.bind_to('overview-map-style')
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes
@@ -366,7 +359,7 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.show()
 
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_checkbutton_wrap_text_toggled(self, button):
         if not self.checkbutton_wrap_text.get_active():
             wrap_mode = Gtk.WrapMode.NONE
@@ -376,11 +369,6 @@ class PreferencesDialog(Gtk.Dialog):
             wrap_mode = Gtk.WrapMode.CHAR
         settings.set_enum('wrap-mode', wrap_mode)
 
-    @Template.Callback()
-    def on_checkbutton_show_whitespace_toggled(self, widget):
-        value = GtkSource.DrawSpacesFlags.ALL if widget.get_active() else 0
-        settings.set_flags('draw-spaces', value)
-
-    @Template.Callback()
+    @Gtk.Template.Callback()
     def on_response(self, dialog, response_id):
         self.destroy()

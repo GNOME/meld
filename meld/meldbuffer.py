@@ -16,13 +16,10 @@
 
 import logging
 
-from gi.repository import Gio
-from gi.repository import GLib
-from gi.repository import GObject
-from gi.repository import GtkSource
+from gi.repository import Gio, GLib, GObject, GtkSource
 
 from meld.conf import _
-from meld.settings import bind_settings, meldsettings
+from meld.settings import bind_settings
 
 log = logging.getLogger(__name__)
 
@@ -40,12 +37,6 @@ class MeldBuffer(GtkSource.Buffer):
         bind_settings(self)
         self.data = MeldBufferData()
         self.undo_sequence = None
-        meldsettings.connect('changed', self.on_setting_changed)
-        self.set_style_scheme(meldsettings.style_scheme)
-
-    def on_setting_changed(self, meldsettings, key):
-        if key == 'style-scheme':
-            self.set_style_scheme(meldsettings.style_scheme)
 
     def do_begin_user_action(self, *args):
         if self.undo_sequence:
@@ -93,7 +84,7 @@ class MeldBufferData(GObject.GObject):
     encoding = GObject.Property(
         type=GtkSource.Encoding,
         nick="The file encoding of the linked GtkSourceFile",
-        default=None,
+        default=GtkSource.Encoding.get_utf8(),
     )
 
     def __init__(self):

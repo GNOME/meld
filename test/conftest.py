@@ -18,8 +18,8 @@ def default_icon_theme():
 
 @pytest.fixture(autouse=True)
 def template_resources():
-    from meld.ui import _gtktemplate
+    import gi  # noqa: F401
     with mock.patch(
-            'meld.ui._gtktemplate.validate_resource_path',
+            'gi._gtktemplate.validate_resource_path',
             mock.Mock(return_value=True)):
         yield

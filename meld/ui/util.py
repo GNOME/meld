@@ -16,31 +16,9 @@
 import logging
 from typing import List
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import Gtk
-
-import meld.conf
-# Import support module to get all builder-constructed widgets in the namespace
-from meld.ui import gladesupport  # noqa: F401
+from gi.repository import Gio, GObject, Gtk
 
 log = logging.getLogger(__name__)
-
-
-def get_widget(filename, widget):
-    builder = Gtk.Builder()
-    builder.set_translation_domain(meld.conf.__package__)
-    path = meld.conf.ui_file(filename)
-    builder.add_objects_from_file(path, [widget])
-    return builder.get_object(widget)
-
-
-def get_builder(filename):
-    builder = Gtk.Builder()
-    builder.set_translation_domain(meld.conf.__package__)
-    path = meld.conf.ui_file(filename)
-    builder.add_from_file(path)
-    return builder
 
 
 def map_widgets_into_lists(widget, widgetnames):

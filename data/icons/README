@@ -1,32 +1,10 @@
 
-Meld's icon situation is an unfortunate confusion of legacy and new-ish
-icons.
-
-All of the icons in the top-level icon folder should be considered
-legacy. Some, like the VC actions, should be replaced with modern, symbolic
-alternatives. Others, like the filter icons, should probably be removed and
-their respective UI elements reworked.
-
-Icons in the hicolor folder are more recently updated, and mostly follow
-the spec.
-
-
 Application icons
 =================
 
- * The reference icon is the SVG at hicolor/scalable/apps/meld.svg. It is
-   designed on a 48x48 canvas, but given the nature of the Meld icon's design,
-   scales fairly well to higher resolutions.
- * The 48x48 icon is exported from the reference SVG.
- * The 32x32 icon is exported from an old SVG; the new one could be used but
-   requires some simplification and border trimming.
- * The 16x16 and 22x22 icons are exported from old XCF files. They should be
-   updated based on the reference SVG.
+On *nix platforms we only ship SVG application icons: the regular Meld icon at
+`hicolor/scalable/apps/org.gnome.meld.svg`, and the symbolic icon for GNOME
+shell presentation at `hicolor/symbolic/apps/org.gnome.meld.svg`.
 
-
-Action icons
-============
-
-The change action icons in hicolor/16x16/actions are all used and have been
-recently updated. These are extremely simple icons, but we would ideally have
-these at additional sizes for different file comparison line heights.
+The Windows `ico` file in this folder is converted from the SVG source. See
+the `Makefile` in this folder for the very simple command.

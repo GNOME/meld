@@ -13,10 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gio
-from gi.repository import GObject
-from gi.repository import GtkSource
-from gi.repository import Pango
+from gi.repository import Gio, GObject, GtkSource, Pango
 
 import meld.conf
 import meld.filters
@@ -56,8 +53,11 @@ class MeldSettings(GObject.GObject):
             self.emit('changed', 'style-scheme')
 
     def _style_scheme_from_gsettings(self):
+        from meld.style import set_base_style_scheme
         manager = GtkSource.StyleSchemeManager.get_default()
-        return manager.get_scheme(settings.get_string('style-scheme'))
+        scheme = manager.get_scheme(settings.get_string('style-scheme'))
+        set_base_style_scheme(scheme)
+        return scheme
 
     def _filters_from_gsetting(self, key, filt_type):
         filter_params = settings.get_value(key)
@@ -91,11 +91,11 @@ def load_settings_schema(schema_id):
 
 
 def create_settings():
-    global settings, interface_settings, meldsettings
+    global settings, interface_settings, _meldsettings
 
     settings = load_settings_schema(meld.conf.APPLICATION_ID)
     interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
-    meldsettings = MeldSettings()
+    _meldsettings = MeldSettings()
 
 
 def bind_settings(obj):
@@ -113,6 +113,10 @@ def bind_settings(obj):
         settings.bind(settings_id, obj, property_id, bind_flags)
 
 
+def get_meld_settings() -> MeldSettings:
+    return _meldsettings
+
+
 settings = None
 interface_settings = None
-meldsettings = None
+_meldsettings = None

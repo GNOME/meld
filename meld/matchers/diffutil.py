@@ -17,8 +17,12 @@
 from gi.repository import GObject
 
 from meld.matchers.myers import (
-    DiffChunk, MyersSequenceMatcher, SyncPointMyersSequenceMatcher)
+    DiffChunk,
+    MyersSequenceMatcher,
+    SyncPointMyersSequenceMatcher,
+)
 
+LO, HI = 1, 2
 
 opcode_reverse = {
     "replace": "replace",
@@ -386,6 +390,19 @@ class Differ(GObject.GObject):
                 if c[seq]:
                     yield reverse_chunk(c[seq])
 
+    # FIXME: This is gratuitous copy-n-paste at this point
+    def paired_all_single_changes(self, fromindex, toindex):
+        if fromindex == 1:
+            seq = toindex // 2
+            for c in self._merge_cache:
+                if c[seq]:
+                    yield c[seq]
+        else:
+            seq = fromindex // 2
+            for c in self._merge_cache:
+                if c[seq]:
+                    yield reverse_chunk(c[seq])
+
     def single_changes(self, textindex, lines=(None, None)):
         """Give changes for single file only. do not return 'equal' hunks.
         """
@@ -410,7 +427,6 @@ class Differ(GObject.GObject):
         return self.diffs == [[], []] and self._initialised
 
     def _merge_blocks(self, using):
-        LO, HI = 1, 2
         lowc = min(using[0][0][LO], using[1][0][LO])
         highc = max(using[0][-1][HI], using[1][-1][HI])
         low = []

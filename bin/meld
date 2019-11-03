@@ -24,6 +24,7 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
+
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
 # these streams seem to have issues with flush() so we just redirect stdout and
@@ -115,10 +116,12 @@ try:
             libintl = cdll.intl
         libintl.bindtextdomain(locale_domain, locale_dir)
         libintl.bind_textdomain_codeset(locale_domain, 'UTF-8')
+        libintl.textdomain(locale_domain)
         del libintl
     else:
         locale.bindtextdomain(locale_domain, locale_dir)
         locale.bind_textdomain_codeset(locale_domain, 'UTF-8')
+        locale.textdomain(locale_domain)
 except AttributeError as e:
     # Python builds linked without libintl (i.e., OSX) don't have
     # bindtextdomain(), which causes Gtk.Builder translations to fail.
@@ -152,14 +155,14 @@ def show_error_and_exit(error_text):
         import gi
         gi.require_version("Gtk", "3.0")
         from gi.repository import Gtk
-        toplevel = Gtk.Window(title="Meld")
-        toplevel.show()
         Gtk.MessageDialog(
-            toplevel, 0, Gtk.MessageType.ERROR,
-            Gtk.ButtonsType.CLOSE, error_text).run()
+            message_type=Gtk.MessageType.ERROR,
+            buttons=Gtk.ButtonsType.CLOSE,
+            text=error_text,
+        ).run()
     except Exception:
-        # Although tkinter is imported here, it isn't meld's dependency:
-        # if found it is used to show GUI error about lacking true dependecies.
+        # tkinter is imported here only to show a UI warning about
+        # missing dependencies.
         try:
             if sys.version_info < (3, 0):
                 from Tkinter import Tk
@@ -181,9 +184,11 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
 
+    cairo_requirement = (1, 15)
     gtk_requirement = (3, 20)
     glib_requirement = (2, 48)
-    gtksourceview_requirement = (3, 20, 0)
+    gtksourceview_requirement = (4, 0, 0)
+    pygobject_requirement = (3, 30, 0)
 
     def missing_reqs(mod, ver, exc=None):
         if isinstance(exc, ImportError):
@@ -194,6 +199,12 @@ def check_requirements():
 
     if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
         missing_reqs("Python", meld.conf.PYTHON_REQUIREMENT_TUPLE)
+
+    try:
+        import gi
+        assert gi.version_info >= pygobject_requirement
+    except (ImportError, AssertionError, ValueError) as e:
+        missing_reqs("pygobject", pygobject_requirement, e)
 
     # gtk+ and related imports
     try:
@@ -213,18 +224,21 @@ def check_requirements():
         missing_reqs("GLib", glib_requirement, e)
 
     try:
-        gi.require_version('GtkSource', '3.0')
+        gi.require_version('GtkSource', '4')
         from gi.repository import GtkSource
-        # TODO: There is no way to get at GtkSourceView's actual version
-        assert hasattr(GtkSource, 'SearchSettings')
-        assert hasattr(GtkSource, 'Tag')
+        GtkSource.init()
     except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GtkSourceView", gtksourceview_requirement, e)
+        missing_reqs("GtkSourceView 4", gtksourceview_requirement, e)
+
+    try:
+        import cairo
+        assert cairo.version_info >= cairo_requirement
+    except (ImportError, AssertionError) as e:
+        missing_reqs("cairo", cairo_requirement, e)
 
 
 def setup_resources():
     from gi.repository import Gio
-    from gi.repository import GLib
     from gi.repository import Gtk
     from gi.repository import Gdk
     from gi.repository import GtkSource
@@ -254,18 +268,24 @@ def setup_resources():
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)
 
-    css_file = os.path.join(meld.conf.DATADIR, "meld.css")
     provider = Gtk.CssProvider()
-    try:
-        provider.load_from_path(css_file)
-    except GLib.GError as err:
-        print(_("Couldn’t load Meld-specific CSS (%s)\n%s") % (css_file, err))
+    provider.load_from_resource('/org/gnome/meld/meld.css')
     Gtk.StyleContext.add_provider_for_screen(
         Gdk.Screen.get_default(), provider,
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     style_path = os.path.join(meld.conf.DATADIR, "styles")
     GtkSource.StyleSchemeManager.get_default().append_search_path(style_path)
+
+    # Just copy style schemes to the file ending expected by
+    # GtkSourceView if we're uninstalled and they're missing
+    if uninstalled:
+        for style in {'meld-base', 'meld-dark'}:
+            path = os.path.join(
+                style_path, '{}.style-scheme.xml'.format(style))
+            if not os.path.exists(path):
+                import shutil
+                shutil.copyfile(path + '.in', path)
 
 
 def setup_settings():
