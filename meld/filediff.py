@@ -18,7 +18,7 @@ import copy
 import functools
 import logging
 import math
-from typing import Type
+from typing import Optional, Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -755,11 +755,41 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     @Gtk.Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
-        self.next_diff(event.direction)
+        self.next_diff(event.direction, use_viewport=True)
 
-    def next_diff(self, direction, centered=False):
-        target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
-                  else self.cursor.prev)
+    def _is_chunk_in_area(
+            self, chunk_id: Optional[int], pane: int, area: Gdk.Rectangle):
+
+        if chunk_id is None:
+            return False
+
+        chunk = self.linediffer.get_chunk(chunk_id, pane)
+        target_iter = self.textbuffer[pane].get_iter_at_line(chunk.start_a)
+        target_y, _height = self.textview[pane].get_line_yrange(target_iter)
+        return area.y <= target_y <= area.y + area.height
+
+    def next_diff(self, direction, centered=False, use_viewport=False):
+        # use_viewport: seek next and previous diffes based on where
+        # the user is currently scrolling at.
+        scroll_down = direction == Gdk.ScrollDirection.DOWN
+        target = self.cursor.next if scroll_down else self.cursor.prev
+
+        if use_viewport:
+            pane = self.cursor.pane
+            text_area = self.textview[pane].get_visible_rect()
+
+            # Only do viewport-relative calculations if the chunk we'd
+            # otherwise scroll to is *not* on screen. This avoids 3-way
+            # comparison cases where scrolling won't go past a chunk
+            # because the scroll doesn't go past 50% of the screen.
+            if not self._is_chunk_in_area(target, pane, text_area):
+                halfscreen = text_area.y + text_area.height / 2
+                halfline = self.textview[pane].get_line_at_y(
+                    halfscreen).target_iter.get_line()
+
+                _, prev, next_ = self.linediffer.locate_chunk(1, halfline)
+                target = next_ if scroll_down else prev
+
         self.go_to_chunk(target, centered=centered)
 
     def action_previous_change(self, *args):
