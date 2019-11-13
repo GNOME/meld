@@ -172,9 +172,6 @@ setup(
         ('share/doc/meld-' + meld.conf.__version__,
          ['COPYING', 'NEWS']
          ),
-        ('share/meld',
-         ['data/meld.css']
-         ),
         ('share/meld/icons',
          glob.glob("data/icons/*.png") +
          glob.glob("data/icons/COPYING*")
