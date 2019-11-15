@@ -23,10 +23,13 @@ from gi.repository import Gdk, Gio, GLib, Gtk
 import meld.ui.gladesupport  # noqa: F401
 import meld.ui.util
 from meld.conf import _
-from meld.const import FILE_FILTER_ACTION_FORMAT, TEXT_FILTER_ACTION_FORMAT
+from meld.const import (
+    FILE_FILTER_ACTION_FORMAT,
+    TEXT_FILTER_ACTION_FORMAT,
+    FileComparisonMode,
+)
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
-from meld.filemerge import FileMerge
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
@@ -372,7 +375,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             raise ValueError(
                 _("Need three files to auto-merge, got: %r") %
                 [f.get_parse_name() for f in gfiles])
-        doc = FileMerge(len(gfiles))
+        doc = FileDiff(
+            len(gfiles), comparison_mode=FileComparisonMode.AutoMerge)
         self._append_page(doc)
         doc.set_files(gfiles)
         if merge_output is not None:

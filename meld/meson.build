@@ -14,7 +14,6 @@ folders = {
         'diffgrid.py',
         'dirdiff.py',
         'filediff.py',
-        'filemerge.py',
         'filters.py',
         'gutterrendererchunk.py',
         'iohelpers.py',

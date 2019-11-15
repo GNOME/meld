@@ -24,6 +24,7 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
+
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
 # these streams seem to have issues with flush() so we just redirect stdout and
@@ -238,7 +239,6 @@ def check_requirements():
 
 def setup_resources():
     from gi.repository import Gio
-    from gi.repository import GLib
     from gi.repository import Gtk
     from gi.repository import Gdk
     from gi.repository import GtkSource
@@ -268,12 +268,8 @@ def setup_resources():
     icon_dir = os.path.join(meld.conf.DATADIR, "icons")
     Gtk.IconTheme.get_default().append_search_path(icon_dir)
 
-    css_file = os.path.join(meld.conf.DATADIR, "meld.css")
     provider = Gtk.CssProvider()
-    try:
-        provider.load_from_path(css_file)
-    except GLib.GError as err:
-        print(_("Couldn’t load Meld-specific CSS (%s)\n%s") % (css_file, err))
+    provider.load_from_resource('/org/gnome/meld/meld.css')
     Gtk.StyleContext.add_provider_for_screen(
         Gdk.Screen.get_default(), provider,
         Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)

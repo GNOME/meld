@@ -18,6 +18,7 @@ import copy
 import functools
 import logging
 import math
+from typing import Optional, Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -29,12 +30,13 @@ from meld.const import (
     TEXT_FILTER_ACTION_FORMAT,
     ActionMode,
     ChunkAction,
+    FileComparisonMode,
 )
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
-from meld.matchers.merge import Merger
+from meld.matchers.merge import AutoMergeDiffer, Merger
 from meld.meldbuffer import (
     BufferDeletionAction,
     BufferInsertionAction,
@@ -188,7 +190,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
 
-    differ = Differ
+    differ: Type[Differ]
+    comparison_mode: FileComparisonMode
 
     keylookup = {
         Gdk.KEY_Shift_L: MASK_SHIFT,
@@ -220,7 +223,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=False,
     )
 
-    def __init__(self, num_panes):
+    def __init__(
+        self,
+        num_panes,
+        *,
+        comparison_mode: FileComparisonMode = FileComparisonMode.Compare,
+    ):
         super().__init__()
         # FIXME:
         # This unimaginable hack exists because GObject (or GTK+?)
@@ -243,6 +251,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             "chunkmap",
         ]
         map_widgets_into_lists(self, widget_lists)
+
+        self.comparison_mode = comparison_mode
+        if comparison_mode == FileComparisonMode.AutoMerge:
+            self.differ = AutoMergeDiffer
+        else:
+            self.differ = Differ
 
         self.warned_bad_comparison = False
         self._keymask = 0
@@ -563,6 +577,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 "notify::cursor-position", self.on_cursor_position_changed)
             buf.handlers = id0, id1, id2, id3, id4
 
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            self.textview[0].set_editable(0)
+            self.textview[2].set_editable(0)
+
     def bind_adapt_cursor_position(self, binding, from_value):
         buf = binding.get_source()
         textview = self.textview[self.textbuffer.index(buf)]
@@ -737,11 +755,41 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     @Gtk.Template.Callback()
     def on_linkmap_scroll_event(self, linkmap, event):
-        self.next_diff(event.direction)
+        self.next_diff(event.direction, use_viewport=True)
 
-    def next_diff(self, direction, centered=False):
-        target = (self.cursor.next if direction == Gdk.ScrollDirection.DOWN
-                  else self.cursor.prev)
+    def _is_chunk_in_area(
+            self, chunk_id: Optional[int], pane: int, area: Gdk.Rectangle):
+
+        if chunk_id is None:
+            return False
+
+        chunk = self.linediffer.get_chunk(chunk_id, pane)
+        target_iter = self.textbuffer[pane].get_iter_at_line(chunk.start_a)
+        target_y, _height = self.textview[pane].get_line_yrange(target_iter)
+        return area.y <= target_y <= area.y + area.height
+
+    def next_diff(self, direction, centered=False, use_viewport=False):
+        # use_viewport: seek next and previous diffes based on where
+        # the user is currently scrolling at.
+        scroll_down = direction == Gdk.ScrollDirection.DOWN
+        target = self.cursor.next if scroll_down else self.cursor.prev
+
+        if use_viewport:
+            pane = self.cursor.pane
+            text_area = self.textview[pane].get_visible_rect()
+
+            # Only do viewport-relative calculations if the chunk we'd
+            # otherwise scroll to is *not* on screen. This avoids 3-way
+            # comparison cases where scrolling won't go past a chunk
+            # because the scroll doesn't go past 50% of the screen.
+            if not self._is_chunk_in_area(target, pane, text_area):
+                halfscreen = text_area.y + text_area.height / 2
+                halfline = self.textview[pane].get_line_at_y(
+                    halfscreen).target_iter.get_line()
+
+                _, prev, next_ = self.linediffer.locate_chunk(1, halfline)
+                target = next_ if scroll_down else prev
+
         self.go_to_chunk(target, centered=centered)
 
     def action_previous_change(self, *args):
@@ -1429,7 +1477,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def get_comparison(self):
         uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
-        return RecentType.File, uris
+
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            comparison_type = RecentType.Merge
+        else:
+            comparison_type = RecentType.File
+
+        return comparison_type, uris
 
     def file_loaded(self, loader, result, user_data):
 
@@ -1488,7 +1542,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
             self.scheduler.add_task(self._compare_files_internal())
 
     def _merge_files(self):
-        yield 1
+        if self.comparison_mode == FileComparisonMode.AutoMerge:
+            yield _("[%s] Merging files") % self.label_text
+            merger = Merger()
+            step = merger.initialize(self.buffer_filtered, self.buffer_texts)
+            while next(step) is None:
+                yield 1
+            for merged_text in merger.merge_3_files():
+                yield 1
+            self.linediffer.unresolved = merger.unresolved
+            self.textbuffer[1].set_text(merged_text)
+            self.recompute_label()
+        else:
+            yield 1
 
     def _diff_files(self, refresh=False):
         yield _("[%s] Computing differences") % self.label_text
@@ -2039,17 +2105,18 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def _sync_vscroll(self, adjustment, master):
         syncpoint = misc.calc_syncpoint(adjustment)
 
-        # Middle of the screen, in buffer coords
-        middle_y = (
+        # Sync point in buffer coords; this will usually be the middle
+        # of the screen, except at the top and bottom of the document.
+        sync_y = (
             adjustment.get_value() + adjustment.get_page_size() * syncpoint)
 
         # Find the target line. This is a float because, especially for
         # wrapped lines, the sync point may be half way through a line.
         # Not doing this calculation makes scrolling jerky.
-        middle_iter, _ = self.textview[master].get_line_at_y(int(middle_y))
-        line_y, height = self.textview[master].get_line_yrange(middle_iter)
+        sync_iter, _ = self.textview[master].get_line_at_y(int(sync_y))
+        line_y, height = self.textview[master].get_line_yrange(sync_iter)
         height = height or 1
-        target_line = middle_iter.get_line() + ((middle_y - line_y) / height)
+        target_line = sync_iter.get_line() + ((sync_y - line_y) / height)
 
         # In the case of two pane scrolling, it's clear how to bind
         # scrollbars: if the user moves the left pane, we move the
@@ -2091,11 +2158,20 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
             fraction = (target_line - mbegin) / ((mend - mbegin) or 1)
             other_line = obegin + fraction * (oend - obegin)
+
+            # At this point, we've identified the line within the
+            # corresponding chunk that we want to sync to.
             it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
             # Special case line-height adjustment for EOF
             line_factor = 1.0 if it.is_end() else other_line - int(other_line)
             val += line_factor * height
+            if syncpoint > 0.5:
+                # If we're in the last half page, gradually factor in
+                # the overscroll margin.
+                overscroll_scale = (syncpoint - 0.5) / 0.5
+                overscroll_height = self.textview[i].get_bottom_margin()
+                val += overscroll_height * overscroll_scale
             val -= adj.get_page_size() * syncpoint
             val = min(max(val, adj.get_lower()),
                       adj.get_upper() - adj.get_page_size())

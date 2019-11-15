@@ -1,4 +1,3 @@
-
 gnome.compile_resources(
   application_id,
   meson.project_name() + '.gresource.xml',
