@@ -12,8 +12,15 @@ install_data(
 )
 
 # Install desktop file
-desktop_file = i18n.merge_file(
-  input: '@0@.desktop.in'.format(application_id),
+desktop_conf = configuration_data()
+desktop_conf.set('icon', application_id)
+
+desktop = i18n.merge_file(
+  input: configure_file(
+    input: '@0@.desktop.in.in'.format(resource_base_id),
+    output: '@0@.desktop.in'.format(application_id),
+    configuration: desktop_conf
+  ),
   output: '@0@.desktop'.format(application_id),
   po_dir: podir,
   type: 'desktop',
