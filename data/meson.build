@@ -7,7 +7,7 @@ install_data(
 
 # Install schema file
 install_data(
-  '@0@.gschema.xml'.format(application_id),
+  '@0@.gschema.xml'.format(resource_base_id),
   install_dir: schemadir
 )
 
@@ -40,7 +40,7 @@ endif
 
 # Install AppData file
 appdata_file = i18n.merge_file(
-  input: '@0@.appdata.xml.in'.format(application_id),
+  input: '@0@.appdata.xml.in'.format(resource_base_id),
   output: '@0@.appdata.xml'.format(application_id),
   po_dir: podir,
   install: true,
@@ -63,7 +63,7 @@ endif
 
 # Install mimetypes
 mimetype_file = i18n.merge_file(
-  input: join_paths('mime', '@0@.xml.in'.format(application_id)),
+  input: join_paths('mime', '@0@.xml.in'.format(resource_base_id)),
   output: '@0@.xml'.format(application_id),
   po_dir: podir,
   data_dirs: itsdir,
