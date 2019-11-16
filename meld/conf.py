@@ -18,6 +18,8 @@ DATADIR = Path(sys.prefix) / "share" / "meld"
 LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 # END
 
+PROFILE = ''
+
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
 PYTHON_REQUIREMENT_TUPLE = (3, 6)
