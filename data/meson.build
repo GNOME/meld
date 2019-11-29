@@ -15,7 +15,7 @@ install_data(
 desktop_conf = configuration_data()
 desktop_conf.set('icon', application_id)
 
-desktop = i18n.merge_file(
+desktop_file = i18n.merge_file(
   input: configure_file(
     input: '@0@.desktop.in.in'.format(resource_base_id),
     output: '@0@.desktop.in'.format(application_id),
