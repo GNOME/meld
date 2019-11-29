@@ -18,7 +18,14 @@ DATADIR = Path(sys.prefix) / "share" / "meld"
 LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 # END
 
+CONFIGURED = '@configured@'
 PROFILE = ''
+
+if CONFIGURED == 'True':
+    APPLICATION_ID = '@application_id@'
+    DATADIR = '@pkgdatadir@'
+    LOCALEDIR = '@localedir@'
+    PROFILE = '@profile@'
 
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
