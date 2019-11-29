@@ -77,6 +77,23 @@ if os.path.exists(os.path.join(melddir, "meld.doap")):
     uninstalled = True
 devel = os.path.exists(os.path.join(melddir, ".git"))
 
+if uninstalled:
+    # Import system hackery to import conf.py.in without copying it to
+    # have a .py suffix. This is entirely so that we can run from a git
+    # checkout without any user intervention.
+    import importlib.machinery
+    import importlib.util
+
+    loader = importlib.machinery.SourceFileLoader(
+        'meld.conf', './meld/conf.py.in')
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    mod = importlib.util.module_from_spec(spec)
+    loader.exec_module(mod)
+
+    import meld
+    meld.conf = mod
+    sys.modules['meld.conf'] = mod
+
 import meld.conf  # noqa: E402
 
 # Silence warnings on non-devel releases (minor version is divisible by 2)
