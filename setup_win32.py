@@ -2,14 +2,12 @@
 
 import glob
 import os.path
+import pathlib
 import platform
 import sys
 import sysconfig
 
 from cx_Freeze import Executable, setup
-
-import meld.build_helpers
-import meld.conf
 
 
 def get_non_python_libs():
@@ -124,6 +122,18 @@ if 'mingw' in sysconfig.get_platform():
          "shortcutName": "Meld",
          "shortcutDir": "ProgramMenuFolder",
     })
+
+# Copy conf.py in place if necessary
+base_path = pathlib.Path(__file__).parent
+conf_path = base_path / 'meld' / 'conf.py'
+
+if not conf_path.exists():
+    import shutil
+    shutil.copyfile(conf_path.with_suffix('.py.in'), conf_path)
+
+import meld.build_helpers  # noqa: E402
+import meld.conf  # noqa: E402
+
 
 setup(
     name="Meld",
