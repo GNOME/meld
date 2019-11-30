@@ -85,7 +85,7 @@ endforeach
 
 # Install the executable file
 app_config = configuration_data()
-app_config.set_quoted('profile', profile)
+app_config.set('profile', profile)
 app_config.set('application_id', application_id)
 app_config.set('resource_base_id', resource_base_id)
 app_config.set('localedir', localedir)
