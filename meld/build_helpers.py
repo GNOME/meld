@@ -328,10 +328,16 @@ class build_i18n(distutils.cmd.Command):
             os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
                                           self.bug_contact
 
+        # These copies are pure hacks to work around not having the
+        # Meson-based initial variable templating in distutils.
         import shutil
         shutil.copyfile(
             'data/org.gnome.meld.desktop.in.in',
             'data/org.gnome.meld.desktop.in',
+        )
+        shutil.copyfile(
+            'data/org.gnome.meld.appdata.xml.in.in',
+            'data/org.gnome.meld.appdata.xml.in',
         )
 
         self._rebuild_po()
