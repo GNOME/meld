@@ -90,7 +90,7 @@ class build_data(distutils.cmd.Command):
     # FIXME: This is way too much hard coding, but I really hope
     # it also doesn't last that long.
     resource_source = "meld/resources/meld.gresource.xml"
-    resource_target = "org.gnome.meld.gresource"
+    resource_target = "org.gnome.Meld.gresource"
 
     def initialize_options(self):
         pass
@@ -327,6 +327,12 @@ class build_i18n(distutils.cmd.Command):
         if self.bug_contact is not None:
             os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
                                           self.bug_contact
+
+        import shutil
+        shutil.copyfile(
+            'data/org.gnome.meld.desktop.in.in',
+            'data/org.gnome.meld.desktop.in',
+        )
 
         self._rebuild_po()
 
