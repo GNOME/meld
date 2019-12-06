@@ -113,13 +113,16 @@ try:
         if frozen:
             libintl = cdll['libintl-8']
         else:
-            libintl = cdll.intl
-        libintl.bindtextdomain(locale_domain, locale_dir)
+            try:
+                libintl = cdll.intl
+            except FileNotFoundError:
+                libintl = cdll['libintl-8']
+        libintl.bindtextdomain(locale_domain, str(locale_dir))
         libintl.bind_textdomain_codeset(locale_domain, 'UTF-8')
         libintl.textdomain(locale_domain)
         del libintl
     else:
-        locale.bindtextdomain(locale_domain, locale_dir)
+        locale.bindtextdomain(locale_domain, str(locale_dir))
         locale.bind_textdomain_codeset(locale_domain, 'UTF-8')
         locale.textdomain(locale_domain)
 except AttributeError as e:
