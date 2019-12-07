@@ -29,7 +29,7 @@ def tree_path_as_tuple(path):
 def tree_path_prev(path):
     if not path or path[-1] == 0:
         return None
-    return path[:-1] + (path[-1] - 1,)
+    return path[:-1] + [path[-1] - 1]
 
 
 def tree_path_up(path):
