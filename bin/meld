@@ -403,16 +403,9 @@ def environment_hacks():
             pass
 
 
-if __name__ == '__main__':
-    setup_logging()
-    disable_stdout_buffering()
-    check_requirements()
-    setup_glib_logging()
-    setup_resources()
-    setup_settings()
-    environment_hacks()
-
+def run_application():
     from meld.meldapp import MeldApp
+
     app = MeldApp()
 
     if sys.platform != 'win32':
@@ -420,5 +413,19 @@ if __name__ == '__main__':
         GLib.unix_signal_add(
             GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
 
-    status = app.run(sys.argv)
-    sys.exit(status)
+    return app.run(sys.argv)
+
+
+def main():
+    setup_logging()
+    disable_stdout_buffering()
+    check_requirements()
+    setup_glib_logging()
+    setup_resources()
+    setup_settings()
+    environment_hacks()
+    return run_application()
+
+
+if __name__ == '__main__':
+    sys.exit(main())
