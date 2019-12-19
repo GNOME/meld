@@ -392,6 +392,3 @@ class MeldApp(Gtk.Application):
 
         parser.command_line = None
         return tab if len(comparisons) == 1 else None
-
-
-app = MeldApp()

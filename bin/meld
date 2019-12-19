@@ -412,10 +412,13 @@ if __name__ == '__main__':
     setup_settings()
     environment_hacks()
 
-    import meld.meldapp
+    from meld.meldapp import MeldApp
+    app = MeldApp()
+
     if sys.platform != 'win32':
         from gi.repository import GLib
-        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
-                             lambda *args: meld.meldapp.app.quit(), None)
-    status = meld.meldapp.app.run(sys.argv)
+        GLib.unix_signal_add(
+            GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
+
+    status = app.run(sys.argv)
     sys.exit(status)
