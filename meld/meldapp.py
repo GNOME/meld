@@ -49,6 +49,15 @@ class MeldApp(Gtk.Application):
         Gtk.Window.set_default_icon_name(meld.conf.APPLICATION_ID)
         self.set_resource_base_path(meld.conf.RESOURCE_BASE)
 
+        provider = Gtk.CssProvider()
+        provider.load_from_resource(self.make_resource_path('meld.css'))
+        Gtk.StyleContext.add_provider_for_screen(
+            Gdk.Screen.get_default(), provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+    def make_resource_path(self, resource_path: str) -> str:
+        return f'{self.props.resource_base_path}/{resource_path}'
+
     def do_startup(self):
         Gtk.Application.do_startup(self)
         meld.accelerators.register_accels(self)
