@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
 
 import glob
-import sys
 from distutils.core import setup
 
 import meld.build_helpers
 import meld.conf
-
-if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
-    version = ".".join(map(str, meld.conf.PYTHON_REQUIREMENT_TUPLE))
-    raise Exception("Meld setup requires Python %s or higher." % version)
 
 setup(
     name=meld.conf.__package__,
