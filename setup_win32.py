@@ -143,6 +143,7 @@ setup(
     author_email='meld-list@gnome.org',
     maintainer='Kai Willadsen',
     url='http://meldmerge.org',
+    license='GPLv2+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: X11 Applications :: GTK',
@@ -150,10 +151,12 @@ setup(
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 3 :: Only',
         'Topic :: Desktop Environment :: Gnome',
         'Topic :: Software Development',
         'Topic :: Software Development :: Version Control',
     ],
+    keywords=['diff', 'merge'],
     options={
         "build_exe": build_exe_options,
         "bdist_msi": bdist_msi_options,
@@ -172,7 +175,8 @@ setup(
         'meld.vc',
     ],
     package_data={
-        'meld': ['README', 'COPYING', 'NEWS']
+        'meld': ['README', 'COPYING', 'NEWS'],
+        'meld.vc': ['README', 'COPYING'],
     },
     scripts=['bin/meld'],
     data_files=[
