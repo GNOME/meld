@@ -201,57 +201,60 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
 
-    cairo_requirement = (1, 15)
-    gtk_requirement = (3, 20)
-    glib_requirement = (2, 48)
-    gtksourceview_requirement = (4, 0, 0)
-    pygobject_requirement = (3, 30, 0)
+    import importlib
+    from typing import NamedTuple, Optional
 
-    def missing_reqs(mod, ver, exc=None):
-        if isinstance(exc, ImportError):
-            show_error_and_exit(_("Cannot import: ") + mod + "\n" + str(exc))
-        else:
-            modver = mod + " " + ".".join(map(str, ver))
-            show_error_and_exit(_("Meld requires %s or higher.") % modver)
+    class Requirement(NamedTuple):
+        name: str
+        module: Optional[str]
+        gi_version: Optional[str]
+        major_version: int
+        minor_version: int
 
-    if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
-        missing_reqs("Python", meld.conf.PYTHON_REQUIREMENT_TUPLE)
+        def check(self):
+            if self.gi_version:
+                import gi
+                gi.require_version(self.module, self.gi_version)
+                module = 'gi.repository.{}'.format(self.module)
+            else:
+                module = self.module
+
+            mod = importlib.import_module(module)
+            if mod.__name__ == 'gi.repository.Gtk':
+                version = (mod.get_major_version(), mod.get_minor_version())
+            elif mod.__name__ == 'gi.repository.GLib':
+                version = (mod.MAJOR_VERSION, mod.MINOR_VERSION)
+            elif mod.__name__ == 'gi.repository.GtkSource':
+                # There's no accessors for GtkSource, so we try a 4.0 API
+                # call and just set the version so it will pass
+                mod.init()
+                version = (self.major_version, self.minor_version)
+            elif mod.__name__ in ('cairo', 'gi', 'sys'):
+                version = mod.version_info
+
+            if version < (self.major_version, self.minor_version):
+                raise RuntimeError('Unsupported version')
+
+        def __str__(self):
+            return '{} {}.{}'.format(
+                self.name, self.major_version, self.minor_version)
+
+    # These requirements are kept in both `bin/meld` and `meson.build`. If you
+    # update one, update the other.
+    requirements = (
+        Requirement('Python', 'sys', None, 3, 6),
+        Requirement('Gtk+', 'Gtk', '3.0', 3, 20),
+        Requirement('GLib', 'GLib', '2.0', 2, 48),
+        Requirement('GtkSourceView', 'GtkSource', '4', 4, 0),
+        Requirement('pygobject', 'gi', None, 3, 30),
+        Requirement('pycairo', 'cairo', None, 1, 15),
+    )
 
     try:
-        import gi
-        assert gi.version_info >= pygobject_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("pygobject", pygobject_requirement, e)
-
-    # gtk+ and related imports
-    try:
-        # FIXME: Extra clause for gi
-        import gi
-        gi.require_version("Gtk", "3.0")
-        from gi.repository import Gtk
-        version = (Gtk.get_major_version(), Gtk.get_minor_version())
-        assert version >= gtk_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GTK+", gtk_requirement, e)
-
-    try:
-        from gi.repository import GLib
-        assert (GLib.MAJOR_VERSION, GLib.MINOR_VERSION) >= glib_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GLib", glib_requirement, e)
-
-    try:
-        gi.require_version('GtkSource', '4')
-        from gi.repository import GtkSource
-        GtkSource.init()
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GtkSourceView 4", gtksourceview_requirement, e)
-
-    try:
-        import cairo
-        assert cairo.version_info >= cairo_requirement
-    except (ImportError, AssertionError) as e:
-        missing_reqs("cairo", cairo_requirement, e)
+        for r in requirements:
+            r.check()
+    except (AttributeError, ImportError, RuntimeError, ValueError):
+        show_error_and_exit(_('Meld requires {} or higher.'.format(r)))
 
 
 def setup_resources():
