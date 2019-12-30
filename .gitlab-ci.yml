@@ -28,16 +28,6 @@ flatpak:
         APP_ID: "org.gnome.MeldDevel"
     extends: .flatpak
 
-review:
-    stage: deploy
-    dependencies:
-        - 'flatpak'
-    extends: '.review'
-
-stop_review:
-    stage: deploy
-    extends: '.stop_review'
-
 nightly:
   extends: '.publish_nightly'
   dependencies:
