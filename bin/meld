@@ -77,6 +77,23 @@ if os.path.exists(os.path.join(melddir, "meld.doap")):
     uninstalled = True
 devel = os.path.exists(os.path.join(melddir, ".git"))
 
+if uninstalled:
+    # Import system hackery to import conf.py.in without copying it to
+    # have a .py suffix. This is entirely so that we can run from a git
+    # checkout without any user intervention.
+    import importlib.machinery
+    import importlib.util
+
+    loader = importlib.machinery.SourceFileLoader(
+        'meld.conf', './meld/conf.py.in')
+    spec = importlib.util.spec_from_loader(loader.name, loader)
+    mod = importlib.util.module_from_spec(spec)
+    loader.exec_module(mod)
+
+    import meld
+    meld.conf = mod
+    sys.modules['meld.conf'] = mod
+
 import meld.conf  # noqa: E402
 
 # Silence warnings on non-devel releases (minor version is divisible by 2)
@@ -187,63 +204,64 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
 
-    cairo_requirement = (1, 15)
-    gtk_requirement = (3, 20)
-    glib_requirement = (2, 48)
-    gtksourceview_requirement = (4, 0, 0)
-    pygobject_requirement = (3, 30, 0)
+    import importlib
+    from typing import NamedTuple, Optional
 
-    def missing_reqs(mod, ver, exc=None):
-        if isinstance(exc, ImportError):
-            show_error_and_exit(_("Cannot import: ") + mod + "\n" + str(exc))
-        else:
-            modver = mod + " " + ".".join(map(str, ver))
-            show_error_and_exit(_("Meld requires %s or higher.") % modver)
+    class Requirement(NamedTuple):
+        name: str
+        module: Optional[str]
+        gi_version: Optional[str]
+        major_version: int
+        minor_version: int
 
-    if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
-        missing_reqs("Python", meld.conf.PYTHON_REQUIREMENT_TUPLE)
+        def check(self):
+            if self.gi_version:
+                import gi
+                gi.require_version(self.module, self.gi_version)
+                module = 'gi.repository.{}'.format(self.module)
+            else:
+                module = self.module
+
+            mod = importlib.import_module(module)
+            if mod.__name__ == 'gi.repository.Gtk':
+                version = (mod.get_major_version(), mod.get_minor_version())
+            elif mod.__name__ == 'gi.repository.GLib':
+                version = (mod.MAJOR_VERSION, mod.MINOR_VERSION)
+            elif mod.__name__ == 'gi.repository.GtkSource':
+                # There's no accessors for GtkSource, so we try a 4.0 API
+                # call and just set the version so it will pass
+                mod.init()
+                version = (self.major_version, self.minor_version)
+            elif mod.__name__ in ('cairo', 'gi', 'sys'):
+                version = mod.version_info
+
+            if version < (self.major_version, self.minor_version):
+                raise RuntimeError('Unsupported version')
+
+        def __str__(self):
+            return '{} {}.{}'.format(
+                self.name, self.major_version, self.minor_version)
+
+    # These requirements are kept in both `bin/meld` and `meson.build`. If you
+    # update one, update the other.
+    requirements = (
+        Requirement('Python', 'sys', None, 3, 6),
+        Requirement('Gtk+', 'Gtk', '3.0', 3, 20),
+        Requirement('GLib', 'GLib', '2.0', 2, 48),
+        Requirement('GtkSourceView', 'GtkSource', '4', 4, 0),
+        Requirement('pygobject', 'gi', None, 3, 30),
+        Requirement('pycairo', 'cairo', None, 1, 15),
+    )
 
     try:
-        import gi
-        assert gi.version_info >= pygobject_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("pygobject", pygobject_requirement, e)
-
-    # gtk+ and related imports
-    try:
-        # FIXME: Extra clause for gi
-        import gi
-        gi.require_version("Gtk", "3.0")
-        from gi.repository import Gtk
-        version = (Gtk.get_major_version(), Gtk.get_minor_version())
-        assert version >= gtk_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GTK+", gtk_requirement, e)
-
-    try:
-        from gi.repository import GLib
-        assert (GLib.MAJOR_VERSION, GLib.MINOR_VERSION) >= glib_requirement
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GLib", glib_requirement, e)
-
-    try:
-        gi.require_version('GtkSource', '4')
-        from gi.repository import GtkSource
-        GtkSource.init()
-    except (ImportError, AssertionError, ValueError) as e:
-        missing_reqs("GtkSourceView 4", gtksourceview_requirement, e)
-
-    try:
-        import cairo
-        assert cairo.version_info >= cairo_requirement
-    except (ImportError, AssertionError) as e:
-        missing_reqs("cairo", cairo_requirement, e)
+        for r in requirements:
+            r.check()
+    except (AttributeError, ImportError, RuntimeError, ValueError):
+        show_error_and_exit(_('Meld requires %s or higher.') % str(r))
 
 
 def setup_resources():
     from gi.repository import Gio
-    from gi.repository import Gtk
-    from gi.repository import Gdk
     from gi.repository import GtkSource
 
     resource_filename = meld.conf.APPLICATION_ID + ".gresource"
@@ -267,15 +285,6 @@ def setup_resources():
         # Allow resources to be missing when running uninstalled
         if not uninstalled:
             raise
-
-    icon_dir = os.path.join(meld.conf.DATADIR, "icons")
-    Gtk.IconTheme.get_default().append_search_path(icon_dir)
-
-    provider = Gtk.CssProvider()
-    provider.load_from_resource('/org/gnome/meld/meld.css')
-    Gtk.StyleContext.add_provider_for_screen(
-        Gdk.Screen.get_default(), provider,
-        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
     style_path = os.path.join(meld.conf.DATADIR, "styles")
     GtkSource.StyleSchemeManager.get_default().append_search_path(style_path)
@@ -400,7 +409,20 @@ def environment_hacks():
             pass
 
 
-if __name__ == '__main__':
+def run_application():
+    from meld.meldapp import MeldApp
+
+    app = MeldApp()
+
+    if sys.platform != 'win32':
+        from gi.repository import GLib
+        GLib.unix_signal_add(
+            GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
+
+    return app.run(sys.argv)
+
+
+def main():
     setup_logging()
     disable_stdout_buffering()
     check_requirements()
@@ -408,11 +430,8 @@ if __name__ == '__main__':
     setup_resources()
     setup_settings()
     environment_hacks()
+    return run_application()
 
-    import meld.meldapp
-    if sys.platform != 'win32':
-        from gi.repository import GLib
-        GLib.unix_signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT,
-                             lambda *args: meld.meldapp.app.quit(), None)
-    status = meld.meldapp.app.run(sys.argv)
-    sys.exit(status)
+
+if __name__ == '__main__':
+    sys.exit(main())

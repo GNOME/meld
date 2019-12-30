@@ -4,8 +4,6 @@ project(
     meson_version: '>=0.47.0',
 )
 
-application_id = 'org.gnome.meld'
-
 python = import('python')
 i18n = import('i18n')
 gnome = import('gnome')
@@ -15,9 +13,26 @@ if not python3.found()
     error('Python 3 is required to build and use Meld')
 endif
 
+# These requirements are kept in both `bin/meld` and `meson.build`. If you
+# update one, update the other.
+dependency('python3', version : '>= 3.6')
 dependency('gtk+-3.0', version: '>= 3.20')
 dependency('glib-2.0', version: '>= 2.48')
 dependency('gtksourceview-4', version: '>= 4.0.0')
+dependency('pygobject-3.0', version: '>= 3.30')
+dependency('py3cairo', version: '>= 1.15.0')
+
+
+if get_option('profile') == 'Devel'
+    name_suffix = ' (Development Snapshot)'
+    profile = 'Devel'
+else
+    name_suffix = ''
+    profile = ''
+endif
+
+resource_base_id = 'org.gnome.meld'
+application_id = 'org.gnome.Meld@0@'.format(profile)
 
 prefix = get_option('prefix')
 

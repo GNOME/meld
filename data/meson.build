@@ -7,13 +7,20 @@ install_data(
 
 # Install schema file
 install_data(
-  '@0@.gschema.xml'.format(application_id),
+  '@0@.gschema.xml'.format(resource_base_id),
   install_dir: schemadir
 )
 
 # Install desktop file
+desktop_conf = configuration_data()
+desktop_conf.set('icon', application_id)
+
 desktop_file = i18n.merge_file(
-  input: '@0@.desktop.in'.format(application_id),
+  input: configure_file(
+    input: '@0@.desktop.in.in'.format(resource_base_id),
+    output: '@0@.desktop.in'.format(application_id),
+    configuration: desktop_conf
+  ),
   output: '@0@.desktop'.format(application_id),
   po_dir: podir,
   type: 'desktop',
@@ -31,9 +38,16 @@ if desktop_file_validate.found()
   )
 endif
 
-# Install AppData file
+appdata_conf = configuration_data()
+appdata_conf.set('appid', application_id)
+
 appdata_file = i18n.merge_file(
-  input: '@0@.appdata.xml.in'.format(application_id),
+  'appdata',
+  input: configure_file(
+    input: files('org.gnome.meld.appdata.xml.in.in'),
+    output: 'org.gnome.meld.appdata.xml.in',
+    configuration: appdata_conf
+  ),
   output: '@0@.appdata.xml'.format(application_id),
   po_dir: podir,
   install: true,
@@ -48,6 +62,7 @@ if appstreamcli.found()
     appstreamcli,
     args: [
         'validate-relax',
+        '--nonet',
         appdata_file.full_path()
      ]
   )
@@ -55,7 +70,7 @@ endif
 
 # Install mimetypes
 mimetype_file = i18n.merge_file(
-  input: join_paths('mime', '@0@.xml.in'.format(application_id)),
+  input: join_paths('mime', '@0@.xml.in'.format(resource_base_id)),
   output: '@0@.xml'.format(application_id),
   po_dir: podir,
   data_dirs: itsdir,
@@ -95,7 +110,7 @@ icon_sizes = ['scalable']
 
 foreach i : icon_sizes
   install_data(
-    join_paths('icons/hicolor', i , 'apps', application_id + '.svg'),
+    join_paths('icons/hicolor', i , 'apps', resource_base_id + '.svg'),
     install_dir: join_paths(icondir, 'hicolor', i , 'apps'),
     rename: '@0@.svg'.format(application_id)
   )
@@ -103,7 +118,7 @@ endforeach
 
 # Install the symbolic icon
 install_data(
-    join_paths('icons/hicolor/symbolic/apps', application_id + '-symbolic.svg'),
+    join_paths('icons/hicolor/symbolic/apps', resource_base_id + '-symbolic.svg'),
     install_dir: join_paths(icondir, 'hicolor', 'symbolic', 'apps'),
     rename: '@0@-symbolic.svg'.format(application_id)
 )

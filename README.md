@@ -23,7 +23,7 @@ Requirements
 
 And following packages with GObject introspection:
 
-* GLib 2.36 (meld install also needs GLib binaries like glib-compile-schemas)
+* GLib 2.36
 * Pango
 * PangoCairo
 * GTK+ 3.20
@@ -33,77 +33,61 @@ And following packages with GObject introspection:
 Build requirements
 ------------------
 
-System packages:
+* Python 3.6
+* Meson 0.48
+* Ninja
+* gettext
+* GLib 2.36 and its development utilities such as `glib-compile-schemas`
 
-* intltool
-* itstool
-* xmllint
+For Windows build requirements, see `mingw-common` section `.gitlab-ci.yml`
 
-Python packages:
-
-* distro
-
-Building Windows MSIs requires:
-
-* cx_Freeze 5
-* pywin32/pypiwin32 (optional, for storing version info in Meld.exe)
 
 Running
 -------
 
-Meld can be run directly from this source tree directory. Just type:
+You *do not* need to build Meld in order to run it. Meld can be run directly
+from this source directory by running:
 
- * `bin/meld`
+```sh
+$ bin/meld
+```
 
-Alternatively, you can install Meld system-wide by running:
+Unix users should get Meld from their distribution package manager, or from
+[Flathub](https://flathub.org/).
 
- * `python3 setup.py install`
+Windows users should download the provided MSIs on the
+[Meld home page](https://meldmerge.org/).
 
-or if you're on Ubuntu, instead try:
-
- * `python3 setup.py install --prefix=/usr`
-
-...but you should probably just get a RPM/deb/installer instead, depending on
-your system. Meld packages are available for just about every \*nix
-distribution.
-
-For Windows users, MSIs are available from the Meld home page. Also if all
-dependencies are installed manually, running from source tree is supported:
- * `python3.exe bin/meld`
-
-For OSX users, Meld can be installed on OSX using MacPorts/Fink/etc. There are
-also unofficial native builds available for older releases. See the wiki for
-details.
+OSX users can install Meld using Homebrew (or Macports, Fink, etc.), or there
+are unofficial native builds available from the
+[Meld for OSX](https://yousseb.github.io/meld/) project.
 
 
 Building
 --------
 
-Meld uses standard distutils for building. It supports anything that distutils
-supports, and little else.
+Meld uses [meson](https://mesonbuild.com/) build system. Use the following
+commands to build Meld from the source directory:
 
-Additional hacks are added to make life easier for packagers where required,
-such as:
+```sh
+$ meson _build
+$ cd _build
+$ ninja
+```
 
-* Passing `--no-update-icon-cache` will stop Meld from running
-  `gtk-update-icon-cache` post-install
-* Passing `--no-compile-schemas` will stop Meld from trying to compile
-  gsettings schemas post-install
+You can then install Meld system-wide by running:
 
-These arguments need to be passed to `setup.py` itself, *not* to the install
-command. In other words, do this:
+```sh
+$ ninja install
+```
 
-    python3 setup.py --no-compile-schemas install
+A Windows installer can be built with command
 
-**not** this:
+```powershell
+C:\Python34\python.exe setup_win32.py bdist_msi
+```
 
-    python3 setup.py install --no-compile-schemas
-
-Windows installer can be built with command
-
-    C:\Python34\python.exe setup_win32.py bdist_msi
-
-that creates file `dist/Meld-VERSION-ARCH.msi`
+which will create the file `dist/Meld-VERSION-ARCH.msi`.
 
 
 Developing

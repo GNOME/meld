@@ -9,7 +9,6 @@ folders = {
         'actiongutter.py',
         'build_helpers.py',
         'chunkmap.py',
-        'conf.py',
         'const.py',
         'diffgrid.py',
         'dirdiff.py',
@@ -83,5 +82,21 @@ foreach folder_name, sources : folders
   pkgdir = join_paths(meson.project_name(), folder_name)
   python3.install_sources(sources, pure: true, subdir: pkgdir)
 endforeach
+
+# Install the executable file
+app_config = configuration_data()
+app_config.set('profile', profile)
+app_config.set('application_id', application_id)
+app_config.set('resource_base_id', resource_base_id)
+app_config.set('localedir', localedir)
+app_config.set('pkgdatadir', pkgdatadir)
+app_config.set('configured', 'True')
+
+configure_file(
+    input: 'conf.py.in',
+    output: 'conf.py',
+    configuration: app_config,
+    install_dir: python3.get_install_dir(pure: true, subdir: meson.project_name()),
+)
 
 subdir('resources')

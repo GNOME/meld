@@ -69,8 +69,7 @@ def with_focused_pane(function):
 def get_modal_parent(widget: Optional[Gtk.Widget] = None) -> Gtk.Window:
     parent: Gtk.Window
     if not widget:
-        from meld.meldapp import app
-        parent = app.get_active_window()
+        parent = Gtk.Application.get_default().get_active_window()
     elif not isinstance(widget, Gtk.Window):
         parent = widget.get_toplevel()
     else:

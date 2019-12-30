@@ -1,15 +1,19 @@
 #!/usr/bin/env python3
 
 import glob
-import sys
+import pathlib
 from distutils.core import setup
 
-import meld.build_helpers
-import meld.conf
+# Copy conf.py in place if necessary
+base_path = pathlib.Path(__file__).parent
+conf_path = base_path / 'meld' / 'conf.py'
 
-if sys.version_info[:2] < meld.conf.PYTHON_REQUIREMENT_TUPLE:
-    version = ".".join(map(str, meld.conf.PYTHON_REQUIREMENT_TUPLE))
-    raise Exception("Meld setup requires Python %s or higher." % version)
+if not conf_path.exists():
+    import shutil
+    shutil.copyfile(conf_path.with_suffix('.py.in'), conf_path)
+
+import meld.build_helpers  # noqa:E402 isort:skip
+import meld.conf  # noqa:E402 isort:skip
 
 setup(
     name=meld.conf.__package__,
