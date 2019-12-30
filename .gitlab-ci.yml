@@ -5,8 +5,9 @@ image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
 stages:
   - check
   - test
-  - deploy
+  - build-flatpak
   - build-windows
+  - deploy
 
 variables:
     BUNDLE: "meld-dev.flatpak"
@@ -20,13 +21,14 @@ variables:
                   glib2-devel
 
 flatpak:
+    extends: .flatpak
+    stage: build-flatpak
     variables:
         MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
         MESON_ARGS: "-Dprofile=Devel"
         FLATPAK_MODULE: "meld"
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
         APP_ID: "org.gnome.MeldDevel"
-    extends: .flatpak
 
 nightly:
   extends: '.publish_nightly'
