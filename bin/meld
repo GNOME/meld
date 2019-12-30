@@ -330,7 +330,15 @@ def setup_logging():
     else:
         log.setLevel(logging.CRITICAL)
 
-    handler = logging.StreamHandler()
+    if sys.platform == 'win32':
+        from gi.repository import GLib
+
+        log_path = os.path.join(GLib.get_user_data_dir(), "meld.log")
+        handler = logging.FileHandler(log_path)
+        log.setLevel(logging.INFO)
+    else:
+        handler = logging.StreamHandler()
+
     formatter = logging.Formatter("%(asctime)s %(levelname)s "
                                   "%(name)s: %(message)s")
     handler.setFormatter(formatter)
