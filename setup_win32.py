@@ -31,6 +31,9 @@ def get_non_python_libs():
         # dll imported by dll dependencies expected to be auto-resolved later
         inst_root = [os.path.join(local_bin, 'libgtksourceview-3.0-1.dll')]
 
+        # required for communicating multiple instances
+        inst_lib.append(os.path.join(local_bin, 'gdbus.exe'))
+
         # gspawn-helper is needed for Gtk.show_uri function
         if platform.architecture()[0] == '32bit':
             inst_lib.append(os.path.join(local_bin, 'gspawn-win32-helper.exe'))
