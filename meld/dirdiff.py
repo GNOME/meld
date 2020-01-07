@@ -1365,7 +1365,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         ]
         files = [f for f in files if f]
         if files:
-            pyperclip.copy(''.join([str(f) for f in files]))
+            pyperclip.copy(' '.join([str(f) for f in files]))
 
     def action_ignore_case_change(self, action, value):
         action.set_state(value)
