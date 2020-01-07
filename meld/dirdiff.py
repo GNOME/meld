@@ -25,6 +25,7 @@ import sys
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
+import pyperclip
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -423,6 +424,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('previous-change', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
+            ('copy-file-names', self.action_copy_file_names),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -1353,6 +1355,17 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         files = [f for f in files if f]
         if files:
             self._open_files(files)
+    def action_copy_file_names(self, *args):
+        pane = self._get_focused_pane()
+        if pane is None:
+            return
+        files = [
+            self.model.value_path(self.model.get_iter(p), pane)
+            for p in self._get_selected_paths(pane)
+        ]
+        files = [f for f in files if f]
+        if files:
+            pyperclip.copy(''.join([str(f) for f in files]))
 
     def action_ignore_case_change(self, action, value):
         action.set_state(value)
