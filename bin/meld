@@ -336,6 +336,13 @@ def setup_logging():
         log_path = os.path.join(GLib.get_user_data_dir(), "meld.log")
         handler = logging.FileHandler(log_path)
         log.setLevel(logging.INFO)
+
+        # Set excepthook so that we get exceptions on Windows
+        def logging_except_hook(exc_type, exc_instance, tb):
+            log.error(
+                'Unhandled exception', exc_info=(exc_type, exc_instance, tb))
+
+        sys.excepthook = logging_except_hook
     else:
         handler = logging.StreamHandler()
 
