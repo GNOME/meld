@@ -89,6 +89,9 @@ class build_data(distutils.cmd.Command):
         ('share/meld', ['data/gschemas.compiled']),
     ]
 
+    style_source = "data/styles/*.style-scheme.xml.in"
+    style_target_dir = 'share/meld/styles'
+
     # FIXME: This is way too much hard coding, but I really hope
     # it also doesn't last that long.
     resource_source = "meld/resources/meld.gresource.xml"
@@ -124,6 +127,21 @@ class build_data(distutils.cmd.Command):
         else:
             gschemas = self.gschemas
         data_files.extend(gschemas)
+
+        if windows_build:
+            # These should get moved/installed by i18n, but until that
+            # runs on Windows we need this hack.
+            styles = glob.glob(self.style_source)
+
+            import shutil
+            targets = []
+            for style in styles:
+                assert style.endswith('.in')
+                target = style[:-len('.in')]
+                shutil.copyfile(style, target)
+                targets.append(target)
+
+            data_files.append((self.style_target_dir, targets))
 
         return data_files
 
