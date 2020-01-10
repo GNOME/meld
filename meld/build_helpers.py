@@ -40,9 +40,11 @@ except ImportError:
             'Missing build requirement "distro" Python module; '
             'install paths may be incorrect', file=sys.stderr)
 
+windows_build = os.name == 'nt'
+
 
 def has_help(self):
-    return "build_help" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_help" in self.distribution.cmdclass and not windows_build
 
 
 def has_icons(self):
@@ -50,7 +52,7 @@ def has_icons(self):
 
 
 def has_i18n(self):
-    return "build_i18n" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_i18n" in self.distribution.cmdclass and not windows_build
 
 
 def has_data(self):
@@ -117,7 +119,7 @@ class build_data(distutils.cmd.Command):
 
         data_files.append(('share/meld', [target]))
 
-        if os.name == 'nt':
+        if windows_build:
             gschemas = self.frozen_gschemas
         else:
             gschemas = self.gschemas
@@ -231,7 +233,7 @@ class build_icons(distutils.cmd.Command):
         pass
 
     def run(self):
-        target_dir = self.frozen_target if os.name == 'nt' else self.target
+        target_dir = self.frozen_target if windows_build else self.target
         data_files = self.distribution.data_files
 
         for theme in glob.glob(os.path.join(self.icon_dir, "*")):
@@ -286,7 +288,7 @@ class build_i18n(distutils.cmd.Command):
 
         # If we're on Windows, assume we're building frozen and make a bunch
         # of insane assumptions.
-        if os.name == 'nt':
+        if windows_build:
             msgfmt = "C:\\Python27\\Tools\\i18n\\msgfmt"
         else:
             msgfmt = "msgfmt"
