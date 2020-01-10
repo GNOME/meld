@@ -355,10 +355,20 @@ def setup_glib_logging():
 
 
 def environment_hacks():
+    # MSYSTEM is set by git, and confuses our
+    # msys-packaged version's library search path -
+    # for frozen build the lib subdirectory is excluded.
+    # workaround it by adding as first path element.
+    # This may confuse vc utils run from meld
+    # but otherwise meld just crash on start, see #267
+
+    global frozen
+    if frozen and "MSYSTEM" in os.environ:
+        lib_dir = os.path.join(get_meld_dir(), "lib")
+        os.environ["PATH"] = lib_dir + os.pathsep + os.environ["PATH"]
     # We manage cwd ourselves for git operations, and GIT_DIR in particular
-    # can mess with this when set. MSYSTEM is set by git, and confuses our
-    # msys-packaged version's library search path.
-    for var in ('GIT_DIR', 'GIT_WORK_TREE', 'MSYSTEM'):
+    # can mess with this when set.
+    for var in ('GIT_DIR', 'GIT_WORK_TREE'):
         try:
             del os.environ[var]
         except KeyError:
