@@ -85,7 +85,7 @@ if uninstalled:
     import importlib.util
 
     loader = importlib.machinery.SourceFileLoader(
-        'meld.conf', './meld/conf.py.in')
+        'meld.conf', os.path.join(melddir, 'meld/conf.py.in'))
     spec = importlib.util.spec_from_loader(loader.name, loader)
     mod = importlib.util.module_from_spec(spec)
     loader.exec_module(mod)
