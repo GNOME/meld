@@ -423,6 +423,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('previous-change', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
+            ('copy-file-paths', self.action_copy_file_paths),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -1353,6 +1354,20 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         files = [f for f in files if f]
         if files:
             self._open_files(files)
+
+    def action_copy_file_paths(self, *args):
+        pane = self._get_focused_pane()
+        if pane is None:
+            return
+        files = [
+            self.model.value_path(self.model.get_iter(p), pane)
+            for p in self._get_selected_paths(pane)
+        ]
+        files = [f for f in files if f]
+        if files:
+            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+            clip.set_text(''.join([str(f) for f in files]), -1)
+            clip.store()
 
     def action_ignore_case_change(self, action, value):
         action.set_state(value)
