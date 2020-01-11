@@ -1366,7 +1366,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         files = [f for f in files if f]
         if files:
             clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-            clip.set_text(''.join([str(f) for f in files]), -1)
+            clip.set_text('\n'.join(str(f) for f in files), -1)
             clip.store()
 
     def action_ignore_case_change(self, action, value):
