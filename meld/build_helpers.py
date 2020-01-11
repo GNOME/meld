@@ -40,9 +40,11 @@ except ImportError:
             'Missing build requirement "distro" Python module; '
             'install paths may be incorrect', file=sys.stderr)
 
+windows_build = os.name == 'nt'
+
 
 def has_help(self):
-    return "build_help" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_help" in self.distribution.cmdclass and not windows_build
 
 
 def has_icons(self):
@@ -50,7 +52,7 @@ def has_icons(self):
 
 
 def has_i18n(self):
-    return "build_i18n" in self.distribution.cmdclass and os.name != 'nt'
+    return "build_i18n" in self.distribution.cmdclass and not windows_build
 
 
 def has_data(self):
@@ -87,6 +89,9 @@ class build_data(distutils.cmd.Command):
         ('share/meld', ['data/gschemas.compiled']),
     ]
 
+    style_source = "data/styles/*.style-scheme.xml.in"
+    style_target_dir = 'share/meld/styles'
+
     # FIXME: This is way too much hard coding, but I really hope
     # it also doesn't last that long.
     resource_source = "meld/resources/meld.gresource.xml"
@@ -117,11 +122,26 @@ class build_data(distutils.cmd.Command):
 
         data_files.append(('share/meld', [target]))
 
-        if os.name == 'nt':
+        if windows_build:
             gschemas = self.frozen_gschemas
         else:
             gschemas = self.gschemas
         data_files.extend(gschemas)
+
+        if windows_build:
+            # These should get moved/installed by i18n, but until that
+            # runs on Windows we need this hack.
+            styles = glob.glob(self.style_source)
+
+            import shutil
+            targets = []
+            for style in styles:
+                assert style.endswith('.in')
+                target = style[:-len('.in')]
+                shutil.copyfile(style, target)
+                targets.append(target)
+
+            data_files.append((self.style_target_dir, targets))
 
         return data_files
 
@@ -231,7 +251,7 @@ class build_icons(distutils.cmd.Command):
         pass
 
     def run(self):
-        target_dir = self.frozen_target if os.name == 'nt' else self.target
+        target_dir = self.frozen_target if windows_build else self.target
         data_files = self.distribution.data_files
 
         for theme in glob.glob(os.path.join(self.icon_dir, "*")):
@@ -262,6 +282,7 @@ class build_i18n(distutils.cmd.Command):
     # way except magically extracting them from self.distribution.data_files
     desktop_files = [('share/applications', glob.glob("data/*.desktop.in"))]
     xml_files = [
+        ('share/meld/styles', glob.glob("data/styles/*.style-scheme.xml.in")),
         ('share/metainfo', glob.glob("data/*.appdata.xml.in")),
         ('share/mime/packages', glob.glob("data/mime/*.xml.in"))
     ]
@@ -286,7 +307,7 @@ class build_i18n(distutils.cmd.Command):
 
         # If we're on Windows, assume we're building frozen and make a bunch
         # of insane assumptions.
-        if os.name == 'nt':
+        if windows_build:
             msgfmt = "C:\\Python27\\Tools\\i18n\\msgfmt"
         else:
             msgfmt = "msgfmt"
