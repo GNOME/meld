@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2019-12-30 22:46+0000\n"
-"PO-Revision-Date: 2020-01-05 17:52+0100\n"
+"POT-Creation-Date: 2020-01-11 21:55+0000\n"
+"PO-Revision-Date: 2020-01-12 17:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -1018,6 +1018,10 @@ msgstr "Rozwiń rekursywnie"
 msgid "_Open Externally"
 msgstr "_Otwórz zewnętrznie"
 
+#: meld/resources/ui/dirdiff-menus.ui:44
+msgid "_Copy File Paths"
+msgstr "Skopiuj ś_cieżki do plików"
+
 #: meld/resources/ui/encoding-selector.ui:31
 msgid "Search text encoding…"
 msgstr "Wyszukiwanie…"
@@ -1097,7 +1101,7 @@ msgstr "1. plik"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:208
-#: meld/dirdiff.py:507
+#: meld/dirdiff.py:508
 msgid "Name"
 msgstr "Nazwa"
 
@@ -1137,7 +1141,7 @@ msgstr "Automatyczny powrót do początku"
 msgid "Replace _All"
 msgstr "Zamień _wszystkie"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1040 meld/iohelpers.py:115
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1041 meld/iohelpers.py:115
 msgid "_Replace"
 msgstr "Z_amień"
 
@@ -1509,7 +1513,7 @@ msgstr ""
 msgid "Close _without Saving"
 msgstr "Zamknij _bez zapisywania"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1039
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1040
 #: meld/iohelpers.py:56 meld/iohelpers.py:114
 msgid "_Cancel"
 msgstr "_Anuluj"
@@ -1647,39 +1651,39 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:528 meld/preferences.py:132
+#: meld/dirdiff.py:529 meld/preferences.py:132
 msgid "Size"
 msgstr "Rozmiar"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:536 meld/preferences.py:133
+#: meld/dirdiff.py:537 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Czas modyfikacji"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:544 meld/preferences.py:134
+#: meld/dirdiff.py:545 meld/preferences.py:134
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: meld/dirdiff.py:767 meld/dirdiff.py:790
+#: meld/dirdiff.py:768 meld/dirdiff.py:791
 #, python-format
 msgid "[%s] Scanning %s"
 msgstr "[%s] Skanowanie %s"
 
-#: meld/dirdiff.py:926
+#: meld/dirdiff.py:927
 #, python-format
 msgid "[%s] Done"
 msgstr "[%s] Ukończono"
 
-#: meld/dirdiff.py:933
+#: meld/dirdiff.py:934
 msgid "Folders have no differences"
 msgstr "Katalogi się nie różnią"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:936
 msgid "Contents of scanned files in folders are identical."
 msgstr "Treść zeskanowanych plików w katalogach jest identyczna."
 
-#: meld/dirdiff.py:937
+#: meld/dirdiff.py:938
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1687,44 +1691,44 @@ msgstr ""
 "Zeskanowane pliki wydają się identyczne, ale treść mogła nie zostać "
 "zeskanowana."
 
-#: meld/dirdiff.py:940
+#: meld/dirdiff.py:941
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Filtry plików są używane, więc nie wszystkie pliki zostały zeskanowane."
 
-#: meld/dirdiff.py:942
+#: meld/dirdiff.py:943
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtry tekstowe są używane i mogą ukrywać różnice między plikami."
 
-#: meld/dirdiff.py:958 meld/filediff.py:1824
+#: meld/dirdiff.py:959 meld/filediff.py:1824
 msgid "Hide"
 msgstr "Ukryj"
 
-#: meld/dirdiff.py:960 meld/filediff.py:1826 meld/filediff.py:1856
+#: meld/dirdiff.py:961 meld/filediff.py:1826 meld/filediff.py:1856
 #: meld/filediff.py:1858 meld/ui/msgarea.py:106 meld/ui/msgarea.py:119
 msgid "Hi_de"
 msgstr "_Ukryj"
 
-#: meld/dirdiff.py:969
+#: meld/dirdiff.py:970
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Wystąpiło wiele błędów podczas skanowania tego katalogu"
 
-#: meld/dirdiff.py:970
+#: meld/dirdiff.py:971
 msgid "Files with invalid encodings found"
 msgstr "Odnaleziono pliki z nieprawidłowym kodowaniem znaków"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:972
+#: meld/dirdiff.py:973
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Niektóre pliki mają nieprawidłowe kodowanie znaków. Nazwy tych plików to:"
 
-#: meld/dirdiff.py:974
+#: meld/dirdiff.py:975
 msgid "Files hidden by case insensitive comparison"
 msgstr "Pliku ukryte przez porównywanie bez uwzględniania wielkości liter"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:976
+#: meld/dirdiff.py:977
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1733,17 +1737,17 @@ msgstr ""
 "w systemie plików, który rozróżnia wielkość liter. Następujące pliki w tym "
 "katalogu zostały ukryte:"
 
-#: meld/dirdiff.py:987
+#: meld/dirdiff.py:988
 #, python-format
 msgid "“%s” hidden by “%s”"
 msgstr "„%s” ukryty przez „%s”"
 
-#: meld/dirdiff.py:1043
+#: meld/dirdiff.py:1044
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Zastąpić katalog „%s”?"
 
-#: meld/dirdiff.py:1045
+#: meld/dirdiff.py:1046
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1753,11 +1757,11 @@ msgstr ""
 "Zastąpienie istniejącego katalogu spowoduje utratę wszystkich plików w nim "
 "zawartych."
 
-#: meld/dirdiff.py:1058
+#: meld/dirdiff.py:1059
 msgid "Error copying file"
 msgstr "Błąd podczas kopiowania pliku"
 
-#: meld/dirdiff.py:1059
+#: meld/dirdiff.py:1060
 #, python-format
 msgid ""
 "Couldn’t copy %s\n"
@@ -1770,11 +1774,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: meld/dirdiff.py:1084 meld/vcview.py:758
+#: meld/dirdiff.py:1085 meld/vcview.py:758
 msgid "Error deleting {}"
 msgstr "Błąd podczas usuwania {}"
 
-#: meld/dirdiff.py:1563
+#: meld/dirdiff.py:1578
 msgid "No folder"
 msgstr "Brak katalogu"
 
