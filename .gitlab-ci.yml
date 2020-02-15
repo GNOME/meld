@@ -8,7 +8,7 @@ variables:
                 python3-pytest intltool
 
 .linux-common: &linux-common
-  image: fedora:rawhide
+  image: fedora:latest
   before_script:
     - dnf update -y
     - dnf install -y $DEPENDENCIES
