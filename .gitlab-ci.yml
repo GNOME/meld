@@ -5,8 +5,7 @@ image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
 stages:
   - check
   - test
-  - build-flatpak
-  - build-windows
+  - build
   - deploy
 
 variables:
@@ -22,7 +21,7 @@ variables:
 
 flatpak:
     extends: .flatpak
-    stage: build-flatpak
+    stage: build
     variables:
         MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
         MESON_ARGS: "-Dprofile=Devel"
@@ -50,8 +49,8 @@ pytest:
   script:
     - py.test-3 test/
 
-.mingw-common: &mingw-common
-  stage: build-windows
+.mingw-common:
+  stage: build
   tags: # select gitlab runners with specific tag (unrelated to git repo tags)
     - win32
   artifacts:
@@ -69,13 +68,13 @@ pytest:
   allow_failure: true
 
 mingw64-dist:
+  extends: .mingw-common
   variables:
     MSYS2_ARCH: x86_64
     MSYSTEM: MINGW64
-  <<: *mingw-common
 
 mingw32-dist:
+  extends: .mingw-common
   variables:
     MSYS2_ARCH: i686
     MSYSTEM: "MINGW32"
-  <<: *mingw-common
