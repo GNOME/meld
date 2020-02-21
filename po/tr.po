@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2020-01-11 21:55+0000\n"
-"PO-Revision-Date: 2020-01-24 23:02+0300\n"
+"POT-Creation-Date: 2020-02-19 20:24+0000\n"
+"PO-Revision-Date: 2020-02-21 09:34+0300\n"
 "Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <gnome-turk@gnome.org>\n"
 "Language: tr\n"
@@ -49,7 +49,7 @@ msgid ""
 "two- and three-way comparison of both files and directories, and supports "
 "many version control systems including Git, Mercurial, Bazaar and Subversion."
 msgstr ""
-"Meld, geliştiricileri hedefleyen görsel bir fark gösterme ve birleştirme "
+"Meld, geliştiricileri hedefleyen görsel fark gösterme ve birleştirme "
 "aracıdır. Meld dosyaları, dizinleri ve sürüm denetimi yapılan projeleri "
 "karşılaştırmanıza yardımcı olur. Hem dosya hem de dizinleri iki ve üç yollu "
 "karşılaştırmayı sağlar. Git, Mercurial, Bazaar ve Subversion gibi sürüm "
@@ -109,7 +109,7 @@ msgstr "Girinti genişliği"
 
 #: data/org.gnome.meld.gschema.xml:67
 msgid "The number of spaces to use for a single indent step"
-msgstr "Tek bir girinti için kullanılacak boşluk sayısı"
+msgstr "Tek girinti için kullanılacak boşluk sayısı"
 
 #: data/org.gnome.meld.gschema.xml:71
 msgid "Whether to indent using spaces or tabs"
@@ -210,7 +210,7 @@ msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
-"Kullanılacak özel yazı tipi, bir karakter dizisi olarak depolandı ve Pango "
+"Kullanılacak özel yazı tipi, dizge olarak depolandı ve Pango "
 "yazı tipi tanımlaması olarak çözümlendi."
 
 #: data/org.gnome.meld.gschema.xml:126
@@ -253,8 +253,8 @@ msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
 msgstr ""
-"Eğer yanlışsa, dosyalar harici bir şekilde açılırken sistem düzenleyici "
-"yerine özel-düzenleyici-komut kullanılacaktır."
+"Eğer yanlışsa, dosyalar harici biçimde açılırken sistem düzenleyici "
+"yerine custom-editor-command kullanılacaktır."
 
 #: data/org.gnome.meld.gschema.xml:152
 msgid "The custom editor launch command"
@@ -265,8 +265,8 @@ msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
-"Özel bir düzenleyici başlatmak için kullanılan komut. Burada sınırlı "
-"seviyede şablonlama desteklenir; şu an '{dosya}' ve '{satır}' tanınan "
+"Özel düzenleyici başlatmak için kullanılan komut. Burada sınırlı "
+"seviyede şablonlama desteklenir; şu an '{file}' ve '{line}' tanınan "
 "belirteçlerdir."
 
 #: data/org.gnome.meld.gschema.xml:159
@@ -357,7 +357,7 @@ msgid ""
 "showing the commands run for version control operations."
 msgstr ""
 "Eğer seçiliyse, sürüm denetimi işlemlerinde çalıştırılan komutları gösteren "
-"bir konsol çıktı bölümü sürüm denetim görünümünde gösterilecektir."
+"konsol çıktı bölümü sürüm denetim görünümünde gösterilecektir."
 
 #: data/org.gnome.meld.gschema.xml:196
 msgid "Version control pane position"
@@ -372,7 +372,7 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:201
 msgid "Present version comparisons as left-local/right-remote"
-msgstr "Sürüm karşılaştırmalarını sol-yerel/sağ-uzak olacak şekilde göster"
+msgstr "Sürüm karşılaştırmalarını sol-yerel/sağ-uzak olacak biçimde göster"
 
 #: data/org.gnome.meld.gschema.xml:202
 msgid ""
@@ -409,7 +409,7 @@ msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr ""
-"Eğer seçiliyse, bir rehber sürüm denetim, ileti gönderim düzenleyicisinde "
+"Eğer seçiliyse, rehber; sürüm denetim, ileti gönderim düzenleyicisinde "
 "kenar boşluğu sütununu göstermek için görüntülenecektir."
 
 #: data/org.gnome.meld.gschema.xml:216
@@ -894,7 +894,7 @@ msgstr ""
 
 #: meld/resources/ui/appwindow.ui:29
 msgid "Start a new comparison"
-msgstr "Yeni bir karşılaştırma başlat"
+msgstr "Yeni karşılaştırma başlat"
 
 #: meld/resources/ui/appwindow.ui:45
 msgid "Open a recent comparison"
@@ -1077,25 +1077,35 @@ msgstr "_Kopyala"
 msgid "_Paste"
 msgstr "_Yapıştır"
 
-#: meld/resources/ui/filediff.ui:33 meld/resources/ui/filediff.ui:99
-#: meld/resources/ui/filediff.ui:165
+#: meld/resources/ui/filediff.ui:33 meld/resources/ui/filediff.ui:102
+#: meld/resources/ui/filediff.ui:171
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
 msgstr ""
 "Bu dosyaya yazılamıyor. Buraya tıklayarak dosyanın kilidini açabilir ve buna "
-"rağmen değişiklikler yapabilirsiniz, fakat bu değişikler yeni bir dosyaya "
+"rağmen değişiklikler yapabilirsiniz, fakat bu değişikler yeni dosyaya "
 "kaydedilmek zorundadır."
 
-#: meld/resources/ui/filediff.ui:71
+#: meld/resources/ui/filediff.ui:47 meld/resources/ui/filediff.ui:116
+#: meld/resources/ui/filediff.ui:185
+msgid "Open file in this pane"
+msgstr "Bu bölmede dosya aç"
+
+#: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:125
+#: meld/resources/ui/filediff.ui:194
+msgid "Save file in this pane"
+msgstr "Bu bölmede dosya kaydet"
+
+#: meld/resources/ui/filediff.ui:73
 msgid "File 3"
 msgstr "Dosya 3"
 
-#: meld/resources/ui/filediff.ui:137
+#: meld/resources/ui/filediff.ui:142
 msgid "File 2"
 msgstr "Dosya 2"
 
-#: meld/resources/ui/filediff.ui:199
+#: meld/resources/ui/filediff.ui:207
 msgid "File 1"
 msgstr "Dosya 1"
 
@@ -1200,7 +1210,7 @@ msgstr "Üçüncü Klasörü Seç"
 
 #: meld/resources/ui/new-diff-tab.ui:393
 msgid "Select A Version-Controlled Folder"
-msgstr "Bir Sürüm Denetimi Klasörü Seç"
+msgstr "Sürüm Denetimi Klasörü Seç"
 
 #: meld/resources/ui/new-diff-tab.ui:442
 msgid "_Blank comparison"
@@ -1421,7 +1431,7 @@ msgid ""
 "details."
 msgstr ""
 "Dosya karşılaştırmaları yaparken, belli değişiklik türlerini "
-"yoksayabilirsiniz. Buradaki her kalıp, karşılaştırma yapılmadan önce boş "
+"yok sayabilirsiniz. Buradaki her kalıp, karşılaştırma yapılmadan önce boş "
 "karakter dizisi ile eşleşen metinlerin yer değiştirdiği bir düzenli python "
 "ifadesidir. Eğer ifade gruplar içeriyorsa, yalnızca gruplar yer değiştirir. "
 "Daha fazla ayrıntı için kullanıcı kılavuzunu inceleyin."
@@ -1717,7 +1727,7 @@ msgstr "Geçersiz kodlamalı dosyalar bulundu"
 #. TRANSLATORS: This is followed by a list of files
 #: meld/dirdiff.py:973
 msgid "Some files were in an incorrect encoding. The names are something like:"
-msgstr "Bazı dosyalar yanlış kodlamadaydı. Adları şu şekildedir:"
+msgstr "Bazı dosyalar yanlış kodlamadaydı. Adları şu biçimdedir:"
 
 #: meld/dirdiff.py:975
 msgid "Files hidden by case insensitive comparison"
@@ -1729,7 +1739,7 @@ msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr ""
-"Büyük/küçük harf duyarlı bir dosya sisteminde büyük/küçük harf duyarsız bir "
+"Büyük/küçük harf duyarlı dosya sisteminde büyük/küçük harf duyarsız "
 "karşılaştırma yapmaktasınız. Bu klasördeki bazı dosyalar gizlidir:"
 
 #: meld/dirdiff.py:988
@@ -1785,7 +1795,7 @@ msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr ""
-"Bir süzgeç dosyadaki satır numaralarını desteklenmeyen şekilde değiştirdi. "
+"Bir süzgeç dosyadaki satır numaralarını desteklenmeyen biçimde değiştirdi. "
 "Karşılaştırma doğru olmayacaktır."
 
 #: meld/filediff.py:1190
@@ -1810,12 +1820,12 @@ msgstr "_Çözümlendi olarak işaretle"
 #: meld/filediff.py:1520
 #, python-format
 msgid "There was a problem opening the file “%s”."
-msgstr "“%s” dosyası açılırken bir sorun var."
+msgstr "“%s” dosyası açılırken sorun var."
 
 #: meld/filediff.py:1528
 #, python-format
 msgid "File %s appears to be a binary file."
-msgstr "%s dosyası ikili bir dosya olarak görünüyor."
+msgstr "%s dosyası ikili dosya olarak görünüyor."
 
 #: meld/filediff.py:1530
 msgid "Do you want to open the file using the default application?"
@@ -1986,7 +1996,7 @@ msgstr "Uzak klasörlerin silinmesi desteklenmiyor"
 
 #: meld/iohelpers.py:43
 msgid "Not a file or directory"
-msgstr "Bir dosya veya dizin değil"
+msgstr "Dosya veya dizin değil"
 
 #: meld/iohelpers.py:47
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
@@ -2011,7 +2021,7 @@ msgid ""
 "A file with this name already exists in “%s”.\n"
 "If you replace the existing file, its contents will be lost."
 msgstr ""
-"“%s” içinde bu ad ile bir dosya zaten var.\n"
+"“%s” içinde bu adda dosya var.\n"
 "Eğer var olan dosyayı değiştirirseniz, içerikleri kaybolacaktır."
 
 #: meld/meldapp.py:179
@@ -2020,7 +2030,7 @@ msgstr "--diff komutuna yanlış sayıda değişken verildi"
 
 #: meld/meldapp.py:184
 msgid "Start with an empty window"
-msgstr "Boş bir pencere ile başla"
+msgstr "Boş pencere ile başla"
 
 #: meld/meldapp.py:185 meld/meldapp.py:187
 msgid "file"
@@ -2049,7 +2059,7 @@ msgstr "Hata: %s\n"
 
 #: meld/meldapp.py:240
 msgid "Meld is a file and directory comparison tool."
-msgstr "Meld bir dosya ve dizin karşılaştırma aracıdır."
+msgstr "Meld, dosya ve dizin karşılaştırma aracıdır."
 
 #: meld/meldapp.py:244
 msgid "Set label to use instead of file name"
@@ -2057,7 +2067,7 @@ msgstr "Dosya adı yerine kullanmak istediğiniz etiketi ayarlayın"
 
 #: meld/meldapp.py:247
 msgid "Open a new tab in an already running instance"
-msgstr "Zaten çalışan bir örnekte yeni bir sekme aç"
+msgstr "Çalışan örnekte yeni sekme aç"
 
 #: meld/meldapp.py:250
 msgid "Automatically compare all differing files on startup"
@@ -2078,7 +2088,7 @@ msgstr "Dosyaları kendiliğinden birleştir"
 #: meld/meldapp.py:264
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr ""
-"Bir Meld karşılaştırma dosyasından kaydedilmiş bir karşılaştırmayı yükle"
+"Meld karşılaştırma dosyasından kayıtlı karşılaştırmayı yükle"
 
 #: meld/meldapp.py:268
 msgid "Create a diff tab for the supplied files or folders"
@@ -2141,7 +2151,7 @@ msgid ""
 msgstr ""
 "{}\n"
 "\n"
-"Meld şunu çalıştırırken ciddi bir hatayla karşılaştı:\n"
+"Meld şunu çalıştırırken ciddi hatayla karşılaştı:\n"
 "<tt>{}</tt>"
 
 #: meld/misc.py:201
@@ -2308,7 +2318,7 @@ msgstr "%(name)s (geçersiz depo)"
 
 #: meld/vcview.py:354
 msgid "No valid version control system found in this folder"
-msgstr "Bu klasörde geçerli bir sürüm denetimi sistemi bulunamadı"
+msgstr "Bu klasörde geçerli sürüm denetimi sistemi bulunamadı"
 
 #: meld/vcview.py:356
 msgid "Choose which version control system to use"
