@@ -34,20 +34,22 @@ nightly:
   dependencies:
     - 'flatpak'
 
-lint:
+.pythonchecks:
   stage: check
+  tags: # test in the same org.gnome.Sdk environment that is used for creating flatpaks
+    - flatpak
   script:
-    - dnf install -y git
-    - pip3 install -r dev-requirements.txt
-    - pre-commit run --all-files --show-diff-on-failure
+    - flatpak run --share=network --filesystem=`pwd` --env=PATH=$PATH:/var/data/python/bin --command=sh org.gnome.Sdk -c 'pip3 install --user -r dev-requirements.txt; $PYTHON_CHECK_COMMAND'
+
+lint:
+  extends: .pythonchecks
+  variables:
+      PYTHON_CHECK_COMMAND: "pre-commit run --all-files --show-diff-on-failure"
 
 pytest:
-  stage: check
-  before_script:
-    - dnf update -y
-    - dnf install -y $DEPENDENCIES
-  script:
-    - py.test-3 test/
+  extends: .pythonchecks
+  variables:
+      PYTHON_CHECK_COMMAND: "pytest"
 
 .mingw-common:
   stage: build
