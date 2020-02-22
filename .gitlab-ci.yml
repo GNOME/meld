@@ -5,24 +5,15 @@ image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
 stages:
   - check
   - test
-  - build-flatpak
-  - build-windows
+  - build
   - deploy
 
 variables:
     BUNDLE: "meld-dev.flatpak"
-    DEPENDENCIES: python3
-                  python3-pip
-                  python3-pytest
-                  python3-gobject
-                  gobject-introspection
-                  gtk3
-                  gtksourceview4
-                  glib2-devel
 
 flatpak:
     extends: .flatpak
-    stage: build-flatpak
+    stage: build
     variables:
         MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
         MESON_ARGS: "-Dprofile=Devel"
@@ -35,23 +26,25 @@ nightly:
   dependencies:
     - 'flatpak'
 
-lint:
+.pythonchecks:
   stage: check
+  tags: # test in the same org.gnome.Sdk environment that is used for creating flatpaks
+    - flatpak
   script:
-    - dnf install -y git
-    - pip3 install -r dev-requirements.txt
-    - pre-commit run --all-files --show-diff-on-failure
+    - flatpak run --share=network --filesystem=`pwd` --env=PATH=$PATH:/var/data/python/bin --command=sh org.gnome.Sdk -c 'pip3 install --user -r dev-requirements.txt; $PYTHON_CHECK_COMMAND'
+
+lint:
+  extends: .pythonchecks
+  variables:
+      PYTHON_CHECK_COMMAND: "pre-commit run --all-files --show-diff-on-failure"
 
 pytest:
-  stage: check
-  before_script:
-    - dnf update -y
-    - dnf install -y $DEPENDENCIES
-  script:
-    - py.test-3 test/
+  extends: .pythonchecks
+  variables:
+      PYTHON_CHECK_COMMAND: "pytest"
 
-.mingw-common: &mingw-common
-  stage: build-windows
+.mingw-common:
+  stage: build
   tags: # select gitlab runners with specific tag (unrelated to git repo tags)
     - win32
   artifacts:
@@ -69,13 +62,13 @@ pytest:
   allow_failure: true
 
 mingw64-dist:
+  extends: .mingw-common
   variables:
     MSYS2_ARCH: x86_64
     MSYSTEM: MINGW64
-  <<: *mingw-common
 
 mingw32-dist:
+  extends: .mingw-common
   variables:
     MSYS2_ARCH: i686
     MSYSTEM: "MINGW32"
-  <<: *mingw-common
