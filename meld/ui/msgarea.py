@@ -19,7 +19,7 @@
 # newer GTK+.
 # Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-from gi.repository import Gtk
+from gi.repository import Gtk, Pango
 
 from meld.conf import _
 
@@ -33,6 +33,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
     primary_label = Gtk.Label(
         label="<b>{}</b>".format(primary_text),
         wrap=True,
+        wrap_mode=Pango.WrapMode.WORD_CHAR,
         use_markup=True,
         xalign=0,
         can_focus=True,
@@ -44,6 +45,7 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
         secondary_label = Gtk.Label(
             "<small>{}</small>".format(secondary_text),
             wrap=True,
+            wrap_mode=Pango.WrapMode.WORD_CHAR,
             use_markup=True,
             xalign=0,
             can_focus=True,
