@@ -128,6 +128,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
+    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     status_filters = GObject.Property(
@@ -906,6 +907,8 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if path:
             self.treeview.expand_to_path(path)
             self.treeview.set_cursor(path)
+        else:
+            self.error_bell()
 
     def action_previous_change(self, *args):
         self.next_diff(Gdk.ScrollDirection.UP)
@@ -925,3 +928,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             row_paths = self.model.value_paths(it)
             paths = [p for p in row_paths if os.path.exists(p)]
             self.run_diff(paths[0])
+
+
+VcView.set_css_name('meld-vc-view')

@@ -298,6 +298,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
+    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -1649,6 +1650,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if path:
             self.treeview[pane].expand_to_path(path)
             self.treeview[pane].set_cursor(path)
+        else:
+            self.error_bell()
 
     def action_previous_change(self, *args):
         self.next_diff(Gdk.ScrollDirection.UP)
@@ -1673,3 +1676,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         modified_states = (tree.STATE_MODIFIED, tree.STATE_CONFLICT)
         for it in self.model.state_rows(modified_states):
             self.run_diff_from_iter(it)
+
+
+DirDiff.set_css_name('meld-folder-diff')

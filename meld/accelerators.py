@@ -10,8 +10,10 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.find-previous': '<Primary><Shift>G',
     'view.find-replace': '<Primary>H',
     'view.go-to-line': '<Primary>I',
+    # Overridden in CSS
     'view.next-change': ('<Alt>Down', '<Alt>KP_Down', '<Primary>D'),
     'view.next-pane': '<Alt>Page_Down',
+    # Overridden in CSS
     'view.previous-change': ('<Alt>Up', '<Alt>KP_Up', '<Primary>E'),
     'view.previous-pane': '<Alt>Page_Up',
     'view.redo': '<Primary><Shift>Z',

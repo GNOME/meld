@@ -116,6 +116,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
+    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings_view__ = (
@@ -720,6 +721,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def go_to_chunk(self, target, pane=None, centered=False):
         if target is None:
+            self.error_bell()
             return
 
         if pane is None:
@@ -729,6 +731,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         chunk = self.linediffer.get_chunk(target, pane)
         if not chunk:
+            self.error_bell()
             return
 
         # Warp the cursor to the first line of the chunk
@@ -1570,8 +1573,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
             chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
             target_chunk = chunk if chunk is not None else next_
-            self.scheduler.add_task(
-                lambda: self.go_to_chunk(target_chunk, centered=True), True)
+            if target_chunk is not None:
+                self.scheduler.add_task(
+                    lambda: self.go_to_chunk(target_chunk, centered=True),
+                    True)
 
         self.queue_draw()
         self._connect_buffer_handlers()
@@ -2387,3 +2392,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
                 mgr.clear()
         self.refresh_comparison()
+
+
+FileDiff.set_css_name('meld-file-diff')
