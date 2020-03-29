@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
 "POT-Creation-Date: 2020-03-14 22:22+0000\n"
-"PO-Revision-Date: 2020-03-29 13:47+0300\n"
+"PO-Revision-Date: 2020-03-29 15:11+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -95,6 +95,11 @@ msgid ""
 "and the current locale-default encoding will always be used; other encodings "
 "may also be tried, depending on the user’s locale."
 msgstr ""
+"Meld використовуватиме ці кодування тексту при спробах декодувати завантажені"
+" текстові файли до того, як програма спробує будь-які інші кодування. Окрім"
+" кодувань з цього списку, завжди використовуватимуться UTF-8 та типове"
+" кодування для поточної локалі; програма також може спробувати скористатися"
+" іншим кодуваннями, залежно від локалі користувача."
 
 #: data/org.gnome.meld.gschema.xml:66
 msgid "Width of an indentation step"
@@ -155,6 +160,9 @@ msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
 msgstr ""
+"Якщо має значення «true», програма малюватиме особливі замінники"
+" символів-пробілів на панелі порівняння, навіть якщо вони перебувають поза"
+" областю змін."
 
 #: data/org.gnome.meld.gschema.xml:101
 msgid "Wrap mode"
@@ -166,6 +174,10 @@ msgid ""
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr ""
+"Рядки на панелі порівняння файлів буде перенесено відповідно до значення"
+" цього ключа. Перенесення або взагалі не виконуватиметься («none»),"
+" виконуватиметься на будь-якому символі («char») або виконуватиметься лише"
+" між словами («word»)."
 
 #: data/org.gnome.meld.gschema.xml:109 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
@@ -176,6 +188,8 @@ msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
 msgstr ""
+"Якщо має значення «true», на панелі порівняння файлів буде підсвічено рядок,"
+" у якому перебуває курсор."
 
 #: data/org.gnome.meld.gschema.xml:114
 msgid "Use the system default monospace font"
@@ -185,6 +199,8 @@ msgstr "Використовувати типовий загальносисте
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
+"Якщо має значення «false», замість загальносистемного моноширинного шрифту"
+" буде використано шрифт, який вказано у ключі custom-font."
 
 #: data/org.gnome.meld.gschema.xml:119
 msgid "Custom font"
@@ -195,6 +211,8 @@ msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
+"Нетиповий шрифт, яким слід скористатися. Зберігається як рядок і обробляється"
+" як опис шрифту Pango."
 
 #: data/org.gnome.meld.gschema.xml:126
 msgid "Show overview source map"
@@ -248,6 +266,9 @@ msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
+"Команда, яку буде використано для запуску нетипового редактора. Передбачено"
+" обмежену підтримку використання шаблонів: у поточній версії можна"
+" скористатися замінниками «{file}» (файл) і «{line}» (рядок)."
 
 #: data/org.gnome.meld.gschema.xml:159
 msgid "Columns to display"
@@ -270,6 +291,8 @@ msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
 msgstr ""
+"Якщо має значення «true», при порівнянні тек програма не переходитиме за"
+" символічними посиланнями при обробці ієрархії тек."
 
 #: data/org.gnome.meld.gschema.xml:169
 msgid "Use shallow comparison"
@@ -281,6 +304,10 @@ msgid ""
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr ""
+"Якщо має значення «true», при порівнянні тек файли порівнюватимуться лише на"
+" основі розмірів та позначки mtime. Програма вважатиме файли тотожними, якщо"
+" тотожними є їхні значення розміру та позначки mtime. Якщо ці значення не"
+" збігатимуться, файли вважатимуться різними."
 
 #: data/org.gnome.meld.gschema.xml:174
 msgid "File timestamp resolution"
@@ -293,6 +320,10 @@ msgid ""
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
+"При порівнянні на основі значення mtime це значення визначає порогову"
+" мінімальну відмінність у мілісекундах, за якої значення mtime вважатимуться"
+" різними. Корисно при порівнянні файлів у різних файлових системах, із"
+" різними системами запису часових позначок."
 
 #: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
 msgid "Apply text filters during folder comparisons"
@@ -304,6 +335,9 @@ msgid ""
 "text filters and the blank line trimming option, and ignore newline "
 "differences."
 msgstr ""
+"Якщо має значення «true», при порівнянні тек із порівнянням вмісту файлів"
+" також буде застосовано текстові фільтри, обрізання порожніх рядків та"
+" ігнорування відмінностей у символах розриву рядків."
 
 #: data/org.gnome.meld.gschema.xml:184
 msgid "File status filters"
@@ -312,6 +346,8 @@ msgstr "Фільтри стану файлів"
 #: data/org.gnome.meld.gschema.xml:185
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
+"Список станів, який буде використано для фільтрування видимих файлів при"
+" порівнянні тек."
 
 #: data/org.gnome.meld.gschema.xml:191
 msgid "Show the version control console output"
@@ -322,6 +358,10 @@ msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
 msgstr ""
+"Якщо має значення «true», на панелях порівняння модифікацій у системі"
+" керування версіями буде показано розділ виведення даних до консолі, у якому"
+" буде показано команди, які виконуватимуться для роботи із системою керування"
+" версіями."
 
 #: data/org.gnome.meld.gschema.xml:196
 msgid "Version control pane position"
@@ -332,10 +372,12 @@ msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr ""
+"Це висота основної панелі ієрархії системи керування версіями, якщо показано"
+" панель консолі."
 
 #: data/org.gnome.meld.gschema.xml:201
 msgid "Present version comparisons as left-local/right-remote"
-msgstr ""
+msgstr "Показувати порівняння версій як лівий-локаний/правий-віддалений"
 
 #: data/org.gnome.meld.gschema.xml:202
 msgid ""
@@ -343,6 +385,10 @@ msgid ""
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr ""
+"Якщо має значення «true», при порівнянні у системі керування версіями буде"
+" використано схему «лівий-є-локальним» і «правий-є-віддаленим» при показі"
+" файлів на панелях. Якщо має значення «false», використовуватиметься схема"
+" «лівий-є-віддаленим» і «правий-є-локальним»."
 
 #: data/org.gnome.meld.gschema.xml:206
 msgid "Order for files in three-way version control merge comparisons"
@@ -356,6 +402,10 @@ msgid ""
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
+"Варіантами для порядку файлів є «віддалений/об'єднаний/локальний» і"
+" «локальний/об'єднаний/віддалений». Цей ключ стосується лише порівняння трьх"
+" файлів, запущеного з панелі системи керування версіями, тому у Meld"
+" використовується лише для об'єднання і розв'язання конфліктів."
 
 #: data/org.gnome.meld.gschema.xml:211
 msgid "Show margin in commit message editor"
@@ -366,6 +416,8 @@ msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr ""
+"Якщо має значення «true», буде показано напрямну, яка визначатиме позицію"
+" поля у редакторі повідомлень внесків системи керування версіями."
 
 #: data/org.gnome.meld.gschema.xml:216
 msgid "Margin column in commit message editor"
@@ -388,6 +440,9 @@ msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
 msgstr ""
+"Якщо має значення «true», редактор повідомлень внесків системи керування"
+" версіями жорстко переноситиме (тобто вставлятиме символи розриву рядків)"
+" рядки на позиції поля внеску до надсилання внеску."
 
 #: data/org.gnome.meld.gschema.xml:226
 msgid "Version control status filters"
@@ -397,6 +452,8 @@ msgstr "Фільтри станів системи керування версі
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
+"Список станів, який буде використано для фільтрування видимих файлів при"
+" порівнянні модифікацій у системі керування версіями."
 
 #: data/org.gnome.meld.gschema.xml:241
 msgid "Filename-based filters"
@@ -407,6 +464,8 @@ msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
+"Список попередньо визначених фільтрів на основі назв файлів. Якщо активний,"
+" відповідні фільтрам файли буде усунено зі списків при порівнянні тек."
 
 #: data/org.gnome.meld.gschema.xml:256
 msgid "Text-based filters"
@@ -418,6 +477,10 @@ msgid ""
 "text from being used in a file comparison. The text will still be displayed, "
 "but won’t contribute to the comparison itself."
 msgstr ""
+"Список попередньо визначених текстових фільтрів на основі формальних виразів."
+" Якщо задіяно, фільтри вилучатимуть фрагменти тексту при порівнянні файлів."
+" Відфільтрований текст буде показано на панелях порівняння, але він не"
+" враховуватиметься при самому порівнянні."
 
 #: data/styles/meld-base.style-scheme.xml.in:1
 msgid "Classic (Meld)"
