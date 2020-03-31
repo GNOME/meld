@@ -295,7 +295,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 cancelled = self.emit(
                     'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
                 if not cancelled:
-                    self.emit('destroy')
+                    self.destroy()
 
     def on_page_state_changed(self, page, old_state, new_state):
         if self.should_close and old_state == ComparisonState.Closing:
