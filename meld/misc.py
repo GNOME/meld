@@ -389,6 +389,9 @@ def apply_text_filters(
 
     filter_ranges = []
     for r in regexes:
+        if not r:
+            continue
+
         for match in r.finditer(txt):
 
             # If there are no groups in the match, use the whole match
