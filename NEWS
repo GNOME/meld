@@ -1,4 +1,136 @@
 
+2020-04-19 meld 3.21.0
+======================
+
+  UI changes:
+
+   * Move to a modern GTK headerbar-based design, including:
+     * More extensive action support in the header bar
+     * New comparison overview map widget that provides a clearer overview for
+       multiple panes at once, and allows for more natural scrollbar
+       positioning (Kai Willadsen)
+     * Text, filename and version filters are now all accessible from the
+       toolbar (Kai Willadsen)
+     * Refreshed find bar that more closely matches other applications (Kai
+       Willadsen)
+     * Remove application menu in line with Initiatives#4 (Kai Willadsen)
+     * New recent comparison selection widget (Kai Willadsen)
+     * Change tab style to be full-width and hidden for single tab windows (Kai
+       Willadsen)
+   * Make file comparison change navigation more intuitive by changing how it
+     decides where to scroll from (Heikki Ketoharju)
+   * Completely refreshed Meld application icon (Alex Monday)
+   * File comparison now has overscroll at the bottom of file comparisons,
+     making it easier to see end-of-file differences and improving scroll
+     syncing (Kai Willadsen)
+   * Text wrapping, whitespace, line numbers and line highlight can now all be
+     toggled from the file comparison status bar (Kai Willadsen)
+
+
+  Features:
+
+   * Add support for CVS in version control comparisons (gitqlt)
+   * Copy selected file paths in folder comparison (WenGuoyao)
+   * Improve dark theme detection so custom Meld highlighting better matches
+     the user's theme (Kai Willadsen)
+   * Meld's built-in GtkSourceView schemes now support syntax highlighting
+     (Kai Willadsen)
+   * Moving past the first or last change using our change navigation now
+     alerts with the standard error bell (Kai Willadsen)
+   * Support nightly Flatpak builds of Meld using GNOME's CI (Kai Willadsen)
+   * Support development using GNOME Builder's workflow
+
+
+  Fixes:
+
+   * CI and build system fixes (Michael Behrisch, Frank Dana, Piotr Drąg, Vasily Galkin)
+   * Fix running uninstalled from non-project-base folder (Vasily Galkin)
+   * Fix file comparison closing after file save (Vasily Galkin)
+   * Fix file comparison handling of certain line breaks (Kai Willadsen)
+   * Fix folder comparison display of large file sizes (andre)
+   * Fix folder comparisons with pre-epoch timestamps (Kai Willadsen)
+   * Fix folder comparisons not handling ignore blank lines + text filters (Kai
+     Willadsen)
+   * Handle file deletion better on NFS mounts (Kai Willadsen)
+   * Fix handling of bad filter regular expressions (Kai Willadsen)
+   * Fix push action on missing changes in three way comparison (Kai Willadsen)
+   * Default file chooser encoding to autodetect (Kai Willadsen)
+   * Minor UI fixes:
+     * Statusbar now correctly sets default encoding & file type for empty
+       files (Kai Willadsen)
+     * Statusbar tries to keep a constant width for the cursor label (Kai
+       Willadsen)
+     * Folder comparisons set sensitivity correctly for empty rows (Kai
+       Willadsen)
+     * Give commit dialog message area a reasonable height (Kai Willadsen)
+     * Fix long file name wrapping in info bar notifications (Kai Willadsen)
+     * Fix long file name ellipsization in file comparisons (Kai Willadsen)
+   * Windows fixes:
+     * Fix crash when started with unexpected environment (Vasily Galkin)
+     * Fix dbus support for single-instance behaviour (Vasily Galkin)
+     * Fix internationalisation building from source (ThunderEX)
+     * Fix SVG icon display (Kai Willadsen)
+     * Support logging to a file on Windows for debugging (Kai Willadsen)
+     * Default file encoding to UTF-8 to avoid Windows-specific locale issues
+       (Kai Willadsen)
+   * Typo fixes (luzpaz)
+   * Localisation fixes (Piotr Drąg)
+
+
+  Internal changes:
+
+   * Add Meson build system support; setuptools is still supported for Windows
+     and Mac OS builds, but Linux distributions should switch to building with
+     Meson (Bilal Elmoussaoui, Kai Willadsen)
+   * Move from GtkUIManager to GAction-based actions
+   * Move all UI-file-constructed widgets from custom Python wrapper classes
+     to using real GtkWidget templates
+   * Move UI templates, menus, custom icons and CSS to be resource-loaded
+   * Move to pre-commit using flake8 and isort for CI linting
+   * Move to new GtkSourceView 4 API
+   * Modernised Python GObject API usage, including signal and property usage
+   * Fix some deprecated GTK API usage
+   * Support Python 3.8
+   * Updated dependencies:
+     * Python 3.6
+     * GTK+ 3.20
+     * GLib 2.48
+     * GtkSourceView 4.0
+     * pygobject 3.30
+     * pycairo 1.15
+
+   * Issues fixed: 62, 78, 119, 170, 240, 265, 265, 267, 279, 290, 313, 314,
+     316, 321, 322, 337, 341, 342, 344, 344, 350, 351, 359, 419, 432, 439, 442,
+     451
+
+
+  Translations:
+
+   * Alan Mortensen (da)
+   * Anders Jonsson (sv)
+   * Asier Sarasua Garmendia (eu)
+   * Ask Hjorth Larsen (da)
+   * Balázs Meskó (hu)
+   * Balázs Úr (hu)
+   * Daniel Mustieles (es)
+   * Daniel Șerbănescu (ro)
+   * Emin Tufan Çetin (tr)
+   * Fran Dieguez (gl)
+   * Guillaume Bernard (fr)
+   * Jiri Grönroos (fi)
+   * Kukuh Syafaat (id)
+   * Marek Černocký (cs)
+   * Matej Urbančič (sl)
+   * Milo Casagrande (it)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+   * Ryuta Fujii (ja)
+   * Sabri Ünal (tr)
+   * sicklylife (ja)
+   * Wolfgang Stöggl (de)
+   * Yuri Chornoivan (uk)
+
+
 2019-01-06 meld 3.20.0
 ======================
 
