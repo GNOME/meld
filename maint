@@ -435,7 +435,7 @@ def news():
 
 @cli.command()
 def appdata():
-    filename = 'data/org.gnome.meld.appdata.xml.in'
+    filename = 'data/org.gnome.meld.appdata.xml.in.in'
 
     rendered = render_template(APPDATA_TEMPLATE)
     with open(filename, 'r') as f:
