@@ -486,12 +486,19 @@ def markdown(filename):
 
 @cli.command()
 def dist():
-    archive = '%s-%s.tar.bz2' % (meld.conf.__package__, meld.conf.__version__)
-    dist_archive_path = os.path.abspath(os.path.join('dist', archive))
-    if os.path.exists(dist_archive_path):
-        click.echo('Replacing %s...' % dist_archive_path)
-    cmd = ['python3', 'setup.py', 'sdist', '--formats=bztar']
+    build_dir = '_build'
+    archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
+    dist_archive_path = os.path.abspath(
+        os.path.join(build_dir, 'meson-dist', archive))
+
+    click.echo('Running meson...')
+    cmd = ['meson', build_dir]
     call_with_output(cmd, echo_stdout=False)
+
+    click.echo('Creating distribution...')
+    cmd = ['ninja', '-C', build_dir, 'dist']
+    call_with_output(cmd, echo_stdout=False)
+
     if not os.path.exists(dist_archive_path):
         click.echo('Failed to create archive file %s' % dist_archive_path)
         raise click.Abort()
