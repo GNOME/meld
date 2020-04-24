@@ -13,6 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
+
 from gi.repository import Gio, GObject, GtkSource, Pango
 
 import meld.conf
@@ -69,7 +71,11 @@ class MeldSettings(GObject.GObject):
 
     def _current_font_from_gsetting(self, *args):
         if settings.get_boolean('use-system-font'):
-            font_string = interface_settings.get_string('monospace-font-name')
+            if sys.platform == 'win32':
+                font_string = 'Consolas 11'
+            else:
+                font_string = interface_settings.get_string(
+                    'monospace-font-name')
         else:
             font_string = settings.get_string('custom-font')
         return Pango.FontDescription(font_string)
