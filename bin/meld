@@ -434,6 +434,10 @@ def environment_hacks():
         except KeyError:
             pass
 
+    # Force the fontconfig backend for font fallback and metric handling
+    if sys.platform == 'win32' and 'PANGOCAIRO_BACKEND' not in os.environ:
+        os.environ['PANGOCAIRO_BACKEND'] = 'fontconfig'
+
 
 def run_application():
     from meld.meldapp import MeldApp
