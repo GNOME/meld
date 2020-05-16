@@ -46,14 +46,22 @@ pytest:
 .mingw-common:
   stage: build
   tags: # select gitlab runners with specific tag (unrelated to git repo tags)
-    - win32
+    - win32-ps
   artifacts:
-    name: "%CI_JOB_STAGE%-%CI_COMMIT_REF_NAME%"
+    name: "${env:CI_JOB_STAGE}-${env:CI_COMMIT_REF_NAME}"
     paths:
       - dist/
   before_script:
-    - path C:\msys64\%MSYSTEM%\bin;C:\msys64\usr\bin;%PATH%
-    - pacman --noconfirm -S --refresh --sysupgrade --needed mingw-w64-%MSYS2_ARCH%-python3-cx_Freeze mingw-w64-%MSYS2_ARCH%-python3-gobject mingw-w64-%MSYS2_ARCH%-python3-pytest mingw-w64-%MSYS2_ARCH%-gtksourceview4 mingw-w64-%MSYS2_ARCH%-gsettings-desktop-schemas glib2-devel intltool
+    - $env:Path = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;${env:PATH}"
+    - >
+      C:\msys64\usr\bin\pacman --noconfirm -S --refresh --sysupgrade --needed
+      mingw-w64-${env:MSYS2_ARCH}-python3-cx_Freeze
+      mingw-w64-${env:MSYS2_ARCH}-python3-gobject
+      mingw-w64-${env:MSYS2_ARCH}-python3-pytest
+      mingw-w64-${env:MSYS2_ARCH}-gtksourceview4
+      mingw-w64-${env:MSYS2_ARCH}-gsettings-desktop-schemas
+      glib2-devel
+      intltool
   script:
     - glib-compile-schemas data
     - python3 setup_win32.py bdist_dumb --bdist-dir build\bdist.mingw\msi --keep-temp bdist_msi --keep-temp
@@ -64,11 +72,13 @@ pytest:
 mingw64-dist:
   extends: .mingw-common
   variables:
-    MSYS2_ARCH: x86_64
-    MSYSTEM: MINGW64
+    MSYS2_ARCH: "x86_64"
+    MSYSTEM: "MINGW64"
+    CHERE_INVOKING: "yes"
 
 mingw32-dist:
   extends: .mingw-common
   variables:
-    MSYS2_ARCH: i686
+    MSYS2_ARCH: "i686"
     MSYSTEM: "MINGW32"
+    CHERE_INVOKING: "yes"
