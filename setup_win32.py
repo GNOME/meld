@@ -70,8 +70,7 @@ for data_dir in gtk_data_dirs:
 manually_added_libs = {
     # add libgdk_pixbuf-2.0-0.dll manually to forbid auto-pulling of gdiplus.dll
     "libgdk_pixbuf-2.0-0.dll": os.path.join(sys.prefix, 'bin'),
-    # libcroco and librsvg are needed for SVG loading in gdkpixbuf
-    "libcroco-0.6-3.dll": os.path.join(sys.prefix, 'bin'),
+    # librsvg is needed for SVG loading in gdkpixbuf
     "librsvg-2-2.dll": os.path.join(sys.prefix, 'bin'),
 }
 
