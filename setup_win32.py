@@ -120,6 +120,7 @@ executable_options = {
     "script": "bin/meld",
     "icon": "data/icons/org.gnome.meld.ico",
 }
+console_executable_options = dict(executable_options)
 
 if 'mingw' in sysconfig.get_platform():
     executable_options.update({
@@ -127,6 +128,9 @@ if 'mingw' in sysconfig.get_platform():
          "targetName": "Meld.exe",
          "shortcutName": "Meld",
          "shortcutDir": "ProgramMenuFolder",
+    })
+    console_executable_options.update({
+         "targetName": "MeldConsole.exe",
     })
 
 # Copy conf.py in place if necessary
@@ -173,6 +177,7 @@ setup(
     },
     executables=[
         Executable(**executable_options),
+        Executable(**console_executable_options),
     ],
     packages=[
         'meld',
