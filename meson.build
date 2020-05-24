@@ -32,6 +32,7 @@ else
 endif
 
 resource_base_id = 'org.gnome.meld'
+application_id_no_profile = 'org.gnome.Meld'
 application_id = 'org.gnome.Meld@0@'.format(profile)
 
 prefix = get_option('prefix')

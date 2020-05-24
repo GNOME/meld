@@ -110,7 +110,7 @@ icon_sizes = ['scalable']
 
 foreach i : icon_sizes
   install_data(
-    join_paths('icons/hicolor', i , 'apps', resource_base_id + '.svg'),
+    join_paths('icons/hicolor', i , 'apps', application_id + '.svg'),
     install_dir: join_paths(icondir, 'hicolor', i , 'apps'),
     rename: '@0@.svg'.format(application_id)
   )
@@ -118,7 +118,7 @@ endforeach
 
 # Install the symbolic icon
 install_data(
-    join_paths('icons/hicolor/symbolic/apps', resource_base_id + '-symbolic.svg'),
+    join_paths('icons/hicolor/symbolic/apps', application_id_no_profile + '-symbolic.svg'),
     install_dir: join_paths(icondir, 'hicolor', 'symbolic', 'apps'),
     rename: '@0@-symbolic.svg'.format(application_id)
 )
