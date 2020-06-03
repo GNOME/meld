@@ -226,9 +226,11 @@ class Vc(_vc.Vc):
         if os.name == "nt":
             path = path.replace("\\", "/")
 
+        suffix = os.path.splitext(path)[1]
         args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
         filename = _vc.call_temp_output(
-            args, cwd=self.location, file_id=_vc.conflicts[conflict])
+            args, cwd=self.location,
+            file_id=_vc.conflicts[conflict], suffix=suffix)
         return filename, True
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -244,8 +246,9 @@ class Vc(_vc.Vc):
             path = path.replace("\\", "/")
 
         obj = commit + ":" + path
+        suffix = os.path.splitext(path)[1]
         args = [self.CMD, "cat-file", "blob", obj]
-        return _vc.call_temp_output(args, cwd=self.root)
+        return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     @classmethod
     def valid_repo(cls, path):

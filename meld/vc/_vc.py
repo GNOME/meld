@@ -413,7 +413,7 @@ def popen(cmd, cwd=None, use_locale_encoding=True):
     return process.stdout
 
 
-def call_temp_output(cmd, cwd, file_id=''):
+def call_temp_output(cmd, cwd, file_id='', suffix=None):
     """Call `cmd` in `cwd` and write the output to a temporary file
 
     This returns the name of the temporary file used. It is the
@@ -421,6 +421,9 @@ def call_temp_output(cmd, cwd, file_id=''):
 
     If `file_id` is provided, it is used as part of the
     temporary file's name, for ease of identification.
+
+    If `suffix` is provided, it is used as the extension
+    of the temporary file's name.
     """
     process = subprocess.Popen(
         cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -430,7 +433,8 @@ def call_temp_output(cmd, cwd, file_id=''):
     # sane response is to return an empty temp file.
 
     prefix = 'meld-tmp' + ('-' + file_id if file_id else '')
-    with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
+    with tempfile.NamedTemporaryFile(prefix=prefix,
+                                     suffix=suffix, delete=False) as f:
         shutil.copyfileobj(vc_file, f)
     return f.name
 

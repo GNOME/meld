@@ -99,11 +99,13 @@ class Vc(_vc.Vc):
             path = self._reverse_rename_cache[path]
 
         path = path[len(self.root) + 1:]
+        suffix = os.path.splitext(path)[1]
         process = subprocess.Popen(
             [self.CMD, "show", "contents", path], cwd=self.root,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+        with tempfile.NamedTemporaryFile(prefix='meld-tmp',
+                                         suffix=suffix, delete=False) as f:
             shutil.copyfileobj(process.stdout, f)
         return f.name
 
