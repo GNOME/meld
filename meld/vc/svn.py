@@ -81,8 +81,9 @@ class Vc(_vc.Vc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
+        suffix = os.path.splitext(path)[1]
         args = [self.CMD, "cat", "-r", commit, path]
-        return _vc.call_temp_output(args, cwd=self.root)
+        return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def get_path_for_conflict(self, path, conflict=None):
         """

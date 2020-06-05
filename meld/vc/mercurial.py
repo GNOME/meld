@@ -76,8 +76,9 @@ class Vc(_vc.Vc):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
         path = path[len(self.root) + 1:]
 
+        suffix = os.path.splitext(path)[1]
         args = [self.CMD, "cat", path]
-        return _vc.call_temp_output(args, cwd=self.root)
+        return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def _update_tree_state_cache(self, path):
         """ Update the state of the file(s) at self._tree_cache['path'] """
