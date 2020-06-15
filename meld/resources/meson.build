@@ -4,8 +4,8 @@ gnome.compile_resources(
   gresource_bundle: true,
   source_dir: [
     meson.current_build_dir(),
-    meson.current_source_dir() + '/../../data/icons/hicolor'
-    ],
+    meson.source_root() / 'data' / 'icons' / 'hicolor',
+  ],
   install_dir: pkgdatadir,
   install: true,
 )

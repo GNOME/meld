@@ -1,7 +1,7 @@
 project(
     'meld',
     version: '3.21.0',
-    meson_version: '>=0.47.0',
+    meson_version: '>=0.49.0',
 )
 
 python = import('python')
