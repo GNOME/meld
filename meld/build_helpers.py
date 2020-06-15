@@ -117,6 +117,7 @@ class build_data(distutils.cmd.Command):
             "glib-compile-resources",
             "--target={}".format(target),
             "--sourcedir={}".format(resource_dir),
+            "--sourcedir={}".format("data/icons/hicolor"),
             self.resource_source,
         ])
 

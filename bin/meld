@@ -273,6 +273,7 @@ def setup_resources():
                 "glib-compile-resources",
                 "--target={}".format(resource_file),
                 "--sourcedir=meld/resources",
+                "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
             ],
             cwd=melddir
