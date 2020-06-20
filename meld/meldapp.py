@@ -65,6 +65,10 @@ class MeldApp(Gtk.Application):
             action.connect('activate', callback)
             self.add_action(action)
 
+        # Keep clipboard contents after application exit
+        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+        clip.set_can_store(None)
+
         # TODO: Should not be necessary but Builder doesn't understand Menus
         builder = meld.ui.util.get_builder("application.ui")
         menu = builder.get_object("app-menu")
