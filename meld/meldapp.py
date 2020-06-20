@@ -73,6 +73,10 @@ class MeldApp(Gtk.Application):
             action.connect('activate', callback)
             self.add_action(action)
 
+        # Keep clipboard contents after application exit
+        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+        clip.set_can_store(None)
+
         self.new_window()
 
     def do_activate(self):
