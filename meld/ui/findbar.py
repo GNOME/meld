@@ -52,9 +52,6 @@ class FindBar(Gtk.Grid):
         self.notify_id = None
         self.set_text_view(None)
 
-        # Setup a signal for when the find bar loses focus
-        parent.connect('set-focus-child', self.on_focus_child)
-
         # Create and bind our GtkSourceSearchSettings
         settings = GtkSource.SearchSettings()
         self.match_case.bind_property('active', settings, 'case-sensitive')
@@ -71,13 +68,6 @@ class FindBar(Gtk.Grid):
         self.bind_property(
             'replace_mode', self, 'row-spacing', GObject.BindingFlags.DEFAULT,
             lambda binding, replace_mode: 6 if replace_mode else 0)
-
-    def on_focus_child(self, container, widget):
-        if widget is not None:
-            visible = self.props.visible
-            if widget is not self and visible:
-                self.hide()
-        return False
 
     def hide(self):
         self.set_text_view(None)
