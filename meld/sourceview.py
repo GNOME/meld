@@ -216,7 +216,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         if not getattr(self, '_approx_line_height', None):
             context = self.get_pango_context()
             layout = Pango.Layout(context)
-            layout.set_text('X')
+            layout.set_text('X', -1)
             _width, self._approx_line_height = layout.get_pixel_size()
 
         return self._approx_line_height
