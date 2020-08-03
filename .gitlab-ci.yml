@@ -8,18 +8,16 @@ stages:
   - build
   - deploy
 
-variables:
-    BUNDLE: "meld-dev.flatpak"
 
 flatpak:
     extends: .flatpak
     stage: build
     variables:
         MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
-        MESON_ARGS: "-Dprofile=Devel"
         FLATPAK_MODULE: "meld"
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
         APP_ID: "org.gnome.MeldDevel"
+        BUNDLE: "meld-dev.flatpak"
 
 nightly:
   extends: '.publish_nightly'
