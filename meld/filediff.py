@@ -1216,6 +1216,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
             meld_settings = get_meld_settings()
             for h in self.settings_handlers:
                 meld_settings.disconnect(h)
+
+            # This is a workaround for cleaning up file monitors.
+            for buf in self.textbuffer:
+                buf.data.disconnect_monitor()
+
             # TODO: This should not be necessary; remove if and when we
             # figure out what's keeping MeldDocs alive for too long.
             del self._cached_match
