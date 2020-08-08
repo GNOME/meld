@@ -822,8 +822,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         valid_panes = list(range(0, self.num_panes))
         if src not in valid_panes or dst not in valid_panes:
             raise ValueError("Action was taken on invalid panes")
-        if self.num_panes > 2 and self.cursor.chunk is None:
-            raise ValueError("Action chunk taken from passive pane")
+        if self.cursor.chunk is None:
+            raise ValueError("Action was taken without chunk")
 
         chunk = self.linediffer.get_chunk(self.cursor.chunk, src, dst)
         if chunk is None:
