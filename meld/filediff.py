@@ -657,6 +657,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
             # conditions for push are met, *and* there is some content in the
             # target pane.
             editable = self.textview[pane].get_editable()
+            # editable_left is relative to current pane and it is False for the
+            # leftmost frame. The same logic applies to editable_right.
             editable_left = pane > 0 and self.textview[pane - 1].get_editable()
             editable_right = (
                 pane < self.num_panes - 1 and
@@ -693,8 +695,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
             # If there is chunk and there are only two panes (#25)
             if self.num_panes == 2:
-                push_right = True
-                push_left = True
+                pane0_editable = self.textview[0].get_editable()
+                pane1_editable = self.textview[1].get_editable()
+                push_left = pane0_editable
+                push_right = pane1_editable
 
         self.set_action_enabled('file-push-left', push_left)
         self.set_action_enabled('file-push-right', push_right)
