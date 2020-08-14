@@ -16,6 +16,7 @@
 
 import enum
 import logging
+import os
 import pipes
 import shlex
 import string
@@ -127,7 +128,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             if not path:
                 return
             if sys.platform == "win32":
-                subprocess.Popen(["start", path], shell=True)
+                os.startfile(path)
             elif sys.platform == "darwin":
                 subprocess.Popen(["open", path])
             else:
