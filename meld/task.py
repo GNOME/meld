@@ -140,8 +140,8 @@ class FifoScheduler(SchedulerBase):
 
 
 if __name__ == "__main__":
-    import time
     import random
+    import time
     m = LifoScheduler()
 
     def timetask(t):
