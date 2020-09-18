@@ -22,6 +22,7 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
 # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import os
 import shutil
 import tempfile
 
@@ -41,7 +42,9 @@ class Vc(_vc.Vc):
         pass
 
     def get_path_for_repo_file(self, path, commit=None):
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp', delete=False) as f:
+        suffix = os.path.splitext(path)[1]
+        with tempfile.NamedTemporaryFile(
+                prefix='meld-tmp', suffix=suffix, delete=False) as f:
             with open(path, 'rb') as vc_file:
                 shutil.copyfileobj(vc_file, f)
         return f.name

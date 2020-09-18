@@ -179,7 +179,7 @@ class Vc(_vc.Vc):
         command = [self.CMD, 'add']
         runner(command, files, refresh=True, working_dir=self.root)
 
-    def remerge_with_ancestor(self, local, base, remote):
+    def remerge_with_ancestor(self, local, base, remote, suffix=''):
         """Reconstruct a mixed merge-plus-base file
 
         This method re-merges a given file to get diff3-style conflicts
@@ -194,7 +194,8 @@ class Vc(_vc.Vc):
             _vc.base_from_diff3(proc.stdout.read()))
 
         prefix = 'meld-tmp-%s-' % _vc.CONFLICT_MERGED
-        with tempfile.NamedTemporaryFile(prefix=prefix, delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+                prefix=prefix, suffix=suffix, delete=False) as f:
             shutil.copyfileobj(vc_file, f)
 
         return f.name, True
@@ -213,7 +214,9 @@ class Vc(_vc.Vc):
                 raise _vc.InvalidVCPath(self, path,
                                         "Couldn't access conflict parents")
 
-            filename, is_temp = self.remerge_with_ancestor(local, base, remote)
+            suffix = os.path.splitext(path)[1]
+            filename, is_temp = self.remerge_with_ancestor(
+                    local, base, remote, suffix=suffix)
 
             for temp_file in (local, base, remote):
                 if os.name == "nt":
