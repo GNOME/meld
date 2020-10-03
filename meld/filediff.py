@@ -1239,7 +1239,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
             # TODO: This should not be necessary; remove if and when we
             # figure out what's keeping MeldDocs alive for too long.
-            del self._cached_match
+            try:
+                del self._cached_match
+            except AttributeError:
+                pass
             # TODO: Base the return code on something meaningful for VC tools
             self.close_signal.emit(0)
         return response
