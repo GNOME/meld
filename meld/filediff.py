@@ -931,7 +931,10 @@ class FileDiff(MeldDoc, Component):
                 meldsettings.disconnect(h)
             # TODO: This should not be necessary; remove if and when we
             # figure out what's keeping MeldDocs alive for too long.
-            del self._cached_match
+            try:
+                del self._cached_match
+            except AttributeError:
+                pass
             # TODO: Base the return code on something meaningful for VC tools
             self.emit('close', 0)
         return response
