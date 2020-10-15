@@ -689,6 +689,7 @@ class DirDiff(MeldDoc, Component):
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
+        self._scan_in_progress = 0
         self.recursively_update(Gtk.TreePath.new_first())
         self._update_diffmaps()
 
