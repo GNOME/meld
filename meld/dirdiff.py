@@ -738,6 +738,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
+        self._scan_in_progress = 0
         self.recursively_update(Gtk.TreePath.new_first())
 
     def get_comparison(self):
