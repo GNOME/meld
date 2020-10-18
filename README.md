@@ -110,7 +110,7 @@ and new contributors are always welcome!
 
 List of issues: https://gitlab.gnome.org/GNOME/meld/issues
 
-Mailing list:   https://mail.gnome.org/mailman/listinfo/meld-list
+Support forum:  https://discourse.gnome.org/tag/meld
 
 
 
