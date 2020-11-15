@@ -5,7 +5,7 @@ from gi.repository import Gio, GLib, Gtk
 
 from meld.conf import _
 from meld.misc import get_modal_parent, modal_dialog
-from meld.ui.filechooser import MeldFileChooserDialog
+from meld.ui.filechooser import MeldFileChooserDialogFactory
 
 
 def trash_or_confirm(gfile: Gio.File) -> bool:
@@ -75,7 +75,7 @@ def trash_or_confirm(gfile: Gio.File) -> bool:
 def prompt_save_filename(
         title: str, parent: Optional[Gtk.Widget] = None) -> Optional[Gio.File]:
 
-    dialog = MeldFileChooserDialog(
+    dialog = MeldFileChooserDialogFactory.dialog(
         title,
         transient_for=get_modal_parent(parent),
         action=Gtk.FileChooserAction.SAVE,

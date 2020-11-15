@@ -20,6 +20,7 @@ from gi.repository import Gio, GLib, GObject, Gtk
 from meld.conf import _
 from meld.melddoc import LabeledObjectMixin, MeldDoc
 from meld.recent import recent_comparisons
+from meld.settings import get_meld_settings, settings
 from meld.ui.util import map_widgets_into_lists
 
 
@@ -61,6 +62,9 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     file_chooser0 = Gtk.Template.Child()
     file_chooser1 = Gtk.Template.Child()
     file_chooser2 = Gtk.Template.Child()
+    file_chooser_native0 = Gtk.Template.Child()
+    file_chooser_native1 = Gtk.Template.Child()
+    file_chooser_native2 = Gtk.Template.Child()
     file_three_way_checkbutton = Gtk.Template.Child()
     filechooserdialog0 = Gtk.Template.Child()
     filechooserdialog1 = Gtk.Template.Child()
@@ -71,7 +75,13 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         super().__init__()
         map_widgets_into_lists(
             self,
-            ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"]
+            [
+                "file_chooser",
+                "file_chooser_native",
+                "dir_chooser",
+                "vc_chooser",
+                "filechooserdialog"
+            ]
         )
         self.button_types = [
             self.button_type_file,
@@ -89,7 +99,10 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         for chooser in self.file_chooser:
             chooser.set_current_folder(default_path)
 
+        get_meld_settings().connect('changed', self.on_setting_changed)
+
         self.show()
+        self.hide_unused_file_chooser_buttons()
 
     @Gtk.Template.Callback()
     def on_button_type_toggled(self, button, *args):
@@ -113,6 +126,7 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     def on_three_way_checkbutton_toggled(self, button, *args):
         if button is self.file_three_way_checkbutton:
             self.file_chooser2.set_sensitive(button.get_active())
+            self.file_chooser_native2.set_sensitive(button.get_active())
         else:  # button is self.dir_three_way_checkbutton
             self.dir_chooser2.set_sensitive(button.get_active())
 
@@ -136,6 +150,23 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         # we've got binary files; check for null file selections; sniff text
         # encodings; check file permissions.
 
+    def hide_unused_file_chooser_buttons(self):
+        if settings.get_boolean('use-system-file-dialogs'):
+            choosers_to_hide = self.file_chooser
+            choosers_to_show = self.file_chooser_native
+        else:
+            choosers_to_hide = self.file_chooser_native
+            choosers_to_show = self.file_chooser
+
+        for b in choosers_to_hide:
+            b.hide()
+        for b in choosers_to_show:
+            b.show()
+
+    def on_setting_changed(self, settings, key):
+        if key == 'use-system-file-dialogs':
+            self.hide_unused_file_chooser_buttons()
+
     def _get_num_paths(self):
         if self.diff_type in (DiffType.File, DiffType.Folder):
             three_way_buttons = (
@@ -150,8 +181,22 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
 
     @Gtk.Template.Callback()
     def on_button_compare_clicked(self, *args):
-        type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
-        choosers = type_choosers[self.diff_type][:self._get_num_paths()]
+        type_choosers = (
+                            self.file_chooser,
+                            self.dir_chooser,
+                            self.vc_chooser,
+                            self.file_chooser_native
+                        )
+
+        if settings.get_boolean('use-system-file-dialogs'):
+            native_offset = 3
+        else:
+            native_offset = 0
+
+        chooser_index = self.diff_type + native_offset
+
+        choosers = type_choosers[chooser_index][:self._get_num_paths()]
+
         compare_gfiles = [chooser.get_file() for chooser in choosers]
 
         compare_kwargs = {}

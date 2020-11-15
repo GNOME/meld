@@ -254,6 +254,7 @@ class PreferencesDialog(Gtk.Dialog):
 
     checkbutton_break_commit_lines = Gtk.Template.Child()
     checkbutton_default_font = Gtk.Template.Child()
+    checkbutton_system_file_dialogs = Gtk.Template.Child()
     checkbutton_folder_filter_text = Gtk.Template.Child()
     checkbutton_highlight_current_line = Gtk.Template.Child()
     checkbutton_ignore_blank_lines = Gtk.Template.Child()
@@ -286,6 +287,7 @@ class PreferencesDialog(Gtk.Dialog):
         super().__init__(**kwargs)
 
         bindings = [
+            ('use-system-file-dialogs', self.checkbutton_system_file_dialogs, 'active'),  # noqa: E501
             ('use-system-font', self.checkbutton_default_font, 'active'),
             ('custom-font', self.fontpicker, 'font'),
             ('indent-width', self.spinbutton_tabsize, 'value'),
