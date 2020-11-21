@@ -230,6 +230,10 @@ def check_requirements():
                 # call and just set the version so it will pass
                 mod.init()
                 version = (self.major_version, self.minor_version)
+            elif mod.__name__ in (
+                    'gi.repository.Peas', 'gi.repository.PeasGtk'):
+                # There's no accessors for Peas
+                version = (self.major_version, self.minor_version)
             elif mod.__name__ in ('cairo', 'gi', 'sys'):
                 version = mod.version_info
 
@@ -247,6 +251,8 @@ def check_requirements():
         Requirement('Gtk+', 'Gtk', '3.0', 3, 22),
         Requirement('GLib', 'GLib', '2.0', 2, 48),
         Requirement('GtkSourceView', 'GtkSource', '4', 4, 0),
+        Requirement('Peas', 'Peas', '1.0', 1, 20),
+        Requirement('PeasGtk', 'PeasGtk', '1.0', 1, 20),
         Requirement('pygobject', 'gi', None, 3, 30),
         Requirement('pycairo', 'cairo', None, 1, 15),
     )
@@ -273,7 +279,7 @@ def setup_resources():
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
             ],
-            cwd=melddir
+            cwd=melddir,
         )
 
     try:
@@ -437,6 +443,42 @@ def environment_hacks():
         os.environ['PANGOCAIRO_BACKEND'] = 'fontconfig'
 
 
+def setup_plugin_system():
+    from gi.repository import Peas
+
+    from meld.confshim import get_meld_paths
+
+    log = logging.getLogger()
+
+    engine = Peas.Engine.get_default()
+    engine.enable_loader('python3')
+
+    meld_paths = get_meld_paths()
+
+    engine.add_search_path(
+        str(meld_paths.user_plugins_dir),
+        str(meld_paths.user_plugins_data_dir)
+    )
+    engine.add_search_path(
+        str(meld_paths.system_plugins_dir),
+        str(meld_paths.system_plugins_data_dir),
+    )
+
+    plugins = engine.get_plugin_list()
+
+    # Plugin initialisation changes sys.argv, so we copy and restore it
+    # here.
+    argv = sys.argv[:]
+
+    # TODO: Add plugin enablement config
+    for p in plugins:
+        success = engine.load_plugin(p)
+        if not success:
+            log.warning(f'Failed to load plugin {p}')
+
+    sys.argv = argv
+
+
 def run_application():
     from meld.meldapp import MeldApp
 
@@ -458,6 +500,7 @@ def main():
     setup_glib_logging()
     setup_resources()
     setup_settings()
+    setup_plugin_system()
     return run_application()
 
 
