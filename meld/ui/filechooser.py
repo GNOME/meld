@@ -20,26 +20,11 @@ import sys
 from gi.repository import Gtk, GtkSource
 
 from meld.conf import _
-from meld.settings import settings
 
 FILE_ACTIONS = {
     Gtk.FileChooserAction.OPEN,
     Gtk.FileChooserAction.SAVE,
 }
-
-
-class MeldFileChooserDialogNative(Gtk.FileChooserNative):
-
-    __gtype_name__ = 'MeldFileChooserDialogNative'
-
-    def __init__(self, title=None, transient_for=None,
-                 action=Gtk.FileChooserAction.OPEN):
-        super().__init__(title=title, transient_for=transient_for,
-                         action=action)
-
-    def set_default_response(*_):
-        pass  # it is not possible to set this when using the native dialog
-        # The native dialog always returns Gtk.ResponseType.ACCEPT
 
 
 class MeldFileChooserDialog(Gtk.FileChooserDialog):
@@ -121,23 +106,3 @@ class MeldFileChooserDialog(Gtk.FileChooserDialog):
             self.props.extra_widget = self.make_encoding_combo()
         else:
             self.props.extra_widget = None
-
-
-class MeldFileChooserDialogFactory:
-
-    @staticmethod
-    def dialog(title=None, transient_for=None,
-               action=Gtk.FileChooserAction.OPEN):
-
-        if settings.get_boolean('use-system-file-dialogs'):
-            return MeldFileChooserDialogNative(
-                                    title,
-                                    transient_for=transient_for,
-                                    action=action,
-                                )
-        else:
-            return MeldFileChooserDialog(
-                                    title,
-                                    transient_for=transient_for,
-                                    action=action,
-                                )

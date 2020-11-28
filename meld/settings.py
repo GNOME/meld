@@ -53,8 +53,6 @@ class MeldSettings(GObject.GObject):
         elif key in ('style-scheme'):
             self.style_scheme = self._style_scheme_from_gsettings()
             self.emit('changed', 'style-scheme')
-        elif key in ('use-system-file-dialogs'):
-            self.emit('changed', 'use-system-file-dialogs')
 
     def _style_scheme_from_gsettings(self):
         from meld.style import set_base_style_scheme

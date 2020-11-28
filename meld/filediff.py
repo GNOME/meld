@@ -52,7 +52,7 @@ from meld.sourceview import (
     TextviewLineAnimationType,
     get_custom_encoding_candidates,
 )
-from meld.ui.filechooser import MeldFileChooserDialogFactory
+from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
     make_multiobject_property_action,
@@ -2042,7 +2042,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def on_file_open_button_clicked(self, button):
         pane = self.file_open_button.index(button)
 
-        dialog = MeldFileChooserDialogFactory.dialog(
+        dialog = MeldFileChooserDialog(
             title=_("Open File"),
             transient_for=self.get_toplevel(),
         )
