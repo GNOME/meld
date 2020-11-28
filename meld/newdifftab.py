@@ -62,16 +62,13 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     file_chooser1 = Gtk.Template.Child()
     file_chooser2 = Gtk.Template.Child()
     file_three_way_checkbutton = Gtk.Template.Child()
-    filechooserdialog0 = Gtk.Template.Child()
-    filechooserdialog1 = Gtk.Template.Child()
-    filechooserdialog2 = Gtk.Template.Child()
     vc_chooser0 = Gtk.Template.Child()
 
     def __init__(self, parentapp):
         super().__init__()
         map_widgets_into_lists(
             self,
-            ["file_chooser", "dir_chooser", "vc_chooser", "filechooserdialog"]
+            ["file_chooser", "dir_chooser", "vc_chooser"]
         )
         self.button_types = [
             self.button_type_file,
@@ -155,10 +152,6 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         compare_gfiles = [chooser.get_file() for chooser in choosers]
 
         compare_kwargs = {}
-        if self.diff_type == DiffType.File:
-            chooserdialogs = self.filechooserdialog[:self._get_num_paths()]
-            encodings = [chooser.get_encoding() for chooser in chooserdialogs]
-            compare_kwargs = {'encodings': encodings}
 
         tab = self.diff_methods[self.diff_type](
             compare_gfiles, **compare_kwargs)

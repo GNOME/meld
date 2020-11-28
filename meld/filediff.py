@@ -52,7 +52,6 @@ from meld.sourceview import (
     TextviewLineAnimationType,
     get_custom_encoding_candidates,
 )
-from meld.ui.filechooser import MeldFileChooserDialog
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
     make_multiobject_property_action,
@@ -2042,7 +2041,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def on_file_open_button_clicked(self, button):
         pane = self.file_open_button.index(button)
 
-        dialog = MeldFileChooserDialog(
+        dialog = Gtk.FileChooserNative(
             title=_("Open File"),
             transient_for=self.get_toplevel(),
         )
@@ -2050,7 +2049,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
             dialog.set_file(self.textbuffer[pane].data.gfile)
         response = dialog.run()
         gfile = dialog.get_file()
-        encoding = dialog.get_encoding()
         dialog.destroy()
 
         if response != Gtk.ResponseType.ACCEPT:
@@ -2059,7 +2057,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if not self.check_unsaved_changes():
             return
 
-        self.set_file(pane, gfile, encoding)
+        self.set_file(pane, gfile)
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
