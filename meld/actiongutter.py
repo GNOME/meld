@@ -143,12 +143,12 @@ class ActionGutter(Gtk.DrawingArea):
 
     @GObject.Signal
     def chunk_action_activated(
-            self,
-            action: str,  # String-ified ChunkAction
-            from_view: Gtk.TextView,
-            to_view: Gtk.TextView,
-            chunk: object,
-            ) -> None:
+        self,
+        action: str,  # String-ified ChunkAction
+        from_view: Gtk.TextView,
+        to_view: Gtk.TextView,
+        chunk: object,
+    ) -> None:
         ...
 
     def __init__(self):

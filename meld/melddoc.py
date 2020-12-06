@@ -22,7 +22,7 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import Iterable, List, Optional, Sequence
+from typing import List, Optional, Sequence
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -42,7 +42,7 @@ def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
     if not any(replacements):
         return [custom_command, path]
     elif not all(r in (None, 'file', 'line') for r in replacements):
-        log.error("Unsupported fields found", )
+        log.error("Unsupported fields found")
         return [custom_command, path]
     else:
         cmd = custom_command.format(file=pipes.quote(path), line=line)
@@ -62,8 +62,8 @@ def open_files_external(
         elif sys.platform == "darwin":
             subprocess.Popen(["open", path])
         else:
-            Gtk.show_uri(Gdk.Screen.get_default(), uri,
-                         Gtk.get_current_event_time())
+            Gtk.show_uri(
+                Gdk.Screen.get_default(), uri, Gtk.get_current_event_time())
 
     def open_cb(source, result, *data):
         info = source.query_info_finish(result)

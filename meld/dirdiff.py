@@ -76,8 +76,8 @@ CacheResult = namedtuple('CacheResult', 'stats result')
 
 
 _cache = {}
-Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
-    list(range(6))
+Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = (
+    list(range(6)))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
 
@@ -118,7 +118,7 @@ def _contents_same(contents, file_size):
     other_files_index = list(range(1, len(contents)))
     chunk_range = zip(
         range(0, file_size, CHUNK_SIZE),
-        range(CHUNK_SIZE, file_size + CHUNK_SIZE, CHUNK_SIZE)
+        range(CHUNK_SIZE, file_size + CHUNK_SIZE, CHUNK_SIZE),
     )
 
     for start, end in chunk_range:
@@ -240,8 +240,8 @@ def _files_same(files, regexes, comparison_args):
 EMBLEM_NEW = "emblem-new"
 EMBLEM_SYMLINK = "emblem-symbolic-link"
 
-COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
-        range(tree.COL_END, tree.COL_END + 6)
+COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = (
+    range(tree.COL_END, tree.COL_END + 6))
 
 
 class DirDiffTreeStore(tree.DiffTreeStore):
@@ -253,7 +253,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         defaults = {
             COL_TIME: MISSING_TIMESTAMP,
             COL_SIZE: -1,
-            COL_PERMS: -1
+            COL_PERMS: -1,
         }
         super().add_error(parent, msg, pane, defaults)
 

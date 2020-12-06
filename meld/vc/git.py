@@ -89,15 +89,18 @@ class Vc(_vc.Vc):
                 # Translators: First %s is replaced by translated "%d unpushed
                 # commits", second %s is replaced by translated "%d branches"
                 label = _("%s in %s") % (
-                    ngettext("%d unpushed commit", "%d unpushed commits",
-                             unpushed_commits) % unpushed_commits,
-                    ngettext("%d branch", "%d branches",
-                             unpushed_branches) % unpushed_branches)
+                    ngettext(
+                        "%d unpushed commit", "%d unpushed commits",
+                        unpushed_commits) % unpushed_commits,
+                    ngettext(
+                        "%d branch", "%d branches",
+                        unpushed_branches) % unpushed_branches)
             else:
                 # Translators: These messages cover the case where there is
                 # only one branch, and are not part of another message.
-                label = ngettext("%d unpushed commit", "%d unpushed commits",
-                                 unpushed_commits) % (unpushed_commits)
+                label = ngettext(
+                    "%d unpushed commit", "%d unpushed commits",
+                    unpushed_commits) % (unpushed_commits)
         else:
             label = ""
         return label
@@ -216,7 +219,7 @@ class Vc(_vc.Vc):
 
             suffix = os.path.splitext(path)[1]
             filename, is_temp = self.remerge_with_ancestor(
-                    local, base, remote, suffix=suffix)
+                local, base, remote, suffix=suffix)
 
             for temp_file in (local, base, remote):
                 if os.name == "nt":

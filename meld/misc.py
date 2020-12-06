@@ -92,12 +92,12 @@ def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
 
 
 def modal_dialog(
-            primary: str,
-            secondary: str,
-            buttons: Union[Gtk.ButtonsType, Sequence[Tuple[str, int]]],
-            parent: Optional[Gtk.Window] = None,
-            messagetype: Gtk.MessageType = Gtk.MessageType.WARNING
-        ) -> Gtk.ResponseType:
+    primary: str,
+    secondary: str,
+    buttons: Union[Gtk.ButtonsType, Sequence[Tuple[str, int]]],
+    parent: Optional[Gtk.Window] = None,
+    messagetype: Gtk.MessageType = Gtk.MessageType.WARNING
+) -> Gtk.ResponseType:
     """A common message dialog handler for Meld
 
     This should only ever be used for interactions that must be resolved
@@ -205,11 +205,11 @@ SubprocessGenerator = Generator[Union[Tuple[int, str], None], None, None]
 
 
 def read_pipe_iter(
-            command: List[str],
-            workdir: str,
-            errorstream: 'ConsoleStream',
-            yield_interval: float = 0.1,
-        ) -> SubprocessGenerator:
+    command: List[str],
+    workdir: str,
+    errorstream: 'ConsoleStream',
+    yield_interval: float = 0.1,
+) -> SubprocessGenerator:
     """Read the output of a shell command iteratively.
 
     Each time 'callback_interval' seconds pass without reading any data,
@@ -372,10 +372,10 @@ def merge_intervals(
 
 
 def apply_text_filters(
-            txt: AnyStr,
-            regexes: Sequence[Pattern],
-            apply_fn: Optional[Callable[[int, int], None]] = None
-        ) -> AnyStr:
+    txt: AnyStr,
+    regexes: Sequence[Pattern],
+    apply_fn: Optional[Callable[[int, int], None]] = None
+) -> AnyStr:
     """Apply text filters
 
     Text filters "regexes", resolved as regular expressions are applied
