@@ -49,7 +49,6 @@ folders = {
       'ui/bufferselectors.py',
       'ui/cellrenderers.py',
       'ui/emblemcellrenderer.py',
-      'ui/filechooser.py',
       'ui/findbar.py',
       'ui/gladesupport.py',
       'ui/gtkcompat.py',
