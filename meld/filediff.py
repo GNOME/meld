@@ -1809,7 +1809,15 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._cached_match.clean(self.linediffer.diff_count())
 
         self._set_merge_action_sensitivity()
-        if self.linediffer.sequences_identical():
+        paths = [tb.data.gfile.get_path() for tb in self.textbuffer if tb.data.gfile]
+        duplicate_files = list(set([p for p in paths if paths.count(p) > 1]))
+        if duplicate_files:
+            for index, mgr in enumerate(self.msgarea_mgr):
+                primary = _(
+                    "File %s was loaded more than once." % duplicate_files[0])
+                mgr.add_dismissable_msg(
+                    'dialog-error-symbolic', primary, "")
+        elif self.linediffer.sequences_identical():
             error_message = True in [m.has_message() for m in self.msgarea_mgr]
             if self.num_panes == 1 or error_message:
                 return
