@@ -1809,7 +1809,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._cached_match.clean(self.linediffer.diff_count())
 
         self._set_merge_action_sensitivity()
-        paths = [tb.data.gfile.get_path() for tb in self.textbuffer if tb.data.gfile]
+        paths = [tb.data.gfile.get_path() for tb in self.textbuffer
+                if tb.data.gfile]
         duplicate_files = list(set([p for p in paths if paths.count(p) > 1]))
         if duplicate_files:
             for index, mgr in enumerate(self.msgarea_mgr):
