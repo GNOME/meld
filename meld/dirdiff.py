@@ -918,13 +918,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             if differences:
                 expanded.add(tree_path_as_tuple(path))
 
-        duplicate_directories = list(set([p for p in roots
-            if roots.count(p) > 1]))
+        duplicate_dirs = list(set([p for p in roots if roots.count(p) > 1]))
         if invalid_filenames or shadowed_entries:
             self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
-        elif duplicate_directories:
+        elif duplicate_dirs:
             # Since we can only load 3 dirs we can have at most 1 duplicate
-            self._show_duplicate_directory(duplicate_directories[0])
+            self._show_duplicate_directory(duplicate_dirs[0])
         elif rootpath == Gtk.TreePath.new_first() and not expanded:
             self._show_identical_status()
 
@@ -941,7 +940,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for index in range(self.num_panes):
             primary = _(
                 "Folder %s was loaded more than once" % duplicate_directory)
-            msgarea = self.msgarea_mgr[index].add_dismissable_msg(
+            self.msgarea_mgr[index].add_dismissable_msg(
                 'dialog-error-symbolic', primary, "",
                 self.msgarea_mgr[:index]+self.msgarea_mgr[index+1:])
 
