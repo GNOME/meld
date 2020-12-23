@@ -1813,11 +1813,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 if tb.data.gfile]
         duplicate_files = list(set([p for p in paths if paths.count(p) > 1]))
         if duplicate_files:
-            for index, mgr in enumerate(self.msgarea_mgr):
+            for index in range(self.num_panes):
                 primary = _(
                     "File %s was loaded more than once." % duplicate_files[0])
-                mgr.add_dismissable_msg(
-                    'dialog-error-symbolic', primary, "")
+                self.msgarea_mgr[index].add_dismissable_msg(
+                    'dialog-error-symbolic', primary, "",
+                    self.msgarea_mgr[:index]+self.msgarea_mgr[index+1:])
         elif self.linediffer.sequences_identical():
             error_message = True in [m.has_message() for m in self.msgarea_mgr]
             if self.num_panes == 1 or error_message:
