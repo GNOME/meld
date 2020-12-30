@@ -74,12 +74,16 @@ class MeldWindow(Gtk.ApplicationWindow):
         state_actions = (
             (
                 "fullscreen", self.action_fullscreen_change,
-                GLib.Variant.new_boolean(False)
+                GLib.Variant.new_boolean(False),
+            ),
+            (
+                "gear-menu", None, GLib.Variant.new_boolean(False),
             ),
         )
         for (name, callback, state) in state_actions:
             action = Gio.SimpleAction.new_stateful(name, None, state)
-            action.connect('change-state', callback)
+            if callback:
+                action.connect('change-state', callback)
             self.add_action(action)
 
         # Initialise sensitivity for important actions
