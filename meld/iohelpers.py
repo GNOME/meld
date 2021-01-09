@@ -1,5 +1,5 @@
 
-from typing import Optional
+from typing import Optional, Sequence
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -118,3 +118,30 @@ def prompt_save_filename(
         return None
 
     return gfile
+
+
+def find_shared_parent_path(
+    paths: Sequence[Gio.File],
+) -> Optional[Gio.File]:
+
+    if not paths or not paths[0]:
+        return None
+
+    current_parent = paths[0].get_parent()
+    if len(paths) == 1:
+        return current_parent
+
+    while current_parent:
+        is_valid_parent = all(
+            current_parent.get_relative_path(path)
+            for path in paths
+        )
+        if is_valid_parent:
+            break
+
+        current_parent = current_parent.get_parent()
+
+    # Either we've broken out of the loop early, in which case we have
+    # a valid common parent path, or we've fallen through, in which
+    # case the path return is None.
+    return current_parent
