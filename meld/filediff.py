@@ -1399,7 +1399,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             if buf.get_modified():
                 shortnames[i] += "*"
             self.file_save_button[i].set_sensitive(buf.get_modified())
-            self.file_save_button[i].props.icon_name = (
+            self.file_save_button[i].get_child().props.icon_name = (
                 'document-save-symbolic' if buf.data.writable else
                 'document-save-as-symbolic')
 
@@ -2022,7 +2022,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def set_buffer_editable(self, buf, editable):
         index = self.textbuffer.index(buf)
         self.readonlytoggle[index].set_active(not editable)
-        self.readonlytoggle[index].props.icon_name = (
+        self.readonlytoggle[index].get_child().props.icon_name = (
             'changes-allow-symbolic' if editable else
             'changes-prevent-symbolic')
         self.textview[index].set_editable(editable)

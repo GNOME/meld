@@ -10,9 +10,16 @@
     padding: 3px 2px 2px 2px;
 }
 
-.meld-actionbar {
-  background-color: @theme_bg_color;
+
+.meld-actionbar > revealer >  box {
   padding: 6px;
+  border-top: none;
+  border-bottom: 1px solid @borders;
+}
+
+.meld-actionbar > revealer >  box:backdrop {
+  border-top: none;
+  border-color: @unfocused_borders;
 }
 
 .prefs-list-widget-toolbar {
