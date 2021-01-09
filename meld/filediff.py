@@ -33,7 +33,7 @@ from meld.const import (
     FileComparisonMode,
 )
 from meld.gutterrendererchunk import GutterRendererChunkLines
-from meld.iohelpers import prompt_save_filename
+from meld.iohelpers import find_shared_parent_path, prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
 from meld.matchers.helpers import CachedSequenceMatcher
 from meld.matchers.merge import AutoMergeDiffer, Merger
@@ -1392,16 +1392,21 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def recompute_label(self):
         self._set_save_action_sensitivity()
-        filenames = [b.data.label for b in self.textbuffer[:self.num_panes]]
+        buffers = self.textbuffer[:self.num_panes]
+        filenames = [b.data.label for b in buffers]
         shortnames = misc.shorten_names(*filenames)
 
-        for i, buf in enumerate(self.textbuffer[:self.num_panes]):
+        for i, buf in enumerate(buffers):
             if buf.get_modified():
                 shortnames[i] += "*"
             self.file_save_button[i].set_sensitive(buf.get_modified())
             self.file_save_button[i].get_child().props.icon_name = (
                 'document-save-symbolic' if buf.data.writable else
                 'document-save-as-symbolic')
+
+        parent_path = find_shared_parent_path([b.data.gfile for b in buffers])
+        for pathlabel in self.filelabel:
+            pathlabel.props.parent_gfile = parent_path
 
         label = self.meta.get("tablabel", "")
         if label:
