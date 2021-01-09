@@ -160,9 +160,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     filelabel0 = Gtk.Template.Child()
     filelabel1 = Gtk.Template.Child()
     filelabel2 = Gtk.Template.Child()
-    filelabel_toolitem0 = Gtk.Template.Child()
-    filelabel_toolitem1 = Gtk.Template.Child()
-    filelabel_toolitem2 = Gtk.Template.Child()
     grid = Gtk.Template.Child()
     msgarea_mgr0 = Gtk.Template.Child()
     msgarea_mgr1 = Gtk.Template.Child()
@@ -245,7 +242,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             "sourcemap", "file_save_button", "file_toolbar",
             "linkmap", "msgarea_mgr", "readonlytoggle",
             "scrolledwindow", "textview", "vbox",
-            "dummy_toolbar_linkmap", "filelabel_toolitem", "filelabel",
+            "dummy_toolbar_linkmap", "filelabel",
             "file_open_button", "statusbar",
             "actiongutter", "dummy_toolbar_actiongutter",
             "chunkmap",
