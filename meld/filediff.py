@@ -314,6 +314,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('add-sync-point', self.add_sync_point),
             ('clear-sync-point', self.clear_sync_points),
             ('copy', self.action_copy),
+            ('copy-full-path', self.action_copy_full_path),
             ('cut', self.action_cut),
             ('file-previous-conflict', self.action_previous_conflict),
             ('file-next-conflict', self.action_next_conflict),
@@ -338,6 +339,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('next-change', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
+            ('open-folder', self.action_open_folder),
             ('paste', self.action_paste),
             ('previous-change', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
@@ -1282,6 +1284,27 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def on_can_redo(self, undosequence, can_redo):
         self.set_action_enabled('redo', can_redo)
+
+    @with_focused_pane
+    def action_copy_full_path(self, pane, *args):
+        gfile = self.textbuffer[pane].data.gfile
+        if not gfile:
+            return
+
+        path = gfile.get_path() or gfile.get_uri()
+        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+        clip.set_text(path, -1)
+        clip.store()
+
+    @with_focused_pane
+    def action_open_folder(self, pane, *args):
+        gfile = self.textbuffer[pane].data.gfile
+        if not gfile:
+            return
+
+        parent = gfile.get_parent()
+        if parent:
+            open_files_external(gfiles=[parent])
 
     @with_focused_pane
     def action_open_external(self, pane, *args):
