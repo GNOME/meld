@@ -14,11 +14,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-import pathlib
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk
+from gi.repository import Gdk, Gio, GObject, Gtk
 
 from meld.conf import _
+from meld.iohelpers import format_parent_relative_path
 from meld.melddoc import open_files_external
 
 log = logging.getLogger(__name__)
@@ -173,68 +173,7 @@ class PathLabel(Gtk.MenuButton):
         self._parent_gfile = parent
         self._gfile = descendant
 
-        # When thinking about the segmentation we do here, there are
-        # four path components that we care about:
-        #
-        #  * any path components above the non-common parent
-        #  * the earliest non-common parent
-        #  * any path components between the actual filename and the
-        #    earliest non-common parent
-        #  * the actual filename
-        #
-        # This is easiest to think about with an example of comparing
-        # two files in a parallel repository structure (or similar).
-        # Let's say that you have two copies of Meld at
-        # /home/foo/checkouts/meld and /home/foo/checkouts/meld-new,
-        # and you're comparing meld/filediff.py within those checkouts.
-        # The components we want would then be (left to right):
-        #
-        #  ---------------------------------------------
-        #  | /home/foo/checkouts | /home/foo/checkouts |
-        #  | meld                | meld-new            |
-        #  | meld                | meld                |
-        #  | filediff.py         | filediff.py         |
-        #  ---------------------------------------------
-        #
-        # Of all of these, the first (the first common parent) is the
-        # *only* one that's actually guaranteed to be the same. The
-        # second will *always* be different (or won't exist if e.g.,
-        # you're comparing files in the same folder or similar). The
-        # third component can be basically anything. The fourth
-        # components will often be the same but that's not guaranteed.
-
-        base_path_str = None
-        elided_path = None
-
-        # FIXME: move all of this (and above) path segmenting logic into a
-        # unit-testable helper
-
-        relative_path_str = parent.get_relative_path(descendant_parent)
-
-        if relative_path_str:
-            relative_path = pathlib.Path(relative_path_str)
-
-            base_path_str = relative_path.parts[0]
-            if len(relative_path.parts) == 1:
-                # No directory components, so we have no elided path
-                # segment
-                elided_path = None
-            else:
-                base_path_gfile = parent.get_child(base_path_str)
-                elided_path = base_path_gfile.get_relative_path(
-                    descendant_parent)
-
-        show_parent = not parent.has_parent()
-        label_segments = [
-            '…' if not show_parent else None,
-            base_path_str,
-            '…' if elided_path else None,
-            descendant.get_basename(),
-        ]
-        label_text = parent.get_parse_name() if show_parent else ''
-        label_text += GLib.build_filenamev([s for s in label_segments if s])
-
-        self._path_label = label_text
+        self._path_label = format_parent_relative_path(parent, descendant)
         self.notify('path_label')
 
     def action_copy_full_path(self, *args):
