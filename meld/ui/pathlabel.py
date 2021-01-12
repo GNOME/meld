@@ -33,10 +33,9 @@ class PathLabel(Gtk.MenuButton):
 
     full_path_label: Gtk.Entry = Gtk.Template.Child()
 
-    custom_label = GObject.Property(type=str, nick='Custom label override')
-
     _gfile: Gio.File
     _parent_gfile: Gio.File
+    _path_label: str
 
     def get_file(self) -> Gio.File:
         return self._gfile
@@ -62,6 +61,9 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f'Error setting parent GFile: {str(e)}')
 
+    def get_path_label(self) -> str:
+        return self._path_label
+
     gfile = GObject.Property(
         type=Gio.File,
         nick='File being displayed',
@@ -79,17 +81,29 @@ class PathLabel(Gtk.MenuButton):
         setter=set_parent_file,
     )
 
+    path_label = GObject.Property(
+        type=str,
+        nick='Summarised path label relative to defined parent',
+        getter=get_path_label,
+    )
+
+    custom_label = GObject.Property(
+        type=str,
+        nick='Custom label override',
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
         self._gfile = None
         self._parent_gfile = None
+        self._path_label = None
 
-        # self.bind_property(
-        #     'gfile', self, 'label',
-        #     GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
-        #     self.get_display_label,
-        # )
+        self.bind_property(
+            'path_label', self, 'label',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+            self.get_display_label,
+        )
         self.bind_property(
             'custom_label', self, 'label',
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
@@ -123,11 +137,8 @@ class PathLabel(Gtk.MenuButton):
     def get_display_label(self, binding, from_value) -> str:
         if self.custom_label:
             return self.custom_label
-        elif self.gfile:
-            # TODO: Ideally we'd do some cross-filename summarisation here
-            # instead of just showing the basename.
-            basename = self.gfile.get_basename()
-            return basename if basename else self.MISSING_FILE_NAME
+        elif self.path_label:
+            return self.path_label
         else:
             return self.MISSING_FILE_NAME
 
@@ -221,8 +232,8 @@ class PathLabel(Gtk.MenuButton):
         ]
         label_text = GLib.build_filenamev([s for s in label_segments if s])
 
-        # FIXME: this doesn't handle custom labels at all....
-        self.set_label(label_text)
+        self._path_label = label_text
+        self.notify('path_label')
 
     def action_copy_full_path(self, *args):
         if not self.gfile:
