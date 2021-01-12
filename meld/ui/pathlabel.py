@@ -224,13 +224,15 @@ class PathLabel(Gtk.MenuButton):
                 elided_path = base_path_gfile.get_relative_path(
                     descendant_parent)
 
+        show_parent = not parent.has_parent()
         label_segments = [
-            '…' if base_path_str else None,
+            '…' if not show_parent else None,
             base_path_str,
             '…' if elided_path else None,
             descendant.get_basename(),
         ]
-        label_text = GLib.build_filenamev([s for s in label_segments if s])
+        label_text = parent.get_parse_name() if show_parent else ''
+        label_text += GLib.build_filenamev([s for s in label_segments if s])
 
         self._path_label = label_text
         self.notify('path_label')
