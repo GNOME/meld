@@ -16,6 +16,8 @@
 
 from gi.repository import GObject, Gtk, GtkSource
 
+_cache = None  # Global variable to hold the most recent searched for text
+
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/findbar.ui')
 class FindBar(Gtk.Grid):
@@ -101,10 +103,14 @@ class FindBar(Gtk.Grid):
             self.search_context = None
 
     def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str):
+        global _cache
         self.replace_mode = replace
         self.set_text_view(textview)
         if text:
             self.find_entry.set_text(text)
+            _cache = text
+        elif _cache:
+            self.find_entry.set_text(_cache)
         self.show()
         self.find_entry.grab_focus()
 
@@ -154,6 +160,8 @@ class FindBar(Gtk.Grid):
 
     @Gtk.Template.Callback()
     def on_find_entry_changed(self, entry):
+        global _cache
+        _cache = entry.get_text()
         self._find_text(0)
 
     @Gtk.Template.Callback()
