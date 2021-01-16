@@ -370,15 +370,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     msgarea_mgr1 = Gtk.Template.Child()
     msgarea_mgr2 = Gtk.Template.Child()
     overview_map_revealer = Gtk.Template.Child()
+    pane_actionbar0 = Gtk.Template.Child()
+    pane_actionbar1 = Gtk.Template.Child()
+    pane_actionbar2 = Gtk.Template.Child()
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
     dummy_toolbar_overview_map = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
-    file_toolbar0 = Gtk.Template.Child()
-    file_toolbar1 = Gtk.Template.Child()
-    file_toolbar2 = Gtk.Template.Child()
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
@@ -481,8 +481,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             [
                 "treeview", "fileentry", "scrolledwindow", "chunkmap",
                 "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
-                "file_toolbar",
-            ]
+                "pane_actionbar",
+            ],
         )
 
         self.ensure_style()
@@ -1566,13 +1566,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             treeview.set_model(self.model)
 
         for widget in (
-                self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
+                self.vbox[:num_panes] + self.pane_actionbar[:num_panes] +
                 self.chunkmap[:num_panes] + self.linkmap[:num_panes - 1] +
                 self.dummy_toolbar_linkmap[:num_panes - 1]):
             widget.show()
 
         for widget in (
-                self.vbox[num_panes:] + self.file_toolbar[num_panes:] +
+                self.vbox[num_panes:] + self.pane_actionbar[num_panes:] +
                 self.chunkmap[num_panes:] + self.linkmap[num_panes - 1:] +
                 self.dummy_toolbar_linkmap[num_panes - 1:]):
             widget.hide()
