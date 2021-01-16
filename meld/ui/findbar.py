@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import GObject, Gtk, GtkSource
 from typing import ClassVar, Optional
+
+from gi.repository import GObject, Gtk, GtkSource
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/findbar.ui')
