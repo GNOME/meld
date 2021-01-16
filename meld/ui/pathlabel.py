@@ -158,6 +158,12 @@ class PathLabel(Gtk.MenuButton):
         if not parent or not descendant:
             self._parent_gfile = parent
             self._gfile = descendant
+
+            # If we have no parent yet but have a descendant, we'll use
+            # the descendant name as the better-than-nothing label.
+            if descendant:
+                self._path_label = descendant.get_parse_name()
+                self.notify('path_label')
             return
 
         descendant_parent = descendant.get_parent()
