@@ -1504,6 +1504,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         buf = self.textbuffer[pane]
         buf.data.reset(gfile)
+        self.file_open_button[pane].props.file = gfile
 
         # FIXME: this was self.textbuffer[pane].data.label, which could be
         # either a custom label or the fallback
@@ -2075,26 +2076,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.save_file(idx)
 
     @Gtk.Template.Callback()
-    def on_file_open_button_clicked(self, button):
-        pane = self.file_open_button.index(button)
-
-        dialog = Gtk.FileChooserNative(
-            title=_("Open File"),
-            transient_for=self.get_toplevel(),
-        )
-        if self.textbuffer[pane].data.gfile:
-            dialog.set_file(self.textbuffer[pane].data.gfile)
-        response = dialog.run()
-        gfile = dialog.get_file()
-        dialog.destroy()
-
-        if response != Gtk.ResponseType.ACCEPT:
-            return
+    def on_file_selected(
+            self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
 
         if not self.check_unsaved_changes():
             return
 
-        self.set_file(pane, gfile)
+        self.set_file(pane, file)
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
