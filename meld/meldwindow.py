@@ -16,6 +16,7 @@
 
 import logging
 import os
+from typing import Optional, Sequence
 
 from gi.repository import Gdk, Gio, GLib, Gtk
 
@@ -356,12 +357,16 @@ class MeldWindow(Gtk.ApplicationWindow):
         doc.connect("diff-created", diff_created_cb)
         return doc
 
-    def append_dirdiff(self, gfiles, auto_compare=False):
-        dirs = [d.get_path() if d else None for d in gfiles]
-        assert len(dirs) in (1, 2, 3)
-        doc = DirDiff(len(dirs))
+    def append_dirdiff(
+        self,
+        gfiles: Sequence[Optional[Gio.File]],
+        auto_compare: bool = False,
+    ) -> DirDiff:
+        assert len(gfiles) in (1, 2, 3)
+        doc = DirDiff(len(gfiles))
         self._append_page(doc)
-        doc.set_locations(dirs)
+        doc.folders = gfiles
+        doc.set_locations()
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
         return doc
