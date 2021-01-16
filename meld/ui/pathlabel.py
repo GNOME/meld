@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from typing import Optional
 
 from gi.repository import Gdk, Gio, GObject, Gtk
 
@@ -33,14 +34,14 @@ class PathLabel(Gtk.MenuButton):
 
     full_path_label: Gtk.Entry = Gtk.Template.Child()
 
-    _gfile: Gio.File
-    _parent_gfile: Gio.File
-    _path_label: str
+    _gfile: Optional[Gio.File]
+    _parent_gfile: Optional[Gio.File]
+    _path_label: Optional[str]
 
-    def get_file(self) -> Gio.File:
+    def get_file(self) -> Optional[Gio.File]:
         return self._gfile
 
-    def set_file(self, file: Gio.File) -> None:
+    def set_file(self, file: Optional[Gio.File]) -> None:
         if file == self._gfile:
             return
 
@@ -49,10 +50,10 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f'Error setting GFile: {str(e)}')
 
-    def get_parent_file(self) -> Gio.File:
+    def get_parent_file(self) -> Optional[Gio.File]:
         return self._parent_gfile
 
-    def set_parent_file(self, parent_file: Gio.File) -> None:
+    def set_parent_file(self, parent_file: Optional[Gio.File]) -> None:
         if parent_file == self._parent_gfile:
             return
 
@@ -61,7 +62,7 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f'Error setting parent GFile: {str(e)}')
 
-    def get_path_label(self) -> str:
+    def get_path_label(self) -> Optional[str]:
         return self._path_label
 
     gfile = GObject.Property(
@@ -147,7 +148,11 @@ class PathLabel(Gtk.MenuButton):
             return from_value.get_parse_name()
         return ''
 
-    def _update_paths(self, parent: Gio.File, descendant: Gio.File) -> None:
+    def _update_paths(
+        self,
+        parent: Optional[Gio.File],
+        descendant: Optional[Gio.File],
+    ) -> None:
         # If either of the parent or the main gfiles are not set, the
         # relationship is fine (because it's not yet established).
         if not parent or not descendant:
