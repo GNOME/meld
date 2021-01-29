@@ -331,8 +331,9 @@ class MeldApp(Gtk.Application):
             # TODO: support for directories specified by URIs
             file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
             if not f.is_native() and file_type == Gio.FileType.DIRECTORY:
-                raise ValueError(
-                    _("remote folder “{}” not supported").format(arg))
+                if f.get_path() is None:
+                    raise ValueError(
+                        _("remote folder “{}” not supported").format(arg))
 
             return f
 
