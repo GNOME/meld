@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-02-09 17:11+0000\n"
-"PO-Revision-Date: 2021-02-10 17:58+0100\n"
+"POT-Creation-Date: 2021-02-10 17:00+0000\n"
+"PO-Revision-Date: 2021-02-11 10:57+0100\n"
 "Last-Translator: Daniel Șerbănescu <daniel [at] serbanescu [dot] dk>\n"
 "Language-Team: Gnome Romanian Translation Team\n"
 "Language: ro\n"
@@ -134,6 +134,11 @@ msgid ""
 "and the current locale-default encoding will always be used; other encodings "
 "may also be tried, depending on the user’s locale."
 msgstr ""
+"Meld va folosi aceste codări de text pentru a încerca decodarea fișierelor "
+"text încărcate înainte de a încerca alte codări. Adițional codărilor din "
+"listă, UTF-8 și codarea implicită în localizarea curentă vor fi folosite "
+"întotdeauna; alte codări pot fi încercate de asemenea, în funcție de "
+"localizarea utilizatorului."
 
 #: ../data/org.gnome.meld.gschema.xml.h:11
 msgid "Width of an indentation step"
@@ -141,7 +146,7 @@ msgstr "Lățimea unui pas de indentare"
 
 #: ../data/org.gnome.meld.gschema.xml.h:12
 msgid "The number of spaces to use for a single indent step"
-msgstr ""
+msgstr "Numărul de spații de folosit pentru un singur pas de indentare"
 
 #: ../data/org.gnome.meld.gschema.xml.h:13
 msgid "Whether to indent using spaces or tabs"
@@ -194,6 +199,8 @@ msgid ""
 "Selector for individual whitespace character types to be shown. Possible "
 "values are 'space', 'tab', 'newline' and 'nbsp'."
 msgstr ""
+"Selector pentru caractere individuale de spații de afișat. Valorile posibile "
+"sunt „sapce”, „tab”, „newline” și „nbsp”."
 
 #: ../data/org.gnome.meld.gschema.xml.h:23
 msgid "Wrap mode"
@@ -205,6 +212,9 @@ msgid ""
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr ""
+"Liniile din comparația de fișiere vor fi încadrate conform acestei "
+"configurări, fie deloc („none”), la orice caracter („char”) sau numai la "
+"cuvinte de sfârșit („word”)."
 
 #: ../data/org.gnome.meld.gschema.xml.h:25
 msgid "Highlight current line"
@@ -238,6 +248,8 @@ msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
+"Font personalizat de folosit, stocat ca șir de caractere și parsat ca "
+"descriere de font Pango."
 
 #: ../data/org.gnome.meld.gschema.xml.h:31
 msgid "Ignore blank lines when comparing files"
@@ -264,13 +276,15 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:35
 msgid "The custom editor launch command"
-msgstr ""
+msgstr "Comanda de lansare pentru editorul personalizat"
 
 #: ../data/org.gnome.meld.gschema.xml.h:36
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
+"Comanda folosită la lansarea editorului personalizat. Șabloane limitate sunt "
+"suportate aici; momentan „{file}” și „{line}” sunt jetoane recunoscute."
 
 #: ../data/org.gnome.meld.gschema.xml.h:37
 msgid "Columns to display"
@@ -281,6 +295,7 @@ msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr ""
+"Lista de nume de coloane în comparația de dosare și dacă ar trebui afișate."
 
 #: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
 msgid "Ignore symbolic links"
@@ -345,6 +360,8 @@ msgstr "Filtre pentru starea fișierelor"
 #: ../data/org.gnome.meld.gschema.xml.h:48
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
+"Listă de stări folosite în filtrarea fișierelor vizibile în comparația de "
+"dosare."
 
 #: ../data/org.gnome.meld.gschema.xml.h:49
 msgid "Show the version control console output"
@@ -368,10 +385,12 @@ msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr ""
+"Aceasta este înălțimea arborelui principal al mediului de control al "
+"versiunilor când panoul consolei este afișat."
 
 #: ../data/org.gnome.meld.gschema.xml.h:53
 msgid "Present version comparisons as left-local/right-remote"
-msgstr ""
+msgstr "Prezintă comparări de versiuni ca stânga-local/dreapta-la-distanță"
 
 #: ../data/org.gnome.meld.gschema.xml.h:54
 msgid ""
@@ -401,7 +420,7 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:57
 msgid "Show margin in commit message editor"
-msgstr ""
+msgstr "Arată marginea în editorul mesajului de comitere"
 
 #: ../data/org.gnome.meld.gschema.xml.h:58
 msgid ""
@@ -413,13 +432,14 @@ msgstr ""
 
 #: ../data/org.gnome.meld.gschema.xml.h:59
 msgid "Margin column in commit message editor"
-msgstr ""
+msgstr "Coloana margine în editorul mesajului de comitere"
 
 #: ../data/org.gnome.meld.gschema.xml.h:60
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
 msgstr ""
+"Coloana la care să se arate marginea în editorul de mesaje de comitere."
 
 #: ../data/org.gnome.meld.gschema.xml.h:61
 msgid "Automatically hard-wrap commit messages"
@@ -442,6 +462,8 @@ msgstr "Filtrele de stare ale mediului de control al versiunilor"
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
+"Listă de stări folosită la filtrarea fișierelor vizibile în comparația "
+"mediului de control al versiunilor."
 
 #: ../data/org.gnome.meld.gschema.xml.h:65
 msgid "Filename-based filters"
@@ -452,6 +474,8 @@ msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr ""
+"Lista de filtre predefinite bazate pe numele de fișiere care, dacă active, "
+"vor elimina fișierele potrivite dintr-o comparație de dosare."
 
 #: ../data/org.gnome.meld.gschema.xml.h:67
 msgid "Text-based filters"
@@ -463,6 +487,9 @@ msgid ""
 "text from being used in a file comparison. The text will still be displayed, "
 "but won’t contribute to the comparison itself."
 msgstr ""
+"Lista de filtre predefinite bazate pe expresii regulate care, dacă active, "
+"va elimina textul folosit în comparația de fișiere. Textul totuși va fi "
+"afișat, dar nu va contribui la însăși comparația."
 
 #: ../data/styles/meld-base.xml.h:1
 msgid "Meld base scheme"
@@ -831,7 +858,7 @@ msgstr "Panoul precedent"
 
 #: ../data/ui/filediff.ui.h:39
 msgid "Move keyboard focus to the previous document in this comparison"
-msgstr ""
+msgstr "Mută focusul tastaturii la precedentul document în această comparație"
 
 #: ../data/ui/filediff.ui.h:40
 msgid "Next Pane"
@@ -839,7 +866,7 @@ msgstr "Panoul următor"
 
 #: ../data/ui/filediff.ui.h:41
 msgid "Move keyboard focus to the next document in this comparison"
-msgstr ""
+msgstr "Mută focusul tastaturii la următorul document în această comparație"
 
 #: ../data/ui/filediff.ui.h:42
 msgid "Lock Scrolling"
@@ -875,6 +902,9 @@ msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
 msgstr ""
+"Nu se poate scrie în acest fișier. Puteți apăsa aici pentru a debloca acest "
+"fișier și a face modificări oricum, dar aceste modificări trebuiesc salvate "
+"într-un nou fișier."
 
 #: ../data/ui/filediff.ui.h:50
 msgid "File 3"
@@ -1079,7 +1109,7 @@ msgstr "Comparații de versiuni"
 
 #: ../data/ui/preferences.ui.h:29
 msgid "_Order when comparing file revisions:"
-msgstr ""
+msgstr "_Ordinea comparării reviziilor de fișiere:"
 
 #: ../data/ui/preferences.ui.h:30
 msgid "Order when _merging files:"
@@ -1091,7 +1121,7 @@ msgstr "Mesaje de comitere"
 
 #: ../data/ui/preferences.ui.h:32
 msgid "Show _right margin at:"
-msgstr ""
+msgstr "Arată marginea d_reaptă la:"
 
 #: ../data/ui/preferences.ui.h:33
 msgid "Automatically _break lines at right margin on commit"
@@ -1165,7 +1195,7 @@ msgstr "La distanță, îmbinare, local"
 
 #: ../data/ui/preferences.ui.h:46
 msgid "Local, merge, remote"
-msgstr ""
+msgstr "Local, îmbinare, la distanță"
 
 #: ../data/ui/preferences.ui.h:47
 msgid "1ns (ext4)"
@@ -1544,6 +1574,8 @@ msgstr "Consolă"
 #: ../data/ui/vcview.ui.h:19
 msgid "Show or hide the version control console output pane"
 msgstr ""
+"Arată sau ascunde panoul cu ieșirea consolei mediului de control al "
+"versiunilor"
 
 #: ../data/ui/vcview.ui.h:20
 msgid "_Flatten"
@@ -1628,6 +1660,7 @@ msgstr "Împinge comiterile locale către server?"
 #: ../data/ui/vcview.ui.h:41
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
+"Comiterile de împins sunt determinate de mediul de control al versiunilor."
 
 #: ../data/ui/vcview.ui.h:42
 msgid "_Push commits"
@@ -1688,6 +1721,8 @@ msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
+"Fișierele scanate în dosare par a fi identice, dar conținutul nu a fost "
+"scanat."
 
 #: ../meld/dirdiff.py:895
 msgid "File filters are in use, so not all files have been scanned."
@@ -1696,7 +1731,7 @@ msgstr ""
 
 #: ../meld/dirdiff.py:897
 msgid "Text filters are in use and may be masking content differences."
-msgstr ""
+msgstr "Filtre de text sunt folosite și pot masca diferențele de conținut."
 
 #: ../meld/dirdiff.py:915 ../meld/filediff.py:1504 ../meld/filediff.py:1534
 #: ../meld/filediff.py:1536 ../meld/ui/msgarea.py:108 ../meld/ui/msgarea.py:121
@@ -1705,7 +1740,7 @@ msgstr "Ascun_de"
 
 #: ../meld/dirdiff.py:924
 msgid "Multiple errors occurred while scanning this folder"
-msgstr ""
+msgstr "Au avut loc erori multiple în timpul scanării acestui dosar"
 
 #: ../meld/dirdiff.py:925
 msgid "Files with invalid encodings found"
@@ -1714,7 +1749,7 @@ msgstr "Fișiere cu codări nevalide au fost găsite"
 #. TRANSLATORS: This is followed by a list of files
 #: ../meld/dirdiff.py:927
 msgid "Some files were in an incorrect encoding. The names are something like:"
-msgstr ""
+msgstr "Unele fișiere au avut o codare incorectă. Numele lor sunt:"
 
 #: ../meld/dirdiff.py:929
 msgid "Files hidden by case insensitive comparison"
@@ -1806,7 +1841,7 @@ msgstr "Marchează ca _rezolvat"
 #: ../meld/filediff.py:1219
 #, python-format
 msgid "There was a problem opening the file “%s”."
-msgstr ""
+msgstr "A intervenit o problemă la deschiderea fișierului „%s”."
 
 #: ../meld/filediff.py:1227
 #, python-format
@@ -1848,6 +1883,8 @@ msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
+"Filtre de text sunt folosite, și pot face diferențe între fișiere. Doriți să "
+"comparați fișierele nefiltrate?"
 
 #: ../meld/filediff.py:1485
 msgid "Files differ in line endings only"
@@ -1875,6 +1912,9 @@ msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
+"Unele modificări nu au fost evidențiate pentru că au fost prea mari. Puteți "
+"forța Meld să utilizeze mai mult timp la evidențierea modificărilor mai "
+"mari, dar asta poate fi lent."
 
 #: ../meld/filediff.py:1538
 msgid "Keep highlighting"
@@ -1893,6 +1933,8 @@ msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr ""
+"Considerați copierea oricăror modificări critice într-un alt program pentru "
+"a evida pierderi de date."
 
 #: ../meld/filediff.py:1563
 msgid "Save Left Pane As"
@@ -1947,7 +1989,7 @@ msgstr "Nu s-a putut salva fișierul %s."
 
 #: ../meld/filediff.py:2019
 msgid "Live comparison updating disabled"
-msgstr ""
+msgstr "Actualizarea comparației în direct este dezactivată"
 
 #: ../meld/filediff.py:2020
 msgid ""
@@ -1955,6 +1997,10 @@ msgid ""
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr ""
+"Actualizarea în direct a comparațiilor este dezactivată când punctele de "
+"sincronizare sunt active. Puteți reîmprospăta manual comparația, și "
+"actualizările în direct vor reveni când punctele de sincronizare sunt "
+"curățate."
 
 #: ../meld/filemerge.py:37
 #, python-format
@@ -1983,7 +2029,7 @@ msgstr "„{}” nu poate fi pus la gunoi. Doriți să îl ștergeți permanent?
 
 #: ../meld/iohelpers.py:52
 msgid "This remote location does not support sending items to the trash."
-msgstr ""
+msgstr "Locația la distanță nu suportă trimiterea de elemente la gunoi."
 
 #: ../meld/iohelpers.py:57
 msgid "_Delete Permanently"
@@ -2066,7 +2112,7 @@ msgstr "Îmbină fișiere automat"
 
 #: ../meld/meldapp.py:270
 msgid "Load a saved comparison from a Meld comparison file"
-msgstr ""
+msgstr "Încarcă o comparație salvată dintr-un fișier de comparație Meld"
 
 #: ../meld/meldapp.py:274
 msgid "Create a diff tab for the supplied files or folders"
@@ -2092,7 +2138,7 @@ msgstr "Eroare la citirea fișierului de comparație salvat"
 #: ../meld/meldapp.py:330
 #, python-format
 msgid "invalid path or URI “%s”"
-msgstr "Cale sau URI nevalid „%s”"
+msgstr "cale sau URI nevalid „%s”"
 
 #: ../meld/meldapp.py:336
 msgid "remote folder “{}” not supported"
@@ -2302,7 +2348,7 @@ msgstr "Despre această aplicație"
 #: ../meld/meldwindow.py:602
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
-msgstr ""
+msgstr "Este nevoie de trei fișiere pentru îmbinarea automată, s-au primit: %r"
 
 #: ../meld/meldwindow.py:623
 msgid "Cannot compare a mixture of files and directories"
@@ -2410,11 +2456,11 @@ msgstr "Modul s-a modificat de la %s la %s"
 
 #: ../meld/vc/git.py:342
 msgid "Partially staged"
-msgstr ""
+msgstr "Parțial introdus în index"
 
 #: ../meld/vc/git.py:342
 msgid "Staged"
-msgstr ""
+msgstr "Introdus în index"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
@@ -2567,6 +2613,8 @@ msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr ""
+"Aceasta va elimina toate fișierele și dosarele selectate, și toate fișierele "
+"din dosarele selectate, din mediul de control al versiunilor."
 
 #: ../meld/vcview.py:785
 msgid "Clear"
