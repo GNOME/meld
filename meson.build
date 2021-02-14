@@ -34,16 +34,11 @@ prefix = get_option('prefix')
 
 bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
-libexecdir = prefix / get_option('libexecdir')
 localedir = prefix / get_option('localedir')
 mandir = prefix / get_option('mandir')
 
-appdatadir = datadir / 'metainfo'
-desktopdir = datadir / 'applications'
 icondir = datadir / 'icons'
-mimedatadir = datadir / 'mime/packages'
 pkgdatadir = datadir / meson.project_name()
-schemadir = datadir / 'glib-2.0/schemas'
 
 itsdir = meson.current_source_dir() / 'gettext'
 podir = meson.current_source_dir() / 'po'

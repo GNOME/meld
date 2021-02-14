@@ -8,7 +8,7 @@ install_data(
 # Install schema file
 install_data(
   '@0@.gschema.xml'.format(resource_base_id),
-  install_dir: schemadir
+  install_dir: datadir / 'glib-2.0/schemas',
 )
 
 # Install desktop file
@@ -25,7 +25,7 @@ desktop_file = i18n.merge_file(
   po_dir: podir,
   type: 'desktop',
   install: true,
-  install_dir: desktopdir,
+  install_dir: datadir / 'applications',
 )
 
 # Validate Desktop file
@@ -51,7 +51,7 @@ appdata_file = i18n.merge_file(
   output: '@0@.appdata.xml'.format(application_id),
   po_dir: podir,
   install: true,
-  install_dir: appdatadir,
+  install_dir: datadir / 'metainfo',
 )
 
 # Validate AppData file
@@ -75,7 +75,7 @@ mimetype_file = i18n.merge_file(
   po_dir: podir,
   data_dirs: itsdir,
   install: true,
-  install_dir: mimedatadir,
+  install_dir: datadir / 'mime/packages',
 )
 
 # Check GSettings schema
