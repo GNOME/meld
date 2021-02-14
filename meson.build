@@ -56,8 +56,4 @@ subdir('po')
 
 install_data('bin/meld', install_dir: bindir)
 
-if get_option('byte-compile')
-    meson.add_install_script('meson_post_install.py', python3.get_install_dir())
-else
-    meson.add_install_script('meson_post_install.py')
-endif
+meson.add_install_script('meson_post_install.py', get_option('byte-compile') ? python3.get_install_dir() : '')
