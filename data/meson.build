@@ -8,7 +8,7 @@ install_data(
 # Install schema file
 install_data(
   '@0@.gschema.xml'.format(resource_base_id),
-  install_dir: datadir / 'glib-2.0/schemas',
+  install_dir: gio_schemasdir,
 )
 
 # Install desktop file

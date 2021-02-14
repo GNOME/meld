@@ -43,6 +43,12 @@ pkgdatadir = datadir / meson.project_name()
 itsdir = meson.current_source_dir() / 'gettext'
 podir = meson.current_source_dir() / 'po'
 
+gio_schemasdir = dependency('gio-2.0').get_pkgconfig_variable(
+  'schemasdir',
+  define_variable: ['datadir', datadir],
+  default: datadir / 'glib-2.0/schemas',
+)
+
 subdir('meld')
 subdir('data')
 subdir('help')
