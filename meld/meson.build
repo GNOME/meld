@@ -78,7 +78,7 @@ folders = {
 }
 
 foreach folder_name, sources : folders
-  pkgdir = join_paths(meson.project_name(), folder_name)
+  pkgdir = meson.project_name() / folder_name
   python3.install_sources(sources, pure: true, subdir: pkgdir)
 endforeach
 

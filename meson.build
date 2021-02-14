@@ -32,21 +32,21 @@ application_id = 'org.gnome.Meld@0@'.format(profile)
 
 prefix = get_option('prefix')
 
-bindir = join_paths(prefix, get_option('bindir'))
-datadir = join_paths(prefix, get_option('datadir'))
-libexecdir = join_paths(prefix, get_option('libexecdir'))
-localedir = join_paths(prefix, get_option('localedir'))
-mandir = join_paths(prefix, get_option('mandir'))
+bindir = prefix / get_option('bindir')
+datadir = prefix / get_option('datadir')
+libexecdir = prefix / get_option('libexecdir')
+localedir = prefix / get_option('localedir')
+mandir = prefix / get_option('mandir')
 
-appdatadir = join_paths(datadir, 'metainfo')
-desktopdir = join_paths(datadir, 'applications')
-icondir = join_paths(datadir, 'icons')
-mimedatadir = join_paths(datadir, 'mime', 'packages')
-pkgdatadir = join_paths(datadir, meson.project_name())
-schemadir = join_paths(datadir, 'glib-2.0', 'schemas')
+appdatadir = datadir / 'metainfo'
+desktopdir = datadir / 'applications'
+icondir = datadir / 'icons'
+mimedatadir = datadir / 'mime/packages'
+pkgdatadir = datadir / meson.project_name()
+schemadir = datadir / 'glib-2.0/schemas'
 
-itsdir = join_paths(meson.current_source_dir(), 'gettext')
-podir = join_paths(meson.current_source_dir(), 'po')
+itsdir = meson.current_source_dir() / 'gettext'
+podir = meson.current_source_dir() / 'po'
 
 subdir('meld')
 subdir('data')

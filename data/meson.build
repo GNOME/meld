@@ -2,7 +2,7 @@
 # Install man page
 install_data(
   'meld.1',
-  install_dir: join_paths(mandir, 'man1')
+  install_dir: mandir / 'man1'
 )
 
 # Install schema file
@@ -70,7 +70,7 @@ endif
 
 # Install mimetypes
 mimetype_file = i18n.merge_file(
-  input: join_paths('mime', '@0@.xml.in'.format(resource_base_id)),
+  input: 'mime' / '@0@.xml.in'.format(resource_base_id),
   output: '@0@.xml'.format(application_id),
   po_dir: podir,
   data_dirs: itsdir,
@@ -96,12 +96,12 @@ styles = [
 
 foreach style : styles
   i18n.merge_file(
-    input: join_paths('styles', style + '.in'),
+    input: 'styles' / style + '.in',
     output: style,
     po_dir: podir,
     data_dirs: itsdir,
     install: true,
-    install_dir: join_paths(pkgdatadir, 'styles')
+    install_dir: pkgdatadir / 'styles',
   )
 endforeach
 
@@ -110,15 +110,15 @@ icon_sizes = ['scalable']
 
 foreach i : icon_sizes
   install_data(
-    join_paths('icons/hicolor', i , 'apps', application_id + '.svg'),
-    install_dir: join_paths(icondir, 'hicolor', i , 'apps'),
+    'icons/hicolor' / i / 'apps' / application_id + '.svg',
+    install_dir: icondir / 'hicolor' / i / 'apps',
     rename: '@0@.svg'.format(application_id)
   )
 endforeach
 
 # Install the symbolic icon
 install_data(
-    join_paths('icons/hicolor/symbolic/apps', application_id_no_profile + '-symbolic.svg'),
-    install_dir: join_paths(icondir, 'hicolor', 'symbolic', 'apps'),
+    'icons/hicolor/symbolic/apps' / application_id_no_profile + '-symbolic.svg',
+    install_dir: icondir / 'hicolor/symbolic/apps',
     rename: '@0@-symbolic.svg'.format(application_id)
 )
