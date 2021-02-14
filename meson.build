@@ -23,13 +23,8 @@ dependency('pygobject-3.0', version: '>= 3.30')
 dependency('py3cairo', version: '>= 1.15.0')
 
 
-if get_option('profile') == 'Devel'
-    name_suffix = ' (Development Snapshot)'
-    profile = 'Devel'
-else
-    name_suffix = ''
-    profile = ''
-endif
+profile = get_option('profile')
+name_suffix = (profile == 'Devel' ? ' (Development Snapshot)' : '')
 
 resource_base_id = 'org.gnome.meld'
 application_id_no_profile = 'org.gnome.Meld'
