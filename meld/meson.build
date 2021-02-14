@@ -87,8 +87,8 @@ app_config = configuration_data()
 app_config.set('profile', profile)
 app_config.set('application_id', application_id)
 app_config.set('resource_base_id', resource_base_id)
-app_config.set('localedir', localedir)
-app_config.set('pkgdatadir', pkgdatadir)
+app_config.set('localedir', prefix / localedir)
+app_config.set('pkgdatadir', prefix / pkgdatadir)
 app_config.set('configured', 'True')
 
 configure_file(

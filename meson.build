@@ -32,10 +32,10 @@ application_id = 'org.gnome.Meld@0@'.format(profile)
 
 prefix = get_option('prefix')
 
-bindir = prefix / get_option('bindir')
-datadir = prefix / get_option('datadir')
-localedir = prefix / get_option('localedir')
-mandir = prefix / get_option('mandir')
+bindir = get_option('bindir')
+datadir = get_option('datadir')
+localedir = get_option('localedir')
+mandir = get_option('mandir')
 
 icondir = datadir / 'icons'
 pkgdatadir = datadir / meson.project_name()
