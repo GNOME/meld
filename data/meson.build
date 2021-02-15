@@ -1,8 +1,5 @@
 # Install man page
-install_data(
-  'meld.1',
-  install_dir: mandir / 'man1',
-)
+install_man('meld.1')
 
 # Install schema file
 install_data(
