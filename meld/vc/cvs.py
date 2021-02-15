@@ -65,7 +65,7 @@ class Vc(_vc.Vc):
 
         relargs = []
         for f1 in relfiles:
-            positions = [i for i, ch in enumerate(f1+os.sep) if ch == os.sep]
+            positions = [i for i, ch in enumerate(f1 + os.sep) if ch == os.sep]
             arg1 = [f1[:pos] for pos in positions]
             relargs += arg1
 

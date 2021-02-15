@@ -240,8 +240,8 @@ def _files_same(files, regexes, comparison_args):
 EMBLEM_NEW = "emblem-new"
 EMBLEM_SYMLINK = "emblem-symbolic-link"
 
-COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = \
-        range(tree.COL_END, tree.COL_END + 6)
+COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = (
+    range(tree.COL_END, tree.COL_END + 6))
 
 
 class DirDiffTreeStore(tree.DiffTreeStore):

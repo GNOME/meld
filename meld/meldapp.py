@@ -41,8 +41,8 @@ class MeldApp(Gtk.Application):
 
     def __init__(self):
         super().__init__(
-          application_id=meld.conf.APPLICATION_ID,
-          flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+            application_id=meld.conf.APPLICATION_ID,
+            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
         )
         GLib.set_application_name(meld.conf.APPLICATION_NAME)
         GLib.set_prgname(meld.conf.APPLICATION_ID)

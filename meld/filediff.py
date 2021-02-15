@@ -2120,7 +2120,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def queue_draw(self, junk=None):
         for t in self.textview:
             t.queue_draw()
-        for i in range(self.num_panes-1):
+        for i in range(self.num_panes - 1):
             self.linkmap[i].queue_draw()
         for gutter in self.actiongutter:
             gutter.queue_draw()

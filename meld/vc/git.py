@@ -216,7 +216,7 @@ class Vc(_vc.Vc):
 
             suffix = os.path.splitext(path)[1]
             filename, is_temp = self.remerge_with_ancestor(
-                    local, base, remote, suffix=suffix)
+                local, base, remote, suffix=suffix)
 
             for temp_file in (local, base, remote):
                 if os.name == "nt":

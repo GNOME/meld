@@ -39,10 +39,10 @@ def get_non_python_libs():
             inst_lib.append(os.path.join(local_bin, 'gspawn-win64-helper.exe'))
 
     return [
-            (f, os.path.basename(f)) for f in inst_root
-        ] + [
-            (f, os.path.join('lib', os.path.basename(f))) for f in inst_lib
-        ]
+        (f, os.path.basename(f)) for f in inst_root
+    ] + [
+        (f, os.path.join('lib', os.path.basename(f))) for f in inst_lib
+    ]
 
 
 gtk_data_dirs = [
@@ -125,13 +125,13 @@ console_executable_options = dict(executable_options)
 
 if 'mingw' in sysconfig.get_platform():
     executable_options.update({
-         "base": "Win32GUI",  # comment to build console version to see stderr
-         "targetName": "Meld.exe",
-         "shortcutName": "Meld",
-         "shortcutDir": "ProgramMenuFolder",
+        "base": "Win32GUI",  # comment to build console version to see stderr
+        "targetName": "Meld.exe",
+        "shortcutName": "Meld",
+        "shortcutDir": "ProgramMenuFolder",
     })
     console_executable_options.update({
-         "targetName": "MeldConsole.exe",
+        "targetName": "MeldConsole.exe",
     })
 
 # Copy conf.py in place if necessary
