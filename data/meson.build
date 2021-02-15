@@ -12,14 +12,11 @@ install_data(
 )
 
 # Install desktop file
-desktop_conf = configuration_data()
-desktop_conf.set('icon', application_id)
-
 desktop_file = i18n.merge_file(
   input: configure_file(
     input: '@0@.desktop.in.in'.format(resource_base_id),
     output: '@0@.desktop.in'.format(application_id),
-    configuration: desktop_conf
+    configuration: {'icon': application_id},
   ),
   output: '@0@.desktop'.format(application_id),
   po_dir: podir,
@@ -38,15 +35,12 @@ if desktop_file_validate.found()
   )
 endif
 
-appdata_conf = configuration_data()
-appdata_conf.set('appid', application_id)
-
 appdata_file = i18n.merge_file(
   'appdata',
   input: configure_file(
     input: files('org.gnome.meld.appdata.xml.in.in'),
     output: 'org.gnome.meld.appdata.xml.in',
-    configuration: appdata_conf
+    configuration: {'appid': application_id},
   ),
   output: '@0@.appdata.xml'.format(application_id),
   po_dir: podir,

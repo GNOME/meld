@@ -83,13 +83,14 @@ foreach folder_name, sources : folders
 endforeach
 
 # Install the executable file
-app_config = configuration_data()
-app_config.set('profile', profile)
-app_config.set('application_id', application_id)
-app_config.set('resource_base_id', resource_base_id)
-app_config.set('localedir', prefix / localedir)
-app_config.set('pkgdatadir', prefix / pkgdatadir)
-app_config.set('configured', 'True')
+app_config = {
+  'profile': profile,
+  'application_id': application_id,
+  'resource_base_id': resource_base_id,
+  'localedir': prefix / localedir,
+  'pkgdatadir': prefix / pkgdatadir,
+  'configured': 'True',
+}
 
 configure_file(
     input: 'conf.py.in',
