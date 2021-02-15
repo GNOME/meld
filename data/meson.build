@@ -1,8 +1,7 @@
-
 # Install man page
 install_data(
   'meld.1',
-  install_dir: mandir / 'man1'
+  install_dir: mandir / 'man1',
 )
 
 # Install schema file
@@ -31,7 +30,7 @@ if desktop_file_validate.found()
   test (
     'Validate desktop file',
     desktop_file_validate,
-    args: desktop_file.full_path()
+    args: desktop_file.full_path(),
   )
 endif
 
@@ -54,11 +53,7 @@ if appstreamcli.found()
   test(
     'Validate appdata file',
     appstreamcli,
-    args: [
-        'validate-relax',
-        '--nonet',
-        appdata_file.full_path()
-     ]
+    args: ['validate-relax', '--nonet', appdata_file.full_path()],
   )
 endif
 
@@ -78,17 +73,17 @@ if compile_schemas.found()
   test(
     'Validate schema file',
     compile_schemas,
-    args: ['--strict', '--dry-run', meson.current_source_dir()]
+    args: ['--strict', '--dry-run', meson.current_source_dir()],
   )
 endif
 
 # Install GtkSourceview style files
 styles = [
-          'meld-base.style-scheme.xml',
-          'meld-dark.style-scheme.xml'
-         ]
+  'meld-base.style-scheme.xml',
+  'meld-dark.style-scheme.xml',
+]
 
-foreach style : styles
+foreach style: styles
   i18n.merge_file(
     input: 'styles' / style + '.in',
     output: style,
@@ -102,17 +97,17 @@ endforeach
 # Install icons
 icon_sizes = ['scalable']
 
-foreach i : icon_sizes
+foreach i: icon_sizes
   install_data(
     'icons/hicolor' / i / 'apps' / application_id + '.svg',
     install_dir: icondir / 'hicolor' / i / 'apps',
-    rename: '@0@.svg'.format(application_id)
+    rename: '@0@.svg'.format(application_id),
   )
 endforeach
 
 # Install the symbolic icon
 install_data(
-    'icons/hicolor/symbolic/apps' / application_id_no_profile + '-symbolic.svg',
-    install_dir: icondir / 'hicolor/symbolic/apps',
-    rename: '@0@-symbolic.svg'.format(application_id)
+  'icons/hicolor/symbolic/apps' / application_id_no_profile + '-symbolic.svg',
+  install_dir: icondir / 'hicolor/symbolic/apps',
+  rename: '@0@-symbolic.svg'.format(application_id),
 )
