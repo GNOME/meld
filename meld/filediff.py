@@ -147,7 +147,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     dummy_toolbar_actiongutter3 = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
-    dummy_toolbar_sourcemap = Gtk.Template.Child()
     file_open_button0 = Gtk.Template.Child()
     file_open_button1 = Gtk.Template.Child()
     file_open_button2 = Gtk.Template.Child()
@@ -181,11 +180,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
     statusbar0 = Gtk.Template.Child()
     statusbar1 = Gtk.Template.Child()
     statusbar2 = Gtk.Template.Child()
+    statusbar_sourcemap_revealer = Gtk.Template.Child()
     linkmap0 = Gtk.Template.Child()
     linkmap1 = Gtk.Template.Child()
     textview0 = Gtk.Template.Child()
     textview1 = Gtk.Template.Child()
     textview2 = Gtk.Template.Child()
+    toolbar_sourcemap_revealer = Gtk.Template.Child()
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
@@ -370,13 +371,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.create_text_filters()
 
-        # Handle overview map visibility binding
-        self.bind_property(
-            'show-overview-map', self.sourcemap_revealer, 'reveal-child',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        # Handle overview map visibility binding. Because of how we use
+        # grid packing, we need three revealers here instead of the
+        # more obvious one.
+        revealers = (
+            self.toolbar_sourcemap_revealer,
+            self.sourcemap_revealer,
+            self.statusbar_sourcemap_revealer,
         )
-        self.sourcemap_revealer.bind_property(
-            'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
+        for revealer in revealers:
+            self.bind_property(
+                'show-overview-map', revealer, 'reveal-child',
+                GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+            )
 
         # Handle overview map style mapping manually
         self.connect(

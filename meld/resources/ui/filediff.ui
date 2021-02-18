@@ -596,12 +596,20 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_sourcemap">
+          <object class="GtkRevealer" id="toolbar_sourcemap_revealer">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <style>
-              <class name="meld-notebook-toolbar"/>
-            </style>
+            <property name="reveal-child">True</property>
+            <property name="transition-type">GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT</property>
+            <child>
+              <object class="GtkToolbar" id="dummy_toolbar_sourcemap">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-notebook-toolbar"/>
+                </style>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="left_attach">9</property>
@@ -698,12 +706,20 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="dummy_statusbar_sourcemap">
+          <object class="GtkRevealer" id="statusbar_sourcemap_revealer">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <style>
-              <class name="meld-status-bar"/>
-            </style>
+            <property name="reveal-child">True</property>
+            <property name="transition-type">GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT</property>
+            <child>
+              <object class="GtkLabel" id="dummy_statusbar_sourcemap">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <style>
+                  <class name="meld-status-bar"/>
+                </style>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="left_attach">9</property>

@@ -373,12 +373,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
-    dummy_toolbar_overview_map = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
     file_toolbar0 = Gtk.Template.Child()
     file_toolbar1 = Gtk.Template.Child()
     file_toolbar2 = Gtk.Template.Child()
+    toolbar_sourcemap_revealer = Gtk.Template.Child()
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
@@ -468,13 +468,18 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 "text-filters-changed", self.on_text_filters_changed)
         ]
 
-        # Handle overview map visibility binding
-        self.bind_property(
-            'show-overview-map', self.overview_map_revealer, 'reveal-child',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        # Handle overview map visibility binding. Because of how we use
+        # grid packing, we need two revealers here instead of the more
+        # obvious one.
+        revealers = (
+            self.toolbar_sourcemap_revealer,
+            self.overview_map_revealer,
         )
-        self.overview_map_revealer.bind_property(
-            'child-revealed', self.dummy_toolbar_overview_map, 'visible')
+        for revealer in revealers:
+            self.bind_property(
+                'show-overview-map', revealer, 'reveal-child',
+                GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+            )
 
         map_widgets_into_lists(
             self,
