@@ -478,7 +478,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for revealer in revealers:
             self.bind_property(
                 'show-overview-map', revealer, 'reveal-child',
-                GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+                (
+                    GObject.BindingFlags.DEFAULT |
+                    GObject.BindingFlags.SYNC_CREATE
+                ),
             )
 
         map_widgets_into_lists(

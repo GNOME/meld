@@ -382,7 +382,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
         for revealer in revealers:
             self.bind_property(
                 'show-overview-map', revealer, 'reveal-child',
-                GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+                (
+                    GObject.BindingFlags.DEFAULT |
+                    GObject.BindingFlags.SYNC_CREATE
+                ),
             )
 
         # Handle overview map style mapping manually
