@@ -86,9 +86,10 @@ def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
 
     if not style_attr:
         import sys
+        style_detail = f'{name}-{attribute}'
         print(_(
-            "Couldn’t find colour scheme details for %s-%s; "
-            "this is a bad install") % (name, attribute), file=sys.stderr)
+            "Couldn’t find colour scheme details for {}; "
+            "this is a bad install").format(style_detail), file=sys.stderr)
         sys.exit(1)
 
     colour = Gdk.RGBA()

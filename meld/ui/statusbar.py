@@ -122,7 +122,7 @@ class MeldStatusBar(Gtk.Statusbar):
     )
 
     # Abbreviation for line, column so that it will fit in the status bar
-    _line_column_text = _("Ln %i, Col %i")
+    _line_column_text = _("Ln {line}, Col {column}")
 
     def __init__(self):
         super().__init__()
@@ -203,7 +203,8 @@ class MeldStatusBar(Gtk.Statusbar):
 
         def format_cursor_position(binding, cursor):
             line, offset = cursor
-            return self._line_column_text % (line + 1, offset + 1)
+            return self._line_column_text.format(
+                line=line + 1, column=offset + 1)
 
         button = MeldStatusMenuButton()
         self.bind_property(

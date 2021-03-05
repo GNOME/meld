@@ -86,13 +86,17 @@ class Vc(_vc.Vc):
         unpushed_commits = sum(len(v) for v in branch_refs.values())
         if unpushed_commits:
             if unpushed_branches > 1:
-                # Translators: First %s is replaced by translated "%d unpushed
-                # commits", second %s is replaced by translated "%d branches"
-                label = _("%s in %s") % (
-                    ngettext("%d unpushed commit", "%d unpushed commits",
-                             unpushed_commits) % unpushed_commits,
-                    ngettext("%d branch", "%d branches",
-                             unpushed_branches) % unpushed_branches)
+                # Translators: First element is replaced by translated "%d
+                # unpushed commits", second element is replaced by translated
+                # "%d branches"
+                label = _("{unpushed_commits} in {unpushed_branches}").format(
+                    unpushed_commits=ngettext(
+                        "%d unpushed commit", "%d unpushed commits",
+                        unpushed_commits) % unpushed_commits,
+                    unpushed_branches=ngettext(
+                        "%d branch", "%d branches",
+                        unpushed_branches) % unpushed_branches,
+                )
             else:
                 # Translators: These messages cover the case where there is
                 # only one branch, and are not part of another message.
@@ -336,8 +340,9 @@ class Vc(_vc.Vc):
                 # Git entries can't be MISSING; that's just an unstaged REMOVED
                 self._add_missing_cache_entry(path, state)
                 if old_mode != new_mode:
-                    msg = _("Mode changed from %s to %s" %
-                            (old_mode, new_mode))
+                    msg = _(
+                        "Mode changed from {old_mode} to {new_mode}".format(
+                            old_mode=old_mode, new_mode=new_mode))
                     tree_meta_cache[path].append(msg)
                 collection = unstaged if new_sha == NULL_SHA else staged
                 collection.add(path)

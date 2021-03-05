@@ -775,7 +775,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             sel = t.get_selection()
             sel.unselect_all()
 
-        yield _("[%s] Scanning %s") % (self.label_text, "")
+        yield _('[{label}] Scanning {folder}').format(
+            label=self.label_text, folder='')
         prefixlen = 1 + len(
             self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
@@ -798,8 +799,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             if not any(os.path.isdir(root) for root in roots):
                 continue
 
-            yield _("[%s] Scanning %s") % (
-                self.label_text, roots[0][prefixlen:])
+            yield _('[{label}] Scanning {folder}').format(
+                label=self.label_text, folder=roots[0][prefixlen:])
             differences = False
             encoding_errors = []
 
@@ -938,7 +939,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(Gtk.TreePath(path))
-        yield _("[%s] Done") % self.label_text
+        yield _('[{label}] Done').format(label=self.label_text)
 
         self._scan_in_progress -= 1
         self.force_cursor_recalculate = True
@@ -1007,7 +1008,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         formatted_entries = [[] for i in range(self.num_panes)]
         for pane, root, f1, f2 in shadowed_entries:
             paths = [os.path.join(root, f) for f in (f1, f2)]
-            entry_str = _("“%s” hidden by “%s”") % (paths[0], paths[1])
+            entry_str = _("“{first_file}” hidden by “{second_file}”").format(
+                first_file=paths[0],
+                second_file=paths[1],
+            )
             formatted_entries[pane].append(entry_str)
 
         if invalid_filenames or shadowed_entries:
@@ -1079,10 +1083,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             except (OSError, IOError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
-                    _("Couldn’t copy %s\nto %s.\n\n%s") % (
-                        GLib.markup_escape_text(src),
-                        GLib.markup_escape_text(dst),
-                        GLib.markup_escape_text(str(err)),
+                    _("Couldn’t copy {source}\nto {dest}.\n\n{error}").format(
+                        source=GLib.markup_escape_text(src),
+                        dest=GLib.markup_escape_text(dst),
+                        error=GLib.markup_escape_text(str(err)),
                     )
                 )
 
