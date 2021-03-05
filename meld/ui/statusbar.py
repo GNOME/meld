@@ -64,11 +64,13 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 
         # Ideally this would be a template child, but there's still no
         # Python support for this.
-        label = Gtk.Label()
-        label.props.single_line_mode = True
-        label.props.halign = Gtk.Align.START
-        label.props.valign = Gtk.Align.BASELINE
-        label.props.xalign = 1.0
+        label = Gtk.Label(
+            single_line_mode=True,
+            halign=Gtk.Align.START,
+            valign=Gtk.Align.BASELINE,
+            xalign=1.0,
+            ellipsize=Pango.EllipsizeMode.END,
+        )
 
         arrow = Gtk.Image.new_from_icon_name(
             'pan-down-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
