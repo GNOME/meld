@@ -947,7 +947,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def _show_duplicate_directory(self, duplicate_directory):
         for index in range(self.num_panes):
             primary = _(
-                f'Folder {duplicate_directory} is being compared to itself')
+                'Folder {} is being compared to itself').format(
+                duplicate_directory)
             self.msgarea_mgr[index].add_dismissable_msg(
                 'dialog-warning-symbolic', primary, '', self.msgarea_mgr)
 

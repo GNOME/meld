@@ -1827,7 +1827,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if duplicate_files:
             for index in range(self.num_panes):
                 primary = _(
-                    f'File {duplicate_files[0]} is being compared to itself')
+                    'File {} is being compared to itself').format(
+                    duplicate_files[0])
                 self.msgarea_mgr[index].add_dismissable_msg(
                     'dialog-warning-symbolic', primary, '', self.msgarea_mgr)
         elif self.linediffer.sequences_identical():
