@@ -1246,12 +1246,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             for buf in self.textbuffer:
                 buf.data.disconnect_monitor()
 
-            # TODO: This should not be necessary; remove if and when we
-            # figure out what's keeping MeldDocs alive for too long.
             try:
-                del self._cached_match
-            except AttributeError:
-                pass
+                self._cached_match.stop()
+            except Exception:
+                # Ignore any cross-process exceptions that happen when
+                # shutting down our matcher process.
+                log.exception('Failed to shut down matcher process')
             # TODO: Base the return code on something meaningful for VC tools
             self.close_signal.emit(0)
         return response

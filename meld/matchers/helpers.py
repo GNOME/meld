@@ -68,11 +68,14 @@ class CachedSequenceMatcher:
         self.queued_matches = {}
         GLib.idle_add(self.thread.start)
 
-    def __del__(self):
+    def stop(self) -> None:
         self.tasks.put((MatcherWorker.END_TASK, ('', '')))
-        self.thread.join(self.TASK_GRACE_PERIOD)
-        if self.thread.exitcode is None:
-            self.thread.terminate()
+        if self.thread.is_alive():
+            self.thread.join(self.TASK_GRACE_PERIOD)
+            if self.thread.exitcode is None:
+                self.thread.terminate()
+        self.cache = {}
+        self.queued_matches = {}
 
     def match(self, text1, textn, cb):
         texts = (text1, textn)
