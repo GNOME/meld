@@ -2066,6 +2066,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         dialog = Gtk.FileChooserNative(
             title=_("Open File"),
             transient_for=self.get_toplevel(),
+            local_only=False,
         )
         if self.textbuffer[pane].data.gfile:
             dialog.set_file(self.textbuffer[pane].data.gfile)
