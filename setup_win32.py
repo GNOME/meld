@@ -115,6 +115,7 @@ bdist_msi_options = {
     "data": msi_data,
     "all_users": True,
     "add_to_path": True,
+    "install_icon": "data/icons/org.gnome.meld.ico",
 }
 
 executable_options = {
