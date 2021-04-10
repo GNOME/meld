@@ -87,6 +87,8 @@ class build_data(distutils.cmd.Command):
         ('share/meld', ['data/gschemas.compiled']),
     ]
 
+    win32_settings_ini = '[Settings]\ngtk-application-prefer-dark-theme=0\n'
+
     def initialize_options(self):
         pass
 
@@ -95,7 +97,18 @@ class build_data(distutils.cmd.Command):
 
     def get_data_files(self):
         if os.name == 'nt':
-            return self.frozen_gschemas
+            # Write out a default settings.ini for Windows to make
+            # e.g., dark theme selection slightly easier.
+            settings_dir = os.path.join('build', 'etc', 'gtk-3.0')
+            if not os.path.exists(settings_dir):
+                os.makedirs(settings_dir)
+            settings_path = os.path.join(settings_dir, 'settings.ini')
+            with open(settings_path, 'w') as f:
+                print(self.win32_settings_ini, file=f)
+
+            return self.frozen_gschemas + [
+                ('etc/gtk-3.0', [settings_path])
+            ]
         else:
             return self.gschemas
 
