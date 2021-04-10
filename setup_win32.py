@@ -117,6 +117,7 @@ bdist_msi_options = {
     "upgrade_code": "{1d303789-b4e2-4d6e-9515-c301e155cd50}",
     "data": msi_data,
     "all_users": True,
+    "install_icon": "data/icons/org.gnome.meld.ico",
 }
 
 executable_options = {
