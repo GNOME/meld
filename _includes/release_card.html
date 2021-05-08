@@ -1,0 +1,30 @@
+    <div class="card bg-dark text-white mb-3 mr-md-3 py-3 px-3 py-md-4 px-md-5">
+      <div class="card-body py-0 px-0">
+        {% assign release = include.release %}
+        {% assign short_version = release.version | split: "." | pop | join: "." %}
+        <div class="d-flex w-100 justify-content-between align-items-baseline">
+          <h5 class="card-title">Meld {{ release.version }} — {{ release.type }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            <time datetime="{{ release.date }}">{{ release.date | date_to_long_string }}</time>
+          </h6>
+        </div>
+        <p class="mb-1">
+          {{ release.description }}
+        </p>
+        <p>
+            See the <a href="https://gitlab.gnome.org/GNOME/meld/-/releases/{{ release.version }}" class="card-link">release notes</a> for details.
+        </p>
+
+        <div>
+          <a class="btn btn-primary mr-2" role="button" href="https://download.gnome.org/sources/meld/{{ short_version }}/meld-{{ release.version }}.tar.xz">
+            <i class="fas fa-download"></i> Source <small>(.tar.xz)</small>
+          </a>
+
+          {% if release.platforms contains 'windows' %}
+          <a class="btn btn-primary mr-2" role="button" href="https://download.gnome.org/binaries/win32/meld/{{ short_version }}/Meld-{{ release.version }}-mingw.msi">
+            <i class="fas fa-download"></i> Windows <small>(.msi)</small>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>

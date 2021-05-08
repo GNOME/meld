@@ -1,0 +1,30 @@
+stages:
+  - deploy
+  - publish
+
+variables:
+  DEPENDENCIES: findutils git libxslt rubygem-jekyll yelp-tools
+
+pages:
+  stage: deploy
+  image: fedora:33
+  script:
+    - dnf install -y $DEPENDENCIES
+    - jekyll build -d public/
+    - git checkout master
+    - mkdir public/help/
+    - yelp-build html -o public/help help/C
+  artifacts:
+    paths:
+      - public
+  only:
+    - pages
+
+cloudflareworkers:
+  stage: publish
+  image: node:12-alpine
+  script:
+    - npm install @cloudflare/wrangler
+    - npx wrangler publish --env production
+  only:
+    - pages

@@ -1,0 +1,211 @@
+---
+layout: default
+title: Meld
+copyright: 2021 Kai Willadsen
+---
+
+<div class="row">
+  <div class="m-md-3 bg-light">
+    <div class="col-md-8 mx-auto my-5">
+      <h1 class="display-4 font-weight-normal">Meld<small class="text-muted">&nbsp;&nbsp;Visual diff and merge tool</small></h1>
+      <p class="lead">
+        Meld helps you compare files, directories, and version controlled projects. It provides two- and three-way comparison of both files and directories, and has support for many popular version control systems.
+      </p>
+      <p class="lead">
+        Meld helps you review code changes and understand patches. It might even help you to figure out what's going on in that merge you keep avoiding.
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <a id="features"></a>
+  <div class="col-md my-md-3">
+    <div class="bg-dark p-3 p-md-5 text-white">
+      <div id="feature-carousel" class="carousel slide mx-4" data-ride="carousel">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <div class="d-md-flex">
+              <a href="images/filediff.png" class="mx-3">
+                <img class="w-100" src="images/filediff.png" alt="File comparison">
+              </a>
+              <div class="w-100 mx-3">
+                <h3>File comparison</h3>
+                <ul class="list-feature">
+                  <li>Compare, edit and merge files using live comparison updates</li>
+                  <li>Navigate between changes and operate on change blocks</li>
+                  <li>Simple text filtering for ignoring irrelevant differences</li>
+                  <li>Three-way merge assistance with conflict handling and base version display</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-md-flex">
+              <a href="images/dirdiff.png" class="mx-3">
+                <img class="w-100" src="images/dirdiff.png" alt="Folder comparison">
+              </a>
+              <div class="w-100 mx-3">
+                <h3>Folder comparison</h3>
+                <ul class="list-feature">
+                  <li>Identify and manage missing or modified files across folders</li>
+                  <li>Drill down into a file comparison for a detailed view of differences</li>
+                  <li>Ignore certain files or folders for more useful comparisons</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="carousel-item">
+            <div class="d-md-flex">
+              <a href="images/vcview.png" class="mx-3">
+                <img class="w-100" src="images/vcview.png" alt="Version control view">
+              </a>
+              <div class="w-100 mx-3">
+                <h3>Version control</h3>
+                <ul class="list-feature">
+                  <li>Supports Git, Mercurial, Bazaar and Subversion</li>
+                  <li>Check your changes, commit and push easily</li>
+                  <li>View and manage version control states</li>
+                  <li>Tool integration with e.g., <code>git mergetool</code></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <a class="carousel-control-prev" href="#feature-carousel" role="button" data-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next" href="#feature-carousel" role="button" data-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6 my-md-3">
+    <div class="py-3 px-3 py-md-5 px-md-5">
+      <div>
+        <h3>Installing Meld</h3>
+        <div class="d-flex">
+          <i class="fas fa-cubes fa-2x fa-fw mr-3 mb-2"></i>
+          <p>
+            Meld is packaged for most Linux/Unix distributions, and is also available on <a href="https://flathub.org/">Flathub</a>. For installing from source, see the <a href="https://gitlab.gnome.org/GNOME/meld/-/blob/master/README.md">instructions</a>.
+          </p>
+        </div>
+        <div class="d-flex">
+          <i class="fab fa-windows fa-2x fa-fw mr-3 mb-2"></i>
+          <p>
+            Windows users should download the MSI. Meld does not yet support automatic updates or portable installs.
+          </p>
+        </div>
+        <div class="d-flex">
+          <i class="fab fa-apple fa-2x fa-fw mr-3 mb-2"></i>
+          <p>
+            Meld is not <em>yet</em> supported on OS X. Third-party binaries <a href="https://github.com/yousseb/meld/releases">are available</a>, and you can install from <a href="https://brew.sh/">Homebrew</a>, <a href="https://www.macports.org/">MacPorts</a> or <a href="http://www.finkproject.org/">Fink</a>.
+          </p>
+        </div>
+      </div>
+
+      <div>
+        <h5>Requirements</h5>
+        <ul class="list-columns">
+          <li>Python 3.4</li>
+          <li>GTK+ 3.20</li>
+          <li>GLib 2.36</li>
+          <li>PyGObject 3.20</li>
+          <li>GtkSourceView 3.20</li>
+          <li>pycairo</li>
+        </ul>
+        <p>
+          See the current <a href="https://gitlab.gnome.org/GNOME/meld/-/blob/master/README.md">README file</a> for development and build requirements.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6 my-md-3">
+    {% for release in site.data.releases %}
+      {% include release_card.html release=release %}
+    {% endfor %}
+
+    <div class="card bg-dark text-white mb-3 mr-md-3 py-2 px-3 py-md-3 px-md-5">
+      <div class="card-body py-0 px-0">
+          See the <a href="https://gitlab.gnome.org/GNOME/meld/-/releases">full release list</a> for older releases.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+
+  <div class="col-md-6 my-md-3">
+    <div class="bg-dark text-white mr-md-3 py-3 px-3 py-md-5 px-md-5">
+      <a id="development"></a>
+      <h3>Contributing</h3>
+      <p>
+        All development happens on <a href="https://gitlab.gnome.org/GNOME/meld">GNOME's Gitlab instance</a>. Please <a href="https://gitlab.gnome.org/GNOME/meld/issues">open an issue</a> for any problems you encounter, and feel free to ask on the <a href="https://discourse.gnome.org/tag/meld">discussion board</a> if you're uncertain about anything.
+      </p>
+
+      <h3>Developing</h3>
+      <p>
+        You can run Meld directly from your git clone, without installing:<br>
+      </p>
+        <pre class="text-white">
+$ git clone https://gitlab.gnome.org/GNOME/meld.git
+$ bin/meld</pre>
+
+      <h3>Internationalization support</h3>
+      <p>
+        Meld is available in <a href="https://l10n.gnome.org/module/meld/">several languages</a> thanks to the epic efforts of many wonderful translators. If you'd like to contribute translations, please contact the <a href="https://wiki.gnome.org/TranslationProject">GNOME Translation Project</a>.
+      </p>
+    </div>
+  </div>
+  <div class="col-md-6 my-md-3">
+    <div class="mr-md-3 py-3 px-3 py-md-5 px-md-5">
+
+      <div class="row">
+        <div class="col-sm-12">
+          <h3>Resources</h3>
+        </div>
+        <div class="col-sm-4 mt-1">Project page</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://gitlab.gnome.org/GNOME/meld">https://gitlab.gnome.org/GNOME/meld</a>
+        </div>
+        <div class="col-sm-4 mt-1">Source view</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://gitlab.gnome.org/GNOME/meld/tree/master">https://gitlab.gnome.org/GNOME/meld/tree/master</a>
+        </div>
+        <div class="col-sm-4 mt-1">Issue tracker</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://gitlab.gnome.org/GNOME/meld/issues">https://gitlab.gnome.org/GNOME/meld/issues</a>
+        </div>
+        <div class="col-sm-4 mt-1">Discussion</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://discourse.gnome.org/tag/meld">https://discourse.gnome.org/tag/meld</a>
+        </div>
+        <div class="col-sm-4 mt-1">Translations</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://l10n.gnome.org/module/meld/">https://l10n.gnome.org/module/meld/</a>
+        </div>
+
+        <div class="col-sm-12 mt-4">
+          <h3>Project details</h3>
+        </div>
+        <div class="col-sm-4 mt-1">License</div>
+        <div class="col-sm-8 mt-1">
+          <a href="https://www.gnu.org/licenses/gpl-2.0.html">GPLv2 or later</a>, except as noted
+        </div>
+        <div class="col-sm-4 mt-1">Primary authors</div>
+        <div class="col-sm-8 mt-1">
+          Kai Willadsen, Stephen Kennedy, Vincent Legoll
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

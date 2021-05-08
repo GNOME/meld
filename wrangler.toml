@@ -1,0 +1,17 @@
+name = "meld-app"
+type = 'webpack'
+account_id = '6339f2b9496297204382eca4fb01f7e2'
+route = ''
+zone_id = ''
+usage_model = ''
+workers_dev = true
+target_type = "webpack"
+
+[site]
+bucket = "./public"
+entry-point = "workers-site"
+
+[env.production]
+workers_dev = false
+zone_id = "b64c0c8b024e2c6dd513e48a2b346d7b"
+route = "meld.app/*"
