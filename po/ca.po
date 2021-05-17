@@ -82,22 +82,16 @@ msgid "Default window height"
 msgstr "Mida per defecte de la finestra"
 
 #: data/org.gnome.meld.gschema.xml:45
-#, fuzzy
-#| msgid "Default window state"
 msgid "Default window maximised state"
-msgstr "Estat per defecte de la finestra"
+msgstr "Estat maximitzat per defecte de la finestra"
 
 #: data/org.gnome.meld.gschema.xml:49
-#, fuzzy
-#| msgid "Default window state"
 msgid "Default window fullscreen state"
-msgstr "Estat per defecte de la finestra"
+msgstr "Estat predeterminat de la finestra a pantalla completa"
 
 #: data/org.gnome.meld.gschema.xml:58
-#, fuzzy
-#| msgid "Automatically detected text encodings"
 msgid "Additional automatically detected text encodings"
-msgstr "Detecta automàticament la codificació del text"
+msgstr "Codificacions de text addicionals detectades automàticament"
 
 #: data/org.gnome.meld.gschema.xml:59
 #, fuzzy
@@ -155,8 +149,8 @@ msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
 msgstr ""
-"Si s'ha de ressaltar la sintaxi quan es compara. Com que el Meld ja té el "
-"seu propi ressaltat, per defecte, està inhabilitat."
+"Si s'ha de ressaltar la sintaxi en les comparacions. A causa del ressaltat "
+"del color de Meld, això està desactivat per defecte."
 
 #: data/org.gnome.meld.gschema.xml:86
 msgid "Color scheme to use for syntax highlighting"
@@ -170,10 +164,9 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:91
 msgid "Draw whitespace"
-msgstr ""
+msgstr "Dibuixa els espais en blanc"
 
 #: data/org.gnome.meld.gschema.xml:92
-#, fuzzy
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are"
 " not in a changed area."
@@ -219,8 +212,8 @@ msgstr "Utilitza la lletra monoespaiada per defecte del sistema"
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
-"Si és «false» (fals), s'utilitzarà el tipus de lletra personalitzat en "
-"comptes de la lletra monoespaiada del sistema."
+"Si és fals, s'utilitzarà un tipus de lletra personalitzat en lloc del tipus "
+"de lletra monoespai del sistema."
 
 #: data/org.gnome.meld.gschema.xml:119
 msgid "Custom font"
@@ -248,7 +241,6 @@ msgstr ""
 "parells per als fitxers comparats."
 
 #: data/org.gnome.meld.gschema.xml:132
-#, fuzzy
 msgid "Style of overview map"
 msgstr "Estil del mapa general"
 
@@ -282,8 +274,8 @@ msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
 msgstr ""
-"Si és «false» (fals), s'utilitzarà l'editor personalitzat que s'hagi definit"
-" per obrir fitxers externs, en comptes de l'editor del sistema."
+"Si és fals, s'utilitzarà l'editor de editor personalitzat en comptes de "
+"l'editor del sistema quan s'obrin els fitxers externament."
 
 #: data/org.gnome.meld.gschema.xml:152
 msgid "The custom editor launch command"
@@ -354,14 +346,12 @@ msgid ""
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
-"En fer una comparació basada en el temps de modificació, aquesta és la "
-"diferència mínima en nanosegons necessària perquè dos fitxers es puguin "
-"considerar diferents. Això pot ser útil quan es comparin fitxers amb "
-"diferents sistemes de fitxers que tinguin una resolució de marca de temps "
-"diferent."
+"Quan es compara basant-se en mtime, aquesta és la diferència mínima en "
+"nanosegons entre dos fitxers abans que es consideri que tenen diferents "
+"hores. Això és útil quan es comparen fitxers entre sistemes de fitxers amb "
+"una resolució de marca horària diferent."
 
 #: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
-#, fuzzy
 msgid "Apply text filters during folder comparisons"
 msgstr "Aplica els filtres de text durant les comparacions de carpetes"
 
@@ -444,10 +434,10 @@ msgid ""
 " preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr ""
-"Les opcions són «remot/fusió/local» i «local/fusió/remot». Aquesta "
-"preferència només afectarà a les comparacions entre tres fitxers iniciades "
-"des de la vista de control de versions, de manera que només s'utilitza per "
-"resolució de conflictes de fusió dins del propi Meld."
+"Les opcions per a l'ordre dels fitxers són remot/fusionat/local i "
+"local/fusionat/remot. Aquesta preferència només afecta les comparacions de "
+"tres vies llançades des de la vista de control de versions, per la qual cosa"
+" s'utilitza únicament per a la fusió/resolució de conflictes dins de Meld."
 
 #: data/org.gnome.meld.gschema.xml:211
 msgid "Show margin in commit message editor"
@@ -474,8 +464,8 @@ msgid ""
 "The column at which to show the margin in the version control commit message"
 " editor."
 msgstr ""
-"La columna del marge a l'editor de missatges de publicació del control de "
-"versions."
+"La columna on mostrar el marge a l'editor de missatges de publicació de "
+"control de versions."
 
 #: data/org.gnome.meld.gschema.xml:221
 msgid "Automatically hard-wrap commit messages"
@@ -490,9 +480,9 @@ msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
 msgstr ""
-"Si és «True» (cert), l'editor de missatges de publicació del control de "
-"versions ajustarà l'amplada de línia segons el marge de publicació "
-"predefinit abans de publicar (p.e. inserirà automàticament salts de línia)."
+"Si és «true» (cert), l'editor de missatges de publicació de control de "
+"versions s'ajustarà (és a dir, inserirà salts de línia) al marge de la "
+"comissió abans de la publicació."
 
 #: data/org.gnome.meld.gschema.xml:226
 msgid "Version control status filters"
@@ -533,24 +523,19 @@ msgid ""
 "text from being used in a file comparison. The text will still be displayed,"
 " but won’t contribute to the comparison itself."
 msgstr ""
-"Llista de filtres d'expressions regulars predefinides basades en text que, "
-"si estan actives, trauran el text que hi concordi de la comparació de "
-"fitxers. El text es mostrarà igualment, però no es tindrà en compte en la "
-"comparació."
+"Llista de filtres d'expressions regulars predefinides que, si estan actius, "
+"eliminaran el text de ser utilitzat en una comparació de fitxers. El text "
+"encara es mostrarà, però no contribuirà a la comparació."
 
 #: data/styles/meld-base.style-scheme.xml.in:1
-#, fuzzy
 msgid "Classic (Meld)"
-msgstr "Clàssic (Melda)"
+msgstr "Clàssic (Meld)"
 
 #: data/styles/meld-base.style-scheme.xml.in:3
-#, fuzzy
-#| msgid "Color scheme to use for syntax highlighting"
 msgid "Base color scheme for Meld highlighting"
-msgstr "L'esquema de color que s'ha d'utilitzar per al ressaltat de sintaxi"
+msgstr "Esquema de color base per al ressaltat del Meld"
 
 #: data/styles/meld-dark.style-scheme.xml.in:1
-#, fuzzy
 msgid "Meld dark scheme"
 msgstr "Esquema fosc Meld"
 
@@ -558,10 +543,9 @@ msgstr "Esquema fosc Meld"
 #, fuzzy
 #| msgid "Color scheme to use for syntax highlighting"
 msgid "Dark color scheme for Meld highlighting"
-msgstr "L'esquema de color que s'ha d'utilitzar per al ressaltat de sintaxi"
+msgstr "Esquema de color fosc per al ressaltat del Meld"
 
 #: meld/resources/gtk/help-overlay.ui:14
-#, fuzzy
 msgctxt "shortcut window"
 msgid "General"
 msgstr "General"
@@ -597,24 +581,19 @@ msgid "Fullscreen"
 msgstr "Pantalla completa"
 
 #: meld/resources/gtk/help-overlay.ui:63
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Panes"
-msgstr "Panells"
+msgstr "Subfinestres"
 
 #: meld/resources/gtk/help-overlay.ui:68
-#, fuzzy
-#| msgid "Previous Change"
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
-msgstr "Canvi anterior"
+msgstr "Subfinestra de comparació anterior"
 
 #: meld/resources/gtk/help-overlay.ui:75
-#, fuzzy
-#| msgid "New comparison"
 msgctxt "shortcut window"
 msgid "Next comparison pane"
-msgstr "Comparació nova"
+msgstr "Subfinestra de comparació següent"
 
 #: meld/resources/gtk/help-overlay.ui:84
 msgctxt "shortcut window"
@@ -637,74 +616,56 @@ msgid "Tabs"
 msgstr "Pestanyes"
 
 #: meld/resources/gtk/help-overlay.ui:110
-#, fuzzy
-#| msgid "Go to the previous change"
 msgctxt "shortcut window"
 msgid "Go to previous tab"
-msgstr "Vés al canvi anterior"
+msgstr "Ves a la pestanya anterior"
 
 #: meld/resources/gtk/help-overlay.ui:117
-#, fuzzy
-#| msgid "Go to the next change"
 msgctxt "shortcut window"
 msgid "Go to next tab"
-msgstr "Vés al canvi següent"
+msgstr "Ves a la pestanya següent"
 
 #: meld/resources/gtk/help-overlay.ui:124
-#, fuzzy
-#| msgid "Switch to this tab"
 msgctxt "shortcut window"
 msgid "Switch to tab"
-msgstr "Canvia a aquesta pestanya"
+msgstr "Canvia a la pestanya"
 
 #: meld/resources/gtk/help-overlay.ui:131
-#, fuzzy
-#| msgid "Move Tab _Left"
 msgctxt "shortcut window"
 msgid "Move tab left"
-msgstr "Mou la pestanya a l'_esquerra"
+msgstr "Mou la pestanya a l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:138
-#, fuzzy
-#| msgid "Move Tab _Right"
 msgctxt "shortcut window"
 msgid "Move tab right"
-msgstr "Mou la pestanya a la _dreta"
+msgstr "Mou la pestanya a la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:147
-#, fuzzy
-#| msgid "_Edit"
 msgctxt "shortcut window"
 msgid "Editing"
-msgstr "_Edita"
+msgstr "Edició"
 
 #: meld/resources/gtk/help-overlay.ui:152
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Desfés"
 
 #: meld/resources/gtk/help-overlay.ui:159
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Refés"
 
 #: meld/resources/gtk/help-overlay.ui:166
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Retalla"
 
 #: meld/resources/gtk/help-overlay.ui:173
-#, fuzzy
-#| msgid "Copy _up"
 msgctxt "shortcut window"
 msgid "Copy"
-msgstr "Copia cap _amunt"
+msgstr "Copia"
 
 #: meld/resources/gtk/help-overlay.ui:180
-#, fuzzy
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Enganxa"
@@ -735,25 +696,19 @@ msgid "File comparison"
 msgstr "Comparació de fitxers"
 
 #: meld/resources/gtk/help-overlay.ui:222
-#, fuzzy
-#| msgid "Save the current file"
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Desa el fitxer actual"
 
 #: meld/resources/gtk/help-overlay.ui:229
-#, fuzzy
-#| msgid "Save the current file"
 msgctxt "shortcut window"
 msgid "Save current file to new path"
-msgstr "Desa el fitxer actual"
+msgstr "Desa el fitxer actual al camí nou"
 
 #: meld/resources/gtk/help-overlay.ui:236
-#, fuzzy
-#| msgid "Save all files in the current comparison"
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
-msgstr "Desa tots els fitxers de la comparació actual"
+msgstr "Desa tots els fitxers en comparació"
 
 #: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
@@ -766,60 +721,56 @@ msgid "Next conflict"
 msgstr "Conflicte següent"
 
 #: meld/resources/gtk/help-overlay.ui:257
-#, fuzzy
-#| msgid "Push current change to the left"
 msgctxt "shortcut window"
 msgid "Push change to left"
-msgstr "Mou el canvi actual cap a l'esquerra"
+msgstr "Mou el canvi a l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:264
-#, fuzzy
-#| msgid "Push current change to the right"
 msgctxt "shortcut window"
 msgid "Push change to right"
-msgstr "Mou el canvi actual cap a la dreta"
+msgstr "Mou el canvi a la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:271
 #, fuzzy
 #| msgid "Pull change from the left"
 msgctxt "shortcut window"
 msgid "Pull change from left"
-msgstr "Agafa el canvi de l'esquerra"
+msgstr "Elimina el canvi de l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:278
 #, fuzzy
 #| msgid "Pull change from the right"
 msgctxt "shortcut window"
 msgid "Pull change from right"
-msgstr "Agafa el canvi de la dreta"
+msgstr "Ajusta el canvi de la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:285
 #, fuzzy
 #| msgid "Copy change above the left chunk"
 msgctxt "shortcut window"
 msgid "Copy change above left"
-msgstr "Copia el canvi per sobre del tros de l'esquerre"
+msgstr "Copia el canvi a sobre de l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:292
 #, fuzzy
 #| msgid "Copy change below the left chunk"
 msgctxt "shortcut window"
 msgid "Copy change below left"
-msgstr "Copia el canvi per sota del tros de l'esquerre"
+msgstr "Copia el canvi a sota de l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:299
 #, fuzzy
 #| msgid "Copy change above the right chunk"
 msgctxt "shortcut window"
 msgid "Copy change above right"
-msgstr "Copia el canvi per sobre del tros de la dreta"
+msgstr "Copia el canvi a sobre de la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:306
 #, fuzzy
 #| msgid "Copy change below the right chunk"
 msgctxt "shortcut window"
 msgid "Copy change below right"
-msgstr "Copia el canvi per sota del tros de la dreta"
+msgstr "Copia el canvi a sota de la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:313
 #: meld/resources/gtk/help-overlay.ui:341
@@ -833,48 +784,35 @@ msgid "Folder comparison"
 msgstr "Comparació de carpetes"
 
 #: meld/resources/gtk/help-overlay.ui:327
-#, fuzzy
-#| msgid "Copy to left"
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Copia a l'esquerra"
 
 #: meld/resources/gtk/help-overlay.ui:334
-#, fuzzy
-#| msgid "Copy to right"
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Copia a la dreta"
 
 #: meld/resources/gtk/help-overlay.ui:350
-#, fuzzy
-#| msgid "Start a version control comparison"
 msgctxt "shortcut window"
 msgid "Version control comparison"
-msgstr "Inicia una comparació de control de versions"
+msgstr "Comparació de control de versions"
 
 #: meld/resources/gtk/help-overlay.ui:355
-#, fuzzy
-#| msgid "Commit changes to version control"
 msgctxt "shortcut window"
 msgid "Commit to version control"
-msgstr "Publica els canvis al control de versions"
+msgstr "Publica al control de versions"
 
 #: meld/resources/gtk/help-overlay.ui:362
-#, fuzzy
-#| msgid "Console output"
 msgctxt "shortcut window"
 msgid "Show/hide console output"
-msgstr "Sortida de la consola"
+msgstr "Mostra/oculta la sortida de la consola"
 
 #: meld/resources/gtk/menus.ui:7
-#, fuzzy
-#| msgid "Refresh the view"
 msgid "Refresh"
-msgstr "Actualitza la visualització"
+msgstr "Actualitza"
 
 #: meld/resources/gtk/menus.ui:12
-#, fuzzy
 msgid "Stop"
 msgstr "Atura"
 
@@ -891,7 +829,6 @@ msgid "Save A_ll"
 msgstr "Desa-ho _tot"
 
 #: meld/resources/gtk/menus.ui:34
-#, fuzzy
 msgid "Revert files…"
 msgstr "Reverteix els fitxers..."
 
@@ -912,27 +849,20 @@ msgid "View"
 msgstr "Visualitza"
 
 #: meld/resources/gtk/menus.ui:59
-#, fuzzy
 msgid "Overview Map"
 msgstr "Mapa de visió general"
 
 #: meld/resources/gtk/menus.ui:63
-#, fuzzy
-#| msgid "Start a version control comparison"
 msgid "Version control console"
-msgstr "Inicia una comparació de control de versions"
+msgstr "Consola de control de versions"
 
 #: meld/resources/gtk/menus.ui:67
-#, fuzzy
-#| msgid "Lock Scrolling"
 msgid "Lock scrolling"
 msgstr "Bloqueja el desplaçament"
 
 #: meld/resources/gtk/menus.ui:73
-#, fuzzy
-#| msgid "New comparison"
 msgid "Comparison"
-msgstr "Comparació nova"
+msgstr "Comparació"
 
 #: meld/resources/gtk/menus.ui:77
 msgid "Merge All from Left"
@@ -955,17 +885,14 @@ msgid "Clear Synchronization Points"
 msgstr "Neteja els punts de sincronització"
 
 #: meld/resources/gtk/menus.ui:103
-#, fuzzy
-#| msgid "Format as Patch"
 msgid "Format as Patch…"
-msgstr "Formata com a pedaç"
+msgstr "Formata com a pedaç…"
 
 #: meld/resources/gtk/menus.ui:112
 msgid "_Preferences"
 msgstr "_Preferències"
 
 #: meld/resources/gtk/menus.ui:116
-#, fuzzy
 msgid "Keyboard Shortcuts"
 msgstr "Dreceres de teclat"
 
@@ -978,8 +905,6 @@ msgid "_About Meld"
 msgstr "_Quant al Meld"
 
 #: meld/resources/gtk/menus.ui:138
-#, fuzzy
-#| msgid "File Status"
 msgid "File status"
 msgstr "Estat del fitxer"
 
@@ -997,16 +922,12 @@ msgid "Modified"
 msgstr "Modificat"
 
 #: meld/resources/gtk/menus.ui:158
-#, fuzzy
-#| msgid "Ignore Filename Case"
 msgid "Ignore filename case"
-msgstr "No distingeixis majúscules/minúscules en el nom del fitxer"
+msgstr "Ignora les majúscules i minúscules del nom de fitxer"
 
 #: meld/resources/gtk/menus.ui:171
-#, fuzzy
-#| msgid "_Normal"
 msgid "Normal"
-msgstr "_Normal"
+msgstr "Normal"
 
 #: meld/resources/gtk/menus.ui:175 meld/vc/_vc.py:70
 msgid "Unversioned"
@@ -1017,10 +938,8 @@ msgid "Ignored"
 msgstr "Ignorat"
 
 #: meld/resources/gtk/menus.ui:186
-#, fuzzy
-#| msgid "Flatten directories"
 msgid "Flatten folders"
-msgstr "Aplana els directoris"
+msgstr "Aplana les carpetes"
 
 #: meld/resources/ui/about-dialog.ui:8
 msgid ""
@@ -1044,10 +963,8 @@ msgid "Start a new comparison"
 msgstr "Inicia una comparació nova"
 
 #: meld/resources/ui/appwindow.ui:45
-#, fuzzy
-#| msgid "Open recent files"
 msgid "Open a recent comparison"
-msgstr "Obre els fitxers recents"
+msgstr "Obre una comparació recent"
 
 #: meld/resources/ui/appwindow.ui:73
 msgid "Go to the previous change"
@@ -1066,10 +983,8 @@ msgid "Go to the next conflict"
 msgstr "Ves al conflicte següent"
 
 #: meld/resources/ui/appwindow.ui:192
-#, fuzzy
-#| msgid "Version Status"
 msgid "Version Filters"
-msgstr "Estat de la versió"
+msgstr "Filtres de versió"
 
 #: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1456
 msgid "File Filters"
@@ -1141,36 +1056,26 @@ msgid "Delete selected"
 msgstr "Suprimeix el text seleccionat"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-#, fuzzy
-#| msgid "Compare selected files"
 msgid "_Compare selected files"
-msgstr "Compara els fitxers seleccionats"
+msgstr "_Compara els fitxers seleccionats"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-#, fuzzy
-#| msgid "Copy to left"
 msgid "Copy to _left"
-msgstr "Copia a l'esquerra"
+msgstr "C_opia a l'esquerra"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-#, fuzzy
-#| msgid "Copy to right"
 msgid "Copy to _right"
-msgstr "Copia a la dreta"
+msgstr "_Copia a la dreta"
 
 #: meld/resources/ui/dirdiff-menus.ui:22
-#, fuzzy
-#| msgid "Delete selected"
 msgid "_Delete selected"
-msgstr "Suprimeix el text seleccionat"
+msgstr "_Suprimeix els seleccionats"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-#, fuzzy
 msgid "Collapse Recursively"
 msgstr "Col·lapsa recursivament"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-#, fuzzy
 msgid "Expand Recursively"
 msgstr "Expandeix recursivament"
 
@@ -1179,14 +1084,12 @@ msgid "_Open Externally"
 msgstr "_Obre externament"
 
 #: meld/resources/ui/dirdiff-menus.ui:44
-#, fuzzy
 msgid "_Copy File Paths"
-msgstr "Copia els camins del fitxer"
+msgstr "_Copia els camins del fitxer"
 
 #: meld/resources/ui/encoding-selector.ui:31
-#, fuzzy
 msgid "Search text encoding…"
-msgstr "Cerca la codificació de text..."
+msgstr "Cerca la codificació de text…"
 
 #: meld/resources/ui/filediff-actions.ui:20
 msgid "Push current change to the left"
@@ -1197,10 +1100,8 @@ msgid "Push current change to the right"
 msgstr "Mou el canvi actual cap a la dreta"
 
 #: meld/resources/ui/filediff-actions.ui:65
-#, fuzzy
-#| msgid "Copy _up"
 msgid "Copy chunks"
-msgstr "Copia cap _amunt"
+msgstr "Copia els trossos"
 
 #: meld/resources/ui/filediff-actions.ui:87
 msgid "Delete change"
@@ -1223,30 +1124,24 @@ msgid "Copy change below the right chunk"
 msgstr "Copia el canvi per sota del tros de la dreta"
 
 #: meld/resources/ui/filediff-menus.ui:28
-#, fuzzy
 msgid "_Undo"
-msgstr "Desfés"
+msgstr "_Desfés"
 
 #: meld/resources/ui/filediff-menus.ui:32
-#, fuzzy
 msgid "_Redo"
-msgstr "Refés"
+msgstr "_Refés"
 
 #: meld/resources/ui/filediff-menus.ui:39
-#, fuzzy
 msgid "Cu_t"
-msgstr "Retalla"
+msgstr "R_etalla"
 
 #: meld/resources/ui/filediff-menus.ui:43
-#, fuzzy
-#| msgid "Copy _up"
 msgid "_Copy"
-msgstr "Copia cap _amunt"
+msgstr "C_opia"
 
 #: meld/resources/ui/filediff-menus.ui:47
-#, fuzzy
 msgid "_Paste"
-msgstr "Enganxa"
+msgstr "E_nganxa"
 
 #: meld/resources/ui/filediff.ui:33 meld/resources/ui/filediff.ui:102
 #: meld/resources/ui/filediff.ui:171
@@ -1259,16 +1154,13 @@ msgstr ""
 
 #: meld/resources/ui/filediff.ui:47 meld/resources/ui/filediff.ui:116
 #: meld/resources/ui/filediff.ui:185
-#, fuzzy
 msgid "Open file in this pane"
-msgstr "Obre el fitxer en aquest panell"
+msgstr "Obre el fitxer en aquesta subfinestra"
 
 #: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:125
 #: meld/resources/ui/filediff.ui:194
-#, fuzzy
-#| msgid "Save all files in the current comparison"
 msgid "Save file in this pane"
-msgstr "Desa tots els fitxers de la comparació actual"
+msgstr "Desa el fitxer en aquesta subfinestra"
 
 #: meld/resources/ui/filediff.ui:73
 msgid "File 3"
@@ -1334,9 +1226,8 @@ msgid "Switch between Find and Find-and-Replace"
 msgstr "Canvia entre Cerca i Cerca i substitueix"
 
 #: meld/resources/ui/language-selector.ui:31
-#, fuzzy
 msgid "Search highlight mode…"
-msgstr "Cerca en mode ressaltat..."
+msgstr "Cerca en mode ressaltat…"
 
 #: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:349
 #: meld/newdifftab.py:49
@@ -1486,12 +1377,10 @@ msgid "Syntax highlighting color scheme:"
 msgstr "Esquema de color pel ressaltat de sintaxi:"
 
 #: meld/resources/ui/preferences.ui:469
-#, fuzzy
 msgid "Code Overview"
 msgstr "Resum del codi"
 
 #: meld/resources/ui/preferences.ui:506
-#, fuzzy
 msgid "Show overview map"
 msgstr "Mostra el mapa general"
 
@@ -1628,18 +1517,14 @@ msgid "Left is local, right is remote"
 msgstr "Esquerra és local, dreta és remot"
 
 #: meld/resources/ui/preferences.ui:1705
-#, fuzzy
-#| msgid "Delete change"
 msgid "Simple change map"
-msgstr "Elimina el canvi"
+msgstr "Mapa de canvi simple"
 
 #: meld/resources/ui/preferences.ui:1709
-#, fuzzy
 msgid "Compact source map"
-msgstr "Mapa de codi compacte"
+msgstr "Mapa d'origen compacte"
 
 #: meld/resources/ui/preferences.ui:1713
-#, fuzzy
 msgid "Full source map"
 msgstr "Mapa d'origen complet"
 
@@ -1675,46 +1560,35 @@ msgstr "Voleu enviar les publicacions locals a l'equip remot?"
 msgid ""
 "The commits to be pushed are determined by your version control system."
 msgstr ""
-"Les publicacions per enviar les determina el sistema de control de versions."
+"Les publicacions per a enviar les determina el sistema de control de versions."
 
 #: meld/resources/ui/push-dialog.ui:38
 msgid "_Push commits"
 msgstr "_Envia les publicacions"
 
 #: meld/resources/ui/recent-selector.ui:16
-#, fuzzy
-#| msgid "Start a new comparison"
 msgid "Search recent comparisons…"
-msgstr "Inicia una comparació nova"
+msgstr "Cerca les comparacions recents…"
 
 #: meld/resources/ui/revert-dialog.ui:9
-#, fuzzy
-#| msgid "Revert unsaved changes to documents?"
 msgid "Discard unsaved changes to documents?"
 msgstr "Voleu descartar els canvis no desats als documents?"
 
 #: meld/resources/ui/revert-dialog.ui:10
-#, fuzzy
-#| msgid ""
-#| "Changes made to the following documents will be permanently lost:\n"
 msgid "Changes made to the following documents will be permanently lost:"
-msgstr ""
-"Els canvis fets als documents següents es perdran de forma definitiva:\n"
+msgstr "Els canvis fets als documents següents es perdran permanentment:"
 
 #: meld/resources/ui/revert-dialog.ui:39
-#, fuzzy
 msgid "_Discard"
-msgstr "Descarta"
+msgstr "_Descarta"
 
 #: meld/resources/ui/save-confirm-dialog.ui:9
 msgid "Save changes to documents before closing?"
 msgstr "Voleu desar els canvis dels documents abans de tancar?"
 
 #: meld/resources/ui/save-confirm-dialog.ui:10
-#, fuzzy
-#| msgid "If you don't save, changes will be permanently lost."
 msgid "If you don’t save, changes will be permanently lost."
-msgstr "Si no els deseu, es perdran els canvis de forma permanent."
+msgstr "Si no ho deseu, els canvis es perdran definitivament."
 
 #: meld/resources/ui/save-confirm-dialog.ui:24
 msgid "Close _without Saving"
@@ -1742,10 +1616,8 @@ msgid "_Compare"
 msgstr "_Compara"
 
 #: meld/resources/ui/vcview-menus.ui:11
-#, fuzzy
-#| msgid "Co_mmit"
 msgid "Co_mmit…"
-msgstr "Confir_ma els canvis"
+msgstr "_Publica…"
 
 #: meld/resources/ui/vcview-menus.ui:15
 msgid "_Update"
@@ -1764,10 +1636,8 @@ msgid "Mar_k as Resolved"
 msgstr "Marca com a _resolt"
 
 #: meld/resources/ui/vcview.ui:73
-#, fuzzy
-#| msgid "Commit"
 msgid "Commit…"
-msgstr "Publica («commit»)"
+msgstr "Publica…"
 
 #: meld/resources/ui/vcview.ui:74
 msgid "Commit changes to version control"
@@ -1782,10 +1652,8 @@ msgid "Update working copy from version control"
 msgstr "Actualitza la còpia de treball des del control de versions"
 
 #: meld/resources/ui/vcview.ui:99
-#, fuzzy
-#| msgid "_Push"
 msgid "Push"
-msgstr "_Envia"
+msgstr "Empeny"
 
 #: meld/resources/ui/vcview.ui:100
 msgid "Push local changes to remote"
@@ -1816,10 +1684,8 @@ msgid "Mark as resolved in version control"
 msgstr "Marca com a resolt al control de versions"
 
 #: meld/resources/ui/vcview.ui:151
-#, fuzzy
-#| msgid "Re_vert"
 msgid "Revert"
-msgstr "_Desfés"
+msgstr "Reverteix"
 
 #: meld/resources/ui/vcview.ui:152
 msgid "Revert working copy to original state"
@@ -1838,7 +1704,6 @@ msgid "Status"
 msgstr "Estat"
 
 #: meld/resources/ui/vcview.ui:238
-#, fuzzy
 msgid "Extra"
 msgstr "Extra"
 
@@ -1855,17 +1720,14 @@ msgid "Copy _down"
 msgstr "Copia cap a_vall"
 
 #: meld/const.py:30
-#, fuzzy
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
 #: meld/const.py:31
-#, fuzzy
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
 #: meld/const.py:32
-#, fuzzy
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1885,33 +1747,29 @@ msgid "Permissions"
 msgstr "Permisos"
 
 #: meld/dirdiff.py:778 meld/dirdiff.py:802
-#, python-brace-format, fuzzy
+#, python-brace-format
 msgid "[{label}] Scanning {folder}"
-msgstr "Scanning{label}} S'està explorant {folder}"
+msgstr "[{label}] S'està escanejant {folder}"
 
 #: meld/dirdiff.py:942
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "[%s] Done"
 msgid "[{label}] Done"
-msgstr "[%s] Fet"
+msgstr "[{label}] Fet"
 
 #: meld/dirdiff.py:951
-#, fuzzy
 msgid "Folder {} is being compared to itself"
 msgstr "S'està comparant la carpeta {} amb ella mateixa"
 
 #: meld/dirdiff.py:957
-#, fuzzy
 msgid "Folders have no differences"
 msgstr "Les carpetes no tenen diferències"
 
 #: meld/dirdiff.py:959
-#, fuzzy
 msgid "Contents of scanned files in folders are identical."
 msgstr "El contingut dels fitxers escanejats a les carpetes és idèntic."
 
 #: meld/dirdiff.py:961
-#, fuzzy
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1920,21 +1778,16 @@ msgstr ""
 "s'han escanejat."
 
 #: meld/dirdiff.py:964
-#, fuzzy
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Els filtres de fitxers estan en ús, de manera que no s'han escanejat tots "
 "els fitxers."
 
 #: meld/dirdiff.py:966
-#, fuzzy
-#| msgid ""
-#| "Text filters are being used, and may be masking differences between files. "
-#| "Would you like to compare the unfiltered files?"
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
-"S'estan fent servir filtres de text i potser s'està emmascarant les "
-"diferències entre fitxers. Voleu comparar els fitxers sense filtrar?"
+"Els filtres de text estan en ús i poden estar emmascarant diferències de"
+" contingut."
 
 #: meld/dirdiff.py:982 meld/filediff.py:1874
 msgid "Hide"
@@ -1978,12 +1831,12 @@ msgstr ""
 "següents d'aquesta carpeta:"
 
 #: meld/dirdiff.py:1011
-#, python-brace-format, fuzzy
+#, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
-msgstr "“{firstfile}” ocult per “{secondfile}”"
+msgstr "«{first_file}» ocultat per «{second_file}»"
 
 #: meld/dirdiff.py:1070
-#, python-format, fuzzy
+#, python-format
 msgid "Replace folder “%s”?"
 msgstr "Voleu reemplaçar la carpeta «%s»?"
 
@@ -2001,7 +1854,7 @@ msgid "Error copying file"
 msgstr "S'ha produït un error en copiar el fitxer"
 
 #: meld/dirdiff.py:1086
-#, fuzzy, python-brace-format
+#, python-brace-format, fuzzy
 #| msgid ""
 #| "Couldn't copy %s\n"
 #| "to %s.\n"
@@ -2013,25 +1866,20 @@ msgid ""
 "\n"
 "{error}"
 msgstr ""
-"No s'ha pogut copiar «%s»\n"
-"a «%s».\n"
+"No s'ha pogut copiar {source}\n"
+"a {dest}.\n"
 "\n"
-"%s"
+"{error}"
 
 #: meld/dirdiff.py:1111 meld/vcview.py:759
-#, fuzzy
-#| msgid "Error deleting %s"
 msgid "Error deleting {}"
-msgstr "S'ha produït un error en suprimir %s"
+msgstr "Error en suprimir {}"
 
 #: meld/dirdiff.py:1604
-#, fuzzy
-#| msgid "folder"
 msgid "No folder"
-msgstr "carpeta"
+msgstr "Sense carpeta"
 
 #: meld/filediff.py:1144
-#, fuzzy
 msgid "Comparison results will be inaccurate"
 msgstr "Els resultats de comparació seran inexactes"
 
@@ -2044,8 +1892,8 @@ msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr ""
-"El filtre «%s» ha canviat el nombre de línies del fitxer. La comparació serà"
-" incorrecta. Vegeu el manual d'usuari per a més informació."
+"Un filtre ha canviat el nombre de línies del fitxer, que no és compatible. "
+"La comparació no serà precisa."
 
 #: meld/filediff.py:1218
 msgid "Mark conflict as resolved?"
@@ -2066,26 +1914,21 @@ msgid "Mark _Resolved"
 msgstr "Marca com a _resolt"
 
 #: meld/filediff.py:1556
-#, python-format, fuzzy
+#, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "S'ha produït un problema en obrir el fitxer «%s»."
 
 #: meld/filediff.py:1564
-#, fuzzy, python-format
+#, python-format
 #| msgid "%s appears to be a binary file."
 msgid "File %s appears to be a binary file."
-msgstr "%s sembla que és un fitxer binari."
+msgstr "El fitxer %s sembla ser un fitxer binari."
 
 #: meld/filediff.py:1566
-#, fuzzy
-#| msgid ""
-#| "Open selected file or directory in the default external application"
 msgid "Do you want to open the file using the default application?"
-msgstr ""
-"Obre el fitxer o la carpeta seleccionada en l'aplicació externa per defecte"
+msgstr "Voleu obrir el fitxer utilitzant l'aplicació predeterminada?"
 
 #: meld/filediff.py:1568
-#, fuzzy
 msgid "Open"
 msgstr "Obre"
 
@@ -2113,7 +1956,6 @@ msgid "_Reload"
 msgstr "Torna a _carregar-lo"
 
 #: meld/filediff.py:1830
-#, fuzzy
 msgid "File {} is being compared to itself"
 msgstr "El fitxer {} s'està comparant amb ell mateix"
 
@@ -2130,10 +1972,8 @@ msgstr ""
 "diferències entre fitxers. Voleu comparar els fitxers sense filtrar?"
 
 #: meld/filediff.py:1857
-#, fuzzy
-#| msgid "Files with invalid encodings found"
 msgid "Files differ in line endings only"
-msgstr "S'han trobat fitxers amb codificacions no vàlides"
+msgstr "Els fitxers només difereixen en els finals de línia"
 
 #: meld/filediff.py:1859
 #, python-format, fuzzy
@@ -2169,18 +2009,16 @@ msgid "_Keep highlighting"
 msgstr "_Mantén el ressaltat"
 
 #: meld/filediff.py:1925
-#, fuzzy
 msgid "Saving failed"
 msgstr "Ha fallat el desament"
 
 #: meld/filediff.py:1926
-#, fuzzy
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr ""
-"Si us plau, considereu copiar qualsevol canvi crític a un altre programa o "
-"fitxer per evitar la pèrdua de dades."
+"Considereu copiar qualsevol canvi crític a un altre programa o "
+"fitxer per a evitar la pèrdua de dades."
 
 #: meld/filediff.py:1935
 msgid "Save Left Pane As"
@@ -2208,10 +2046,8 @@ msgid "Save Anyway"
 msgstr "Desa de totes maneres"
 
 #: meld/filediff.py:1956
-#, fuzzy
-#| msgid "Don't Save"
 msgid "Don’t Save"
-msgstr "No el desis"
+msgstr "No desis"
 
 #: meld/filediff.py:1998
 #, fuzzy
@@ -2222,28 +2058,28 @@ msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr ""
-"«%s» conté caràcters no codificables amb «%s»\n"
-"Voleu desar-lo com a UTF-8?"
+"El fitxer “{}” conté caràcters que no es poden codificar amb la seva "
+"codificació actual “{}”."
 
 #: meld/filediff.py:2002 meld/patchdialog.py:138
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not read file"
 msgid ""
 "Couldn’t save file due to:\n"
 "%s"
-msgstr "No s'ha pogut llegir el fitxer"
+msgstr ""
+"No s'ha pogut desar el fitxer a causa de:\n"
+"%s"
 
 #: meld/filediff.py:2006 meld/patchdialog.py:137
-#, fuzzy, python-format
+#, python-format
 #| msgid "Could not read file"
 msgid "Could not save file %s."
-msgstr "No s'ha pogut llegir el fitxer"
+msgstr "No s'ha pogut desar el fitxer %s."
 
 #: meld/filediff.py:2067
-#, fuzzy
-#| msgid "Open recent files"
 msgid "Open File"
-msgstr "Obre els fitxers recents"
+msgstr "Obre un fitxer"
 
 #: meld/filediff.py:2421
 msgid "Live comparison updating disabled"
@@ -2266,28 +2102,23 @@ msgid "Deleting remote folders is not supported"
 msgstr "No s'admet eliminar carpetes remotes"
 
 #: meld/iohelpers.py:42
-#, fuzzy
 msgid "Not a file or directory"
 msgstr "No és un fitxer o directori"
 
 #: meld/iohelpers.py:46
-#, fuzzy
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr "“{}” no es pot posar a la paperera. Voleu suprimir-lo immediatament?"
 
 #: meld/iohelpers.py:51
-#, fuzzy
 msgid "This remote location does not support sending items to the trash."
 msgstr "Aquesta ubicació remota no permet enviar elements a la paperera."
 
 #: meld/iohelpers.py:56
-#, fuzzy
-#| msgid "Delete change"
 msgid "_Delete Permanently"
-msgstr "Elimina el canvi"
+msgstr "_Suprimeix permanentment"
 
 #: meld/iohelpers.py:106
-#, python-format, fuzzy
+#, python-format
 msgid "Replace file “%s”?"
 msgstr "Voleu reemplaçar el fitxer «%s»?"
 
@@ -2382,11 +2213,9 @@ msgstr ""
 #, fuzzy
 #| msgid "can't auto-merge less than 3 files"
 msgid "can’t auto-merge less than 3 files"
-msgstr "no es poden fusionar automàticament menys de tres fitxers"
+msgstr "no es pot fusionar automàticament menys de 3 fitxers"
 
 #: meld/meldapp.py:297
-#, fuzzy
-#| msgid "can't auto-merge directories"
 msgid "can’t auto-merge directories"
 msgstr "no es poden fusionar automàticament els directoris"
 
@@ -2414,10 +2243,8 @@ msgid "untitled"
 msgstr "sense títol"
 
 #: meld/meldwindow.py:155
-#, fuzzy
-#| msgid "Filename filters"
 msgid "Filename"
-msgstr "Filtres de nom de fitxer"
+msgstr "Nom del fitxer"
 
 #: meld/meldwindow.py:384
 #, python-format, fuzzy
@@ -2466,23 +2293,21 @@ msgstr ""
 "una instal·lació incorrecta"
 
 #: meld/ui/bufferselectors.py:110
-#, python-brace-format, fuzzy
+#, python-brace-format
 msgid "{name} ({charset})"
 msgstr "{name} ({charset})"
 
 #: meld/ui/bufferselectors.py:140 meld/ui/bufferselectors.py:148
-#, fuzzy
 msgid "Plain Text"
-msgstr "Text net"
+msgstr "Text pla"
 
 #. Abbreviation for line, column so that it will fit in the status bar
 #: meld/ui/statusbar.py:125
-#, python-brace-format, fuzzy
+#, python-brace-format
 msgid "Ln {line}, Col {column}"
 msgstr "Ln {line}, Col {column}"
 
 #: meld/ui/statusbar.py:185
-#, fuzzy
 msgid "Line you want to move the cursor to"
 msgstr "Línia a la qual voleu moure el cursor"
 
@@ -2494,9 +2319,9 @@ msgstr "No es publicarà cap fitxer"
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
 #: meld/vc/git.py:92
-#, python-brace-format, fuzzy
+#, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
-msgstr "{unpushedcomits} a {unpushedbranches}"
+msgstr "{unpushed_commits} a {unpushed_branches}"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
@@ -2515,10 +2340,10 @@ msgstr[0] "%d branca"
 msgstr[1] "%d branques"
 
 #: meld/vc/git.py:344
-#, fuzzy, python-brace-format
+#, python-brace-format, fuzzy
 #| msgid "Mode changed from %s to %s"
 msgid "Mode changed from {old_mode} to {new_mode}"
-msgstr "S'ha canviat el mode de %s a %s"
+msgstr "S'ha canviat el mode de {oldmode} a {newmode}"
 
 #: meld/vc/git.py:352
 #, fuzzy
@@ -2537,7 +2362,7 @@ msgid "None"
 msgstr "Cap"
 
 #: meld/vc/svn.py:203
-#, python-format, fuzzy
+#, python-format
 msgid "Rev %s"
 msgstr "Rev %s"
 
@@ -2588,26 +2413,25 @@ msgstr "No hi és"
 #. Translators: This error message is shown when no
 #. repository of this type is found.
 #: meld/vcview.py:333
-#, fuzzy, python-format
-#| msgid "%s not installed"
+#, python-format
 msgid "%(name)s (not found)"
-msgstr "%s no està instal·lat"
+msgstr "%(name)s (no s'ha trobat)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
 #: meld/vcview.py:337
-#, fuzzy, python-format
+#, python-format
 #| msgid "%s not installed"
 msgid "%(name)s (%(cmd)s not installed)"
-msgstr "%s no està instal·lat"
+msgstr "%(name)s (%(cmd)s no instal·lat)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
 #: meld/vcview.py:341
-#, fuzzy, python-format
+#, python-format
 #| msgid "Invalid repository"
 msgid "%(name)s (invalid repository)"
-msgstr "El dipòsit no és vàlid"
+msgstr "%(name)s (dipòsit no vàlid)"
 
 #: meld/vcview.py:355
 msgid "No valid version control system found in this folder"
@@ -2619,18 +2443,16 @@ msgstr "Trieu quin control de versions voleu utilitzar"
 
 #. TRANSLATORS: This is the location of the directory being viewed
 #: meld/vcview.py:411
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "Location"
 msgid "Location: {path}"
-msgstr "Ubicació"
+msgstr "Ubicació: {path}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
 #: meld/vcview.py:418
-#, fuzzy
-#| msgid "Scanning %s"
 msgid "Scanning repository"
-msgstr "S'està escanejant %s"
+msgstr "S'està escanejant el dipòsit"
 
 #: meld/vcview.py:447
 #, python-format
@@ -2690,6 +2512,5 @@ msgstr ""
 "seleccionades."
 
 #: meld/vcview.py:845
-#, fuzzy
 msgid "Clear"
 msgstr "Neteja"
