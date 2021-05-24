@@ -37,7 +37,6 @@ VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
 UPLOAD_SERVER = 'master.gnome.org'
 GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
 GITLAB_PROJECT_ID = 'GNOME/meld'
-APPVEYOR_BUILD_ENDPOINT = "https://ci.appveyor.com/api/builds"
 
 NEWS_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
@@ -312,26 +311,6 @@ def check_release_branch():
     return branch
 
 
-def get_tag_sha(tag):
-    # We want the object ID for the commit, not the tag
-    rev = "{}^0".format(tag)
-    output = subprocess.check_output(
-        ["git", "rev-parse", rev], encoding="utf-8")
-    return output.strip()
-
-
-def get_branch_for_tag(tag):
-    output = subprocess.check_output([
-        "git", "branch", "--contains", tag,
-        "--sort=-committerdate", "--format=%(refname:short)",
-    ], encoding="utf-8")
-    branches = output.splitlines()
-    if not branches:
-        raise click.ClickException(
-            "No branches found containing tag {}".format(tag))
-    return branches[0].strip()
-
-
 def pull():
     check_release_branch()
     cmd = ['git', 'pull', '--rebase']
@@ -579,61 +558,6 @@ def version_bump():
     conf_data[version_line] = '__version__ = "%s"' % new_version
     with open(meld.conf.__file__, 'w') as f:
         f.write('\n'.join(conf_data) + '\n')
-
-
-def get_token(appveyor_account):
-    # FIXME: copy-paste from gitlab_release_tag()
-    auth_token = keyring.get_password('appveyor-token', appveyor_account)
-    if not auth_token:
-        raise click.ClickException(
-            "No password in keychain for {id}\n\n"
-            "Set password using the Python `keyring` package. "
-            "From the command line:\n"
-            "  $ keyring set appveyor-token {id}\n"
-            "and enter your secret token from the Gitlab UI.\n".format(
-                id=appveyor_account)
-        )
-    return auth_token
-
-
-@cli.command(
-    'appveyor-build',
-    help=(
-        'Start a build on an Appveyor account. This requires you to have '
-        'an account with a "meld" project set up.'
-    ),
-)
-@click.argument('account', type=str)
-@click.argument('tag', type=str)
-def appveyor_build(account, tag):
-
-    token = get_token(account)
-    branch = get_branch_for_tag(tag)
-    sha = get_tag_sha(tag)
-
-    if not click.confirm('Start build of {} ({}:{}) on account {}'.format(
-            tag, branch, sha, account)):
-        raise click.Abort()
-
-    response = requests.post(
-        APPVEYOR_BUILD_ENDPOINT,
-        headers={
-            'Authorization': 'Bearer {}'.format(token),
-        },
-        json={
-            'accountName': account,
-            'projectSlug': 'meld',
-            'branch': branch,
-            'commitId': sha,
-        },
-    )
-    try:
-        response.raise_for_status()
-    except Exception as e:
-        click.secho(
-            'Error queuing build: {}\n{}'.format(e, response.text), fg='red')
-    else:
-        click.echo('Build started')
 
 
 @cli.command('release')
