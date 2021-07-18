@@ -45,7 +45,6 @@ def layout_text_and_icon(stockid, primary_text, secondary_text=None):
         secondary_label = Gtk.Label(
             "<small>{}</small>".format(secondary_text),
             wrap=True,
-            wrap_mode=Pango.WrapMode.WORD_CHAR,
             use_markup=True,
             xalign=0,
             can_focus=True,
