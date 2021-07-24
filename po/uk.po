@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-03-05 22:54+0000\n"
-"PO-Revision-Date: 2021-03-06 10:03+0200\n"
+"POT-Creation-Date: 2021-07-24 06:24+0000\n"
+"PO-Revision-Date: 2021-07-24 09:38+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.11.70\n"
+"X-Generator: Lokalize 20.12.0\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9
@@ -882,12 +882,15 @@ msgid "Flatten folders"
 msgstr "Сплощувати теки"
 
 #: meld/resources/ui/about-dialog.ui:8
+#| msgid ""
+#| "Copyright © 2002-2009 Stephen Kennedy\n"
+#| "Copyright © 2009-2019 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 msgstr ""
 "© Stephen Kennedy, 2002–2009\n"
-"© 2009-2019 Kai Willadsen, 2009-2019"
+"© 2009-2019 Kai Willadsen, 2009-2021"
 
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
@@ -1181,43 +1184,43 @@ msgstr "Тека"
 msgid "Version control"
 msgstr "Керування версіями"
 
-#: meld/resources/ui/new-diff-tab.ui:235 meld/resources/ui/new-diff-tab.ui:352
+#: meld/resources/ui/new-diff-tab.ui:236 meld/resources/ui/new-diff-tab.ui:357
 msgid "_3-way comparison"
 msgstr "Порівняння _3 файлів"
 
-#: meld/resources/ui/new-diff-tab.ui:254
+#: meld/resources/ui/new-diff-tab.ui:256
 msgid "Select First File"
 msgstr "Виберіть перший файл"
 
-#: meld/resources/ui/new-diff-tab.ui:267
+#: meld/resources/ui/new-diff-tab.ui:270
 msgid "Select Second File"
 msgstr "Виберіть другий файл"
 
-#: meld/resources/ui/new-diff-tab.ui:281
+#: meld/resources/ui/new-diff-tab.ui:285
 msgid "Select Third File"
 msgstr "Виберіть третій файл"
 
-#: meld/resources/ui/new-diff-tab.ui:316
+#: meld/resources/ui/new-diff-tab.ui:321
 msgid "Select First Folder"
 msgstr "Виберіть першу теку"
 
-#: meld/resources/ui/new-diff-tab.ui:329
+#: meld/resources/ui/new-diff-tab.ui:334
 msgid "Select Second Folder"
 msgstr "Виберіть другу теку"
 
-#: meld/resources/ui/new-diff-tab.ui:343
+#: meld/resources/ui/new-diff-tab.ui:348
 msgid "Select Third Folder"
 msgstr "Виберіть третю теку"
 
-#: meld/resources/ui/new-diff-tab.ui:393
+#: meld/resources/ui/new-diff-tab.ui:399
 msgid "Select A Version-Controlled Folder"
 msgstr "Виберіть теку, яка перебуває у системі керування версіями"
 
-#: meld/resources/ui/new-diff-tab.ui:442
+#: meld/resources/ui/new-diff-tab.ui:448
 msgid "_Blank comparison"
 msgstr "Порівняння п_робілів"
 
-#: meld/resources/ui/new-diff-tab.ui:459
+#: meld/resources/ui/new-diff-tab.ui:466
 msgid "C_ompare"
 msgstr "Порів_няти"
 
@@ -1678,17 +1681,14 @@ msgstr "Права доступу"
 #: meld/dirdiff.py:778 meld/dirdiff.py:802
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
-msgstr ""
-"[{label}] Скануємо {folder}"
+msgstr "[{label}] Скануємо {folder}"
 
 #: meld/dirdiff.py:942
 #, python-brace-format
-#| msgid "[%s] Done"
 msgid "[{label}] Done"
 msgstr "[{label}] Виконано"
 
 #: meld/dirdiff.py:951
-#| msgid "Folder {duplicate_directory} is being compared to itself"
 msgid "Folder {} is being compared to itself"
 msgstr "Виконуємо порівняння теки {} із самою собою"
 
@@ -1756,7 +1756,6 @@ msgstr ""
 
 #: meld/dirdiff.py:1011
 #, python-brace-format
-#| msgid "“%s” hidden by “%s”"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "«{first_file}» приховано «{second_file}»"
 
@@ -1780,11 +1779,6 @@ msgstr "Помилка під час копіювання файла"
 
 #: meld/dirdiff.py:1086
 #, python-brace-format
-#| msgid ""
-#| "Couldn’t copy %s\n"
-#| "to %s.\n"
-#| "\n"
-#| "%s"
 msgid ""
 "Couldn’t copy {source}\n"
 "to {dest}.\n"
@@ -1876,7 +1870,6 @@ msgid "_Reload"
 msgstr "Перезаванта_жити"
 
 #: meld/filediff.py:1830
-#| msgid "File {duplicate_files[0]} is being compared to itself"
 msgid "File {} is being compared to itself"
 msgstr "Виконуємо порівняння файла {} із самим собою"
 
@@ -1998,11 +1991,11 @@ msgstr "Не вдалося зберегти файл %s."
 msgid "Open File"
 msgstr "Відкрити файл"
 
-#: meld/filediff.py:2420
+#: meld/filediff.py:2421
 msgid "Live comparison updating disabled"
 msgstr "Інтерактивне оновлення порівняння вимкнено"
 
-#: meld/filediff.py:2421
+#: meld/filediff.py:2422
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2046,98 +2039,98 @@ msgstr ""
 "У «%s» вже зберігається файл із цією назвою.\n"
 "Якщо ви заміните наявний файл, його вміст буде втрачено."
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
 msgstr "--diff передано помилкову кількість аргументів"
 
-#: meld/meldapp.py:188
+#: meld/meldapp.py:193
 msgid "Start with an empty window"
 msgstr "Запустити із порожнім вікном"
 
-#: meld/meldapp.py:189 meld/meldapp.py:191
+#: meld/meldapp.py:194 meld/meldapp.py:196
 msgid "file"
 msgstr "файл"
 
-#: meld/meldapp.py:189 meld/meldapp.py:193
+#: meld/meldapp.py:194 meld/meldapp.py:198
 msgid "folder"
 msgstr "тека"
 
-#: meld/meldapp.py:190
+#: meld/meldapp.py:195
 msgid "Start a version control comparison"
 msgstr "Розпочати порівняння за системою керування версіями"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Розпочати порівняння двох або трьох файлів"
 
-#: meld/meldapp.py:194
+#: meld/meldapp.py:199
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Розпочати порівняння двох або трьох тек"
 
-#: meld/meldapp.py:237
+#: meld/meldapp.py:242
 #, python-format
 msgid "Error: %s\n"
 msgstr "Помилка: %s\n"
 
-#: meld/meldapp.py:244
+#: meld/meldapp.py:249
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld — інструмент для порівняння файлів і каталогів."
 
-#: meld/meldapp.py:248
+#: meld/meldapp.py:253
 msgid "Set label to use instead of file name"
 msgstr "Встановіть мітку, щоб використовувати замість назви файла"
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:256
 msgid "Open a new tab in an already running instance"
 msgstr "Відкрити вкладку у вже запущеному екземплярі"
 
-#: meld/meldapp.py:254
+#: meld/meldapp.py:259
 msgid "Automatically compare all differing files on startup"
 msgstr "Автоматично порівнювати усі файли, які відрізняються, під час запуску"
 
-#: meld/meldapp.py:257
+#: meld/meldapp.py:262
 msgid "Ignored for compatibility"
 msgstr "Ігнорується для сумісності"
 
-#: meld/meldapp.py:261
+#: meld/meldapp.py:266
 msgid "Set the target file for saving a merge result"
 msgstr "Встановити файл цілі для збереження результатів об'єднання"
 
-#: meld/meldapp.py:264
+#: meld/meldapp.py:269
 msgid "Automatically merge files"
 msgstr "Автоматично об'єднати файли"
 
-#: meld/meldapp.py:268
+#: meld/meldapp.py:273
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Завантажити збережене порівняння з файла порівняння Meld"
 
-#: meld/meldapp.py:272
+#: meld/meldapp.py:277
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Створити вкладку різниці для вказаних файлів або тек"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:297
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "забагато аргументів (мало бути від 0 до 3, маємо %d)"
 
-#: meld/meldapp.py:295
+#: meld/meldapp.py:300
 msgid "can’t auto-merge less than 3 files"
 msgstr "неможливо автоматично об'єднати менше за 3 файли"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:302
 msgid "can’t auto-merge directories"
 msgstr "неможливо автоматично об'єднати каталоги"
 
-#: meld/meldapp.py:312
+#: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
 msgstr "Помилка під час читання збереженого файла порівняння"
 
-#: meld/meldapp.py:329
+#: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "некоректний шлях або адреса «%s»"
 
-#: meld/meldapp.py:336
+#: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
 msgstr "підтримки віддалених тек «{}» не передбачено"
 
@@ -2192,7 +2185,6 @@ msgid "Version control:"
 msgstr "Керування версіями:"
 
 #: meld/style.py:91
-#| msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgstr ""
 "Не вдалося знайти параметри схеми кольорів для {} — якісь проблеми зі "
@@ -2211,8 +2203,7 @@ msgstr "Звичайний текст"
 #: meld/ui/statusbar.py:125
 #, python-brace-format
 msgid "Ln {line}, Col {column}"
-msgstr ""
-"Р {line}, Поз {column}"
+msgstr "Р {line}, Поз {column}"
 
 #: meld/ui/statusbar.py:185
 msgid "Line you want to move the cursor to"
@@ -2228,8 +2219,7 @@ msgstr "Жодного файла не буде внесено"
 #: meld/vc/git.py:92
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
-msgstr ""
-"{unpushed_commits} у {unpushed_branches}"
+msgstr "{unpushed_commits} у {unpushed_branches}"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
@@ -2253,7 +2243,6 @@ msgstr[3] "%d гілка"
 
 #: meld/vc/git.py:344
 #, python-brace-format
-#| msgid "Mode changed from %s to %s"
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Режим змінено з {old_mode} на {new_mode}"
 
@@ -2353,7 +2342,6 @@ msgstr "Виберіть систему керування версіями, я�
 #. TRANSLATORS: This is the location of the directory being viewed
 #: meld/vcview.py:411
 #, python-brace-format
-#| msgid "Location"
 msgid "Location: {path}"
 msgstr "Розташування: {path}"
 
