@@ -52,6 +52,13 @@
 
   <schema id="org.gnome.meld" path="/org/gnome/meld/">
 
+      <!-- GtkSettings overrides -->
+      <key name="prefer-dark-theme" type="b">
+          <default>false</default>
+          <summary>Prefer application-wide dark theme</summary>
+          <description>If true, the GTK dark theme variant will be used, if available. Note that this is separate from the syntax highlighting scheme.</description>
+      </key>
+
       <!-- File loading settings -->
       <key name="detect-encodings" type="as">
           <default>[]</default>
