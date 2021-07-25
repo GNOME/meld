@@ -3,7 +3,7 @@
 # Christian Rose <menthos@menthos.com>, 2005.
 # Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009, 2011.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2018, 2019, 2020.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2018, 2019, 2020, 2021.
 # Josef Andersson <l10nl18nsweja@gmail.com>, 2014, 2015, 2016, 2017.
 # Luna Jernberg <droidbittin@gmail.com>, 2021.
 #
@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-03-05 22:54+0000\n"
-"PO-Revision-Date: 2021-03-07 21:37+0100\n"
+"POT-Creation-Date: 2021-07-25 10:37+0000\n"
+"PO-Revision-Date: 2021-07-25 22:05+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -87,10 +87,22 @@ msgid "Default window fullscreen state"
 msgstr "Helskärmstillstånd för standardfönster"
 
 #: data/org.gnome.meld.gschema.xml:58
+msgid "Prefer application-wide dark theme"
+msgstr "Föredra mörkt tema i programmet"
+
+#: data/org.gnome.meld.gschema.xml:59
+msgid ""
+"If true, the GTK dark theme variant will be used, if available. Note that "
+"this is separate from the syntax highlighting scheme."
+msgstr ""
+"Om true (sant) kommer den mörka GTK-temavarianten användas om tillgänglig. "
+"Observera att detta är åtskilt från schemat för syntaxmarkering."
+
+#: data/org.gnome.meld.gschema.xml:65
 msgid "Additional automatically detected text encodings"
 msgstr "Ytterligare automatiskt upptäckta textkodningar"
 
-#: data/org.gnome.meld.gschema.xml:59
+#: data/org.gnome.meld.gschema.xml:66
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -102,36 +114,36 @@ msgstr ""
 "kommer UTF-8 och standardkodningen för aktuell lokal alltid att användas. "
 "Andra kodningar kan också provas beroende på användarens lokal."
 
-#: data/org.gnome.meld.gschema.xml:66
+#: data/org.gnome.meld.gschema.xml:73
 msgid "Width of an indentation step"
 msgstr "Bredden på ett indenteringssteg"
 
-#: data/org.gnome.meld.gschema.xml:67
+#: data/org.gnome.meld.gschema.xml:74
 msgid "The number of spaces to use for a single indent step"
 msgstr "Antalet blanksteg att använda för ett ensamt indenteringssteg"
 
-#: data/org.gnome.meld.gschema.xml:71
+#: data/org.gnome.meld.gschema.xml:78
 msgid "Whether to indent using spaces or tabs"
 msgstr "Huruvida indentering sker med blanksteg eller tabb"
 
-#: data/org.gnome.meld.gschema.xml:72
+#: data/org.gnome.meld.gschema.xml:79
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr ""
 "Om true kommer nya indenteringar att använda blanksteg istället för tabbar."
 
-#: data/org.gnome.meld.gschema.xml:76 meld/resources/ui/statusbar-menu.ui:5
+#: data/org.gnome.meld.gschema.xml:83 meld/resources/ui/statusbar-menu.ui:5
 msgid "Show line numbers"
 msgstr "Visa radnummer"
 
-#: data/org.gnome.meld.gschema.xml:77
+#: data/org.gnome.meld.gschema.xml:84
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr "Om true visas radnummer i marginalen på filjämförelserna."
 
-#: data/org.gnome.meld.gschema.xml:81
+#: data/org.gnome.meld.gschema.xml:88
 msgid "Highlight syntax"
 msgstr "Markera syntax"
 
-#: data/org.gnome.meld.gschema.xml:82
+#: data/org.gnome.meld.gschema.xml:89
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
@@ -139,20 +151,20 @@ msgstr ""
 "Huruvida syntax ska markeras i jämförelser. På grund av Melds egna "
 "färgmarkeringar är detta som standard av."
 
-#: data/org.gnome.meld.gschema.xml:86
+#: data/org.gnome.meld.gschema.xml:93
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Färgschema att använda för syntaxmarkering"
 
-#: data/org.gnome.meld.gschema.xml:87
+#: data/org.gnome.meld.gschema.xml:94
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr ""
 "Används av GtkSourceView för att bestämma färger för färgmarkering av syntax"
 
-#: data/org.gnome.meld.gschema.xml:91
+#: data/org.gnome.meld.gschema.xml:98
 msgid "Draw whitespace"
 msgstr "Rita ut tomrum"
 
-#: data/org.gnome.meld.gschema.xml:92
+#: data/org.gnome.meld.gschema.xml:99
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
@@ -160,11 +172,11 @@ msgstr ""
 "Om true (sant), kommer tomrumstecken att ritas ut i jämförelser även om de "
 "inte är i ett ändrat område."
 
-#: data/org.gnome.meld.gschema.xml:101
+#: data/org.gnome.meld.gschema.xml:108
 msgid "Wrap mode"
 msgstr "Radbrytningsläge"
 
-#: data/org.gnome.meld.gschema.xml:102
+#: data/org.gnome.meld.gschema.xml:109
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -174,32 +186,32 @@ msgstr ""
 "antingen inte alls (\"none\"), vid vilket tecken som helst (\"char\") eller "
 "bara vid slutet av ord (\"word\")."
 
-#: data/org.gnome.meld.gschema.xml:109 meld/resources/ui/statusbar-menu.ui:13
+#: data/org.gnome.meld.gschema.xml:116 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
 msgstr "Markera aktuell rad"
 
-#: data/org.gnome.meld.gschema.xml:110
+#: data/org.gnome.meld.gschema.xml:117
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
 msgstr "Om true kommer raden med markören att bli markerad i filjämförelser."
 
-#: data/org.gnome.meld.gschema.xml:114
+#: data/org.gnome.meld.gschema.xml:121
 msgid "Use the system default monospace font"
 msgstr "Använd systemets standard typsnitt med fast breddsteg"
 
-#: data/org.gnome.meld.gschema.xml:115
+#: data/org.gnome.meld.gschema.xml:122
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
 "Om false kommer det anpassade typsnittet att användas istället för systemets "
 "monospace-typsnitt."
 
-#: data/org.gnome.meld.gschema.xml:119
+#: data/org.gnome.meld.gschema.xml:126
 msgid "Custom font"
 msgstr "Anpassat typsnitt"
 
-#: data/org.gnome.meld.gschema.xml:120
+#: data/org.gnome.meld.gschema.xml:127
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
@@ -207,40 +219,40 @@ msgstr ""
 "Det anpassade typsnittet att använda, lagrat som en sträng och tolkat som en "
 "som en Pango typsnittsbeskrivning."
 
-#: data/org.gnome.meld.gschema.xml:126
+#: data/org.gnome.meld.gschema.xml:133
 msgid "Show overview source map"
 msgstr "Visa översiktskällkodskarta"
 
-#: data/org.gnome.meld.gschema.xml:127
+#: data/org.gnome.meld.gschema.xml:134
 msgid ""
 "If true, file comparisons will have paired source maps for compared files."
 msgstr ""
 "Om true (sant), kommer filjämförelser ha ihopparade källkodskartor för "
 "jämförda filer."
 
-#: data/org.gnome.meld.gschema.xml:132
+#: data/org.gnome.meld.gschema.xml:139
 msgid "Style of overview map"
 msgstr "Stil för översiktskarta"
 
-#: data/org.gnome.meld.gschema.xml:133
+#: data/org.gnome.meld.gschema.xml:140
 msgid "Style options for how the overview map is displayed."
 msgstr "Stilalternativ för hur översiktskartan visas."
 
-#: data/org.gnome.meld.gschema.xml:139
+#: data/org.gnome.meld.gschema.xml:146
 msgid "Ignore blank lines when comparing files"
 msgstr "Ignorera tomma rader vid filjämförelser"
 
-#: data/org.gnome.meld.gschema.xml:140
+#: data/org.gnome.meld.gschema.xml:147
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Om true kommer tomma rader att tas bort när ändringar markeras mellan filer."
 
-#: data/org.gnome.meld.gschema.xml:147
+#: data/org.gnome.meld.gschema.xml:154
 msgid "Use the system default editor"
 msgstr "Använd systemets standardredigerare"
 
-#: data/org.gnome.meld.gschema.xml:148
+#: data/org.gnome.meld.gschema.xml:155
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -248,11 +260,11 @@ msgstr ""
 "Om false kommer den anpassade redigeraren att användas istället för "
 "systemredigeraren när filer öppnas externt."
 
-#: data/org.gnome.meld.gschema.xml:152
+#: data/org.gnome.meld.gschema.xml:159
 msgid "The custom editor launch command"
 msgstr "Kommandot för att starta anpassad redigerare"
 
-#: data/org.gnome.meld.gschema.xml:153
+#: data/org.gnome.meld.gschema.xml:160
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -260,21 +272,21 @@ msgstr ""
 "Kommandot för att starta en anpassad redigerare. Begränsat mallstöd här; för "
 "tillfället är ”{file}” och ”{line}” igenkända informationsbärare."
 
-#: data/org.gnome.meld.gschema.xml:159
+#: data/org.gnome.meld.gschema.xml:166
 msgid "Columns to display"
 msgstr "Kolumner att visa"
 
-#: data/org.gnome.meld.gschema.xml:160
+#: data/org.gnome.meld.gschema.xml:167
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr "Lista av kolumnnamn vid mappjämförelse och huruvida de ska visas."
 
-#: data/org.gnome.meld.gschema.xml:164 meld/resources/ui/preferences.ui:935
+#: data/org.gnome.meld.gschema.xml:171 meld/resources/ui/preferences.ui:951
 msgid "Ignore symbolic links"
 msgstr "Ignorera symboliska länkar"
 
-#: data/org.gnome.meld.gschema.xml:165
+#: data/org.gnome.meld.gschema.xml:172
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -282,11 +294,11 @@ msgstr ""
 "Om true följer inte mappjämförelser symboliska länkar när mappträdet "
 "genomsöks."
 
-#: data/org.gnome.meld.gschema.xml:169
+#: data/org.gnome.meld.gschema.xml:176
 msgid "Use shallow comparison"
 msgstr "Använd ytlig jämförelse"
 
-#: data/org.gnome.meld.gschema.xml:170
+#: data/org.gnome.meld.gschema.xml:177
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -295,11 +307,11 @@ msgstr ""
 "Om true sker mappjämförelser endast baserat på storlek och mtime och bedömer "
 "filerna identiska om deras storlek och mtime matchar, annars inte."
 
-#: data/org.gnome.meld.gschema.xml:174
+#: data/org.gnome.meld.gschema.xml:181
 msgid "File timestamp resolution"
 msgstr "Tidsstämpelupplösning på filen"
 
-#: data/org.gnome.meld.gschema.xml:175
+#: data/org.gnome.meld.gschema.xml:182
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -311,11 +323,11 @@ msgstr ""
 "användbart när filer jämförs på olika filsystem med olika "
 "tidsstämpelupplösningar."
 
-#: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
+#: data/org.gnome.meld.gschema.xml:186 meld/resources/ui/preferences.ui:852
 msgid "Apply text filters during folder comparisons"
 msgstr "Verkställ textfilter vid mappjämförelser"
 
-#: data/org.gnome.meld.gschema.xml:180
+#: data/org.gnome.meld.gschema.xml:187
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -325,21 +337,21 @@ msgstr ""
 "aktiva textfilter och alternativet att trimma tomma rader samt ignorera "
 "nyradsskillnader."
 
-#: data/org.gnome.meld.gschema.xml:184
+#: data/org.gnome.meld.gschema.xml:191
 msgid "File status filters"
 msgstr "Filstatusfilter"
 
-#: data/org.gnome.meld.gschema.xml:185
+#: data/org.gnome.meld.gschema.xml:192
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Lista över statusar använda till att filtrera synliga filer vid "
 "mappjämförelse."
 
-#: data/org.gnome.meld.gschema.xml:191
+#: data/org.gnome.meld.gschema.xml:198
 msgid "Show the version control console output"
 msgstr "Visa versionshanterarens konsolutmatning"
 
-#: data/org.gnome.meld.gschema.xml:192
+#: data/org.gnome.meld.gschema.xml:199
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -347,11 +359,11 @@ msgstr ""
 "Om true kommer en konsolutmatning att visas i versionshanteringsvyer, "
 "visandes de kommandon som körs vid versionshanteringsåtgärder."
 
-#: data/org.gnome.meld.gschema.xml:196
+#: data/org.gnome.meld.gschema.xml:203
 msgid "Version control pane position"
 msgstr "Position för versionshanteringspanelen"
 
-#: data/org.gnome.meld.gschema.xml:197
+#: data/org.gnome.meld.gschema.xml:204
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -359,11 +371,11 @@ msgstr ""
 "Detta är höjden på huvudträdet för versionshanteringen när konsolpanelen "
 "visas."
 
-#: data/org.gnome.meld.gschema.xml:201
+#: data/org.gnome.meld.gschema.xml:208
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Visa versionsjämförelser som vänster-lokal/höger-fjärr"
 
-#: data/org.gnome.meld.gschema.xml:202
+#: data/org.gnome.meld.gschema.xml:209
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -374,11 +386,11 @@ msgstr ""
 "presenteras i paneler. Annars används ett vänster-är-deras-, höger-är-mitt-"
 "schema."
 
-#: data/org.gnome.meld.gschema.xml:206
+#: data/org.gnome.meld.gschema.xml:213
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Sortering för filer i trevägsjämförelser med versionshantering"
 
-#: data/org.gnome.meld.gschema.xml:207
+#: data/org.gnome.meld.gschema.xml:214
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -389,11 +401,11 @@ msgstr ""
 "versionshanteringsvyn, och används endast för sammanfogning/konfliktlösning "
 "i Meld."
 
-#: data/org.gnome.meld.gschema.xml:211
+#: data/org.gnome.meld.gschema.xml:218
 msgid "Show margin in commit message editor"
 msgstr "Visa marginal i redigeraren för incheckningsmeddelanden"
 
-#: data/org.gnome.meld.gschema.xml:212
+#: data/org.gnome.meld.gschema.xml:219
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -401,11 +413,11 @@ msgstr ""
 "Om true så visas en guide för marginalens kolumn i "
 "versionshanteringsredigeraren för incheckningsmeddelanden."
 
-#: data/org.gnome.meld.gschema.xml:216
+#: data/org.gnome.meld.gschema.xml:223
 msgid "Margin column in commit message editor"
 msgstr "Marginalkolumn i redigeraren för incheckningsmeddelanden"
 
-#: data/org.gnome.meld.gschema.xml:217
+#: data/org.gnome.meld.gschema.xml:224
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -413,11 +425,11 @@ msgstr ""
 "Kolumnen i vilken marginalen ska visas i versionshanteringsredigeraren för "
 "incheckningsmeddelanden."
 
-#: data/org.gnome.meld.gschema.xml:221
+#: data/org.gnome.meld.gschema.xml:228
 msgid "Automatically hard-wrap commit messages"
 msgstr "Automatisk radbrytning av incheckningsmeddelanden"
 
-#: data/org.gnome.meld.gschema.xml:222
+#: data/org.gnome.meld.gschema.xml:229
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -426,22 +438,22 @@ msgstr ""
 "radbrytas (d.v.s. infoga radbrytning) vid incheckningsmarginalen före "
 "incheckning."
 
-#: data/org.gnome.meld.gschema.xml:226
+#: data/org.gnome.meld.gschema.xml:233
 msgid "Version control status filters"
 msgstr "Statusfilter för versionshantering"
 
-#: data/org.gnome.meld.gschema.xml:227
+#: data/org.gnome.meld.gschema.xml:234
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Statuslista använd för att filtrera synliga filer vid "
 "versionshanteringsjämförelse."
 
-#: data/org.gnome.meld.gschema.xml:241
+#: data/org.gnome.meld.gschema.xml:248
 msgid "Filename-based filters"
 msgstr "Filnamnsbaserade filter"
 
-#: data/org.gnome.meld.gschema.xml:242
+#: data/org.gnome.meld.gschema.xml:249
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -449,11 +461,11 @@ msgstr ""
 "Lista över fördefinierade filnamnsbaserade filter som, om aktiva, kommer att "
 "ta bort matchande filer vid en mappjämförelse."
 
-#: data/org.gnome.meld.gschema.xml:256
+#: data/org.gnome.meld.gschema.xml:263
 msgid "Text-based filters"
 msgstr "Textbaserade filter"
 
-#: data/org.gnome.meld.gschema.xml:257
+#: data/org.gnome.meld.gschema.xml:264
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -866,10 +878,10 @@ msgstr "Platta till mappar"
 #: meld/resources/ui/about-dialog.ui:8
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 msgstr ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
@@ -911,11 +923,11 @@ msgstr "Gå till nästa konflikt"
 msgid "Version Filters"
 msgstr "Versionsfilter"
 
-#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1456
+#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1472
 msgid "File Filters"
 msgstr "Filfilter"
 
-#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1641
+#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1657
 msgid "Text Filters"
 msgstr "Textfilter"
 
@@ -1170,43 +1182,43 @@ msgstr "Mapp"
 msgid "Version control"
 msgstr "Versionshantering"
 
-#: meld/resources/ui/new-diff-tab.ui:235 meld/resources/ui/new-diff-tab.ui:352
+#: meld/resources/ui/new-diff-tab.ui:236 meld/resources/ui/new-diff-tab.ui:357
 msgid "_3-way comparison"
 msgstr "_Trevägsjämförelse"
 
-#: meld/resources/ui/new-diff-tab.ui:254
+#: meld/resources/ui/new-diff-tab.ui:256
 msgid "Select First File"
 msgstr "Välj första filen"
 
-#: meld/resources/ui/new-diff-tab.ui:267
+#: meld/resources/ui/new-diff-tab.ui:270
 msgid "Select Second File"
 msgstr "Välj andra filen"
 
-#: meld/resources/ui/new-diff-tab.ui:281
+#: meld/resources/ui/new-diff-tab.ui:285
 msgid "Select Third File"
 msgstr "Välj tredje filen"
 
-#: meld/resources/ui/new-diff-tab.ui:316
+#: meld/resources/ui/new-diff-tab.ui:321
 msgid "Select First Folder"
 msgstr "Välj första mappen"
 
-#: meld/resources/ui/new-diff-tab.ui:329
+#: meld/resources/ui/new-diff-tab.ui:334
 msgid "Select Second Folder"
 msgstr "Välj andra mappen"
 
-#: meld/resources/ui/new-diff-tab.ui:343
+#: meld/resources/ui/new-diff-tab.ui:348
 msgid "Select Third Folder"
 msgstr "Välj tredje filen"
 
-#: meld/resources/ui/new-diff-tab.ui:393
+#: meld/resources/ui/new-diff-tab.ui:399
 msgid "Select A Version-Controlled Folder"
 msgstr "Välj en versionshanterad mapp"
 
-#: meld/resources/ui/new-diff-tab.ui:442
+#: meld/resources/ui/new-diff-tab.ui:448
 msgid "_Blank comparison"
 msgstr "_Tom jämförelse"
 
-#: meld/resources/ui/new-diff-tab.ui:459
+#: meld/resources/ui/new-diff-tab.ui:466
 msgid "C_ompare"
 msgstr "_Jämför"
 
@@ -1293,104 +1305,108 @@ msgid "Show w_hitespace"
 msgstr "Visa tom_rum"
 
 #: meld/resources/ui/preferences.ui:381
+msgid "Prefer dark theme"
+msgstr "Föredra mörkt schema"
+
+#: meld/resources/ui/preferences.ui:397
 msgid "Use s_yntax highlighting"
 msgstr "Använd _syntaxmarkering"
 
-#: meld/resources/ui/preferences.ui:404
+#: meld/resources/ui/preferences.ui:420
 msgid "Syntax highlighting color scheme:"
 msgstr "Färgschema för syntaxmarkering:"
 
-#: meld/resources/ui/preferences.ui:469
+#: meld/resources/ui/preferences.ui:485
 msgid "Code Overview"
 msgstr "Kodöversikt"
 
-#: meld/resources/ui/preferences.ui:506
+#: meld/resources/ui/preferences.ui:522
 msgid "Show overview map"
 msgstr "Visa översiktskarta"
 
-#: meld/resources/ui/preferences.ui:529
+#: meld/resources/ui/preferences.ui:545
 msgid "Overview map style:"
 msgstr "Stil för översiktskarta:"
 
-#: meld/resources/ui/preferences.ui:596
+#: meld/resources/ui/preferences.ui:612
 msgid "External Editor"
 msgstr "Extern redigerare"
 
-#: meld/resources/ui/preferences.ui:632
+#: meld/resources/ui/preferences.ui:648
 msgid "Use _default system editor"
 msgstr "Använd systemets standardred_igerare"
 
-#: meld/resources/ui/preferences.ui:655
+#: meld/resources/ui/preferences.ui:671
 msgid "Edito_r command:"
 msgstr "Kommando för re_digerare:"
 
-#: meld/resources/ui/preferences.ui:711
+#: meld/resources/ui/preferences.ui:727
 msgid "Editor"
 msgstr "Redigerare"
 
-#: meld/resources/ui/preferences.ui:732
+#: meld/resources/ui/preferences.ui:748
 msgid "Shallow Comparison"
 msgstr "Ytlig jämförelse"
 
-#: meld/resources/ui/preferences.ui:768
+#: meld/resources/ui/preferences.ui:784
 msgid "C_ompare files based only on size and timestamp"
 msgstr "J_ämför filer enbart baserat på storlek och tidsstämpel"
 
-#: meld/resources/ui/preferences.ui:791
+#: meld/resources/ui/preferences.ui:807
 msgid "_Timestamp resolution:"
 msgstr "_Tidsstämpelupplösning:"
 
-#: meld/resources/ui/preferences.ui:855
+#: meld/resources/ui/preferences.ui:871
 msgid "Note: enabling text filters may make comparing large files much slower"
 msgstr ""
 "Observera: att aktivera textfilter kan göra att jämförelse av stora filer "
 "blir mycket långsammare"
 
-#: meld/resources/ui/preferences.ui:904
+#: meld/resources/ui/preferences.ui:920
 msgid "Symbolic Links"
 msgstr "Symboliska länkar"
 
-#: meld/resources/ui/preferences.ui:972
+#: meld/resources/ui/preferences.ui:988
 msgid "Visible Columns"
 msgstr "Synliga kolumner"
 
-#: meld/resources/ui/preferences.ui:1039
+#: meld/resources/ui/preferences.ui:1055
 msgid "Folder Comparisons"
 msgstr "Mappjämförelser"
 
-#: meld/resources/ui/preferences.ui:1061
+#: meld/resources/ui/preferences.ui:1077
 msgid "Version Comparisons"
 msgstr "Versionsjämförelser"
 
-#: meld/resources/ui/preferences.ui:1104
+#: meld/resources/ui/preferences.ui:1120
 msgid "_Order when comparing file revisions:"
 msgstr "_Sortering vid jämförelse av filrevisioner:"
 
-#: meld/resources/ui/preferences.ui:1151
+#: meld/resources/ui/preferences.ui:1167
 msgid "Order when _merging files:"
 msgstr "Sortering när filer _sammanfogas:"
 
-#: meld/resources/ui/preferences.ui:1219
+#: meld/resources/ui/preferences.ui:1235
 msgid "Commit Messages"
 msgstr "Incheckningsmeddelanden"
 
-#: meld/resources/ui/preferences.ui:1260
+#: meld/resources/ui/preferences.ui:1276
 msgid "Show _right margin at:"
 msgstr "Visa _högermarginal vid:"
 
-#: meld/resources/ui/preferences.ui:1301
+#: meld/resources/ui/preferences.ui:1317
 msgid "Automatically _break lines at right margin on commit"
 msgstr "_Radbryt automatiskt vid högermarginal under incheckning"
 
-#: meld/resources/ui/preferences.ui:1351
+#: meld/resources/ui/preferences.ui:1367
 msgid "Version Control"
 msgstr "Versionshantering"
 
-#: meld/resources/ui/preferences.ui:1373
+#: meld/resources/ui/preferences.ui:1389
 msgid "Filename filters"
 msgstr "Filnamnsfilter"
 
-#: meld/resources/ui/preferences.ui:1411
+#: meld/resources/ui/preferences.ui:1427
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1400,19 +1416,19 @@ msgstr ""
 "deras namn. Varje mönster är en lista med jokertecken i skalstil, åtskilda "
 "med blanksteg."
 
-#: meld/resources/ui/preferences.ui:1478
+#: meld/resources/ui/preferences.ui:1494
 msgid "Change trimming"
 msgstr "Ändra borttagning av blanksteg"
 
-#: meld/resources/ui/preferences.ui:1514
+#: meld/resources/ui/preferences.ui:1530
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Ta bort tomma radskillnader från början och slutet av ändringar"
 
-#: meld/resources/ui/preferences.ui:1558
+#: meld/resources/ui/preferences.ui:1574
 msgid "Text filters"
 msgstr "Textfilter"
 
-#: meld/resources/ui/preferences.ui:1596
+#: meld/resources/ui/preferences.ui:1612
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1426,47 +1442,47 @@ msgstr ""
 "grupper kommer endast grupperna att ersättas. Se användarhandboken för mer "
 "information."
 
-#: meld/resources/ui/preferences.ui:1687
+#: meld/resources/ui/preferences.ui:1703
 msgid "Left is remote, right is local"
 msgstr "Vänster är fjärr, höger är lokal"
 
-#: meld/resources/ui/preferences.ui:1691
+#: meld/resources/ui/preferences.ui:1707
 msgid "Left is local, right is remote"
 msgstr "Vänster är lokal, höger är fjärr"
 
-#: meld/resources/ui/preferences.ui:1705
+#: meld/resources/ui/preferences.ui:1721
 msgid "Simple change map"
 msgstr "Enkel ändringskarta"
 
-#: meld/resources/ui/preferences.ui:1709
+#: meld/resources/ui/preferences.ui:1725
 msgid "Compact source map"
 msgstr "Kompakt källkodskarta"
 
-#: meld/resources/ui/preferences.ui:1713
+#: meld/resources/ui/preferences.ui:1729
 msgid "Full source map"
 msgstr "Fullständig källkodskarta"
 
-#: meld/resources/ui/preferences.ui:1727
+#: meld/resources/ui/preferences.ui:1743
 msgid "Remote, merge, local"
 msgstr "Fjärr, sammanfoga, lokal"
 
-#: meld/resources/ui/preferences.ui:1731
+#: meld/resources/ui/preferences.ui:1747
 msgid "Local, merge, remote"
 msgstr "Lokal, sammanfoga, fjärr"
 
-#: meld/resources/ui/preferences.ui:1753
+#: meld/resources/ui/preferences.ui:1769
 msgid "1ns (ext4)"
 msgstr "1ns (ext4)"
 
-#: meld/resources/ui/preferences.ui:1757
+#: meld/resources/ui/preferences.ui:1773
 msgid "100ns (NTFS)"
 msgstr "100ns (NTFS)"
 
-#: meld/resources/ui/preferences.ui:1761
+#: meld/resources/ui/preferences.ui:1777
 msgid "1s (ext2/ext3)"
 msgstr "1s (ext2/ext3)"
 
-#: meld/resources/ui/preferences.ui:1765
+#: meld/resources/ui/preferences.ui:1781
 msgid "2s (VFAT)"
 msgstr "2s (VFAT)"
 
@@ -1970,11 +1986,11 @@ msgstr "Kunde inte spara filen %s."
 msgid "Open File"
 msgstr "Öppna fil"
 
-#: meld/filediff.py:2420
+#: meld/filediff.py:2421
 msgid "Live comparison updating disabled"
 msgstr "Inaktivera realtidsuppdateringar av jämförelser"
 
-#: meld/filediff.py:2421
+#: meld/filediff.py:2422
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2020,98 +2036,98 @@ msgstr ""
 "En fil med detta namn existerar redan i ”%s”.\n"
 "Om du ersätter befintlig fil kommer dess innehåll att gå förlorat."
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
 msgstr "felaktigt antal argument angavs för --diff"
 
-#: meld/meldapp.py:188
+#: meld/meldapp.py:193
 msgid "Start with an empty window"
 msgstr "Starta med ett tomt fönster"
 
-#: meld/meldapp.py:189 meld/meldapp.py:191
+#: meld/meldapp.py:194 meld/meldapp.py:196
 msgid "file"
 msgstr "fil"
 
-#: meld/meldapp.py:189 meld/meldapp.py:193
+#: meld/meldapp.py:194 meld/meldapp.py:198
 msgid "folder"
 msgstr "mapp"
 
-#: meld/meldapp.py:190
+#: meld/meldapp.py:195
 msgid "Start a version control comparison"
 msgstr "Starta en versionshanterad jämförelse"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Starta med en två- eller trevägs filjämförelse"
 
-#: meld/meldapp.py:194
+#: meld/meldapp.py:199
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Starta med en två- eller trevägs mappjämförelse"
 
-#: meld/meldapp.py:237
+#: meld/meldapp.py:242
 #, python-format
 msgid "Error: %s\n"
 msgstr "Fel: %s\n"
 
-#: meld/meldapp.py:244
+#: meld/meldapp.py:249
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld är ett verktyg för att jämföra filer och kataloger."
 
-#: meld/meldapp.py:248
+#: meld/meldapp.py:253
 msgid "Set label to use instead of file name"
 msgstr "Sätt etikett att använda istället för filnamn"
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:256
 msgid "Open a new tab in an already running instance"
 msgstr "Öppna en ny flik i en redan körande instans"
 
-#: meld/meldapp.py:254
+#: meld/meldapp.py:259
 msgid "Automatically compare all differing files on startup"
 msgstr "Jämför automatiskt alla filer som skiljer sig vid uppstart"
 
-#: meld/meldapp.py:257
+#: meld/meldapp.py:262
 msgid "Ignored for compatibility"
 msgstr "Ignorerad för kompatibilitet"
 
-#: meld/meldapp.py:261
+#: meld/meldapp.py:266
 msgid "Set the target file for saving a merge result"
 msgstr "Ställ in målfilen för att spara sammanfogat resultat"
 
-#: meld/meldapp.py:264
+#: meld/meldapp.py:269
 msgid "Automatically merge files"
 msgstr "Sammanfoga automatiskt filer"
 
-#: meld/meldapp.py:268
+#: meld/meldapp.py:273
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Läs in en sparad jämförelse från en Meld jämförelsefil"
 
-#: meld/meldapp.py:272
+#: meld/meldapp.py:277
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Skapar en diff-tabell för angivna filer eller mappar"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:297
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "för många argument (ville ha 0-3, fick %d)"
 
-#: meld/meldapp.py:295
+#: meld/meldapp.py:300
 msgid "can’t auto-merge less than 3 files"
 msgstr "kan inte automatiskt sammanfoga mindre är tre filer"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:302
 msgid "can’t auto-merge directories"
 msgstr "kan inte automatiskt sammanfoga kataloger"
 
-#: meld/meldapp.py:312
+#: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
 msgstr "Fel vid läsning av den sparade konfigurationsfilen"
 
-#: meld/meldapp.py:329
+#: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "ogiltig sökväg eller URI ”%s”"
 
-#: meld/meldapp.py:336
+#: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
 msgstr "fjärrmapp ”{}” stöds ej"
 
