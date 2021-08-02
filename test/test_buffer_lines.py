@@ -19,6 +19,20 @@ text = ("""0
 """)
 
 
+@pytest.fixture(scope='module', autouse=True)
+def mock_bind_settings():
+    with mock.patch('meld.meldbuffer.bind_settings', mock.DEFAULT):
+        yield
+
+
+@pytest.fixture
+def buffer_setup():
+    buf = MeldBuffer()
+    buf.set_text(text)
+    buffer_lines = BufferLines(buf)
+    yield buf, buffer_lines
+
+
 @pytest.mark.parametrize("line_start, line_end, expected_text", [
     (0, 1, ["0"],),
     (0, 2, ["0", "1"],),
@@ -34,11 +48,8 @@ text = ("""0
     (10, 12, ["10"],),
     (11, 12, [],),
 ])
-def test_filter_text(line_start, line_end, expected_text):
+def test_meld_buffer_slicing(
+        line_start, line_end, expected_text, buffer_setup):
 
-    with mock.patch('meld.meldbuffer.bind_settings', mock.DEFAULT):
-        buf = MeldBuffer()
-        buf.set_text(text)
-
-        buffer_lines = BufferLines(buf)
-        assert buffer_lines[line_start:line_end] == expected_text
+    buffer, buffer_lines = buffer_setup
+    assert buffer_lines[line_start:line_end] == expected_text
