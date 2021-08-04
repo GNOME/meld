@@ -8,10 +8,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2020-10-18 00:49+0000\n"
-"PO-Revision-Date: 2021-01-12 22:17+0200\n"
+"POT-Creation-Date: 2021-07-25 19:59+0000\n"
+"PO-Revision-Date: 2021-07-28 13:06+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
-"Language-Team: српски <gnome-sr@googlegroups.org>\n"
+"Language-Team: Serbian\n"
 "Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,13 +27,10 @@ msgstr "Не могу да увезем: "
 #: ../bin/meld:197
 #, c-format
 msgid "Meld requires %s or higher."
-msgstr "Мелд захтева %s или новији."
+msgstr "Мелд захтева „%s“ или новији."
 
 #: ../bin/meld:243
 #, c-format
-#| msgid ""
-#| "Couldn't load Meld-specific CSS (%s)\n"
-#| "%s"
 msgid ""
 "Couldn’t load Meld-specific CSS (%s)\n"
 "%s"
@@ -130,11 +127,6 @@ msgid "Additional automatically detected text encodings"
 msgstr "Додатно самостално откривање кодних распореда"
 
 #: ../data/org.gnome.meld.gschema.xml.h:10
-#| msgid ""
-#| "Meld will use these text encodings to try to decode loaded text files "
-#| "before trying any other encodings. In addition to the encodings in this "
-#| "list, UTF-8 and the current locale-default encoding will always be used; "
-#| "other encodings may also be tried, depending on the user's locale."
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -178,9 +170,6 @@ msgid "Highlight syntax"
 msgstr "Истиче појаву"
 
 #: ../data/org.gnome.meld.gschema.xml.h:18
-#| msgid ""
-#| "Whether to highlight syntax in comparisons. Because of Meld's own color "
-#| "highlighting, this is off by default."
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
@@ -334,11 +323,6 @@ msgid "File timestamp resolution"
 msgstr "Резолуција временске ознаке датотеке"
 
 #: ../data/org.gnome.meld.gschema.xml.h:44
-#| msgid ""
-#| "When comparing based on mtime, this is the minimum difference in "
-#| "nanoseconds between two files before they're considered to have different "
-#| "mtimes. This is useful when comparing files between filesystems with "
-#| "different timestamp resolution."
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -490,10 +474,6 @@ msgid "Text-based filters"
 msgstr "Пропусници засновани на тексту"
 
 #: ../data/org.gnome.meld.gschema.xml.h:68
-#| msgid ""
-#| "List of predefined text-based regex filters that, if active, will remove "
-#| "text from being used in a file comparison. The text will still be "
-#| "displayed, but won't contribute to the comparison itself."
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -526,13 +506,13 @@ msgstr "О Мелду"
 #: ../data/ui/application.ui.h:2
 #| msgid ""
 #| "Copyright © 2002-2009 Stephen Kennedy\n"
-#| "Copyright © 2009-2013 Kai Willadsen"
+#| "Copyright © 2009-2017 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2017 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 msgstr ""
 "Ауторска права © 2002-2009 Стефен Кенеди\n"
-"Ауторска права © 2009-2017 Кај Виладсен"
+"Ауторска права © 2009-2021 Кај Виладсен"
 
 #: ../data/ui/application.ui.h:4
 msgid "Website"
@@ -579,7 +559,6 @@ msgid "Collapse Recursively"
 msgstr "Скупи дубински"
 
 #: ../data/ui/dirdiff.ui.h:4
-#| msgid "Remove folder and all its files?"
 msgid "Collapse selected folder and all subfolders"
 msgstr "Скупите изабрану фасциклу и све подфасцикле"
 
@@ -588,7 +567,6 @@ msgid "Expand Recursively"
 msgstr "Рашири дубински"
 
 #: ../data/ui/dirdiff.ui.h:6
-#| msgid "Remove folder and all its files?"
 msgid "Expand selected folder and all subfolders"
 msgstr "Раширите изабрану фасциклу и све подфасцикле"
 
@@ -724,7 +702,6 @@ msgid "Search text encoding…"
 msgstr "Тражи кодирање текста…"
 
 #: ../data/ui/filediff.ui.h:1
-#| msgid "Format as Patch"
 msgid "Format as Patch…"
 msgstr "Обликуј као исправку…"
 
@@ -901,7 +878,6 @@ msgid "Save changes to documents before closing?"
 msgstr "Да сачувам измене у документу пре затварања?"
 
 #: ../data/ui/filediff.ui.h:45
-#| msgid "If you don't save, changes will be permanently lost."
 msgid "If you don’t save, changes will be permanently lost."
 msgstr "Ако не сачувате, измене ће бити трајно изгубљене."
 
@@ -940,12 +916,10 @@ msgid "File 1"
 msgstr "1. датотека"
 
 #: ../data/ui/filediff.ui.h:53
-#| msgid "Revert unsaved changes to documents?"
 msgid "Discard unsaved changes to documents?"
 msgstr "Да одбацим несачуване измене у документима?"
 
 #: ../data/ui/filediff.ui.h:54
-#| msgid "Changes made to the following documents will be permanently lost:\n"
 msgid "Changes made to the following documents will be permanently lost:"
 msgstr "Измене начињене над следећим документима биће трајно изгубљене:"
 
@@ -1537,7 +1511,6 @@ msgid "C_ompare"
 msgstr "_Упореди"
 
 #: ../data/ui/vcview.ui.h:3
-#| msgid "Co_mmit"
 msgid "Co_mmit…"
 msgstr "У_гради…"
 
@@ -1753,7 +1726,7 @@ msgid "Text filters are in use and may be masking content differences."
 msgstr "Филтери текста су у употреби и можда су замаскирали разлике садржаја."
 
 #: ../meld/dirdiff.py:915 ../meld/filediff.py:1504 ../meld/filediff.py:1534
-#: ../meld/filediff.py:1536 ../meld/ui/msgarea.py:108 ../meld/ui/msgarea.py:121
+#: ../meld/filediff.py:1536 ../meld/ui/msgarea.py:107 ../meld/ui/msgarea.py:120
 msgid "Hi_de"
 msgstr "_Сакриј"
 
@@ -1785,7 +1758,6 @@ msgstr ""
 
 #: ../meld/dirdiff.py:942
 #, python-format
-#| msgid "'%s' hidden by '%s'"
 msgid "“%s” hidden by “%s”"
 msgstr "„%s“ сакривено од стране „%s“"
 
@@ -1809,11 +1781,6 @@ msgstr "Грешка умножавања датотеке"
 
 #: ../meld/dirdiff.py:1014
 #, python-format
-#| msgid ""
-#| "Couldn't copy %s\n"
-#| "to %s.\n"
-#| "\n"
-#| "%s"
 msgid ""
 "Couldn’t copy %s\n"
 "to %s.\n"
@@ -1826,7 +1793,6 @@ msgstr ""
 "%s"
 
 #: ../meld/dirdiff.py:1039 ../meld/vcview.py:703
-#| msgid "Error deleting %s"
 msgid "Error deleting {}"
 msgstr "Грешка брисања {}"
 
@@ -1986,14 +1952,10 @@ msgid "Save Anyway"
 msgstr "Ипак сачувај"
 
 #: ../meld/filediff.py:1586
-#| msgid "Don't Save"
 msgid "Don’t Save"
 msgstr "Немој чувати"
 
 #: ../meld/filediff.py:1628
-#| msgid ""
-#| "File “%s” contains characters that can't be encoded using encoding “%s”.\n"
-#| "Would you like to save as UTF-8?"
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2003,9 +1965,6 @@ msgstr ""
 
 #: ../meld/filediff.py:1632 ../meld/patchdialog.py:131
 #, python-format
-#| msgid ""
-#| "Couldn't save file due to:\n"
-#| "%s"
 msgid ""
 "Couldn’t save file due to:\n"
 "%s"
@@ -2062,7 +2021,6 @@ msgid "This remote location does not support sending items to the trash."
 msgstr "Ово удаљено место не подржава слање ставки у смеће."
 
 #: ../meld/iohelpers.py:57
-#| msgid "Delete change"
 msgid "_Delete Permanently"
 msgstr "_Трајно обриши"
 
@@ -2156,12 +2114,10 @@ msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "превише аргумената (тражено је 0-3, добих %d)"
 
 #: ../meld/meldapp.py:297
-#| msgid "can't auto-merge less than 3 files"
 msgid "can’t auto-merge less than 3 files"
 msgstr "не могу самостално да стопим мање од 3 датотеке"
 
 #: ../meld/meldapp.py:299
-#| msgid "can't auto-merge directories"
 msgid "can’t auto-merge directories"
 msgstr "не могу самостално да стопим директоријуме"
 
@@ -2171,7 +2127,6 @@ msgstr "Грешка читања сачуване датотеке поређе
 
 #: ../meld/meldapp.py:330
 #, python-format
-#| msgid "invalid path or URI \"%s\""
 msgid "invalid path or URI “%s”"
 msgstr "неисправна путања или адреса „%s“"
 
@@ -2193,7 +2148,6 @@ msgid "_File"
 msgstr "_Датотека"
 
 #: ../meld/meldwindow.py:48
-#| msgid "_New Comparison..."
 msgid "_New Comparison…"
 msgstr "_Ново поређење…"
 
@@ -2206,7 +2160,6 @@ msgid "Save the current file"
 msgstr "Сачувајте тренутну датотеку"
 
 #: ../meld/meldwindow.py:54
-#| msgid "Save As..."
 msgid "Save As…"
 msgstr "Сачувај као…"
 
@@ -2243,8 +2196,6 @@ msgid "Paste the clipboard"
 msgstr "Убаците оставу"
 
 #: ../meld/meldwindow.py:74
-#| msgctxt "shortcut window"
-#| msgid "Find"
 msgid "Find…"
 msgstr "Нађи…"
 
@@ -2269,7 +2220,6 @@ msgid "Search backwards for the same text"
 msgstr "Тражите уназад исти текст"
 
 #: ../meld/meldwindow.py:83
-#| msgid "_Replace"
 msgid "_Replace…"
 msgstr "_Замени…"
 
@@ -2278,7 +2228,6 @@ msgid "Find and replace text"
 msgstr "Пронађите и замените текст"
 
 #: ../meld/meldwindow.py:86
-#| msgid "Copy to _Left"
 msgid "Go to _Line"
 msgstr "Иди на _ред"
 
@@ -2409,7 +2358,6 @@ msgstr ""
 
 #: ../meld/misc.py:254
 #, python-format
-#| msgid "Couldn't find colour scheme details for %s-%s; this is a bad install"
 msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgstr ""
 "Не могу да нађем појединости шеме боје за „%s-%s“; јер је лоше инсталирана"
@@ -2511,7 +2459,7 @@ msgstr "Уштекано"
 msgid "None"
 msgstr "Ништа"
 
-#: ../meld/vc/svn.py:203
+#: ../meld/vc/svn.py:202
 #, python-format
 msgid "Rev %s"
 msgstr "Рев %s"
@@ -2599,7 +2547,6 @@ msgstr "%s: %s"
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
 #: ../meld/vcview.py:338
-#| msgid "Scanning %s"
 msgid "Scanning repository"
 msgstr "Прегледам ризницу"
 
