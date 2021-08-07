@@ -15,6 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from typing import List, Optional
 
 from gi.repository import Gio, GLib, GObject, GtkSource
 
@@ -216,6 +217,11 @@ class BufferLines:
     Gtk.TextBuffer is used.
     """
 
+    #: Cached copy of the (possibly filtered) text in a single line,
+    #: where an entry of None indicates that there is no cached result
+    #: available.
+    lines: List[Optional[str]]
+
     def __init__(self, buf, textfilter=None):
         self.buf = buf
         if textfilter is not None:
@@ -223,33 +229,56 @@ class BufferLines:
         else:
             self.textfilter = lambda x, buf, start_iter, end_iter: x
 
+        self.lines = [None] * self.buf.get_line_count()
+        self.mark = buf.create_mark(
+            "bufferlines-insert", buf.get_start_iter(), True,
+        )
+
+        buf.connect("insert-text", self.on_insert_text),
+        buf.connect("delete-range", self.on_delete_range),
+        buf.connect_after("insert-text", self.after_insert_text),
+
+    def on_insert_text(self, buf, it, text, textlen):
+        buf.move_mark(self.mark, it)
+
+    def after_insert_text(self, buf, it, newtext, textlen):
+        start_idx = buf.get_iter_at_mark(self.mark).get_line()
+        end_idx = it.get_line() + 1
+        # Replace the insertion-point cache line with a list of empty
+        # lines. In the single-line case this will be a single element
+        # substitution; for multi-line inserts, we will replace the
+        # single insertion point line with several empty cache lines.
+        self.lines[start_idx:start_idx + 1] = [None] * (end_idx - start_idx)
+
+    def on_delete_range(self, buf, it0, it1):
+        start_idx = it0.get_line()
+        end_idx = it1.get_line() + 1
+        self.lines[start_idx:end_idx] = [None]
+
     def __getitem__(self, key):
         if isinstance(key, slice):
             lo, hi, _ = key.indices(self.buf.get_line_count())
-            line_start = self.buf.get_iter_at_line_or_eof(lo)
-            end = self.buf.get_iter_at_line_or_eof(hi)
 
-            lines = []
-            while line_start.compare(end) < 0:
-                line_end = line_start.copy()
-                if not line_end.ends_line():
-                    line_end.forward_to_line_end()
-                txt = self.buf.get_text(line_start, line_end, False)
-                filter_txt = self.textfilter(txt, self.buf, line_start, end)
-                lines.append(filter_txt)
-                line_start.forward_visible_line()
+            for idx in range(lo, hi):
+                if self.lines[idx] is None:
+                    self.lines[idx] = self[idx]
 
-            return lines
+            return self.lines[lo:hi]
 
         elif isinstance(key, int):
             if key >= len(self):
                 raise IndexError
-            line_start = self.buf.get_iter_at_line_or_eof(key)
-            line_end = line_start.copy()
-            if not line_end.ends_line():
-                line_end.forward_to_line_end()
-            txt = self.buf.get_text(line_start, line_end, False)
-            return self.textfilter(txt, self.buf, line_start, line_end)
+
+            if self.lines[key] is None:
+                line_start = self.buf.get_iter_at_line_or_eof(key)
+                line_end = line_start.copy()
+                if not line_end.ends_line():
+                    line_end.forward_to_line_end()
+                txt = self.buf.get_text(line_start, line_end, False)
+                txt = self.textfilter(txt, self.buf, line_start, line_end)
+                self.lines[key] = txt
+
+            return self.lines[key]
 
     def __len__(self):
         return self.buf.get_line_count()
