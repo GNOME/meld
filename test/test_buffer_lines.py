@@ -119,3 +119,28 @@ def test_meld_buffer_delete_range(buffer_setup):
 
     assert buffer_lines[5] == "7"
     assert buffer_lines.lines[4:7] == ["4", "7", "8"]
+
+
+def test_meld_buffer_cache_debug(caplog, buffer_setup):
+
+    buffer, buffer_lines = buffer_setup
+    buffer_lines = BufferLines(buffer, cache_debug=True)
+
+    # Invalidate our line cache...
+    buffer_lines.lines.append("invalid")
+
+    # ...and check that insertion/deletion logs an error
+    buffer.insert(
+        buffer.get_iter_at_line(5),
+        "hey",
+    )
+    assert len(caplog.records) == 1
+    assert caplog.records[0].msg.startswith("Cache line count does not match")
+    caplog.clear()
+
+    buffer.delete(
+        buffer.get_iter_at_line(5),
+        buffer.get_iter_at_line(7),
+    )
+    assert len(caplog.records) == 1
+    assert caplog.records[0].msg.startswith("Cache line count does not match")

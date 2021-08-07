@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import List, Optional
+from typing import Any, List, Optional
 
 from gi.repository import Gio, GLib, GObject, GtkSource
 
@@ -222,7 +222,7 @@ class BufferLines:
     #: available.
     lines: List[Optional[str]]
 
-    def __init__(self, buf, textfilter=None):
+    def __init__(self, buf, textfilter=None, *, cache_debug: bool = False):
         self.buf = buf
         if textfilter is not None:
             self.textfilter = textfilter
@@ -237,6 +237,16 @@ class BufferLines:
         buf.connect("insert-text", self.on_insert_text),
         buf.connect("delete-range", self.on_delete_range),
         buf.connect_after("insert-text", self.after_insert_text),
+        if cache_debug:
+            buf.connect_after("insert-text", self._check_cache_invariant),
+            buf.connect_after("delete-range", self._check_cache_invariant),
+
+    def _check_cache_invariant(self, *args: Any) -> None:
+        if len(self.lines) != len(self):
+            log.error(
+                "Cache line count does not match buffer line count: "
+                f"{len(self.lines)} != {len(self)}",
+            )
 
     def on_insert_text(self, buf, it, text, textlen):
         buf.move_mark(self.mark, it)
