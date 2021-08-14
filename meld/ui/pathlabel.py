@@ -37,6 +37,7 @@ class PathLabel(Gtk.MenuButton):
     _gfile: Optional[Gio.File]
     _parent_gfile: Optional[Gio.File]
     _path_label: Optional[str]
+    _icon_name: Optional[str]
 
     def get_file(self) -> Optional[Gio.File]:
         return self._gfile
@@ -65,6 +66,22 @@ class PathLabel(Gtk.MenuButton):
     def get_path_label(self) -> Optional[str]:
         return self._path_label
 
+    def get_icon_name(self) -> Optional[str]:
+        return self._icon_name
+
+    def set_icon_name(self, icon_name: Optional[str]) -> None:
+        if icon_name == self._icon_name:
+            return
+
+        if icon_name:
+            image = Gtk.Image.new_from_icon_name(
+                icon_name, Gtk.IconSize.BUTTON)
+            self.set_image(image)
+            self.props.always_show_image = True
+        else:
+            self.set_image(None)
+            self.props.always_show_image = False
+
     gfile = GObject.Property(
         type=Gio.File,
         nick='File being displayed',
@@ -88,6 +105,13 @@ class PathLabel(Gtk.MenuButton):
         getter=get_path_label,
     )
 
+    icon_name = GObject.Property(
+        type=str,
+        nick='The name of the icon to display',
+        getter=get_icon_name,
+        setter=set_icon_name,
+    )
+
     custom_label = GObject.Property(
         type=str,
         nick='Custom label override',
@@ -99,6 +123,7 @@ class PathLabel(Gtk.MenuButton):
         self._gfile = None
         self._parent_gfile = None
         self._path_label = None
+        self._icon_name = None
 
         self.bind_property(
             'path_label', self, 'label',
