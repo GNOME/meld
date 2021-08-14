@@ -43,7 +43,7 @@ def test_find_shared_parent_path(paths, expected_parent):
         (
             '/home/hey/',
             '/home/hey/foo.txt',
-            '…/foo.txt',
+            '…/hey/foo.txt',
         ),
         # Child is a direct child of parent and parent is the root
         (

@@ -212,6 +212,12 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
                 descendant_parent)
 
     show_parent = not parent.has_parent()
+    # It looks odd to have a single component, so if we don't have a
+    # base path, we'll use the direct parent. In this case the parent
+    # won't provide any disambiguation... it's just for appearances.
+    if not show_parent and not base_path_str:
+        base_path_str = parent.get_basename()
+
     label_segments = [
         '…' if not show_parent else None,
         base_path_str,
