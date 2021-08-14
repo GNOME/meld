@@ -387,9 +387,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
-    dummy_toolbar_overview_map = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
+    toolbar_sourcemap_revealer = Gtk.Template.Child()
 
     state_actions = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
@@ -481,13 +481,21 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 "text-filters-changed", self.on_text_filters_changed)
         ]
 
-        # Handle overview map visibility binding
-        self.bind_property(
-            'show-overview-map', self.overview_map_revealer, 'reveal-child',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        # Handle overview map visibility binding. Because of how we use
+        # grid packing, we need two revealers here instead of the more
+        # obvious one.
+        revealers = (
+            self.toolbar_sourcemap_revealer,
+            self.overview_map_revealer,
         )
-        self.overview_map_revealer.bind_property(
-            'child-revealed', self.dummy_toolbar_overview_map, 'visible')
+        for revealer in revealers:
+            self.bind_property(
+                'show-overview-map', revealer, 'reveal-child',
+                (
+                    GObject.BindingFlags.DEFAULT |
+                    GObject.BindingFlags.SYNC_CREATE
+                ),
+            )
 
         map_widgets_into_lists(
             self,
@@ -788,7 +796,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             sel = t.get_selection()
             sel.unselect_all()
 
-        yield _("[%s] Scanning %s") % (self.label_text, "")
+        yield _('[{label}] Scanning {folder}').format(
+            label=self.label_text, folder='')
         prefixlen = 1 + len(
             self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
@@ -811,8 +820,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             if not any(os.path.isdir(root) for root in roots):
                 continue
 
-            yield _("[%s] Scanning %s") % (
-                self.label_text, roots[0][prefixlen:])
+            yield _('[{label}] Scanning {folder}').format(
+                label=self.label_text, folder=roots[0][prefixlen:])
             differences = False
             encoding_errors = []
 
@@ -951,7 +960,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(Gtk.TreePath(path))
-        yield _("[%s] Done") % self.label_text
+        yield _('[{label}] Done').format(label=self.label_text)
 
         self._scan_in_progress -= 1
         self.force_cursor_recalculate = True
@@ -960,7 +969,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def _show_duplicate_directory(self, duplicate_directory):
         for index in range(self.num_panes):
             primary = _(
-                f'Folder {duplicate_directory} is being compared to itself')
+                'Folder {} is being compared to itself').format(
+                duplicate_directory)
             self.msgarea_mgr[index].add_dismissable_msg(
                 'dialog-warning-symbolic', primary, '', self.msgarea_mgr)
 
@@ -1019,7 +1029,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         formatted_entries = [[] for i in range(self.num_panes)]
         for pane, root, f1, f2 in shadowed_entries:
             paths = [os.path.join(root, f) for f in (f1, f2)]
-            entry_str = _("“%s” hidden by “%s”") % (paths[0], paths[1])
+            entry_str = _("“{first_file}” hidden by “{second_file}”").format(
+                first_file=paths[0],
+                second_file=paths[1],
+            )
             formatted_entries[pane].append(entry_str)
 
         if invalid_filenames or shadowed_entries:
@@ -1091,10 +1104,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             except (OSError, IOError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
-                    _("Couldn’t copy %s\nto %s.\n\n%s") % (
-                        GLib.markup_escape_text(src),
-                        GLib.markup_escape_text(dst),
-                        GLib.markup_escape_text(str(err)),
+                    _("Couldn’t copy {source}\nto {dest}.\n\n{error}").format(
+                        source=GLib.markup_escape_text(src),
+                        dest=GLib.markup_escape_text(dst),
+                        error=GLib.markup_escape_text(str(err)),
                     )
                 )
 

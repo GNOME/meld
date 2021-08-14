@@ -207,7 +207,7 @@ class ChunkMap(Gtk.DrawingArea):
     def _scroll_to_location(self, location: float):
         raise NotImplementedError()
 
-    def _scroll_fraction(self, position: float):
+    def _scroll_fraction(self, position: float, *, animate: bool = True):
         """Scroll the mapped textview to the given position
 
         This uses GtkTextView's scrolling so that the movement is
@@ -223,7 +223,10 @@ class ChunkMap(Gtk.DrawingArea):
         adj = self.adjustment
         location = fraction * (adj.get_upper() - adj.get_lower())
 
-        self._scroll_to_location(location)
+        if animate:
+            self._scroll_to_location(location)
+        else:
+            adj.set_value(location)
 
     def do_button_press_event(self, event: Gdk.EventButton) -> bool:
         if event.button == 1:
@@ -244,7 +247,7 @@ class ChunkMap(Gtk.DrawingArea):
 
     def do_motion_notify_event(self, event: Gdk.EventMotion) -> bool:
         if self._have_grab:
-            self._scroll_fraction(event.y)
+            self._scroll_fraction(event.y, animate=False)
 
         return True
 

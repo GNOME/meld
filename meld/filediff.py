@@ -147,7 +147,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
     dummy_toolbar_actiongutter3 = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
-    dummy_toolbar_sourcemap = Gtk.Template.Child()
     file_open_button0 = Gtk.Template.Child()
     file_open_button1 = Gtk.Template.Child()
     file_open_button2 = Gtk.Template.Child()
@@ -178,11 +177,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
     statusbar0 = Gtk.Template.Child()
     statusbar1 = Gtk.Template.Child()
     statusbar2 = Gtk.Template.Child()
+    statusbar_sourcemap_revealer = Gtk.Template.Child()
     linkmap0 = Gtk.Template.Child()
     linkmap1 = Gtk.Template.Child()
     textview0 = Gtk.Template.Child()
     textview1 = Gtk.Template.Child()
     textview2 = Gtk.Template.Child()
+    toolbar_sourcemap_revealer = Gtk.Template.Child()
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
@@ -369,13 +370,22 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.create_text_filters()
 
-        # Handle overview map visibility binding
-        self.bind_property(
-            'show-overview-map', self.sourcemap_revealer, 'reveal-child',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+        # Handle overview map visibility binding. Because of how we use
+        # grid packing, we need three revealers here instead of the
+        # more obvious one.
+        revealers = (
+            self.toolbar_sourcemap_revealer,
+            self.sourcemap_revealer,
+            self.statusbar_sourcemap_revealer,
         )
-        self.sourcemap_revealer.bind_property(
-            'child-revealed', self.dummy_toolbar_sourcemap, 'visible')
+        for revealer in revealers:
+            self.bind_property(
+                'show-overview-map', revealer, 'reveal-child',
+                (
+                    GObject.BindingFlags.DEFAULT |
+                    GObject.BindingFlags.SYNC_CREATE
+                ),
+            )
 
         # Handle overview map style mapping manually
         self.connect(
@@ -1235,12 +1245,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
             for buf in self.textbuffer:
                 buf.data.disconnect_monitor()
 
-            # TODO: This should not be necessary; remove if and when we
-            # figure out what's keeping MeldDocs alive for too long.
             try:
-                del self._cached_match
-            except AttributeError:
-                pass
+                self._cached_match.stop()
+            except Exception:
+                # Ignore any cross-process exceptions that happen when
+                # shutting down our matcher process.
+                log.exception('Failed to shut down matcher process')
             # TODO: Base the return code on something meaningful for VC tools
             self.close_signal.emit(0)
         return response
@@ -1844,7 +1854,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if duplicate_files:
             for index in range(self.num_panes):
                 primary = _(
-                    f'File {duplicate_files[0]} is being compared to itself')
+                    'File {} is being compared to itself').format(
+                    duplicate_files[0])
                 self.msgarea_mgr[index].add_dismissable_msg(
                     'dialog-warning-symbolic', primary, '', self.msgarea_mgr)
         elif self.linediffer.sequences_identical():

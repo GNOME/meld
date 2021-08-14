@@ -104,6 +104,11 @@ class MeldApp(Gtk.Application):
         self.activate()
         return 0
 
+    def do_window_removed(self, widget):
+        Gtk.Application.do_window_removed(self, widget)
+        if not len(self.get_windows()):
+            self.quit()
+
     # We can't override do_local_command_line because it has no introspection
     # annotations: https://bugzilla.gnome.org/show_bug.cgi?id=687912
 
@@ -331,8 +336,9 @@ class MeldApp(Gtk.Application):
             # TODO: support for directories specified by URIs
             file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
             if not f.is_native() and file_type == Gio.FileType.DIRECTORY:
-                raise ValueError(
-                    _("remote folder “{}” not supported").format(arg))
+                if f.get_path() is None:
+                    raise ValueError(
+                        _("remote folder “{}” not supported").format(arg))
 
             return f
 

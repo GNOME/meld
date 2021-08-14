@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2020-10-18 00:50+0000\n"
-"PO-Revision-Date: 2020-11-13 15:26+0700\n"
+"POT-Creation-Date: 2021-05-15 21:16+0000\n"
+"PO-Revision-Date: 2021-05-31 18:41+0700\n"
 "Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural= n!=1;\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 2.4.3\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9
@@ -148,8 +148,6 @@ msgstr ""
 "Dipakai oleh GtkSourceView untuk menentukan warna bagi penyorotan sintaks"
 
 #: data/org.gnome.meld.gschema.xml:91
-#, fuzzy
-#| msgid "Show whitespace"
 msgid "Draw whitespace"
 msgstr "Tampilkan whitespace"
 
@@ -758,9 +756,8 @@ msgid "Save A_ll"
 msgstr "Simpan Semu_a"
 
 #: meld/resources/gtk/menus.ui:34
-#, fuzzy
 msgid "Revert files…"
-msgstr "Kembalikan file..."
+msgstr "Pulihkan berkas…"
 
 #: meld/resources/gtk/menus.ui:38
 msgid "Open Externally"
@@ -868,8 +865,6 @@ msgid "Ignored"
 msgstr "Diabaikan"
 
 #: meld/resources/gtk/menus.ui:186
-#, fuzzy
-#| msgid "Flatten directories"
 msgid "Flatten folders"
 msgstr "Ratakan direktori"
 
@@ -884,7 +879,7 @@ msgstr ""
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
 msgstr ""
-"Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016, 2018, 2020.\n"
+"Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016, 2018, 2020, 2021.\n"
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019."
 
 #: meld/resources/ui/appwindow.ui:29
@@ -892,10 +887,8 @@ msgid "Start a new comparison"
 msgstr "Mulai suatu perbandingan baru"
 
 #: meld/resources/ui/appwindow.ui:45
-#, fuzzy
-#| msgid "Open recent files"
 msgid "Open a recent comparison"
-msgstr "Buka berkas yang baru-baru ini"
+msgstr "Buka perbandingan baru-baru ini"
 
 #: meld/resources/ui/appwindow.ui:73
 msgid "Go to the previous change"
@@ -913,17 +906,15 @@ msgstr "Pindah ke konflik sebelumnya"
 msgid "Go to the next conflict"
 msgstr "Pindah ke konflik selanjutnya"
 
-#: meld/resources/ui/appwindow.ui:191
-#, fuzzy
-#| msgid "Version Status"
+#: meld/resources/ui/appwindow.ui:192
 msgid "Version Filters"
-msgstr "Status Versi"
+msgstr "Penyaring Versi"
 
-#: meld/resources/ui/appwindow.ui:206 meld/resources/ui/preferences.ui:1456
+#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1456
 msgid "File Filters"
 msgstr "Penyaring Berkas"
 
-#: meld/resources/ui/appwindow.ui:221 meld/resources/ui/preferences.ui:1641
+#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1641
 msgid "Text Filters"
 msgstr "Penyaring Teks"
 
@@ -1110,7 +1101,7 @@ msgstr "Berkas 1"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:208
-#: meld/dirdiff.py:509
+#: meld/dirdiff.py:517
 msgid "Name"
 msgstr "Nama"
 
@@ -1150,73 +1141,72 @@ msgstr "Dilipat"
 msgid "Replace _All"
 msgstr "Timp_a Semua"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1043 meld/iohelpers.py:115
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1067 meld/iohelpers.py:113
 msgid "_Replace"
 msgstr "_Timpa"
 
 #: meld/resources/ui/findbar.ui:226
-#, fuzzy
 msgid "Switch between Find and Find-and-Replace"
-msgstr "Beralih antara Cari dan temukan-dan-ganti"
+msgstr "Beralih antara Cari dan Cari-dan-Ganti"
 
 #: meld/resources/ui/language-selector.ui:31
 msgid "Search highlight mode…"
 msgstr "Mode sorot pencarian…"
 
-#: meld/resources/ui/new-diff-tab.ui:119 meld/meldwindow.py:345
+#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:349
 #: meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Perbandingan baru"
 
-#: meld/resources/ui/new-diff-tab.ui:171
+#: meld/resources/ui/new-diff-tab.ui:72
 msgid "File"
 msgstr "Berkas"
 
-#: meld/resources/ui/new-diff-tab.ui:220
+#: meld/resources/ui/new-diff-tab.ui:121
 msgid "Folder"
 msgstr "Folder"
 
-#: meld/resources/ui/new-diff-tab.ui:269
+#: meld/resources/ui/new-diff-tab.ui:170
 msgid "Version control"
 msgstr "Kontrol versi"
 
-#: meld/resources/ui/new-diff-tab.ui:334 meld/resources/ui/new-diff-tab.ui:454
+#: meld/resources/ui/new-diff-tab.ui:235 meld/resources/ui/new-diff-tab.ui:355
 msgid "_3-way comparison"
 msgstr "Perbandingan _3 pihak"
 
-#: meld/resources/ui/new-diff-tab.ui:353
+#: meld/resources/ui/new-diff-tab.ui:255
 msgid "Select First File"
 msgstr "Pilih Berkas Pertama"
 
-#: meld/resources/ui/new-diff-tab.ui:367
+#: meld/resources/ui/new-diff-tab.ui:269
 msgid "Select Second File"
 msgstr "Pilih Berkas Ke Dua"
 
-#: meld/resources/ui/new-diff-tab.ui:383
+#: meld/resources/ui/new-diff-tab.ui:284
 msgid "Select Third File"
 msgstr "Pilih Berkas Ke Tiga"
 
-#: meld/resources/ui/new-diff-tab.ui:418
+#: meld/resources/ui/new-diff-tab.ui:319
 msgid "Select First Folder"
 msgstr "Pilih Folder Pertama"
 
-#: meld/resources/ui/new-diff-tab.ui:431
+#: meld/resources/ui/new-diff-tab.ui:332
 msgid "Select Second Folder"
 msgstr "Pilih Folder Ke Dua"
 
-#: meld/resources/ui/new-diff-tab.ui:445
+#: meld/resources/ui/new-diff-tab.ui:346
 msgid "Select Third Folder"
 msgstr "Pilih Folder Ke Tiga"
 
-#: meld/resources/ui/new-diff-tab.ui:495
+#: meld/resources/ui/new-diff-tab.ui:396
 msgid "Select A Version-Controlled Folder"
 msgstr "Pilih Suatu Folder Versi-Terkendali"
 
-#: meld/resources/ui/new-diff-tab.ui:544
+#: meld/resources/ui/new-diff-tab.ui:445
 msgid "_Blank comparison"
 msgstr "Per_bandingan kosong"
 
-#: meld/resources/ui/new-diff-tab.ui:561
+#: meld/resources/ui/new-diff-tab.ui:462
 msgid "C_ompare"
 msgstr "B_andingkan"
 
@@ -1270,7 +1260,7 @@ msgstr "Fonta p_enyunting:"
 
 #. TRANSLATORS: This is the status bar label for a group of settings,
 #. such as text wrapping, show line numbers, whitespace, etc.
-#: meld/resources/ui/preferences.ui:198 meld/ui/statusbar.py:288
+#: meld/resources/ui/preferences.ui:198 meld/ui/statusbar.py:291
 msgid "Display"
 msgstr "Tampilan"
 
@@ -1493,10 +1483,8 @@ msgid "_Push commits"
 msgstr "_Push komit"
 
 #: meld/resources/ui/recent-selector.ui:16
-#, fuzzy
-#| msgid "Search text encoding…"
 msgid "Search recent comparisons…"
-msgstr "Pengkodean teks pencarian…"
+msgstr "Cari perbandingan baru-baru ini…"
 
 #: meld/resources/ui/revert-dialog.ui:9
 msgid "Discard unsaved changes to documents?"
@@ -1523,8 +1511,8 @@ msgstr "Bila Anda tak menyimpan, perubahan akan hilang selamanya."
 msgid "Close _without Saving"
 msgstr "Tutup _Tanpa Menyimpan"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1042
-#: meld/iohelpers.py:56 meld/iohelpers.py:114
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1066
+#: meld/iohelpers.py:55 meld/iohelpers.py:112
 msgid "_Cancel"
 msgstr "_Batal"
 
@@ -1565,10 +1553,8 @@ msgid "Mar_k as Resolved"
 msgstr "Tandai sebagai Terselesai_kan"
 
 #: meld/resources/ui/vcview.ui:73
-#, fuzzy
-#| msgid "Co_mmit…"
 msgid "Commit…"
-msgstr "Komit"
+msgstr "Komit…"
 
 #: meld/resources/ui/vcview.ui:74
 msgid "Commit changes to version control"
@@ -1626,7 +1612,7 @@ msgstr "Kembalikan salinan kerja ke keadaan asli"
 msgid "Delete from working copy"
 msgstr "Hapus dari salinan kerja"
 
-#: meld/resources/ui/vcview.ui:220 meld/vcview.py:411
+#: meld/resources/ui/vcview.ui:220
 msgid "Location"
 msgstr "Lokasi"
 
@@ -1663,39 +1649,43 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:530 meld/preferences.py:132
+#: meld/dirdiff.py:538 meld/preferences.py:132
 msgid "Size"
 msgstr "Ukuran"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:538 meld/preferences.py:133
+#: meld/dirdiff.py:546 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Waktu modifikasi"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:546 meld/preferences.py:134
+#: meld/dirdiff.py:554 meld/preferences.py:134
 msgid "Permissions"
 msgstr "Ijin"
 
-#: meld/dirdiff.py:770 meld/dirdiff.py:793
-#, python-format
-msgid "[%s] Scanning %s"
-msgstr "[%s] Memindai %s"
+#: meld/dirdiff.py:778 meld/dirdiff.py:802
+#, python-brace-format
+msgid "[{label}] Scanning {folder}"
+msgstr "[{label}] Memindai {folder}"
 
-#: meld/dirdiff.py:929
-#, python-format
-msgid "[%s] Done"
-msgstr "[%s] Selesai"
+#: meld/dirdiff.py:942
+#, python-brace-format
+msgid "[{label}] Done"
+msgstr "[{label}] selesai"
 
-#: meld/dirdiff.py:936
+#: meld/dirdiff.py:951
+msgid "Folder {} is being compared to itself"
+msgstr "Folder {} sedang dibandingkan dengan dirinya sendiri"
+
+#: meld/dirdiff.py:957
 msgid "Folders have no differences"
 msgstr "Folder-folder tak punya perbedaan"
 
-#: meld/dirdiff.py:938
+#: meld/dirdiff.py:959
 msgid "Contents of scanned files in folders are identical."
 msgstr "Isi berkas yang dipindai dalam folder-folder identik."
 
-#: meld/dirdiff.py:940
+#: meld/dirdiff.py:961
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1703,46 +1693,46 @@ msgstr ""
 "Berkas-berkas yang dipindai dalam folder-folder tampak identik, tapi isi "
 "belum dipindai."
 
-#: meld/dirdiff.py:943
+#: meld/dirdiff.py:964
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Penyaring berkas sedang dipakai, maka tidak semua berkas telah dipindai."
 
-#: meld/dirdiff.py:945
+#: meld/dirdiff.py:966
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Penyaring teks sedang dipakai dan mungkin menutupi perbedaan isi."
 
-#: meld/dirdiff.py:961 meld/filediff.py:1853
+#: meld/dirdiff.py:982 meld/filediff.py:1874
 msgid "Hide"
 msgstr "Sembunyikan"
 
-#: meld/dirdiff.py:963 meld/filediff.py:1855 meld/filediff.py:1885
-#: meld/filediff.py:1887 meld/ui/msgarea.py:108 meld/ui/msgarea.py:121
+#: meld/dirdiff.py:984 meld/filediff.py:1876 meld/filediff.py:1906
+#: meld/filediff.py:1908 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "Sem_bunyikan"
 
-#: meld/dirdiff.py:972
+#: meld/dirdiff.py:993
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Galat berganda terjadi ketika memindai folder ini"
 
-#: meld/dirdiff.py:973
+#: meld/dirdiff.py:994
 msgid "Files with invalid encodings found"
 msgstr "Berkas dengan pengkodean tak valid ditemukan"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:975
+#: meld/dirdiff.py:996
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Beberapa berkas memiliki pengkodean yang salah. Namanya kurang lebih seperti:"
 
-#: meld/dirdiff.py:977
+#: meld/dirdiff.py:998
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 "Berkasn yang disembunyikan oleh perbandingan yang tak membedakan huruf besar "
 "kecil"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:979
+#: meld/dirdiff.py:1000
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1751,17 +1741,17 @@ msgstr ""
 "sistem berkas yang peka huruf besar kecil. Berkas-berkas berikut dalam "
 "folder ini tersembunyi:"
 
-#: meld/dirdiff.py:990
-#, python-format
-msgid "“%s” hidden by “%s”"
-msgstr "\"%s\" disembunyikan oleh \"%s\""
+#: meld/dirdiff.py:1011
+#, python-brace-format
+msgid "“{first_file}” hidden by “{second_file}”"
+msgstr "\"{first_file}\" disembunyikan oleh \"{second_file}\""
 
-#: meld/dirdiff.py:1046
+#: meld/dirdiff.py:1070
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Timpa folder “%s”?"
 
-#: meld/dirdiff.py:1048
+#: meld/dirdiff.py:1072
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1770,36 +1760,36 @@ msgstr ""
 "Folder lain dengan nama sama telah ada dalam \"%s\".\n"
 "Bila Anda menimpa folder yang ada, semua berkas di dalamnya akan hilang."
 
-#: meld/dirdiff.py:1061
+#: meld/dirdiff.py:1085
 msgid "Error copying file"
 msgstr "Galat saat menyalin berkas"
 
-#: meld/dirdiff.py:1062
-#, python-format
+#: meld/dirdiff.py:1086
+#, python-brace-format
 msgid ""
-"Couldn’t copy %s\n"
-"to %s.\n"
+"Couldn’t copy {source}\n"
+"to {dest}.\n"
 "\n"
-"%s"
+"{error}"
 msgstr ""
-"Tak bisa menyalin %s\n"
-"ke %s.\n"
+"Tak bisa menyalin {source}\n"
+"ke {dest}.\n"
 "\n"
-"%s"
+"{error}"
 
-#: meld/dirdiff.py:1087 meld/vcview.py:759
+#: meld/dirdiff.py:1111 meld/vcview.py:759
 msgid "Error deleting {}"
 msgstr "Galat saat menghapus {}"
 
-#: meld/dirdiff.py:1580
+#: meld/dirdiff.py:1604
 msgid "No folder"
 msgstr "Tidak ada folder"
 
-#: meld/filediff.py:1135
+#: meld/filediff.py:1144
 msgid "Comparison results will be inaccurate"
 msgstr "Hasil perbandingan tidak akan akurat"
 
-#: meld/filediff.py:1137
+#: meld/filediff.py:1146
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1807,71 +1797,75 @@ msgstr ""
 "Suatu penyaring mengubah cacah baris dalam berkas, yang tidak didukung. "
 "Perbandingan tidak akan akurat."
 
-#: meld/filediff.py:1209
+#: meld/filediff.py:1218
 msgid "Mark conflict as resolved?"
 msgstr "Tandai konflik sebagai terselesaikan?"
 
-#: meld/filediff.py:1211
+#: meld/filediff.py:1220
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Bila konflik sukses dipecahkan, Anda dapat menandainya sebagai terpecahkan "
 "sekarang."
 
-#: meld/filediff.py:1213
+#: meld/filediff.py:1222
 msgid "Cancel"
 msgstr "Batal"
 
-#: meld/filediff.py:1214
+#: meld/filediff.py:1223
 msgid "Mark _Resolved"
 msgstr "Tandai Te_rselesaikan"
 
-#: meld/filediff.py:1547
+#: meld/filediff.py:1556
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Ada masalah saat membuka berkas \"%s\"."
 
-#: meld/filediff.py:1555
+#: meld/filediff.py:1564
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Berkas %s tampaknya berkas biner."
 
-#: meld/filediff.py:1557
+#: meld/filediff.py:1566
 msgid "Do you want to open the file using the default application?"
 msgstr "Apakah Anda ingin membuka berkas memakai aplikasi baku?"
 
-#: meld/filediff.py:1559
+#: meld/filediff.py:1568
 msgid "Open"
 msgstr "Buka"
 
-#: meld/filediff.py:1573
+#: meld/filediff.py:1582
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Sedang merge berkas"
 
-#: meld/filediff.py:1587
+#: meld/filediff.py:1596
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Menghitung perbedaan"
 
-#: meld/filediff.py:1648
+#: meld/filediff.py:1657
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Berkas %s telah berubah pada disk"
 
-#: meld/filediff.py:1649
+#: meld/filediff.py:1658
 msgid "Do you want to reload the file?"
 msgstr "Apakah Anda ingin memuat ulang berkas?"
 
-#: meld/filediff.py:1651
+#: meld/filediff.py:1660
 msgid "_Reload"
 msgstr "Muat _Ulang"
 
-#: meld/filediff.py:1818
+#: meld/filediff.py:1830
+msgid "File {} is being compared to itself"
+msgstr "Berkas {} sedang dibandingkan dengan dirinya sendiri"
+
+#: meld/filediff.py:1839
 msgid "Files are identical"
 msgstr "Berkas identik"
 
-#: meld/filediff.py:1831
+#: meld/filediff.py:1852
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1879,11 +1873,11 @@ msgstr ""
 "Penyaring teks sedang dipakai, dan mungkin menutupi perbedaan antara berkas. "
 "Apakah Anda ingin membandingkan berkas-berkas yang tak tersaring?"
 
-#: meld/filediff.py:1836
+#: meld/filediff.py:1857
 msgid "Files differ in line endings only"
 msgstr "Berkas berbeda hanya pada akhiran baris"
 
-#: meld/filediff.py:1838
+#: meld/filediff.py:1859
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1892,15 +1886,15 @@ msgstr ""
 "Berkas-berkas identik kecuali perbedaan akhiran baris:\n"
 "%s"
 
-#: meld/filediff.py:1858
+#: meld/filediff.py:1879
 msgid "Show without filters"
 msgstr "Tampilkan tanpa penyaring"
 
-#: meld/filediff.py:1880
+#: meld/filediff.py:1901
 msgid "Change highlighting incomplete"
 msgstr "Penyorotan perubahan tak lengkap"
 
-#: meld/filediff.py:1881
+#: meld/filediff.py:1902
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1909,19 +1903,19 @@ msgstr ""
 "untuk lebih panjang sehingga menyorot perubahan yang lebih besar, walaupun "
 "ini mungkin lambat."
 
-#: meld/filediff.py:1889
+#: meld/filediff.py:1910
 msgid "Keep highlighting"
 msgstr "Tetap menyorot"
 
-#: meld/filediff.py:1891
+#: meld/filediff.py:1912
 msgid "_Keep highlighting"
 msgstr "_Tetap menyorot"
 
-#: meld/filediff.py:1904
+#: meld/filediff.py:1925
 msgid "Saving failed"
 msgstr "Gagal menyimpan"
 
-#: meld/filediff.py:1905
+#: meld/filediff.py:1926
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1929,42 +1923,42 @@ msgstr ""
 "Harap pertimbangkan untuk menyalin perubahan penting apapun ke program atau "
 "berkas lain untuk menghindari kehilangan data."
 
-#: meld/filediff.py:1914
+#: meld/filediff.py:1935
 msgid "Save Left Pane As"
 msgstr "Simpan Panel Kiri Sebagai"
 
-#: meld/filediff.py:1916
+#: meld/filediff.py:1937
 msgid "Save Middle Pane As"
 msgstr "Simpan Panel Tengah Sebagai"
 
-#: meld/filediff.py:1918
+#: meld/filediff.py:1939
 msgid "Save Right Pane As"
 msgstr "Simpan Panel Kanan Sebagai"
 
-#: meld/filediff.py:1929
+#: meld/filediff.py:1950
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Berkas %s telah berubah pada disk sejak dibuka"
 
-#: meld/filediff.py:1931
+#: meld/filediff.py:1952
 msgid "If you save it, any external changes will be lost."
 msgstr "Bila Anda menyimpannya, perubahan eksternal akan hilang."
 
-#: meld/filediff.py:1934
+#: meld/filediff.py:1955
 msgid "Save Anyway"
 msgstr "Simpan Saja"
 
-#: meld/filediff.py:1935
+#: meld/filediff.py:1956
 msgid "Don’t Save"
 msgstr "Jangan Simpan"
 
-#: meld/filediff.py:1977
+#: meld/filediff.py:1998
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Berkas “{}” memuat karakter yang tak bisa dienkode dengan “{}”."
 
-#: meld/filediff.py:1981 meld/patchdialog.py:138
+#: meld/filediff.py:2002 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1973,20 +1967,20 @@ msgstr ""
 "Tidak bisa menyimpan berkas karena:\n"
 "%s"
 
-#: meld/filediff.py:1985 meld/patchdialog.py:137
+#: meld/filediff.py:2006 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Tak bisa menyimpan berkas %s."
 
-#: meld/filediff.py:2046
+#: meld/filediff.py:2067
 msgid "Open File"
 msgstr "Buka Berkas"
 
-#: meld/filediff.py:2400
+#: meld/filediff.py:2421
 msgid "Live comparison updating disabled"
 msgstr "Pemutakhiran perbandingan live dinonaktifkan"
 
-#: meld/filediff.py:2401
+#: meld/filediff.py:2422
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -1997,34 +1991,34 @@ msgstr ""
 "dan pemutakhiran secara live akan dilanjutkan ketika titik penyelarasan "
 "dibersihkan."
 
-#: meld/iohelpers.py:41
+#: meld/iohelpers.py:40
 msgid "Deleting remote folders is not supported"
 msgstr "Menghapus folder jauh tidak didukung"
 
-#: meld/iohelpers.py:43
+#: meld/iohelpers.py:42
 msgid "Not a file or directory"
 msgstr "Bukan suatu berkas atau direktori"
 
-#: meld/iohelpers.py:47
+#: meld/iohelpers.py:46
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr ""
 "\"{}\" tak bisa dibuang ke tong sampah. Apakah Anda hendak langsung "
 "menghapusnya?"
 
-#: meld/iohelpers.py:52
+#: meld/iohelpers.py:51
 msgid "This remote location does not support sending items to the trash."
 msgstr "Lokasi remote ini tidak mendukung pengiriman butir ke tong sampah."
 
-#: meld/iohelpers.py:57
+#: meld/iohelpers.py:56
 msgid "_Delete Permanently"
 msgstr "_Hapus Permanen"
 
-#: meld/iohelpers.py:108
+#: meld/iohelpers.py:106
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Timpa berkas “%s”?"
 
-#: meld/iohelpers.py:110
+#: meld/iohelpers.py:108
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2033,98 +2027,98 @@ msgstr ""
 "Sebuah berkas dengan nama ini telah ada dalam \"%s\".\n"
 "Bila Anda menimpa berkas yang ada, isinya akan hilang."
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
 msgstr "banyaknya argumen yang diberikan ke --diff salah"
 
-#: meld/meldapp.py:188
+#: meld/meldapp.py:193
 msgid "Start with an empty window"
 msgstr "Mulai dengan jendela kosong"
 
-#: meld/meldapp.py:189 meld/meldapp.py:191
+#: meld/meldapp.py:194 meld/meldapp.py:196
 msgid "file"
 msgstr "berkas"
 
-#: meld/meldapp.py:189 meld/meldapp.py:193
+#: meld/meldapp.py:194 meld/meldapp.py:198
 msgid "folder"
 msgstr "folder"
 
-#: meld/meldapp.py:190
+#: meld/meldapp.py:195
 msgid "Start a version control comparison"
 msgstr "Mulai suatu perbandingan kendali versi"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Mulai perbandingan berkas 2 atau 3 pihak"
 
-#: meld/meldapp.py:194
+#: meld/meldapp.py:199
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Mulai perbandingan folder 2 atau 3 pihak"
 
-#: meld/meldapp.py:237
+#: meld/meldapp.py:242
 #, python-format
 msgid "Error: %s\n"
 msgstr "Galat: %s\n"
 
-#: meld/meldapp.py:244
+#: meld/meldapp.py:249
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld adalah alat perbandingan berkas dan direktori."
 
-#: meld/meldapp.py:248
+#: meld/meldapp.py:253
 msgid "Set label to use instead of file name"
 msgstr "Tata label yang akan dipakai sebagai ganti nama berkas"
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:256
 msgid "Open a new tab in an already running instance"
 msgstr "Buka tab baru pada instansi yang sedang berjalan"
 
-#: meld/meldapp.py:254
+#: meld/meldapp.py:259
 msgid "Automatically compare all differing files on startup"
 msgstr "Otomatis membandingkan semua berkas yang berbeda saat awal mula"
 
-#: meld/meldapp.py:257
+#: meld/meldapp.py:262
 msgid "Ignored for compatibility"
 msgstr "Diabaikan untuk kompatibilitas"
 
-#: meld/meldapp.py:261
+#: meld/meldapp.py:266
 msgid "Set the target file for saving a merge result"
 msgstr "Tata berkas target untuk menyimpan hasil merge"
 
-#: meld/meldapp.py:264
+#: meld/meldapp.py:269
 msgid "Automatically merge files"
 msgstr "Otomatis me-merge berkas"
 
-#: meld/meldapp.py:268
+#: meld/meldapp.py:273
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Muat perbandingan yang disimpan dari suatu berkas perbandingan Meld"
 
-#: meld/meldapp.py:272
+#: meld/meldapp.py:277
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Buat suatu tab diff bagi berkas atau folder yang diberikan"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:297
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "terlalu banyak argumen (diinginkan 0-3, diperoleh %d)"
 
-#: meld/meldapp.py:295
+#: meld/meldapp.py:300
 msgid "can’t auto-merge less than 3 files"
 msgstr "tak bisa merge otomatis kurang dari 3 berkas"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:302
 msgid "can’t auto-merge directories"
 msgstr "tak bisa merge otomatis direktori"
 
-#: meld/meldapp.py:312
+#: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
 msgstr "Galat saat membaca berkas perbandingan yang disimpan"
 
-#: meld/meldapp.py:329
+#: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "path atau URI \"%s\" tidak valid"
 
-#: meld/meldapp.py:335
+#: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
 msgstr "folder jauh “{}” tidak didukung"
 
@@ -2137,16 +2131,16 @@ msgstr "<tanpa nama>"
 msgid "untitled"
 msgstr "tanpa judul"
 
-#: meld/meldwindow.py:151
+#: meld/meldwindow.py:155
 msgid "Filename"
 msgstr "Nama Berkas"
 
-#: meld/meldwindow.py:380
+#: meld/meldwindow.py:384
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Perlu tiga berkas untuk merge otomatis, mendapat: %r"
 
-#: meld/meldwindow.py:402
+#: meld/meldwindow.py:406
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Tak bisa membandingkan campuran berkas dan direktori"
 
@@ -2178,12 +2172,10 @@ msgstr "pola"
 msgid "Version control:"
 msgstr "Kendali versi:"
 
-#: meld/style.py:90
-#, python-format
-msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
+#: meld/style.py:91
+msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgstr ""
-"Tak bisa temukan rincian skema warna bagi %s-%s; ini adalah instalasi yang "
-"buruk"
+"Tak bisa temukan rincian skema warna bagi {}; ini adalah instalasi yang buruk"
 
 #: meld/ui/bufferselectors.py:110
 #, python-brace-format
@@ -2194,23 +2186,13 @@ msgstr "{name} ({charset})"
 msgid "Plain Text"
 msgstr "Teks Polos"
 
-#: meld/ui/filechooser.py:68
-#, fuzzy
-msgid "Autodetect Encoding"
-msgstr "Deteksi Mandiri Pengkodean"
-
-#: meld/ui/filechooser.py:71
-#, fuzzy
-msgid "Current Locale ({})"
-msgstr "Lokal Saat Ini: "
-
 #. Abbreviation for line, column so that it will fit in the status bar
-#: meld/ui/statusbar.py:123
-#, python-format
-msgid "Ln %i, Col %i"
-msgstr "Brs %i, Kol %i"
+#: meld/ui/statusbar.py:125
+#, python-brace-format
+msgid "Ln {line}, Col {column}"
+msgstr "Brs {line}, Kol {column}"
 
-#: meld/ui/statusbar.py:183
+#: meld/ui/statusbar.py:185
 msgid "Line you want to move the cursor to"
 msgstr "Baris yang ingin Anda pindahkan kursor ke"
 
@@ -2218,39 +2200,40 @@ msgstr "Baris yang ingin Anda pindahkan kursor ke"
 msgid "No files will be committed"
 msgstr "Tak ada berkas yang akan dikomit"
 
-#. Translators: First %s is replaced by translated "%d unpushed
-#. commits", second %s is replaced by translated "%d branches"
-#: meld/vc/git.py:91
-#, python-format
-msgid "%s in %s"
-msgstr "%s dalam %s"
+#. Translators: First element is replaced by translated "%d
+#. unpushed commits", second element is replaced by translated
+#. "%d branches"
+#: meld/vc/git.py:92
+#, python-brace-format
+msgid "{unpushed_commits} in {unpushed_branches}"
+msgstr "{unpushed_commits} dalam {unpushed_branches}"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: meld/vc/git.py:92 meld/vc/git.py:99
+#: meld/vc/git.py:94 meld/vc/git.py:103
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d komit belum didorong"
 msgstr[1] "%d komit belum didorong"
 
-#: meld/vc/git.py:94
+#: meld/vc/git.py:97
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d cabang"
 msgstr[1] "%d cabang"
 
-#: meld/vc/git.py:339
-#, python-format
-msgid "Mode changed from %s to %s"
-msgstr "Mode diubah dari %s ke %s"
+#: meld/vc/git.py:344
+#, python-brace-format
+msgid "Mode changed from {old_mode} to {new_mode}"
+msgstr "Mode berubah dari {old_mode} menjadi {new_mode}"
 
-#: meld/vc/git.py:347
+#: meld/vc/git.py:352
 msgid "Partially staged"
 msgstr "Di-stage sebagian"
 
-#: meld/vc/git.py:347
+#: meld/vc/git.py:352
 msgid "Staged"
 msgstr "Di-stage"
 
@@ -2260,7 +2243,7 @@ msgstr "Di-stage"
 msgid "None"
 msgstr "Nihil"
 
-#: meld/vc/svn.py:204
+#: meld/vc/svn.py:203
 #, python-format
 msgid "Rev %s"
 msgstr "Rev %s"
@@ -2340,9 +2323,9 @@ msgstr "Pilih sistem kendali mana yang akan dipakai"
 
 #. TRANSLATORS: This is the location of the directory being viewed
 #: meld/vcview.py:411
-#, python-format
-msgid "%s: %s"
-msgstr "%s: %s"
+#, python-brace-format
+msgid "Location: {path}"
+msgstr "Lokasi: {path}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.

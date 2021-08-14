@@ -1,5 +1,5 @@
 # Brazilian Portuguese translation of meld.
-# Copyright (C) 2020 Free Software Foundation, Inc.
+# Copyright (C) 2021 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
 # Raphael Higino <In memoriam>, 2004.
 # Djavan Fagundes <dnoway@gmail.com>, 2008, 2009.
@@ -8,15 +8,15 @@
 # Leonardo Ferreira Fontenelle <leonardof@gnome.org>, 2008.
 # Gabriel Speckhahn <gabspeck@gmail.com>, 2011.
 # Florêncio Neves <florencioneves@gmail.com>, 2012.
-# Enrico Nicoletto <liverig@gmail.com>, 2013, 2018.
-# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2020.
+# Enrico Nicoletto <liverig@gmail.com>, 2013, 2018-2021.
+# Rafael Fontenelle <rafaelff@gnome.org>, 2013-2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2020-02-19 20:24+0000\n"
-"PO-Revision-Date: 2020-02-20 19:44-0300\n"
+"POT-Creation-Date: 2021-07-25 20:07+0000\n"
+"PO-Revision-Date: 2021-07-28 11:17-0300\n"
 "Last-Translator: Rafael Fontenelle <rafaelff@gnome.org>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt_BR\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1)\n"
-"X-Generator: Gtranslator 3.32.0\n"
+"X-Generator: Gtranslator 40.0\n"
 "X-Project-Style: gnome\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
@@ -91,10 +91,22 @@ msgid "Default window fullscreen state"
 msgstr "Estado tela cheia padrão da janela"
 
 #: data/org.gnome.meld.gschema.xml:58
+msgid "Prefer application-wide dark theme"
+msgstr "Preferir tema escuro em todo o aplicativo"
+
+#: data/org.gnome.meld.gschema.xml:59
+msgid ""
+"If true, the GTK dark theme variant will be used, if available. Note that "
+"this is separate from the syntax highlighting scheme."
+msgstr ""
+"Se verdadeiro, a variante de tema escuro GTK será usada, se disponível. "
+"Observe que isso é separado do esquema de realce de sintaxe."
+
+#: data/org.gnome.meld.gschema.xml:65
 msgid "Additional automatically detected text encodings"
 msgstr "Codificações de texto adicionais detectadas automaticamente"
 
-#: data/org.gnome.meld.gschema.xml:59
+#: data/org.gnome.meld.gschema.xml:66
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -107,38 +119,38 @@ msgstr ""
 "será sempre usada; outras codificações também podem ser tentadas, dependendo "
 "da localidade do usuário."
 
-#: data/org.gnome.meld.gschema.xml:66
+#: data/org.gnome.meld.gschema.xml:73
 msgid "Width of an indentation step"
 msgstr "Largura de uma etapa de recuo"
 
-#: data/org.gnome.meld.gschema.xml:67
+#: data/org.gnome.meld.gschema.xml:74
 msgid "The number of spaces to use for a single indent step"
 msgstr "O número de espaços a serem usados para uma única etapa de recuo"
 
-#: data/org.gnome.meld.gschema.xml:71
+#: data/org.gnome.meld.gschema.xml:78
 msgid "Whether to indent using spaces or tabs"
 msgstr "Se deve ser recuado usando espaços ou tabulações"
 
-#: data/org.gnome.meld.gschema.xml:72
+#: data/org.gnome.meld.gschema.xml:79
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr ""
 "Se verdadeiro, qualquer novo recuo vai usar espaços ao invés de tabulações."
 
-#: data/org.gnome.meld.gschema.xml:76 meld/resources/ui/statusbar-menu.ui:5
+#: data/org.gnome.meld.gschema.xml:83 meld/resources/ui/statusbar-menu.ui:5
 msgid "Show line numbers"
 msgstr "Mostra números de linhas"
 
-#: data/org.gnome.meld.gschema.xml:77
+#: data/org.gnome.meld.gschema.xml:84
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr ""
 "Se verdadeiro, números de linhas serão mostrados nas margens das comparações "
 "de arquivos."
 
-#: data/org.gnome.meld.gschema.xml:81
+#: data/org.gnome.meld.gschema.xml:88
 msgid "Highlight syntax"
 msgstr "Destaque de linha"
 
-#: data/org.gnome.meld.gschema.xml:82
+#: data/org.gnome.meld.gschema.xml:89
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
@@ -146,19 +158,19 @@ msgstr ""
 "Se deve destacar linhas nas comparações. Por causa do destaque de cores "
 "próprio do Meld, isso está desativado por padrão."
 
-#: data/org.gnome.meld.gschema.xml:86
+#: data/org.gnome.meld.gschema.xml:93
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Esquema de cores a ser usada para realce de sintaxe"
 
-#: data/org.gnome.meld.gschema.xml:87
+#: data/org.gnome.meld.gschema.xml:94
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr "Usado pelo GtkSourceView para determinar cores para realce de sintaxe"
 
-#: data/org.gnome.meld.gschema.xml:91
+#: data/org.gnome.meld.gschema.xml:98
 msgid "Draw whitespace"
 msgstr "Desenhar espaço em branco"
 
-#: data/org.gnome.meld.gschema.xml:92
+#: data/org.gnome.meld.gschema.xml:99
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
@@ -166,11 +178,11 @@ msgstr ""
 "Se verdadeiro, caracteres de espaço em branco serão desenhados em "
 "comparações mesmo se eles não estiverem em uma área alterada."
 
-#: data/org.gnome.meld.gschema.xml:101
+#: data/org.gnome.meld.gschema.xml:108
 msgid "Wrap mode"
 msgstr "Quebra de linha"
 
-#: data/org.gnome.meld.gschema.xml:102
+#: data/org.gnome.meld.gschema.xml:109
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -180,11 +192,11 @@ msgstr ""
 "configuração, seja nenhuma (“none”), seja em qualquer caractere (“char”), "
 "seja apenas ao final das palavras (“word”)."
 
-#: data/org.gnome.meld.gschema.xml:109 meld/resources/ui/statusbar-menu.ui:13
+#: data/org.gnome.meld.gschema.xml:116 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
 msgstr "Destacar a linha atual"
 
-#: data/org.gnome.meld.gschema.xml:110
+#: data/org.gnome.meld.gschema.xml:117
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
@@ -192,22 +204,22 @@ msgstr ""
 "Se verdadeiro, a linha contendo o cursor será destacada nas comparações de "
 "arquivos."
 
-#: data/org.gnome.meld.gschema.xml:114
+#: data/org.gnome.meld.gschema.xml:121
 msgid "Use the system default monospace font"
 msgstr "Usa a fonte mono-espaçada padrão do sistema"
 
-#: data/org.gnome.meld.gschema.xml:115
+#: data/org.gnome.meld.gschema.xml:122
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
 "Se falso, a fonte personalizada será usada ao invés da fonte monoespaçada do "
 "sistema."
 
-#: data/org.gnome.meld.gschema.xml:119
+#: data/org.gnome.meld.gschema.xml:126
 msgid "Custom font"
 msgstr "Fonte personalizada"
 
-#: data/org.gnome.meld.gschema.xml:120
+#: data/org.gnome.meld.gschema.xml:127
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
@@ -215,41 +227,41 @@ msgstr ""
 "A fonte personalizada para usar, armazenada como um texto e interpretada "
 "como uma descrição de fonte Pango."
 
-#: data/org.gnome.meld.gschema.xml:126
+#: data/org.gnome.meld.gschema.xml:133
 msgid "Show overview source map"
 msgstr "Mostrar visão geral de mapa de fontes"
 
-#: data/org.gnome.meld.gschema.xml:127
+#: data/org.gnome.meld.gschema.xml:134
 msgid ""
 "If true, file comparisons will have paired source maps for compared files."
 msgstr ""
 "Se verdadeiro, as comparações de arquivos terão mapas de fontes pareados "
 "para arquivos comparados."
 
-#: data/org.gnome.meld.gschema.xml:132
+#: data/org.gnome.meld.gschema.xml:139
 msgid "Style of overview map"
 msgstr "Estilo do mapa de visão geral"
 
-#: data/org.gnome.meld.gschema.xml:133
+#: data/org.gnome.meld.gschema.xml:140
 msgid "Style options for how the overview map is displayed."
 msgstr "Opções de estilo para como o mapa de visão geral é exibido."
 
-#: data/org.gnome.meld.gschema.xml:139
+#: data/org.gnome.meld.gschema.xml:146
 msgid "Ignore blank lines when comparing files"
 msgstr "Ignorar linhas vazias ao comparar arquivos"
 
-#: data/org.gnome.meld.gschema.xml:140
+#: data/org.gnome.meld.gschema.xml:147
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Se verdadeiro, linhas vazias serão aparadas ao destacar alterações entre "
 "arquivos."
 
-#: data/org.gnome.meld.gschema.xml:147
+#: data/org.gnome.meld.gschema.xml:154
 msgid "Use the system default editor"
 msgstr "Usar o editor padrão do sistema"
 
-#: data/org.gnome.meld.gschema.xml:148
+#: data/org.gnome.meld.gschema.xml:155
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -257,11 +269,11 @@ msgstr ""
 "Se falso, o comando de editor personalizado será usado ao invés do editor do "
 "sistema ao abrir arquivos externamente."
 
-#: data/org.gnome.meld.gschema.xml:152
+#: data/org.gnome.meld.gschema.xml:159
 msgid "The custom editor launch command"
 msgstr "O comando para iniciar o editor personalizado"
 
-#: data/org.gnome.meld.gschema.xml:153
+#: data/org.gnome.meld.gschema.xml:160
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -270,11 +282,11 @@ msgstr ""
 "limitados têm suporte aqui; no momento “{file}” e “{line}” são tokens "
 "reconhecidos."
 
-#: data/org.gnome.meld.gschema.xml:159
+#: data/org.gnome.meld.gschema.xml:166
 msgid "Columns to display"
 msgstr "Coluna para exibir"
 
-#: data/org.gnome.meld.gschema.xml:160
+#: data/org.gnome.meld.gschema.xml:167
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
@@ -282,11 +294,11 @@ msgstr ""
 "Lista de nomes de colunas na comparação de diretórios e se eles deveriam ser "
 "exibidos."
 
-#: data/org.gnome.meld.gschema.xml:164 meld/resources/ui/preferences.ui:935
+#: data/org.gnome.meld.gschema.xml:171 meld/resources/ui/preferences.ui:951
 msgid "Ignore symbolic links"
 msgstr "Ignorar ligações simbólicas"
 
-#: data/org.gnome.meld.gschema.xml:165
+#: data/org.gnome.meld.gschema.xml:172
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -294,11 +306,11 @@ msgstr ""
 "Se verdadeiro, comparações de pastas não seguirão ligações simbólicas ao "
 "atravessar a árvore de pastas."
 
-#: data/org.gnome.meld.gschema.xml:169
+#: data/org.gnome.meld.gschema.xml:176
 msgid "Use shallow comparison"
 msgstr "Usa comparação superficial"
 
-#: data/org.gnome.meld.gschema.xml:170
+#: data/org.gnome.meld.gschema.xml:177
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -308,11 +320,11 @@ msgstr ""
 "tamanho e mtime, considerando arquivos como sendo idênticos se seu tamanho e "
 "mtime corresponderem; do contrário, diferentes."
 
-#: data/org.gnome.meld.gschema.xml:174
+#: data/org.gnome.meld.gschema.xml:181
 msgid "File timestamp resolution"
 msgstr "Resolução da marca de tempo de arquivo"
 
-#: data/org.gnome.meld.gschema.xml:175
+#: data/org.gnome.meld.gschema.xml:182
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -324,11 +336,11 @@ msgstr ""
 "mtimes diferentes. Isso é útil quando se está comparando arquivos entre "
 "sistemas de arquivos com diferentes resolução de marca de tempo."
 
-#: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
+#: data/org.gnome.meld.gschema.xml:186 meld/resources/ui/preferences.ui:852
 msgid "Apply text filters during folder comparisons"
 msgstr "Aplicar filtros de texto durante comparação de pastas"
 
-#: data/org.gnome.meld.gschema.xml:180
+#: data/org.gnome.meld.gschema.xml:187
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -338,21 +350,21 @@ msgstr ""
 "também se aplicarão a filtros de texto ativos e à opção de aparar linhas "
 "vazias, e ignorar diferenças de nova linha."
 
-#: data/org.gnome.meld.gschema.xml:184
+#: data/org.gnome.meld.gschema.xml:191
 msgid "File status filters"
 msgstr "Filtros de status de arquivo"
 
-#: data/org.gnome.meld.gschema.xml:185
+#: data/org.gnome.meld.gschema.xml:192
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "Lista de status usados para filtrar arquivos visíveis na comparação de "
 "pastas."
 
-#: data/org.gnome.meld.gschema.xml:191
+#: data/org.gnome.meld.gschema.xml:198
 msgid "Show the version control console output"
 msgstr "Mostra a saída de console de controle de versão"
 
-#: data/org.gnome.meld.gschema.xml:192
+#: data/org.gnome.meld.gschema.xml:199
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -361,11 +373,11 @@ msgstr ""
 "controle de versão, mostrando os comandos executados para operações de "
 "controle de versão."
 
-#: data/org.gnome.meld.gschema.xml:196
+#: data/org.gnome.meld.gschema.xml:203
 msgid "Version control pane position"
 msgstr "Posição do painel de controle de versão"
 
-#: data/org.gnome.meld.gschema.xml:197
+#: data/org.gnome.meld.gschema.xml:204
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
@@ -373,11 +385,11 @@ msgstr ""
 "Essa é a altura da árvore principal de controle de versão quando o painel de "
 "console é mostrado."
 
-#: data/org.gnome.meld.gschema.xml:201
+#: data/org.gnome.meld.gschema.xml:208
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Apresenta comparações de versão como esquerda-local/direita-remoto"
 
-#: data/org.gnome.meld.gschema.xml:202
+#: data/org.gnome.meld.gschema.xml:209
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -388,11 +400,11 @@ msgstr ""
 "apresentados arquivos nos painéis. Do contrário, um esquema esquerda-é-deles "
 "e direita-é-meu é usado."
 
-#: data/org.gnome.meld.gschema.xml:206
+#: data/org.gnome.meld.gschema.xml:213
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Ordena por arquivos em comparações de controle de versão em três-vias"
 
-#: data/org.gnome.meld.gschema.xml:207
+#: data/org.gnome.meld.gschema.xml:214
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -403,11 +415,11 @@ msgstr ""
 "visão de controle de versão, de forma que seja usado apenas para resolução "
 "de conflitos/mesclagem dentro do Meld."
 
-#: data/org.gnome.meld.gschema.xml:211
+#: data/org.gnome.meld.gschema.xml:218
 msgid "Show margin in commit message editor"
 msgstr "Mostra margem no editor de mensagens de commit"
 
-#: data/org.gnome.meld.gschema.xml:212
+#: data/org.gnome.meld.gschema.xml:219
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -415,11 +427,11 @@ msgstr ""
 "Se verdadeiro, um guia será exibido para mostrar em qual coluna a margem "
 "está no editor de mensagens de commit de controle de versão."
 
-#: data/org.gnome.meld.gschema.xml:216
+#: data/org.gnome.meld.gschema.xml:223
 msgid "Margin column in commit message editor"
 msgstr "Coluna margem no editor de mensagens de commit"
 
-#: data/org.gnome.meld.gschema.xml:217
+#: data/org.gnome.meld.gschema.xml:224
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -427,11 +439,11 @@ msgstr ""
 "A coluna na qual deve ser mostrada a margem do editor de mensagens de commit "
 "de controle de versão."
 
-#: data/org.gnome.meld.gschema.xml:221
+#: data/org.gnome.meld.gschema.xml:228
 msgid "Automatically hard-wrap commit messages"
 msgstr "Inserir quebra de linha automaticamente em mensagens de commit"
 
-#: data/org.gnome.meld.gschema.xml:222
+#: data/org.gnome.meld.gschema.xml:229
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -439,22 +451,22 @@ msgstr ""
 "Se verdadeiro, o editor de mensagens de commit de controle de versão vai "
 "inserir quebra de linha na margem de commit antes de fazer o commit."
 
-#: data/org.gnome.meld.gschema.xml:226
+#: data/org.gnome.meld.gschema.xml:233
 msgid "Version control status filters"
 msgstr "Filtros de status de controle de versão"
 
-#: data/org.gnome.meld.gschema.xml:227
+#: data/org.gnome.meld.gschema.xml:234
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "Lista de status usados para filtrar arquivos visíveis me comparação de "
 "controle de versão."
 
-#: data/org.gnome.meld.gschema.xml:241
+#: data/org.gnome.meld.gschema.xml:248
 msgid "Filename-based filters"
 msgstr "Filtros baseados em nome de arquivo"
 
-#: data/org.gnome.meld.gschema.xml:242
+#: data/org.gnome.meld.gschema.xml:249
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -462,11 +474,11 @@ msgstr ""
 "Lista de filtros pré-determinados baseados em nome de arquivo que, se ativa, "
 "vai remover arquivos correspondentes de uma comparação de pastas."
 
-#: data/org.gnome.meld.gschema.xml:256
+#: data/org.gnome.meld.gschema.xml:263
 msgid "Text-based filters"
 msgstr "Filtros baseados em texto"
 
-#: data/org.gnome.meld.gschema.xml:257
+#: data/org.gnome.meld.gschema.xml:264
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -879,12 +891,15 @@ msgid "Flatten folders"
 msgstr "Achata pastas"
 
 #: meld/resources/ui/about-dialog.ui:8
+#| msgid ""
+#| "Copyright © 2002-2009 Stephen Kennedy\n"
+#| "Copyright © 2009-2019 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 msgstr ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
@@ -924,15 +939,15 @@ msgstr "Vai ao conflito anterior"
 msgid "Go to the next conflict"
 msgstr "Vai ao próximo conflito"
 
-#: meld/resources/ui/appwindow.ui:191
+#: meld/resources/ui/appwindow.ui:192
 msgid "Version Filters"
 msgstr "Filtros de versão"
 
-#: meld/resources/ui/appwindow.ui:206 meld/resources/ui/preferences.ui:1456
+#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1472
 msgid "File Filters"
 msgstr "Filtros de arquivos"
 
-#: meld/resources/ui/appwindow.ui:221 meld/resources/ui/preferences.ui:1641
+#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1657
 msgid "Text Filters"
 msgstr "Filtros de texto"
 
@@ -945,7 +960,7 @@ msgid "Column Name"
 msgstr "Nome da coluna"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:128
-#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:735
+#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:736
 msgid "_Remove"
 msgstr "_Remover"
 
@@ -1102,8 +1117,6 @@ msgstr "Abre arquivo neste painel"
 
 #: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:125
 #: meld/resources/ui/filediff.ui:194
-#| msgctxt "shortcut window"
-#| msgid "Save all files in comparison"
 msgid "Save file in this pane"
 msgstr "Salva arquivo neste painel"
 
@@ -1121,7 +1134,7 @@ msgstr "Arquivo 1"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:208
-#: meld/dirdiff.py:508
+#: meld/dirdiff.py:517
 msgid "Name"
 msgstr "Nome"
 
@@ -1161,7 +1174,7 @@ msgstr "Voltou ao início"
 msgid "Replace _All"
 msgstr "Substituir _todos"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1041 meld/iohelpers.py:115
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1067 meld/iohelpers.py:113
 msgid "_Replace"
 msgstr "_Substituir"
 
@@ -1173,7 +1186,7 @@ msgstr "Alterna entre “Localizar” e “Localizar e substituir”"
 msgid "Search highlight mode…"
 msgstr "Pesquisar modo de destaque…"
 
-#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:345
+#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:349
 #: meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Nova comparação"
@@ -1190,43 +1203,43 @@ msgstr "Pasta"
 msgid "Version control"
 msgstr "Controle de versão"
 
-#: meld/resources/ui/new-diff-tab.ui:235 meld/resources/ui/new-diff-tab.ui:352
+#: meld/resources/ui/new-diff-tab.ui:236 meld/resources/ui/new-diff-tab.ui:357
 msgid "_3-way comparison"
 msgstr "Comparação em _3-vias"
 
-#: meld/resources/ui/new-diff-tab.ui:254
+#: meld/resources/ui/new-diff-tab.ui:256
 msgid "Select First File"
 msgstr "Selecione o primeiro arquivo"
 
-#: meld/resources/ui/new-diff-tab.ui:267
+#: meld/resources/ui/new-diff-tab.ui:270
 msgid "Select Second File"
 msgstr "Selecione o segundo arquivo"
 
-#: meld/resources/ui/new-diff-tab.ui:281
+#: meld/resources/ui/new-diff-tab.ui:285
 msgid "Select Third File"
 msgstr "Selecione o terceiro arquivo"
 
-#: meld/resources/ui/new-diff-tab.ui:316
+#: meld/resources/ui/new-diff-tab.ui:321
 msgid "Select First Folder"
 msgstr "Selecione a primeira pasta"
 
-#: meld/resources/ui/new-diff-tab.ui:329
+#: meld/resources/ui/new-diff-tab.ui:334
 msgid "Select Second Folder"
 msgstr "Selecione a segunda pasta"
 
-#: meld/resources/ui/new-diff-tab.ui:343
+#: meld/resources/ui/new-diff-tab.ui:348
 msgid "Select Third Folder"
 msgstr "Selecione a terceira pasta"
 
-#: meld/resources/ui/new-diff-tab.ui:393
+#: meld/resources/ui/new-diff-tab.ui:399
 msgid "Select A Version-Controlled Folder"
 msgstr "Selecione uma pasta com controle de versão"
 
-#: meld/resources/ui/new-diff-tab.ui:442
+#: meld/resources/ui/new-diff-tab.ui:448
 msgid "_Blank comparison"
 msgstr "_Limpar comparação"
 
-#: meld/resources/ui/new-diff-tab.ui:459
+#: meld/resources/ui/new-diff-tab.ui:466
 msgid "C_ompare"
 msgstr "_Comparar"
 
@@ -1280,7 +1293,7 @@ msgstr "_Fonte do editor:"
 
 #. TRANSLATORS: This is the status bar label for a group of settings,
 #. such as text wrapping, show line numbers, whitespace, etc.
-#: meld/resources/ui/preferences.ui:198 meld/ui/statusbar.py:288
+#: meld/resources/ui/preferences.ui:198 meld/ui/statusbar.py:291
 msgid "Display"
 msgstr "Exibição"
 
@@ -1313,104 +1326,109 @@ msgid "Show w_hitespace"
 msgstr "Mostrar _espaço em branco"
 
 #: meld/resources/ui/preferences.ui:381
+#| msgid "Meld dark scheme"
+msgid "Prefer dark theme"
+msgstr "Preferir tema escruto"
+
+#: meld/resources/ui/preferences.ui:397
 msgid "Use s_yntax highlighting"
 msgstr "Usar de_staque de sintaxe"
 
-#: meld/resources/ui/preferences.ui:404
+#: meld/resources/ui/preferences.ui:420
 msgid "Syntax highlighting color scheme:"
 msgstr "Esquema de cores de realce de sintaxe:"
 
-#: meld/resources/ui/preferences.ui:469
+#: meld/resources/ui/preferences.ui:485
 msgid "Code Overview"
 msgstr "Visão geral do código"
 
-#: meld/resources/ui/preferences.ui:506
+#: meld/resources/ui/preferences.ui:522
 msgid "Show overview map"
 msgstr "Mostra o mapa de visão geral"
 
-#: meld/resources/ui/preferences.ui:529
+#: meld/resources/ui/preferences.ui:545
 msgid "Overview map style:"
 msgstr "Estilo de mapa de visão geral:"
 
-#: meld/resources/ui/preferences.ui:596
+#: meld/resources/ui/preferences.ui:612
 msgid "External Editor"
 msgstr "Editor externo"
 
-#: meld/resources/ui/preferences.ui:632
+#: meld/resources/ui/preferences.ui:648
 msgid "Use _default system editor"
 msgstr "Usar o e_ditor padrão do sistema"
 
-#: meld/resources/ui/preferences.ui:655
+#: meld/resources/ui/preferences.ui:671
 msgid "Edito_r command:"
 msgstr "Comando do edito_r:"
 
-#: meld/resources/ui/preferences.ui:711
+#: meld/resources/ui/preferences.ui:727
 msgid "Editor"
 msgstr "Editor"
 
-#: meld/resources/ui/preferences.ui:732
+#: meld/resources/ui/preferences.ui:748
 msgid "Shallow Comparison"
 msgstr "Comparação superficial"
 
-#: meld/resources/ui/preferences.ui:768
+#: meld/resources/ui/preferences.ui:784
 msgid "C_ompare files based only on size and timestamp"
 msgstr "C_omparar arquivos baseando-se apenas no tamanho e marca de tempo"
 
-#: meld/resources/ui/preferences.ui:791
+#: meld/resources/ui/preferences.ui:807
 msgid "_Timestamp resolution:"
 msgstr "Resolução da marca de _tempo:"
 
-#: meld/resources/ui/preferences.ui:855
+#: meld/resources/ui/preferences.ui:871
 msgid "Note: enabling text filters may make comparing large files much slower"
 msgstr ""
 "Nota: habilitar filtros de texto pode atrasar em muito a comparação entre "
 "arquivos grandes"
 
-#: meld/resources/ui/preferences.ui:904
+#: meld/resources/ui/preferences.ui:920
 msgid "Symbolic Links"
 msgstr "Ligações simbólicas"
 
-#: meld/resources/ui/preferences.ui:972
+#: meld/resources/ui/preferences.ui:988
 msgid "Visible Columns"
 msgstr "Colunas visíveis"
 
-#: meld/resources/ui/preferences.ui:1039
+#: meld/resources/ui/preferences.ui:1055
 msgid "Folder Comparisons"
 msgstr "Comparação de pastas"
 
-#: meld/resources/ui/preferences.ui:1061
+#: meld/resources/ui/preferences.ui:1077
 msgid "Version Comparisons"
 msgstr "Comparação de versão"
 
-#: meld/resources/ui/preferences.ui:1104
+#: meld/resources/ui/preferences.ui:1120
 msgid "_Order when comparing file revisions:"
 msgstr "_Ordenar ao comparar revisões de arquivo:"
 
-#: meld/resources/ui/preferences.ui:1151
+#: meld/resources/ui/preferences.ui:1167
 msgid "Order when _merging files:"
 msgstr "Ordenar ao _mesclar arquivos:"
 
-#: meld/resources/ui/preferences.ui:1219
+#: meld/resources/ui/preferences.ui:1235
 msgid "Commit Messages"
 msgstr "Mensagens de commit"
 
-#: meld/resources/ui/preferences.ui:1260
+#: meld/resources/ui/preferences.ui:1276
 msgid "Show _right margin at:"
 msgstr "Mostrar ma_rgem esquerda em:"
 
-#: meld/resources/ui/preferences.ui:1301
+#: meld/resources/ui/preferences.ui:1317
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Que_brar linhas automaticamente na margem esquerda no commit"
 
-#: meld/resources/ui/preferences.ui:1351
+#: meld/resources/ui/preferences.ui:1367
 msgid "Version Control"
 msgstr "Controle de versão"
 
-#: meld/resources/ui/preferences.ui:1373
+#: meld/resources/ui/preferences.ui:1389
 msgid "Filename filters"
 msgstr "Filtros de nome de arquivo"
 
-#: meld/resources/ui/preferences.ui:1411
+#: meld/resources/ui/preferences.ui:1427
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1420,19 +1438,19 @@ msgstr ""
 "arquivos e diretórios por nome. Cada padrão é um lista com caracteres "
 "curingas (* ou ?) separados por espaços."
 
-#: meld/resources/ui/preferences.ui:1478
+#: meld/resources/ui/preferences.ui:1494
 msgid "Change trimming"
 msgstr "Aparar alterações"
 
-#: meld/resources/ui/preferences.ui:1514
+#: meld/resources/ui/preferences.ui:1530
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Aparar diferenças de linhas vazias do início e fim de alterações"
 
-#: meld/resources/ui/preferences.ui:1558
+#: meld/resources/ui/preferences.ui:1574
 msgid "Text filters"
 msgstr "Filtros de texto"
 
-#: meld/resources/ui/preferences.ui:1596
+#: meld/resources/ui/preferences.ui:1612
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1446,47 +1464,47 @@ msgstr ""
 "da comparação. Se a expressão contém grupos, somente os grupos são "
 "substituídos. Veja o manual do usuário para maiores detalhes."
 
-#: meld/resources/ui/preferences.ui:1687
+#: meld/resources/ui/preferences.ui:1703
 msgid "Left is remote, right is local"
 msgstr "Esquerda é remoto, direita é local"
 
-#: meld/resources/ui/preferences.ui:1691
+#: meld/resources/ui/preferences.ui:1707
 msgid "Left is local, right is remote"
 msgstr "Esquerda é local, direita é remoto"
 
-#: meld/resources/ui/preferences.ui:1705
+#: meld/resources/ui/preferences.ui:1721
 msgid "Simple change map"
 msgstr "Mapa de alteração simples"
 
-#: meld/resources/ui/preferences.ui:1709
+#: meld/resources/ui/preferences.ui:1725
 msgid "Compact source map"
 msgstr "Mapa de fontes compacto"
 
-#: meld/resources/ui/preferences.ui:1713
+#: meld/resources/ui/preferences.ui:1729
 msgid "Full source map"
 msgstr "Mapa de fontes completo"
 
-#: meld/resources/ui/preferences.ui:1727
+#: meld/resources/ui/preferences.ui:1743
 msgid "Remote, merge, local"
 msgstr "Remoto, mesclagem, local"
 
-#: meld/resources/ui/preferences.ui:1731
+#: meld/resources/ui/preferences.ui:1747
 msgid "Local, merge, remote"
 msgstr "Local, mesclagem, remoto"
 
-#: meld/resources/ui/preferences.ui:1753
+#: meld/resources/ui/preferences.ui:1769
 msgid "1ns (ext4)"
 msgstr "1ns (ext4)"
 
-#: meld/resources/ui/preferences.ui:1757
+#: meld/resources/ui/preferences.ui:1773
 msgid "100ns (NTFS)"
 msgstr "100ns (NTFS)"
 
-#: meld/resources/ui/preferences.ui:1761
+#: meld/resources/ui/preferences.ui:1777
 msgid "1s (ext2/ext3)"
 msgstr "1s (ext2/ext3)"
 
-#: meld/resources/ui/preferences.ui:1765
+#: meld/resources/ui/preferences.ui:1781
 msgid "2s (VFAT)"
 msgstr "2s (VFAT)"
 
@@ -1533,8 +1551,8 @@ msgstr "Se você não salvar, as mudanças serão perdidas permanentemente."
 msgid "Close _without Saving"
 msgstr "_Fechar sem salvar"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1040
-#: meld/iohelpers.py:56 meld/iohelpers.py:114
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1066
+#: meld/iohelpers.py:55 meld/iohelpers.py:112
 msgid "_Cancel"
 msgstr "_Cancelar"
 
@@ -1634,7 +1652,7 @@ msgstr "Reverte uma cópia de trabalho para o estado original"
 msgid "Delete from working copy"
 msgstr "Exclui da cópia de trabalho"
 
-#: meld/resources/ui/vcview.ui:220 meld/vcview.py:410
+#: meld/resources/ui/vcview.ui:220
 msgid "Location"
 msgstr "Localização"
 
@@ -1671,39 +1689,43 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:529 meld/preferences.py:132
+#: meld/dirdiff.py:538 meld/preferences.py:132
 msgid "Size"
 msgstr "Tamanho"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:537 meld/preferences.py:133
+#: meld/dirdiff.py:546 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Hora da modificação"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:545 meld/preferences.py:134
+#: meld/dirdiff.py:554 meld/preferences.py:134
 msgid "Permissions"
 msgstr "Permissões"
 
-#: meld/dirdiff.py:768 meld/dirdiff.py:791
-#, python-format
-msgid "[%s] Scanning %s"
-msgstr "[%s] Varrendo %s"
+#: meld/dirdiff.py:778 meld/dirdiff.py:802
+#, python-brace-format
+msgid "[{label}] Scanning {folder}"
+msgstr "[{label}] Varrendo {folder}"
 
-#: meld/dirdiff.py:927
-#, python-format
-msgid "[%s] Done"
-msgstr "[%s] Concluído"
+#: meld/dirdiff.py:942
+#, python-brace-format
+msgid "[{label}] Done"
+msgstr "[{label}] Concluído"
 
-#: meld/dirdiff.py:934
+#: meld/dirdiff.py:951
+msgid "Folder {} is being compared to itself"
+msgstr "Pasta {} sendo comparada consigo própria"
+
+#: meld/dirdiff.py:957
 msgid "Folders have no differences"
 msgstr "As pastas têm nenhuma diferença"
 
-#: meld/dirdiff.py:936
+#: meld/dirdiff.py:959
 msgid "Contents of scanned files in folders are identical."
 msgstr "Conteúdos de arquivos verificados em pastas são idênticos."
 
-#: meld/dirdiff.py:938
+#: meld/dirdiff.py:961
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1711,48 +1733,48 @@ msgstr ""
 "Arquivos verificados em pastas parecem ser idênticos, mas conteúdos não "
 "foram verificados."
 
-#: meld/dirdiff.py:941
+#: meld/dirdiff.py:964
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Filtros de arquivo estão em uso, portanto nem todos os arquivos foram "
 "verificados."
 
-#: meld/dirdiff.py:943
+#: meld/dirdiff.py:966
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Filtros de texto estão sendo usados e podem estar escondendo diferenças no "
 "conteúdo."
 
-#: meld/dirdiff.py:959 meld/filediff.py:1824
+#: meld/dirdiff.py:982 meld/filediff.py:1874
 msgid "Hide"
 msgstr "Ocultar"
 
-#: meld/dirdiff.py:961 meld/filediff.py:1826 meld/filediff.py:1856
-#: meld/filediff.py:1858 meld/ui/msgarea.py:106 meld/ui/msgarea.py:119
+#: meld/dirdiff.py:984 meld/filediff.py:1876 meld/filediff.py:1906
+#: meld/filediff.py:1908 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "Ocu_ltar"
 
-#: meld/dirdiff.py:970
+#: meld/dirdiff.py:993
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Ocorreram vários erros ao varrer este diretório"
 
-#: meld/dirdiff.py:971
+#: meld/dirdiff.py:994
 msgid "Files with invalid encodings found"
 msgstr "Arquivos com codificações inválidas encontrados"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:973
+#: meld/dirdiff.py:996
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Alguns arquivos estavam com uma codificação incorreta. Os nomes são algo "
 "como:"
 
-#: meld/dirdiff.py:975
+#: meld/dirdiff.py:998
 msgid "Files hidden by case insensitive comparison"
 msgstr "Arquivos ocultos pela comparação não sensível a maiusculização"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:977
+#: meld/dirdiff.py:1000
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1761,17 +1783,17 @@ msgstr ""
 "minúsculas em um sistema de arquivos que diferencia. Os seguintes arquivos "
 "neste diretório ficam ocultos:"
 
-#: meld/dirdiff.py:988
-#, python-format
-msgid "“%s” hidden by “%s”"
-msgstr "“%s” ocultado por “%s”"
+#: meld/dirdiff.py:1011
+#, python-brace-format
+msgid "“{first_file}” hidden by “{second_file}”"
+msgstr "“{first_file}” ocultado por “{second_file}”"
 
-#: meld/dirdiff.py:1044
+#: meld/dirdiff.py:1070
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Substituir pasta “%s”?"
 
-#: meld/dirdiff.py:1046
+#: meld/dirdiff.py:1072
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1780,36 +1802,36 @@ msgstr ""
 "Uma outra pasta com o mesmo nome já existe em “%s”.\n"
 "Se você substituir a pasta existente, todos os arquivos nela serão perdidos."
 
-#: meld/dirdiff.py:1059
+#: meld/dirdiff.py:1085
 msgid "Error copying file"
 msgstr "Erro ao copiar arquivo"
 
-#: meld/dirdiff.py:1060
-#, python-format
+#: meld/dirdiff.py:1086
+#, python-brace-format
 msgid ""
-"Couldn’t copy %s\n"
-"to %s.\n"
+"Couldn’t copy {source}\n"
+"to {dest}.\n"
 "\n"
-"%s"
+"{error}"
 msgstr ""
-"Não foi possível copiar %s\n"
-"para %s.\n"
+"Não foi possível copiar {source}\n"
+"para {dest}.\n"
 "\n"
-"%s"
+"{error}"
 
-#: meld/dirdiff.py:1085 meld/vcview.py:758
+#: meld/dirdiff.py:1111 meld/vcview.py:759
 msgid "Error deleting {}"
 msgstr "Erro ao excluir {}"
 
-#: meld/dirdiff.py:1578
+#: meld/dirdiff.py:1604
 msgid "No folder"
 msgstr "Nenhum pasta"
 
-#: meld/filediff.py:1116
+#: meld/filediff.py:1144
 msgid "Comparison results will be inaccurate"
 msgstr "Resultados da comparação será imprecisa"
 
-#: meld/filediff.py:1118
+#: meld/filediff.py:1146
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1817,71 +1839,75 @@ msgstr ""
 "Um filtro alterou o número de linhas no arquivo, não havendo suporte a essa "
 "alteração. A comparação pode não ser precisa."
 
-#: meld/filediff.py:1190
+#: meld/filediff.py:1218
 msgid "Mark conflict as resolved?"
 msgstr "Marcar como resolvido?"
 
-#: meld/filediff.py:1192
+#: meld/filediff.py:1220
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Se o conflito foi resolvido com sucesso, você pode marcá-lo como resolvido "
 "agora."
 
-#: meld/filediff.py:1194
+#: meld/filediff.py:1222
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: meld/filediff.py:1195
+#: meld/filediff.py:1223
 msgid "Mark _Resolved"
 msgstr "Marcar como _resolvido"
 
-#: meld/filediff.py:1520
+#: meld/filediff.py:1556
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Ocorreu um problema ao abrir o arquivo “%s”."
 
-#: meld/filediff.py:1528
+#: meld/filediff.py:1564
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "O arquivo %s parece ser um arquivo binário."
 
-#: meld/filediff.py:1530
+#: meld/filediff.py:1566
 msgid "Do you want to open the file using the default application?"
 msgstr "Você gostaria de abrir o arquivo usando o aplicativo padrão?"
 
-#: meld/filediff.py:1532
+#: meld/filediff.py:1568
 msgid "Open"
 msgstr "Abrir"
 
-#: meld/filediff.py:1546
+#: meld/filediff.py:1582
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Mesclando arquivos"
 
-#: meld/filediff.py:1560
+#: meld/filediff.py:1596
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Analisando diferenças"
 
-#: meld/filediff.py:1619
+#: meld/filediff.py:1657
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "O arquivo %s foi alterado em disco"
 
-#: meld/filediff.py:1620
+#: meld/filediff.py:1658
 msgid "Do you want to reload the file?"
 msgstr "Deseja recarregar o arquivo?"
 
-#: meld/filediff.py:1622
+#: meld/filediff.py:1660
 msgid "_Reload"
 msgstr "_Recarregar"
 
-#: meld/filediff.py:1789
+#: meld/filediff.py:1830
+msgid "File {} is being compared to itself"
+msgstr "Arquivo {} sendo comparado consigo próprio"
+
+#: meld/filediff.py:1839
 msgid "Files are identical"
 msgstr "Os arquivos são idênticos"
 
-#: meld/filediff.py:1802
+#: meld/filediff.py:1852
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1889,11 +1915,11 @@ msgstr ""
 "Filtros de texto estão sendo usados e podem estar escondendo diferenças "
 "entre os arquivos. Você gostaria de comparar os arquivos sem filtro?"
 
-#: meld/filediff.py:1807
+#: meld/filediff.py:1857
 msgid "Files differ in line endings only"
 msgstr "Arquivos se diferenciam nos fins de linha apenas"
 
-#: meld/filediff.py:1809
+#: meld/filediff.py:1859
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1902,15 +1928,15 @@ msgstr ""
 "Arquivos são idênticos, exceto pela diferença entre fins de linha:\n"
 "%s"
 
-#: meld/filediff.py:1829
+#: meld/filediff.py:1879
 msgid "Show without filters"
 msgstr "Mostrar sem filtros"
 
-#: meld/filediff.py:1851
+#: meld/filediff.py:1901
 msgid "Change highlighting incomplete"
 msgstr "Alteração de destaque incompleta"
 
-#: meld/filediff.py:1852
+#: meld/filediff.py:1902
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1919,19 +1945,19 @@ msgstr ""
 "grandes. Você pode forçar o Meld a levar mais tempo para destacar alterações "
 "longas, porém isso pode ser bem lento."
 
-#: meld/filediff.py:1860
+#: meld/filediff.py:1910
 msgid "Keep highlighting"
 msgstr "Manter destaque"
 
-#: meld/filediff.py:1862
+#: meld/filediff.py:1912
 msgid "_Keep highlighting"
 msgstr "_Manter destaque"
 
-#: meld/filediff.py:1875
+#: meld/filediff.py:1925
 msgid "Saving failed"
 msgstr "Salvamento falhou"
 
-#: meld/filediff.py:1876
+#: meld/filediff.py:1926
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1939,36 +1965,36 @@ msgstr ""
 "Por favor, considere copiar quaisquer alterações críticas para outro "
 "programa ou arquivo para evita perda de dados."
 
-#: meld/filediff.py:1885
+#: meld/filediff.py:1935
 msgid "Save Left Pane As"
 msgstr "Salvar o painel esquerdo como"
 
-#: meld/filediff.py:1887
+#: meld/filediff.py:1937
 msgid "Save Middle Pane As"
 msgstr "Salvar o painel do meio como"
 
-#: meld/filediff.py:1889
+#: meld/filediff.py:1939
 msgid "Save Right Pane As"
 msgstr "Salvar o painel direito como"
 
-#: meld/filediff.py:1900
+#: meld/filediff.py:1950
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "O arquivo %s foi alterado em disco após ter sido aberto"
 
-#: meld/filediff.py:1902
+#: meld/filediff.py:1952
 msgid "If you save it, any external changes will be lost."
 msgstr "Se você não salvá-lo, quaisquer mudanças externas serão perdidas."
 
-#: meld/filediff.py:1905
+#: meld/filediff.py:1955
 msgid "Save Anyway"
 msgstr "Salvar mesmo assim"
 
-#: meld/filediff.py:1906
+#: meld/filediff.py:1956
 msgid "Don’t Save"
 msgstr "Não salvar"
 
-#: meld/filediff.py:1948
+#: meld/filediff.py:1998
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1976,7 +2002,7 @@ msgstr ""
 "O arquivo “{}” contém caracteres que não pode ser codificado usando "
 "codificação “{}”."
 
-#: meld/filediff.py:1952 meld/patchdialog.py:138
+#: meld/filediff.py:2002 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1985,20 +2011,20 @@ msgstr ""
 "Não foi possível salvar o arquivo pois:\n"
 "%s"
 
-#: meld/filediff.py:1956 meld/patchdialog.py:137
+#: meld/filediff.py:2006 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Não foi possível salvar o arquivo %s."
 
-#: meld/filediff.py:2017
+#: meld/filediff.py:2067
 msgid "Open File"
 msgstr "Abrir arquivo"
 
-#: meld/filediff.py:2371
+#: meld/filediff.py:2421
 msgid "Live comparison updating disabled"
 msgstr "Atualização em tempo real de comparação desabilitada"
 
-#: meld/filediff.py:2372
+#: meld/filediff.py:2422
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2009,33 +2035,33 @@ msgstr ""
 "e atualizações em tempo real serão resumidas quando os pontos de "
 "sincronização estiverem limpos."
 
-#: meld/iohelpers.py:41
+#: meld/iohelpers.py:40
 msgid "Deleting remote folders is not supported"
 msgstr "Não há suporte à exclusão de pastas remotas"
 
-#: meld/iohelpers.py:43
+#: meld/iohelpers.py:42
 msgid "Not a file or directory"
 msgstr "Não é um arquivo ou diretório"
 
-#: meld/iohelpers.py:47
+#: meld/iohelpers.py:46
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr ""
 "“{}” não pode ser colocado na lixeira. Você deseja excluí-lo imediatamente?"
 
-#: meld/iohelpers.py:52
+#: meld/iohelpers.py:51
 msgid "This remote location does not support sending items to the trash."
 msgstr "Este local remoto não possui suporte ao envio de itens para a lixeira."
 
-#: meld/iohelpers.py:57
+#: meld/iohelpers.py:56
 msgid "_Delete Permanently"
 msgstr "_Excluir permanentemente"
 
-#: meld/iohelpers.py:108
+#: meld/iohelpers.py:106
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Substituir arquivo “%s”?"
 
-#: meld/iohelpers.py:110
+#: meld/iohelpers.py:108
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2044,98 +2070,98 @@ msgstr ""
 "Um arquivo com esse nome já existe em “%s”.\n"
 "Se você substituir o arquivo existente, seu conteúdo será perdido."
 
-#: meld/meldapp.py:179
+#: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
 msgstr "número incorreto de argumentos fornecidos para --diff"
 
-#: meld/meldapp.py:184
+#: meld/meldapp.py:193
 msgid "Start with an empty window"
 msgstr "Iniciar com a janela vazia"
 
-#: meld/meldapp.py:185 meld/meldapp.py:187
+#: meld/meldapp.py:194 meld/meldapp.py:196
 msgid "file"
 msgstr "arquivo"
 
-#: meld/meldapp.py:185 meld/meldapp.py:189
+#: meld/meldapp.py:194 meld/meldapp.py:198
 msgid "folder"
 msgstr "pasta"
 
-#: meld/meldapp.py:186
+#: meld/meldapp.py:195
 msgid "Start a version control comparison"
 msgstr "Inicia uma comparação de controle de versão"
 
-#: meld/meldapp.py:188
+#: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Inicia uma comparação de arquivo em 2 ou 3 vias"
 
-#: meld/meldapp.py:190
+#: meld/meldapp.py:199
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Inicia uma comparação de pasta em 2 ou 3 vias"
 
-#: meld/meldapp.py:233
+#: meld/meldapp.py:242
 #, python-format
 msgid "Error: %s\n"
 msgstr "Erro: %s\n"
 
-#: meld/meldapp.py:240
+#: meld/meldapp.py:249
 msgid "Meld is a file and directory comparison tool."
 msgstr "O Meld é uma ferramenta de comparação de arquivos e diretórios."
 
-#: meld/meldapp.py:244
+#: meld/meldapp.py:253
 msgid "Set label to use instead of file name"
 msgstr "Definir rótulo para usar no lugar do nome do arquivo"
 
-#: meld/meldapp.py:247
+#: meld/meldapp.py:256
 msgid "Open a new tab in an already running instance"
 msgstr "Abrir em uma nova aba de uma instância existente"
 
-#: meld/meldapp.py:250
+#: meld/meldapp.py:259
 msgid "Automatically compare all differing files on startup"
 msgstr "Compara automaticamente todos os arquivos diferentes na inicialização"
 
-#: meld/meldapp.py:253
+#: meld/meldapp.py:262
 msgid "Ignored for compatibility"
 msgstr "Ignorado por questão de compatibilidade"
 
-#: meld/meldapp.py:257
+#: meld/meldapp.py:266
 msgid "Set the target file for saving a merge result"
 msgstr "Define o arquivo destino para salvar um resultado de mesclagem"
 
-#: meld/meldapp.py:260
+#: meld/meldapp.py:269
 msgid "Automatically merge files"
 msgstr "Mescla arquivos automaticamente"
 
-#: meld/meldapp.py:264
+#: meld/meldapp.py:273
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Carrega uma comparação salva de um arquivo de comparação"
 
-#: meld/meldapp.py:268
+#: meld/meldapp.py:277
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Cria uma aba de diff para os arquivos e pastas fornecidos"
 
-#: meld/meldapp.py:288
+#: meld/meldapp.py:297
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "muitos argumentos (esperava 0-3, obteve %d)"
 
-#: meld/meldapp.py:291
+#: meld/meldapp.py:300
 msgid "can’t auto-merge less than 3 files"
 msgstr "não é possível mesclar automaticamente menos que 3 arquivos"
 
-#: meld/meldapp.py:293
+#: meld/meldapp.py:302
 msgid "can’t auto-merge directories"
 msgstr "não é possível mesclar diretórios automaticamente"
 
-#: meld/meldapp.py:308
+#: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
 msgstr "Erro ao ler arquivo de comparação salvo"
 
-#: meld/meldapp.py:325
+#: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "caminho inválido ou URI “%s”"
 
-#: meld/meldapp.py:331
+#: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
 msgstr "sem suporte à pasta remota “{}”"
 
@@ -2144,21 +2170,21 @@ msgstr "sem suporte à pasta remota “{}”"
 msgid "<unnamed>"
 msgstr "<sem nome>"
 
-#: meld/melddoc.py:60
+#: meld/melddoc.py:61
 msgid "untitled"
 msgstr "sem título"
 
-#: meld/meldwindow.py:151
+#: meld/meldwindow.py:155
 msgid "Filename"
 msgstr "Nome de arquivo"
 
-#: meld/meldwindow.py:380
+#: meld/meldwindow.py:384
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 "É necessário ter três arquivos para mesclar automaticamente, obtive: %r"
 
-#: meld/meldwindow.py:402
+#: meld/meldwindow.py:406
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Não foi possível comparar uma mistura de arquivos e diretórios"
 
@@ -2190,12 +2216,11 @@ msgstr "padrão"
 msgid "Version control:"
 msgstr "Controle de versão:"
 
-#: meld/style.py:90
-#, python-format
-msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
+#: meld/style.py:91
+msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgstr ""
-"Não foi possível localizar detalhes de esquema de cores para %s-%s; esta é "
-"uma instalação ruim"
+"Não foi possível localizar detalhes de esquema de cores para {}; esta é uma "
+"instalação ruim"
 
 #: meld/ui/bufferselectors.py:110
 #, python-brace-format
@@ -2206,21 +2231,13 @@ msgstr "{name} ({charset})"
 msgid "Plain Text"
 msgstr "Texto simples"
 
-#: meld/ui/filechooser.py:68
-msgid "Autodetect Encoding"
-msgstr "Codificação da detecção automática"
-
-#: meld/ui/filechooser.py:71
-msgid "Current Locale ({})"
-msgstr "Localidade atual ({})"
-
 #. Abbreviation for line, column so that it will fit in the status bar
-#: meld/ui/statusbar.py:123
-#, python-format
-msgid "Ln %i, Col %i"
-msgstr "Lin %i, Col %i"
+#: meld/ui/statusbar.py:125
+#, python-brace-format
+msgid "Ln {line}, Col {column}"
+msgstr "Lin {line}, Col {column}"
 
-#: meld/ui/statusbar.py:183
+#: meld/ui/statusbar.py:185
 msgid "Line you want to move the cursor to"
 msgstr "Linha para onde você deseja mover o cursor"
 
@@ -2228,45 +2245,46 @@ msgstr "Linha para onde você deseja mover o cursor"
 msgid "No files will be committed"
 msgstr "Nenhuma arquivo para submeter (commit)"
 
-#. Translators: First %s is replaced by translated "%d unpushed
-#. commits", second %s is replaced by translated "%d branches"
-#: meld/vc/git.py:91
-#, python-format
-msgid "%s in %s"
-msgstr "%s em %s"
+#. Translators: First element is replaced by translated "%d
+#. unpushed commits", second element is replaced by translated
+#. "%d branches"
+#: meld/vc/git.py:92
+#, python-brace-format
+msgid "{unpushed_commits} in {unpushed_branches}"
+msgstr "{unpushed_commits} em {unpushed_branches}"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
-#: meld/vc/git.py:92 meld/vc/git.py:99
+#: meld/vc/git.py:94 meld/vc/git.py:103
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d commit não enviado (push)"
 msgstr[1] "%d commits não enviados (push)"
 
-#: meld/vc/git.py:94
+#: meld/vc/git.py:97
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d ramo"
 msgstr[1] "%d ramos"
 
-#: meld/vc/git.py:333
-#, python-format
-msgid "Mode changed from %s to %s"
-msgstr "Modo modificado de %s para %s"
+#: meld/vc/git.py:344
+#, python-brace-format
+msgid "Mode changed from {old_mode} to {new_mode}"
+msgstr "Modo modificado de {old_mode} para {new_mode}"
 
-#: meld/vc/git.py:341
+#: meld/vc/git.py:352
 msgid "Partially staged"
 msgstr "Apresentados (staged) parcialmente"
 
-#: meld/vc/git.py:341
+#: meld/vc/git.py:352
 msgid "Staged"
 msgstr "Apresentados (staged)"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
-#: meld/vc/_null.py:37
+#: meld/vc/_null.py:38
 msgid "None"
 msgstr "Nenhum"
 
@@ -2321,94 +2339,94 @@ msgstr "Não presente"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:332
+#: meld/vcview.py:333
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (não encontrado)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:336
+#: meld/vcview.py:337
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s não instalado)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:340
+#: meld/vcview.py:341
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (repositório inválido)"
 
-#: meld/vcview.py:354
+#: meld/vcview.py:355
 msgid "No valid version control system found in this folder"
 msgstr "Nenhum sistema de controle de versão válido localizado nesta pasta"
 
-#: meld/vcview.py:356
+#: meld/vcview.py:357
 msgid "Choose which version control system to use"
 msgstr "Escolha qual sistema de controle de versão a ser usado"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: meld/vcview.py:410
-#, python-format
-msgid "%s: %s"
-msgstr "%s: %s"
+#: meld/vcview.py:411
+#, python-brace-format
+msgid "Location: {path}"
+msgstr "Localização: {path}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:417
+#: meld/vcview.py:418
 msgid "Scanning repository"
 msgstr "Varrendo repositório"
 
-#: meld/vcview.py:446
+#: meld/vcview.py:447
 #, python-format
 msgid "Scanning %s"
 msgstr "Varrendo %s"
 
-#: meld/vcview.py:485
+#: meld/vcview.py:486
 msgid "(Empty)"
 msgstr "(Vazio)"
 
-#: meld/vcview.py:532
+#: meld/vcview.py:533
 #, python-format
 msgid "%s — local"
 msgstr "%s — local"
 
-#: meld/vcview.py:533
+#: meld/vcview.py:534
 #, python-format
 msgid "%s — remote"
 msgstr "%s — remoto"
 
-#: meld/vcview.py:541
+#: meld/vcview.py:542
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (local, mesclagem, remoto)"
 
-#: meld/vcview.py:546
+#: meld/vcview.py:547
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (remoto, mesclagem, local)"
 
-#: meld/vcview.py:557
+#: meld/vcview.py:558
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repositório"
 
-#: meld/vcview.py:563
+#: meld/vcview.py:564
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (em trabalho, repositório)"
 
-#: meld/vcview.py:567
+#: meld/vcview.py:568
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repositório, em trabalho)"
 
-#: meld/vcview.py:729
+#: meld/vcview.py:730
 msgid "Remove folder and all its files?"
 msgstr "Remover pasta e todos seus arquivos?"
 
-#: meld/vcview.py:731
+#: meld/vcview.py:732
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2416,1245 +2434,6 @@ msgstr ""
 "Isso vai remover todos os arquivos e pastas selecionados, e todos arquivos "
 "dentro de quaisquer pastas selecionadas, do controle de versão."
 
-#: meld/vcview.py:844
+#: meld/vcview.py:845
 msgid "Clear"
 msgstr "Limpar"
-
-#~ msgid "Cannot import: "
-#~ msgstr "Não foi possível importar: "
-
-#~ msgid "Meld requires %s or higher."
-#~ msgstr "Meld requer %s ou superior."
-
-#~ msgid ""
-#~ "Couldn’t load Meld-specific CSS (%s)\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Não foi possível carregar CSS específico do Meld (%s)\n"
-#~ "%s"
-
-#~ msgid "Meld Diff Viewer"
-#~ msgstr "Visualizador de diff Meld"
-
-#~ msgid "About Meld"
-#~ msgstr "Sobre o Meld"
-
-#~ msgid "Website"
-#~ msgstr "Página web"
-
-#~ msgid "Displayed whitespace"
-#~ msgstr "Espaço em branco exibido"
-
-#~ msgid ""
-#~ "Selector for individual whitespace character types to be shown. Possible "
-#~ "values are 'space', 'tab', 'newline' and 'nbsp'."
-#~ msgstr ""
-#~ "Seletor para tipos de caracteres de espaço em branco individuais a serem "
-#~ "mostrados. Valores possíveis são “space”, “tab”, “newline” e “nbsp”."
-
-# todas = alterações
-#~ msgid "Merge All from Reft"
-#~ msgstr "Mesclar todas da direita"
-
-#~ msgid "Meld base scheme"
-#~ msgstr "Esquema base do Meld"
-
-#~ msgid "_About"
-#~ msgstr "_Sobre"
-
-#~ msgid "_Quit"
-#~ msgstr "_Sair"
-
-#~ msgid "Collapse selected folder and all subfolders"
-#~ msgstr "Recolhe a pasta selecionada e todas as subpastas"
-
-#~ msgid "Expand selected folder and all subfolders"
-#~ msgstr "Expandir a pasta selecionada e todas as subpastas"
-
-#~ msgid "Copy to _Left"
-#~ msgstr "Copia para a _esquerda"
-
-#~ msgid "Copy to _Right"
-#~ msgstr "Copia para a _direita"
-
-#~ msgid "Hide selected"
-#~ msgstr "Oculta os selecionados"
-
-#~ msgid ""
-#~ "Consider differently-cased filenames that are otherwise-identical to be "
-#~ "the same"
-#~ msgstr ""
-#~ "Não distingue nomes de arquivo que diferem apenas pela maiusculização"
-
-#~ msgid "Show identical"
-#~ msgstr "Mostra os iguais"
-
-#~ msgid "Show new"
-#~ msgstr "Mostra os novos"
-
-#~ msgid "Show modified"
-#~ msgstr "Mostra os modificados"
-
-#~ msgid "Filters"
-#~ msgstr "Filtros"
-
-#~ msgid "Set active filters"
-#~ msgstr "Definir filtros ativos"
-
-#~ msgid "Create a patch using differences between files"
-#~ msgstr "Cria um patch usando as diferenças entre os arquivos"
-
-#~ msgid "Save all files in the current comparison"
-#~ msgstr "Salva todos os arquivos na comparação atual"
-
-#~ msgid "Revert files to their saved versions"
-#~ msgstr "Reverte arquivos para suas versões salvas"
-
-#~ msgid "Add a synchronization point for changes between files"
-#~ msgstr "Adiciona um ponto de sincronização das alterações entre arquivos"
-
-#~ msgid "Clear sychronization points for changes between files"
-#~ msgstr "Limpa pontos de sincronização das alterações entre arquivos"
-
-#~ msgid "Previous Conflict"
-#~ msgstr "Conflito anterior"
-
-#~ msgid "Next Conflict"
-#~ msgstr "Próximo conflito"
-
-#~ msgid "Push to Left"
-#~ msgstr "Levar para a esquerda"
-
-#~ msgid "Push to Right"
-#~ msgstr "Levar para a direita"
-
-#~ msgid "Pull from Left"
-#~ msgstr "Trazer da esquerda"
-
-#~ msgid "Pull change from the left"
-#~ msgstr "Traz a alteração da esquerda"
-
-#~ msgid "Pull from Right"
-#~ msgstr "Trazer da direita"
-
-#~ msgid "Pull change from the right"
-#~ msgstr "Traz a alteração da direita"
-
-#~ msgid "Copy Above Left"
-#~ msgstr "Copiar acima da esquerda"
-
-#~ msgid "Copy Below Left"
-#~ msgstr "Copiar abaixo da esquerda"
-
-#~ msgid "Copy Above Right"
-#~ msgstr "Copiar acima da direita"
-
-#~ msgid "Copy Below Right"
-#~ msgstr "Copiar abaixo da direita"
-
-#~ msgid "Merge all non-conflicting changes from the left"
-#~ msgstr "Mescla todas as alterações não conflitantes da esquerda"
-
-#~ msgid "Merge all non-conflicting changes from the right"
-#~ msgstr "Mescla todas as alterações não conflitantes da direita"
-
-#~ msgid "Merge all non-conflicting changes from left and right panes"
-#~ msgstr ""
-#~ "Mescla todas as alterações não conflitantes dos painéis esquerdo e direito"
-
-#~ msgid "Previous Pane"
-#~ msgstr "Painel anterior"
-
-#~ msgid "Move keyboard focus to the previous document in this comparison"
-#~ msgstr "Move o foco do teclado ao documento anterior nesta comparação"
-
-#~ msgid "Next Pane"
-#~ msgstr "Próximo painel"
-
-#~ msgid "Move keyboard focus to the next document in this comparison"
-#~ msgstr "Move o foco do teclado ao próximo documento nesta comparação"
-
-#~ msgid "Lock scrolling of all panes"
-#~ msgstr "Bloqueia a rolagem de todos os painéis"
-
-#~ msgid "_Previous"
-#~ msgstr "_Anterior"
-
-#~ msgid "_Next"
-#~ msgstr "_Próximo"
-
-#~ msgid "Find:"
-#~ msgstr "Localizar:"
-
-#~ msgid "Replace _with:"
-#~ msgstr "Substituir _por:"
-
-#~ msgid "File comparison"
-#~ msgstr "Comparação de arquivos"
-
-#~ msgid "Directory comparison"
-#~ msgstr "Comparação de diretórios"
-
-#~ msgid "Version control view"
-#~ msgstr "Visão de controle de versão"
-
-#~ msgid "Console"
-#~ msgstr "Console"
-
-#~ msgid "Show or hide the version control console output pane"
-#~ msgstr "Mostra e oculta o painel de saída de console de controle de versão"
-
-#~ msgid "_Flatten"
-#~ msgstr "Ac_hatar"
-
-#~ msgid "_Modified"
-#~ msgstr "_Modificado"
-
-#~ msgid "Show modified files"
-#~ msgstr "Mostra arquivos modificados"
-
-#~ msgid "Show normal files"
-#~ msgstr "Mostra os arquivos normais"
-
-#~ msgid "Un_versioned"
-#~ msgstr "Sem controle de _versão"
-
-#~ msgid "Show unversioned files"
-#~ msgstr "Mostra os arquivos sem controle de versão"
-
-#~ msgid "Show ignored files"
-#~ msgstr "Mostra os arquivos ignorados"
-
-#~ msgid "Hide %s"
-#~ msgstr "Ocultar %s"
-
-#~ msgid "_New Comparison…"
-#~ msgstr "_Nova comparação…"
-
-#~ msgid "Save the current file"
-#~ msgstr "Salva o arquivo atual"
-
-#~ msgid "Save the current file with a different name"
-#~ msgstr "Salva o arquivo atual com um nome diferente"
-
-#~ msgid "Close the current file"
-#~ msgstr "Fecha o arquivo atual"
-
-#~ msgid "_Edit"
-#~ msgstr "_Editar"
-
-#~ msgid "Undo the last action"
-#~ msgstr "Desfaz a última ação"
-
-#~ msgid "Redo the last undone action"
-#~ msgstr "Refaz a última ação desfeita"
-
-#~ msgid "Cut the selection"
-#~ msgstr "Recortar a seleção"
-
-#~ msgid "Copy the selection"
-#~ msgstr "Copiar a seleção"
-
-#~ msgid "Paste the clipboard"
-#~ msgstr "Cola da área de transferência"
-
-#~ msgid "Search for text"
-#~ msgstr "Pesquisa por texto"
-
-#~ msgid "Find Ne_xt"
-#~ msgstr "Localizar pró_ximo"
-
-#~ msgid "Search forwards for the same text"
-#~ msgstr "Pesquisa pelo mesmo texto em frente"
-
-#~ msgid "Find _Previous"
-#~ msgstr "Localizar _anterior"
-
-#~ msgid "Search backwards for the same text"
-#~ msgstr "Pesquisa o mesmo texto para trás"
-
-#~ msgid "Find and replace text"
-#~ msgstr "Localiza e substitui texto"
-
-#~ msgid "Go to _Line"
-#~ msgstr "Ir para a _linha"
-
-#~ msgid "Go to a specific line"
-#~ msgstr "Vai para uma linha específica"
-
-#~ msgid "_Changes"
-#~ msgstr "_Alterações"
-
-#~ msgid "Next Change"
-#~ msgstr "Próxima alteração"
-
-#~ msgid "Previous Change"
-#~ msgstr "Alteração anterior"
-
-#~ msgid "Open selected file or directory in the default external application"
-#~ msgstr ""
-#~ "Abre o arquivo ou diretório selecionado com o aplicativo externo padrão"
-
-#~ msgid "Stop the current action"
-#~ msgstr "Interrompe a ação atual"
-
-#~ msgid "View the comparison in fullscreen"
-#~ msgstr "Visualiza a comparação em tela cheia"
-
-#~ msgid "Open Recent"
-#~ msgstr "Abrir recente"
-
-#~ msgid "Only one version control system found in this folder"
-#~ msgstr "Apenas um sistema de controle de versão foi localizado nesta pasta"
-
-#~ msgid "Show toolbar"
-#~ msgstr "Mostra a barra de ferramentas"
-
-#~ msgid "If true, the window toolbar is visible."
-#~ msgstr "Se verdadeiro, a barra de ferramentas da janela fica visível."
-
-#~ msgid "Show statusbar"
-#~ msgstr "Mostra a barra de status"
-
-#~ msgid "If true, the window statusbar is visible."
-#~ msgstr "Se verdadeiro, a barra de status da janela fica visível."
-
-#~ msgid "Editable List"
-#~ msgstr "Lista editável"
-
-#~ msgid "Meld Preferences"
-#~ msgstr "Preferências do Meld"
-
-#~ msgid "_Toolbar"
-#~ msgstr "Barra de _ferramentas"
-
-#~ msgid "Show or hide the toolbar"
-#~ msgstr "Mostra ou oculta a barra de ferramentas"
-
-#~ msgid "_Meld"
-#~ msgstr "_Meld"
-
-#~ msgid "Quit the program"
-#~ msgstr "Sai do programa"
-
-#~ msgid "Prefere_nces"
-#~ msgstr "Preferê_ncias"
-
-#~ msgid "Configure the application"
-#~ msgstr "Configura o aplicativo"
-
-#~ msgid "_Contents"
-#~ msgstr "S_umário"
-
-#~ msgid "Open the Meld manual"
-#~ msgstr "Abre o manual do Meld"
-
-#~ msgid "About this application"
-#~ msgstr "Sobre esse aplicativo"
-
-#~ msgid "_Save as UTF-8"
-#~ msgstr "_Salvar como UTF-8"
-
-#~ msgid "Couldn’t encode text as “%s”"
-#~ msgstr "Não foi possível codificar o texto como “%s”"
-
-#~ msgid "Error removing %s"
-#~ msgstr "Erro ao remover %s"
-
-#~ msgid "Format as Patch..."
-#~ msgstr "Formatar como patch..."
-
-#~ msgid "Co_mmit..."
-#~ msgstr "Sub_meter..."
-
-#~ msgid "INS"
-#~ msgstr "INS"
-
-#~ msgid "OVR"
-#~ msgstr "SBR"
-
-#~ msgid "Find..."
-#~ msgstr "Localizar..."
-
-#~ msgid "_Replace..."
-#~ msgstr "_Substituir..."
-
-#~ msgid "Meld does not support Python 3."
-#~ msgstr "Meld não tem suporte a Python 3."
-
-#~ msgid "_Tabs"
-#~ msgstr "A_bas"
-
-#~ msgid "_Previous Tab"
-#~ msgstr "Aba _anterior"
-
-#~ msgid "Activate previous tab"
-#~ msgstr "Ativa a aba anterior"
-
-#~ msgid "_Next Tab"
-#~ msgstr "Aba _seguinte"
-
-#~ msgid "Activate next tab"
-#~ msgstr "Ativa a aba seguinte"
-
-#~ msgid "Move Tab _Left"
-#~ msgstr "Mover aba para a _esquerda"
-
-#~ msgid "Move current tab to left"
-#~ msgstr "Move a aba atual para a esquerda"
-
-#~ msgid "Move Tab _Right"
-#~ msgstr "Mover aba para a _direita"
-
-#~ msgid "Move current tab to right"
-#~ msgstr "Move a aba atual para a direita"
-
-#~ msgid "Switch to this tab"
-#~ msgstr "Alterna para esta aba"
-
-#~ msgid ""
-#~ "These text encodings will be automatically used (in order) to try to "
-#~ "decode loaded text files."
-#~ msgstr ""
-#~ "Essas codificações de texto serão usadas (em ordem) automaticamente para "
-#~ "tentar decodificar arquivos texto carregados."
-
-#~ msgid "[%s] Set num panes"
-#~ msgstr "[%s] Definir quantidade de painéis"
-
-#~ msgid "[%s] Opening files"
-#~ msgstr "[%s] Abrindo arquivos"
-
-#~ msgid "Could not read file"
-#~ msgstr "Não foi possível ler o arquivo"
-
-#~ msgid "[%s] Reading files"
-#~ msgstr "[%s] Lendo arquivos"
-
-#~ msgid "%s is not in encodings: %s"
-#~ msgstr "%s não está nas codificações: %s"
-
-#~ msgid "Inconsistent line endings found"
-#~ msgstr "Fins de linha inconsistentes encontrados"
-
-#~ msgid ""
-#~ "'%s' contains a mixture of line endings. Select the line ending format to "
-#~ "use."
-#~ msgstr ""
-#~ "\"%s\" contém uma mistura de fins de linha. Selecione o formato de fim de "
-#~ "linha que você gostaria de usar."
-
-#~ msgid "Copy _Left"
-#~ msgstr "Copiar para a _esquerda"
-
-#~ msgid "Copy _Right"
-#~ msgstr "Copiar para a _direita"
-
-#~ msgid ""
-#~ "'%s' exists.\n"
-#~ "Overwrite?"
-#~ msgstr ""
-#~ "\"%s\" já existe.\n"
-#~ "Sobrescrevê-lo?"
-
-#~ msgid "Clear manual change sychronization points"
-#~ msgstr "Limpa alterações manuais de pontos de sincronização"
-
-#~ msgid "Cycle Through Documents"
-#~ msgstr "Fazer ciclo através dos documentos"
-
-#~ msgid ""
-#~ "\"%s\" exists!\n"
-#~ "Overwrite?"
-#~ msgstr ""
-#~ "\"%s\" já existe!\n"
-#~ "Sobrescrevê-lo?"
-
-#~ msgid ""
-#~ "Error writing to %s\n"
-#~ "\n"
-#~ "%s."
-#~ msgstr ""
-#~ "Erro ao escrever em %s\n"
-#~ "\n"
-#~ "%s."
-
-#~ msgid "Regular expression error"
-#~ msgstr "Erro na expressão regular"
-
-#~ msgid "Revision"
-#~ msgstr "Revisão"
-
-#~ msgid "Options"
-#~ msgstr "Opções"
-
-#~ msgid "%s (%s)"
-#~ msgstr "%s (%s)"
-
-#~ msgid "Ignore changes which insert or delete blank lines"
-#~ msgstr "Ignorar alterações que inserem ou excluem linhas vazias"
-
-#~ msgid "http://meldmerge.org/"
-#~ msgstr "http://meldmerge.org/"
-
-#~ msgid "Loading"
-#~ msgstr "Carregando"
-
-#~ msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-#~ msgstr "Ao carregar, tentar esses codecs, em ordem. (p.ex. utf8, iso8859)"
-
-#~ msgid "Encoding"
-#~ msgstr "Codificação"
-
-#~ msgid "%i second"
-#~ msgid_plural "%i seconds"
-#~ msgstr[0] "%i segundo"
-#~ msgstr[1] "%i segundos"
-
-#~ msgid "%i minute"
-#~ msgid_plural "%i minutes"
-#~ msgstr[0] "%i minuto"
-#~ msgstr[1] "%i minutos"
-
-#~ msgid "%i hour"
-#~ msgid_plural "%i hours"
-#~ msgstr[0] "%i hora"
-#~ msgstr[1] "%i horas"
-
-#~ msgid "%i day"
-#~ msgid_plural "%i days"
-#~ msgstr[0] "%i dia"
-#~ msgstr[1] "%i dias"
-
-#~ msgid "%i week"
-#~ msgid_plural "%i weeks"
-#~ msgstr[0] "%i semana"
-#~ msgstr[1] "%i semanas"
-
-#~ msgid "%i month"
-#~ msgid_plural "%i months"
-#~ msgstr[0] "%i mês"
-#~ msgstr[1] "%i meses"
-
-#~ msgid "%i year"
-#~ msgid_plural "%i years"
-#~ msgstr[0] "%i ano"
-#~ msgstr[1] "%i anos"
-
-#~ msgid "dir"
-#~ msgstr "dir"
-
-#~ msgid "Start a 2- or 3-way directory comparison"
-#~ msgstr "Inicia uma comparação de diretório em 2 ou 3 vias"
-
-#~ msgid "Show or hide the statusbar"
-#~ msgstr "Mostra ou oculta a barra de status"
-
-#~ msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-#~ msgstr "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-
-#~ msgid ""
-#~ "OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
-#~ "Desktop.ini\n"
-#~ msgstr ""
-#~ "Metadados específicos do SO\t0\t.DS_Store ._* .Spotlight-V100 .Trashes "
-#~ "Thumbs.db Desktop.ini\n"
-
-#~ msgid "Version Control\t1\t%s\n"
-#~ msgstr "Controle de versão\t1\t%s\n"
-
-#~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
-#~ msgstr "Binários\t1\t*.{pyc,a,obj,o,so,la,lib,dll,exe}\n"
-
-#~ msgid "Media\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
-#~ msgstr "Mídia\t0\t*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}"
-
-#~ msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-#~ msgstr "Palavras-chave do CVS\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-
-#~ msgid "C++ comment\t0\t//.*\n"
-#~ msgstr "Comentário C++\t0\t//.*\n"
-
-#~ msgid "C comment\t0\t/\\*.*?\\*/\n"
-#~ msgstr "Comentário C\t0\t/\\*.*?\\*/\n"
-
-#~ msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Todo espaço em branco\t0\t[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-#~ msgstr "Espaço em branco no começo\t0\t^[ \\t\\r\\f\\v]*\n"
-
-#~ msgid "Script comment\t0\t#.*"
-#~ msgstr "Comentário de script\t0\t#.*"
-
-#~ msgid ""
-#~ "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:"
-#~ "Missing:Not present"
-#~ msgstr ""
-#~ "Ignorado:Sem controle de versão:::Erro::Adicionado recentemente:"
-#~ "Modificado:Conflito:Removido:Faltando:Não presente"
-
-#~ msgid ""
-#~ "Meld is free software: you can redistribute it and/or modify it under the "
-#~ "terms of the GNU General Public License as published by the Free Software "
-#~ "Foundation, either version 2 of the License, or (at your option) any "
-#~ "later version.\n"
-#~ "\n"
-#~ "Meld is distributed in the hope that it will be useful, but WITHOUT ANY "
-#~ "WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
-#~ "FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
-#~ "details. \n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program.  If not, see <http://www.gnu.org/licenses/>."
-#~ msgstr ""
-#~ "Meld é software livre; você pode redistribuí-lo e/ou modificá-lo sob os "
-#~ "termos da Licença Pública Geral da GNU (GPL), conforme publicada pela "
-#~ "Free Software Foundation; quer a versão 2 da Licença, ou (se você "
-#~ "preferir) qualquer versão posterior.\n"
-#~ "\n"
-#~ "Meld é distribuído com esperanças de que seja útil, porém SEM NENHUMA "
-#~ "GARANTIA; nem mesmo garantia implícitas de MERCANTIBILIDADE ou SERVENTIA "
-#~ "PARA UM PROPÓSITO PARTICULAR. Veja a Licença Pública Geral da GNU para "
-#~ "maiores detalhes.\n"
-#~ "\n"
-#~ "Você deve ter recebido uma cópia da Licença Pública Geral da GNU junto "
-#~ "este programa; se não, veja <http://www.gnu.org/licenses/>."
-
-#~ msgid "Start a comparison between file and dir/file"
-#~ msgstr "Iniciar uma comparação entre arquivo e diretório/arquivo"
-
-#~ msgid "D-Bus error; comparisons will open in a new window."
-#~ msgstr "Erro D-Bus; comparações irão abrir em nova janela."
-
-#~ msgid "Report _Bug"
-#~ msgstr "Relatar _erro"
-
-#~ msgid "Report a bug in Meld"
-#~ msgstr "Relate um erro no Meld"
-
-#~ msgid "About this program"
-#~ msgstr "Sobre este programa"
-
-#~ msgid "Only available if you have PyGtkSourceView 2 installed"
-#~ msgstr "Disponível apenas se você tiver PyGtkSourceView 2 instalado"
-
-#~ msgid "_Browse..."
-#~ msgstr "_Navegar..."
-
-#~ msgid "Path"
-#~ msgstr "Caminho"
-
-#~ msgid "Path to file"
-#~ msgstr "Caminho para o arquivo"
-
-#~ msgid "Pop up a file selector to choose a file"
-#~ msgstr "Exibir um seletor de arquivo para escolher um"
-
-#~ msgid "Select directory"
-#~ msgstr "Selecionar diretório"
-
-#~ msgid "Compare selected"
-#~ msgstr "Compara os selecionados"
-
-#~ msgid ""
-#~ "'%s' is a directory.\n"
-#~ "Remove recursively?"
-#~ msgstr ""
-#~ "\"%s\" é um diretório.\n"
-#~ "Remover recursivamente?"
-
-#~ msgid ""
-#~ "Error converting to a regular expression\n"
-#~ "The pattern was '%s'\n"
-#~ "The error was '%s'"
-#~ msgstr ""
-#~ "Erro ao converter para uma expressão regular\n"
-#~ "O padrão foi \"%s\"\n"
-#~ "O erro foi \"%s\""
-
-#~ msgid "Merge All Non-conflicting"
-#~ msgstr "Mesclar todas não conflitantes"
-
-#~ msgid "Tag"
-#~ msgstr "Marca"
-
-#~ msgid "[%s] Applying patch"
-#~ msgstr "[%s] Aplicando patch"
-
-#~ msgid "Patch tool not found"
-#~ msgstr "Ferramenta de patch não encontrada"
-
-#~ msgid ""
-#~ "Meld needs the <i>patch</i> tool to be installed to perform comparisons "
-#~ "in %s repositories. Please install <i>patch</i> and try again."
-#~ msgstr ""
-#~ "Meld precisa da ferramenta <i>patch</i> instalada para executar "
-#~ "comparações em %s repositórios. Por favor instale <i>patch</i> e tente "
-#~ "novamente."
-
-#~ msgid "Error fetching original comparison file"
-#~ msgstr "Erro ao obter arquivo de comparação original"
-
-#~ msgid ""
-#~ "Meld couldn't obtain the original version of your comparison file. If you "
-#~ "are using the most recent version of Meld, please report a bug, including "
-#~ "as many details as possible."
-#~ msgstr ""
-#~ "Meld não pôde obter a versão original de seu arquivo de comparação. Se "
-#~ "você está usando a versão mais recente de Meld, por favor relate um erro, "
-#~ "incluindo o maior número possível de detalhes."
-
-#~ msgid "Report a bug"
-#~ msgstr "Relatar erro"
-
-#~ msgid "Create Patch"
-#~ msgstr "Criar patch"
-
-#~ msgid "Create a patch"
-#~ msgstr "Cria um patch"
-
-#~ msgid "Choose a name for buffer %i."
-#~ msgstr "Escolha um nome para o buffer %i."
-
-#~ msgid "Save changes to documents before reloading?"
-#~ msgstr "Salvar as mudanças a documentos antes de recarregar?"
-
-#~ msgid "Reload the comparison"
-#~ msgstr "Recarrega a comparação"
-
-#~ msgid "VC Log"
-#~ msgstr "Log do controle de versão"
-
-#~ msgid "Add to VC"
-#~ msgstr "Adiciona ao controle de versão"
-
-#~ msgid "Remove from VC"
-#~ msgstr "Remove do controle de versão"
-
-#~ msgid "Delete locally"
-#~ msgstr "Exclui localmente"
-
-#~ msgid "Non _VC"
-#~ msgstr "Sem controle de _versão"
-
-#~ msgid "Rev"
-#~ msgstr "Rev"
-
-#~ msgid "Choose Files"
-#~ msgstr "Escolher arquivos"
-
-#~ msgid "_Three Way Compare"
-#~ msgstr "Comparação de _três vias"
-
-#~ msgid "Mine"
-#~ msgstr "Meu"
-
-#~ msgid "Original"
-#~ msgstr "Original"
-
-#~ msgid "Other"
-#~ msgstr "Outro"
-
-#~ msgid "Select VC Directory"
-#~ msgstr "Selecionar diretório do controle de versão"
-
-#~ msgid "Directory"
-#~ msgstr "Diretório"
-
-#~ msgid "_New..."
-#~ msgstr "_Novo..."
-
-#~ msgid ""
-#~ "Some files have been modified.\n"
-#~ "Which ones would you like to save?"
-#~ msgstr ""
-#~ "Alguns arquivos foram modificados.\n"
-#~ "Quais deles você gostaria de salvar?"
-
-#~ msgid "_Save Selected"
-#~ msgstr "S_alvar selecionados"
-
-#~ msgid ""
-#~ "Reloading will discard changes in:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "You cannot undo this operation."
-#~ msgstr ""
-#~ "Recarregar irá descartar as alterações em:\n"
-#~ "%s\n"
-#~ "\n"
-#~ "Você não pode desfazer essa operação."
-
-#~ msgid "Select some files first."
-#~ msgstr "Selecione primeiro alguns arquivos."
-
-#~ msgid "_Search for"
-#~ msgstr "Pesqui_sar por"
-
-#~ msgid "Compare Options"
-#~ msgstr "Opções de comparação"
-
-#~ msgid "Date"
-#~ msgstr "Data"
-
-#~ msgid "Local copy against other remote revision"
-#~ msgstr "Cópia local contra outra revisão remota"
-
-#~ msgid "Local copy against same remote revision"
-#~ msgstr "Cópia local contra a mesma revisão remota"
-
-#~ msgid "Case"
-#~ msgstr "Maiusculização"
-
-#~ msgid "Ignore case of entries"
-#~ msgstr "Ignora maiúsc./minúsc. das entradas"
-
-#~ msgid "can't compare more than three directories"
-#~ msgstr "não é possível comparar mais de três diretórios"
-
-#~ msgid "Add _Binary"
-#~ msgstr "Adicionar _binário"
-
-#~ msgid "Add binary to VC"
-#~ msgstr "Adiciona binário ao controle de versão"
-
-#~ msgid ""
-#~ "\n"
-#~ "                    Invoking 'patch' failed.\n"
-#~ "                    \n"
-#~ "                    Maybe you don't have 'GNU patch' installed,\n"
-#~ "                    or you use an untested version of %s.\n"
-#~ "                    \n"
-#~ "                    Please send email bug report to:\n"
-#~ "                    meld-list@gnome.org\n"
-#~ "                    \n"
-#~ "                    Containing the following information:\n"
-#~ "                    \n"
-#~ "                    - meld version: '%s'\n"
-#~ "                    - source control software type: '%s'\n"
-#~ "                    - source control software version: 'X.Y.Z'\n"
-#~ "                    - the output of '%s somefile.txt'\n"
-#~ "                    - patch command: '%s'\n"
-#~ "                    (no need to actually run it, just provide\n"
-#~ "                    the command line) \n"
-#~ "                    \n"
-#~ "                    Replace 'X.Y.Z' by the actual version for the\n"
-#~ "                    source control software you use.\n"
-#~ "                    "
-#~ msgstr ""
-#~ "\n"
-#~ "                    Invocar 'patch' falhou.\n"
-#~ "                    \n"
-#~ "                    Talvez você não tenha o 'GNU patch' instalado,\n"
-#~ "                    ou você use uma versão não-testada de %s.\n"
-#~ "                    \n"
-#~ "                    Por favor, envie um relatório de erro por email "
-#~ "para:\n"
-#~ "                    meld-list@gnome.org\n"
-#~ "                    \n"
-#~ "                    Contendo as seguintes informações:\n"
-#~ "                    \n"
-#~ "                    - versão do meld: '%s'\n"
-#~ "                    - tipo de aplicativo de controle de versão: '%s'\n"
-#~ "                    - versão do aplicativo de controle de versão: 'X.Y."
-#~ "Z'\n"
-#~ "                    - a saída do '%s somefile.txt'\n"
-#~ "                    - comando de patch: '%s'\n"
-#~ "                    (não é necessário rodá-lo, apenas enviar\n"
-#~ "                    a linha de comando) \n"
-#~ "                    \n"
-#~ "                    Substitua 'X.Y.Z' pela versão atual do\n"
-#~ "                    aplicativo de controle de versão que você usa.\n"
-#~ "                    "
-
-#~ msgid "<b>Edit Menu</b>"
-#~ msgstr "<b>Menu de edição</b>"
-
-#~ msgid "<b>Font</b>"
-#~ msgstr "<b>Fonte</b>"
-
-#~ msgid "<b>Misc</b>"
-#~ msgstr "<b>Miscelânea</b>"
-
-#~ msgid "Automatically supply missing newline at end of file"
-#~ msgstr "Colocar automaticamente uma nova linha no fim do arquivo"
-
-#~ msgid "Copyright © 2002-2009 Stephen Kennedy"
-#~ msgstr "Copyright ® 2002-2009 Stephen Kennedy"
-
-#~ msgid "Line Wrapping "
-#~ msgstr "Quebras de linha "
-
-#~ msgid "Preferences : Meld"
-#~ msgstr "Preferências : Meld"
-
-#~ msgid "Three way directory"
-#~ msgstr "Diretório de três vias"
-
-#~ msgid "Three way file"
-#~ msgstr "Arquivos de três vias"
-
-#~ msgid "Two way file"
-#~ msgstr "Arquivo de duas vias"
-
-#~ msgid "Use GNOME monospace font"
-#~ msgstr "Usar a fonte monospace do GNOME"
-
-#~ msgid "_Character"
-#~ msgstr "_Caractere"
-
-#~ msgid "_Word"
-#~ msgstr "_Palavra"
-
-#~ msgid "Left"
-#~ msgstr "Esquerda"
-
-#~ msgid "Right"
-#~ msgstr "Direita"
-
-#~ msgid "Error converting pattern '%s' to regular expression"
-#~ msgstr "Erro ao converter o padrão \"%s\" para expressão regular"
-
-#~ msgid "Regex"
-#~ msgstr "ER"
-
-#~ msgid "_Commit"
-#~ msgstr "_Commit"
-
-#~ msgid "The regular expression '%s' was not found."
-#~ msgstr "A expressão regular \"%s\" não foi localizada."
-
-#~ msgid "The text '%s' was not found."
-#~ msgstr "O texto \"%s\" não foi localizado."
-
-#~ msgid "The error was:"
-#~ msgstr "O erro foi:"
-
-#~ msgid ""
-#~ "It contains ascii nulls.\n"
-#~ "Perhaps it is a binary file."
-#~ msgstr ""
-#~ "Isto contém ascii nulos.\n"
-#~ "Talvez seja um arquivo binário."
-
-#~ msgid "Match _entire word only"
-#~ msgstr "Coincidir ap_enas a palavra inteira"
-
-#~ msgid "(gnome-default-editor)"
-#~ msgstr "(editor-padrão-gnome)"
-
-#~ msgid "<b>Drawing Style</b>"
-#~ msgstr "<b>Estilo de desenho</b>"
-
-#~ msgid "<b>Saving</b>"
-#~ msgstr "<b>Gravação</b>"
-
-#~ msgid "<b>Toolbar Appearance</b>"
-#~ msgstr "<b>Aparência da barra de ferramentas</b>"
-
-#~ msgid "<b>Whitespace</b>"
-#~ msgstr "<b>Espaços em branco</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Compare</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Comparar</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Display</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Exibição</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Editor</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Encoding</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Codificação</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">File Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Filtros de arquivos</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Text Filters</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Filtros de texto</span>"
-
-#~ msgid ""
-#~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
-#~ "choose a simpler mode if you find scrolling is slow."
-#~ msgstr ""
-#~ "Escolha como a barra central do visualizador diff é desenhada. Você pode "
-#~ "querer escolher um modo mais simples se achar que a rolagem está lenta."
-
-#~ msgid "Curved: Filled Curves"
-#~ msgstr "Curvado: Curvas preenchidas"
-
-#~ msgid "Gnome Default"
-#~ msgstr "Padrão do GNOME"
-
-#~ msgid "Icons Only"
-#~ msgstr "Apenas ícones"
-
-#~ msgid "Ignore changes in amount of white space"
-#~ msgstr "Ignorar alterações na quantidade de espaço em branco"
-
-#~ msgid ""
-#~ "Ignore changes in case; consider upper and lower-case letters equivalent"
-#~ msgstr ""
-#~ "Ignorar alterações na maiusculização; considera maiúsculas e minúsculas "
-#~ "equivalentes"
-
-#~ msgid "Ignore changes that just insert or delete blank lines"
-#~ msgstr "Ignora alterações que apenas inserem ou excluem linhas vazias"
-
-#~ msgid "Save in the files original encoding"
-#~ msgstr "Salvar usando a codificação original do arquivo"
-
-#~ msgid "Simple: Lines only"
-#~ msgstr "Simples: Apenas linhas"
-
-#~ msgid "Solid: Filled Quadilaterals"
-#~ msgstr "Sólido: Quadriláteros preenchidos"
-
-#~ msgid "Text Beside Icons"
-#~ msgstr "Texto ao lado de ícones"
-
-#~ msgid "Text Only"
-#~ msgstr "Apenas texto"
-
-#~ msgid "Text Under Icons"
-#~ msgstr "Texto sob ícones"
-
-#~ msgid "Whitespace is significant"
-#~ msgstr "Espaços em branco são significantes"
-
-#~ msgid "_Logo"
-#~ msgstr "_Logotipo"
-
-#~ msgid ""
-#~ "Spaces instead of tab is only available if you have gnome-python-desktop "
-#~ "installed."
-#~ msgstr ""
-#~ "\"Espaços em vez de tabulações\" está disponível apenas se você tiver o "
-#~ "gnome-python-desktop instalado."
-
-#~ msgid ""
-#~ "Syntax highlighting is only available if you have gnome-python-desktop "
-#~ "installed."
-#~ msgstr ""
-#~ "\"Destaque de sintaxe\" está disponível apenas se você tiver o gnome-"
-#~ "python-desktop instalado."
-
-#~ msgid ""
-#~ "Version Control\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory RCS\n"
-#~ msgstr ""
-#~ "Controle de versão\t1\tCVS .svn MT [{]arch[}] .arch-ids .arch-inventory "
-#~ "RCS\n"
-
-#~ msgid "Mailing _List"
-#~ msgstr "_Lista de discussão"
-
-#~ msgid "Go to the Meld mailing list"
-#~ msgstr "Vai à lista de discussão do Meld"
-
-#~ msgid ""
-#~ "Meld %s\n"
-#~ "Written by Stephen Kennedy <stevek@gnome.org>"
-#~ msgstr ""
-#~ "Meld %s\n"
-#~ "Escrito por Stephen Kennedy <stevek@gnome.org>"
-
-#~ msgid "Wrong number of arguments (Got %i)"
-#~ msgstr "Número errado de argumentos (Recebi %i)"
-
-#~ msgid "Invoking patch failed, you need GNU patch."
-#~ msgstr "Falha ao invocar patch, você precisa do GNU patch."
-
-#~ msgid "Edit selected"
-#~ msgstr "Editar selecionado"
-
-#~ msgid "Edit files"
-#~ msgstr "Editar arquivos"
-
-#~ msgid "[%s] Scanning"
-#~ msgstr "[%s] Varrendo"
-
-#~ msgid ""
-#~ "second,seconds:minute,minutes:hour,hours:day,days:week,weeks:month,months:"
-#~ "year,years"
-#~ msgstr ""
-#~ "segundo,segundos:minuto,minutos:hora,horas:dia,dias:semana,semanas:mês,"
-#~ "meses:ano,anos"
-
-#~ msgid ""
-#~ "Could not open '%s' for reading.\n"
-#~ "\n"
-#~ "The error was:\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Não foi possível abrir \"%s\" para leitura.\n"
-#~ "\n"
-#~ "O erro foi:\n"
-#~ "%s"
-
-#~ msgid "Meld requires a recent version of pygtk."
-#~ msgstr "O Meld precisa de uma versão recente do pygtk."
-
-#~ msgid "pygtk-%s or higher is recommended."
-#~ msgstr "O pygtk-%s ou superior é recomendado."
-
-#~ msgid "Meld works best with pygtk-%s or higher. (found %s)"
-#~ msgstr "O Meld funciona melhor com pygtk-%s ou superior. (localizado %s)"
-
-#~ msgid ""
-#~ "Due to incompatible API changes some functions may not operate as "
-#~ "expected."
-#~ msgstr ""
-#~ "Devido a alterações de API incompatíveis, algumas funções podem não "
-#~ "operar como esperado."
-
-#~ msgid "nonexistant"
-#~ msgstr "não existente"
-
-#~ msgid ""
-#~ "Meld is a file and directory comparison tool. Usage:\n"
-#~ "\n"
-#~ "    meld                        Start with no windows open\n"
-#~ "    meld <dir>                  Start with CVS browser in 'dir'\n"
-#~ "    meld <file>                 Start with CVS diff of 'file'\n"
-#~ "    meld <file> <file> [file]   Start with 2 or 3 way file comparison\n"
-#~ "    meld <dir>  <dir>  [dir]    Start with 2 or 3 way directory "
-#~ "comparison\n"
-#~ "\n"
-#~ "For more information choose help -> contents.\n"
-#~ "Report bugs at http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-#~ "stevek@gnome.org\n"
-#~ msgstr ""
-#~ "Meld é uma ferramenta de comparação de arquivos e diretórios. Uso:\n"
-#~ "\n"
-#~ "    meld                       Inicia sem janelas abertas\n"
-#~ "    meld <dir>                 Inicia com o navegador de CVS em 'dir'\n"
-#~ "    meld <arq>                 Inicia com um diff de CVS de 'arq'\n"
-#~ "    meld <arq> <arq> [arq]     Inicia comparando 2 ou 3 arquivos\n"
-#~ "    meld <dir> <dir> [dir]     Inicia comparando 2 ou 3 diretórios\n"
-#~ "\n"
-#~ "Para mais informações escolha Ajuda -> Conteúdo.\n"
-#~ "Relate erros em http://bugzilla.gnome.org/buglist.cgi?product=meld\n"
-#~ "http://mail.gnome.org/mailman/listinfo/meld-list\n"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "Diff Options"
-#~ msgstr "Opções do Diff"
-
-#~ msgid "Remove _Locally"
-#~ msgstr "Remover _Localmente"
-
-#~ msgid "Show non-CVS"
-#~ msgstr "Mostrar não-CVS"
-
-#~ msgid "_Diff"
-#~ msgstr "_Diff"
-
-#~ msgid "Copy All _Left"
-#~ msgstr "Copiar tudo à _esquerda"
-
-#~ msgid "Copy All _Right"
-#~ msgstr "Copiar tudo à _direita"
-
-#~ msgid "Diff"
-#~ msgstr "Diff"
-
-#~ msgid " spaces."
-#~ msgstr " espaços."
-
-#~ msgid "<b>Global options</b>"
-#~ msgstr "<b>Opções globais</b>"
-
-#~ msgid "<b>Update Options</b>"
-#~ msgstr "<b>Opções de Atualização</b>"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Diff</span>"
-
-#~ msgid "CVS"
-#~ msgstr "CVS"
-
-#~ msgid "CVS binary"
-#~ msgstr "Binário CVS"
-
-#~ msgid "CVS view"
-#~ msgstr "Visualização de CVS"
-
-#~ msgid "Create missing directories (-d)"
-#~ msgstr "Criar diretórios ausentes (-d)"
-
-#~ msgid "Edit menu popup invokes"
-#~ msgstr "Edita chamadas de menu de contexto"
-
-#~ msgid "Ignore .cvsrc (-f)"
-#~ msgstr "Ignorar .cvsrc (-f)"
-
-#~ msgid "Locate CVS binary : Meld"
-#~ msgstr "Localizar binário CVS : Meld "
-
-#~ msgid "My File"
-#~ msgstr "Meu arquivo"
-
-#~ msgid "New..."
-#~ msgstr "Novo..."
-
-#~ msgid "Original Directory"
-#~ msgstr "Diretório original"
-
-#~ msgid "Original File"
-#~ msgstr "Arquivo original"
-
-#~ msgid "Other Directory"
-#~ msgstr "Diretório de outro"
-
-#~ msgid "Prune empty directories (-P)"
-#~ msgstr "Retirar diretórios vazios (-P)"
-
-#~ msgid "Quiet mode (-q)"
-#~ msgstr "Modo silencioso (-q)"
-
-#~ msgid "SVN Directory"
-#~ msgstr "Diretório SVN"
-
-#~ msgid "SVN view"
-#~ msgstr "Visualização de SVN"
-
-#~ msgid "Tabs equivalent to "
-#~ msgstr "Tab equivalente a "
-
-#~ msgid "Use Compression (-z)"
-#~ msgstr "Usar compressão (-z)"
-
-#~ msgid "_SVN Browser"
-#~ msgstr "Navegador de _SVN"
-
-#~ msgid "_Up"
-#~ msgstr "Para _cima"
-
-#~ msgid "utf8 iso8859"
-#~ msgstr "utf8 iso8859"
-
-#~ msgid "Save File 1"
-#~ msgstr "Salvar arquivo 1"
-
-#~ msgid "Save File 2"
-#~ msgstr "Salvar arquivo 2"
-
-#~ msgid "Save File 3"
-#~ msgstr "Salvar arquivo 3"
-
-#~ msgid "`%s' is not a directory or file, cannot open cvs view"
-#~ msgstr "'%s' não é um diretório ou arquivo, impossível abrir a visão de CVS"
-
-#~ msgid "<span weight=\"bold\" size=\"x-large\">Binary Files</span>"
-#~ msgstr "<span weight=\"bold\" size=\"x-large\">Arquivos Binários</span>"
-
-#~ msgid ""
-#~ "Binary files do not have text filters applied to them when comparing."
-#~ msgstr ""
-#~ "Filtro de texto não são aplicados a arquivos binários ao ser comparados."
-
-#~ msgid "_Binary Files"
-#~ msgstr "Arquivos _binários"

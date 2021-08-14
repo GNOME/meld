@@ -64,11 +64,13 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 
         # Ideally this would be a template child, but there's still no
         # Python support for this.
-        label = Gtk.Label()
-        label.props.single_line_mode = True
-        label.props.halign = Gtk.Align.START
-        label.props.valign = Gtk.Align.BASELINE
-        label.props.xalign = 1.0
+        label = Gtk.Label(
+            single_line_mode=True,
+            halign=Gtk.Align.START,
+            valign=Gtk.Align.BASELINE,
+            xalign=1.0,
+            ellipsize=Pango.EllipsizeMode.END,
+        )
 
         arrow = Gtk.Image.new_from_icon_name(
             'pan-down-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
@@ -120,7 +122,7 @@ class MeldStatusBar(Gtk.Statusbar):
     )
 
     # Abbreviation for line, column so that it will fit in the status bar
-    _line_column_text = _("Ln %i, Col %i")
+    _line_column_text = _("Ln {line}, Col {column}")
 
     def __init__(self):
         super().__init__()
@@ -201,7 +203,8 @@ class MeldStatusBar(Gtk.Statusbar):
 
         def format_cursor_position(binding, cursor):
             line, offset = cursor
-            return self._line_column_text % (line + 1, offset + 1)
+            return self._line_column_text.format(
+                line=line + 1, column=offset + 1)
 
         button = MeldStatusMenuButton()
         self.bind_property(

@@ -316,6 +316,11 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         return GtkSource.View.do_realize(self)
 
+    def do_unrealize(self):
+        if self.anim_source_id:
+            GLib.source_remove(self.anim_source_id)
+        return GtkSource.View.do_unrealize(self)
+
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
             return GtkSource.View.do_draw_layer(self, layer, context)

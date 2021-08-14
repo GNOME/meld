@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import ClassVar, Optional
+
 from gi.repository import GObject, Gtk, GtkSource
 
 
@@ -34,6 +36,7 @@ class FindBar(Gtk.Grid):
     wrap_box = Gtk.Template.Child()
 
     replace_mode = GObject.Property(type=bool, default=False)
+    _cached_search: ClassVar[Optional[str]] = None
 
     @GObject.Signal(
         name='activate-secondary',
@@ -105,6 +108,9 @@ class FindBar(Gtk.Grid):
         self.set_text_view(textview)
         if text:
             self.find_entry.set_text(text)
+            FindBar._cached_search = text
+        elif FindBar._cached_search:
+            self.find_entry.set_text(FindBar._cached_search)
         self.show()
         self.find_entry.grab_focus()
 
@@ -154,6 +160,7 @@ class FindBar(Gtk.Grid):
 
     @Gtk.Template.Callback()
     def on_find_entry_changed(self, entry):
+        FindBar._cached_search = entry.get_text()
         self._find_text(0)
 
     @Gtk.Template.Callback()

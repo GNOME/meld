@@ -258,6 +258,7 @@ class PreferencesDialog(Gtk.Dialog):
     checkbutton_highlight_current_line = Gtk.Template.Child()
     checkbutton_ignore_blank_lines = Gtk.Template.Child()
     checkbutton_ignore_symlinks = Gtk.Template.Child()
+    checkbutton_prefer_dark_theme = Gtk.Template.Child()
     checkbutton_shallow_compare = Gtk.Template.Child()
     checkbutton_show_commit_margin = Gtk.Template.Child()
     checkbutton_show_line_numbers = Gtk.Template.Child()
@@ -292,6 +293,7 @@ class PreferencesDialog(Gtk.Dialog):
             ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),  # noqa: E501
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
+            ('prefer-dark-theme', self.checkbutton_prefer_dark_theme, 'active'),  # noqa: E501
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('use-system-editor', self.system_editor_checkbutton, 'active'),
