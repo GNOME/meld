@@ -422,7 +422,8 @@ class MeldWindow(Gtk.ApplicationWindow):
         self._append_page(doc)
         if isinstance(location, (list, tuple)):
             location = location[0]
-        doc.set_location(location.get_path())
+        if location:
+            doc.set_location(location.get_path())
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
         return doc
