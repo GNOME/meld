@@ -14,6 +14,7 @@
       <object class="GtkHeaderBar" id="header_bar">
         <property name="show-close-button">true</property>
         <property name="visible">true</property>
+        <property name="title" translatable="yes">Meld</property>
         <child>
           <object class="GtkBox">
             <property name="visible">True</property>
@@ -252,7 +253,6 @@
             <property name="show_border">False</property>
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <signal name="switch-page" handler="after_switch_page" after="yes" swapped="no"/>
-            <signal name="page-label-changed" handler="on_page_label_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">True</property>

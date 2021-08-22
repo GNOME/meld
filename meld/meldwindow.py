@@ -237,12 +237,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         self.lookup_action('close').set_enabled(bool(newdoc))
 
-        if newdoc:
-            nbl = self.notebook.get_tab_label(newdoc)
-            self.set_title(nbl.props.label_text)
-        else:
-            self.set_title("Meld")
-
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
@@ -254,10 +248,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
         newdoc.on_container_switch_in_event(self)
-
-    @Gtk.Template.Callback()
-    def on_page_label_changed(self, notebook, label_text):
-        self.set_title(label_text)
 
     def action_new_tab(self, action, parameter):
         self.append_new_comparison()
