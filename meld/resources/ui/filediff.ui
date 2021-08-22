@@ -39,18 +39,6 @@
               </object>
             </child>
             <child>
-              <object class="MeldFileButton" id="file_open_button2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">2</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-                <property name="local-only">False</property>
-                <property name="dialog_label">Select File</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
-            <child>
               <object class="GtkButton" id="file_save_button2">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -65,14 +53,32 @@
               </object>
             </child>
             <child type="center">
-              <object class="PathLabel" id="filelabel2">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">File 3</property>
-                <property name="icon-name">text-x-generic-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">2</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 3</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>
@@ -102,18 +108,6 @@
               </object>
             </child>
             <child>
-              <object class="MeldFileButton" id="file_open_button1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">1</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-                <property name="local-only">False</property>
-                <property name="dialog_label">Select File</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
-            <child>
               <object class="GtkButton" id="file_save_button1">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -128,14 +122,32 @@
               </object>
             </child>
             <child type="center">
-              <object class="PathLabel" id="filelabel1">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">File 2</property>
-                <property name="icon-name">text-x-generic-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">1</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 2</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>
@@ -165,18 +177,6 @@
               </object>
             </child>
             <child>
-              <object class="MeldFileButton" id="file_open_button0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">0</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
-                <property name="local-only">False</property>
-                <property name="dialog_label">Select File</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
-            <child>
               <object class="GtkButton" id="file_save_button0">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -191,14 +191,32 @@
               </object>
             </child>
             <child type="center">
-              <object class="PathLabel" id="filelabel0">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">File 1</property>
-                <property name="icon-name">text-x-generic-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">0</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 1</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>

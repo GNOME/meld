@@ -17,26 +17,32 @@
           <object class="GtkActionBar" id="pane_actionbar0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="MeldFileButton" id="folder_open_button0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">0</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
-                <property name="dialog_label">Select Folder</property>
-                <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
             <child type="center">
-              <object class="PathLabel" id="folder_label0">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Folder 1</property>
-                <property name="icon-name">folder-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="folder_open_button0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">0</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                    <property name="dialog_label">Select Folder</property>
+                    <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="folder_label0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Folder 1</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>
@@ -52,26 +58,32 @@
           <object class="GtkActionBar" id="pane_actionbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="MeldFileButton" id="folder_open_button1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">1</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
-                <property name="dialog_label">Select Folder</property>
-                <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
             <child type="center">
-              <object class="PathLabel" id="folder_label1">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Folder 2</property>
-                <property name="icon-name">folder-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="folder_open_button1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">1</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                    <property name="dialog_label">Select Folder</property>
+                    <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="folder_label1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Folder 2</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>
@@ -87,26 +99,32 @@
           <object class="GtkActionBar" id="pane_actionbar2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <child>
-              <object class="MeldFileButton" id="folder_open_button2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="pane">2</property>
-                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
-                <property name="dialog_label">Select Folder</property>
-                <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
-                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
-              </object>
-            </child>
             <child type="center">
-              <object class="PathLabel" id="folder_label2">
+              <object class="GtkBox">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Folder 3</property>
-                <property name="icon-name">folder-symbolic</property>
+                <property name="orientation">horizontal</property>
+                <property name="homogeneous">False</property>
                 <style>
-                  <class name="flat"/>
+                  <class name="linked"/>
                 </style>
+                <child>
+                  <object class="MeldFileButton" id="folder_open_button2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">2</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                    <property name="dialog_label">Select Folder</property>
+                    <property name="tooltip_text" translatable="yes">Select folder to open in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="folder_label2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">Folder 3</property>
+                  </object>
+                </child>
               </object>
             </child>
             <style>
