@@ -18,7 +18,7 @@ import copy
 import functools
 import logging
 import math
-from typing import Optional, Type
+from typing import Optional, Tuple, Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -528,6 +528,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
             style in ('compact-sourcemap', 'full-sourcemap'))
         for sourcemap in self.sourcemap:
             sourcemap.props.compact_view = style == 'compact-sourcemap'
+
+    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+        return True, False, False
 
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()

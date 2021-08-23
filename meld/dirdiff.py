@@ -25,6 +25,7 @@ import sys
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
+from typing import Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -621,6 +622,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 treeview.move_column_after(current_column, last_column)
                 last_column = current_column
             treeview.set_headers_visible(extra_cols)
+
+    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+        # TODO: Make text filters available in folder comparison
+        return False, True, False
 
     def on_file_filters_changed(self, app):
         relevant_change = self.create_name_filters()

@@ -209,6 +209,14 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         window.insert_action_group(
             'view', getattr(self, 'view_action_group', None))
 
+        if hasattr(self, "get_filter_visibility"):
+            text, folder, vc = self.get_filter_visibility()
+        else:
+            text, folder, vc = False, False, False
+        window.text_filter_button.set_visible(text)
+        window.folder_filter_button.set_visible(folder)
+        window.vc_filter_button.set_visible(vc)
+
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
 

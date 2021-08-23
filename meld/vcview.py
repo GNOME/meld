@@ -22,6 +22,7 @@ import shutil
 import stat
 import sys
 import tempfile
+from typing import Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 
@@ -577,6 +578,9 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             [Gio.File.new_for_path(d) for d in diffs],
             kwargs,
         )
+
+    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+        return False, False, True
 
     def action_filter_state_change(self, action, value):
         action.set_state(value)
