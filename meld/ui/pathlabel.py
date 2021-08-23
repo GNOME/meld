@@ -19,7 +19,10 @@ from typing import Optional
 from gi.repository import Gdk, Gio, GObject, Gtk
 
 from meld.conf import _
-from meld.iohelpers import format_parent_relative_path
+from meld.iohelpers import (
+    format_home_relative_path,
+    format_parent_relative_path,
+)
 from meld.melddoc import open_files_external
 
 log = logging.getLogger(__name__)
@@ -187,7 +190,7 @@ class PathLabel(Gtk.MenuButton):
             # If we have no parent yet but have a descendant, we'll use
             # the descendant name as the better-than-nothing label.
             if descendant:
-                self._path_label = descendant.get_parse_name()
+                self._path_label = format_home_relative_path(descendant)
                 self.notify('path_label')
             return
 

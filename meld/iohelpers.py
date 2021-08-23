@@ -148,6 +148,15 @@ def find_shared_parent_path(
     return current_parent
 
 
+def format_home_relative_path(gfile: Gio.File) -> str:
+    home_file = Gio.File.new_for_path(GLib.get_home_dir())
+    home_relative = home_file.get_relative_path(gfile)
+    if home_relative:
+        return GLib.build_filenamev(['~', home_relative])
+    else:
+        return gfile.get_parse_name()
+
+
 def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     """Format shortened child paths using a common parent
 
@@ -224,7 +233,7 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
         '…' if elided_path else None,
         descendant.get_basename(),
     ]
-    label_text = parent.get_parse_name() if show_parent else ''
+    label_text = format_home_relative_path(parent) if show_parent else ""
     label_text += GLib.build_filenamev([s for s in label_segments if s])
 
     return label_text
