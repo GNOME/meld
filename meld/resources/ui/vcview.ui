@@ -162,31 +162,30 @@
                 <property name="label" translatable="yes">File 1</property>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkComboBox" id="combobox_vcs">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">liststore_vcs</property>
+            <property name="popup_fixed_width">False</property>
+            <signal name="changed" handler="on_vc_change" swapped="no"/>
             <child>
-              <object class="GtkComboBox" id="combobox_vcs">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="model">liststore_vcs</property>
-                <property name="popup_fixed_width">False</property>
-                <signal name="changed" handler="on_vc_change" swapped="no"/>
-                <child>
-                  <object class="GtkCellRendererText">
-                    <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
-                    <property name="width-chars">12</property>
-                    <property name="max-width-chars">30</property>
-                  </object>
-                  <attributes>
-                    <attribute name="text">0</attribute>
-                    <attribute name="sensitive">2</attribute>
-                  </attributes>
-                </child>
+              <object class="GtkCellRendererText">
+                <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+                <property name="width-chars">12</property>
+                <property name="max-width-chars">30</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-              </packing>
+              <attributes>
+                <attribute name="text">0</attribute>
+                <attribute name="sensitive">2</attribute>
+              </attributes>
             </child>
           </object>
+          <packing>
+            <property name="pack-type">GTK_PACK_END</property>
+          </packing>
         </child>
         <style>
           <class name="meld-actionbar"/>
