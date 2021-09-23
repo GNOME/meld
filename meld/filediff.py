@@ -532,6 +532,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
         return True, False, False
 
+    def get_conflict_visibility(self) -> bool:
+        return self.num_panes == 3
+
     def on_text_filters_changed(self, app):
         relevant_change = self.create_text_filters()
         if relevant_change:

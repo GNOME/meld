@@ -213,9 +213,18 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
             text, folder, vc = self.get_filter_visibility()
         else:
             text, folder, vc = False, False, False
+
+        if hasattr(self, "get_conflict_visibility"):
+            show_conflict_actions = self.get_conflict_visibility()
+        else:
+            show_conflict_actions = False
+
         window.text_filter_button.set_visible(text)
         window.folder_filter_button.set_visible(folder)
         window.vc_filter_button.set_visible(vc)
+
+        window.next_conflict_button.set_visible(show_conflict_actions)
+        window.previous_conflict_button.set_visible(show_conflict_actions)
 
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
