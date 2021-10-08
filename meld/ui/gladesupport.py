@@ -10,8 +10,10 @@ from meld import linkmap  # noqa: F401
 from meld import preferences  # noqa: F401
 from meld import sourceview  # noqa: F401
 from meld.ui import emblemcellrenderer  # noqa: F401
+from meld.ui import filebutton  # noqa: F401
 from meld.ui import historyentry  # noqa: F401
 from meld.ui import msgarea  # noqa: F401
 from meld.ui import notebook  # noqa: F401
+from meld.ui import pathlabel  # noqa: F401
 from meld.ui import recentselector  # noqa: F401
 from meld.ui import statusbar  # noqa: F401

@@ -64,7 +64,7 @@ for data_dir in gtk_data_dirs:
         data_subdir = os.path.relpath(local_data_subdir, local_data_dir)
         gtk_data_files.append((
             os.path.join(data_dir, data_subdir),
-            [os.path.join(local_data_subdir, file) for file in files]
+            [os.path.join(local_data_subdir, file) for file in files],
         ))
 
 manually_added_libs = {
@@ -100,14 +100,14 @@ registry_table = [
 # Provide the locator and app search to give MSI the existing install directory
 # for future upgrades
 reg_locator_table = [
-    ('MeldInstallDirLocate', 2, r'SOFTWARE\Meld', 'InstallDir', 0)
+    ('MeldInstallDirLocate', 2, r'SOFTWARE\Meld', 'InstallDir', 0),
 ]
 app_search_table = [('TARGETDIR', 'MeldInstallDirLocate')]
 
 msi_data = {
     'Registry': registry_table,
     'RegLocator': reg_locator_table,
-    'AppSearch': app_search_table
+    'AppSearch': app_search_table,
 }
 
 bdist_msi_options = {

@@ -45,7 +45,7 @@ class Vc(_vc.Vc):
         "!":                _vc.STATE_MISSING,
         "I":                _vc.STATE_IGNORED,
         "Locally Modified": _vc.STATE_MODIFIED,
-        "Locally Removed":  _vc.STATE_REMOVED
+        "Locally Removed":  _vc.STATE_REMOVED,
     }
 
     def commit(self, runner, files, message):
@@ -59,8 +59,10 @@ class Vc(_vc.Vc):
     def add(self, runner, afiles):
         # CVS needs to add files together with all the parents
         # (if those are Unversioned yet)
-        relfiles = [os.path.relpath(s, self.root)
-                    for s in afiles if os.path.isfile(s)]
+        relfiles = [
+            os.path.relpath(s, self.root)
+            for s in afiles if os.path.isfile(s)
+        ]
         command = [self.CMD, 'add']
 
         relargs = []
@@ -115,10 +117,14 @@ class Vc(_vc.Vc):
                 files = self._find_files(path) if path_isdir else [path]
 
                 # Should suppress stderr here
-                proc = _vc.popen([self.CMD, "-Q", "status"] + files,
-                                 cwd=self.location)
-                entries = [li for li in proc.read().splitlines()
-                           if li.startswith('File:')]
+                proc = _vc.popen(
+                    [self.CMD, "-Q", "status"] + files,
+                    cwd=self.location,
+                )
+                entries = [
+                    li for li in proc.read().splitlines()
+                    if li.startswith('File:')
+                ]
                 break
             except OSError as e:
                 if e.errno != errno.EAGAIN:

@@ -231,8 +231,8 @@ class Vc:
             valid_actions.add('add')
         if all(s == STATE_CONFLICT for s in states):
             valid_actions.add('resolve')
-        if (all(s not in non_removeable_states for s in states)
-                and self.root not in path_states.keys()):
+        if (all(s not in non_removeable_states for s in states) and
+                self.root not in path_states.keys()):
             valid_actions.add('remove')
         if all(s not in non_revertable_states for s in states):
             valid_actions.add('revert')

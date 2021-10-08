@@ -29,7 +29,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 from meld import tree
 from meld.conf import _
 from meld.iohelpers import trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.melddoc import MeldDoc, open_files_external
 from meld.misc import error_dialog, read_pipe_iter
 from meld.recent import RecentType
 from meld.settings import bind_settings, settings
@@ -159,7 +159,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     emblem_renderer = Gtk.Template.Child()
     extra_column = Gtk.Template.Child()
     extra_renderer = Gtk.Template.Child()
-    fileentry = Gtk.Template.Child()
+    filelabel = Gtk.Template.Child()
     liststore_vcs = Gtk.Template.Child()
     location_column = Gtk.Template.Child()
     location_renderer = Gtk.Template.Child()
@@ -375,7 +375,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.location = location
         self.current_path = None
         self.model.clear()
-        self.fileentry.set_filename(location)
+        self.filelabel.props.gfile = Gio.File.new_for_path(location)
         it = self.model.add_entries(None, [location])
         self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
@@ -493,9 +493,10 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     @Gtk.Template.Callback()
-    def on_fileentry_file_set(self, fileentry):
-        directory = fileentry.get_file()
-        path = directory.get_path()
+    def on_file_selected(
+            self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
+
+        path = file.get_path()
         self.set_location(path)
 
     def on_delete_event(self):
@@ -778,7 +779,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.run_diff(f)
 
     def action_open_external(self, *args):
-        self._open_files(self._get_selected_files())
+        open_files_external(self._get_selected_files())
 
     def refresh(self):
         root = self.model.get_iter_first()
@@ -921,7 +922,7 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.next_diff(Gdk.ScrollDirection.DOWN)
 
     def action_refresh(self, *args):
-        self.on_fileentry_file_set(self.fileentry)
+        self.set_location(self.location)
 
     def action_find(self, *args):
         self.treeview.emit("start-interactive-search")

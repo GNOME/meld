@@ -16,6 +16,7 @@
 
 import logging
 import os
+from typing import Optional, Sequence
 
 from gi.repository import Gdk, Gio, GLib, Gtk
 
@@ -238,12 +239,6 @@ class MeldWindow(Gtk.ApplicationWindow):
 
         self.lookup_action('close').set_enabled(bool(newdoc))
 
-        if newdoc:
-            nbl = self.notebook.get_tab_label(newdoc)
-            self.set_title(nbl.props.label_text)
-        else:
-            self.set_title("Meld")
-
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
@@ -255,10 +250,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def after_switch_page(self, notebook, page, which):
         newdoc = notebook.get_nth_page(which)
         newdoc.on_container_switch_in_event(self)
-
-    @Gtk.Template.Callback()
-    def on_page_label_changed(self, notebook, label_text):
-        self.set_title(label_text)
 
     def action_new_tab(self, action, parameter):
         self.append_new_comparison()
@@ -358,12 +349,16 @@ class MeldWindow(Gtk.ApplicationWindow):
         doc.connect("diff-created", diff_created_cb)
         return doc
 
-    def append_dirdiff(self, gfiles, auto_compare=False):
-        dirs = [d.get_path() if d else None for d in gfiles]
-        assert len(dirs) in (1, 2, 3)
-        doc = DirDiff(len(dirs))
+    def append_dirdiff(
+        self,
+        gfiles: Sequence[Optional[Gio.File]],
+        auto_compare: bool = False,
+    ) -> DirDiff:
+        assert len(gfiles) in (1, 2, 3)
+        doc = DirDiff(len(gfiles))
         self._append_page(doc)
-        doc.set_locations(dirs)
+        doc.folders = gfiles
+        doc.set_locations()
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
         return doc
@@ -419,7 +414,8 @@ class MeldWindow(Gtk.ApplicationWindow):
         self._append_page(doc)
         if isinstance(location, (list, tuple)):
             location = location[0]
-        doc.set_location(location.get_path())
+        if location:
+            doc.set_location(location.get_path())
         if auto_compare:
             doc.scheduler.add_task(doc.auto_compare)
         return doc

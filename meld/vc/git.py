@@ -100,8 +100,9 @@ class Vc(_vc.Vc):
             else:
                 # Translators: These messages cover the case where there is
                 # only one branch, and are not part of another message.
-                label = ngettext("%d unpushed commit", "%d unpushed commits",
-                                 unpushed_commits) % (unpushed_commits)
+                label = ngettext(
+                    "%d unpushed commit", "%d unpushed commits",
+                    unpushed_commits) % (unpushed_commits)
         else:
             label = ""
         return label

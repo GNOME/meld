@@ -22,10 +22,11 @@ import os
 import shutil
 import stat
 import sys
+import typing
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import Tuple
+from typing import List, Optional, Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -33,8 +34,8 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 from meld import misc, tree
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
-from meld.iohelpers import trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.iohelpers import find_shared_parent_path, trash_or_confirm
+from meld.melddoc import MeldDoc, open_files_external
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
@@ -46,6 +47,9 @@ from meld.ui.cellrenderers import (
 )
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
 from meld.ui.util import map_widgets_into_lists
+
+if typing.TYPE_CHECKING:
+    from meld.ui.pathlabel import PathLabel
 
 
 class StatItem(namedtuple('StatItem', 'mode size time')):
@@ -77,8 +81,8 @@ CacheResult = namedtuple('CacheResult', 'stats result')
 
 
 _cache = {}
-Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = \
-    list(range(6))
+Same, SameFiltered, DodgySame, DodgyDifferent, Different, FileError = (
+    list(range(6)))
 # TODO: Get the block size from os.stat
 CHUNK_SIZE = 4096
 
@@ -119,7 +123,7 @@ def _contents_same(contents, file_size):
     other_files_index = list(range(1, len(contents)))
     chunk_range = zip(
         range(0, file_size, CHUNK_SIZE),
-        range(CHUNK_SIZE, file_size + CHUNK_SIZE, CHUNK_SIZE)
+        range(CHUNK_SIZE, file_size + CHUNK_SIZE, CHUNK_SIZE),
     )
 
     for start, end in chunk_range:
@@ -254,7 +258,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         defaults = {
             COL_TIME: MISSING_TIMESTAMP,
             COL_SIZE: -1,
-            COL_PERMS: -1
+            COL_PERMS: -1,
         }
         super().add_error(parent, msg, pane, defaults)
 
@@ -319,6 +323,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             "should be applied when comparing file contents"),
         default=False,
     )
+    folders: List[Optional[Gio.File]] = GObject.Property(
+        type=object,
+        nick="Folders being compared",
+        blurb="List of folders being compared, as GFiles",
+    )
     ignore_blank_lines = GObject.Property(
         type=bool,
         nick="Ignore blank lines",
@@ -356,12 +365,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     chunkmap0 = Gtk.Template.Child()
     chunkmap1 = Gtk.Template.Child()
     chunkmap2 = Gtk.Template.Child()
+    folder_label: 'List[PathLabel]'
+    folder_label0 = Gtk.Template.Child()
+    folder_label1 = Gtk.Template.Child()
+    folder_label2 = Gtk.Template.Child()
     treeview0 = Gtk.Template.Child()
     treeview1 = Gtk.Template.Child()
     treeview2 = Gtk.Template.Child()
-    fileentry0 = Gtk.Template.Child()
-    fileentry1 = Gtk.Template.Child()
-    fileentry2 = Gtk.Template.Child()
     scrolledwindow0 = Gtk.Template.Child()
     scrolledwindow1 = Gtk.Template.Child()
     scrolledwindow2 = Gtk.Template.Child()
@@ -371,14 +381,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     msgarea_mgr1 = Gtk.Template.Child()
     msgarea_mgr2 = Gtk.Template.Child()
     overview_map_revealer = Gtk.Template.Child()
+    pane_actionbar0 = Gtk.Template.Child()
+    pane_actionbar1 = Gtk.Template.Child()
+    pane_actionbar2 = Gtk.Template.Child()
     vbox0 = Gtk.Template.Child()
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
     dummy_toolbar_linkmap0 = Gtk.Template.Child()
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
-    file_toolbar0 = Gtk.Template.Child()
-    file_toolbar1 = Gtk.Template.Child()
-    file_toolbar2 = Gtk.Template.Child()
     toolbar_sourcemap_revealer = Gtk.Template.Child()
 
     state_actions = {
@@ -457,6 +467,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             '/org/gnome/meld/ui/dirdiff-actions.ui')
         self.toolbar_actions = builder.get_object('view-toolbar')
 
+        self.folders = [None, None, None]
+
         self.name_filters = []
         self.text_filters = []
         self.create_name_filters()
@@ -488,10 +500,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         map_widgets_into_lists(
             self,
             [
-                "treeview", "fileentry", "scrolledwindow", "chunkmap",
+                "treeview", "folder_label", "scrolledwindow", "chunkmap",
                 "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
-                "file_toolbar",
-            ]
+                "pane_actionbar",
+            ],
         )
 
         self.ensure_style()
@@ -724,13 +736,23 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             it = self.model.iter_parent(it)
 
     @Gtk.Template.Callback()
-    def on_fileentry_file_set(self, entry):
-        files = [e.get_file() for e in self.fileentry[:self.num_panes]]
-        paths = [f.get_path() for f in files]
-        self.set_locations(paths)
+    def on_file_selected(
+            self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
+        self.folders[pane] = file
+        self.set_locations()
 
-    def set_locations(self, locations):
+    def set_locations(self) -> None:
+        locations = [f.get_path() for f in self.folders if f]
+        if not locations:
+            return
+
         self.set_num_panes(len(locations))
+
+        parent_path = find_shared_parent_path(self.folders)
+        for pane, folder in enumerate(self.folders):
+            self.folder_label[pane].set_file(folder)
+            self.folder_label[pane].set_parent_file(parent_path)
+
         # This is difficult to trigger, and to test. Most of the time here we
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
         # the time we get this far. This is a fallback, and may be wrong!
@@ -739,13 +761,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             if l and not isinstance(l, str):
                 locations[i] = l.decode(sys.getfilesystemencoding())
         locations = [os.path.abspath(l) if l else '' for l in locations]
+
         self.current_path = None
         self.model.clear()
         for m in self.msgarea_mgr:
             m.clear()
-        for pane, loc in enumerate(locations):
-            if loc:
-                self.fileentry[pane].set_filename(loc)
         child = self.model.add_entries(None, locations)
         self.treeview0.grab_focus()
         self._update_item_state(child)
@@ -1384,7 +1404,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         ]
         files = [f for f in files if f]
         if files:
-            self._open_files(files)
+            open_files_external(files)
 
     def action_copy_file_paths(self, *args):
         pane = self._get_focused_pane()
@@ -1584,13 +1604,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             treeview.set_model(self.model)
 
         for widget in (
-                self.vbox[:num_panes] + self.file_toolbar[:num_panes] +
+                self.vbox[:num_panes] + self.pane_actionbar[:num_panes] +
                 self.chunkmap[:num_panes] + self.linkmap[:num_panes - 1] +
                 self.dummy_toolbar_linkmap[:num_panes - 1]):
             widget.show()
 
         for widget in (
-                self.vbox[num_panes:] + self.file_toolbar[num_panes:] +
+                self.vbox[num_panes:] + self.pane_actionbar[num_panes:] +
                 self.chunkmap[num_panes:] + self.linkmap[num_panes - 1:] +
                 self.dummy_toolbar_linkmap[num_panes - 1:]):
             widget.hide()
@@ -1598,10 +1618,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.num_panes = num_panes
 
     def refresh(self):
-        root = self.model.get_iter_first()
-        if root:
-            roots = self.model.value_paths(root)
-            self.set_locations(roots)
+        self.set_locations()
 
     def recompute_label(self):
         root = self.model.get_iter_first()
@@ -1690,7 +1707,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.next_diff(Gdk.ScrollDirection.DOWN)
 
     def action_refresh(self, *args):
-        self.on_fileentry_file_set(None)
+        self.refresh()
 
     def on_delete_event(self):
         meld_settings = get_meld_settings()

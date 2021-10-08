@@ -1,5 +1,6 @@
 
-from typing import Optional
+import pathlib
+from typing import Optional, Sequence
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -118,3 +119,121 @@ def prompt_save_filename(
         return None
 
     return gfile
+
+
+def find_shared_parent_path(
+    paths: Sequence[Gio.File],
+) -> Optional[Gio.File]:
+
+    if not paths or not paths[0]:
+        return None
+
+    current_parent = paths[0].get_parent()
+    if len(paths) == 1:
+        return current_parent
+
+    while current_parent:
+        is_valid_parent = all(
+            current_parent.get_relative_path(path)
+            for path in paths
+        )
+        if is_valid_parent:
+            break
+
+        current_parent = current_parent.get_parent()
+
+    # Either we've broken out of the loop early, in which case we have
+    # a valid common parent path, or we've fallen through, in which
+    # case the path return is None.
+    return current_parent
+
+
+def format_home_relative_path(gfile: Gio.File) -> str:
+    home_file = Gio.File.new_for_path(GLib.get_home_dir())
+    home_relative = home_file.get_relative_path(gfile)
+    if home_relative:
+        return GLib.build_filenamev(['~', home_relative])
+    else:
+        return gfile.get_parse_name()
+
+
+def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
+    """Format shortened child paths using a common parent
+
+    This is a helper for shortening sets of paths using their common
+    parent as a guide for what is required to distinguish the paths
+    from one another. The helper operates on every path individually,
+    so that this work can be done in individual widgets using only the
+    path being displayed (`descendent` here) and the common parent
+    (`parent` here).
+    """
+
+    # When thinking about the segmentation we do here, there are
+    # four path components that we care about:
+    #
+    #  * any path components above the non-common parent
+    #  * the earliest non-common parent
+    #  * any path components between the actual filename and the
+    #    earliest non-common parent
+    #  * the actual filename
+    #
+    # This is easiest to think about with an example of comparing
+    # two files in a parallel repository structure (or similar).
+    # Let's say that you have two copies of Meld at
+    # /home/foo/checkouts/meld and /home/foo/checkouts/meld-new,
+    # and you're comparing meld/filediff.py within those checkouts.
+    # The components we want would then be (left to right):
+    #
+    #  ---------------------------------------------
+    #  | /home/foo/checkouts | /home/foo/checkouts |
+    #  | meld                | meld-new            |
+    #  | meld                | meld                |
+    #  | filediff.py         | filediff.py         |
+    #  ---------------------------------------------
+    #
+    # Of all of these, the first (the first common parent) is the
+    # *only* one that's actually guaranteed to be the same. The
+    # second will *always* be different (or won't exist if e.g.,
+    # you're comparing files in the same folder or similar). The
+    # third component can be basically anything. The fourth
+    # components will often be the same but that's not guaranteed.
+
+    base_path_str = None
+    elided_path = None
+
+    descendant_parent = descendant.get_parent()
+    if descendant_parent is None:
+        raise ValueError(f'Path {descendant.get_path()} has no parent')
+
+    relative_path_str = parent.get_relative_path(descendant_parent)
+
+    if relative_path_str:
+        relative_path = pathlib.Path(relative_path_str)
+
+        base_path_str = relative_path.parts[0]
+        if len(relative_path.parts) == 1:
+            # No directory components, so we have no elided path
+            # segment
+            elided_path = None
+        else:
+            base_path_gfile = parent.get_child(base_path_str)
+            elided_path = base_path_gfile.get_relative_path(
+                descendant_parent)
+
+    show_parent = not parent.has_parent()
+    # It looks odd to have a single component, so if we don't have a
+    # base path, we'll use the direct parent. In this case the parent
+    # won't provide any disambiguation... it's just for appearances.
+    if not show_parent and not base_path_str:
+        base_path_str = parent.get_basename()
+
+    label_segments = [
+        '…' if not show_parent else None,
+        base_path_str,
+        '…' if elided_path else None,
+        descendant.get_basename(),
+    ]
+    label_text = format_home_relative_path(parent) if show_parent else ""
+    label_text += GLib.build_filenamev([s for s in label_segments if s])
+
+    return label_text

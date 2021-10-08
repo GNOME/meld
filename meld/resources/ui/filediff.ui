@@ -22,67 +22,67 @@
           <class name="meld-notebook-child"/>
         </style>
         <child>
-          <object class="GtkToolbar" id="file_toolbar2">
+          <object class="GtkActionBar" id="file_toolbar2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show_arrow">False</property>
-            <property name="icon_size">1</property>
             <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle2">
+              <object class="GtkToggleButton" id="readonlytoggle2">
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">changes-prevent-symbolic</property>
                 <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_open_button2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">document-open-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button2">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="icon_name">document-save-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem2">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">12</property>
                 <child>
-                  <object class="GtkLabel" id="filelabel2">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">File 3</property>
-                    <property name="xalign">0</property>
-                    <property name="ellipsize">PANGO_ELLIPSIZE_MIDDLE</property>
+                  <object class="GtkImage">
+                    <property name="icon-name">changes-prevent-symbolic</property>
+                    <property name="visible">true</property>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
+            </child>
+            <child>
+              <object class="GtkButton" id="file_save_button2">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">document-save-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="center">
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
                 <property name="homogeneous">False</property>
-              </packing>
+                <style>
+                  <class name="linked"/>
+                </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">2</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel2">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 3</property>
+                  </object>
+                </child>
+              </object>
             </child>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -91,67 +91,67 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="file_toolbar1">
+          <object class="GtkActionBar" id="file_toolbar1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show_arrow">False</property>
-            <property name="icon_size">1</property>
             <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle1">
+              <object class="GtkToggleButton" id="readonlytoggle1">
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">changes-prevent-symbolic</property>
                 <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_open_button1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">document-open-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="icon_name">document-save-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem1">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">12</property>
                 <child>
-                  <object class="GtkLabel" id="filelabel1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">File 2</property>
-                    <property name="ellipsize">PANGO_ELLIPSIZE_MIDDLE</property>
-                    <property name="xalign">0</property>
+                  <object class="GtkImage">
+                    <property name="icon-name">changes-prevent-symbolic</property>
+                    <property name="visible">true</property>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
+            </child>
+            <child>
+              <object class="GtkButton" id="file_save_button1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">document-save-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="center">
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
                 <property name="homogeneous">False</property>
-              </packing>
+                <style>
+                  <class name="linked"/>
+                </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">1</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 2</property>
+                  </object>
+                </child>
+              </object>
             </child>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -160,63 +160,67 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="file_toolbar0">
+          <object class="GtkActionBar" id="file_toolbar0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="show_arrow">False</property>
-            <property name="icon_size">1</property>
             <child>
-              <object class="GtkToggleToolButton" id="readonlytoggle0">
+              <object class="GtkToggleButton" id="readonlytoggle0">
                 <property name="can_focus">False</property>
                 <property name="tooltip_text" translatable="yes">This file can not be written to. You may click here to unlock this file and make changes anyway, but these changes must be saved to a new file.</property>
-                <property name="icon_name">changes-prevent-symbolic</property>
                 <signal name="toggled" handler="on_readonly_button_toggled" swapped="no"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="homogeneous">True</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_open_button0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="icon_name">document-open-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Open file in this pane</property>
-                <signal name="clicked" handler="on_file_open_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolButton" id="file_save_button0">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="icon_name">document-save-symbolic</property>
-                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
-                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
-              </object>
-            </child>
-            <child>
-              <object class="GtkToolItem" id="filelabel_toolitem0">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="margin_start">12</property>
                 <child>
-                  <object class="GtkLabel" id="filelabel0">
-                    <property name="visible">True</property>
-                    <property name="can_focus">False</property>
-                    <property name="label" translatable="yes">File 1</property>
-                    <property name="ellipsize">PANGO_ELLIPSIZE_MIDDLE</property>
-                    <property name="xalign">0</property>
+                  <object class="GtkImage">
+                    <property name="icon-name">changes-prevent-symbolic</property>
+                    <property name="visible">true</property>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
+            </child>
+            <child>
+              <object class="GtkButton" id="file_save_button0">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Save file in this pane</property>
+                <signal name="clicked" handler="on_file_save_button_clicked" swapped="no"/>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">document-save-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="center">
+              <object class="GtkBox">
+                <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
                 <property name="homogeneous">False</property>
-              </packing>
+                <style>
+                  <class name="linked"/>
+                </style>
+                <child>
+                  <object class="MeldFileButton" id="file_open_button0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="pane">0</property>
+                    <property name="action">GTK_FILE_CHOOSER_ACTION_OPEN</property>
+                    <property name="local-only">False</property>
+                    <property name="dialog_label">Select File</property>
+                    <property name="tooltip_text" translatable="yes">Open file in this pane</property>
+                    <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+                  </object>
+                </child>
+                <child>
+                  <object class="PathLabel" id="filelabel0">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">File 1</property>
+                  </object>
+                </child>
+              </object>
             </child>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -369,11 +373,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_linkmap0">
+          <object class="GtkActionBar" id="dummy_toolbar_linkmap0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -395,11 +399,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_linkmap1">
+          <object class="GtkActionBar" id="dummy_toolbar_linkmap1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -488,11 +492,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_actiongutter0">
+          <object class="GtkActionBar" id="dummy_toolbar_actiongutter0">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -501,11 +505,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_actiongutter1">
+          <object class="GtkActionBar" id="dummy_toolbar_actiongutter1">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -514,11 +518,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_actiongutter2">
+          <object class="GtkActionBar" id="dummy_toolbar_actiongutter2">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -527,11 +531,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkToolbar" id="dummy_toolbar_actiongutter3">
+          <object class="GtkActionBar" id="dummy_toolbar_actiongutter3">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <style>
-              <class name="meld-notebook-toolbar"/>
+              <class name="meld-actionbar"/>
             </style>
           </object>
           <packing>
@@ -602,11 +606,11 @@
             <property name="reveal-child">True</property>
             <property name="transition-type">GTK_REVEALER_TRANSITION_TYPE_SLIDE_RIGHT</property>
             <child>
-              <object class="GtkToolbar" id="dummy_toolbar_sourcemap">
+              <object class="GtkActionBar" id="dummy_toolbar_sourcemap">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
                 <style>
-                  <class name="meld-notebook-toolbar"/>
+                  <class name="meld-actionbar"/>
                 </style>
               </object>
             </child>

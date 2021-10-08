@@ -26,6 +26,7 @@ infrastructure that that's actually what we opened.
 
 import configparser
 import enum
+import logging
 import os
 import sys
 import tempfile
@@ -35,6 +36,8 @@ from gi.repository import Gio, GLib, Gtk
 
 import meld.misc
 from meld.conf import _
+
+log = logging.getLogger(__name__)
 
 
 class RecentType(enum.Enum):
@@ -73,7 +76,11 @@ class RecentFiles:
         The passed flags are currently ignored. In the future these are to be
         used for extra initialisation not captured by the tab itself.
         """
-        recent_type, gfiles = tab.get_comparison()
+        try:
+            recent_type, gfiles = tab.get_comparison()
+        except Exception:
+            log.warning(f'Failed to get recent comparison data for {tab}')
+            return
 
         # While Meld handles comparisons including None, recording these as
         # recently-used comparisons just isn't that sane.

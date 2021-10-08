@@ -6,167 +6,176 @@
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <child>
-      <object class="GtkToolbar" id="file_toolbar">
+      <object class="GtkActionBar" id="file_toolbar">
         <property name="visible">True</property>
         <property name="can_focus">False</property>
-        <property name="show_arrow">False</property>
-        <property name="icon_size">1</property>
-        <style>
-          <class name="meld-notebook-toolbar"/>
-        </style>
         <child>
-          <object class="GtkToolItem" id="fileentry_toolitem0">
+          <object class="GtkButton">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin-start">4</property>
-            <property name="margin-end">12</property>
+            <property name="action_name">view.vc-commit</property>
+            <property name="tooltip_text" translatable="yes">Commit changes to version control</property>
             <child>
-              <object class="GtkFileChooserButton" id="fileentry">
+              <object class="GtkLabel">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="action">select-folder</property>
-                <signal name="file-set" handler="on_fileentry_file_set" swapped="no"/>
+                <property name="label" translatable="yes">Commit…</property>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkToolItem" id="fileentry_toolitem1">
+          <object class="GtkBox">
             <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="margin-end">4</property>
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">True</property>
+            <style>
+              <class name="linked"/>
+            </style>
             <child>
-              <object class="GtkComboBox" id="combobox_vcs">
+              <object class="GtkButton">
                 <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="model">liststore_vcs</property>
-                <property name="popup_fixed_width">False</property>
-                <signal name="changed" handler="on_vc_change" swapped="no"/>
+                <property name="action_name">view.vc-update</property>
+                <property name="tooltip_text" translatable="yes">Pull remote changes to the local repository</property>
                 <child>
-                  <object class="GtkCellRendererText">
-                    <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
-                    <property name="width-chars">12</property>
-                    <property name="max-width-chars">30</property>
+                  <object class="GtkImage">
+                    <property name="icon-name">vc-pull-symbolic</property>
+                    <property name="visible">true</property>
                   </object>
-                  <attributes>
-                    <attribute name="text">0</attribute>
-                    <attribute name="sensitive">2</attribute>
-                  </attributes>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="visible">True</property>
+                <property name="action_name">view.vc-push</property>
+                <property name="tooltip_text" translatable="yes">Push local changes to remote</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">vc-push-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
                 </child>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkToolItem">
+          <object class="GtkBox">
             <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">True</property>
+            <style>
+              <class name="linked"/>
+            </style>
             <child>
-              <object class="GtkModelButton">
-                <property name="visible">True</property>
-                <property name="action_name">view.vc-commit</property>
-                <property name="text" translatable="yes">Commit…</property>
-                <property name="tooltip_text" translatable="yes">Commit changes to version control</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkModelButton">
-                <property name="visible">True</property>
-                <property name="action_name">view.vc-update</property>
-                <property name="text" translatable="yes">Update</property>
-                <property name="tooltip_text" translatable="yes">Update working copy from version control</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkModelButton">
-                <property name="visible">True</property>
-                <property name="action_name">view.vc-push</property>
-                <property name="text" translatable="yes">Push</property>
-                <property name="tooltip_text" translatable="yes">Push local changes to remote</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkModelButton">
+              <object class="GtkButton">
                 <property name="visible">True</property>
                 <property name="action_name">view.vc-add</property>
-                <property name="text" translatable="yes">Add</property>
                 <property name="tooltip_text" translatable="yes">Add to version control</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">list-add-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
             <child>
-              <object class="GtkModelButton">
+              <object class="GtkButton">
                 <property name="visible">True</property>
                 <property name="action_name">view.vc-remove</property>
-                <property name="text" translatable="yes">Remove</property>
                 <property name="tooltip_text" translatable="yes">Remove from version control</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">list-remove-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
               </object>
             </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
             <child>
-              <object class="GtkModelButton">
-                <property name="visible">True</property>
-                <property name="action_name">view.vc-resolve</property>
-                <property name="text" translatable="yes">Mark as Resolved</property>
-                <property name="tooltip_text" translatable="yes">Mark as resolved in version control</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkToolItem">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkModelButton">
+              <object class="GtkButton">
                 <property name="visible">True</property>
                 <property name="action_name">view.vc-revert</property>
-                <property name="text" translatable="yes">Revert</property>
                 <property name="tooltip_text" translatable="yes">Revert working copy to original state</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">document-revert-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
+                <property name="visible">True</property>
+                <property name="action_name">view.vc-resolve</property>
+                <property name="tooltip_text" translatable="yes">Mark as resolved in version control</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">emblem-ok-symbolic</property>
+                    <property name="visible">true</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child type="center">
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="orientation">horizontal</property>
+            <property name="homogeneous">False</property>
+            <style>
+              <class name="linked"/>
+            </style>
+            <child>
+              <object class="MeldFileButton" id="file_open_button0">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pane">0</property>
+                <property name="action">GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER</property>
+                <property name="local-only">True</property>
+                <property name="dialog_label">Select Folder</property>
+                <property name="tooltip_text" translatable="yes">Open version controlled folder in this pane</property>
+                <signal name="file-selected" handler="on_file_selected" swapped="no"/>
+              </object>
+            </child>
+            <child>
+              <object class="PathLabel" id="filelabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">File 1</property>
               </object>
             </child>
           </object>
         </child>
         <child>
-          <object class="GtkToolItem">
+          <object class="GtkComboBox" id="combobox_vcs">
             <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="model">liststore_vcs</property>
+            <property name="popup_fixed_width">False</property>
+            <signal name="changed" handler="on_vc_change" swapped="no"/>
             <child>
-              <object class="GtkModelButton">
-                <property name="visible">True</property>
-                <property name="action_name">view.vc-delete-locally</property>
-                <property name="text" translatable="yes">Delete</property>
-                <property name="tooltip_text" translatable="yes">Delete from working copy</property>
+              <object class="GtkCellRendererText">
+                <property name="ellipsize">PANGO_ELLIPSIZE_END</property>
+                <property name="width-chars">12</property>
+                <property name="max-width-chars">30</property>
               </object>
+              <attributes>
+                <attribute name="text">0</attribute>
+                <attribute name="sensitive">2</attribute>
+              </attributes>
             </child>
           </object>
+          <packing>
+            <property name="pack-type">GTK_PACK_END</property>
+          </packing>
         </child>
+        <style>
+          <class name="meld-actionbar"/>
+        </style>
       </object>
       <packing>
         <property name="expand">False</property>
