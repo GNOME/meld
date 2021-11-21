@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
 "POT-Creation-Date: 2021-05-11 10:00+0000\n"
-"PO-Revision-Date: 2021-05-13 10:02+0200\n"
+"PO-Revision-Date: 2021-11-21 21:52+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n"
 "%100==4 ? 3 : 0);\n"
 "X-Poedit-SourceCharset: utf-8\n"
-"X-Generator: Poedit 2.4.2\n"
+"X-Generator: Poedit 3.0\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9
@@ -1299,9 +1299,8 @@ msgid "_Order when comparing file revisions:"
 msgstr "_Med primerjavo predelav datotek"
 
 #: meld/resources/ui/preferences.ui:1151
-#, fuzzy
 msgid "Order when _merging files:"
-msgstr "[%s] Združevanje datotek"
+msgstr "Vrstni red _združevanja datotek:"
 
 #: meld/resources/ui/preferences.ui:1219
 msgid "Commit Messages"
@@ -1599,7 +1598,7 @@ msgstr "Dovoljenja"
 #: meld/dirdiff.py:778 meld/dirdiff.py:802
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
-msgstr ""
+msgstr "[{label}] Prebiranje mape {folder}"
 
 #: meld/dirdiff.py:942
 #, python-brace-format
@@ -1692,7 +1691,7 @@ msgid "Error copying file"
 msgstr "Napaka kopiranja datoteke"
 
 #: meld/dirdiff.py:1086
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid ""
 #| "Couldn’t copy %s\n"
 #| "to %s.\n"
@@ -1704,10 +1703,10 @@ msgid ""
 "\n"
 "{error}"
 msgstr ""
-"Ni mogoče kopirati %s\n"
-"v %s\n"
+"Ni mogoče kopirati vira {source}\n"
+"v cilj {dest}.\n"
 "\n"
-"%s"
+"{error}"
 
 #: meld/dirdiff.py:1111 meld/vcview.py:759
 msgid "Error deleting {}"
@@ -2020,16 +2019,12 @@ msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "preveč argumentov (zahtevanih 0-3, prejetih %d)"
 
 #: meld/meldapp.py:300
-#, fuzzy
-#| msgid "can't auto-merge less than 3 files"
 msgid "can’t auto-merge less than 3 files"
-msgstr "manj kot treh datotek ni mogoče samodejno združevati"
+msgstr "ni mogoče samodejno združiti manj kot tri datoteke"
 
 #: meld/meldapp.py:302
-#, fuzzy
-#| msgid "can't auto-merge directories"
 msgid "can’t auto-merge directories"
-msgstr "Ni mogoče združiti map"
+msgstr "ni mogoče samodejno združiti map"
 
 #: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
@@ -2038,11 +2033,11 @@ msgstr "Napaka med branjem datoteke primerjav"
 #: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
-msgstr "Neveljavna pot oziroma naslov URI »%s«"
+msgstr "neveljavna pot oziroma naslov URI »%s«"
 
 #: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
-msgstr ""
+msgstr "oddaljena mapa »{}« ni podprta"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
 #: meld/meldbuffer.py:114
@@ -2107,7 +2102,7 @@ msgstr "Običajno besedilo"
 #: meld/ui/statusbar.py:125
 #, python-brace-format
 msgid "Ln {line}, Col {column}"
-msgstr ""
+msgstr "Vrstica {line}, Stolpec {column}"
 
 #: meld/ui/statusbar.py:185
 msgid "Line you want to move the cursor to"
@@ -2121,10 +2116,10 @@ msgstr "Ni pripravljenih datotek za uveljavitev"
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
 #: meld/vc/git.py:92
-#, fuzzy, python-brace-format
+#, python-brace-format
 #| msgid "%d unpushed commits in %d branches"
 msgid "{unpushed_commits} in {unpushed_branches}"
-msgstr "%d neobjavljenih uveljavitev v %d vejah"
+msgstr "{unpushed_commits} v {unpushed_branches}"
 
 #. Translators: These messages cover the case where there is
 #. only one branch, and are not part of another message.
@@ -2147,15 +2142,13 @@ msgstr[2] "%d veji"
 msgstr[3] "%d veje"
 
 #: meld/vc/git.py:344
-#, fuzzy, python-brace-format
-#| msgid "Mode changed from %s to %s"
+#, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
-msgstr "Način je spremenjen iz %s v %s"
+msgstr "Način je spremenjen iz {old_mode} v {new_mode}"
 
 #: meld/vc/git.py:352
-#, fuzzy
 msgid "Partially staged"
-msgstr "delno označeno"
+msgstr "Delno v pripravljenosti"
 
 #: meld/vc/git.py:352
 msgid "Staged"
