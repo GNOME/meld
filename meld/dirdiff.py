@@ -273,7 +273,7 @@ class CanonicalListing:
         self.compare = compare
 
     def add(self, pane, item):
-        # nomralize the name depending on settings
+        # normalize the name depending on settings
         ci = item
         if self.compare.ignore_case:
             ci = ci.lower()
