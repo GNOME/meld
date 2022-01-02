@@ -293,6 +293,7 @@ class CanonicalListing:
 
         return sorted(filled(v) for v in self.items.values())
 
+
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
 class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
