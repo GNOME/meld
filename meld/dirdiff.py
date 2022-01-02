@@ -23,6 +23,7 @@ import shutil
 import stat
 import sys
 import typing
+import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
@@ -266,17 +267,20 @@ class DirDiffTreeStore(tree.DiffTreeStore):
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
-    def __init__(self, n, canonicalize=None):
+    def __init__(self, n, compare):
         self.items = collections.defaultdict(lambda: [None] * n)
         self.errors = []
-        self.canonicalize = canonicalize
-        self.add = self.add_simple if canonicalize is None else self.add_canon
+        self.compare = compare
 
-    def add_simple(self, pane, item):
-        self.items[item][pane] = item
+    def add(self, pane, item):
+        # nomralize the name depending on settings
+        ci = item
+        if self.compare.ignore_case:
+            ci = ci.lower()
+        if self.compare.normalize_encoding:
+            ci = unicodedata.normalize('NFC', ci)
 
-    def add_canon(self, pane, item):
-        ci = self.canonicalize(item)
+        # add the item to the comparison tree
         if self.items[ci][pane] is None:
             self.items[ci][pane] = item
         else:
@@ -288,11 +292,6 @@ class CanonicalListing:
             return tuple(s or fill_value for s in seq)
 
         return sorted(filled(v) for v in self.items.values())
-
-    @staticmethod
-    def canonicalize_lower(element):
-        return element.lower()
-
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
 class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
@@ -451,6 +450,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 GLib.Variant.new_boolean(False)),
             ("folder-ignore-case", self.action_ignore_case_change,
                 GLib.Variant.new_boolean(False)),
+            ("folder-normalize-encoding", self.action_ignore_case_change,
+                GLib.Variant.new_boolean(False)),
         )
         for (name, callback, state) in actions:
             action = Gio.SimpleAction.new_stateful(name, None, state)
@@ -480,6 +481,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             meld_settings.connect(
                 "text-filters-changed", self.on_text_filters_changed)
         ]
+
+        class Comparison:
+            def __init__(self):
+                self.ignore_case = False
+                self.normalize_encoding = False
+            pass
+        self.compare = Comparison()
 
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need two revealers here instead of the more
@@ -813,6 +821,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         shadowed_entries = []
         invalid_filenames = []
+
+        # TODO: Map this to a GObject prop instead?
+        if self.get_action_state('folder-ignore-case'):
+            self.compare.ignore_case = True
+        if self.get_action_state('folder-normalize-encoding'):
+            self.compare.normalize_encoding = True
+
         while len(todo):
             todo.sort()  # depth first
             path = todo.pop(0)
@@ -829,12 +844,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             differences = False
             encoding_errors = []
 
-            canonicalize = None
-            # TODO: Map this to a GObject prop instead?
-            if self.get_action_state('folder-ignore-case'):
-                canonicalize = CanonicalListing.canonicalize_lower
-            dirs = CanonicalListing(self.num_panes, canonicalize)
-            files = CanonicalListing(self.num_panes, canonicalize)
+            dirs = CanonicalListing(self.num_panes, self.compare)
+            files = CanonicalListing(self.num_panes, self.compare)
 
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
