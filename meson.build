@@ -1,6 +1,6 @@
 project(
   'meld',
-  version: '3.21.1',
+  version: '3.21.2',
   meson_version: '>= 0.49.0',
 )
 
