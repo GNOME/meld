@@ -283,6 +283,8 @@ class CanonicalListing:
         if self.compare.ignore_case:
             ci = ci.lower()
         if self.compare.normalize_encoding:
+            # NFC or NFD will work here, changing all composed or decomposed
+            # characters to the same set for matching only.
             ci = unicodedata.normalize('NFC', ci)
 
         # add the item to the comparison tree
