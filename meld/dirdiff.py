@@ -263,6 +263,11 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         }
         super().add_error(parent, msg, pane, defaults)
 
+class ComparisonOptions:
+    def __init__(self):
+        self.ignore_case = False
+        self.normalize_encoding = False
+
 
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
@@ -483,12 +488,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 "text-filters-changed", self.on_text_filters_changed)
         ]
 
-        class Comparison:
-            def __init__(self):
-                self.ignore_case = False
-                self.normalize_encoding = False
-            pass
-        self.compare = Comparison()
+        self.compare = ComparisonOptions()
 
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need two revealers here instead of the more
@@ -824,10 +824,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         invalid_filenames = []
 
         # TODO: Map this to a GObject prop instead?
-        if self.get_action_state('folder-ignore-case'):
-            self.compare.ignore_case = True
-        if self.get_action_state('folder-normalize-encoding'):
-            self.compare.normalize_encoding = True
+        self.compare.ignore_case = self.get_action_state('folder-ignore-case')
+        self.compare.normalize_encoding = self.get_action_state('folder-normalize-encoding')
 
         while len(todo):
             todo.sort()  # depth first
