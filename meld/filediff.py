@@ -1604,9 +1604,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 'dialog-warning-symbolic', primary, secondary, _("Open"),
                 functools.partial(open_files_external, gfiles=[gfile]))
 
+        # We checkpoint first, which will set modified state via the
+        # checkpointed callback. We then check whether we're saving the
+        # file to a different location than it was loaded from, in
+        # which case we assume that this needs to be saved to persist
+        # what the user is seeing. Finally, we update the writability,
+        # which does label calculation.
+        self.undosequence.checkpoint(buf)
+        if buf.data.savefile:
+            buf.set_modified(True)
         self.update_buffer_writable(buf)
 
-        self.undosequence.checkpoint(buf)
         buf.data.update_mtime()
         buf.data.loaded = True
 
