@@ -26,6 +26,9 @@ class CellRendererDate(Gtk.CellRendererText):
     MIN_TIMESTAMP = -2147483648
     DATETIME_FORMAT = "%a %d %b %Y %H:%M:%S"
 
+    def _format_datetime(self, dt: datetime.datetime) -> str:
+        return dt.strftime(self.DATETIME_FORMAT)
+
     def get_timestamp(self):
         return getattr(self, '_datetime', self.MIN_TIMESTAMP)
 
@@ -37,7 +40,7 @@ class CellRendererDate(Gtk.CellRendererText):
         else:
             try:
                 mod_datetime = datetime.datetime.fromtimestamp(value)
-                time_str = mod_datetime.strftime(self.DATETIME_FORMAT)
+                time_str = self._format_datetime(mod_datetime)
             except Exception:
                 time_str = ''
         self.props.markup = time_str
@@ -49,6 +52,16 @@ class CellRendererDate(Gtk.CellRendererText):
         getter=get_timestamp,
         setter=set_timestamp,
     )
+
+
+class CellRendererISODate(CellRendererDate):
+
+    __gtype_name__ = "CellRendererISODate"
+
+    def _format_datetime(self, dt: datetime.datetime) -> str:
+        # Limit our ISO display to seconds (i.e., no milli or
+        # microseconds) for usability
+        return dt.isoformat(timespec="seconds")
 
 
 class CellRendererByteSize(Gtk.CellRendererText):

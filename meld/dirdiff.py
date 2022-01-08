@@ -45,6 +45,7 @@ from meld.ui.cellrenderers import (
     CellRendererByteSize,
     CellRendererDate,
     CellRendererFileMode,
+    CellRendererISODate,
 )
 from meld.ui.emblemcellrenderer import EmblemCellRenderer
 from meld.ui.util import map_widgets_into_lists
@@ -569,6 +570,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             column.set_attributes(rentext, timestamp=col_index(COL_TIME, i))
             self.treeview[i].append_column(column)
             self.columns_dict[i]["modification time"] = column
+            # Create ISO-format date-time CellRenderer
+            column = Gtk.TreeViewColumn(_("Modification time (ISO)"))
+            column.set_resizable(True)
+            rentext = CellRendererISODate()
+            column.pack_start(rentext, True)
+            column.set_attributes(rentext, timestamp=col_index(COL_TIME, i))
+            self.treeview[i].append_column(column)
+            self.columns_dict[i]["iso-time"] = column
             # Create permissions CellRenderer
             column = Gtk.TreeViewColumn(_("Permissions"))
             column.set_resizable(True)
@@ -627,10 +636,21 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             _files_same, comparison_args=comparison_args)
         self.refresh()
 
-    def update_treeview_columns(self, settings, key):
+    def update_treeview_columns(
+        self, settings: Gio.Settings, key: str,
+    ) -> None:
         """Update the visibility and order of columns"""
+
         columns = settings.get_value(key)
         have_extra_columns = any(visible for name, visible in columns)
+
+        # Check for columns missing from the settings, special-casing
+        # the always-present name column
+        configured_columns = [name for name, visible in columns] + ["name"]
+        missing_columns = [
+            c for c in self.columns_dict[0].keys()
+            if c not in configured_columns
+        ]
 
         for i, treeview in enumerate(self.treeview):
             last_column = treeview.get_column(0)
@@ -643,6 +663,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 current_column.set_visible(visible)
                 treeview.move_column_after(current_column, last_column)
                 last_column = current_column
+
+            for column_name in missing_columns:
+                self.columns_dict[i][column_name].set_visible(False)
 
             treeview.set_headers_visible(have_extra_columns)
 

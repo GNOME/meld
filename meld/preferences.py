@@ -131,6 +131,7 @@ class ColumnList(Gtk.VBox, EditableListWidget):
     available_columns = {
         "size": _("Size"),
         "modification time": _("Modification time"),
+        "iso-time": _("Modification time (ISO)"),
         "permissions": _("Permissions"),
     }
 
@@ -158,10 +159,13 @@ class ColumnList(Gtk.VBox, EditableListWidget):
             column_order[column_name] = sort_key
 
         columns = [
-            (column_vis.get(name, True), name, label)
+            (column_vis.get(name, False), name, label)
             for name, label in self.available_columns.items()
         ]
-        columns = sorted(columns, key=lambda c: column_order.get(c[1], 0))
+        columns = sorted(
+            columns,
+            key=lambda c: column_order.get(c[1], len(self.available_columns)),
+        )
 
         for visibility, name, label in columns:
             self.model.append([visibility, name, label])
