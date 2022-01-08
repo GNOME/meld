@@ -238,8 +238,8 @@ class BufferLines:
         buf.connect("delete-range", self.on_delete_range),
         buf.connect_after("insert-text", self.after_insert_text),
         if cache_debug:
-            buf.connect_after("insert-text", self._check_cache_invariant),
-            buf.connect_after("delete-range", self._check_cache_invariant),
+            buf.connect_after("insert-text", self._check_cache_invariant)
+            buf.connect_after("delete-range", self._check_cache_invariant)
 
     def _check_cache_invariant(self, *args: Any) -> None:
         if len(self.lines) != len(self):
