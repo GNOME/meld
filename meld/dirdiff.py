@@ -369,6 +369,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     folder_label0 = Gtk.Template.Child()
     folder_label1 = Gtk.Template.Child()
     folder_label2 = Gtk.Template.Child()
+    folder_open_button0 = Gtk.Template.Child()
+    folder_open_button1 = Gtk.Template.Child()
+    folder_open_button2 = Gtk.Template.Child()
     treeview0 = Gtk.Template.Child()
     treeview1 = Gtk.Template.Child()
     treeview2 = Gtk.Template.Child()
@@ -502,7 +505,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             [
                 "treeview", "folder_label", "scrolledwindow", "chunkmap",
                 "linkmap", "msgarea_mgr", "vbox", "dummy_toolbar_linkmap",
-                "pane_actionbar",
+                "pane_actionbar", "folder_open_button",
             ],
         )
 
@@ -752,6 +755,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for pane, folder in enumerate(self.folders):
             self.folder_label[pane].set_file(folder)
             self.folder_label[pane].set_parent_file(parent_path)
+            self.folder_open_button[pane].props.file = folder
 
         # This is difficult to trigger, and to test. Most of the time here we
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
