@@ -60,6 +60,13 @@
       "config-opts": [
         "-Dprofile=Devel"
       ]
+    },
+    {
+      "name": "git",
+      "buildsystem": "simple",
+      "build-commands": [
+        "cp /usr/bin/git ${FLATPAK_DEST}/bin"
+      ]
     }
   ]
 }
