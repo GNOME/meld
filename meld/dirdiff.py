@@ -18,6 +18,7 @@ import collections
 import copy
 import errno
 import functools
+import logging
 import os
 import shutil
 import stat
@@ -50,6 +51,8 @@ from meld.ui.util import map_widgets_into_lists
 
 if typing.TYPE_CHECKING:
     from meld.ui.pathlabel import PathLabel
+
+log = logging.getLogger(__name__)
 
 
 class StatItem(namedtuple('StatItem', 'mode size time')):
@@ -632,7 +635,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for i, treeview in enumerate(self.treeview):
             last_column = treeview.get_column(0)
             for column_name, visible in columns:
-                current_column = self.columns_dict[i][column_name]
+                try:
+                    current_column = self.columns_dict[i][column_name]
+                except KeyError:
+                    log.warning(f"Invalid column {column_name} in settings")
+                    continue
                 current_column.set_visible(visible)
                 treeview.move_column_after(current_column, last_column)
                 last_column = current_column
