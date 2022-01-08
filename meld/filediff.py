@@ -1443,7 +1443,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 'document-save-symbolic' if buf.data.writable else
                 'document-save-as-symbolic')
 
-        parent_path = find_shared_parent_path([b.data.gfile for b in buffers])
+        parent_path = find_shared_parent_path(
+            [b.data.gfiletarget for b in buffers]
+        )
         for pathlabel in self.filelabel:
             pathlabel.props.parent_gfile = parent_path
 
