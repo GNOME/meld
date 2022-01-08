@@ -42,7 +42,7 @@ from meld.conf import _
 (STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE,
     STATE_ERROR, STATE_EMPTY, STATE_NEW,
     STATE_MODIFIED, STATE_RENAMED, STATE_CONFLICT, STATE_REMOVED,
-    STATE_MISSING, STATE_NONEXIST, STATE_MAX) = list(range(14))
+    STATE_MISSING, STATE_NONEXIST, STATE_SPINNER, STATE_MAX) = list(range(15))
 
 # VC conflict types
 (CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL,
@@ -79,6 +79,7 @@ class Entry:
         STATE_REMOVED: _("Removed"),
         STATE_MISSING: _("Missing"),
         STATE_NONEXIST: _("Not present"),
+        STATE_SPINNER: _("Scanning…"),
     }
 
     def __init__(self, path, name, state, isdir, options=None):

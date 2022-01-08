@@ -818,6 +818,28 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             uris = []
         return RecentType.Folder, uris
 
+    def mark_in_progress_row(self, it: Gtk.TreeIter) -> None:
+        """Mark a tree row as having a scan in progress
+
+        After the scan is finished, `_update_item_state()` must be
+        called on the row to restore its actual state.
+        """
+
+        for pane in range(self.model.ntree):
+            path = self.model.get_value(
+                it, self.model.column_index(tree.COL_PATH, pane))
+            filename = GLib.markup_escape_text(os.path.basename(path))
+            label = _(f"{filename} (scanning…)")
+
+            self.model.set_state(it, pane, tree.STATE_SPINNER, label, True)
+            self.model.unsafe_set(it, pane, {
+                COL_EMBLEM: None,
+                COL_EMBLEM_SECONDARY: None,
+                COL_TIME: MISSING_TIMESTAMP,
+                COL_SIZE: -1,
+                COL_PERMS: -1
+            })
+
     def recursively_update(self, path):
         """Recursively update from tree path 'path'.
         """
@@ -826,7 +848,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         while child:
             self.model.remove(child)
             child = self.model.iter_children(it)
-        self._update_item_state(it)
+        if self._scan_in_progress == 0:
+            # Starting a scan, so set up progress indicator
+            self.mark_in_progress_row(it)
+        else:
+            self._update_item_state(it)
         self._scan_in_progress += 1
         self.scheduler.add_task(self._search_recursively_iter(path))
 
@@ -1002,6 +1028,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         yield _('[{label}] Done').format(label=self.label_text)
 
         self._scan_in_progress -= 1
+        if self._scan_in_progress == 0:
+            # Finishing a scan, so remove progress indicator
+            self._update_item_state(self.model.get_iter(rootpath))
+
         self.force_cursor_recalculate = True
         self.treeview[0].set_cursor(Gtk.TreePath.new_first())
 
