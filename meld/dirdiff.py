@@ -627,16 +627,17 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def update_treeview_columns(self, settings, key):
         """Update the visibility and order of columns"""
         columns = settings.get_value(key)
+        have_extra_columns = any(visible for name, visible in columns)
+
         for i, treeview in enumerate(self.treeview):
-            extra_cols = False
             last_column = treeview.get_column(0)
             for column_name, visible in columns:
-                extra_cols = extra_cols or visible
                 current_column = self.columns_dict[i][column_name]
                 current_column.set_visible(visible)
                 treeview.move_column_after(current_column, last_column)
                 last_column = current_column
-            treeview.set_headers_visible(extra_cols)
+
+            treeview.set_headers_visible(have_extra_columns)
 
     def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
         # TODO: Make text filters available in folder comparison
