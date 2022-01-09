@@ -16,7 +16,7 @@
 
 import logging
 import os
-from typing import Optional, Sequence
+from typing import Any, Dict, Optional, Sequence
 
 from gi.repository import Gdk, Gio, GLib, Gtk
 
@@ -388,13 +388,21 @@ class MeldWindow(Gtk.ApplicationWindow):
             doc.set_merge_output_file(merge_output)
         return doc
 
-    def append_diff(self, gfiles, auto_compare=False, auto_merge=False,
-                    merge_output=None, meta=None):
+    def append_diff(
+        self,
+        gfiles: Sequence[Optional[Gio.File]],
+        auto_compare: bool = False,
+        auto_merge: bool = False,
+        merge_output: Optional[Gio.File] = None,
+        meta: Optional[Dict[str, Any]] = None,
+    ):
         have_directories = False
         have_files = False
         for f in gfiles:
-            if f.query_file_type(
-               Gio.FileQueryInfoFlags.NONE, None) == Gio.FileType.DIRECTORY:
+            if not f:
+                continue
+            file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
+            if file_type == Gio.FileType.DIRECTORY:
                 have_directories = True
             else:
                 have_files = True
