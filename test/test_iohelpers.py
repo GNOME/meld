@@ -22,18 +22,25 @@ from meld.iohelpers import find_shared_parent_path, format_parent_relative_path
         (['/foo/a/', '/foo/b/asd/asd'], '/foo'),
         # Common parent is the root
         (['/foo/a/', '/bar/b/'], '/'),
+        # One path, one missing path
+        (['/foo/a', None], None),
+        # Two paths, one missing path
+        (['/foo/a', None, '/foo/c'], None),
     ],
 )
 def test_find_shared_parent_path(paths, expected_parent):
-    files = [Gio.File.new_for_path(p) for p in paths]
-    print([f.get_path() for f in files])
+    files = [Gio.File.new_for_path(p) if p else None for p in paths]
+    print([f.get_path() if f else repr(f) for f in files])
     parent = find_shared_parent_path(files)
 
     if parent is None:
         assert expected_parent is None
     else:
         print(f'Parent: {parent.get_path()}; expected {expected_parent}')
-        assert parent.equal(Gio.File.new_for_path(expected_parent))
+        if expected_parent is None:
+            assert parent is None
+        else:
+            assert parent.equal(Gio.File.new_for_path(expected_parent))
 
 
 @pytest.mark.parametrize(

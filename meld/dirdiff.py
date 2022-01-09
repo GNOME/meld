@@ -1376,10 +1376,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if not rows[pane]:
             return
         if os.path.isfile(rows[pane]):
-            self.create_diff_signal.emit(
-                [Gio.File.new_for_path(r) for r in rows if os.path.isfile(r)],
-                {}
-            )
+            diff_gfiles = [
+                Gio.File.new_for_path(r) if os.path.isfile(r) else None
+                for r in rows
+            ]
+            self.create_diff_signal.emit(diff_gfiles, {})
         elif os.path.isdir(rows[pane]):
             if view.row_expanded(path):
                 view.collapse_row(path)

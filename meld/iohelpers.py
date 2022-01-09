@@ -122,10 +122,10 @@ def prompt_save_filename(
 
 
 def find_shared_parent_path(
-    paths: Sequence[Gio.File],
+    paths: Sequence[Optional[Gio.File]],
 ) -> Optional[Gio.File]:
 
-    if not paths or not paths[0]:
+    if not paths or not paths[0] or any(path is None for path in paths):
         return None
 
     current_parent = paths[0].get_parent()
