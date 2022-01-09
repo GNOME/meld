@@ -1,9 +1,9 @@
 # Swedish messages for meld.
-# Copyright © 2005-2021 Free Software Foundation, Inc.
+# Copyright © 2005-2022 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2005.
 # Daniel Nylander <po@danielnylander.se>, 2006, 2007, 2008, 2009, 2011.
 # Sebastian Rasmussen <sebras@gmail.com>, 2015.
-# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2018, 2019, 2020, 2021.
+# Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2018, 2019, 2020, 2021, 2022.
 # Josef Andersson <l10nl18nsweja@gmail.com>, 2014, 2015, 2016, 2017.
 # Luna Jernberg <droidbittin@gmail.com>, 2021.
 #
@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-10-08 22:28+0000\n"
-"PO-Revision-Date: 2021-12-26 12:41+0100\n"
+"POT-Creation-Date: 2022-01-08 23:40+0000\n"
+"PO-Revision-Date: 2022-01-09 02:03+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -1138,7 +1138,7 @@ msgstr "Fil ett"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:530
+#: meld/dirdiff.py:537
 msgid "Name"
 msgstr "Namn"
 
@@ -1178,7 +1178,7 @@ msgstr "Radbruten"
 msgid "Replace _All"
 msgstr "Ersätt _alla"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1092 meld/iohelpers.py:114
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1157 meld/iohelpers.py:114
 msgid "_Replace"
 msgstr "_Ersätt"
 
@@ -1564,7 +1564,7 @@ msgstr "Sparar du inte kommer ändringar att gå förlorade för alltid."
 msgid "Close _without Saving"
 msgstr "Stäng _utan att spara"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1091
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1156
 #: meld/iohelpers.py:56 meld/iohelpers.py:113
 msgid "_Cancel"
 msgstr "_Avbryt"
@@ -1674,85 +1674,95 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:551 meld/preferences.py:132
+#: meld/dirdiff.py:558 meld/preferences.py:132
 msgid "Size"
 msgstr "Storlek"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:559 meld/preferences.py:133
+#: meld/dirdiff.py:566 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Ändringstid"
 
+#. Create ISO-format date-time CellRenderer
+#: meld/dirdiff.py:574 meld/preferences.py:134
+msgid "Modification time (ISO)"
+msgstr "Ändringstid (ISO)"
+
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:567 meld/preferences.py:134
+#: meld/dirdiff.py:582 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Rättigheter"
 
-#: meld/dirdiff.py:803 meld/dirdiff.py:827
+#: meld/dirdiff.py:832
+#, python-brace-format
+msgid "{filename} (scanning…)"
+msgstr "{filename} (söker igenom…)"
+
+#: meld/dirdiff.py:864 meld/dirdiff.py:888
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Söker igenom {folder}"
 
-#: meld/dirdiff.py:967
+#: meld/dirdiff.py:1028
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Klar"
 
-#: meld/dirdiff.py:976
+#: meld/dirdiff.py:1041
 msgid "Folder {} is being compared to itself"
 msgstr "Mappen {} jämförs med sig själv"
 
-#: meld/dirdiff.py:982
+#: meld/dirdiff.py:1047
 msgid "Folders have no differences"
 msgstr "Mapparna skiljer sig inte åt"
 
-#: meld/dirdiff.py:984
+#: meld/dirdiff.py:1049
 msgid "Contents of scanned files in folders are identical."
 msgstr "Innehållet i mapparnas avsökta filer är identiskt."
 
-#: meld/dirdiff.py:986
+#: meld/dirdiff.py:1051
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 "Mapparnas avsökta filer verkar identiska, men innehållet har inte genomsökts."
 
-#: meld/dirdiff.py:989
+#: meld/dirdiff.py:1054
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Filfilter används, och därför har inte alla filer genomsökts."
 
-#: meld/dirdiff.py:991
+#: meld/dirdiff.py:1056
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Textfilter används och kan dölja skillnader i innehåll."
 
-#: meld/dirdiff.py:1007 meld/filediff.py:1907
+#: meld/dirdiff.py:1072 meld/filediff.py:1917
 msgid "Hide"
 msgstr "Dölj"
 
-#: meld/dirdiff.py:1009 meld/filediff.py:1909 meld/filediff.py:1939
-#: meld/filediff.py:1941 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1074 meld/filediff.py:1919 meld/filediff.py:1949
+#: meld/filediff.py:1951 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "_Dölj"
 
-#: meld/dirdiff.py:1018
+#: meld/dirdiff.py:1083
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Flera fel inträffade vid avsökning av denna mapp"
 
-#: meld/dirdiff.py:1019
+#: meld/dirdiff.py:1084
 msgid "Files with invalid encodings found"
 msgstr "Filer med ogiltiga teckenkodningar hittades"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1021
+#: meld/dirdiff.py:1086
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "En del filer hade en felaktig kodning. Namnen är ungefär:"
 
-#: meld/dirdiff.py:1023
+#: meld/dirdiff.py:1088
 msgid "Files hidden by case insensitive comparison"
 msgstr "Filer dolda av skiftlägeskänslig jämförelse"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1025
+#: meld/dirdiff.py:1090
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1760,17 +1770,17 @@ msgstr ""
 "Du gör en skiftlägesokänslig jämförelse på ett skiftlägeskänsligt filsystem. "
 "En del filer syns inte:"
 
-#: meld/dirdiff.py:1036
+#: meld/dirdiff.py:1101
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "”{first_file}” dold av ”{second_file}”"
 
-#: meld/dirdiff.py:1095
+#: meld/dirdiff.py:1160
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Ersätt mappen ”%s”?"
 
-#: meld/dirdiff.py:1097
+#: meld/dirdiff.py:1162
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1779,11 +1789,11 @@ msgstr ""
 "En annan mapp med samma namn existerar redan i ”%s”.\n"
 "Om du ersätter befintlig mapp kommer alla filer att förloras."
 
-#: meld/dirdiff.py:1110
+#: meld/dirdiff.py:1175
 msgid "Error copying file"
 msgstr "Fel vid filkopiering"
 
-#: meld/dirdiff.py:1111
+#: meld/dirdiff.py:1176
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1796,11 +1806,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1136 meld/vcview.py:764
+#: meld/dirdiff.py:1201 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Fel vid borttagning av {}"
 
-#: meld/dirdiff.py:1626
+#: meld/dirdiff.py:1691
 msgid "No folder"
 msgstr "Ingen mapp"
 
@@ -1833,56 +1843,56 @@ msgstr "Avbryt"
 msgid "Mark _Resolved"
 msgstr "Markera som _löst"
 
-#: meld/filediff.py:1589
+#: meld/filediff.py:1591
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Det uppstod ett problem vid öppnandet av filen ”%s”."
 
-#: meld/filediff.py:1598
+#: meld/filediff.py:1600
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Filen %s verkar vara en binärfil."
 
-#: meld/filediff.py:1600
+#: meld/filediff.py:1602
 msgid "Do you want to open the file using the default application?"
 msgstr "Vill du öppna filen med standardprogrammet?"
 
-#: meld/filediff.py:1602
+#: meld/filediff.py:1604
 msgid "Open"
 msgstr "Öppna"
 
-#: meld/filediff.py:1616
+#: meld/filediff.py:1626
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Sammanfogar filer"
 
-#: meld/filediff.py:1630
+#: meld/filediff.py:1640
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Beräknar skillnader"
 
-#: meld/filediff.py:1690
+#: meld/filediff.py:1700
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Filen %s har ändrats på disk"
 
-#: meld/filediff.py:1691
+#: meld/filediff.py:1701
 msgid "Do you want to reload the file?"
 msgstr "Vill du läsa om filen?"
 
-#: meld/filediff.py:1693
+#: meld/filediff.py:1703
 msgid "_Reload"
 msgstr "_Läs om"
 
-#: meld/filediff.py:1863
+#: meld/filediff.py:1873
 msgid "File {} is being compared to itself"
 msgstr "Filen {} jämförs med sig själv"
 
-#: meld/filediff.py:1872
+#: meld/filediff.py:1882
 msgid "Files are identical"
 msgstr "Filerna är identiska"
 
-#: meld/filediff.py:1885
+#: meld/filediff.py:1895
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1890,11 +1900,11 @@ msgstr ""
 "Textfilter används och kan dölja skillnader mellan filer. Vill du jämföra de "
 "ofiltrerade filerna?"
 
-#: meld/filediff.py:1890
+#: meld/filediff.py:1900
 msgid "Files differ in line endings only"
 msgstr "Filer skiljer sig endast vad gäller radslut"
 
-#: meld/filediff.py:1892
+#: meld/filediff.py:1902
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1903,15 +1913,15 @@ msgstr ""
 "Filerna är identiska förutom radavsluten:\n"
 "%s"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:1922
 msgid "Show without filters"
 msgstr "Visa utan filer"
 
-#: meld/filediff.py:1934
+#: meld/filediff.py:1944
 msgid "Change highlighting incomplete"
 msgstr "Ändra markering av ofärdiga"
 
-#: meld/filediff.py:1935
+#: meld/filediff.py:1945
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1920,19 +1930,19 @@ msgstr ""
 "Meld till att längre tid på sig att markera större ändringar, men det kan "
 "bli långsamt."
 
-#: meld/filediff.py:1943
+#: meld/filediff.py:1953
 msgid "Keep highlighting"
 msgstr "Använd markering"
 
-#: meld/filediff.py:1945
+#: meld/filediff.py:1955
 msgid "_Keep highlighting"
 msgstr "_Använd markering"
 
-#: meld/filediff.py:1958
+#: meld/filediff.py:1968
 msgid "Saving failed"
 msgstr "Misslyckades med att spara"
 
-#: meld/filediff.py:1959
+#: meld/filediff.py:1969
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1940,36 +1950,36 @@ msgstr ""
 "Överväg att kopiera kritiska ändringar till ett annat program eller en annan "
 "fil för att undvika förlust av data."
 
-#: meld/filediff.py:1968
+#: meld/filediff.py:1978
 msgid "Save Left Pane As"
 msgstr "Spara vänsterpanel som"
 
-#: meld/filediff.py:1970
+#: meld/filediff.py:1980
 msgid "Save Middle Pane As"
 msgstr "Spara mittenpanel som"
 
-#: meld/filediff.py:1972
+#: meld/filediff.py:1982
 msgid "Save Right Pane As"
 msgstr "Spara högerpanel som"
 
-#: meld/filediff.py:1983
+#: meld/filediff.py:1993
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Filen %s har ändrats på disk sedan den öppnades"
 
-#: meld/filediff.py:1985
+#: meld/filediff.py:1995
 msgid "If you save it, any external changes will be lost."
 msgstr "Om du sparar den kommer alla externa ändringar att gå förlorade."
 
-#: meld/filediff.py:1988
+#: meld/filediff.py:1998
 msgid "Save Anyway"
 msgstr "Spara ändå"
 
-#: meld/filediff.py:1989
+#: meld/filediff.py:1999
 msgid "Don’t Save"
 msgstr "Spara inte"
 
-#: meld/filediff.py:2031
+#: meld/filediff.py:2041
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1977,7 +1987,7 @@ msgstr ""
 "Filen ”{}” innehåller tecken som inte kan kodas med dess aktuella kodning "
 "”{}”."
 
-#: meld/filediff.py:2035 meld/patchdialog.py:138
+#: meld/filediff.py:2045 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1986,16 +1996,16 @@ msgstr ""
 "Kunde in spara fil beroende på:\n"
 "%s"
 
-#: meld/filediff.py:2039 meld/patchdialog.py:137
+#: meld/filediff.py:2049 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Kunde inte spara filen %s."
 
-#: meld/filediff.py:2440
+#: meld/filediff.py:2450
 msgid "Live comparison updating disabled"
 msgstr "Inaktivera realtidsuppdateringar av jämförelser"
 
-#: meld/filediff.py:2441
+#: meld/filediff.py:2451
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2307,6 +2317,10 @@ msgstr "Saknas"
 #: meld/vc/_vc.py:81
 msgid "Not present"
 msgstr "Inte närvarande"
+
+#: meld/vc/_vc.py:82
+msgid "Scanning…"
+msgstr "Söker igenom…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
