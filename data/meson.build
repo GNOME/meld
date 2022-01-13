@@ -32,7 +32,6 @@ if desktop_file_validate.found()
 endif
 
 appdata_file = i18n.merge_file(
-  'appdata',
   input: configure_file(
     input: files('org.gnome.meld.appdata.xml.in.in'),
     output: 'org.gnome.meld.appdata.xml.in',
