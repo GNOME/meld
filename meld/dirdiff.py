@@ -27,7 +27,7 @@ import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import List, Optional, Tuple
+from typing import DefaultDict, List, Optional, Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -263,6 +263,7 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         }
         super().add_error(parent, msg, pane, defaults)
 
+
 class ComparisonOptions:
     def __init__(self):
         self.ignore_case = False
@@ -272,26 +273,30 @@ class ComparisonOptions:
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
-    def __init__(self, n, compare):
+    items: DefaultDict[str, List[Optional[str]]]
+    errors: List[Tuple[int, str, str]]
+
+    def __init__(self, n: int, options: ComparisonOptions):
         self.items = collections.defaultdict(lambda: [None] * n)
         self.errors = []
-        self.compare = compare
+        self.options = options
 
-    def add(self, pane, item):
+    def add(self, pane: int, item: str):
         # normalize the name depending on settings
         ci = item
-        if self.compare.ignore_case:
+        if self.options.ignore_case:
             ci = ci.lower()
-        if self.compare.normalize_encoding:
+        if self.options.normalize_encoding:
             # NFC or NFD will work here, changing all composed or decomposed
             # characters to the same set for matching only.
             ci = unicodedata.normalize('NFC', ci)
 
         # add the item to the comparison tree
-        if self.items[ci][pane] is None:
+        existing_item = self.items[ci][pane]
+        if existing_item is None:
             self.items[ci][pane] = item
         else:
-            self.errors.append((pane, item, self.items[ci][pane]))
+            self.errors.append((pane, item, existing_item))
 
     def get(self):
         def filled(seq):
