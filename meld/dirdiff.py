@@ -24,10 +24,11 @@ import shutil
 import stat
 import sys
 import typing
+import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import List, Optional, Tuple
+from typing import DefaultDict, List, Optional, Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -267,24 +268,44 @@ class DirDiffTreeStore(tree.DiffTreeStore):
         super().add_error(parent, msg, pane, defaults)
 
 
+class ComparisonOptions:
+    def __init__(
+        self,
+        *,
+        ignore_case: bool = False,
+        normalize_encoding: bool = False,
+    ):
+        self.ignore_case = ignore_case
+        self.normalize_encoding = normalize_encoding
+
+
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
-    def __init__(self, n, canonicalize=None):
+    items: DefaultDict[str, List[Optional[str]]]
+    errors: List[Tuple[int, str, str]]
+
+    def __init__(self, n: int, options: ComparisonOptions):
         self.items = collections.defaultdict(lambda: [None] * n)
         self.errors = []
-        self.canonicalize = canonicalize
-        self.add = self.add_simple if canonicalize is None else self.add_canon
+        self.options = options
 
-    def add_simple(self, pane, item):
-        self.items[item][pane] = item
+    def add(self, pane: int, item: str):
+        # normalize the name depending on settings
+        ci = item
+        if self.options.ignore_case:
+            ci = ci.lower()
+        if self.options.normalize_encoding:
+            # NFC or NFD will work here, changing all composed or decomposed
+            # characters to the same set for matching only.
+            ci = unicodedata.normalize('NFC', ci)
 
-    def add_canon(self, pane, item):
-        ci = self.canonicalize(item)
-        if self.items[ci][pane] is None:
+        # add the item to the comparison tree
+        existing_item = self.items[ci][pane]
+        if existing_item is None:
             self.items[ci][pane] = item
         else:
-            self.errors.append((pane, item, self.items[ci][pane]))
+            self.errors.append((pane, item, existing_item))
 
     def get(self):
         def filled(seq):
@@ -292,10 +313,6 @@ class CanonicalListing:
             return tuple(s or fill_value for s in seq)
 
         return sorted(filled(v) for v in self.items.values())
-
-    @staticmethod
-    def canonicalize_lower(element):
-        return element.lower()
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
@@ -457,6 +474,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ("folder-status-modified", self.action_filter_state_change,
                 GLib.Variant.new_boolean(False)),
             ("folder-ignore-case", self.action_ignore_case_change,
+                GLib.Variant.new_boolean(False)),
+            ("folder-normalize-encoding", self.action_ignore_case_change,
                 GLib.Variant.new_boolean(False)),
         )
         for (name, callback, state) in actions:
@@ -874,6 +893,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         shadowed_entries = []
         invalid_filenames = []
+
+        # TODO: Map these action states to GObject props instead?
+        comparison_options = ComparisonOptions(
+            ignore_case=self.get_action_state('folder-ignore-case'),
+            normalize_encoding=self.get_action_state(
+                'folder-normalize-encoding'),
+        )
+
         while len(todo):
             todo.sort()  # depth first
             path = todo.pop(0)
@@ -890,12 +917,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             differences = False
             encoding_errors = []
 
-            canonicalize = None
-            # TODO: Map this to a GObject prop instead?
-            if self.get_action_state('folder-ignore-case'):
-                canonicalize = CanonicalListing.canonicalize_lower
-            dirs = CanonicalListing(self.num_panes, canonicalize)
-            files = CanonicalListing(self.num_panes, canonicalize)
+            dirs = CanonicalListing(self.num_panes, comparison_options)
+            files = CanonicalListing(self.num_panes, comparison_options)
 
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
