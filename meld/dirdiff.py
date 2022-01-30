@@ -265,9 +265,14 @@ class DirDiffTreeStore(tree.DiffTreeStore):
 
 
 class ComparisonOptions:
-    def __init__(self):
-        self.ignore_case = False
-        self.normalize_encoding = False
+    def __init__(
+        self,
+        *,
+        ignore_case: bool = False,
+        normalize_encoding: bool = False,
+    ):
+        self.ignore_case = ignore_case
+        self.normalize_encoding = normalize_encoding
 
 
 class CanonicalListing:
@@ -494,8 +499,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             meld_settings.connect(
                 "text-filters-changed", self.on_text_filters_changed)
         ]
-
-        self.compare = ComparisonOptions()
 
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need two revealers here instead of the more
@@ -830,9 +833,12 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         shadowed_entries = []
         invalid_filenames = []
 
-        # TODO: Map this to a GObject prop instead?
-        self.compare.ignore_case = self.get_action_state('folder-ignore-case')
-        self.compare.normalize_encoding = self.get_action_state('folder-normalize-encoding')
+        # TODO: Map these action states to GObject props instead?
+        comparison_options = ComparisonOptions(
+            ignore_case=self.get_action_state('folder-ignore-case'),
+            normalize_encoding=self.get_action_state(
+                'folder-normalize-encoding'),
+        )
 
         while len(todo):
             todo.sort()  # depth first
@@ -850,8 +856,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             differences = False
             encoding_errors = []
 
-            dirs = CanonicalListing(self.num_panes, self.compare)
-            files = CanonicalListing(self.num_panes, self.compare)
+            dirs = CanonicalListing(self.num_panes, comparison_options)
+            files = CanonicalListing(self.num_panes, comparison_options)
 
             for pane, root in enumerate(roots):
                 if not os.path.isdir(root):
