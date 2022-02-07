@@ -2,14 +2,14 @@
 # Copyright (C) 2009 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
 #
-# Matej Urbančič <mateju@src.gnome.org>, 2009–2022.
+# Matej Urbančič <mateju@src.gnome.org>, 2009–2021.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
 "POT-Creation-Date: 2021-05-11 10:00+0000\n"
-"PO-Revision-Date: 2022-01-17 22:13+0100\n"
+"PO-Revision-Date: 2021-11-21 21:52+0100\n"
 "Last-Translator: Matej Urbančič <mateju@src.gnome.org>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -46,20 +46,12 @@ msgid ""
 "two- and three-way comparison of both files and directories, and supports "
 "many version control systems including Git, Mercurial, Bazaar and Subversion."
 msgstr ""
-"Meld je napredno orodje za primerjavo in združevanje sprememb vsebine v "
-"različnih virih. Omogoča primerjavo datotek, map in virov sistema nadzora "
-"različic. Omogoča dvojno in trojno primerjavo datotek in map, podpira pa "
-"tudi različne sisteme za nadzov različic, vključno z Git, Mercurial, Bazaar "
-"in Subversion."
 
 #: data/org.gnome.meld.appdata.xml.in.in:21
-#, fuzzy
 msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
 msgstr ""
-"Meld vam pomaga pregledati spremembe kode, razumeti obliže in naredi ogromne "
-"spajanje konfliktov nekoliko manj boleče."
 
 #: data/org.gnome.meld.appdata.xml.in.in:51
 msgid "The GNOME Project"
@@ -90,17 +82,12 @@ msgid "Additional automatically detected text encodings"
 msgstr "Dodatna samodejno zaznana kodiranja"
 
 #: data/org.gnome.meld.gschema.xml:59
-#, fuzzy
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
 "and the current locale-default encoding will always be used; other encodings "
 "may also be tried, depending on the user’s locale."
 msgstr ""
-"Meld bo s temi kodiranje besedila poskušal dekodirati naložene besedilne "
-"datoteke, preden poskusite katero koli drugo kodiranje. Poleg kodiranja na "
-"tem seznamu bosta vedno uporabljena UTF-8 in trenutno kodiranje na lokalni "
-"ravni; lahko tudi druge kodiranje, odvisno od uporabnikovega lokala."
 
 #: data/org.gnome.meld.gschema.xml:66
 msgid "Width of an indentation step"
@@ -111,9 +98,9 @@ msgid "The number of spaces to use for a single indent step"
 msgstr "Število presledkov za vsak korak zamika"
 
 #: data/org.gnome.meld.gschema.xml:71
+#, fuzzy
 msgid "Whether to indent using spaces or tabs"
-msgstr ""
-"Ali naj bodo za zamik besedila uporabljeni presledki namesto tabulatorjev"
+msgstr "Ali naj gedit vstavlja presledke namesto zamikov (tabulatorjev)."
 
 #: data/org.gnome.meld.gschema.xml:72
 msgid "If true, any new indentation will use spaces instead of tabs."
@@ -126,83 +113,67 @@ msgid "Show line numbers"
 msgstr "Pokaži številke vrstic"
 
 #: data/org.gnome.meld.gschema.xml:77
-#, fuzzy
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
-msgstr "Če je res, bodo številke vrstice prikazane v čreh primerjave datotek."
+msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:81
 msgid "Highlight syntax"
 msgstr "Poudarjanje skladnje"
 
 #: data/org.gnome.meld.gschema.xml:82
-#, fuzzy
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
 msgstr ""
-"Ali poudariti sintakso v primerjavah. Zaradi Meld-ovega označevanje barv je "
-"to privzeto izklopljeno."
 
 #: data/org.gnome.meld.gschema.xml:86
+#, fuzzy
 msgid "Color scheme to use for syntax highlighting"
-msgstr "Barvna shema za poudarjanje skladnje."
+msgstr "Ime barvne sheme gtksourceview za poudarjanje skladnje."
 
 #: data/org.gnome.meld.gschema.xml:87
-#, fuzzy
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
-msgstr "GtkSourceView uporablja za določanje barv za označevanje sintakse"
+msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:91
 msgid "Draw whitespace"
 msgstr "Pokaži presledne znake"
 
 #: data/org.gnome.meld.gschema.xml:92
-#, fuzzy
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
 msgstr ""
-"Če je res, bodo znaki belega prostora narisani v primerjavah, tudi če niso v "
-"spremenjenem območju."
 
 #: data/org.gnome.meld.gschema.xml:101
 msgid "Wrap mode"
 msgstr "Način preloma"
 
 #: data/org.gnome.meld.gschema.xml:102
-#, fuzzy
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr ""
-"Vrstice v primerjavah datotek bodo zavite v skladu s to nastavitev, bodisi "
-"sploh ne (\"nobena\"), pri nobenem znaku (\"char\") ali samo na koncu besed "
-"(\"beseda\")."
 
 #: data/org.gnome.meld.gschema.xml:109 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
 msgstr "Poudari trenutno vrstico"
 
 #: data/org.gnome.meld.gschema.xml:110
-#, fuzzy
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
 msgstr ""
-"Če je res, bo vrstica, ki vsebuje kazalko, označena v primerjavah datotek."
 
 #: data/org.gnome.meld.gschema.xml:114
 msgid "Use the system default monospace font"
 msgstr "Uporabi privzeto sistemsko pisavo stalne širine"
 
 #: data/org.gnome.meld.gschema.xml:115
-#, fuzzy
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
-"Če je napačna, bo namesto pisave v enoprostornem sistemu uporabljena pisava "
-"po meri."
 
 #: data/org.gnome.meld.gschema.xml:119
 msgid "Custom font"
@@ -213,8 +184,6 @@ msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
 msgstr ""
-"Pisava po meri za uporabo, shranjena kot niz in razčlenjena kot opis pisave "
-"Pango."
 
 #: data/org.gnome.meld.gschema.xml:126
 msgid "Show overview source map"
@@ -231,7 +200,7 @@ msgstr "Slog preglednega zemljevida"
 
 #: data/org.gnome.meld.gschema.xml:133
 msgid "Style options for how the overview map is displayed."
-msgstr "Možnosti sloga prikaza preglednega zemljevida."
+msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:139
 msgid "Ignore blank lines when comparing files"
@@ -253,8 +222,9 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:152
+#, fuzzy
 msgid "The custom editor launch command"
-msgstr "Ukaz za zagon urejevalnika po meri"
+msgstr "Ukaz za zagon urejevalnika: "
 
 #: data/org.gnome.meld.gschema.xml:153
 msgid ""
@@ -287,36 +257,28 @@ msgid "Use shallow comparison"
 msgstr "Uporabi grobo primerjavo"
 
 #: data/org.gnome.meld.gschema.xml:170
-#, fuzzy
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr ""
-"Če je res, primerjave map primerjajo datoteke, ki temeljijo samo na "
-"velikosti in mtime, glede na to, da so datoteke enake, če se njihova "
-"velikost in mtime ujemata, in drugače."
 
 #: data/org.gnome.meld.gschema.xml:174
+#, fuzzy
 msgid "File timestamp resolution"
-msgstr "Ločljivost časovnega žiga"
+msgstr "Ločljivost časovnega _žiga:"
 
 #: data/org.gnome.meld.gschema.xml:175
-#, fuzzy
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
 "is useful when comparing files between filesystems with different timestamp "
 "resolution."
 msgstr ""
-"Pri primerjavi na podlagi mtime je to najmanjša razlika v nanosekondih med "
-"dvema datotekama, preden se šteje, da imajo različne mtimes. To je uporabno "
-"pri primerjanju datotek med datotečnimi stemi z različno ločljivostjo "
-"časovnega žiga."
 
 #: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
 msgid "Apply text filters during folder comparisons"
-msgstr "Uveljavi besedilne filtre med primerjavo map"
+msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:180
 msgid ""
@@ -334,8 +296,9 @@ msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:191
+#, fuzzy
 msgid "Show the version control console output"
-msgstr "Pokaži odvod konzole nadzora različic"
+msgstr "Pokaži/Skrij odvod konzole"
 
 #: data/org.gnome.meld.gschema.xml:192
 msgid ""
@@ -356,8 +319,6 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:201
 msgid "Present version comparisons as left-local/right-remote"
 msgstr ""
-"Trenutna primerjava različice poteka kot levo je krajevno / desno je "
-"oddaljeno"
 
 #: data/org.gnome.meld.gschema.xml:202
 msgid ""
@@ -379,8 +340,9 @@ msgid ""
 msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:211
+#, fuzzy
 msgid "Show margin in commit message editor"
-msgstr "Pokaži rob v urejevalniku sporočila uveljavitve"
+msgstr "Pokaži desni rob v pogledu sporočil uveljavitev"
 
 #: data/org.gnome.meld.gschema.xml:212
 msgid ""
@@ -398,8 +360,6 @@ msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
 msgstr ""
-"Stolpec pri katerem naj bo pokazan rob v urejevalniku sistema nadzora "
-"uveljavitve različic."
 
 #: data/org.gnome.meld.gschema.xml:221
 msgid "Automatically hard-wrap commit messages"
@@ -419,8 +379,6 @@ msgstr "Filtri nadzora različic"
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
-"Seznam stanj, uporabljenih za filtriranje vidnih datotek pri primerjavi "
-"različic."
 
 #: data/org.gnome.meld.gschema.xml:241
 msgid "Filename-based filters"
@@ -1122,7 +1080,7 @@ msgstr "_Zamenjaj"
 
 #: meld/resources/ui/findbar.ui:226
 msgid "Switch between Find and Find-and-Replace"
-msgstr "Preklop med možnostima Najdi in Najdi in Zamenjaj"
+msgstr ""
 
 #: meld/resources/ui/language-selector.ui:31
 msgid "Search highlight mode…"
@@ -1336,8 +1294,9 @@ msgid "Version Comparisons"
 msgstr "Primerjave različic"
 
 #: meld/resources/ui/preferences.ui:1104
+#, fuzzy
 msgid "_Order when comparing file revisions:"
-msgstr "Vrstni red primerjave predelav datotek:"
+msgstr "_Med primerjavo predelav datotek"
 
 #: meld/resources/ui/preferences.ui:1151
 msgid "Order when _merging files:"
@@ -1649,7 +1608,7 @@ msgstr "[{label}] končano"
 
 #: meld/dirdiff.py:951
 msgid "Folder {} is being compared to itself"
-msgstr "Mapo {} primerjate samo s seboj"
+msgstr ""
 
 #: meld/dirdiff.py:957
 msgid "Folders have no differences"
@@ -1657,7 +1616,7 @@ msgstr "V mapah ni razlik"
 
 #: meld/dirdiff.py:959
 msgid "Contents of scanned files in folders are identical."
-msgstr "Vsebina preiskanih datotek v mapah je enaka."
+msgstr ""
 
 #: meld/dirdiff.py:961
 msgid ""
@@ -1827,7 +1786,7 @@ msgstr "_Ponovno naloži"
 
 #: meld/filediff.py:1830
 msgid "File {} is being compared to itself"
-msgstr "Datoteko {} primerjate samo s seboj"
+msgstr ""
 
 #: meld/filediff.py:1839
 msgid "Files are identical"
@@ -1843,7 +1802,7 @@ msgstr ""
 
 #: meld/filediff.py:1857
 msgid "Files differ in line endings only"
-msgstr "Datoteki se razlikujeta le v končnih vrstičnih oznakah"
+msgstr ""
 
 #: meld/filediff.py:1859
 #, python-format
@@ -1851,8 +1810,6 @@ msgid ""
 "Files are identical except for differing line endings:\n"
 "%s"
 msgstr ""
-"Datoteki sta enaki, razlikujeta se le v končnih vrstičnih oznakah:\n"
-"%s"
 
 #: meld/filediff.py:1879
 msgid "Show without filters"
@@ -1957,7 +1914,7 @@ msgstr ""
 
 #: meld/iohelpers.py:40
 msgid "Deleting remote folders is not supported"
-msgstr "Brisanje oddaljenih map ni podprto"
+msgstr ""
 
 #: meld/iohelpers.py:42
 msgid "Not a file or directory"
@@ -1986,8 +1943,6 @@ msgid ""
 "A file with this name already exists in “%s”.\n"
 "If you replace the existing file, its contents will be lost."
 msgstr ""
-"Datoteka s tem imenom v »%s« žeobstaja.\n"
-"Če zamenjate obstoječo datoteko, bo izgubljena celotna vsebina."
 
 #: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
@@ -2100,7 +2055,7 @@ msgstr "Ime datoteke"
 #: meld/meldwindow.py:384
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
-msgstr "Za samodejno združevanje morajo biti navedene tri datoteke (ne %r)"
+msgstr ""
 
 #: meld/meldwindow.py:406
 msgid "Cannot compare a mixture of files and directories"
@@ -2133,7 +2088,6 @@ msgstr "Nadzor različic:"
 #: meld/style.py:91
 msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgstr ""
-"Podrobnosti barvne sheme za {} ni mogoče najti! Namestitev je okvarjena."
 
 #: meld/ui/bufferselectors.py:110
 #, python-brace-format
@@ -2152,7 +2106,7 @@ msgstr "Vrstica {line}, Stolpec {column}"
 
 #: meld/ui/statusbar.py:185
 msgid "Line you want to move the cursor to"
-msgstr "Vrstica, na katero želite postaviti kazalko"
+msgstr ""
 
 #: meld/ui/vcdialogs.py:50
 msgid "No files will be committed"
