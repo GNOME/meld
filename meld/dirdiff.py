@@ -422,6 +422,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
+    marked = None
+
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -449,6 +451,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('find', self.action_find),
             ('folder-collapse', self.action_folder_collapse),
             ('folder-compare', self.action_diff),
+            ('folder-mark', self.action_mark),
+            ('folder-unmark', self.action_unmark),
+            ('folder-compare-marked', self.action_diff_marked),
             ('folder-copy-left', self.action_copy_left),
             ('folder-copy-right', self.action_copy_right),
             ('folder-delete', self.action_delete),
@@ -1271,6 +1276,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled('folder-collapse', is_single_foldable_row)
             self.set_action_enabled('folder-expand', is_single_foldable_row)
             self.set_action_enabled('folder-compare', True)
+            self.set_action_enabled('folder-mark', True)
+            self.set_action_enabled('folder-unmark', self.marked != None)
+            self.set_action_enabled('folder-compare-marked', self.marked != None)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
             self.set_action_enabled(
@@ -1280,6 +1288,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             actions = (
                 'folder-collapse',
                 'folder-compare',
+                'folder-mark',
+                'folder-unmark',
+                'folder-compare-marked',
                 'folder-copy-left',
                 'folder-copy-right',
                 'folder-delete',
@@ -1444,6 +1455,41 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         selected = self._get_selected_paths(pane)
         for row in selected:
             self.run_diff_from_iter(self.model.get_iter(row))
+
+    def action_mark(self, *args):
+        pane = self._get_focused_pane()
+        if pane is None:
+            return
+
+        selected = self._get_selected_paths(pane)
+        self.marked = {}
+        self.marked['mark'] = self.model.get_iter(selected[0])
+        self.marked['pane'] = pane
+        #print(self.marked)
+
+    def action_unmark(self, *args):
+        self.marked = None
+        #print(self.marked)
+
+    def action_diff_marked(self, *args):
+        if self.marked is None:
+            return
+        marked = self.marked['mark']
+        markedPane = self.marked['pane']
+        self.action_unmark()
+
+        pane = self._get_focused_pane()
+        if pane is None:
+            return
+
+        selected = self.model.get_iter(self._get_selected_paths(pane)[0])
+        row_paths = []
+        row_paths.append(self.model.value_paths(marked)[markedPane])
+        row_paths.append(self.model.value_paths(selected)[pane])
+        #print(row_paths)
+        gfiles = [Gio.File.new_for_path(p)
+                  for p in row_paths if os.path.exists(p)]
+        self.create_diff_signal.emit(gfiles, {})
 
     def action_folder_collapse(self, *args):
         pane = self._get_focused_pane()
