@@ -1465,17 +1465,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.marked = {}
         self.marked['mark'] = self.model.get_iter(selected[0])
         self.marked['pane'] = pane
-        #print(self.marked)
 
     def action_unmark(self, *args):
         self.marked = None
-        #print(self.marked)
 
     def action_diff_marked(self, *args):
         if self.marked is None:
             return
         marked = self.marked['mark']
-        markedPane = self.marked['pane']
+        marked_pane = self.marked['pane']
         self.action_unmark()
 
         pane = self._get_focused_pane()
@@ -1484,9 +1482,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         selected = self.model.get_iter(self._get_selected_paths(pane)[0])
         row_paths = []
-        row_paths.append(self.model.value_paths(marked)[markedPane])
+        row_paths.append(self.model.value_paths(marked)[marked_pane])
         row_paths.append(self.model.value_paths(selected)[pane])
-        #print(row_paths)
         gfiles = [Gio.File.new_for_path(p)
                   for p in row_paths if os.path.exists(p)]
         self.create_diff_signal.emit(gfiles, {})
