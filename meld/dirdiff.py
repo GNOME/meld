@@ -1277,8 +1277,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled('folder-expand', is_single_foldable_row)
             self.set_action_enabled('folder-compare', True)
             self.set_action_enabled('folder-mark', True)
-            self.set_action_enabled('folder-unmark', self.marked != None)
-            self.set_action_enabled('folder-compare-marked', self.marked != None)
+            self.set_action_enabled('folder-unmark', self.marked is not None)
+            self.set_action_enabled(
+                'folder-compare-marked', self.marked is not None)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
             self.set_action_enabled(
