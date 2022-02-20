@@ -5,14 +5,14 @@
 # Sebastian Rasmussen <sebras@gmail.com>, 2015.
 # Anders Jonsson <anders.jonsson@norsjovallen.se>, 2016, 2018, 2019, 2020, 2021, 2022.
 # Josef Andersson <l10nl18nsweja@gmail.com>, 2014, 2015, 2016, 2017.
-# Luna Jernberg <droidbittin@gmail.com>, 2021.
+# Luna Jernberg <droidbittin@gmail.com>, 2021, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-01-08 23:40+0000\n"
-"PO-Revision-Date: 2022-01-09 02:03+0100\n"
+"POT-Creation-Date: 2022-01-31 07:53+0000\n"
+"PO-Revision-Date: 2022-02-20 21:04+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -850,7 +850,7 @@ msgstr "Samma"
 msgid "New"
 msgstr "Nya"
 
-#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:167
+#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:171
 #: meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Ändrade"
@@ -859,19 +859,23 @@ msgstr "Ändrade"
 msgid "Ignore filename case"
 msgstr "Ignorera skiftlägeskänslighet för filnamn"
 
-#: meld/resources/gtk/menus.ui:171
+#: meld/resources/gtk/menus.ui:162
+msgid "Normalize Unicode paths"
+msgstr "Normalisera Unicode-sökvägar"
+
+#: meld/resources/gtk/menus.ui:175
 msgid "Normal"
 msgstr "Normala"
 
-#: meld/resources/gtk/menus.ui:175 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Oversionerade"
 
-#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:69
+#: meld/resources/gtk/menus.ui:183 meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Ignorerade"
 
-#: meld/resources/gtk/menus.ui:186
+#: meld/resources/gtk/menus.ui:190
 msgid "Flatten folders"
 msgstr "Platta till mappar"
 
@@ -1138,7 +1142,7 @@ msgstr "Fil ett"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:537
+#: meld/dirdiff.py:556
 msgid "Name"
 msgstr "Namn"
 
@@ -1178,7 +1182,7 @@ msgstr "Radbruten"
 msgid "Replace _All"
 msgstr "Ersätt _alla"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1157 meld/iohelpers.py:114
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1180 meld/iohelpers.py:114
 msgid "_Replace"
 msgstr "_Ersätt"
 
@@ -1564,7 +1568,7 @@ msgstr "Sparar du inte kommer ändringar att gå förlorade för alltid."
 msgid "Close _without Saving"
 msgstr "Stäng _utan att spara"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1156
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1179
 #: meld/iohelpers.py:56 meld/iohelpers.py:113
 msgid "_Cancel"
 msgstr "_Avbryt"
@@ -1674,95 +1678,95 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:558 meld/preferences.py:132
+#: meld/dirdiff.py:577 meld/preferences.py:132
 msgid "Size"
 msgstr "Storlek"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:566 meld/preferences.py:133
+#: meld/dirdiff.py:585 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Ändringstid"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:574 meld/preferences.py:134
+#: meld/dirdiff.py:593 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Ändringstid (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:582 meld/preferences.py:135
+#: meld/dirdiff.py:601 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Rättigheter"
 
-#: meld/dirdiff.py:832
+#: meld/dirdiff.py:851
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "{filename} (söker igenom…)"
 
-#: meld/dirdiff.py:864 meld/dirdiff.py:888
+#: meld/dirdiff.py:883 meld/dirdiff.py:915
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Söker igenom {folder}"
 
-#: meld/dirdiff.py:1028
+#: meld/dirdiff.py:1051
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Klar"
 
-#: meld/dirdiff.py:1041
+#: meld/dirdiff.py:1064
 msgid "Folder {} is being compared to itself"
 msgstr "Mappen {} jämförs med sig själv"
 
-#: meld/dirdiff.py:1047
+#: meld/dirdiff.py:1070
 msgid "Folders have no differences"
 msgstr "Mapparna skiljer sig inte åt"
 
-#: meld/dirdiff.py:1049
+#: meld/dirdiff.py:1072
 msgid "Contents of scanned files in folders are identical."
 msgstr "Innehållet i mapparnas avsökta filer är identiskt."
 
-#: meld/dirdiff.py:1051
+#: meld/dirdiff.py:1074
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 "Mapparnas avsökta filer verkar identiska, men innehållet har inte genomsökts."
 
-#: meld/dirdiff.py:1054
+#: meld/dirdiff.py:1077
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Filfilter används, och därför har inte alla filer genomsökts."
 
-#: meld/dirdiff.py:1056
+#: meld/dirdiff.py:1079
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Textfilter används och kan dölja skillnader i innehåll."
 
-#: meld/dirdiff.py:1072 meld/filediff.py:1917
+#: meld/dirdiff.py:1095 meld/filediff.py:1917
 msgid "Hide"
 msgstr "Dölj"
 
-#: meld/dirdiff.py:1074 meld/filediff.py:1919 meld/filediff.py:1949
+#: meld/dirdiff.py:1097 meld/filediff.py:1919 meld/filediff.py:1949
 #: meld/filediff.py:1951 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "_Dölj"
 
-#: meld/dirdiff.py:1083
+#: meld/dirdiff.py:1106
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Flera fel inträffade vid avsökning av denna mapp"
 
-#: meld/dirdiff.py:1084
+#: meld/dirdiff.py:1107
 msgid "Files with invalid encodings found"
 msgstr "Filer med ogiltiga teckenkodningar hittades"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1086
+#: meld/dirdiff.py:1109
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "En del filer hade en felaktig kodning. Namnen är ungefär:"
 
-#: meld/dirdiff.py:1088
+#: meld/dirdiff.py:1111
 msgid "Files hidden by case insensitive comparison"
 msgstr "Filer dolda av skiftlägeskänslig jämförelse"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1090
+#: meld/dirdiff.py:1113
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1770,17 +1774,17 @@ msgstr ""
 "Du gör en skiftlägesokänslig jämförelse på ett skiftlägeskänsligt filsystem. "
 "En del filer syns inte:"
 
-#: meld/dirdiff.py:1101
+#: meld/dirdiff.py:1124
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "”{first_file}” dold av ”{second_file}”"
 
-#: meld/dirdiff.py:1160
+#: meld/dirdiff.py:1183
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Ersätt mappen ”%s”?"
 
-#: meld/dirdiff.py:1162
+#: meld/dirdiff.py:1185
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1789,11 +1793,11 @@ msgstr ""
 "En annan mapp med samma namn existerar redan i ”%s”.\n"
 "Om du ersätter befintlig mapp kommer alla filer att förloras."
 
-#: meld/dirdiff.py:1175
+#: meld/dirdiff.py:1198
 msgid "Error copying file"
 msgstr "Fel vid filkopiering"
 
-#: meld/dirdiff.py:1176
+#: meld/dirdiff.py:1199
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1806,11 +1810,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1201 meld/vcview.py:764
+#: meld/dirdiff.py:1224 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Fel vid borttagning av {}"
 
-#: meld/dirdiff.py:1691
+#: meld/dirdiff.py:1715
 msgid "No folder"
 msgstr "Ingen mapp"
 
@@ -2164,7 +2168,7 @@ msgstr "Filnamn"
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Behöver tre filer för att sammanfoga automatiskt, fick: %r"
 
-#: meld/meldwindow.py:403
+#: meld/meldwindow.py:411
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Kan inte jämföra en blandning av filer och kataloger"
 
