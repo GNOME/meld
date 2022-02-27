@@ -281,6 +281,7 @@ class PreferencesDialog(Gtk.Dialog):
     custom_edit_command_entry = Gtk.Template.Child()
     file_filters_vbox = Gtk.Template.Child()
     fontpicker = Gtk.Template.Child()
+    plugins_tab = Gtk.Template.Child()
     spinbutton_commit_margin = Gtk.Template.Child()
     spinbutton_tabsize = Gtk.Template.Child()
     syntaxschemestore = Gtk.Template.Child()
@@ -289,6 +290,8 @@ class PreferencesDialog(Gtk.Dialog):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        self.plugins_tab.show_all()
 
         bindings = [
             ('use-system-font', self.checkbutton_default_font, 'active'),

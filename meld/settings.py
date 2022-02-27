@@ -114,9 +114,10 @@ def load_interface_settings() -> Optional[Gio.Settings]:
 
 
 def create_settings():
-    global settings, interface_settings, _meldsettings
+    global settings, plugin_settings, interface_settings, _meldsettings
 
     settings = load_settings_schema(meld.conf.SETTINGS_SCHEMA_ID)
+    plugin_settings = load_settings_schema(meld.conf.PLUGIN_SCHEMA_ID)
     interface_settings = load_interface_settings()
     _meldsettings = MeldSettings()
 
@@ -145,5 +146,6 @@ def get_meld_settings() -> MeldSettings:
 
 
 settings = None
+plugin_settings = None
 interface_settings = None
 _meldsettings = None

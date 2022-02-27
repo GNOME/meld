@@ -48,6 +48,8 @@
 
   <schema id="org.gnome.meld" path="/org/gnome/meld/">
 
+      <child name="plugins" schema="org.gnome.meld.plugins"/>
+
       <!-- GtkSettings overrides -->
       <key name="prefer-dark-theme" type="b">
           <default>false</default>
@@ -269,5 +271,13 @@
           <summary>Text-based filters</summary>
           <description>List of predefined text-based regex filters that, if active, will remove text from being used in a file comparison. The text will still be displayed, but won’t contribute to the comparison itself.</description>
       </key>
+  </schema>
+
+  <schema id="org.gnome.meld.plugins" path="/org/gnome/meld/plugins/">
+    <key name="active-plugins" type="as">
+      <default>[]</default>
+      <summary>Active plugins</summary>
+      <description>List of active plugins.</description>
+    </key>
   </schema>
 </schemalist>

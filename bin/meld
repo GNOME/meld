@@ -444,11 +444,16 @@ def environment_hacks():
 
 
 def setup_plugin_system():
-    from gi.repository import Peas
+    import sys
+
+    from gi.repository import Gio, GObject, Peas, PeasGtk
 
     from meld.confshim import get_meld_paths
+    from meld.settings import plugin_settings
 
-    log = logging.getLogger()
+    # Make sure we have the plugin manager loaded, or the preferences
+    # dialog will fail to construct properly.
+    GObject.type_ensure(PeasGtk.PluginManager)
 
     engine = Peas.Engine.get_default()
     engine.enable_loader('python3')
@@ -464,17 +469,16 @@ def setup_plugin_system():
         str(meld_paths.system_plugins_data_dir),
     )
 
-    plugins = engine.get_plugin_list()
-
     # Plugin initialisation changes sys.argv, so we copy and restore it
     # here.
     argv = sys.argv[:]
 
-    # TODO: Add plugin enablement config
-    for p in plugins:
-        success = engine.load_plugin(p)
-        if not success:
-            log.warning(f'Failed to load plugin {p}')
+    # Bind our active-plugins config to the engine, and rely upon it
+    # to load plugins appropriately.
+    plugin_settings.bind(
+        'active-plugins', engine, 'loaded-plugins',
+        Gio.SettingsBindFlags.DEFAULT,
+    )
 
     sys.argv = argv
 
