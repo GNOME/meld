@@ -1277,7 +1277,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled('folder-compare', True)
             self.set_action_enabled('folder-mark', True)
             self.set_action_enabled('folder-compare-marked',
-                self.marked is not None and self.marked.get('pane', -1) != pane)
+                                    self.marked is not None and
+                                    self.marked.get('pane', -1) != pane)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
             self.set_action_enabled(
@@ -1469,12 +1470,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         }
 
     def action_diff_marked(self, *args):
-        if self.marked is None:
-            return
-
-        marked = self.marked['mark']
-        marked_pane = self.marked['pane']
-
         pane = self._get_focused_pane()
         if pane is None:
             return
@@ -1484,7 +1479,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             return
 
         row_paths = [
-            self.model.value_paths(marked)[marked_pane],
+            self.model.value_paths(self.marked['mark'])[self.marked['pane']],
             self.model.value_paths(selected)[pane]
         ]
         gfiles = [Gio.File.new_for_path(p)
