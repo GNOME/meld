@@ -422,8 +422,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
-    marked = None
-
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -643,6 +641,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.state_filters = state_filters
 
         self._scan_in_progress = 0
+
+        self.marked = None
 
     def queue_draw(self):
         for treeview in self.treeview:
