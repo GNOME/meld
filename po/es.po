@@ -9,21 +9,22 @@
 #
 # Luisa Ceron <luisacerpe@gmail.com>, 2016.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2011-2022.
+# Daniel Mustieles García <daniel.mustieles@gmail.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld.master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-01-30 21:55+0000\n"
-"PO-Revision-Date: 2022-02-07 13:12+0100\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"POT-Creation-Date: 2022-02-28 21:56+0000\n"
+"PO-Revision-Date: 2022-03-03 11:58+0100\n"
+"Last-Translator: Daniel Mustieles García <daniel.mustieles@gmail.com>\n"
 "Language-Team: Spanish - Spain <gnome-es-list@gnome.org>\n"
 "Language: es_ES\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Gtranslator 41.0\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -1014,51 +1015,57 @@ msgid "_Compare selected files"
 msgstr "_Comparar los archivos seleccionados"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
+#| msgid "_Compare selected files"
+msgid "_Mark selected file"
+msgstr "Marcar el archivo seleccionado"
+
+#: meld/resources/ui/dirdiff-menus.ui:18
+#| msgid "_Compare selected files"
+msgid "Compare _with marked file"
+msgstr "_Comparar _con el archivo marcado"
+
+#: meld/resources/ui/dirdiff-menus.ui:25
 msgid "Copy to _left"
 msgstr "Copiar a la _izquierda"
 
-#: meld/resources/ui/dirdiff-menus.ui:18
+#: meld/resources/ui/dirdiff-menus.ui:29
 msgid "Copy to _right"
 msgstr "Copiar a la _derecha"
 
-#: meld/resources/ui/dirdiff-menus.ui:22
+#: meld/resources/ui/dirdiff-menus.ui:33
 msgid "_Delete selected"
 msgstr "_Eliminar seleccionados"
 
-#: meld/resources/ui/dirdiff-menus.ui:29
+#: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
 msgstr "Contraer recursivamente"
 
-#: meld/resources/ui/dirdiff-menus.ui:33
+#: meld/resources/ui/dirdiff-menus.ui:44
 msgid "Expand Recursively"
 msgstr "Expandir recursivamente"
 
-#: meld/resources/ui/dirdiff-menus.ui:40
+#: meld/resources/ui/dirdiff-menus.ui:51
 msgid "_Open Externally"
 msgstr "A_brir externamente"
 
-#: meld/resources/ui/dirdiff-menus.ui:44
+#: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "_Copiar rutas de archivos"
 
 #: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:76
 #: meld/resources/ui/dirdiff.ui:117
-#| msgid "Save file in this pane"
 msgid "Select folder to open in this pane"
 msgstr "Seleccione la carpeta que abrir en éste panel"
 
 #: meld/resources/ui/dirdiff.ui:43
-#| msgid "Folder"
 msgid "Folder 1"
 msgstr "Carpeta 1"
 
 #: meld/resources/ui/dirdiff.ui:84
-#| msgid "Folder"
 msgid "Folder 2"
 msgstr "Carpeta 2"
 
 #: meld/resources/ui/dirdiff.ui:125
-#| msgid "Folder"
 msgid "Folder 3"
 msgstr "Carpeta 3"
 
@@ -1123,7 +1130,6 @@ msgid "Open Containing Folder"
 msgstr "Abrir la carpeta contenedora"
 
 #: meld/resources/ui/filediff-menus.ui:58
-#| msgid "_Copy File Paths"
 msgid "Copy Full Path"
 msgstr "Copiar la ruta completa"
 
@@ -1161,7 +1167,7 @@ msgstr "Fila 1"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:556
+#: meld/dirdiff.py:558
 msgid "Name"
 msgstr "Nombre"
 
@@ -1201,7 +1207,7 @@ msgstr "Ajustada"
 msgid "Replace _All"
 msgstr "Reemplazar _todo"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1180 meld/iohelpers.py:114
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1184 meld/iohelpers.py:114
 msgid "_Replace"
 msgstr "_Reemplazar"
 
@@ -1307,12 +1313,10 @@ msgid "Path"
 msgstr "Ruta"
 
 #: meld/resources/ui/path-label.ui:62
-#| msgid "_Copy File Paths"
 msgid "Copy Path"
 msgstr "Copiar ruta"
 
 #: meld/resources/ui/path-label.ui:78
-#| msgid "Open File"
 msgid "Open Folder"
 msgstr "Abrir carpeta"
 
@@ -1592,7 +1596,7 @@ msgstr "Los cambios se perderán permanentemente si no los guarda."
 msgid "Close _without Saving"
 msgstr "Cerrar _sin guardar"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1179
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1183
 #: meld/iohelpers.py:56 meld/iohelpers.py:113
 msgid "_Cancel"
 msgstr "_Cancelar"
@@ -1626,7 +1630,6 @@ msgid "Delete"
 msgstr "Eliminar"
 
 #: meld/resources/ui/vcview-menus.ui:37
-#| msgid "Next Conflict"
 msgid "Resolve Conflict"
 msgstr "Resolver conflicto"
 
@@ -1639,7 +1642,6 @@ msgid "Commit…"
 msgstr "Efectuar…"
 
 #: meld/resources/ui/vcview.ui:38
-#| msgid "Push current change to the left"
 msgid "Pull remote changes to the local repository"
 msgstr "Descargar cambios remotos en el repositorio local"
 
@@ -1664,7 +1666,6 @@ msgid "Mark as resolved in version control"
 msgstr "Marcar como resuelto en el control de versiones"
 
 #: meld/resources/ui/vcview.ui:140
-#| msgid "Only one version control system found in this folder"
 msgid "Open version controlled folder in this pane"
 msgstr "Abrir carpeta controlada por versión en este panel"
 
@@ -1705,54 +1706,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:577 meld/preferences.py:132
+#: meld/dirdiff.py:579 meld/preferences.py:132
 msgid "Size"
 msgstr "Tamaño"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:585 meld/preferences.py:133
+#: meld/dirdiff.py:587 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Hora de modificación"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:593 meld/preferences.py:134
-#| msgid "Modification time"
+#: meld/dirdiff.py:595 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Hora de modificación (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:601 meld/preferences.py:135
+#: meld/dirdiff.py:603 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Permisos"
 
-#: meld/dirdiff.py:851
+#: meld/dirdiff.py:855
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "{filename} (analizando…)"
 
-#: meld/dirdiff.py:883 meld/dirdiff.py:915
+#: meld/dirdiff.py:887 meld/dirdiff.py:919
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Analizando {folder}"
 
-#: meld/dirdiff.py:1051
+#: meld/dirdiff.py:1055
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Hecho"
 
-#: meld/dirdiff.py:1064
+#: meld/dirdiff.py:1068
 msgid "Folder {} is being compared to itself"
 msgstr "La carpeta {} se está comparando consigo misma"
 
-#: meld/dirdiff.py:1070
+#: meld/dirdiff.py:1074
 msgid "Folders have no differences"
 msgstr "No hay diferencias entre las carpetas"
 
-#: meld/dirdiff.py:1072
+#: meld/dirdiff.py:1076
 msgid "Contents of scanned files in folders are identical."
 msgstr "El contenido de los archivos analizados en carpetas es idéntico."
 
-#: meld/dirdiff.py:1074
+#: meld/dirdiff.py:1078
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1760,48 +1760,48 @@ msgstr ""
 "Los archivos analizados en las carpetas parecen idénticos, pero no se ha "
 "analizado el contenido."
 
-#: meld/dirdiff.py:1077
+#: meld/dirdiff.py:1081
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Se están usando filtros de archivos, por lo que no se han analizado todos "
 "los archivos."
 
-#: meld/dirdiff.py:1079
+#: meld/dirdiff.py:1083
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Se están usando filtros de texto, y pueden estar ocultando diferencias entre "
 "archivos."
 
-#: meld/dirdiff.py:1095 meld/filediff.py:1917
+#: meld/dirdiff.py:1099 meld/filediff.py:1917
 msgid "Hide"
 msgstr "Ocultar"
 
-#: meld/dirdiff.py:1097 meld/filediff.py:1919 meld/filediff.py:1949
+#: meld/dirdiff.py:1101 meld/filediff.py:1919 meld/filediff.py:1949
 #: meld/filediff.py:1951 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "_Ocultar"
 
-#: meld/dirdiff.py:1106
+#: meld/dirdiff.py:1110
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Ocurrieron varios errores al escanear esta carpeta"
 
-#: meld/dirdiff.py:1107
+#: meld/dirdiff.py:1111
 msgid "Files with invalid encodings found"
 msgstr "Se encontraron archivos con codificaciones no válidas"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1109
+#: meld/dirdiff.py:1113
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Algunos archivos tienen una codificación incorrecta. Los nombres son como "
 "esto:"
 
-#: meld/dirdiff.py:1111
+#: meld/dirdiff.py:1115
 msgid "Files hidden by case insensitive comparison"
 msgstr "Archivos ocultos por una comparación no sensible a capitalización"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1113
+#: meld/dirdiff.py:1117
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1810,17 +1810,17 @@ msgstr ""
 "sensible a capitalización. Los siguientes archivos de esta carpeta archivos "
 "están ocultos:"
 
-#: meld/dirdiff.py:1124
+#: meld/dirdiff.py:1128
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "«{first_file}» oculto por «{second_file}»"
 
-#: meld/dirdiff.py:1183
+#: meld/dirdiff.py:1187
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "¿Reemplazar la carpeta «%s»?"
 
-#: meld/dirdiff.py:1185
+#: meld/dirdiff.py:1189
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1829,11 +1829,11 @@ msgstr ""
 "Ya existe otra carpeta con el mismo nombre en «%s».\n"
 "Si reemplaza la carpeta existente, se perderán todos sus archivos."
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1202
 msgid "Error copying file"
 msgstr "Error al copiar el archivo"
 
-#: meld/dirdiff.py:1199
+#: meld/dirdiff.py:1203
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1846,11 +1846,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1224 meld/vcview.py:764
+#: meld/dirdiff.py:1228 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Error al eliminar {}"
 
-#: meld/dirdiff.py:1715
+#: meld/dirdiff.py:1756
 msgid "No folder"
 msgstr "No hay ninguna carpeta"
 
@@ -2254,7 +2254,6 @@ msgid "Plain Text"
 msgstr "Texto plano"
 
 #: meld/ui/pathlabel.py:36
-#| msgid "Filename filters"
 msgid "Unnamed file"
 msgstr "Archivo sin nombre"
 
@@ -2363,7 +2362,6 @@ msgid "Not present"
 msgstr "No presente"
 
 #: meld/vc/_vc.py:82
-#| msgid "Scanning %s"
 msgid "Scanning…"
 msgstr "Analizando…"
 
