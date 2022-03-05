@@ -221,6 +221,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=False,
     )
 
+    ADD_SYNCPOINT_OFFSET = 10
+
     def __init__(
         self,
         num_panes,
@@ -281,7 +283,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._sync_hscroll_lock = False
         self.linediffer = self.differ()
         self.force_highlight = False
-        self.syncpoints = []
+
+        def get_mark_line(pane, mark):
+            return self.textbuffer[pane].get_iter_at_mark(mark).get_line()
+
+        self.syncpoints = Syncpoints(num_panes, get_mark_line)
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher(self.scheduler)
 
@@ -313,6 +319,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         # Manually handle GAction additions
         actions = (
             ('add-sync-point', self.add_sync_point),
+            ('remove-sync-point', self.remove_sync_point),
             ('clear-sync-point', self.clear_sync_points),
             ('copy', self.action_copy),
             ('copy-full-path', self.action_copy_full_path),
@@ -362,6 +369,18 @@ class FileDiff(Gtk.VBox, MeldDoc):
         context_menu = builder.get_object('filediff-context-menu')
         self.popup_menu = Gtk.Menu.new_from_model(context_menu)
         self.popup_menu.attach_to_widget(self)
+
+        popup_options = self.popup_menu.get_children()
+
+        offset = FileDiff.ADD_SYNCPOINT_OFFSET
+        self.add_sync_point_opt = popup_options[offset]
+        self.move_sync_point_opt = popup_options[offset + 1]
+        self.match_sync_point_opt = popup_options[offset + 2]
+        self.remove_sync_point_opt = popup_options[offset + 3]
+
+        self.popup_menu.remove(self.move_sync_point_opt)
+        self.popup_menu.remove(self.match_sync_point_opt)
+        self.popup_menu.remove(self.remove_sync_point_opt)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-actions.ui')
@@ -1390,6 +1409,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         rect.x, rect.y = textview.buffer_to_window_coords(
             Gtk.TextWindowType.WIDGET, location.x, location.y)
 
+        pane = self.textview.index(textview)
+        self.set_syncpoint_menuitem(pane)
+
         self.popup_menu.popup_at_rect(
             Gtk.Widget.get_window(textview),
             rect,
@@ -1403,9 +1425,46 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def on_textview_button_press_event(self, textview, event):
         if event.button == 3:
             textview.grab_focus()
+            pane = self.textview.index(textview)
+            self.set_syncpoint_menuitem(pane)
             self.popup_menu.popup_at_pointer(event)
             return True
         return False
+
+    def set_syncpoint_menuitem(self, pane):
+        state = self.syncpoints.pane_sync_state(pane)
+
+        popup_options = self.popup_menu.get_children()
+        current_option = popup_options[FileDiff.ADD_SYNCPOINT_OFFSET]
+        next_option = None
+
+        if state == Syncpoints.DANGLING:
+            next_option = self.move_sync_point_opt
+        elif state == Syncpoints.MATCHED:
+            next_option = self.add_sync_point_opt
+        elif state == Syncpoints.SHORT:
+            next_option = self.match_sync_point_opt
+
+        if state == Syncpoints.MATCHED:
+            mark = self.textbuffer[pane].get_insert()
+            if self.syncpoints.can_delete_matched_at(pane, mark):
+                next_option = self.remove_sync_point_opt
+
+        elif state == Syncpoints.DANGLING:
+            mark = self.textbuffer[pane].get_insert()
+            action = self.syncpoints.can_move_at(pane, mark)
+
+            if action == Syncpoints.CAN_DELETE:
+                next_option = self.remove_sync_point_opt
+            else:
+                next_option.set_sensitive(bool(action))
+
+        if next_option is not current_option:
+            self.popup_menu.insert(
+                next_option,
+                FileDiff.ADD_SYNCPOINT_OFFSET + 1
+            )
+            self.popup_menu.remove(current_option)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -2409,18 +2468,24 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     @with_focused_pane
     def add_sync_point(self, pane, *args):
-        # Find a non-complete syncpoint, or create a new one
-        if self.syncpoints and None in self.syncpoints[-1]:
-            syncpoint = self.syncpoints.pop()
-        else:
-            syncpoint = [None] * self.num_panes
         cursor_it = self.textbuffer[pane].get_iter_at_mark(
             self.textbuffer[pane].get_insert())
-        syncpoint[pane] = self.textbuffer[pane].create_mark(None, cursor_it)
-        self.syncpoints.append(syncpoint)
 
+        self.syncpoints.add(
+            pane,
+            self.textbuffer[pane].create_mark(None, cursor_it)
+        )
+
+        self.refresh_sync_points()
+
+    @with_focused_pane
+    def remove_sync_point(self, pane, *args):
+        self.syncpoints.remove(pane, self.textbuffer[pane].get_insert())
+        self.refresh_sync_points()
+
+    def refresh_sync_points(self):
         for i, t in enumerate(self.textview[:self.num_panes]):
-            t.syncpoints = [p[i] for p in self.syncpoints if p[i] is not None]
+            t.syncpoints = self.syncpoints.points(i)
 
         def make_line_retriever(pane, marks):
             buf = self.textbuffer[pane]
@@ -2430,7 +2495,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 return buf.get_iter_at_mark(mark).get_line()
             return get_line_for_mark
 
-        valid_points = [p for p in self.syncpoints if all(p)]
+        valid_points = self.syncpoints.valid_points()
+
         if valid_points and self.num_panes == 2:
             self.linediffer.syncpoints = [
                 ((make_line_retriever(1, p), make_line_retriever(0, p)), )
@@ -2442,6 +2508,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
                  (make_line_retriever(1, p), make_line_retriever(2, p)))
                 for p in valid_points
             ]
+        elif not valid_points:
+            self.linediffer.syncpoints = []
 
         if valid_points:
             for mgr in self.msgarea_mgr:
@@ -2458,7 +2526,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.refresh_comparison()
 
     def clear_sync_points(self, *args):
-        self.syncpoints = []
+        self.syncpoints.clear()
         self.linediffer.syncpoints = []
         for t in self.textview:
             t.syncpoints = []
@@ -2469,3 +2537,109 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
 
 FileDiff.set_css_name('meld-file-diff')
+
+
+class Syncpoints:
+    # The state of a pane with all its syncpoints matched
+    MATCHED = "matched"
+    # The state of a pane waiting to be matched to existing syncpoints
+    # in other panes
+    SHORT = "short"
+    # The state of a pane with a dangling syncpoint, not yet matched
+    # across all panes
+    DANGLING = "DANGLING"
+
+    # The state of a line when a dangling syncpoint can be moved to it
+    CAN_MOVE = "can_move"
+    # The state of a line where a dangling syncpoint sits
+    CAN_DELETE = "can_delete"
+
+    def __init__(self, num_panes, get_line):
+        self._num_panes = num_panes
+        self._points = [[] for p in range(0, num_panes)]
+        self._get_line = get_line
+
+    def add(self, pane_idx, point):
+        pane_state = self.pane_sync_state(pane_idx)
+
+        if pane_state == Syncpoints.DANGLING:
+            self._points[pane_idx].pop()
+
+        self._points[pane_idx].append(point)
+
+        lengths = set(len(p) for p in self._points)
+
+        if len(lengths) == 1:
+            for (i, p) in enumerate(self._points):
+                p.sort(key=lambda point: self._get_line(i, point))
+
+    def remove(self, pane_idx, cursor_point):
+        line = self._get_line(pane_idx, cursor_point)
+
+        index = None
+
+        for (i, point) in enumerate(self._points[pane_idx]):
+            if self._get_line(pane_idx, point) == line:
+                index = i
+                break
+
+        if index is None:
+            return
+
+        pane_state = self.pane_sync_state(pane_idx)
+
+        if pane_state == Syncpoints.MATCHED:
+            for pane in self._points:
+                pane.pop(index)
+        elif pane_state == Syncpoints.DANGLING:
+            self._points[pane_idx].pop()
+
+    def clear(self):
+        self._points = [[] for _i in range(0, self._num_panes)]
+
+    def points(self, pane_idx):
+        return self._points[pane_idx].copy()
+
+    def can_move_at(self, pane_idx, mark):
+        target_line = self._get_line(pane_idx, mark)
+        pane_syncpoints = self._points[pane_idx]
+
+        if self._get_line(pane_idx, pane_syncpoints[-1]) == target_line:
+            return Syncpoints.CAN_DELETE
+
+        for syncpoint in pane_syncpoints[:-1]:
+            if self._get_line(pane_idx, syncpoint) == target_line:
+                return None
+
+        return Syncpoints.CAN_MOVE
+
+    def can_delete_matched_at(self, pane_idx, mark):
+        target_line = self._get_line(pane_idx, mark)
+        return any(
+            self._get_line(pane_idx, syncpoint) == target_line
+            for syncpoint in self._points[pane_idx]
+        )
+
+    def valid_points(self):
+        num_matched = min(len(p) for p in self._points)
+
+        if not num_matched:
+            return []
+
+        matched = [p[:num_matched] for p in self._points]
+
+        return [
+            tuple(matched_point[i] for matched_point in matched)
+            for i in range(0, num_matched)
+        ]
+
+    def pane_sync_state(self, pane_idx):
+        lengths = set(len(points) for points in self._points)
+
+        if len(lengths) == 1:
+            return Syncpoints.MATCHED
+
+        if len(self._points[pane_idx]) == min(lengths):
+            return Syncpoints.SHORT
+        else:
+            return Syncpoints.DANGLING
