@@ -248,6 +248,7 @@ def _files_same(files, regexes, comparison_args):
 
 
 EMBLEM_NEW = "emblem-new"
+EMBLEM_SELECTED = "emblem-default-symbolic"
 EMBLEM_SYMLINK = "emblem-symbolic-link"
 
 COL_EMBLEM, COL_EMBLEM_SECONDARY, COL_SIZE, COL_TIME, COL_PERMS, COL_END = (
@@ -821,6 +822,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         locations = [os.path.abspath(l) if l else '' for l in locations]
 
         self.current_path = None
+        self.marked = None
         self.model.clear()
         for m in self.msgarea_mgr:
             m.clear()
@@ -1464,10 +1466,14 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if selected is None:
             return
 
-        self.marked = {
-            'mark': self.model.get_iter(selected[0]),
-            'pane': pane
-        }
+        old_it = self.marked['mark'] if self.marked else None
+        it = self.model.get_iter(selected[0])
+
+        self.marked = {'mark': it, 'pane': pane}
+
+        self._update_item_state(it)
+        if old_it:
+            self._update_item_state(old_it)
 
     def action_diff_marked(self, *args):
         pane = self._get_focused_pane()
@@ -1706,7 +1712,17 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             if stats[j]:
                 self.model.set_path_state(
                     it, j, state, isdir[j], display_text=name_overrides[j])
-                emblem = EMBLEM_NEW if j in newest else None
+
+                if (
+                    self.marked and
+                    self.marked["pane"] == j and
+                    self.model.get_string_from_iter(self.marked["mark"]) ==
+                    self.model.get_string_from_iter(it)
+                ):
+                    emblem = EMBLEM_SELECTED
+                else:
+                    emblem = EMBLEM_NEW if j in newest else None
+
                 link_emblem = EMBLEM_SYMLINK if j in symlinks else None
                 self.model.unsafe_set(it, j, {
                     COL_EMBLEM: emblem,
