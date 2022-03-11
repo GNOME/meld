@@ -1478,10 +1478,17 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if selected is None:
             return
 
-        row_paths = [
-            self.model.value_paths(self.marked['mark'])[self.marked['pane']],
-            self.model.value_paths(selected)[pane]
-        ]
+        mark, mark_pane = self.marked['mark'], self.marked['pane']
+        marked_path = self.model.value_paths(mark)[mark_pane]
+        selected_path = self.model.value_paths(selected)[pane]
+
+        # Maintain the pane ordering in the new comparison, regardless
+        # of which pane is the marked one.
+        if pane < mark_pane:
+            row_paths = [selected_path, marked_path]
+        else:
+            row_paths = [marked_path, selected_path]
+
         gfiles = [Gio.File.new_for_path(p)
                   for p in row_paths if os.path.exists(p)]
         self.create_diff_signal.emit(gfiles, {})
