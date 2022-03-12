@@ -28,7 +28,7 @@ import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import DefaultDict, List, Optional, Tuple
+from typing import DefaultDict, List, NamedTuple, Optional, Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -314,6 +314,49 @@ class CanonicalListing:
             return tuple(s or fill_value for s in seq)
 
         return sorted(filled(v) for v in self.items.values())
+
+
+class ComparisonMarker(NamedTuple):
+    """A stable row + pane marker
+
+    This marker is used for selecting a specific file or folder when
+    the user wants to compare paths that don't have matching names, and
+    so aren't aligned in our tree view.
+    """
+
+    pane: int
+    row: Gtk.TreeRowReference
+
+    def get_iter(self) -> Gtk.TreeIter:
+        return self.row.get_model().get_iter(self.row.get_path())
+
+    def matches_iter(self, pane: int, it: Gtk.TreeIter) -> bool:
+        return (
+            pane == self.pane and
+            self.row.get_model().get_path(it) == self.row.get_path()
+        )
+
+    @classmethod
+    def from_selection(
+        cls,
+        treeview: Gtk.TreeView,
+        pane: int,
+    ) -> "ComparisonMarker":
+
+        if pane is None or pane == -1:
+            raise ValueError("Invalid pane for marker")
+
+        model = treeview.get_model()
+        _, selected_paths = treeview.get_selection().get_selected_rows()
+
+        # We'll assume that in any multi-select, the first row was the
+        # intended mark.
+        selected_row = Gtk.TreeRowReference.new(model, selected_paths[0])
+
+        return cls(
+            pane=pane,
+            row=selected_row,
+        )
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
@@ -1278,9 +1321,9 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled('folder-expand', is_single_foldable_row)
             self.set_action_enabled('folder-compare', True)
             self.set_action_enabled('folder-mark', True)
-            self.set_action_enabled('folder-compare-marked',
-                                    self.marked is not None and
-                                    self.marked.get('pane', -1) != pane)
+            self.set_action_enabled(
+                'folder-compare-marked',
+                self.marked is not None and self.marked.pane != pane)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
             self.set_action_enabled(
@@ -1466,14 +1509,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if selected is None:
             return
 
-        old_it = self.marked['mark'] if self.marked else None
-        it = self.model.get_iter(selected[0])
+        old_mark_it = self.marked.get_iter() if self.marked else None
+        self.marked = ComparisonMarker.from_selection(
+            self.treeview[pane], pane)
 
-        self.marked = {'mark': it, 'pane': pane}
-
-        self._update_item_state(it)
-        if old_it:
-            self._update_item_state(old_it)
+        self._update_item_state(self.marked.get_iter())
+        if old_mark_it:
+            self._update_item_state(old_mark_it)
 
     def action_diff_marked(self, *args):
         pane = self._get_focused_pane()
@@ -1484,13 +1526,13 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         if selected is None:
             return
 
-        mark, mark_pane = self.marked['mark'], self.marked['pane']
-        marked_path = self.model.value_paths(mark)[mark_pane]
+        mark_it = self.marked.get_iter()
+        marked_path = self.model.value_paths(mark_it)[self.marked.pane]
         selected_path = self.model.value_paths(selected)[pane]
 
         # Maintain the pane ordering in the new comparison, regardless
         # of which pane is the marked one.
-        if pane < mark_pane:
+        if pane < self.marked.pane:
             row_paths = [selected_path, marked_path]
         else:
             row_paths = [marked_path, selected_path]
@@ -1713,12 +1755,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 self.model.set_path_state(
                     it, j, state, isdir[j], display_text=name_overrides[j])
 
-                if (
-                    self.marked and
-                    self.marked["pane"] == j and
-                    self.model.get_string_from_iter(self.marked["mark"]) ==
-                    self.model.get_string_from_iter(it)
-                ):
+                if self.marked and self.marked.matches_iter(j, it):
                     emblem = EMBLEM_SELECTED
                 else:
                     emblem = EMBLEM_NEW if j in newest else None
