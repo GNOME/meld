@@ -18,6 +18,7 @@ import copy
 import functools
 import logging
 import math
+from enum import Enum
 from typing import Optional, Tuple, Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
@@ -1432,32 +1433,25 @@ class FileDiff(Gtk.VBox, MeldDoc):
         return False
 
     def set_syncpoint_menuitem(self, pane):
-        state = self.syncpoints.pane_sync_state(pane)
+        action = self._syncpoint_action(pane)
 
         popup_options = self.popup_menu.get_children()
         current_option = popup_options[FileDiff.ADD_SYNCPOINT_OFFSET]
         next_option = None
 
-        if state == Syncpoints.DANGLING:
-            next_option = self.move_sync_point_opt
-        elif state == Syncpoints.MATCHED:
+        if action == SyncpointState.CAN_ADD:
             next_option = self.add_sync_point_opt
-        elif state == Syncpoints.SHORT:
+        elif action == SyncpointState.CAN_MATCH:
             next_option = self.match_sync_point_opt
+        elif action == SyncpointState.CAN_DELETE:
+            next_option = self.remove_sync_point_opt
+        elif action == SyncpointState.CAN_MOVE:
+            next_option = self.move_sync_point_opt
+        elif action is SyncpointState.DISABLED:
+            next_option = self.move_sync_point_opt
 
-        if state == Syncpoints.MATCHED:
-            mark = self.textbuffer[pane].get_insert()
-            if self.syncpoints.can_delete_matched_at(pane, mark):
-                next_option = self.remove_sync_point_opt
 
-        elif state == Syncpoints.DANGLING:
-            mark = self.textbuffer[pane].get_insert()
-            action = self.syncpoints.can_move_at(pane, mark)
-
-            if action == Syncpoints.CAN_DELETE:
-                next_option = self.remove_sync_point_opt
-            else:
-                next_option.set_sensitive(bool(action))
+        self.set_action_enabled("add-sync-point", action != SyncpointState.DISABLED)
 
         if next_option is not current_option:
             self.popup_menu.insert(
@@ -1465,6 +1459,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 FileDiff.ADD_SYNCPOINT_OFFSET + 1
             )
             self.popup_menu.remove(current_option)
+
+    def _syncpoint_action(self, pane):
+        def get_mark():
+            return self.textbuffer[pane].get_insert()
+
+        return self.syncpoints.state(pane, get_mark)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -2539,30 +2539,31 @@ class FileDiff(Gtk.VBox, MeldDoc):
 FileDiff.set_css_name('meld-file-diff')
 
 
-class Syncpoints:
-    # The state of a pane with all its syncpoints matched
-    MATCHED = "matched"
-    # The state of a pane waiting to be matched to existing syncpoints
-    # in other panes
-    SHORT = "short"
-    # The state of a pane with a dangling syncpoint, not yet matched
-    # across all panes
-    DANGLING = "DANGLING"
 
+class SyncpointState(Enum):
     # The state of a line when a dangling syncpoint can be moved to it
     CAN_MOVE = "can_move"
     # The state of a line where a dangling syncpoint sits
     CAN_DELETE = "can_delete"
+    # The state of a line when a syncpoint can be added to match existing ones
+    CAN_MATCH = "can_match"
+    # The state of a line when a new, dangling syncpoint can be added to it
+    CAN_ADD = "can_add"
+    # The state of a line when no syncpoint action can be taken
+    DISABLED = "disabled"
 
-    def __init__(self, num_panes, get_line):
+
+
+class Syncpoints:
+    def __init__(self, num_panes: int, comparator):
         self._num_panes = num_panes
-        self._points = [[] for p in range(0, num_panes)]
-        self._get_line = get_line
+        self._points = [[] for _i in range(0, num_panes)]
+        self._comparator = comparator
 
-    def add(self, pane_idx, point):
-        pane_state = self.pane_sync_state(pane_idx)
+    def add(self, pane_idx: int, point):
+        pane_state = self._pane_state(pane_idx)
 
-        if pane_state == Syncpoints.DANGLING:
+        if pane_state == self.PaneState.DANGLING:
             self._points[pane_idx].pop()
 
         self._points[pane_idx].append(point)
@@ -2571,54 +2572,35 @@ class Syncpoints:
 
         if len(lengths) == 1:
             for (i, p) in enumerate(self._points):
-                p.sort(key=lambda point: self._get_line(i, point))
+                p.sort(key=lambda point: self._comparator(i, point))
 
-    def remove(self, pane_idx, cursor_point):
-        line = self._get_line(pane_idx, cursor_point)
+    def remove(self, pane_idx: int, cursor_point):
+        cursor_key = self._comparator(pane_idx, cursor_point)
 
-        index = None
+        index = -1
 
         for (i, point) in enumerate(self._points[pane_idx]):
-            if self._get_line(pane_idx, point) == line:
+            if self._comparator(pane_idx, point) == cursor_key:
                 index = i
                 break
 
-        if index is None:
-            return
+        assert index is not None
 
-        pane_state = self.pane_sync_state(pane_idx)
+        pane_state = self._pane_state(pane_idx)
 
-        if pane_state == Syncpoints.MATCHED:
+        assert pane_state != self.PaneState.SHORT
+
+        if pane_state == self.PaneState.MATCHED:
             for pane in self._points:
                 pane.pop(index)
-        elif pane_state == Syncpoints.DANGLING:
+        elif pane_state == self.PaneState.DANGLING:
             self._points[pane_idx].pop()
 
     def clear(self):
         self._points = [[] for _i in range(0, self._num_panes)]
 
-    def points(self, pane_idx):
+    def points(self, pane_idx: int):
         return self._points[pane_idx].copy()
-
-    def can_move_at(self, pane_idx, mark):
-        target_line = self._get_line(pane_idx, mark)
-        pane_syncpoints = self._points[pane_idx]
-
-        if self._get_line(pane_idx, pane_syncpoints[-1]) == target_line:
-            return Syncpoints.CAN_DELETE
-
-        for syncpoint in pane_syncpoints[:-1]:
-            if self._get_line(pane_idx, syncpoint) == target_line:
-                return None
-
-        return Syncpoints.CAN_MOVE
-
-    def can_delete_matched_at(self, pane_idx, mark):
-        target_line = self._get_line(pane_idx, mark)
-        return any(
-            self._get_line(pane_idx, syncpoint) == target_line
-            for syncpoint in self._points[pane_idx]
-        )
 
     def valid_points(self):
         num_matched = min(len(p) for p in self._points)
@@ -2633,13 +2615,58 @@ class Syncpoints:
             for i in range(0, num_matched)
         ]
 
-    def pane_sync_state(self, pane_idx):
+    def _pane_state(self, pane_idx: int):
         lengths = set(len(points) for points in self._points)
 
         if len(lengths) == 1:
-            return Syncpoints.MATCHED
+            return self.PaneState.MATCHED
 
         if len(self._points[pane_idx]) == min(lengths):
-            return Syncpoints.SHORT
+            return self.PaneState.SHORT
         else:
-            return Syncpoints.DANGLING
+            return self.PaneState.DANGLING
+
+    def state(self, pane_idx: int, get_mark):
+        state = self._pane_state(pane_idx)
+
+        if state == self.PaneState.SHORT:
+            return SyncpointState.CAN_MATCH
+
+        target = self._comparator(pane_idx, get_mark())
+
+        points = self._points[pane_idx]
+
+        if state == self.PaneState.MATCHED:
+            is_syncpoint = any(
+                self._comparator(pane_idx, point) == target
+                for point in points
+            )
+
+            if is_syncpoint:
+                return SyncpointState.CAN_DELETE
+            else:
+                return SyncpointState.CAN_ADD
+
+        # state == DANGLING
+        if target == self._comparator(pane_idx, points[-1]):
+            return SyncpointState.CAN_DELETE
+
+        is_syncpoint = any(
+            self._comparator(pane_idx, point) == target
+            for point in points
+        )
+
+        if is_syncpoint:
+            return SyncpointState.DISABLED
+        else:
+            return SyncpointState.CAN_MOVE
+
+    class PaneState(Enum):
+        # The state of a pane with all its syncpoints matched
+        MATCHED = "matched"
+        # The state of a pane waiting to be matched to existing syncpoints
+        # in other panes
+        SHORT = "short"
+        # The state of a pane with a dangling syncpoint, not yet matched
+        # across all panes
+        DANGLING = "DANGLING"
