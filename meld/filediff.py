@@ -1432,6 +1432,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
             return True
         return False
 
+    def syncpoint_action(self):
+        if self.focus_pane:
+            return self._syncpoint_action(self.textview.index(self.focus_pane))
+
     def set_syncpoint_menuitem(self, pane):
         action = self._syncpoint_action(pane)
 
