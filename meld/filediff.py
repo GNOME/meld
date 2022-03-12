@@ -1224,8 +1224,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
             secondary = _(
                 "If the conflict was resolved successfully, you may mark "
                 "it as resolved now.")
-            buttons = ((_("Cancel"), Gtk.ResponseType.CANCEL),
-                       (_("Mark _Resolved"), Gtk.ResponseType.OK))
+            buttons = (
+                (_("Cancel"), Gtk.ResponseType.CANCEL, None),
+                (_("Mark _Resolved"), Gtk.ResponseType.OK, None),
+            )
             resolve_response = misc.modal_dialog(
                 primary, secondary, buttons, parent=self,
                 messagetype=Gtk.MessageType.QUESTION)

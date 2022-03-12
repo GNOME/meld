@@ -53,8 +53,11 @@ def trash_or_confirm(gfile: Gio.File) -> bool:
             "to the trash."
         ),
         buttons=[
-            (_("_Cancel"), Gtk.ResponseType.CANCEL),
-            (_("_Delete Permanently"), Gtk.ResponseType.OK),
+            (_("_Cancel"), Gtk.ResponseType.CANCEL, None),
+            (
+                _("_Delete Permanently"), Gtk.ResponseType.OK,
+                Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION,
+            ),
         ],
     )
 
@@ -110,8 +113,8 @@ def prompt_save_filename(
             "If you replace the existing file, its contents "
             "will be lost.") % parent_name,
         buttons=[
-            (_("_Cancel"), Gtk.ResponseType.CANCEL),
-            (_("_Replace"), Gtk.ResponseType.OK),
+            (_("_Cancel"), Gtk.ResponseType.CANCEL, None),
+            (_("_Replace"), Gtk.ResponseType.OK, None),
         ],
         messagetype=Gtk.MessageType.WARNING,
     )

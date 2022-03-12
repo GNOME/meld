@@ -1225,8 +1225,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                         parent_name = os.path.dirname(dst)
                         folder_name = os.path.basename(dst)
                         dialog_buttons = [
-                            (_("_Cancel"), Gtk.ResponseType.CANCEL),
-                            (_("_Replace"), Gtk.ResponseType.OK),
+                            (_("_Cancel"), Gtk.ResponseType.CANCEL, None),
+                            (
+                                _("_Replace"), Gtk.ResponseType.OK,
+                                Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION,
+                            ),
                         ]
                         replace = misc.modal_dialog(
                             primary=_("Replace folder “%s”?") % folder_name,
