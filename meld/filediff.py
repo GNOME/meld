@@ -1454,8 +1454,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
         elif action is SyncpointState.DISABLED:
             next_option = self.move_sync_point_opt
 
-
-        self.set_action_enabled("add-sync-point", action != SyncpointState.DISABLED)
+        self.set_action_enabled(
+            "add-sync-point",
+            action != SyncpointState.DISABLED
+        )
 
         if next_option is not current_option:
             self.popup_menu.insert(
@@ -2543,7 +2545,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
 FileDiff.set_css_name('meld-file-diff')
 
 
-
 class SyncpointState(Enum):
     # The state of a line when a dangling syncpoint can be moved to it
     CAN_MOVE = "can_move"
@@ -2555,7 +2556,6 @@ class SyncpointState(Enum):
     CAN_ADD = "can_add"
     # The state of a line when no syncpoint action can be taken
     DISABLED = "disabled"
-
 
 
 class Syncpoints:

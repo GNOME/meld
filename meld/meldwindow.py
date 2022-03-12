@@ -30,7 +30,7 @@ from meld.const import (
     FileComparisonMode,
 )
 from meld.dirdiff import DirDiff
-from meld.filediff import FileDiff, SyncpointState
+from meld.filediff import FileDiff
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
@@ -121,9 +121,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         Gtk.ApplicationWindow.do_realize(self)
 
         app = self.get_application()
-        gear_menu = app.get_menu_by_id("gear-menu")
+        menu = app.get_menu_by_id("gear-menu")
         self.gear_menu_button.set_popover(
-            Gtk.Popover.new_from_model(self.gear_menu_button, gear_menu))
+            Gtk.Popover.new_from_model(self.gear_menu_button, menu))
 
         filter_model = app.get_menu_by_id("text-filter-menu")
         self.text_filter_button.set_popover(
@@ -147,7 +147,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 "file-filters-changed", self.update_filename_filters),
         ]
 
-        meld.ui.util.extract_accels_from_menu(gear_menu, self.get_application())
+        meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
     def update_filename_filters(self, settings):
         filter_items_model = Gio.Menu()
@@ -378,9 +378,8 @@ class MeldWindow(Gtk.ApplicationWindow):
         if not isinstance(page, FileDiff):
             return
 
-        action = page.syncpoint_action()
-
         # TODO: recompute menu items
+        # action = page.syncpoint_action()
 
     def append_filediff(
             self, gfiles, *, encodings=None, merge_output=None, meta=None):
