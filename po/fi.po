@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-10-08 21:01+0000\n"
-"PO-Revision-Date: 2021-11-22 14:08+0200\n"
+"POT-Creation-Date: 2022-03-10 22:43+0000\n"
+"PO-Revision-Date: 2022-03-14 21:45+0200\n"
 "Last-Translator: Jiri Grönroos <jiri.gronroos+l10n@iki.fi>\n"
 "Language-Team: suomi <lokalisointi-lista@googlegroups.com>\n"
 "Language: fi\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -790,7 +790,7 @@ msgstr "Sama"
 msgid "New"
 msgstr "Uusi"
 
-#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:167
+#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:171
 #: meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Muokattu"
@@ -801,19 +801,23 @@ msgstr "Muokattu"
 msgid "Ignore filename case"
 msgstr "Älä huomioi kirjainkoon eroja tiedostonimessä"
 
-#: meld/resources/gtk/menus.ui:171
+#: meld/resources/gtk/menus.ui:162
+msgid "Normalize Unicode paths"
+msgstr "Normalisoi Unicode-polut"
+
+#: meld/resources/gtk/menus.ui:175
 msgid "Normal"
 msgstr "Normaali"
 
-#: meld/resources/gtk/menus.ui:175 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Versioimaton"
 
-#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:69
+#: meld/resources/gtk/menus.ui:183 meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Huomiotta jätetyt"
 
-#: meld/resources/gtk/menus.ui:186
+#: meld/resources/gtk/menus.ui:190
 msgid "Flatten folders"
 msgstr "Litistetyt kansiot"
 
@@ -931,30 +935,38 @@ msgid "_Compare selected files"
 msgstr "_Vertaa valittuja tiedostoja"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
+msgid "_Mark selected file"
+msgstr "_Merkitse valittu tiedosto"
+
+#: meld/resources/ui/dirdiff-menus.ui:18
+msgid "Compare _with marked file"
+msgstr "_Vertaa merkityn tiedoston kanssa"
+
+#: meld/resources/ui/dirdiff-menus.ui:25
 msgid "Copy to _left"
 msgstr "Kopioi _vasemmalle"
 
-#: meld/resources/ui/dirdiff-menus.ui:18
+#: meld/resources/ui/dirdiff-menus.ui:29
 msgid "Copy to _right"
 msgstr "Kopioi _oikealle"
 
-#: meld/resources/ui/dirdiff-menus.ui:22
+#: meld/resources/ui/dirdiff-menus.ui:33
 msgid "_Delete selected"
 msgstr "Poista _valittu"
 
-#: meld/resources/ui/dirdiff-menus.ui:29
+#: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
 msgstr "Supista rekursiivisesti"
 
-#: meld/resources/ui/dirdiff-menus.ui:33
+#: meld/resources/ui/dirdiff-menus.ui:44
 msgid "Expand Recursively"
 msgstr "Laajenna rekursiivisesti"
 
-#: meld/resources/ui/dirdiff-menus.ui:40
+#: meld/resources/ui/dirdiff-menus.ui:51
 msgid "_Open Externally"
 msgstr "Avaa _ulkoisesti"
 
-#: meld/resources/ui/dirdiff-menus.ui:44
+#: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "_Kopioi tiedostopolut"
 
@@ -1073,7 +1085,7 @@ msgstr "Tiedosto 1"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:530
+#: meld/dirdiff.py:558
 msgid "Name"
 msgstr "Nimi"
 
@@ -1113,7 +1125,7 @@ msgstr "Rivitetty"
 msgid "Replace _All"
 msgstr "K_orvaa kaikki"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1092 meld/iohelpers.py:114
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1184 meld/iohelpers.py:114
 msgid "_Replace"
 msgstr "_Korvaa"
 
@@ -1499,7 +1511,7 @@ msgstr "Jos et tallenna, muutokset häviävät pysyvästi."
 msgid "Close _without Saving"
 msgstr "Sulje _tallentamatta"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1091
+#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1183
 #: meld/iohelpers.py:56 meld/iohelpers.py:113
 msgid "_Cancel"
 msgstr "_Peru"
@@ -1609,43 +1621,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:551 meld/preferences.py:132
+#: meld/dirdiff.py:579 meld/preferences.py:132
 msgid "Size"
 msgstr "Koko"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:559 meld/preferences.py:133
+#: meld/dirdiff.py:587 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Muokkausaika"
 
+#. Create ISO-format date-time CellRenderer
+#: meld/dirdiff.py:595 meld/preferences.py:134
+msgid "Modification time (ISO)"
+msgstr "Muokkausaika (ISO)"
+
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:567 meld/preferences.py:134
+#: meld/dirdiff.py:603 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Oikeudet"
 
-#: meld/dirdiff.py:803 meld/dirdiff.py:827
+#: meld/dirdiff.py:855
+#, python-brace-format
+msgid "{filename} (scanning…)"
+msgstr "{filename} (kartoitetaan…)"
+
+#: meld/dirdiff.py:887 meld/dirdiff.py:919
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Kartoitetaan {folder}"
 
-#: meld/dirdiff.py:967
+#: meld/dirdiff.py:1055
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Valmis"
 
-#: meld/dirdiff.py:976
+#: meld/dirdiff.py:1068
 msgid "Folder {} is being compared to itself"
 msgstr "Kansiota {} vertaillaan itseensä"
 
-#: meld/dirdiff.py:982
+#: meld/dirdiff.py:1074
 msgid "Folders have no differences"
 msgstr "Kansioilla ei ole eroja"
 
-#: meld/dirdiff.py:984
+#: meld/dirdiff.py:1076
 msgid "Contents of scanned files in folders are identical."
 msgstr "Kansioissa olevien tiedostojen sisällöt ovat identtisiä sisällöiltään."
 
-#: meld/dirdiff.py:986
+#: meld/dirdiff.py:1078
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1653,46 +1675,46 @@ msgstr ""
 "Kartoitetut tiedostot kansioissa vaikuttavat identtisiltä, mutta niiden "
 "sisältöä ei ole vielä kartoitettu."
 
-#: meld/dirdiff.py:989
+#: meld/dirdiff.py:1081
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Tiedostosuodattimet ovat käytössä, joten kaikkia tiedostoja ei tarkistettu."
 
-#: meld/dirdiff.py:991
+#: meld/dirdiff.py:1083
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Tekstisuodattimia on käytössä ja ne saattavat naamioida "
 "sisältöeroavaisuuksia."
 
-#: meld/dirdiff.py:1007 meld/filediff.py:1907
+#: meld/dirdiff.py:1099 meld/filediff.py:1917
 msgid "Hide"
 msgstr "Piilota"
 
-#: meld/dirdiff.py:1009 meld/filediff.py:1909 meld/filediff.py:1939
-#: meld/filediff.py:1941 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1101 meld/filediff.py:1919 meld/filediff.py:1949
+#: meld/filediff.py:1951 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "_Piilota"
 
-#: meld/dirdiff.py:1018
+#: meld/dirdiff.py:1110
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Tätä kansiota tutkittaessa tapahtui lukuisia virheitä"
 
-#: meld/dirdiff.py:1019
+#: meld/dirdiff.py:1111
 msgid "Files with invalid encodings found"
 msgstr "Virheellisellä merkistökoodauksella varustettuja tiedostoja löytyi"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1021
+#: meld/dirdiff.py:1113
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Joillain tiedostoilla on virheellinen merkistö. Nimet ovat jotain tällaisia:"
 
-#: meld/dirdiff.py:1023
+#: meld/dirdiff.py:1115
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1025
+#: meld/dirdiff.py:1117
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1700,18 +1722,18 @@ msgstr ""
 "Suoritat kirjainkoosta riippumatonta vertailua kirjainkoon huomioivassa "
 "tiedostojärjestelmässä. Seuraavat tiedostot tässä hakemistossa on piilotettu:"
 
-#: meld/dirdiff.py:1036
+#: meld/dirdiff.py:1128
 #, fuzzy, python-brace-format
 #| msgid "'%s' hidden by '%s'"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "\"%s\" piilottanut \"%s\""
 
-#: meld/dirdiff.py:1095
+#: meld/dirdiff.py:1187
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Korvataanko kansio “%s”?"
 
-#: meld/dirdiff.py:1097
+#: meld/dirdiff.py:1189
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1720,11 +1742,11 @@ msgstr ""
 "Toinen kansio samalla nimellä on jo olemassa sijainnissa “%s”.\n"
 "Jos korvaat olemassa olevan kansion, siinä olevat kaikki tiedostot häviävät."
 
-#: meld/dirdiff.py:1110
+#: meld/dirdiff.py:1202
 msgid "Error copying file"
 msgstr "Virhe tiedostoa kopioitaessa"
 
-#: meld/dirdiff.py:1111
+#: meld/dirdiff.py:1203
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1737,11 +1759,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1136 meld/vcview.py:764
+#: meld/dirdiff.py:1228 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Virhe poistaessa {}"
 
-#: meld/dirdiff.py:1626
+#: meld/dirdiff.py:1756
 msgid "No folder"
 msgstr "Ei kansiota"
 
@@ -1775,56 +1797,56 @@ msgstr "Peru"
 msgid "Mark _Resolved"
 msgstr "Merkitse _selvitetyksi"
 
-#: meld/filediff.py:1589
+#: meld/filediff.py:1591
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Ongelma avatessa tiedostoa “%s”."
 
-#: meld/filediff.py:1598
+#: meld/filediff.py:1600
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "%s vaikuttaa binääritiedostolta."
 
-#: meld/filediff.py:1600
+#: meld/filediff.py:1602
 msgid "Do you want to open the file using the default application?"
 msgstr "Haluatko avata tiedoston käyttäen oletussovellusta?"
 
-#: meld/filediff.py:1602
+#: meld/filediff.py:1604
 msgid "Open"
 msgstr "Avaa"
 
-#: meld/filediff.py:1616
+#: meld/filediff.py:1626
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Yhdistetään tiedostoja"
 
-#: meld/filediff.py:1630
+#: meld/filediff.py:1640
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] lasketaan eroja"
 
-#: meld/filediff.py:1690
+#: meld/filediff.py:1700
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Tiedosto %s on muuttunut levyllä"
 
-#: meld/filediff.py:1691
+#: meld/filediff.py:1701
 msgid "Do you want to reload the file?"
 msgstr "Haluatko ladata tiedoston uudelleen?"
 
-#: meld/filediff.py:1693
+#: meld/filediff.py:1703
 msgid "_Reload"
 msgstr "_Lataa uudestaan"
 
-#: meld/filediff.py:1863
+#: meld/filediff.py:1873
 msgid "File {} is being compared to itself"
 msgstr "Tiedostoa {} vertaillaan itseensä"
 
-#: meld/filediff.py:1872
+#: meld/filediff.py:1882
 msgid "Files are identical"
 msgstr "Tiedostot ovat identtiset"
 
-#: meld/filediff.py:1885
+#: meld/filediff.py:1895
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1832,11 +1854,11 @@ msgstr ""
 "Tekstisuodattimia on käytössä ja ne saattavat naamioida "
 "sisältöeroavaisuuksia. Haluatko verrata suodattamattomia tiedostoja?"
 
-#: meld/filediff.py:1890
+#: meld/filediff.py:1900
 msgid "Files differ in line endings only"
 msgstr "Tiedostot eroavat toisistaan ainoastaan riviloppujen osalta"
 
-#: meld/filediff.py:1892
+#: meld/filediff.py:1902
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1845,15 +1867,15 @@ msgstr ""
 "Tiedostot ovat identtisiä riviloppuja lukuun ottamatta:\n"
 "%s"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:1922
 msgid "Show without filters"
 msgstr "Näytä ilman suodattimia"
 
-#: meld/filediff.py:1934
+#: meld/filediff.py:1944
 msgid "Change highlighting incomplete"
 msgstr "Muutosten korostaminen vaillinaista"
 
-#: meld/filediff.py:1935
+#: meld/filediff.py:1945
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1862,19 +1884,19 @@ msgstr ""
 "pakottaa Meldin korostamaan myös suuret muutokset, mutta siinä saattaa "
 "kestää hetki."
 
-#: meld/filediff.py:1943
+#: meld/filediff.py:1953
 msgid "Keep highlighting"
 msgstr "Säilytä korostus"
 
-#: meld/filediff.py:1945
+#: meld/filediff.py:1955
 msgid "_Keep highlighting"
 msgstr "_Säilytä korostus"
 
-#: meld/filediff.py:1958
+#: meld/filediff.py:1968
 msgid "Saving failed"
 msgstr "Tallentaminen epäonnistui"
 
-#: meld/filediff.py:1959
+#: meld/filediff.py:1969
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1882,36 +1904,36 @@ msgstr ""
 "Tärkeiden muutosten kopiointi toiseen ohjelmaan tai tiedostoon on "
 "suositeltavaa tietojen katoamisen estämiseksi."
 
-#: meld/filediff.py:1968
+#: meld/filediff.py:1978
 msgid "Save Left Pane As"
 msgstr "Tallenna vasen paneeli nimellä"
 
-#: meld/filediff.py:1970
+#: meld/filediff.py:1980
 msgid "Save Middle Pane As"
 msgstr "Tallenna keskipaneeli nimellä"
 
-#: meld/filediff.py:1972
+#: meld/filediff.py:1982
 msgid "Save Right Pane As"
 msgstr "Tallenna oikea paneeli nimellä"
 
-#: meld/filediff.py:1983
+#: meld/filediff.py:1993
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Tiedosto %s on muuttunut levyllä sen avaamisen jälkeen"
 
-#: meld/filediff.py:1985
+#: meld/filediff.py:1995
 msgid "If you save it, any external changes will be lost."
 msgstr "Jos tallennat sen, kaikki ulkoiset muutokset häviävät pysyvästi."
 
-#: meld/filediff.py:1988
+#: meld/filediff.py:1998
 msgid "Save Anyway"
 msgstr "Tallenna silti"
 
-#: meld/filediff.py:1989
+#: meld/filediff.py:1999
 msgid "Don’t Save"
 msgstr "Älä tallenna"
 
-#: meld/filediff.py:2031
+#: meld/filediff.py:2041
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1919,7 +1941,7 @@ msgstr ""
 "Tiedosto “{}” sisältää merkkejä, joita ei voi esittää sen nykyisessä "
 "merkistössä “{}”."
 
-#: meld/filediff.py:2035 meld/patchdialog.py:138
+#: meld/filediff.py:2045 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1928,16 +1950,16 @@ msgstr ""
 "Tiedostoa ei voitu tallentaa, syy:\n"
 "%s"
 
-#: meld/filediff.py:2039 meld/patchdialog.py:137
+#: meld/filediff.py:2049 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Tiedoston %s tallentaminen epäonnistui."
 
-#: meld/filediff.py:2440
+#: meld/filediff.py:2450
 msgid "Live comparison updating disabled"
 msgstr "Reaaliaikainen vertailupäivitys poistettu käytöstä"
 
-#: meld/filediff.py:2441
+#: meld/filediff.py:2451
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2100,7 +2122,7 @@ msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 "Automaattista yhdistämistä varten tarvitaan kolme tiedostoa, saatiin: %r"
 
-#: meld/meldwindow.py:403
+#: meld/meldwindow.py:411
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Hakemistoja ja tiedostoja ei voi verrata samanaikaisesti"
 
@@ -2252,6 +2274,11 @@ msgstr "Puuttuu"
 #: meld/vc/_vc.py:81
 msgid "Not present"
 msgstr "Ei läsnä"
+
+#: meld/vc/_vc.py:82
+#| msgid "Scanning %s"
+msgid "Scanning…"
+msgstr "Kartoitetaan…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
