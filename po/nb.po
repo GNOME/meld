@@ -5,41 +5,625 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
-"Report-Msgid-Bugs-To: Stephen Kennedy <stevek@gnome.org>\n"
-"POT-Creation-Date: 2012-02-04 13:06+0100\n"
-"PO-Revision-Date: 2012-02-04 13:15+0100\n"
-"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
+"Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
+"POT-Creation-Date: 2019-09-24 19:00+0000\n"
+"PO-Revision-Date: 2019-10-15 16:57+0200\n"
+"Last-Translator: Kjell Cato Heskjestad <cato@heskjestad.xyz>\n"
 "Language-Team: Norwegian/Bokmaal <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.2.1\n"
 
-#: ../bin/meld:97
+#: ../bin/meld:194
 msgid "Cannot import: "
 msgstr "Kan ikke importere: "
 
-#: ../bin/meld:100
+#: ../bin/meld:197
 #, c-format
 msgid "Meld requires %s or higher."
 msgstr "Meld krever %s eller høyere."
 
-#: ../data/meld.desktop.in.h:1 ../data/ui/meldapp.ui.h:1
+#: ../bin/meld:243
+#, c-format
+msgid ""
+"Couldn’t load Meld-specific CSS (%s)\n"
+"%s"
+msgstr ""
+"Klarte ikke laste Meld-spesifikk CSS (%s)\n"
+"%s"
+
+#: ../data/org.gnome.meld.desktop.in.h:1
+#: ../data/org.gnome.meld.appdata.xml.in.h:1 ../data/ui/meldapp.ui.h:1
 msgid "Meld"
 msgstr "Meld"
 
-#: ../data/meld.desktop.in.h:2
+#: ../data/org.gnome.meld.desktop.in.h:2
 msgid "Diff Viewer"
 msgstr "Vis forskjeller"
 
-#: ../data/meld.desktop.in.h:3
+#: ../data/org.gnome.meld.desktop.in.h:3
 msgid "Meld Diff Viewer"
-msgstr "Meld visning av forskjeller"
+msgstr "Meld: visning av forskjeller"
 
-#: ../data/meld.desktop.in.h:4
+#: ../data/org.gnome.meld.desktop.in.h:4
+#: ../data/org.gnome.meld.appdata.xml.in.h:2
 msgid "Compare and merge your files"
 msgstr "Sammenligne og flett sammen dine filer"
+
+#. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
+#: ../data/org.gnome.meld.desktop.in.h:6
+msgid "diff;merge;"
+msgstr "forskjell;flett;"
+
+#: ../data/org.gnome.meld.appdata.xml.in.h:3
+msgid ""
+"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
+"compare files, directories, and version controlled projects. It provides "
+"two- and three-way comparison of both files and directories, and supports "
+"many version control systems including Git, Mercurial, Bazaar and Subversion."
+msgstr ""
+"Meld er et visuelt endrings- og fletteverktøy som er rettet mot utviklere. "
+"Meld kan sammenligne filer, mapper og versjonskontrollerte prosjekter. Meld "
+"tilbyr to- og treveissammenligninger av både filer og mapper, og støtter "
+"mange versjonskontrollsystemer, bl.a. Git, Mercurial, Bazaar og Subversion."
+
+#: ../data/org.gnome.meld.appdata.xml.in.h:4
+msgid ""
+"Meld helps you review code changes, understand patches, and makes enormous "
+"merge conflicts slightly less painful."
+msgstr ""
+"Meld lar deg gjennomgå kodeforandringer, oppdateringsfiler («patcher») og "
+"gjør svære flettekonflikter litt lettere."
+
+#: ../data/org.gnome.meld.appdata.xml.in.h:5
+msgid "The GNOME Project"
+msgstr "GNOME-prosjektet"
+
+#: ../data/mime/org.gnome.meld.xml.in.h:1
+msgid "Meld comparison description"
+msgstr "Meld sammenligningsbeskrivelse"
+
+#: ../data/org.gnome.meld.gschema.xml.h:1
+msgid "Default window width"
+msgstr "Vinduets standardbredde"
+
+#: ../data/org.gnome.meld.gschema.xml.h:2
+msgid "Default window height"
+msgstr "Vinduets standardhøyde"
+
+#: ../data/org.gnome.meld.gschema.xml.h:3
+msgid "Default window maximised state"
+msgstr "Er vinduet maksimert som standard"
+
+#: ../data/org.gnome.meld.gschema.xml.h:4
+msgid "Default window fullscreen state"
+msgstr "Er vinduet i fullskjermmodus som standard"
+
+#: ../data/org.gnome.meld.gschema.xml.h:5
+msgid "Show toolbar"
+msgstr "Vis verktøylinja"
+
+#: ../data/org.gnome.meld.gschema.xml.h:6
+msgid "If true, the window toolbar is visible."
+msgstr "Hvis sann så vil verktøyslinja være synlig."
+
+#: ../data/org.gnome.meld.gschema.xml.h:7
+msgid "Show statusbar"
+msgstr "Vis statuslinje"
+
+#: ../data/org.gnome.meld.gschema.xml.h:8
+msgid "If true, the window statusbar is visible."
+msgstr "Hvis sann så vil vinduets statuslinje være synlig."
+
+#: ../data/org.gnome.meld.gschema.xml.h:9
+msgid "Additional automatically detected text encodings"
+msgstr "Flere automatisk gjenkjente tegnkodinger"
+
+#: ../data/org.gnome.meld.gschema.xml.h:10
+msgid ""
+"Meld will use these text encodings to try to decode loaded text files before "
+"trying any other encodings. In addition to the encodings in this list, UTF-8 "
+"and the current locale-default encoding will always be used; other encodings "
+"may also be tried, depending on the user’s locale."
+msgstr ""
+"Meld bruker disse tegnkodinger til å forsøke å dekode innleste tekstfiler "
+"før andre tegnkodinger forsøkes. I tillegg til tegnkodingene i denne lista "
+"så vil alltid UTF-8 og tegnkodingen til gjeldende regionaltilpasning kunne "
+"brukes. Andre tegnkodinger vil kunne forsøkes avhengig av brukerens region."
+
+#: ../data/org.gnome.meld.gschema.xml.h:11
+msgid "Width of an indentation step"
+msgstr "Innrykksbredde"
+
+#: ../data/org.gnome.meld.gschema.xml.h:12
+msgid "The number of spaces to use for a single indent step"
+msgstr "Antall mellomrom i et enkelt innrykk"
+
+#: ../data/org.gnome.meld.gschema.xml.h:13
+msgid "Whether to indent using spaces or tabs"
+msgstr "Om innrykket består av mellomrom eller tabulatortegn"
+
+#: ../data/org.gnome.meld.gschema.xml.h:14
+msgid "If true, any new indentation will use spaces instead of tabs."
+msgstr "Hvis sann så vil nye innrykk bruke mellomrom istedenfor tabulatortegn."
+
+#: ../data/org.gnome.meld.gschema.xml.h:15
+msgid "Show line numbers"
+msgstr "Vis linjenummer"
+
+#: ../data/org.gnome.meld.gschema.xml.h:16
+msgid "If true, line numbers will be shown in the gutter of file comparisons."
+msgstr "Velg for å vise linjenummer i filsammenligninger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:17
+msgid "Highlight syntax"
+msgstr "Syntaksmerking"
+
+#: ../data/org.gnome.meld.gschema.xml.h:18
+msgid ""
+"Whether to highlight syntax in comparisons. Because of Meld’s own color "
+"highlighting, this is off by default."
+msgstr ""
+"Velg for å bruke fargekodet syntaksmerking i sammenligninger. Dette er slått "
+"av som standard fordi Meld bruker sin egen utheving med farger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:19
+msgid "Color scheme to use for syntax highlighting"
+msgstr "Fargeskjema for syntaksmerking"
+
+#: ../data/org.gnome.meld.gschema.xml.h:20
+msgid "Used by GtkSourceView to determine colors for syntax highlighting"
+msgstr "Brukes av GtkSourceView til å bestemme farger for syntaksmerking"
+
+#: ../data/org.gnome.meld.gschema.xml.h:21
+msgid "Displayed whitespace"
+msgstr "Blanktegn som vises"
+
+#: ../data/org.gnome.meld.gschema.xml.h:22
+msgid ""
+"Selector for individual whitespace character types to be shown. Possible "
+"values are 'space', 'tab', 'newline' and 'nbsp'."
+msgstr ""
+"Utvalg av typer blanktegn som vises. Mulige verdier er «space», «tab», "
+"«newline» og «nbsp»."
+
+#: ../data/org.gnome.meld.gschema.xml.h:23
+msgid "Wrap mode"
+msgstr "Type linjebryting"
+
+#: ../data/org.gnome.meld.gschema.xml.h:24
+msgid ""
+"Lines in file comparisons will be wrapped according to this setting, either "
+"not at all ('none'), at any character ('char') or only at the end of words "
+"('word')."
+msgstr ""
+"Linjer i filsammenligninger vil brytes i henhold til denne innstillingen. "
+"Enten ikke i det hele tatt, i et vilkårlig tegn, eller kun i slutten av ord."
+
+#: ../data/org.gnome.meld.gschema.xml.h:25
+msgid "Highlight current line"
+msgstr "Uthev gjeldende linje"
+
+#: ../data/org.gnome.meld.gschema.xml.h:26
+msgid ""
+"If true, the line containing the cursor will be highlighted in file "
+"comparisons."
+msgstr "Velg for å utheve linja med skrivemerket i filsammenligninger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:27
+msgid "Use the system default monospace font"
+msgstr "Bruk systemets skrift med fast bredde"
+
+#: ../data/org.gnome.meld.gschema.xml.h:28
+msgid ""
+"If false, custom-font will be used instead of the system monospace font."
+msgstr ""
+"Fravelg for å bruke en selvvalgt skrift istedenfor systemets skrift med fast "
+"bredde."
+
+#: ../data/org.gnome.meld.gschema.xml.h:29
+msgid "Custom font"
+msgstr "Tilpasset skrift"
+
+#: ../data/org.gnome.meld.gschema.xml.h:30
+msgid ""
+"The custom font to use, stored as a string and parsed as a Pango font "
+"description."
+msgstr ""
+"Den selvvalgte skriften som skal brukes. Lagres og tolkes som en tekststreng "
+"i Pango-format."
+
+#: ../data/org.gnome.meld.gschema.xml.h:31
+msgid "Ignore blank lines when comparing files"
+msgstr "Hopp over tomme linjer når filer sammenlignes"
+
+#: ../data/org.gnome.meld.gschema.xml.h:32
+msgid ""
+"If true, blank lines will be trimmed when highlighting changes between files."
+msgstr "Velg for å fjerne tomme linjer når endringer mellom filene utheves."
+
+#: ../data/org.gnome.meld.gschema.xml.h:33
+msgid "Use the system default editor"
+msgstr "Bruk systemets forvalgte redigeringsprogram"
+
+#: ../data/org.gnome.meld.gschema.xml.h:34
+msgid ""
+"If false, custom-editor-command will be used instead of the system editor "
+"when opening files externally."
+msgstr ""
+"Fravelg for å bruke en tilpasset redigeringskommando istedenfor systemets "
+"forvalgte redigeringsprogram når filer åpnes eksternt."
+
+#: ../data/org.gnome.meld.gschema.xml.h:35
+msgid "The custom editor launch command"
+msgstr "Kommando som starter det selvvalgte redigeringsprogrammet"
+
+#: ../data/org.gnome.meld.gschema.xml.h:36
+msgid ""
+"The command used to launch a custom editor. Some limited templating is "
+"supported here; at the moment '{file}' and '{line}' are recognised tokens."
+msgstr ""
+"Kommandoen som starter det selvvalgte redigeringsprogrammet. Symbolene "
+"«{file}» og «{line}» vil erstattes med riktig verdi."
+
+#: ../data/org.gnome.meld.gschema.xml.h:37
+msgid "Columns to display"
+msgstr "Vis disse kolonnene"
+
+#: ../data/org.gnome.meld.gschema.xml.h:38
+msgid ""
+"List of column names in folder comparison and whether they should be "
+"displayed."
+msgstr ""
+"Liste med kolonnenavn i mappesammenligninger og hvorvidt de skal vises."
+
+#: ../data/org.gnome.meld.gschema.xml.h:39 ../data/ui/preferences.ui.h:25
+msgid "Ignore symbolic links"
+msgstr "Ignorer symbolske lenker"
+
+#: ../data/org.gnome.meld.gschema.xml.h:40
+msgid ""
+"If true, folder comparisons do not follow symbolic links when traversing the "
+"folder tree."
+msgstr ""
+"Velg for å ikke følge symbolske lenker når mappetreet gjennomsøkes i "
+"mappesammenligninger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:41
+msgid "Use shallow comparison"
+msgstr "Bruk grunn sammenligning"
+
+#: ../data/org.gnome.meld.gschema.xml.h:42
+msgid ""
+"If true, folder comparisons compare files based solely on size and mtime, "
+"considering files to be identical if their size and mtime match, and "
+"different otherwise."
+msgstr ""
+"Velg for å sjekke kun størrelse og «mtime» når mapper sammenlignes. Filer er "
+"like hvis størrelse og «mtime» er like, ellers er de forskjellige."
+
+#: ../data/org.gnome.meld.gschema.xml.h:43
+msgid "File timestamp resolution"
+msgstr "Oppløsning til filenes tidsstempler"
+
+#: ../data/org.gnome.meld.gschema.xml.h:44
+msgid ""
+"When comparing based on mtime, this is the minimum difference in nanoseconds "
+"between two files before they’re considered to have different mtimes. This "
+"is useful when comparing files between filesystems with different timestamp "
+"resolution."
+msgstr ""
+"Gjelder sammenligninger som bruker «mtime». Dette er minste forskjell i "
+"nanosekunder mellom «mtime» til to filer før de betraktes som forskjellige. "
+"Dette er nyttig når en sammenligner filer mellom filsystemer som har ulik "
+"oppløsning for tidsstempel."
+
+#: ../data/org.gnome.meld.gschema.xml.h:45 ../data/ui/preferences.ui.h:22
+msgid "Apply text filters during folder comparisons"
+msgstr "Bruk tekstfiltre når mapper sammenlignes"
+
+#: ../data/org.gnome.meld.gschema.xml.h:46
+msgid ""
+"If true, folder comparisons that compare file contents also apply active "
+"text filters and the blank line trimming option, and ignore newline "
+"differences."
+msgstr ""
+"Velg for å la mappesammenligninger som også sammenligner filinnhold a) bruke "
+"aktive tekstfiltre, b) fjerne tomme linjer og c) se bort fra forskjell i "
+"linjeavslutninger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:47
+msgid "File status filters"
+msgstr "Filtre for filstatus"
+
+#: ../data/org.gnome.meld.gschema.xml.h:48
+msgid "List of statuses used to filter visible files in folder comparison."
+msgstr ""
+"Liste med statuser som brukes til å filtrere synlige filer når mapper "
+"sammenlignes."
+
+#: ../data/org.gnome.meld.gschema.xml.h:49
+msgid "Show the version control console output"
+msgstr "Vis versjonskontrollens konsollutdata"
+
+#: ../data/org.gnome.meld.gschema.xml.h:50
+msgid ""
+"If true, a console output section will be shown in version control views, "
+"showing the commands run for version control operations."
+msgstr ""
+"Hvis sann så vil konsollutdata vises i versjonskontrollmodus. Her vil "
+"kommandoene som kjøres for versjonskontrollering vises."
+
+#: ../data/org.gnome.meld.gschema.xml.h:51
+msgid "Version control pane position"
+msgstr "Posisjonen til versjonskontrollruta"
+
+#: ../data/org.gnome.meld.gschema.xml.h:52
+msgid ""
+"This is the height of the main version control tree when the console pane is "
+"shown."
+msgstr ""
+"Dette er høyden til hovedtreet for versjonskontrollering når konsollruta "
+"vises."
+
+#: ../data/org.gnome.meld.gschema.xml.h:53
+msgid "Present version comparisons as left-local/right-remote"
+msgstr "Vis versjonssammenligninger som venstre-lokal/høyre-ekstern"
+
+#: ../data/org.gnome.meld.gschema.xml.h:54
+msgid ""
+"If true, version control comparisons will use a left-is-local, right-is-"
+"remote scheme to determine what order to present files in panes. Otherwise, "
+"a left-is-theirs, right-is-mine scheme is used."
+msgstr ""
+"Hvis sann så vil versjonskontrollsammenligninger bruke rekkefølgen venstre-"
+"er-lokal og høyre-er-ekstern. Ellers vil rekkefølgen være venstre-er deres, "
+"høyre-er-mitt."
+
+#: ../data/org.gnome.meld.gschema.xml.h:55
+msgid "Order for files in three-way version control merge comparisons"
+msgstr "Filrekkefølge i flettesammenligninger i treveis-versjonskontrollering"
+
+#: ../data/org.gnome.meld.gschema.xml.h:56
+msgid ""
+"Choices for file order are remote/merged/local and local/merged/remote. This "
+"preference only affects three-way comparisons launched from the version "
+"control view, so is used solely for merges/conflict resolution within Meld."
+msgstr ""
+"Mulige valg for filrekkefølge er ekstern/flettet/lokal og lokal/flettet/"
+"ekstern. Denne innstillingen gjelder kun treveissammenligninger som startes "
+"fra versjonskontrollvisningen, så den brukes kun til sammenfletting/"
+"konfliktløsing i Meld."
+
+#: ../data/org.gnome.meld.gschema.xml.h:57
+msgid "Show margin in commit message editor"
+msgstr "Vis margen i redigeringsboksen for innleggingsmeldinger"
+
+#: ../data/org.gnome.meld.gschema.xml.h:58
+msgid ""
+"If true, a guide will be displayed to show what column the margin is at in "
+"the version control commit message editor."
+msgstr ""
+"Hvis sann så vil en hjelpelinje vise i hvilken kolonne margen er i "
+"redigeringsboksen for innleggingsmeldinger til versjonskontrollen."
+
+#: ../data/org.gnome.meld.gschema.xml.h:59
+msgid "Margin column in commit message editor"
+msgstr "Margkolonne i redigeringsboks for innleggingsmeldinger"
+
+#: ../data/org.gnome.meld.gschema.xml.h:60
+msgid ""
+"The column at which to show the margin in the version control commit message "
+"editor."
+msgstr ""
+"Den kolonnen som margen skal vises i redigeringsboksen til "
+"innleggingsmeldinger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:61
+msgid "Automatically hard-wrap commit messages"
+msgstr "Bryt automatisk tekst i innleggingsmeldinger"
+
+#: ../data/org.gnome.meld.gschema.xml.h:62
+msgid ""
+"If true, the version control commit message editor will hard-wrap (i.e., "
+"insert line breaks) at the commit margin before commit."
+msgstr ""
+"Hvis sann så vil redigeringsboksen til innleggingsmeldinger sette inn "
+"linjeskift i margen før innlegging."
+
+#: ../data/org.gnome.meld.gschema.xml.h:63
+msgid "Version control status filters"
+msgstr "Statusfiltre til versjonskontroll"
+
+#: ../data/org.gnome.meld.gschema.xml.h:64
+msgid ""
+"List of statuses used to filter visible files in version control comparison."
+msgstr ""
+"En liste med statuser som brukes til å filtrere synlige filer i "
+"versjonskontrollsammenligninger."
+
+#: ../data/org.gnome.meld.gschema.xml.h:65
+msgid "Filename-based filters"
+msgstr "Filnavnbaserte filtre"
+
+#: ../data/org.gnome.meld.gschema.xml.h:66
+msgid ""
+"List of predefined filename-based filters that, if active, will remove "
+"matching files from a folder comparison."
+msgstr ""
+"En liste med forhåndsvalgte filnavnbaserte filtre. Hvis de slås på så vil de "
+"fjerne samsvarende filer fra en mappesammenligning."
+
+#: ../data/org.gnome.meld.gschema.xml.h:67
+msgid "Text-based filters"
+msgstr "Tekstbaserte filtre"
+
+#: ../data/org.gnome.meld.gschema.xml.h:68
+msgid ""
+"List of predefined text-based regex filters that, if active, will remove "
+"text from being used in a file comparison. The text will still be displayed, "
+"but won’t contribute to the comparison itself."
+msgstr ""
+"En liste med forhåndsvalgte tekstbaserte regex-filtre. Hvis de slås på så "
+"vil de utelate tekst fra filsammenligninger. Teksten vil fortsatt vises, men "
+"vil ikke bidra til selve sammenligningen."
+
+#: ../data/styles/meld-base.xml.h:1
+msgid "Meld base scheme"
+msgstr "Meld grunnleggende skjema"
+
+#: ../data/styles/meld-base.xml.h:2
+msgid "Base color scheme for Meld highlighting"
+msgstr "Grunnleggende fargeskjema for Melds uthevinger"
+
+#: ../data/styles/meld-dark.xml.h:1
+msgid "Meld dark scheme"
+msgstr "Meld mørkt skjema"
+
+#: ../data/styles/meld-dark.xml.h:2
+msgid "Dark color scheme for Meld highlighting"
+msgstr "Mørkt fargeskjema for Melds uthevinger"
+
+#: ../data/ui/application.ui.h:1
+msgid "About Meld"
+msgstr "Om Meld"
+
+#: ../data/ui/application.ui.h:2
+msgid ""
+"Copyright © 2002-2009 Stephen Kennedy\n"
+"Copyright © 2009-2017 Kai Willadsen"
+msgstr ""
+"Opphavsrett © 2002-2009 Stephen Kennedy\n"
+"Opphavsrett © 2009-2017 Kai Willadsen"
+
+#: ../data/ui/application.ui.h:4
+msgid "Website"
+msgstr "Nettside"
+
+#: ../data/ui/application.ui.h:5
+msgid "translator-credits"
+msgstr ""
+"Kjartan Maraas <kmaraas@gnome.org> 2001-2012\n"
+"Kjell Cato Heskjestad <cato@heskjestad.xyz> 2019"
+
+#: ../data/ui/application.ui.h:6
+msgid "_Preferences"
+msgstr "_Innstillinger"
+
+#: ../data/ui/application.ui.h:7
+msgid "_Help"
+msgstr "_Hjelp"
+
+#: ../data/ui/application.ui.h:8
+msgid "Keyboard Shortcuts"
+msgstr "Hurtigtaster"
+
+#: ../data/ui/application.ui.h:9
+msgid "_About"
+msgstr "_Om"
+
+#: ../data/ui/application.ui.h:10
+msgid "_Quit"
+msgstr "_Avslutt"
+
+#: ../data/ui/dirdiff.ui.h:1 ../data/ui/vcview.ui.h:1
+msgid "_Compare"
+msgstr "_Sammenlign"
+
+#: ../data/ui/dirdiff.ui.h:2 ../data/ui/vcview.ui.h:2
+msgid "Compare selected files"
+msgstr "Sammenlign valgte filer"
+
+#: ../data/ui/dirdiff.ui.h:3
+msgid "Collapse Recursively"
+msgstr "Fold sammen rekursivt"
+
+#: ../data/ui/dirdiff.ui.h:4
+msgid "Collapse selected folder and all subfolders"
+msgstr "Fold sammen valgt mappe og alle undermapper"
+
+#: ../data/ui/dirdiff.ui.h:5
+msgid "Expand Recursively"
+msgstr "Fold ut rekursivt"
+
+#: ../data/ui/dirdiff.ui.h:6
+msgid "Expand selected folder and all subfolders"
+msgstr "Fold ut valgt mappe og alle undermapper"
+
+#: ../data/ui/dirdiff.ui.h:7
+msgid "Copy to _Left"
+msgstr "Kopier til _venstre"
+
+#: ../data/ui/dirdiff.ui.h:8
+msgid "Copy to left"
+msgstr "Kopier til venstre"
+
+#: ../data/ui/dirdiff.ui.h:9
+msgid "Copy to _Right"
+msgstr "Kopier til _høyre"
+
+#: ../data/ui/dirdiff.ui.h:10
+msgid "Copy to right"
+msgstr "Kopier til høyre"
+
+#: ../data/ui/dirdiff.ui.h:11
+msgid "Delete selected"
+msgstr "Slett valgte"
+
+#: ../data/ui/dirdiff.ui.h:12 ../meld/dirdiff.py:912 ../meld/filediff.py:1499
+msgid "Hide"
+msgstr "Skjul"
+
+#: ../data/ui/dirdiff.ui.h:13
+msgid "Hide selected"
+msgstr "Skjul valgte"
+
+#: ../data/ui/dirdiff.ui.h:14
+msgid "Ignore Filename Case"
+msgstr "Ikke skill store/små bokstaver i filnavn"
+
+#: ../data/ui/dirdiff.ui.h:15
+msgid ""
+"Consider differently-cased filenames that are otherwise-identical to be the "
+"same"
+msgstr ""
+"Betrakt filnavn med ulik bokstavstørrelse som ellers er identiske som samme "
+"fil"
+
+#: ../data/ui/dirdiff.ui.h:16
+msgid "Same"
+msgstr "Samme"
+
+#: ../data/ui/dirdiff.ui.h:17
+msgid "Show identical"
+msgstr "Vis identiske"
+
+#: ../data/ui/dirdiff.ui.h:18
+msgid "New"
+msgstr "Ny"
+
+#: ../data/ui/dirdiff.ui.h:19
+msgid "Show new"
+msgstr "Vis ny"
+
+#: ../data/ui/dirdiff.ui.h:20 ../meld/vc/_vc.py:76
+msgid "Modified"
+msgstr "Endret"
+
+#: ../data/ui/dirdiff.ui.h:21
+msgid "Show modified"
+msgstr "Vis endret"
+
+#: ../data/ui/dirdiff.ui.h:22
+msgid "Filters"
+msgstr "Filtre"
+
+#: ../data/ui/dirdiff.ui.h:23
+msgid "Set active filters"
+msgstr "Sett aktive filtre"
 
 #: ../data/ui/EditableList.ui.h:1
 msgid "Editable List"
@@ -49,67 +633,285 @@ msgstr "Redigerbar liste"
 msgid "Active"
 msgstr "Aktiv"
 
-#: ../data/ui/EditableList.ui.h:3 ../meld/vcview.py:166
-msgid "Name"
-msgstr "Navn"
+#: ../data/ui/EditableList.ui.h:3
+msgid "Column Name"
+msgstr "Kolonnenavn"
 
-#: ../data/ui/EditableList.ui.h:4
-msgid "Pattern"
-msgstr "Mønster"
-
-#: ../data/ui/EditableList.ui.h:5
-msgid "Add new filter"
-msgstr "Legg til nytt filter"
-
-#: ../data/ui/EditableList.ui.h:6 ../meld/vcview.py:130
+#: ../data/ui/EditableList.ui.h:4 ../data/ui/vcview.ui.h:9
 msgid "_Add"
 msgstr "_Legg til"
 
-#: ../data/ui/EditableList.ui.h:7
-msgid "Remove selected filter"
-msgstr "Fjern valgt filter"
-
-#: ../data/ui/EditableList.ui.h:8 ../meld/vcview.py:132
+#: ../data/ui/EditableList.ui.h:5 ../data/ui/vcview.ui.h:11
+#: ../meld/vcview.py:680
 msgid "_Remove"
 msgstr "Fje_rn"
 
-#: ../data/ui/EditableList.ui.h:9
+#: ../data/ui/EditableList.ui.h:6
 msgid "Move item up"
 msgstr "Flytt oppføring opp"
 
-#: ../data/ui/EditableList.ui.h:10
+#: ../data/ui/EditableList.ui.h:7
 msgid "Move _Up"
 msgstr "Flytt _opp"
 
-#: ../data/ui/EditableList.ui.h:11
+#: ../data/ui/EditableList.ui.h:8
 msgid "Move item down"
 msgstr "Flytt oppføring ned"
 
-#: ../data/ui/EditableList.ui.h:12
+#: ../data/ui/EditableList.ui.h:9
 msgid "Move _Down"
 msgstr "Flytt ne_d"
 
+#. Create icon and filename CellRenderer
+#: ../data/ui/EditableList.ui.h:10 ../data/ui/vcview.ui.h:35
+#: ../meld/dirdiff.py:412
+msgid "Name"
+msgstr "Navn"
+
+#: ../data/ui/EditableList.ui.h:11
+msgid "Pattern"
+msgstr "Mønster"
+
+#: ../data/ui/EditableList.ui.h:12
+msgid "Add new filter"
+msgstr "Legg til nytt filter"
+
+#: ../data/ui/EditableList.ui.h:13
+msgid "Remove selected filter"
+msgstr "Fjern valgt filter"
+
+#: ../data/ui/encoding-selector.ui.h:1
+msgid "Search text encoding…"
+msgstr "Søk etter tegnkoding …"
+
 #: ../data/ui/filediff.ui.h:1
-msgid "Save modified files?"
-msgstr "Lagre endrede filer?"
+msgid "Format as Patch…"
+msgstr "Formater som endringsfil …"
 
 #: ../data/ui/filediff.ui.h:2
-msgid ""
-"Some files have been modified.\n"
-"Which ones would you like to save?"
-msgstr ""
+msgid "Create a patch using differences between files"
+msgstr "Lag en endringsfil ut fra forskjellene mellom filene"
+
+#: ../data/ui/filediff.ui.h:3
+msgid "Save A_ll"
+msgstr "Lagre _alle"
 
 #: ../data/ui/filediff.ui.h:4
-msgid "_Discard Changes"
-msgstr ""
+msgid "Save all files in the current comparison"
+msgstr "Lagre alle filer i gjeldende sammenligning"
 
 #: ../data/ui/filediff.ui.h:5
-msgid "_Save Selected"
-msgstr "_Lagre valgt"
+msgid "Revert files to their saved versions"
+msgstr "Tilbakestill filer til lagret versjon"
 
-#: ../data/ui/findbar.ui.h:1 ../meld/meldwindow.py:141
+#: ../data/ui/filediff.ui.h:6
+msgid "Add Synchronization Point"
+msgstr "Legg til synkroniseringspunkt"
+
+#: ../data/ui/filediff.ui.h:7
+msgid "Add a synchronization point for changes between files"
+msgstr "Legg til et synkroniseringspunkt for endringer mellom filer"
+
+#: ../data/ui/filediff.ui.h:8
+msgid "Clear Synchronization Points"
+msgstr "Tøm synkroniseringspunkt"
+
+#: ../data/ui/filediff.ui.h:9
+msgid "Clear sychronization points for changes between files"
+msgstr "Tøm synkroniseringspunkt for endringer mellom filer"
+
+#: ../data/ui/filediff.ui.h:10
+msgid "Previous Conflict"
+msgstr "Forrige konflikt"
+
+#: ../data/ui/filediff.ui.h:11
+msgid "Go to the previous conflict"
+msgstr "Gå til forrige konflikt"
+
+#: ../data/ui/filediff.ui.h:12
+msgid "Next Conflict"
+msgstr "Neste konflikt"
+
+#: ../data/ui/filediff.ui.h:13
+msgid "Go to the next conflict"
+msgstr "Gå til neste konflikt"
+
+#: ../data/ui/filediff.ui.h:14
+msgid "Push to Left"
+msgstr "Dytt til venstre"
+
+#: ../data/ui/filediff.ui.h:15
+msgid "Push current change to the left"
+msgstr "Dytt gjeldende endring til venstre"
+
+#: ../data/ui/filediff.ui.h:16
+msgid "Push to Right"
+msgstr "Dytt til høyre"
+
+#: ../data/ui/filediff.ui.h:17
+msgid "Push current change to the right"
+msgstr "Dytt gjeldende endring til høyre"
+
+#: ../data/ui/filediff.ui.h:18
+msgid "Pull from Left"
+msgstr "Dra fra venstre"
+
+#: ../data/ui/filediff.ui.h:19
+msgid "Pull change from the left"
+msgstr "Dra endring fra venstre"
+
+#: ../data/ui/filediff.ui.h:20
+msgid "Pull from Right"
+msgstr "Dra fra høyre"
+
+#: ../data/ui/filediff.ui.h:21
+msgid "Pull change from the right"
+msgstr "Dra endring fra høyre"
+
+#: ../data/ui/filediff.ui.h:22
+msgid "Copy Above Left"
+msgstr "Kopier over til venstre"
+
+#: ../data/ui/filediff.ui.h:23
+msgid "Copy change above the left chunk"
+msgstr "Kopier endring over det venstre stykket"
+
+#: ../data/ui/filediff.ui.h:24
+msgid "Copy Below Left"
+msgstr "Kopier under til venstre"
+
+#: ../data/ui/filediff.ui.h:25
+msgid "Copy change below the left chunk"
+msgstr "Kopier endring under det venstre stykket"
+
+#: ../data/ui/filediff.ui.h:26
+msgid "Copy Above Right"
+msgstr "Kopier over til høyre"
+
+#: ../data/ui/filediff.ui.h:27
+msgid "Copy change above the right chunk"
+msgstr "Kopier endring over det høyre stykket"
+
+#: ../data/ui/filediff.ui.h:28
+msgid "Copy Below Right"
+msgstr "Kopier under til høyre"
+
+#: ../data/ui/filediff.ui.h:29
+msgid "Copy change below the right chunk"
+msgstr "Kopier endring under det høyre stykket"
+
+#: ../data/ui/filediff.ui.h:30
+msgid "Delete"
+msgstr "Slett"
+
+#: ../data/ui/filediff.ui.h:31
+msgid "Delete change"
+msgstr "Slett endring"
+
+#: ../data/ui/filediff.ui.h:32
+msgid "Merge All from Left"
+msgstr "Flett alle fra venstre"
+
+#: ../data/ui/filediff.ui.h:33
+msgid "Merge all non-conflicting changes from the left"
+msgstr "Flett alle endringer uten konflikter fra venstre"
+
+#: ../data/ui/filediff.ui.h:34
+msgid "Merge All from Right"
+msgstr "Flett alle fra høyre"
+
+#: ../data/ui/filediff.ui.h:35
+msgid "Merge all non-conflicting changes from the right"
+msgstr "Flett alle endringer uten konflikter fra høyre"
+
+#: ../data/ui/filediff.ui.h:36
+msgid "Merge All"
+msgstr "Flett alle"
+
+#: ../data/ui/filediff.ui.h:37
+msgid "Merge all non-conflicting changes from left and right panes"
+msgstr "Flett alle endringer uten konflikter fra venstre og høyre paneler"
+
+#: ../data/ui/filediff.ui.h:38
+msgid "Previous Pane"
+msgstr "Forrige rute"
+
+#: ../data/ui/filediff.ui.h:39
+msgid "Move keyboard focus to the previous document in this comparison"
+msgstr "Flytt tastaturfokus til forrige dokument i denne sammenligningen"
+
+#: ../data/ui/filediff.ui.h:40
+msgid "Next Pane"
+msgstr "Neste rute"
+
+#: ../data/ui/filediff.ui.h:41
+msgid "Move keyboard focus to the next document in this comparison"
+msgstr "Flytt tastaturfokus til neste dokument i denne sammenligningen"
+
+#: ../data/ui/filediff.ui.h:42
+msgid "Lock Scrolling"
+msgstr "Lås rulling"
+
+#: ../data/ui/filediff.ui.h:43
+msgid "Lock scrolling of all panes"
+msgstr "Lås rulling av alle panelene"
+
+#: ../data/ui/filediff.ui.h:44
+msgid "Save changes to documents before closing?"
+msgstr "Lagre endringer i dokumentene før avslutning?"
+
+#: ../data/ui/filediff.ui.h:45
+msgid "If you don’t save, changes will be permanently lost."
+msgstr "Hvis du ikke lagrer så vil endringene gå tapt."
+
+#: ../data/ui/filediff.ui.h:46
+msgid "Close _without Saving"
+msgstr "Lukk _uten å lagre"
+
+#: ../data/ui/filediff.ui.h:47 ../meld/dirdiff.py:993 ../meld/iohelpers.py:56
+#: ../meld/iohelpers.py:106
+msgid "_Cancel"
+msgstr "_Avbryt"
+
+#: ../data/ui/filediff.ui.h:48
+msgid "_Save"
+msgstr "_Lagre"
+
+#: ../data/ui/filediff.ui.h:49
+msgid ""
+"This file can not be written to. You may click here to unlock this file and "
+"make changes anyway, but these changes must be saved to a new file."
+msgstr ""
+"Kan ikke skrive til fila. Du kan klikke her for å låse opp fila og endre den "
+"likevel, men disse endringene må lagres til en ny fil."
+
+#: ../data/ui/filediff.ui.h:50
+msgid "File 3"
+msgstr "Fil 3"
+
+#: ../data/ui/filediff.ui.h:51
+msgid "File 2"
+msgstr "Fil 2"
+
+#: ../data/ui/filediff.ui.h:52
+msgid "File 1"
+msgstr "Fil 1"
+
+#: ../data/ui/filediff.ui.h:53
+msgid "Discard unsaved changes to documents?"
+msgstr "Forkast endringer i dokumentene som ikke er lagret?"
+
+#: ../data/ui/filediff.ui.h:54
+msgid "Changes made to the following documents will be permanently lost:"
+msgstr "Endringer i følgende dokumenter vil gå tapt:"
+
+#: ../data/ui/filediff.ui.h:55
+msgid "_Discard"
+msgstr "_Forkast"
+
+#: ../data/ui/findbar.ui.h:1 ../meld/dirdiff.py:994 ../meld/iohelpers.py:107
 msgid "_Replace"
-msgstr "E_rstatt"
+msgstr "_Erstatt"
 
 #: ../data/ui/findbar.ui.h:2
 msgid "Replace _All"
@@ -117,116 +919,67 @@ msgstr "Erstatt _alle"
 
 #: ../data/ui/findbar.ui.h:3
 msgid "_Previous"
-msgstr "_Forrige"
+msgstr "Forri_ge"
 
 #: ../data/ui/findbar.ui.h:4
 msgid "_Next"
 msgstr "_Neste"
 
 #: ../data/ui/findbar.ui.h:5
-msgid "_Search for"
-msgstr "_Søk etter"
+msgid "Find:"
+msgstr "Søk:"
 
 #: ../data/ui/findbar.ui.h:6
-msgid "Replace _With"
-msgstr "Erstatt _med"
+msgid "Replace _with:"
+msgstr "Erstatt _med:"
 
 #: ../data/ui/findbar.ui.h:7
-msgid "_Match Case"
-msgstr ""
+msgid "_Match case"
+msgstr "Skill store og sm_å bokstaver"
 
 #: ../data/ui/findbar.ui.h:8
 msgid "Who_le word"
-msgstr "He_le ord"
+msgstr "_Hele ord"
 
 #: ../data/ui/findbar.ui.h:9
-#, fuzzy
-msgid "Regular E_xpression"
-msgstr "Vanlig uttrykk"
+msgid "Regular e_xpression"
+msgstr "Regul_ært uttrykk"
 
-#: ../data/ui/meldapp.ui.h:2
-msgid ""
-"Copyright &#xA9; 2002-2009 Stephen Kennedy\n"
-"Copyright &#xA9; 2009-2011 Kai Willadsen"
-msgstr ""
+#: ../data/ui/findbar.ui.h:10
+msgid "Wrapped"
+msgstr "Søk rundt"
 
-#: ../data/ui/meldapp.ui.h:4
-msgid "translator-credits"
-msgstr "Kjartan Maraas <kmaraas@gnome.org>"
-
-#: ../data/ui/meldapp.ui.h:5
-msgid "Choose Files"
-msgstr "Velg filer"
-
-#: ../data/ui/meldapp.ui.h:6
-msgid "_Three Way Compare"
-msgstr "_Treveis sammenligning"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:8
-msgid "Mine"
-msgstr "Min"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:10
-msgid "Original"
-msgstr "Opprinnelig"
-
-#. Refers to version of the file being compared
-#: ../data/ui/meldapp.ui.h:12
-msgid "Other"
-msgstr "Andre"
-
-#: ../data/ui/meldapp.ui.h:13
-msgid "_File Comparison"
-msgstr "_Filsammenligning"
-
-#: ../data/ui/meldapp.ui.h:14
-msgid "_Directory Comparison"
-msgstr "_Katalogsammenligning"
-
-#: ../data/ui/meldapp.ui.h:15
-msgid "Select VC Directory"
-msgstr "Velg katalog under versjonskontroll"
-
-#: ../data/ui/meldapp.ui.h:16
-msgid "Directory"
-msgstr "Katalog"
-
-#: ../data/ui/meldapp.ui.h:17
-#, fuzzy
-msgid "_Version Control Browser"
-msgstr "Git versjonskontroll"
+#: ../data/ui/language-selector.ui.h:1
+msgid "Search highlight mode…"
+msgstr "Modus for søkeutheving …"
 
 #: ../data/ui/patch-dialog.ui.h:1
-#, fuzzy
-msgid "Create Patch"
-msgstr "Opprett"
+msgid "Format as Patch"
+msgstr "Formater som endringsfil"
 
 #: ../data/ui/patch-dialog.ui.h:2
-#, fuzzy
-msgid "Create a patch"
-msgstr "Opprett"
-
-#: ../data/ui/patch-dialog.ui.h:3
-msgid "Use differences between:"
-msgstr ""
-
-#: ../data/ui/patch-dialog.ui.h:4
-msgid "Left and middle panes"
-msgstr ""
-
-#: ../data/ui/patch-dialog.ui.h:5
-msgid "Middle and right panes"
-msgstr ""
-
-#: ../data/ui/patch-dialog.ui.h:6
-msgid "_Reverse patch direction"
-msgstr ""
-
-#: ../data/ui/patch-dialog.ui.h:7
 msgid "Copy to Clipboard"
 msgstr "Kopier til utklippstavlen"
+
+#: ../data/ui/patch-dialog.ui.h:3 ../meld/patchdialog.py:152
+msgid "Save Patch"
+msgstr "Lagre endringsfil"
+
+#: ../data/ui/patch-dialog.ui.h:4
+msgid "Use differences between:"
+msgstr "Bruk forskjeller mellom:"
+
+#: ../data/ui/patch-dialog.ui.h:5
+msgid "Left and middle panes"
+msgstr "Venstre og midtre rute"
+
+#: ../data/ui/patch-dialog.ui.h:6
+msgid "Middle and right panes"
+msgstr "Midtre og høyre rute"
+
+#: ../data/ui/patch-dialog.ui.h:7
+msgid "_Reverse patch direction"
+msgstr "_Motsatt endringsretning"
 
 #: ../data/ui/preferences.ui.h:1
 msgid "Meld Preferences"
@@ -265,49 +1018,130 @@ msgid "Do not _split words over two lines"
 msgstr "Ikke _del ord over to linjer"
 
 #: ../data/ui/preferences.ui.h:10
+msgid "Highlight _current line"
+msgstr "_Uthev gjeldende linje"
+
+#: ../data/ui/preferences.ui.h:11
 msgid "Show _line numbers"
 msgstr "Vis _linjenummer"
 
-#: ../data/ui/preferences.ui.h:11
-msgid "Show w_hitespace"
-msgstr "Vis _tomrom"
-
 #: ../data/ui/preferences.ui.h:12
+msgid "Show w_hitespace"
+msgstr "Vis bla_nktegn"
+
+#: ../data/ui/preferences.ui.h:13
 msgid "Use s_yntax highlighting"
 msgstr "Slå på utheving av s_yntaks"
 
-#: ../data/ui/preferences.ui.h:13
-msgid "External editor"
+#: ../data/ui/preferences.ui.h:14
+msgid "Syntax highlighting color scheme:"
+msgstr "Fargeskjema for syntaksmerking:"
+
+#: ../data/ui/preferences.ui.h:15
+msgid "External Editor"
 msgstr "Eksternt redigeringsprogram"
 
-#: ../data/ui/preferences.ui.h:14
+#: ../data/ui/preferences.ui.h:16
 msgid "Use _default system editor"
 msgstr "Bruk systemets _forvalgte redigeringsprogram"
 
-#: ../data/ui/preferences.ui.h:15
+#: ../data/ui/preferences.ui.h:17
 msgid "Edito_r command:"
 msgstr "_Redigeringskommando:"
 
-#: ../data/ui/preferences.ui.h:16
+#: ../data/ui/preferences.ui.h:18
 msgid "Editor"
-msgstr "Editor"
+msgstr "Redigeringsprogram"
 
-#: ../data/ui/preferences.ui.h:17
+#: ../data/ui/preferences.ui.h:19
+msgid "Shallow Comparison"
+msgstr "Grunn sammenligning"
+
+#: ../data/ui/preferences.ui.h:20
+msgid "C_ompare files based only on size and timestamp"
+msgstr "_Sammenlign filer ut fra størrelse og tidsstempel"
+
+#: ../data/ui/preferences.ui.h:21
+msgid "_Timestamp resolution:"
+msgstr "Oppløsning til _tidsstempel:"
+
+#: ../data/ui/preferences.ui.h:23
+msgid "Note: enabling text filters may make comparing large files much slower"
+msgstr ""
+"Legg merke til at tekstfiltre kan gjøre sammenligning av store filer mye "
+"treigere"
+
+#: ../data/ui/preferences.ui.h:24
+msgid "Symbolic Links"
+msgstr "Symbolske lenker"
+
+#: ../data/ui/preferences.ui.h:26
+msgid "Visible Columns"
+msgstr "Synlige kolonner"
+
+#: ../data/ui/preferences.ui.h:27
+msgid "Folder Comparisons"
+msgstr "Sammenlign mapper"
+
+#: ../data/ui/preferences.ui.h:28
+msgid "Version Comparisons"
+msgstr "Sammenlign versjoner"
+
+#: ../data/ui/preferences.ui.h:29
+msgid "_Order when comparing file revisions:"
+msgstr "_Rekkefølge når filrevisjoner sammenlignes:"
+
+#: ../data/ui/preferences.ui.h:30
+msgid "Order when _merging files:"
+msgstr "Rekkefølge når filer _flettes:"
+
+#: ../data/ui/preferences.ui.h:31
+msgid "Commit Messages"
+msgstr "Innleggingsmeldinger"
+
+#: ../data/ui/preferences.ui.h:32
+msgid "Show _right margin at:"
+msgstr "Vis høyre _marg i:"
+
+#: ../data/ui/preferences.ui.h:33
+msgid "Automatically _break lines at right margin on commit"
+msgstr "_Bryt automatisk linjer i høyre marg ved innlegging"
+
+#: ../data/ui/preferences.ui.h:34
+msgid "Version Control"
+msgstr "Versjonskontroll"
+
+#: ../data/ui/preferences.ui.h:35
+msgid "Filename filters"
+msgstr "Filnavnfiltre"
+
+#: ../data/ui/preferences.ui.h:36
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr ""
+"Under mappesammenligninger kan en filtrere vekkm filer og mapper etter navn. "
+"Hvert mønster er en liste med jokertegn på skallskriptformat som skilles med "
+"mellomrom."
 
-#: ../data/ui/preferences.ui.h:18
-msgid "Ignore symbolic links"
-msgstr "Ignorer symbolske lenker"
-
-#: ../data/ui/preferences.ui.h:19
+#: ../data/ui/preferences.ui.h:37 ../meld/meldwindow.py:105
 msgid "File Filters"
-msgstr "Filfilter"
+msgstr "Filfiltre"
 
-#: ../data/ui/preferences.ui.h:20
+#: ../data/ui/preferences.ui.h:38
+msgid "Change trimming"
+msgstr "Endre beskjæring"
+
+#: ../data/ui/preferences.ui.h:39
+msgid "Trim blank line differences from the start and end of changes"
+msgstr "Beskjær tomme linjeforskjeller fra starten og slutten av endringer"
+
+#: ../data/ui/preferences.ui.h:40
+msgid "Text filters"
+msgstr "Tekstfiltre"
+
+#: ../data/ui/preferences.ui.h:41
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -315,1157 +1149,1941 @@ msgid ""
 "contains groups, only the groups are replaced. See the user manual for more "
 "details."
 msgstr ""
+"Under filsammenligninger kan en ignorere visse type endringer. Hvert mønster "
+"er et regulært uttrykk på Python-format som erstatter samsvarende tekst med "
+"en tom streng før sammenligningen utføres. Hvis uttrykket inneholder grupper "
+"så vil kun gruppene erstattes. Se brukerhåndboka for flere detaljer."
 
-#: ../data/ui/preferences.ui.h:21
-msgid "Ignore changes which insert or delete blank lines"
-msgstr ""
-
-#: ../data/ui/preferences.ui.h:22
+#: ../data/ui/preferences.ui.h:42
 msgid "Text Filters"
 msgstr "Tekstfiltre"
 
-#: ../data/ui/preferences.ui.h:23
-msgid "Loading"
-msgstr "Laster"
+#: ../data/ui/preferences.ui.h:43
+msgid "Left is remote, right is local"
+msgstr "Venstre er ekstern, høyre er lokal"
 
-#: ../data/ui/preferences.ui.h:24
-msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
-msgstr ""
+#: ../data/ui/preferences.ui.h:44
+msgid "Left is local, right is remote"
+msgstr "Venstre er lokal, høyre er ekstern"
 
-#: ../data/ui/preferences.ui.h:25
-msgid "Encoding"
-msgstr "Koder"
+#: ../data/ui/preferences.ui.h:45
+msgid "Remote, merge, local"
+msgstr "Ekstern, flett, lokal"
 
-#: ../data/ui/vcview.ui.h:1
-#, fuzzy
-msgid "VC Log"
-msgstr "Vis logg"
+#: ../data/ui/preferences.ui.h:46
+msgid "Local, merge, remote"
+msgstr "Lokal, flett, ekstern"
 
-#: ../data/ui/vcview.ui.h:2
-#, fuzzy
-msgid "Commit Files"
-msgstr "Ko_mpiler fil"
+#: ../data/ui/preferences.ui.h:47
+msgid "1ns (ext4)"
+msgstr "1 ns (ext4)"
+
+#: ../data/ui/preferences.ui.h:48
+msgid "100ns (NTFS)"
+msgstr "100 ns (NTFS)"
+
+#: ../data/ui/preferences.ui.h:49
+msgid "1s (ext2/ext3)"
+msgstr "1 s (ext2/ext3)"
+
+#: ../data/ui/preferences.ui.h:50
+msgid "2s (VFAT)"
+msgstr "2 s (VFAT)"
+
+#: ../data/ui/shortcuts.ui.h:1
+msgctxt "shortcut window"
+msgid "General"
+msgstr "Generelt"
+
+#: ../data/ui/shortcuts.ui.h:2
+msgctxt "shortcut window"
+msgid "New comparison"
+msgstr "Ny sammenligning"
+
+#: ../data/ui/shortcuts.ui.h:3
+msgctxt "shortcut window"
+msgid "Close a comparison"
+msgstr "Lukk en sammenligning"
+
+#: ../data/ui/shortcuts.ui.h:4
+msgctxt "shortcut window"
+msgid "Quit Meld"
+msgstr "Avslutt Meld"
+
+#: ../data/ui/shortcuts.ui.h:5
+msgctxt "shortcut window"
+msgid "Stop the current action"
+msgstr "Stopp gjeldende handling"
+
+#: ../data/ui/shortcuts.ui.h:6
+msgctxt "shortcut window"
+msgid "Refresh comparison"
+msgstr "Oppdater sammenligningen"
+
+#: ../data/ui/shortcuts.ui.h:7
+msgctxt "shortcut window"
+msgid "Fullscreen"
+msgstr "Fullskjerm"
+
+#: ../data/ui/shortcuts.ui.h:8
+msgctxt "shortcut window"
+msgid "Tabs"
+msgstr "Faner"
+
+#: ../data/ui/shortcuts.ui.h:9
+msgctxt "shortcut window"
+msgid "Go to previous tab"
+msgstr "Gå til forrige fane"
+
+#: ../data/ui/shortcuts.ui.h:10
+msgctxt "shortcut window"
+msgid "Go to next tab"
+msgstr "Gå til neste fane"
+
+#: ../data/ui/shortcuts.ui.h:11
+msgctxt "shortcut window"
+msgid "Switch to tab"
+msgstr "Bytt til fane"
+
+#: ../data/ui/shortcuts.ui.h:12
+msgctxt "shortcut window"
+msgid "Move tab left"
+msgstr "Flytt fane til venstre"
+
+#: ../data/ui/shortcuts.ui.h:13
+msgctxt "shortcut window"
+msgid "Move tab right"
+msgstr "Flytt fane til høyre"
+
+#: ../data/ui/shortcuts.ui.h:14
+msgctxt "shortcut window"
+msgid "Changes"
+msgstr "Endringer"
+
+#: ../data/ui/shortcuts.ui.h:15
+msgctxt "shortcut window"
+msgid "Go to previous change"
+msgstr "Gå til forrige endring"
+
+#: ../data/ui/shortcuts.ui.h:16
+msgctxt "shortcut window"
+msgid "Go to next change"
+msgstr "Gå til neste endring"
+
+#: ../data/ui/shortcuts.ui.h:17
+msgctxt "shortcut window"
+msgid "Editing"
+msgstr "Redigering"
+
+#: ../data/ui/shortcuts.ui.h:18
+msgctxt "shortcut window"
+msgid "Undo"
+msgstr "Angre"
+
+#: ../data/ui/shortcuts.ui.h:19
+msgctxt "shortcut window"
+msgid "Redo"
+msgstr "Gjør om"
+
+#: ../data/ui/shortcuts.ui.h:20
+msgctxt "shortcut window"
+msgid "Cut"
+msgstr "Klipp ut"
+
+#: ../data/ui/shortcuts.ui.h:21
+msgctxt "shortcut window"
+msgid "Copy"
+msgstr "Kopier"
+
+#: ../data/ui/shortcuts.ui.h:22
+msgctxt "shortcut window"
+msgid "Paste"
+msgstr "Lim inn"
+
+#: ../data/ui/shortcuts.ui.h:23
+msgctxt "shortcut window"
+msgid "Find"
+msgstr "Søk"
+
+#: ../data/ui/shortcuts.ui.h:24
+msgctxt "shortcut window"
+msgid "Find Next"
+msgstr "Finn neste"
+
+#: ../data/ui/shortcuts.ui.h:25
+msgctxt "shortcut window"
+msgid "Find Previous"
+msgstr "Finn forrige"
+
+#: ../data/ui/shortcuts.ui.h:26
+msgctxt "shortcut window"
+msgid "Replace"
+msgstr "Erstatt"
+
+#: ../data/ui/shortcuts.ui.h:27
+msgctxt "shortcut window"
+msgid "File comparison"
+msgstr "Sammenligning av filer"
+
+#: ../data/ui/shortcuts.ui.h:28
+msgctxt "shortcut window"
+msgid "Save current file"
+msgstr "Lagre gjeldende fil"
+
+#: ../data/ui/shortcuts.ui.h:29
+msgctxt "shortcut window"
+msgid "Save current file to new path"
+msgstr "Lagre gjeldende fil til ny sti"
+
+#: ../data/ui/shortcuts.ui.h:30
+msgctxt "shortcut window"
+msgid "Save all files in comparison"
+msgstr "Lagre alle filer i sammenligning"
+
+#: ../data/ui/shortcuts.ui.h:31
+msgctxt "shortcut window"
+msgid "Previous conflict"
+msgstr "Forrige konflikt"
+
+#: ../data/ui/shortcuts.ui.h:32
+msgctxt "shortcut window"
+msgid "Next conflict"
+msgstr "Neste konflikt"
+
+#: ../data/ui/shortcuts.ui.h:33
+msgctxt "shortcut window"
+msgid "Push change to left"
+msgstr "Dytt endringen til venstre"
+
+#: ../data/ui/shortcuts.ui.h:34
+msgctxt "shortcut window"
+msgid "Push change to right"
+msgstr "Dytt endringen til høyre"
+
+#: ../data/ui/shortcuts.ui.h:35
+msgctxt "shortcut window"
+msgid "Pull change from left"
+msgstr "Dra endring fra venstre"
+
+#: ../data/ui/shortcuts.ui.h:36
+msgctxt "shortcut window"
+msgid "Pull change from right"
+msgstr "Dra endring fra høyre"
+
+#: ../data/ui/shortcuts.ui.h:37
+msgctxt "shortcut window"
+msgid "Copy change above left"
+msgstr "Kopier endringen ovenfor til venstre"
+
+#: ../data/ui/shortcuts.ui.h:38
+msgctxt "shortcut window"
+msgid "Copy change below left"
+msgstr "Kopier endringen nedenfor til venstre"
+
+#: ../data/ui/shortcuts.ui.h:39
+msgctxt "shortcut window"
+msgid "Copy change above right"
+msgstr "Kopier endringen ovenfor til høyre"
+
+#: ../data/ui/shortcuts.ui.h:40
+msgctxt "shortcut window"
+msgid "Copy change below right"
+msgstr "Kopier endringen nedenfor til høyre"
+
+#: ../data/ui/shortcuts.ui.h:41
+msgctxt "shortcut window"
+msgid "Delete change"
+msgstr "Slett endring"
+
+#: ../data/ui/shortcuts.ui.h:42
+msgctxt "shortcut window"
+msgid "Previous comparison pane"
+msgstr "Forrige sammenligningsrute"
+
+#: ../data/ui/shortcuts.ui.h:43
+msgctxt "shortcut window"
+msgid "Next comparison pane"
+msgstr "Neste sammenligningsrute"
+
+#: ../data/ui/shortcuts.ui.h:44
+msgctxt "shortcut window"
+msgid "Folder comparison"
+msgstr "Sammenligning av mapper"
+
+#: ../data/ui/shortcuts.ui.h:45
+msgctxt "shortcut window"
+msgid "Copy to left"
+msgstr "Kopier til venstre"
+
+#: ../data/ui/shortcuts.ui.h:46
+msgctxt "shortcut window"
+msgid "Copy to right"
+msgstr "Kopier til høyre"
+
+#: ../data/ui/shortcuts.ui.h:47
+msgctxt "shortcut window"
+msgid "Version control comparison"
+msgstr "Sammenligning av versjoner"
+
+#: ../data/ui/shortcuts.ui.h:48
+msgctxt "shortcut window"
+msgid "Commit to version control"
+msgstr "Legg inn til versjonskontroll"
+
+#: ../data/ui/shortcuts.ui.h:49
+msgctxt "shortcut window"
+msgid "Show/hide console output"
+msgstr "Vis/skjul konsollutdata"
+
+#: ../data/ui/tab-placeholder.ui.h:1 ../meld/meldwindow.py:567
+#: ../meld/newdifftab.py:49
+msgid "New comparison"
+msgstr "Ny sammenligning"
+
+#: ../data/ui/tab-placeholder.ui.h:2
+msgid "File comparison"
+msgstr "Sammenligning av filer"
+
+#: ../data/ui/tab-placeholder.ui.h:3
+msgid "Directory comparison"
+msgstr "Sammenligning av mapper"
+
+#: ../data/ui/tab-placeholder.ui.h:4
+msgid "Version control view"
+msgstr "Versjonskontroll-visning"
+
+#: ../data/ui/tab-placeholder.ui.h:5
+msgid "_3-way comparison"
+msgstr "_3-veis sammenligning"
+
+#: ../data/ui/tab-placeholder.ui.h:6
+msgid "Select Third File"
+msgstr "Velg tredje fil"
+
+#: ../data/ui/tab-placeholder.ui.h:7
+msgid "Select Second File"
+msgstr "Velg andre fil"
+
+#: ../data/ui/tab-placeholder.ui.h:8
+msgid "Select First File"
+msgstr "Velg første fil"
+
+#: ../data/ui/tab-placeholder.ui.h:9
+msgid "Select First Folder"
+msgstr "Velg første mappe"
+
+#: ../data/ui/tab-placeholder.ui.h:10
+msgid "Select Second Folder"
+msgstr "Velg andre mappe"
+
+#: ../data/ui/tab-placeholder.ui.h:11
+msgid "Select Third Folder"
+msgstr "Velg tredje mappe"
+
+#: ../data/ui/tab-placeholder.ui.h:12
+msgid "Select A Version-Controlled Folder"
+msgstr "Velg en versjonskontrollert mappe"
+
+#: ../data/ui/tab-placeholder.ui.h:13
+msgid "_Blank comparison"
+msgstr "_Blank sammenligning"
+
+#: ../data/ui/tab-placeholder.ui.h:14
+msgid "C_ompare"
+msgstr "_Sammenlign"
 
 #: ../data/ui/vcview.ui.h:3
-#, fuzzy
-msgid "Previous Logs"
-msgstr "Forrige hjelp"
+msgid "Co_mmit…"
+msgstr "_Legg inn …"
 
 #: ../data/ui/vcview.ui.h:4
+msgid "Commit changes to version control"
+msgstr "Legg inn endringer til versjonskontroll"
+
+#: ../data/ui/vcview.ui.h:5
+msgid "_Update"
+msgstr "_Oppdater"
+
+#: ../data/ui/vcview.ui.h:6
+msgid "Update working copy from version control"
+msgstr "Oppdater arbeidskopi fra versjonskontroll"
+
+#: ../data/ui/vcview.ui.h:7
+msgid "_Push"
+msgstr "_Dytt"
+
+#: ../data/ui/vcview.ui.h:8
+msgid "Push local changes to remote"
+msgstr "Dytt lokale endringer til ekstern"
+
+#: ../data/ui/vcview.ui.h:10
+msgid "Add to version control"
+msgstr "Legg til versjonskontroll"
+
+#: ../data/ui/vcview.ui.h:12
+msgid "Remove from version control"
+msgstr "Fjern fra versjonskontroll"
+
+#: ../data/ui/vcview.ui.h:13
+msgid "Mar_k as Resolved"
+msgstr "_Merk som løst"
+
+#: ../data/ui/vcview.ui.h:14
+msgid "Mark as resolved in version control"
+msgstr "Merk som løst i versjonskontroll"
+
+#: ../data/ui/vcview.ui.h:15
+msgid "Re_vert"
+msgstr "_Tilbakestill"
+
+#: ../data/ui/vcview.ui.h:16
+msgid "Revert working copy to original state"
+msgstr "Tilbakestill arbeidskopien til opprinnelig tilstand"
+
+#: ../data/ui/vcview.ui.h:17
+msgid "Delete from working copy"
+msgstr "Slett fra arbeidskopi"
+
+#: ../data/ui/vcview.ui.h:18
+msgid "Console"
+msgstr "Konsoll"
+
+#: ../data/ui/vcview.ui.h:19
+msgid "Show or hide the version control console output pane"
+msgstr "Vis eller skjul rute med versjonskontrollens konsollutdata"
+
+#: ../data/ui/vcview.ui.h:20
+msgid "_Flatten"
+msgstr "_Forflat"
+
+#: ../data/ui/vcview.ui.h:21
+msgid "Flatten directories"
+msgstr "Forflat mapper"
+
+#: ../data/ui/vcview.ui.h:22
+msgid "_Modified"
+msgstr "_Endret"
+
+#: ../data/ui/vcview.ui.h:23
+msgid "Show modified files"
+msgstr "Vis endrede filer"
+
+#: ../data/ui/vcview.ui.h:24
+msgid "_Normal"
+msgstr "_Normal"
+
+#: ../data/ui/vcview.ui.h:25
+msgid "Show normal files"
+msgstr "Vis normale filer"
+
+#: ../data/ui/vcview.ui.h:26
+msgid "Un_versioned"
+msgstr "_Ikke versjonert"
+
+#: ../data/ui/vcview.ui.h:27
+msgid "Show unversioned files"
+msgstr "Vis filer som ikke er versjonerte"
+
+#: ../data/ui/vcview.ui.h:28 ../meld/vc/_vc.py:69
+msgid "Ignored"
+msgstr "Ignorert"
+
+#: ../data/ui/vcview.ui.h:29
+msgid "Show ignored files"
+msgstr "Vis ignorerte filer"
+
+#: ../data/ui/vcview.ui.h:30
+msgid "Commit"
+msgstr "Legg inn"
+
+#: ../data/ui/vcview.ui.h:31
+msgid "Commit Files"
+msgstr "Legg inn filer"
+
+#: ../data/ui/vcview.ui.h:32
 msgid "Log Message"
 msgstr "Loggmelding"
 
-#: ../meld/dirdiff.py:232 ../meld/vcview.py:127
-msgid "_Compare"
-msgstr "_Sammenligne"
+#: ../data/ui/vcview.ui.h:33
+msgid "Previous logs:"
+msgstr "Forrige logger:"
 
-#: ../meld/dirdiff.py:232 ../meld/vcview.py:127
-#, fuzzy
-msgid "Compare selected"
-msgstr "Fullført"
+#: ../data/ui/vcview.ui.h:34
+msgid "Co_mmit"
+msgstr "_Legg inn"
 
-#: ../meld/dirdiff.py:233
-msgid "Copy _Left"
+#: ../data/ui/vcview.ui.h:36 ../meld/vcview.py:331
+msgid "Location"
+msgstr "Plassering"
+
+#: ../data/ui/vcview.ui.h:37
+msgid "Status"
+msgstr "Status"
+
+#: ../data/ui/vcview.ui.h:38
+msgid "Extra"
+msgstr "Ekstra"
+
+#: ../data/ui/vcview.ui.h:39
+msgid "Console output"
+msgstr "Konsollutdata"
+
+#: ../data/ui/vcview.ui.h:40
+msgid "Push local commits to remote?"
+msgstr "Dytt lokale innlegginger eksternt?"
+
+#: ../data/ui/vcview.ui.h:41
+msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
+"Versjonskontrollsystemet bestemmer hvilke innlegginger som skal dyttes."
 
-#: ../meld/dirdiff.py:233
-msgid "Copy to left"
-msgstr ""
+#: ../data/ui/vcview.ui.h:42
+msgid "_Push commits"
+msgstr "_Dytt innlegginger"
 
-#: ../meld/dirdiff.py:234
-#, fuzzy
-msgid "Copy _Right"
-msgstr "Høyre"
+#: ../meld/const.py:12
+msgid "UNIX (LF)"
+msgstr "UNIX (LF)"
 
-#: ../meld/dirdiff.py:234
-msgid "Copy to right"
-msgstr ""
+#: ../meld/const.py:13
+msgid "DOS/Windows (CR-LF)"
+msgstr "DOS/Windows (CR-LF)"
 
-#: ../meld/dirdiff.py:235
-msgid "Delete selected"
-msgstr "Slett valgte"
+#: ../meld/const.py:14
+msgid "Mac OS (CR)"
+msgstr "Mac OS (CR)"
 
-#: ../meld/dirdiff.py:236 ../meld/filediff.py:1157
-msgid "Hide"
-msgstr "Skjul"
+#. Create file size CellRenderer
+#: ../meld/dirdiff.py:433 ../meld/preferences.py:81
+msgid "Size"
+msgstr "Størrelse"
 
-#: ../meld/dirdiff.py:236
-msgid "Hide selected"
-msgstr "Skjul valgte"
+#. Create date-time CellRenderer
+#: ../meld/dirdiff.py:441 ../meld/preferences.py:82
+msgid "Modification time"
+msgstr "Endringstid"
 
-#: ../meld/dirdiff.py:240
-#, fuzzy
-msgid "Case"
-msgstr "Lukk"
+#. Create permissions CellRenderer
+#: ../meld/dirdiff.py:449 ../meld/preferences.py:83
+msgid "Permissions"
+msgstr "Rettigheter"
 
-#: ../meld/dirdiff.py:240
-#, fuzzy
-msgid "Ignore case of entries"
-msgstr "Ignorer kataloger:"
-
-#: ../meld/dirdiff.py:241
-msgid "Same"
-msgstr "Samme"
-
-#: ../meld/dirdiff.py:241
-#, fuzzy
-msgid "Show identical"
-msgstr "Vis signaler fra kjernen"
-
-#: ../meld/dirdiff.py:242
-msgid "New"
-msgstr "Ny"
-
-#: ../meld/dirdiff.py:242
-#, fuzzy
-msgid "Show new"
-msgstr "Vis"
-
-#: ../meld/dirdiff.py:243
-msgid "Modified"
-msgstr "Endret"
-
-#: ../meld/dirdiff.py:243 ../meld/vcview.py:140
-msgid "Show modified"
-msgstr "Vis endret"
-
-#: ../meld/dirdiff.py:245
-msgid "Filters"
-msgstr "Filtre"
-
-#: ../meld/dirdiff.py:245
-msgid "Set active filters"
-msgstr "Sett aktive filtre"
-
-#: ../meld/dirdiff.py:362
+#: ../meld/dirdiff.py:580
 #, python-format
 msgid "Hide %s"
 msgstr "Skjul %s"
 
-#: ../meld/dirdiff.py:465 ../meld/dirdiff.py:478 ../meld/vcview.py:322
-#: ../meld/vcview.py:346
+#: ../meld/dirdiff.py:721 ../meld/dirdiff.py:744
 #, python-format
 msgid "[%s] Scanning %s"
-msgstr ""
+msgstr "[%s] Leter gjennom %s"
 
-#: ../meld/dirdiff.py:577
+#: ../meld/dirdiff.py:879
 #, python-format
 msgid "[%s] Done"
-msgstr ""
+msgstr "[%s] Ferdig"
 
-#: ../meld/dirdiff.py:581
+#: ../meld/dirdiff.py:887
+msgid "Folders have no differences"
+msgstr "Mappene er ikke forskjellige"
+
+#: ../meld/dirdiff.py:889
+msgid "Contents of scanned files in folders are identical."
+msgstr "Innholdet i de gjennomsøkte filene i mappene er likt."
+
+#: ../meld/dirdiff.py:891
+msgid ""
+"Scanned files in folders appear identical, but contents have not been "
+"scanned."
+msgstr ""
+"De gjennomsøkte filene i mappene fremstår som identiske, men selve innholdet "
+"er ikke gjennomsøkt."
+
+#: ../meld/dirdiff.py:894
+msgid "File filters are in use, so not all files have been scanned."
+msgstr "Filfiltre er i bruk, så ikke alle filer er gjennomsøkte."
+
+#: ../meld/dirdiff.py:896
+msgid "Text filters are in use and may be masking content differences."
+msgstr "Tekstfiltre er i bruk og kan skjule forskjeller i innholdet."
+
+#: ../meld/dirdiff.py:914 ../meld/filediff.py:1501 ../meld/filediff.py:1531
+#: ../meld/filediff.py:1533 ../meld/ui/msgarea.py:106 ../meld/ui/msgarea.py:119
+msgid "Hi_de"
+msgstr "_Skjul"
+
+#: ../meld/dirdiff.py:923
 msgid "Multiple errors occurred while scanning this folder"
-msgstr ""
+msgstr "Det oppstod flere feil mens mappen ble gjennomsøkt"
 
-#: ../meld/dirdiff.py:582
+#: ../meld/dirdiff.py:924
 msgid "Files with invalid encodings found"
-msgstr ""
+msgstr "Fant filer med ugyldig tegnkoding"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:584
+#: ../meld/dirdiff.py:926
 msgid "Some files were in an incorrect encoding. The names are something like:"
-msgstr ""
+msgstr "Noen filer har ugyldig tegnkoding. Filnavnene er noe sånt som:"
 
-#: ../meld/dirdiff.py:586
+#: ../meld/dirdiff.py:928
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
+"Filer som skjules av sammenligning som ikke skiller store/små bokstaver"
 
 #. TRANSLATORS: This is followed by a list of files
-#: ../meld/dirdiff.py:588
+#: ../meld/dirdiff.py:930
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr ""
+"Du kjører en sammenligning som ikke skiller store/små bokstaver på et "
+"filsystem som gjør det. De følgende filene i mappa er skjult:"
 
-#: ../meld/dirdiff.py:599
+#: ../meld/dirdiff.py:941
 #, python-format
-msgid "'%s' hidden by '%s'"
-msgstr ""
+msgid "“%s” hidden by “%s”"
+msgstr "«%s» skjules av «%s»"
 
-#: ../meld/dirdiff.py:624 ../meld/filediff.py:1008 ../meld/filediff.py:1161
-msgid "Hi_de"
-msgstr ""
-
-#: ../meld/dirdiff.py:674
+#: ../meld/dirdiff.py:997
 #, python-format
-msgid ""
-"'%s' exists.\n"
-"Overwrite?"
-msgstr ""
+msgid "Replace folder “%s”?"
+msgstr "Erstatt mappen «%s»?"
 
-#: ../meld/dirdiff.py:681
+#: ../meld/dirdiff.py:999
 #, python-format
 msgid ""
-"Error copying '%s' to '%s'\n"
+"Another folder with the same name already exists in “%s”.\n"
+"If you replace the existing folder, all files in it will be lost."
+msgstr ""
+"Det finnes allerede en mappe med dette navnet i «%s».\n"
+"Hvis du erstatter denne mappen så vil alle filene i den slettes."
+
+#: ../meld/dirdiff.py:1012
+msgid "Error copying file"
+msgstr "Klarte ikke kopiere fil"
+
+#: ../meld/dirdiff.py:1013
+#, python-format
+msgid ""
+"Couldn’t copy %s\n"
+"to %s.\n"
 "\n"
-"%s."
+"%s"
 msgstr ""
-
-#: ../meld/dirdiff.py:699 ../meld/vcview.py:526
-#, python-format
-msgid ""
-"'%s' is a directory.\n"
-"Remove recursively?"
-msgstr ""
-
-#: ../meld/dirdiff.py:706 ../meld/vcview.py:531
-#, fuzzy, python-format
-msgid ""
-"Error removing %s\n"
+"Klarte ikke kopiere %s\n"
+"til %s.\n"
 "\n"
-"%s."
-msgstr "Feil under skriving til: %s."
+"%s"
 
-#: ../meld/dirdiff.py:731
-#, python-format
-msgid "%i second"
-msgid_plural "%i seconds"
-msgstr[0] ""
-msgstr[1] ""
+#: ../meld/dirdiff.py:1038 ../meld/vcview.py:703
+msgid "Error deleting {}"
+msgstr "Klarte ikke slette {}"
 
-#: ../meld/dirdiff.py:732
-#, python-format
-msgid "%i minute"
-msgid_plural "%i minutes"
-msgstr[0] ""
-msgstr[1] ""
+#: ../meld/dirdiff.py:1549
+msgid "No folder"
+msgstr "Ingen mappe"
 
-#: ../meld/dirdiff.py:733
-#, python-format
-msgid "%i hour"
-msgid_plural "%i hours"
-msgstr[0] ""
-msgstr[1] ""
+#: ../meld/filediff.py:836
+msgid "Comparison results will be inaccurate"
+msgstr "Sammenligningsresultatene vil være unøyaktige"
 
-#: ../meld/dirdiff.py:734
-#, python-format
-msgid "%i day"
-msgid_plural "%i days"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../meld/dirdiff.py:735
-#, python-format
-msgid "%i week"
-msgid_plural "%i weeks"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../meld/dirdiff.py:736
-#, python-format
-msgid "%i month"
-msgid_plural "%i months"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../meld/dirdiff.py:737
-#, python-format
-msgid "%i year"
-msgid_plural "%i years"
-msgstr[0] ""
-msgstr[1] ""
-
-#: ../meld/filediff.py:294
-msgid "Format as patch..."
-msgstr ""
-
-#: ../meld/filediff.py:294
-msgid "Create a patch using differences between files"
-msgstr ""
-
-#: ../meld/filediff.py:295
-msgid "Previous conflict"
-msgstr "Forrige konflikt"
-
-#: ../meld/filediff.py:295
-msgid "Go to the previous conflict"
-msgstr ""
-
-#: ../meld/filediff.py:296
-msgid "Next conflict"
-msgstr "Neste konflikt"
-
-#: ../meld/filediff.py:296
-msgid "Go to the next conflict"
-msgstr ""
-
-#: ../meld/filediff.py:297
-msgid "Push to left"
-msgstr ""
-
-#: ../meld/filediff.py:297
-msgid "Push current change to the left"
-msgstr ""
-
-#: ../meld/filediff.py:298
-msgid "Push to right"
-msgstr ""
-
-#: ../meld/filediff.py:298
-msgid "Push current change to the right"
-msgstr ""
-
-#. FIXME: using LAST and FIRST is terrible and unreliable icon abuse
-#: ../meld/filediff.py:300
-msgid "Pull from left"
-msgstr ""
-
-#: ../meld/filediff.py:300
-msgid "Pull change from the left"
-msgstr ""
-
-#: ../meld/filediff.py:301
-msgid "Pull from right"
-msgstr ""
-
-#: ../meld/filediff.py:301
-msgid "Pull change from the right"
-msgstr ""
-
-#: ../meld/filediff.py:302
-msgid "Copy above left"
-msgstr ""
-
-#: ../meld/filediff.py:302
-msgid "Copy change above the left chunk"
-msgstr ""
-
-#: ../meld/filediff.py:303
-msgid "Copy below left"
-msgstr ""
-
-#: ../meld/filediff.py:303
-msgid "Copy change below the left chunk"
-msgstr ""
-
-#: ../meld/filediff.py:304
-msgid "Copy above right"
-msgstr ""
-
-#: ../meld/filediff.py:304
-msgid "Copy change above the right chunk"
-msgstr ""
-
-#: ../meld/filediff.py:305
-msgid "Copy below right"
-msgstr ""
-
-#: ../meld/filediff.py:305
-msgid "Copy change below the right chunk"
-msgstr ""
-
-#: ../meld/filediff.py:306
-msgid "Delete"
-msgstr "Slett"
-
-#: ../meld/filediff.py:306
-msgid "Delete change"
-msgstr "Slett endring"
-
-#: ../meld/filediff.py:307
-msgid "Merge all changes from left"
-msgstr ""
-
-#: ../meld/filediff.py:307
-msgid "Merge all non-conflicting changes from the left"
-msgstr ""
-
-#: ../meld/filediff.py:308
-msgid "Merge all changes from right"
-msgstr ""
-
-#: ../meld/filediff.py:308
-msgid "Merge all non-conflicting changes from the right"
-msgstr ""
-
-#: ../meld/filediff.py:309
-msgid "Merge all non-conflicting"
-msgstr ""
-
-#: ../meld/filediff.py:309
-msgid "Merge all non-conflicting changes from left and right panes"
-msgstr ""
-
-#: ../meld/filediff.py:310
-msgid "Cycle through documents"
-msgstr ""
-
-#: ../meld/filediff.py:310
-msgid "Move keyboard focus to the next document in this comparison"
-msgstr ""
-
-#: ../meld/filediff.py:314
-msgid "Lock scrolling"
-msgstr ""
-
-#: ../meld/filediff.py:315
-msgid "Lock scrolling of all panes"
-msgstr ""
-
-#. Abbreviations for insert and overwrite that fit in the status bar
-#: ../meld/filediff.py:396
-msgid "INS"
-msgstr "INS"
-
-#: ../meld/filediff.py:396
-msgid "OVR"
-msgstr "OVR"
-
-#. Abbreviation for line, column so that it will fit in the status bar
-#: ../meld/filediff.py:398
-#, python-format
-msgid "Ln %i, Col %i"
-msgstr ""
-
-#: ../meld/filediff.py:722
-#, python-format
+#: ../meld/filediff.py:838
 msgid ""
-"Filter '%s' changed the number of lines in the file. Comparison will be "
-"incorrect. See the user manual for more details."
+"A filter changed the number of lines in the file, which is unsupported. The "
+"comparison will not be accurate."
 msgstr ""
+"Et filter endret antall linjer i fila, dette støttes ikke. Sammenligningen "
+"vil være unøyaktig."
 
-#. TRANSLATORS: this is the name of a new file which has not yet been saved
-#: ../meld/filediff.py:809
-msgid "<unnamed>"
-msgstr "<uten navn>"
+#: ../meld/filediff.py:907
+msgid "Mark conflict as resolved?"
+msgstr "Merk konflikten som løst?"
 
-#: ../meld/filediff.py:996
+#: ../meld/filediff.py:909
+msgid ""
+"If the conflict was resolved successfully, you may mark it as resolved now."
+msgstr "Du kan nå merke konflikten som løst dersom den er ordnet."
+
+#: ../meld/filediff.py:911
+msgid "Cancel"
+msgstr "Avbryt"
+
+#: ../meld/filediff.py:912
+msgid "Mark _Resolved"
+msgstr "Merk som l_øst"
+
+#: ../meld/filediff.py:1216
 #, python-format
-msgid "[%s] Set num panes"
-msgstr ""
+msgid "There was a problem opening the file “%s”."
+msgstr "Klarte ikke åpne fila «%s»."
 
-#: ../meld/filediff.py:1002
+#: ../meld/filediff.py:1224
 #, python-format
-msgid "[%s] Opening files"
-msgstr "[%s] Åpner filer"
+msgid "File %s appears to be a binary file."
+msgstr "Fila %s er tilsynelatende en binær fil."
 
-#: ../meld/filediff.py:1026 ../meld/filediff.py:1035 ../meld/filediff.py:1047
-#: ../meld/filediff.py:1053
-msgid "Could not read file"
-msgstr "Kunne ikke lese fil"
+#: ../meld/filediff.py:1226
+msgid "Do you want to open the file using the default application?"
+msgstr "Vil du åpne fila med standardprogrammet?"
 
-#: ../meld/filediff.py:1027
-#, python-format
-msgid "[%s] Reading files"
-msgstr "[%s] Leser filer"
+#: ../meld/filediff.py:1228
+msgid "Open"
+msgstr "Åpne"
 
-#: ../meld/filediff.py:1036
-#, python-format
-msgid "%s appears to be a binary file."
-msgstr ""
-
-#: ../meld/filediff.py:1048
-#, python-format
-msgid "%s is not in encodings: %s"
-msgstr ""
-
-#: ../meld/filediff.py:1078 ../meld/filemerge.py:67
+#: ../meld/filediff.py:1244
 #, python-format
 msgid "[%s] Computing differences"
-msgstr ""
+msgstr "[%s] Beregner forskjeller"
 
-#: ../meld/filediff.py:1148
+#: ../meld/filediff.py:1305
+#, python-format
+msgid "File %s has changed on disk"
+msgstr "Fila %s er endret på disken"
+
+#: ../meld/filediff.py:1306
+msgid "Do you want to reload the file?"
+msgstr "Vil du laste fila på nytt?"
+
+#: ../meld/filediff.py:1308
+msgid "_Reload"
+msgstr "_Last på nytt"
+
+#: ../meld/filediff.py:1464
+msgid "Files are identical"
+msgstr "Filene er identiske"
+
+#: ../meld/filediff.py:1477
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
+"Tekstfiltre er i bruk og kan skjule forskjeller mellom filene. Vil du "
+"sammenligne de ufiltrerte filene?"
 
-#: ../meld/filediff.py:1154
-msgid "Files are identical"
-msgstr "Filene er identiske"
+#: ../meld/filediff.py:1482
+msgid "Files differ in line endings only"
+msgstr "Filene har kun forskjellige linjeavslutninger"
 
-#: ../meld/filediff.py:1164
+#: ../meld/filediff.py:1484
+#, python-format
+msgid ""
+"Files are identical except for differing line endings:\n"
+"%s"
+msgstr ""
+"Filene er identiske, bortsett fra ulike linjeavslutninger:\n"
+"%s"
+
+#: ../meld/filediff.py:1504
 msgid "Show without filters"
 msgstr "Vis uten filtre"
 
-#: ../meld/filediff.py:1354
+#: ../meld/filediff.py:1526
+msgid "Change highlighting incomplete"
+msgstr "Fullførte ikke utheving av endringer"
+
+#: ../meld/filediff.py:1527
+msgid ""
+"Some changes were not highlighted because they were too large. You can force "
+"Meld to take longer to highlight larger changes, though this may be slow."
+msgstr ""
+"Noen endringer er ikke uthevet fordi de er for store. Du kan tvinge Meld til "
+"å bruke mer tid til å utheve dem, men dette kan gå treigt."
+
+#: ../meld/filediff.py:1535
+msgid "Keep highlighting"
+msgstr "Fortsett utheving"
+
+#: ../meld/filediff.py:1537
+msgid "_Keep highlighting"
+msgstr "_Fortsett utheving"
+
+#: ../meld/filediff.py:1550
+msgid "Saving failed"
+msgstr "Klarte ikke lagre"
+
+#: ../meld/filediff.py:1551
+msgid ""
+"Please consider copying any critical changes to another program or file to "
+"avoid data loss."
+msgstr ""
+"Vurder å kopiere viktige endringer til et annet program eller fil for å "
+"unngå datatap."
+
+#: ../meld/filediff.py:1560
+msgid "Save Left Pane As"
+msgstr "Lagre venstre rute som"
+
+#: ../meld/filediff.py:1562
+msgid "Save Middle Pane As"
+msgstr "Lagre midtre rute som"
+
+#: ../meld/filediff.py:1564
+msgid "Save Right Pane As"
+msgstr "Lagre høyre rute som"
+
+#: ../meld/filediff.py:1577
+#, python-format
+msgid "File %s has changed on disk since it was opened"
+msgstr "Fila %s er blitt endret på disk etter at den ble åpnet"
+
+#: ../meld/filediff.py:1579
+msgid "If you save it, any external changes will be lost."
+msgstr "Hvis du lagrer den så vil eksterne endringer gå tapt."
+
+#: ../meld/filediff.py:1582
+msgid "Save Anyway"
+msgstr "Lagre likevel"
+
+#: ../meld/filediff.py:1583
+msgid "Don’t Save"
+msgstr "Ikke lagre"
+
+#: ../meld/filediff.py:1625
+msgid ""
+"File “{}” contains characters that can’t be encoded using its current "
+"encoding “{}”."
+msgstr ""
+"Fila «{}» inneholder tegn som ikke kan kodes med dens gjeldende tegnkoding "
+"«{}»."
+
+#: ../meld/filediff.py:1629 ../meld/patchdialog.py:131
 #, python-format
 msgid ""
-"\"%s\" exists!\n"
-"Overwrite?"
+"Couldn’t save file due to:\n"
+"%s"
 msgstr ""
-"«%s» eksisterer!\n"
-"Overskriv?"
+"Klarte ikke lagre fila fordi:\n"
+"%s"
 
-#: ../meld/filediff.py:1367
-#, fuzzy, python-format
-msgid ""
-"Error writing to %s\n"
-"\n"
-"%s."
-msgstr "Feil under skriving til: %s."
-
-#: ../meld/filediff.py:1376
+#: ../meld/filediff.py:1633 ../meld/patchdialog.py:130
 #, python-format
-msgid "Choose a name for buffer %i."
-msgstr ""
+msgid "Could not save file %s."
+msgstr "Klarte ikke lagre fila %s."
 
-#: ../meld/filediff.py:1391
-#, python-format
+#: ../meld/filediff.py:2016
+msgid "Live comparison updating disabled"
+msgstr "Sanntidsoppdatering av endringer er slått av"
+
+#: ../meld/filediff.py:2017
 msgid ""
-"This file '%s' contains a mixture of line endings.\n"
-"\n"
-"Which format would you like to use?"
+"Live updating of comparisons is disabled when synchronization points are "
+"active. You can still manually refresh the comparison, and live updates will "
+"resume when synchronization points are cleared."
 msgstr ""
+"Sanntidsoppdatering av sammenligninger er slått av når "
+"synkroniseringspunkter er slått på. Du kan oppdatere sammenligningen "
+"manuelt, og sanntidsoppdateringen vil fortsette når synkroniseringspunktene "
+"er blitt tømt."
 
-#: ../meld/filediff.py:1407
+#: ../meld/filemerge.py:37
 #, python-format
-msgid ""
-"'%s' contains characters not encodable with '%s'\n"
-"Would you like to save as UTF-8?"
-msgstr ""
-
-#: ../meld/filediff.py:1466
-#, python-format
-msgid ""
-"Reloading will discard changes in:\n"
-"%s\n"
-"\n"
-"You cannot undo this operation."
-msgstr ""
-
-#: ../meld/filemerge.py:82
-#, fuzzy, python-format
 msgid "[%s] Merging files"
-msgstr "Åpne fil"
+msgstr "[%s] Fletter filer"
 
-#: ../meld/meldapp.py:152
+#: ../meld/gutterrendererchunk.py:216
+msgid "Copy _up"
+msgstr "Kopier _opp"
+
+#: ../meld/gutterrendererchunk.py:217
+msgid "Copy _down"
+msgstr "Kopier _ned"
+
+#: ../meld/iohelpers.py:41
+msgid "Deleting remote folders is not supported"
+msgstr "Eksterne mapper kan ikke slettes"
+
+#: ../meld/iohelpers.py:43
+msgid "Not a file or directory"
+msgstr "Ikke en fil eller mappe"
+
+#: ../meld/iohelpers.py:47
+msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
+msgstr "Kan ikke legge «{}» i papirkurven. Vil du slette den nå?"
+
+#: ../meld/iohelpers.py:52
+msgid "This remote location does not support sending items to the trash."
+msgstr "Denne eksterne plasseringen kan ikke legge elementer i papirkurven."
+
+#: ../meld/iohelpers.py:57
+msgid "_Delete Permanently"
+msgstr "Slett _permanent"
+
+#: ../meld/iohelpers.py:100
+#, python-format
+msgid "Replace file “%s”?"
+msgstr "Erstatt fila «%s»?"
+
+#: ../meld/iohelpers.py:102
+#, python-format
+msgid ""
+"A file with this name already exists in “%s”.\n"
+"If you replace the existing file, its contents will be lost."
+msgstr ""
+"Det finnes allerede en fil med dette navnet i «%s».\n"
+"Hvis du erstatter denne fila så vil innholdet gå tapt."
+
+#: ../meld/meldapp.py:181
 msgid "wrong number of arguments supplied to --diff"
-msgstr ""
+msgstr "feil antall argumenter gitt til --diff"
 
-#: ../meld/meldapp.py:156
+#: ../meld/meldapp.py:186
 msgid "Start with an empty window"
-msgstr ""
+msgstr "Start med tomt vindu"
 
-#: ../meld/meldapp.py:157 ../meld/meldapp.py:158 ../meld/meldapp.py:160
+#: ../meld/meldapp.py:187 ../meld/meldapp.py:189
 msgid "file"
 msgstr "fil"
 
-#: ../meld/meldapp.py:157 ../meld/meldapp.py:159 ../meld/meldapp.py:160
-msgid "dir"
-msgstr "katalog"
+#: ../meld/meldapp.py:187 ../meld/meldapp.py:191
+msgid "folder"
+msgstr "mappe"
 
-#: ../meld/meldapp.py:157
+#: ../meld/meldapp.py:188
 msgid "Start a version control comparison"
-msgstr ""
+msgstr "Start en sammenligning av versjoner"
 
-#: ../meld/meldapp.py:158
+#: ../meld/meldapp.py:190
 msgid "Start a 2- or 3-way file comparison"
-msgstr ""
+msgstr "Start en 2- eller 3-veis filsammenligning"
 
-#: ../meld/meldapp.py:159
-msgid "Start a 2- or 3-way directory comparison"
-msgstr ""
+#: ../meld/meldapp.py:192
+msgid "Start a 2- or 3-way folder comparison"
+msgstr "Start en 2- eller 3-veis mappesammenligning"
 
-#: ../meld/meldapp.py:160
-msgid "Start a comparison between file and dir/file"
-msgstr ""
-
-#: ../meld/meldapp.py:166
-msgid "Meld is a file and directory comparison tool."
-msgstr ""
-
-#: ../meld/meldapp.py:169
-msgid "Set label to use instead of file name"
-msgstr ""
-
-#: ../meld/meldapp.py:171
-msgid "Automatically compare all differing files on startup"
-msgstr ""
-
-#: ../meld/meldapp.py:173
-msgid "Ignored for compatibility"
-msgstr ""
-
-#: ../meld/meldapp.py:176
-msgid "Set the target file for saving a merge result"
-msgstr ""
-
-#: ../meld/meldapp.py:179
-msgid "Creates a diff tab for up to 3 supplied files or directories."
-msgstr ""
-
-#: ../meld/meldapp.py:182
+#: ../meld/meldapp.py:235
 #, python-format
-msgid "too many arguments (wanted 0-4, got %d)"
-msgstr ""
+msgid "Error: %s\n"
+msgstr "Feil: %s\n"
 
-#: ../meld/meldapp.py:184 ../meld/meldapp.py:188
-#, fuzzy
-msgid "can't compare more than three directories"
-msgstr "Opprett nye kataloger"
+#: ../meld/meldapp.py:242
+msgid "Meld is a file and directory comparison tool."
+msgstr "Meld er et verktøy for sammenligning av filer og mapper."
 
-#: ../meld/melddoc.py:56 ../meld/melddoc.py:57
+#: ../meld/meldapp.py:246
+msgid "Set label to use instead of file name"
+msgstr "Angi en etikett som skal brukes istedenfor filnavn"
+
+#: ../meld/meldapp.py:249
+msgid "Open a new tab in an already running instance"
+msgstr "Åpne en ny fane i en Meld som allerede kjører"
+
+#: ../meld/meldapp.py:252
+msgid "Automatically compare all differing files on startup"
+msgstr "Sammenlign automatisk alle ulike filer ved oppstart"
+
+#: ../meld/meldapp.py:255
+msgid "Ignored for compatibility"
+msgstr "Ignorert pga. kompatibilitet"
+
+#: ../meld/meldapp.py:259
+msgid "Set the target file for saving a merge result"
+msgstr "Velg målfilen der fletteresultatet skal lagres"
+
+#: ../meld/meldapp.py:262
+msgid "Automatically merge files"
+msgstr "Automatisk flett filer"
+
+#: ../meld/meldapp.py:266
+msgid "Load a saved comparison from a Meld comparison file"
+msgstr "Last en lagret sammenligning fra en Meld-sammenligningsfil"
+
+#: ../meld/meldapp.py:270
+msgid "Create a diff tab for the supplied files or folders"
+msgstr "Lager en fane med forskjeller for angitte filer eller mapper"
+
+#: ../meld/meldapp.py:290
+#, python-format
+msgid "too many arguments (wanted 0-3, got %d)"
+msgstr "for mange argumenter (ønsket 0-3, fikk %d)"
+
+#: ../meld/meldapp.py:293
+msgid "can’t auto-merge less than 3 files"
+msgstr "kan ikke autoflette mindre enn 3 filer"
+
+#: ../meld/meldapp.py:295
+msgid "can’t auto-merge directories"
+msgstr "kan ikke autoflette mapper"
+
+#: ../meld/meldapp.py:309
+msgid "Error reading saved comparison file"
+msgstr "Klarte ikke lese lagret sammenligningsfil"
+
+#: ../meld/meldapp.py:326
+#, python-format
+msgid "invalid path or URI “%s”"
+msgstr "ugyldig sti eller adresse «%s»"
+
+#: ../meld/meldapp.py:332
+msgid "remote folder “{}” not supported"
+msgstr "ekstern mappe «{}» støttes ikke"
+
+#. TRANSLATORS: This is the label of a new, currently-unnamed file.
+#: ../meld/meldbuffer.py:124
+msgid "<unnamed>"
+msgstr "<uten navn>"
+
+#: ../meld/melddoc.py:68
 msgid "untitled"
 msgstr "uten navn"
 
-#: ../meld/meldwindow.py:125
+#: ../meld/meldwindow.py:47
 msgid "_File"
 msgstr "_Fil"
 
-#: ../meld/meldwindow.py:126
-msgid "_New..."
-msgstr "_Ny …"
+#: ../meld/meldwindow.py:48
+msgid "_New Comparison…"
+msgstr "Ny sammenligning …"
 
-#: ../meld/meldwindow.py:126
+#: ../meld/meldwindow.py:49
 msgid "Start a new comparison"
-msgstr ""
+msgstr "Start en ny sammenligning"
 
-#: ../meld/meldwindow.py:127
+#: ../meld/meldwindow.py:52
 msgid "Save the current file"
-msgstr ""
+msgstr "Lagre gjeldende fil"
 
-#: ../meld/meldwindow.py:129
+#: ../meld/meldwindow.py:54
+msgid "Save As…"
+msgstr "Lagre som …"
+
+#: ../meld/meldwindow.py:55
+msgid "Save the current file with a different name"
+msgstr "Lagre gjeldende fil med nytt navn"
+
+#: ../meld/meldwindow.py:58
 msgid "Close the current file"
-msgstr ""
+msgstr "Lukk gjeldende fil"
 
-#: ../meld/meldwindow.py:130
-msgid "Quit the program"
-msgstr ""
-
-#: ../meld/meldwindow.py:132
+#: ../meld/meldwindow.py:61
 msgid "_Edit"
-msgstr "R_ediger"
+msgstr "_Rediger"
 
-#: ../meld/meldwindow.py:133
+#: ../meld/meldwindow.py:63
 msgid "Undo the last action"
-msgstr ""
+msgstr "Angre forrige handling"
 
-#: ../meld/meldwindow.py:134
+#: ../meld/meldwindow.py:66
 msgid "Redo the last undone action"
-msgstr ""
+msgstr "Gjør om sist angrede handling"
 
-#: ../meld/meldwindow.py:135
+#: ../meld/meldwindow.py:68
 msgid "Cut the selection"
 msgstr "Klipp ut utvalg"
 
-#: ../meld/meldwindow.py:136
+#: ../meld/meldwindow.py:70
 msgid "Copy the selection"
 msgstr "Kopier utvalg"
 
-#: ../meld/meldwindow.py:137
+#: ../meld/meldwindow.py:72
 msgid "Paste the clipboard"
-msgstr ""
+msgstr "Lim inn fra utklippstavla"
 
-#: ../meld/meldwindow.py:138
+#: ../meld/meldwindow.py:74
+msgid "Find…"
+msgstr "Søk …"
+
+#: ../meld/meldwindow.py:74
 msgid "Search for text"
 msgstr "Søk etter tekst"
 
-#: ../meld/meldwindow.py:139
+#: ../meld/meldwindow.py:76
 msgid "Find Ne_xt"
-msgstr "Finn ne_ste"
+msgstr "Finn _neste"
 
-#: ../meld/meldwindow.py:139
+#: ../meld/meldwindow.py:77
 msgid "Search forwards for the same text"
-msgstr ""
+msgstr "Let framover etter samme tekst"
 
-#: ../meld/meldwindow.py:140
+#: ../meld/meldwindow.py:79
 msgid "Find _Previous"
 msgstr "Finn _forrige"
 
-#: ../meld/meldwindow.py:140
+#: ../meld/meldwindow.py:80
 msgid "Search backwards for the same text"
-msgstr ""
+msgstr "Let bakover etter samme tekst"
 
-#: ../meld/meldwindow.py:141
+#: ../meld/meldwindow.py:83
+msgid "_Replace…"
+msgstr "_Erstatt …"
+
+#: ../meld/meldwindow.py:84
 msgid "Find and replace text"
-msgstr ""
+msgstr "Søk og erstatt tekst"
 
-#: ../meld/meldwindow.py:142
-msgid "Prefere_nces"
-msgstr "_Brukervalg"
+#: ../meld/meldwindow.py:86
+msgid "Go to _Line"
+msgstr "Gå til _linje"
 
-#: ../meld/meldwindow.py:142
-msgid "Configure the application"
-msgstr ""
+#: ../meld/meldwindow.py:87
+msgid "Go to a specific line"
+msgstr "Gå til en bestemt linje"
 
-#: ../meld/meldwindow.py:144
+#: ../meld/meldwindow.py:90
 msgid "_Changes"
-msgstr ""
+msgstr "End_ringer"
 
-#: ../meld/meldwindow.py:145
-msgid "Next change"
+#: ../meld/meldwindow.py:91
+msgid "Next Change"
 msgstr "Neste endring"
 
-#: ../meld/meldwindow.py:145
+#: ../meld/meldwindow.py:92
 msgid "Go to the next change"
-msgstr ""
+msgstr "Gå til neste endring"
 
-#: ../meld/meldwindow.py:146
-#, fuzzy
-msgid "Previous change"
-msgstr "Forrige hjelp"
+#: ../meld/meldwindow.py:94
+msgid "Previous Change"
+msgstr "Gå til forrige endring"
 
-#: ../meld/meldwindow.py:146
+#: ../meld/meldwindow.py:95
 msgid "Go to the previous change"
-msgstr ""
+msgstr "Gå til forrige endring"
 
-#: ../meld/meldwindow.py:147
-msgid "Open externally"
+#: ../meld/meldwindow.py:97
+msgid "Open Externally"
 msgstr "Åpne eksternt"
 
-#: ../meld/meldwindow.py:147
+#: ../meld/meldwindow.py:98
 msgid "Open selected file or directory in the default external application"
-msgstr ""
+msgstr "Åpne valgt fil eller mappe i forvalgt eksternt program"
 
-#: ../meld/meldwindow.py:149
+#: ../meld/meldwindow.py:102
 msgid "_View"
-msgstr "_Visning"
+msgstr "_Vis"
 
-#: ../meld/meldwindow.py:150
-msgid "File status"
+#: ../meld/meldwindow.py:103
+msgid "File Status"
 msgstr "Filstatus"
 
-#: ../meld/meldwindow.py:151
-msgid "Version status"
-msgstr ""
+#: ../meld/meldwindow.py:104
+msgid "Version Status"
+msgstr "Versjonsstatus"
 
-#: ../meld/meldwindow.py:152
-#, fuzzy
-msgid "File filters"
-msgstr "<b>Filfilter</b>"
+#: ../meld/meldwindow.py:107
+msgid "Stop the current action"
+msgstr "Stopp gjeldende handling"
+
+#: ../meld/meldwindow.py:110
+msgid "Refresh the view"
+msgstr "Oppdater visning"
+
+#: ../meld/meldwindow.py:114
+msgid "Fullscreen"
+msgstr "Fullskjerm"
+
+#: ../meld/meldwindow.py:115
+msgid "View the comparison in fullscreen"
+msgstr "Vis sammenligningen i fullskjerm"
+
+#: ../meld/meldwindow.py:117
+msgid "_Toolbar"
+msgstr "Verkt_øylinje"
+
+#: ../meld/meldwindow.py:118
+msgid "Show or hide the toolbar"
+msgstr "Vis eller skjul verktøylinja"
+
+#: ../meld/meldwindow.py:127
+msgid "Open Recent"
+msgstr "Åpne nylig"
+
+#: ../meld/meldwindow.py:128
+msgid "Open recent files"
+msgstr "Åpne nylige filer"
+
+#: ../meld/meldwindow.py:150
+msgid "_Meld"
+msgstr "_Meld"
+
+#: ../meld/meldwindow.py:151
+msgid "Quit the program"
+msgstr "Avslutt programmet"
 
 #: ../meld/meldwindow.py:153
-msgid "Stop the current action"
-msgstr ""
+msgid "Prefere_nces"
+msgstr "_Innstillinger"
 
 #: ../meld/meldwindow.py:154
-#, fuzzy
-msgid "Refresh the view"
-msgstr "Oppdater"
+msgid "Configure the application"
+msgstr "Sett opp programmet"
 
-#: ../meld/meldwindow.py:155
-msgid "Reload"
-msgstr "Gjenles"
-
-#: ../meld/meldwindow.py:155
-msgid "Reload the comparison"
-msgstr ""
+#: ../meld/meldwindow.py:156
+msgid "_Contents"
+msgstr "_Innhold"
 
 #: ../meld/meldwindow.py:157
-msgid "_Tabs"
-msgstr "_Faner"
-
-#: ../meld/meldwindow.py:158
-msgid "_Previous Tab"
-msgstr "_Forrige fane"
-
-#: ../meld/meldwindow.py:158
-msgid "Activate previous tab"
-msgstr ""
-
-#: ../meld/meldwindow.py:159
-msgid "_Next Tab"
-msgstr "_Neste fane"
-
-#: ../meld/meldwindow.py:159
-msgid "Activate next tab"
-msgstr ""
-
-#: ../meld/meldwindow.py:160
-msgid "Move Tab _Left"
-msgstr ""
-
-#: ../meld/meldwindow.py:160
-msgid "Move current tab to left"
-msgstr ""
-
-#: ../meld/meldwindow.py:161
-msgid "Move Tab _Right"
-msgstr ""
-
-#: ../meld/meldwindow.py:161
-msgid "Move current tab to right"
-msgstr ""
-
-#: ../meld/meldwindow.py:163
-msgid "_Help"
-msgstr "_Hjelp"
-
-#: ../meld/meldwindow.py:164
-#, fuzzy
-msgid "_Contents"
-msgstr "Kjør/_Fortsett"
-
-#: ../meld/meldwindow.py:164
 msgid "Open the Meld manual"
+msgstr "Åpne Meld-håndboka"
+
+#: ../meld/meldwindow.py:159
+msgid "About this application"
+msgstr "Om dette programmet"
+
+#: ../meld/meldwindow.py:602
+#, python-format
+msgid "Need three files to auto-merge, got: %r"
+msgstr "Trenger tre filer for å autoflette, fikk: %r"
+
+#: ../meld/meldwindow.py:623
+msgid "Cannot compare a mixture of files and directories"
+msgstr "Kan ikke sammenligne en blanding av filer og mapper"
+
+#: ../meld/misc.py:135
+msgid ""
+"{}\n"
+"\n"
+"Meld encountered a critical error while running:\n"
+"<tt>{}</tt>"
 msgstr ""
+"{}\n"
+"\n"
+"Det oppstod en kritisk feil i Meld under kjøring av:\n"
+"<tt>{}</tt>"
 
-#: ../meld/meldwindow.py:165
-msgid "Report _Bug"
-msgstr ""
+#: ../meld/misc.py:254
+#, python-format
+msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
+msgstr "Fant ikke fargeskjemadetaljer for %s-%s. Forsøk å installere på nytt."
 
-#: ../meld/meldwindow.py:165
-msgid "Report a bug in Meld"
-msgstr ""
-
-#: ../meld/meldwindow.py:166
-msgid "About this program"
-msgstr ""
-
-#: ../meld/meldwindow.py:169
-msgid "Full Screen"
-msgstr ""
-
-#: ../meld/meldwindow.py:169
-msgid "View the comparison in full screen"
-msgstr ""
-
-#: ../meld/meldwindow.py:170
-msgid "_Toolbar"
-msgstr ""
-
-#: ../meld/meldwindow.py:170
-msgid "Show or hide the toolbar"
-msgstr ""
-
-#: ../meld/meldwindow.py:171
-#, fuzzy
-msgid "_Statusbar"
-msgstr "Tilstand"
-
-#: ../meld/meldwindow.py:171
-msgid "Show or hide the statusbar"
-msgstr ""
-
-#: ../meld/meldwindow.py:538
-msgid "Switch to this tab"
-msgstr ""
-
-#. exit at first non found directory + file
-#: ../meld/meldwindow.py:629
-#, fuzzy
-msgid "Cannot compare a mixture of files and directories.\n"
-msgstr "Opprett nye kataloger"
-
-#. no common path. empty names get changed to "[None]"
-#: ../meld/misc.py:174
-#, fuzzy
+#: ../meld/misc.py:325
 msgid "[None]"
-msgstr "Ingen"
+msgstr "[Ingen]"
 
-#: ../meld/patchdialog.py:122
-#, fuzzy
-msgid "Save Patch As..."
-msgstr "Lagrer prosjekt...\n"
-
-#: ../meld/preferences.py:37
+#: ../meld/preferences.py:33
 msgid "label"
 msgstr "etikett"
 
-#: ../meld/preferences.py:37
-#, fuzzy
+#: ../meld/preferences.py:33
 msgid "pattern"
-msgstr "Oppdater"
+msgstr "mønster"
 
-#: ../meld/preferences.py:111
-msgid "Only available if you have gnome-python-desktop installed"
-msgstr ""
+#: ../meld/recent.py:105
+msgid "Version control:"
+msgstr "Versjonskontroll:"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:234
-msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
-msgstr ""
+#: ../meld/ui/bufferselectors.py:32
+#, python-brace-format
+msgid "{name} ({charset})"
+msgstr "{name} ({charset})"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:236
-msgid ""
-"OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
-"Desktop.ini\n"
-msgstr ""
+#: ../meld/ui/bufferselectors.py:65 ../meld/ui/bufferselectors.py:73
+msgid "Plain Text"
+msgstr "Ren tekst"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:238
-#, fuzzy, python-format
-msgid "Version Control\t1\t%s\n"
-msgstr "Git versjonskontroll"
+#: ../meld/ui/filechooser.py:69
+msgid "Autodetect Encoding"
+msgstr "Gjenkjenn tegnkoding"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:240
-msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
-msgstr ""
+#: ../meld/ui/filechooser.py:72
+msgid "Current Locale ({})"
+msgstr "Gjeldende lokaltilpassing ({})"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:242
-msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
-msgstr ""
+#: ../meld/ui/notebooklabel.py:63
+msgid "Close tab"
+msgstr "Lukk fane"
 
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:244
-msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:246
-msgid "C++ comment\t0\t//.*\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:248
-msgid "C comment\t0\t/\\*.*?\\*/\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:250
-msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:252
-msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
-msgstr ""
-
-#. TRANSLATORS: translate this string ONLY to the first "\t", leave it and the following parts intact
-#: ../meld/preferences.py:254
-msgid "Script comment\t0\t#.*"
-msgstr ""
-
-#: ../meld/vcview.py:128
-#, fuzzy
-msgid "Co_mmit"
-msgstr "_Sjekk inn"
-
-#: ../meld/vcview.py:128
-#, fuzzy
-msgid "Commit"
-msgstr "_Sjekk inn"
-
-#: ../meld/vcview.py:129
-msgid "_Update"
-msgstr "_Oppdater"
-
-#: ../meld/vcview.py:129
-msgid "Update"
-msgstr "Oppdater"
-
-#: ../meld/vcview.py:130
-#, fuzzy
-msgid "Add to VC"
-msgstr "Legg til i prosjekt"
-
-#: ../meld/vcview.py:131
-#, fuzzy
-msgid "Add _Binary"
-msgstr "Legg _til mål"
-
-#: ../meld/vcview.py:131
-#, fuzzy
-msgid "Add binary to VC"
-msgstr "Legg til i prosjekt"
-
-#: ../meld/vcview.py:132
-#, fuzzy
-msgid "Remove from VC"
-msgstr "Fjern fra prosjekt"
-
-#: ../meld/vcview.py:133
-msgid "_Resolved"
-msgstr ""
-
-#: ../meld/vcview.py:133
-msgid "Mark as resolved for VC"
-msgstr ""
-
-#: ../meld/vcview.py:134
-msgid "Revert to original"
-msgstr ""
-
-#: ../meld/vcview.py:135
-#, fuzzy
-msgid "Delete locally"
-msgstr "Slett"
-
-#: ../meld/vcview.py:139
-#, fuzzy
-msgid "_Flatten"
-msgstr "_Fil"
-
-#: ../meld/vcview.py:139
-#, fuzzy
-msgid "Flatten directories"
-msgstr "Opprett nye kataloger"
-
-#: ../meld/vcview.py:140
-#, fuzzy
-msgid "_Modified"
-msgstr "Endret"
-
-#: ../meld/vcview.py:141
-msgid "_Normal"
-msgstr ""
-
-#: ../meld/vcview.py:141
-#, fuzzy
-msgid "Show normal"
-msgstr "Vis merker"
-
-#: ../meld/vcview.py:142
-msgid "Non _VC"
-msgstr ""
-
-#: ../meld/vcview.py:142
-#, fuzzy
-msgid "Show unversioned files"
-msgstr "Vis signaler fra kjernen"
-
-#: ../meld/vcview.py:143
-#, fuzzy
-msgid "Ignored"
-msgstr "Fje_rn ..."
-
-#: ../meld/vcview.py:143
-#, fuzzy
-msgid "Show ignored files"
-msgstr "Ignorer filer:"
-
-#: ../meld/vcview.py:186 ../meld/vcview.py:318
-msgid "Location"
-msgstr "Lokasjon"
-
-#: ../meld/vcview.py:187
-#, fuzzy
-msgid "Status"
-msgstr "Tilstand"
-
-#: ../meld/vcview.py:188
-#, fuzzy
-msgid "Rev"
-msgstr "Fjern"
-
-#: ../meld/vcview.py:189
-msgid "Tag"
-msgstr ""
-
-#: ../meld/vcview.py:190
-msgid "Options"
-msgstr "Alternativer"
-
-#: ../meld/vcview.py:249
-#, fuzzy
-msgid "Choose one Version Control"
-msgstr "Git versjonskontroll"
-
-#: ../meld/vcview.py:250
-msgid "Only one Version Control in this directory"
-msgstr ""
-
-#. TRANSLATORS: this is an error message when a version control
-#. application isn't installed or can't be found
-#: ../meld/vcview.py:263
+#. Abbreviation for line, column so that it will fit in the status bar
+#: ../meld/ui/statusbar.py:124
 #, python-format
-msgid "%s Not Installed"
-msgstr ""
+msgid "Ln %i, Col %i"
+msgstr "Ln %i, kol %i"
 
-#. TRANSLATORS: this is an error message when a version
-#. controlled repository is invalid or corrupted
-#: ../meld/vcview.py:267
-msgid "Invalid Repository"
-msgstr ""
+#: ../meld/ui/statusbar.py:177
+msgid "Line you want to move the cursor to"
+msgstr "Linje som du vil flytte skrivemerket til"
 
-#: ../meld/vcview.py:276
+#: ../meld/ui/vcdialogs.py:48
+msgid "No files will be committed"
+msgstr "Ingen filer vil legges inn"
+
+#. Translators: First %s is replaced by translated "%d unpushed
+#. commits", second %s is replaced by translated "%d branches"
+#: ../meld/vc/git.py:92
 #, python-format
-msgid "%s (%s)"
-msgstr ""
+msgid "%s in %s"
+msgstr "%s i %s"
 
-#. TRANSLATORS: This is the location of the directory the user is diffing
-#: ../meld/vcview.py:318
+#. Translators: These messages cover the case where there is
+#. only one branch, and are not part of another message.
+#: ../meld/vc/git.py:93 ../meld/vc/git.py:100
+#, python-format
+msgid "%d unpushed commit"
+msgid_plural "%d unpushed commits"
+msgstr[0] "%d udyttet innlegging"
+msgstr[1] "%d udyttede innlegginger"
+
+#: ../meld/vc/git.py:95
+#, python-format
+msgid "%d branch"
+msgid_plural "%d branches"
+msgstr[0] "%d grein"
+msgstr[1] "%d greiner"
+
+#: ../meld/vc/git.py:334
+#, python-format
+msgid "Mode changed from %s to %s"
+msgstr "Endret modus fra %s til %s"
+
+#: ../meld/vc/git.py:342
+msgid "Partially staged"
+msgstr "Delvis køet"
+
+#: ../meld/vc/git.py:342
+msgid "Staged"
+msgstr "Køet"
+
+#. Translators: This is the displayed name of a version control system
+#. when no version control system is actually found.
+#: ../meld/vc/_null.py:37
+msgid "None"
+msgstr "Ingen"
+
+#: ../meld/vc/svn.py:203
+#, python-format
+msgid "Rev %s"
+msgstr "Rev. %s"
+
+#: ../meld/vc/_vc.py:54
+msgid "Merged"
+msgstr "Flettet"
+
+#: ../meld/vc/_vc.py:54
+msgid "Base"
+msgstr "Base"
+
+#: ../meld/vc/_vc.py:54
+msgid "Local"
+msgstr "Lokal"
+
+#: ../meld/vc/_vc.py:54
+msgid "Remote"
+msgstr "Ekstern"
+
+#: ../meld/vc/_vc.py:70
+msgid "Unversioned"
+msgstr "Ikke versjonert"
+
+#: ../meld/vc/_vc.py:73
+msgid "Error"
+msgstr "Feil"
+
+#: ../meld/vc/_vc.py:75
+msgid "Newly added"
+msgstr "Nylig lagt til"
+
+#: ../meld/vc/_vc.py:77
+msgid "Renamed"
+msgstr "Har fått nytt navn"
+
+#: ../meld/vc/_vc.py:78
+msgid "Conflict"
+msgstr "Konflikt"
+
+#: ../meld/vc/_vc.py:79
+msgid "Removed"
+msgstr "Fjernet"
+
+#: ../meld/vc/_vc.py:80
+msgid "Missing"
+msgstr "Mangler"
+
+#: ../meld/vc/_vc.py:81
+msgid "Not present"
+msgstr "Ikke til stede"
+
+#. Translators: This error message is shown when a version
+#. control binary isn't installed.
+#: ../meld/vcview.py:248
+#, python-format
+msgid "%(name)s (%(cmd)s not installed)"
+msgstr "%(name)s (%(cmd)s er ikke installert)"
+
+#. Translators: This error message is shown when a version
+#. controlled repository is invalid.
+#: ../meld/vcview.py:252
+#, python-format
+msgid "%(name)s (Invalid repository)"
+msgstr "%(name)s (ugyldig depot)"
+
+#: ../meld/vcview.py:273
+msgid "No valid version control system found in this folder"
+msgstr "Fant ikke et gyldig versjonskontrollsystem i denne mappa"
+
+#: ../meld/vcview.py:275
+msgid "Only one version control system found in this folder"
+msgstr "Fant kun ett versjonskontrollsystem i denne mappa"
+
+#: ../meld/vcview.py:277
+msgid "Choose which version control system to use"
+msgstr "Velg hvilket versjonskontrollsystem som skal brukes"
+
+#. TRANSLATORS: This is the location of the directory being viewed
+#: ../meld/vcview.py:331
 #, python-format
 msgid "%s: %s"
-msgstr ""
+msgstr "%s: %s"
 
-#: ../meld/vcview.py:362
+#. Initial yield so when we add this to our tasks, we don't
+#. create iterators that may be invalidated.
+#: ../meld/vcview.py:338
+msgid "Scanning repository"
+msgstr "Gjennomsøker depot"
+
+#: ../meld/vcview.py:367
+#, python-format
+msgid "Scanning %s"
+msgstr "Gjennomsøker %s"
+
+#: ../meld/vcview.py:406
 msgid "(Empty)"
-msgstr ""
+msgstr "(Tom)"
 
-#: ../meld/vcview.py:400
+#: ../meld/vcview.py:450
 #, python-format
-msgid "[%s] Fetching differences"
-msgstr ""
+msgid "%s — local"
+msgstr "%s – lokal"
 
-#: ../meld/vcview.py:408
+#: ../meld/vcview.py:451
 #, python-format
-msgid "[%s] Applying patch"
-msgstr ""
+msgid "%s — remote"
+msgstr "%s – ekstern"
 
-#: ../meld/vcview.py:501
+#: ../meld/vcview.py:459
+#, python-format
+msgid "%s (local, merge, remote)"
+msgstr "%s (lokal, flett, ekstern)"
+
+#: ../meld/vcview.py:464
+#, python-format
+msgid "%s (remote, merge, local)"
+msgstr "%s (ekstern, flett, lokal)"
+
+#: ../meld/vcview.py:475
+#, python-format
+msgid "%s — repository"
+msgstr "%s – depot"
+
+#: ../meld/vcview.py:481
+#, python-format
+msgid "%s (working, repository)"
+msgstr "%s (arbeidskopi, depot)"
+
+#: ../meld/vcview.py:485
+#, python-format
+msgid "%s (repository, working)"
+msgstr "%s (depot, arbeidskopi)"
+
+#: ../meld/vcview.py:674
+msgid "Remove folder and all its files?"
+msgstr "Fjern mappe og alle filene i den?"
+
+#: ../meld/vcview.py:676
+msgid ""
+"This will remove all selected files and folders, and all files within any "
+"selected folders, from version control."
+msgstr ""
+"Dette vil fjerne alle valgte filer og mapper, og alle filer inni valgte "
+"mapper fra versjonskontrollsystemet."
+
+#: ../meld/vcview.py:785
+msgid "Clear"
+msgstr "Tøm"
+
+#~ msgid ""
+#~ "If true, whitespace characters will be drawn in comparisons even if they "
+#~ "are not in a changed area."
+#~ msgstr ""
+#~ "Velg for å tegne blanktegn i sammenligninger selv om de ikke er i et "
+#~ "område som er endret."
+
+#~ msgid "Show overview source map"
+#~ msgstr "Vis oversiktsstolpe"
+
+#~ msgid ""
+#~ "If true, file comparisons will have paired source maps for compared files."
+#~ msgstr ""
+#~ "Hvis sann så vil filsammenligninger vise to fargekodede stolper som "
+#~ "illustrerer forskjeller og likheter mellom filene."
+
+#~ msgid "Style of overview map"
+#~ msgstr "Oversiktsstolpens stil"
+
+#~ msgid "Style options for how the overview map is displayed."
+#~ msgstr "Velg hvordan oversiktsstolpen skal vises."
+
+#~ msgid "Classic (Meld)"
+#~ msgstr "Klassisk (Meld)"
+
+#~ msgctxt "shortcut window"
+#~ msgid "Panes"
+#~ msgstr "Ruter"
+
+#~ msgid "Stop"
+#~ msgstr "Stopp"
+
+#~ msgid "Revert files…"
+#~ msgstr "Gjenopprett filer …"
+
+#~ msgid "Overview Map"
+#~ msgstr "Oversiktsstolpe"
+
+#~ msgid "Version control console"
+#~ msgstr "Versjonskontroll-konsoll"
+
+#~ msgid "Comparison"
+#~ msgstr "Sammenligning"
+
+#~ msgid "_Delete selected"
+#~ msgstr "_Slett valgte"
+
+#~ msgid "_Open Externally"
+#~ msgstr "Åpne e_ksternt"
+
+#~ msgid "Copy chunks"
+#~ msgstr "Kopier stykker"
+
+#~ msgid "_Undo"
+#~ msgstr "_Angre"
+
+#~ msgid "_Redo"
+#~ msgstr "_Gjør om"
+
+#~ msgid "Cu_t"
+#~ msgstr "Klipp _ut"
+
+#~ msgid "_Copy"
+#~ msgstr "_Kopier"
+
+#~ msgid "_Paste"
+#~ msgstr "_Lim inn"
+
+#~ msgid "Switch between Find and Find-and-Replace"
+#~ msgstr "Bytt mellom «søk» og «søk og erstatt»"
+
+#~ msgid "Folder"
+#~ msgstr "Mappe"
+
+#~ msgid "Code Overview"
+#~ msgstr "Kodeoversikt"
+
+#~ msgid "Show overview map"
+#~ msgstr "Vis oversiktsstolpe"
+
+#~ msgid "Overview map style:"
+#~ msgstr "Oversiktsstolpens stil:"
+
+#~ msgid "Simple change map"
+#~ msgstr "Enkelt endringskart"
+
+#~ msgid "Compact source map"
+#~ msgstr "Lite kildekart"
+
+#~ msgid "Full source map"
+#~ msgstr "Stort kildekart"
+
+#~ msgid "Search recent comparisons…"
+#~ msgstr "Søk nylige sammenligninger …"
+
+#~ msgid "Show whitespace"
+#~ msgstr "Vis blanktegn"
+
+#~ msgid "Text wrapping"
+#~ msgstr "Tekstbryting"
+
+#~ msgid "Commit…"
+#~ msgstr "Legg inn …"
+
+#~ msgid "Update"
+#~ msgstr "Oppdater"
+
+#~ msgid "Add"
+#~ msgstr "Legg til"
+
+#~ msgid "Remove"
+#~ msgstr "Fjern"
+
+#~ msgid "Mark as Resolved"
+#~ msgstr "Merk som løst"
+
+#~ msgid "Revert"
+#~ msgstr "Tilbakestill"
+
+#~ msgid "Filename"
+#~ msgstr "Filnavn"
+
+#~ msgid "%(name)s (not found)"
+#~ msgstr "%(name)s (fant ikke)"
+
+#~ msgid "org.gnome.meld"
+#~ msgstr "org.gnome.meld"
+
+#~ msgid ""
+#~ "This is a new stable release series. Notable changes compared to 3.18 "
+#~ "include:"
+#~ msgstr ""
+#~ "Dette er en ny serie stabile utgivelser. Blant endringer fra 3.18 kan "
+#~ "nevnes:"
+
+#~ msgid "Support comparing remote files"
+#~ msgstr "Støtter sammenligning av eksterne filer"
+
+#~ msgid "Much faster comparisons for folders with lots of files"
+#~ msgstr "Mye raskere sammenligninger for mapper med mange filer"
+
+#~ msgid "Better handling of encoding failures during file load and save"
+#~ msgstr "Håndterer bedre tegnkodingsfeil under lasting og lagring av filer"
+
+#~ msgid "New status bar for view-specific editor settings"
+#~ msgstr ""
+#~ "Ny statuslinje for visningsspesifikt oppsett av redigeringsprogrammet"
+
+#~ msgid ""
+#~ "Support user-selected file encodings in dialogs and the new status bar"
+#~ msgstr ""
+#~ "Støtter brukervalgte filkodinger i dialogvinduer og den nye statuslinja"
+
+#~ msgid "New automated Windows builds using GNOME Gitlab CI"
+#~ msgstr "Ny automatisert bygging av Windows-utgaver med GNOME Gitlab CI"
+
+#~ msgid "Improved support for Flatpak builds"
+#~ msgstr "Forbedret støtte for Flatpak-utgivelser"
+
+#~ msgid "Updated translations"
+#~ msgstr "Oppdaterte oversettelser"
+
+#~ msgid ""
+#~ "Some files have been modified.\n"
+#~ "Which ones would you like to save?"
+#~ msgstr ""
+#~ "Noen filer har blitt endret.\n"
+#~ "Hvilke vil du lagre?"
+
+#~ msgid "_Save Selected"
+#~ msgstr "_Lagre valgt"
+
+#~ msgid "_Search for"
+#~ msgstr "_Søk etter"
+
+#~ msgid "Choose Files"
+#~ msgstr "Velg filer"
+
+#~ msgid "_Three Way Compare"
+#~ msgstr "_Treveis sammenligning"
+
+#~ msgid "Mine"
+#~ msgstr "Min"
+
+#~ msgid "Original"
+#~ msgstr "Opprinnelig"
+
+#~ msgid "Other"
+#~ msgstr "Andre"
+
+#~ msgid "Select VC Directory"
+#~ msgstr "Velg katalog under versjonskontroll"
+
+#~ msgid "Directory"
+#~ msgstr "Katalog"
+
+#~ msgid "Create Patch"
+#~ msgstr "Lag endringsfil"
+
+#~ msgid "Create a patch"
+#~ msgstr "Lag en endringsfil («patch»)"
+
+#~ msgid "Ignore changes which insert or delete blank lines"
+#~ msgstr "Se bort fra endringer som setter inn eller sletter tomme linjer"
+
+#~ msgid "Loading"
+#~ msgstr "Laster"
+
+#~ msgid "When loading, try these codecs in order. (e.g. utf8, iso8859)"
+#~ msgstr ""
+#~ "Bruk disse tegnkodingene i rekkefølge ved lasting. (F.eks. utf8, iso8859)."
+
+#~ msgid "Encoding"
+#~ msgstr "Tegnkoding"
+
 #, fuzzy
-msgid "Select some files first."
-msgstr "Velg header-fil"
+#~ msgid "VC Log"
+#~ msgstr "Vis logg"
 
-#: ../meld/vcview.py:574
-#, python-format
-msgid ""
-"\n"
-"                    Invoking 'patch' failed.\n"
-"                    \n"
-"                    Maybe you don't have 'GNU patch' installed,\n"
-"                    or you use an untested version of %s.\n"
-"                    \n"
-"                    Please send email bug report to:\n"
-"                    meld-list@gnome.org\n"
-"                    \n"
-"                    Containing the following information:\n"
-"                    \n"
-"                    - meld version: '%s'\n"
-"                    - source control software type: '%s'\n"
-"                    - source control software version: 'X.Y.Z'\n"
-"                    - the output of '%s somefile.txt'\n"
-"                    - patch command: '%s'\n"
-"                    (no need to actually run it, just provide\n"
-"                    the command line) \n"
-"                    \n"
-"                    Replace 'X.Y.Z' by the actual version for the\n"
-"                    source control software you use.\n"
-"                    "
-msgstr ""
-
-#: ../meld/ui/findbar.py:127
-#, fuzzy, python-format
-msgid ""
-"Regular expression error\n"
-"'%s'"
-msgstr "Vanlig uttrykk"
-
-#: ../meld/ui/historyentry.py:293
-msgid "_Browse..."
-msgstr ""
-
-#: ../meld/ui/historyentry.py:301
-msgid "Path"
-msgstr ""
-
-#: ../meld/ui/historyentry.py:302
-msgid "Path to file"
-msgstr ""
-
-#: ../meld/ui/historyentry.py:303
-msgid "Pop up a file selector to choose a file"
-msgstr ""
-
-#: ../meld/ui/historyentry.py:441
 #, fuzzy
-msgid "Select directory"
-msgstr "Velg katalog"
+#~ msgid "Case"
+#~ msgstr "Lukk"
 
-#: ../meld/ui/historyentry.py:445
 #, fuzzy
-msgid "Select file"
-msgstr "Velg header-fil"
+#~ msgid "Ignore case of entries"
+#~ msgstr "Ignorer kataloger:"
 
-#: ../meld/ui/notebooklabel.py:60
-msgid "Close tab"
-msgstr ""
+#~ msgid ""
+#~ "'%s' exists.\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "«%s» eksisterer.\n"
+#~ "Vil du overskrive?"
 
-#. These are the possible states of files. Be sure to get the colons correct.
-#: ../meld/vc/_vc.py:40
-msgid ""
-"Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing"
-msgstr ""
+#~ msgid ""
+#~ "'%s' is a directory.\n"
+#~ "Remove recursively?"
+#~ msgstr ""
+#~ "«%s» er en mappe.\n"
+#~ "Vil du slette gjennomgripende?"
 
-#: ../meld/vc/cvs.py:163
-#, python-format
-msgid ""
-"Error converting to a regular expression\n"
-"The pattern was '%s'\n"
-"The error was '%s'"
-msgstr ""
+#~ msgid ""
+#~ "Error removing %s\n"
+#~ "\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Klarte ikke fjerne %s.\n"
+#~ "\n"
+#~ "%s."
+
+#~ msgid "%i second"
+#~ msgid_plural "%i seconds"
+#~ msgstr[0] "%i sekund"
+#~ msgstr[1] "%i sekunder"
+
+#~ msgid "%i minute"
+#~ msgid_plural "%i minutes"
+#~ msgstr[0] "%i minutt"
+#~ msgstr[1] "%i minutter"
+
+#~ msgid "%i hour"
+#~ msgid_plural "%i hours"
+#~ msgstr[0] "%i time"
+#~ msgstr[1] "%i timer"
+
+#~ msgid "%i day"
+#~ msgid_plural "%i days"
+#~ msgstr[0] "%i dag"
+#~ msgstr[1] "%i dager"
+
+#~ msgid "%i week"
+#~ msgid_plural "%i weeks"
+#~ msgstr[0] "%i uke"
+#~ msgstr[1] "%i uker"
+
+#~ msgid "%i month"
+#~ msgid_plural "%i months"
+#~ msgstr[0] "%i måned"
+#~ msgstr[1] "%i måneder"
+
+#~ msgid "%i year"
+#~ msgid_plural "%i years"
+#~ msgstr[0] "%i år"
+#~ msgstr[1] "%i år"
+
+#~ msgid "Merge all non-conflicting"
+#~ msgstr "Flett alle uten konflikter"
+
+#~ msgid "INS"
+#~ msgstr "INS"
+
+#~ msgid "OVR"
+#~ msgstr "OVR"
+
+#~ msgid "[%s] Set num panes"
+#~ msgstr "[%s] Velg antall paneler"
+
+#~ msgid "[%s] Opening files"
+#~ msgstr "[%s] Åpner filer"
+
+#~ msgid "[%s] Reading files"
+#~ msgstr "[%s] Leser filer"
+
+#~ msgid "%s is not in encodings: %s"
+#~ msgstr "%s er ikke i tegnkodingene: %s"
+
+#~ msgid ""
+#~ "\"%s\" exists!\n"
+#~ "Overwrite?"
+#~ msgstr ""
+#~ "«%s» eksisterer!\n"
+#~ "Overskriv?"
+
+#~ msgid ""
+#~ "Error writing to %s\n"
+#~ "\n"
+#~ "%s."
+#~ msgstr ""
+#~ "Klarte ikke skrive til %s.\n"
+#~ "\n"
+#~ "%s."
+
+#~ msgid "Choose a name for buffer %i."
+#~ msgstr "Velg et navn for bufferen %i."
+
+#~ msgid ""
+#~ "This file '%s' contains a mixture of line endings.\n"
+#~ "\n"
+#~ "Which format would you like to use?"
+#~ msgstr ""
+#~ "Denne fila «%s» har flere typer linjeslutter.\n"
+#~ "\n"
+#~ "Hvilket format vil du bruke?"
+
+#~ msgid ""
+#~ "'%s' contains characters not encodable with '%s'\n"
+#~ "Would you like to save as UTF-8?"
+#~ msgstr ""
+#~ "«%s» inneholder tegn som ikke kan kodes med «%s».\n"
+#~ "Vil du lagre som UTF-8?"
+
+#~ msgid ""
+#~ "Reloading will discard changes in:\n"
+#~ "%s\n"
+#~ "\n"
+#~ "You cannot undo this operation."
+#~ msgstr ""
+#~ "Ny innlasting vil forkaste endringene i:\n"
+#~ "%s\n"
+#~ "\n"
+#~ "Du kan ikke angre dette."
+
+#~ msgid "dir"
+#~ msgstr "mappe"
+
+#~ msgid "Start a 2- or 3-way directory comparison"
+#~ msgstr "Start en 2- eller 3-veis mappesammenligning"
+
+#~ msgid "Start a comparison between file and dir/file"
+#~ msgstr "Start en sammenligning mellom fil og mappe/fil"
+
+#~ msgid "can't compare more than three directories"
+#~ msgstr "kan ikke sammenligne mer enn tre mapper"
+
+#~ msgid "_New..."
+#~ msgstr "_Ny …"
+
+#~ msgid "Activate previous tab"
+#~ msgstr "Aktiver forrige fane"
+
+#~ msgid "_Next Tab"
+#~ msgstr "_Neste fane"
+
+#~ msgid "Activate next tab"
+#~ msgstr "Aktiver neste fane"
+
+#~ msgid "Move current tab to left"
+#~ msgstr "Flytt gjeldende fane til venstre"
+
+#~ msgid "Move current tab to right"
+#~ msgstr "Flytt gjeldende fane til høyre"
+
+#~ msgid "Report _Bug"
+#~ msgstr "Rapporter _feil"
+
+#~ msgid "Report a bug in Meld"
+#~ msgstr "Rapporter en feil i Meld"
+
+#~ msgid "About this program"
+#~ msgstr "Om programmet"
+
+#~ msgid "Show or hide the statusbar"
+#~ msgstr "Vis eller skjul statuslinja"
+
+#~ msgid "Only available if you have gnome-python-desktop installed"
+#~ msgstr "Kun tilgjengelig hvis du har «gnome-python-desktop» installert"
+
+#~ msgid "Backups\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+#~ msgstr "Reservekopier\t1\t#*# .#* ~* *~ *.{orig,bak,swp}\n"
+
+#~ msgid ""
+#~ "OS-specific metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db "
+#~ "Desktop.ini\n"
+#~ msgstr ""
+#~ "OS-spesifikke metadata\t0\t.DS_Store ._* .Spotlight-V100 .Trashes Thumbs."
+#~ "db Desktop.ini\n"
+
+#~ msgid "Binaries\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+#~ msgstr "Binærfiler\t1\t*.{pyc,a,obj,o,so,la,lib,dll}\n"
+
+#~ msgid "Media\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+#~ msgstr "Mediefiler\t0\t*.{jpg,gif,png,wav,mp3,ogg,xcf,xpm}"
+
+#~ msgid "CVS keywords\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+#~ msgstr "CVS-nøkkelord\t0\t\\$\\w+(:[^\\n$]+)?\\$\n"
+
+#~ msgid "C++ comment\t0\t//.*\n"
+#~ msgstr "C++-kommentar\t0\t//.*\n"
+
+#~ msgid "C comment\t0\t/\\*.*?\\*/\n"
+#~ msgstr "C-kommentar\t0\t/\\*.*?\\*/\n"
+
+#~ msgid "All whitespace\t0\t[ \\t\\r\\f\\v]*\n"
+#~ msgstr "Alle blanktegn\t0\t[ \\t\\r\\f\\v]*\n"
+
+#~ msgid "Leading whitespace\t0\t^[ \\t\\r\\f\\v]*\n"
+#~ msgstr "Ledende blanktegn\t0\t^[ \\t\\r\\f\\v]*\n"
+
+#~ msgid "Script comment\t0\t#.*"
+#~ msgstr "Skriptkommentar\t0\t#.*"
+
+#, fuzzy
+#~ msgid "Add to VC"
+#~ msgstr "Legg til i prosjekt"
+
+#, fuzzy
+#~ msgid "Add _Binary"
+#~ msgstr "Legg _til mål"
+
+#, fuzzy
+#~ msgid "Add binary to VC"
+#~ msgstr "Legg til i prosjekt"
+
+#, fuzzy
+#~ msgid "Remove from VC"
+#~ msgstr "Fjern fra prosjekt"
+
+#~ msgid "Delete locally"
+#~ msgstr "Slett lokalt"
+
+#, fuzzy
+#~ msgid "Rev"
+#~ msgstr "Fjern"
+
+#~ msgid "Options"
+#~ msgstr "Alternativer"
+
+#~ msgid "%s Not Installed"
+#~ msgstr "%s er ikke installert"
+
+#~ msgid "%s (%s)"
+#~ msgstr "%s (%s)"
+
+#~ msgid "[%s] Applying patch"
+#~ msgstr "[%s] Påfører endringer"
+
+#~ msgid "Select some files first."
+#~ msgstr "Velg noen filer først."
+
+#~ msgid ""
+#~ "Regular expression error\n"
+#~ "'%s'"
+#~ msgstr ""
+#~ "Feil i regulært uttrykk.\n"
+#~ "«%s»"
+
+#~ msgid "Path"
+#~ msgstr "Sti"
+
+#~ msgid "Path to file"
+#~ msgstr "Sti til fila"
+
+#~ msgid "Pop up a file selector to choose a file"
+#~ msgstr "Sprett opp en filvelger for å velge en fil"
+
+#~ msgid ""
+#~ "Ignored:Unversioned:::Error::Newly added:Modified:Conflict:Removed:Missing"
+#~ msgstr ""
+#~ "Ignorert:Ikke versjonskontrollert:::Feil::Nylig lagt til:Endret:Konflikt:"
+#~ "Fjernet:Mangler"
+
+#~ msgid ""
+#~ "Error converting to a regular expression\n"
+#~ "The pattern was '%s'\n"
+#~ "The error was '%s'"
+#~ msgstr ""
+#~ "Klarte ikke konvertere til et regulært uttrykk.\n"
+#~ "Mønsteret er «%s».\n"
+#~ "Feilmeldingen er «%s»."
