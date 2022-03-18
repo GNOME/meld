@@ -1,17 +1,17 @@
 # Hungarian translation for meld.
-# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021. Free Software Foundation, Inc.
+# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
 #
 # Csécsy László <boobaa at ajrg dot hu>, 2005.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013, 2014, 2015, 2016.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2017, 2018, 2019, 2020, 2021.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2017, 2018, 2019, 2020, 2021, 2022.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-03-05 22:54+0000\n"
-"PO-Revision-Date: 2021-03-18 01:39+0100\n"
+"POT-Creation-Date: 2022-03-15 12:52+0000\n"
+"PO-Revision-Date: 2022-03-18 01:39+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -22,7 +22,7 @@ msgstr ""
 "X-Generator: Lokalize 19.12.3\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
-#: meld/resources/ui/appwindow.ui:9
+#: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
 msgid "Meld"
 msgstr "Meld"
 
@@ -85,10 +85,22 @@ msgid "Default window fullscreen state"
 msgstr "Ablak alapértelmezett teljes képernyős állapota"
 
 #: data/org.gnome.meld.gschema.xml:58
+msgid "Prefer application-wide dark theme"
+msgstr "Alkalmazásszintű sötét téma előnyben részesítése"
+
+#: data/org.gnome.meld.gschema.xml:59
+msgid ""
+"If true, the GTK dark theme variant will be used, if available. Note that "
+"this is separate from the syntax highlighting scheme."
+msgstr ""
+"Ha igaz, akkor a GTK sötét téma változata lesz használva, ha elérhető. Ne"
+" feledje, hogy ez független a szintaxiskiemelő sémától."
+
+#: data/org.gnome.meld.gschema.xml:65
 msgid "Additional automatically detected text encodings"
 msgstr "További automatikusan felismert szövegkódolások"
 
-#: data/org.gnome.meld.gschema.xml:59
+#: data/org.gnome.meld.gschema.xml:66
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -101,39 +113,39 @@ msgstr ""
 "kódolása mindig felhasználásra kerül, a felhasználó területi beállításától "
 "függően más kódolások is kipróbálhatók."
 
-#: data/org.gnome.meld.gschema.xml:66
+#: data/org.gnome.meld.gschema.xml:73
 msgid "Width of an indentation step"
 msgstr "Behúzási lépés szélessége"
 
-#: data/org.gnome.meld.gschema.xml:67
+#: data/org.gnome.meld.gschema.xml:74
 msgid "The number of spaces to use for a single indent step"
 msgstr "Egy behúzási lépéshez használandó szóközök száma"
 
-#: data/org.gnome.meld.gschema.xml:71
+#: data/org.gnome.meld.gschema.xml:78
 msgid "Whether to indent using spaces or tabs"
 msgstr "A behúzáshoz szóközök vagy tabok használandók-e"
 
-#: data/org.gnome.meld.gschema.xml:72
+#: data/org.gnome.meld.gschema.xml:79
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr ""
 "Ha igaz, akkor minden új behúzás szóközöket fog használni tabulátorok "
 "helyett."
 
-#: data/org.gnome.meld.gschema.xml:76 meld/resources/ui/statusbar-menu.ui:5
+#: data/org.gnome.meld.gschema.xml:83 meld/resources/ui/statusbar-menu.ui:5
 msgid "Show line numbers"
 msgstr "Sorszámok megjelenítése"
 
-#: data/org.gnome.meld.gschema.xml:77
+#: data/org.gnome.meld.gschema.xml:84
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr ""
 "Ha igaz, akkor a sorszámok meg fognak jelenni a fájl-összehasonlítások "
 "margóján."
 
-#: data/org.gnome.meld.gschema.xml:81
+#: data/org.gnome.meld.gschema.xml:88
 msgid "Highlight syntax"
 msgstr "Szintaxiskiemelés"
 
-#: data/org.gnome.meld.gschema.xml:82
+#: data/org.gnome.meld.gschema.xml:89
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
@@ -141,21 +153,21 @@ msgstr ""
 "A szintaxis kiemelése az összehasonlításokban. A Meld saját színkiemelése "
 "miatt ez alapesetben ki van kapcsolva."
 
-#: data/org.gnome.meld.gschema.xml:86
+#: data/org.gnome.meld.gschema.xml:93
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Szintaxiskiemeléshez használandó színséma"
 
-#: data/org.gnome.meld.gschema.xml:87
+#: data/org.gnome.meld.gschema.xml:94
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr ""
 "A GtkSourceView használja a szintaxiskiemeléshez használandó színek "
 "meghatározásához"
 
-#: data/org.gnome.meld.gschema.xml:91
+#: data/org.gnome.meld.gschema.xml:98
 msgid "Draw whitespace"
 msgstr "Üres helyek kirajzolása"
 
-#: data/org.gnome.meld.gschema.xml:92
+#: data/org.gnome.meld.gschema.xml:99
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
@@ -163,11 +175,11 @@ msgstr ""
 "Ha igaz, akkor az üres hely karakterek ki lesznek rajzolva az "
 "összehasonlításokban, még akkor is ha nincsenek a megváltoztatott területen."
 
-#: data/org.gnome.meld.gschema.xml:101
+#: data/org.gnome.meld.gschema.xml:108
 msgid "Wrap mode"
 msgstr "Tördelés módja"
 
-#: data/org.gnome.meld.gschema.xml:102
+#: data/org.gnome.meld.gschema.xml:109
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
@@ -177,11 +189,11 @@ msgstr ""
 "törni. Lehetséges értékek: „none” (ne törjön), „char” (bármely karakter) "
 "vagy „word” (csak szavak végén)."
 
-#: data/org.gnome.meld.gschema.xml:109 meld/resources/ui/statusbar-menu.ui:13
+#: data/org.gnome.meld.gschema.xml:116 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
 msgstr "Aktuális sor kiemelése"
 
-#: data/org.gnome.meld.gschema.xml:110
+#: data/org.gnome.meld.gschema.xml:117
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
@@ -189,23 +201,23 @@ msgstr ""
 "Ha igaz, akkor a kurzort tartalmazó sor ki lesz emelve a fájl-"
 "összehasonlításokban."
 
-#: data/org.gnome.meld.gschema.xml:114
+#: data/org.gnome.meld.gschema.xml:121
 msgid "Use the system default monospace font"
 msgstr ""
 "A rendszer alapértelmezett rögzített szélességű betűkészletének használata"
 
-#: data/org.gnome.meld.gschema.xml:115
+#: data/org.gnome.meld.gschema.xml:122
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr ""
 "Ha hamis, akkor a rendszer rögzített szélességű betűkészlete helyett az "
 "egyéni lesz használva."
 
-#: data/org.gnome.meld.gschema.xml:119
+#: data/org.gnome.meld.gschema.xml:126
 msgid "Custom font"
 msgstr "Egyéni betűkészlet"
 
-#: data/org.gnome.meld.gschema.xml:120
+#: data/org.gnome.meld.gschema.xml:127
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
@@ -213,41 +225,41 @@ msgstr ""
 "Használandó egyéni betűkészlet, karakterláncként tárolva és Pango "
 "betűleírásként feldolgozva."
 
-#: data/org.gnome.meld.gschema.xml:126
+#: data/org.gnome.meld.gschema.xml:133
 msgid "Show overview source map"
 msgstr "Áttekintő forrástérkép megjelenítése"
 
-#: data/org.gnome.meld.gschema.xml:127
+#: data/org.gnome.meld.gschema.xml:134
 msgid ""
 "If true, file comparisons will have paired source maps for compared files."
 msgstr ""
 "Ha igaz, akkor a fájl-összehasonlítások összepárosított forrástérképeket "
 "fognak tartalmazni az összehasonlított fájlokhoz."
 
-#: data/org.gnome.meld.gschema.xml:132
+#: data/org.gnome.meld.gschema.xml:139
 msgid "Style of overview map"
 msgstr "Az áttekintő térkép stílusa"
 
-#: data/org.gnome.meld.gschema.xml:133
+#: data/org.gnome.meld.gschema.xml:140
 msgid "Style options for how the overview map is displayed."
 msgstr "Az áttekintő térkép megjelenítését szabályozó stílusbeállítások."
 
-#: data/org.gnome.meld.gschema.xml:139
+#: data/org.gnome.meld.gschema.xml:146
 msgid "Ignore blank lines when comparing files"
 msgstr "Üres sorok figyelmen kívül hagyása fájlok összehasonlításakor"
 
-#: data/org.gnome.meld.gschema.xml:140
+#: data/org.gnome.meld.gschema.xml:147
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr ""
 "Ha igaz, akkor az üres sorok ki lesznek hagyva a fájlok közti különbségek "
 "kiemelésekor."
 
-#: data/org.gnome.meld.gschema.xml:147
+#: data/org.gnome.meld.gschema.xml:154
 msgid "Use the system default editor"
 msgstr "A rendszer alapértelmezett szerkesztőjének használata"
 
-#: data/org.gnome.meld.gschema.xml:148
+#: data/org.gnome.meld.gschema.xml:155
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
@@ -255,11 +267,11 @@ msgstr ""
 "Ha hamis, akkor a custom-editor-command lesz a rendszer alapértelmezett "
 "szerkesztője helyett használva."
 
-#: data/org.gnome.meld.gschema.xml:152
+#: data/org.gnome.meld.gschema.xml:159
 msgid "The custom editor launch command"
 msgstr "Az egyéni szerkesztőt indító parancs"
 
-#: data/org.gnome.meld.gschema.xml:153
+#: data/org.gnome.meld.gschema.xml:160
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
@@ -267,22 +279,22 @@ msgstr ""
 "Az egyéni szerkesztőt indító parancs. Ez a kulcs korlátozottan támogat "
 "sablonokat is. Jelenleg a {file} és {line} a felismert helyettesítők."
 
-#: data/org.gnome.meld.gschema.xml:159
+#: data/org.gnome.meld.gschema.xml:166
 msgid "Columns to display"
 msgstr "Megjelenítendő oszlopok"
 
-#: data/org.gnome.meld.gschema.xml:160
+#: data/org.gnome.meld.gschema.xml:167
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr ""
 "Oszlopnevek listája a mappa-összehasonlításban, és hogy megjelenítendők-e."
 
-#: data/org.gnome.meld.gschema.xml:164 meld/resources/ui/preferences.ui:935
+#: data/org.gnome.meld.gschema.xml:171 meld/resources/ui/preferences.ui:951
 msgid "Ignore symbolic links"
 msgstr "Szimbolikus linkek figyelmen kívül hagyása"
 
-#: data/org.gnome.meld.gschema.xml:165
+#: data/org.gnome.meld.gschema.xml:172
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
@@ -290,11 +302,11 @@ msgstr ""
 "Ha igaz, akkor a mappa-összehasonlítások nem követik a szimbolikus linkeket "
 "a mappafa bejárásakor."
 
-#: data/org.gnome.meld.gschema.xml:169
+#: data/org.gnome.meld.gschema.xml:176
 msgid "Use shallow comparison"
 msgstr "Sekély összehasonlítás használata"
 
-#: data/org.gnome.meld.gschema.xml:170
+#: data/org.gnome.meld.gschema.xml:177
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
@@ -304,11 +316,11 @@ msgstr ""
 "módosítási idő alapján hasonlítják össze, a fájlokat azonosnak tekintik a "
 "méret és módosítási idő egyezésekor, és eltérőnek egyébként."
 
-#: data/org.gnome.meld.gschema.xml:174
+#: data/org.gnome.meld.gschema.xml:181
 msgid "File timestamp resolution"
 msgstr "Fájlidőbélyeg felbontása"
 
-#: data/org.gnome.meld.gschema.xml:175
+#: data/org.gnome.meld.gschema.xml:182
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -320,11 +332,11 @@ msgstr ""
 "számítanának. Ez eltérő időbélyeg-felbontással rendelkező fájlrendszereken "
 "lévő fájlok összehasonlításakor hasznos."
 
-#: data/org.gnome.meld.gschema.xml:179 meld/resources/ui/preferences.ui:836
+#: data/org.gnome.meld.gschema.xml:186 meld/resources/ui/preferences.ui:852
 msgid "Apply text filters during folder comparisons"
 msgstr "Szövegszűrők alkalmazása mappa-összehasonlításkor"
 
-#: data/org.gnome.meld.gschema.xml:180
+#: data/org.gnome.meld.gschema.xml:187
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
@@ -334,21 +346,21 @@ msgstr ""
 "szövegszűrőket is alkalmaznak, valamint levágják az üres sorokat, és "
 "mellőzik az üreshely-különbségeket."
 
-#: data/org.gnome.meld.gschema.xml:184
+#: data/org.gnome.meld.gschema.xml:191
 msgid "File status filters"
 msgstr "Fájlállapotszűrők"
 
-#: data/org.gnome.meld.gschema.xml:185
+#: data/org.gnome.meld.gschema.xml:192
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr ""
 "A mappa-összehasonlításban látható fájlok szűrésére használt állapotok "
 "listája."
 
-#: data/org.gnome.meld.gschema.xml:191
+#: data/org.gnome.meld.gschema.xml:198
 msgid "Show the version control console output"
 msgstr "A verziókövető konzolos kimenetének megjelenítése"
 
-#: data/org.gnome.meld.gschema.xml:192
+#: data/org.gnome.meld.gschema.xml:199
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
@@ -357,21 +369,21 @@ msgstr ""
 "szakasz, amely a verziókövetési műveletekhez használt parancsokat jeleníti "
 "meg."
 
-#: data/org.gnome.meld.gschema.xml:196
+#: data/org.gnome.meld.gschema.xml:203
 msgid "Version control pane position"
 msgstr "Verziókövetés ablaktábla pozíciója"
 
-#: data/org.gnome.meld.gschema.xml:197
+#: data/org.gnome.meld.gschema.xml:204
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr "A fő verziókövetési fa magassága, amikor a konzol ablaktábla látható."
 
-#: data/org.gnome.meld.gschema.xml:201
+#: data/org.gnome.meld.gschema.xml:208
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Verzió-összehasonlítások megjelenítése mint bal-helyi / jobb-távoli"
 
-#: data/org.gnome.meld.gschema.xml:202
+#: data/org.gnome.meld.gschema.xml:209
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
@@ -381,13 +393,13 @@ msgstr ""
 "sémát használják-e a fájlok megjelenítéséhez az ablaktáblákon. Ha nincs "
 "bejelölve, a bal-övék, jobb-enyém séma kerül felhasználásra."
 
-#: data/org.gnome.meld.gschema.xml:206
+#: data/org.gnome.meld.gschema.xml:213
 msgid "Order for files in three-way version control merge comparisons"
 msgstr ""
 "Fájlok sorrendje a háromutas verziókövetési összefésülési "
 "összehasonlításokban"
 
-#: data/org.gnome.meld.gschema.xml:207
+#: data/org.gnome.meld.gschema.xml:214
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
@@ -398,11 +410,11 @@ msgstr ""
 "összehasonlításokat befolyásolja, így csak a Melden belüli összefésülésekhez/"
 "ütközésfeloldásokhoz kerül felhasználásra."
 
-#: data/org.gnome.meld.gschema.xml:211
+#: data/org.gnome.meld.gschema.xml:218
 msgid "Show margin in commit message editor"
 msgstr "Margó megjelenítése a véglegesítésüzenet-szerkesztőben"
 
-#: data/org.gnome.meld.gschema.xml:212
+#: data/org.gnome.meld.gschema.xml:219
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
@@ -410,11 +422,11 @@ msgstr ""
 "Ha igaz, akkor egy útmutató lesz megjelenítve azt jelezve, hogy a margó "
 "melyik oszlopban van a verziókövetési véglegesítésüzenet-szerkesztőben."
 
-#: data/org.gnome.meld.gschema.xml:216
+#: data/org.gnome.meld.gschema.xml:223
 msgid "Margin column in commit message editor"
 msgstr "Margó oszlop a véglegesítésüzenet-szerkesztőben"
 
-#: data/org.gnome.meld.gschema.xml:217
+#: data/org.gnome.meld.gschema.xml:224
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
@@ -422,11 +434,11 @@ msgstr ""
 "A margó megjelenítése ebben az oszlopban a verziókövető véglegesítésüzenet-"
 "szerkesztőjében."
 
-#: data/org.gnome.meld.gschema.xml:221
+#: data/org.gnome.meld.gschema.xml:228
 msgid "Automatically hard-wrap commit messages"
 msgstr "Véglegesítésüzenetek automatikus törése"
 
-#: data/org.gnome.meld.gschema.xml:222
+#: data/org.gnome.meld.gschema.xml:229
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
@@ -434,22 +446,22 @@ msgstr ""
 "Ha igaz, akkor a verziókövető véglegesítésüzenet-szerkesztője sortöréseket "
 "szúr be a véglegesítés margójánál a véglegesítés előtt."
 
-#: data/org.gnome.meld.gschema.xml:226
+#: data/org.gnome.meld.gschema.xml:233
 msgid "Version control status filters"
 msgstr "Verziókövetési állapotszűrők"
 
-#: data/org.gnome.meld.gschema.xml:227
+#: data/org.gnome.meld.gschema.xml:234
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
 "A verziókövetési összehasonlításban látható fájlok szűrésére használt "
 "állapotok listája."
 
-#: data/org.gnome.meld.gschema.xml:241
+#: data/org.gnome.meld.gschema.xml:248
 msgid "Filename-based filters"
 msgstr "Fájlnév alapú szűrők"
 
-#: data/org.gnome.meld.gschema.xml:242
+#: data/org.gnome.meld.gschema.xml:249
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -457,11 +469,11 @@ msgstr ""
 "Előre megadott fájlnév alapú szűrők listája, amelyekre illeszkedő fájlok "
 "eltávolításra kerülnek a mappa-összehasonlításból."
 
-#: data/org.gnome.meld.gschema.xml:256
+#: data/org.gnome.meld.gschema.xml:263
 msgid "Text-based filters"
 msgstr "Szöveg alapú szűrők"
 
-#: data/org.gnome.meld.gschema.xml:257
+#: data/org.gnome.meld.gschema.xml:264
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -806,11 +818,11 @@ msgstr "Minden egyesítése jobbról"
 msgid "Merge All"
 msgstr "Minden egyesítése"
 
-#: meld/resources/gtk/menus.ui:92 meld/resources/ui/filediff-menus.ui:54
+#: meld/resources/gtk/menus.ui:92 meld/resources/ui/filediff-menus.ui:65
 msgid "Add Synchronization Point"
 msgstr "Szinkronizálási pont hozzáadása"
 
-#: meld/resources/gtk/menus.ui:96 meld/resources/ui/filediff-menus.ui:58
+#: meld/resources/gtk/menus.ui:96 meld/resources/ui/filediff-menus.ui:69
 msgid "Clear Synchronization Points"
 msgstr "Szinkronizálási pontok törlése"
 
@@ -846,7 +858,7 @@ msgstr "Egyezik"
 msgid "New"
 msgstr "Új"
 
-#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:167
+#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:171
 #: meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Módosítva"
@@ -855,29 +867,36 @@ msgstr "Módosítva"
 msgid "Ignore filename case"
 msgstr "Kis- és nagybetűk nem különböznek a fájlnévben"
 
-#: meld/resources/gtk/menus.ui:171
+#: meld/resources/gtk/menus.ui:162
+msgid "Normalize Unicode paths"
+msgstr "Unicode útvonalak normalizálása"
+
+#: meld/resources/gtk/menus.ui:175
 msgid "Normal"
 msgstr "Normál"
 
-#: meld/resources/gtk/menus.ui:175 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Verziózatlan"
 
-#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:69
+#: meld/resources/gtk/menus.ui:183 meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Mellőzve"
 
-#: meld/resources/gtk/menus.ui:186
+#: meld/resources/gtk/menus.ui:190
 msgid "Flatten folders"
 msgstr "Könyvtárak simítása"
 
 #: meld/resources/ui/about-dialog.ui:8
+#| msgid ""
+#| "Copyright © 2002-2009 Stephen Kennedy\n"
+#| "Copyright © 2009-2019 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 msgstr ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2019 Kai Willadsen"
+"Copyright © 2009-2021 Kai Willadsen"
 
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
@@ -887,39 +906,39 @@ msgstr ""
 "Meskó Balázs <mesko.balazs at fsf dot hu>\n"
 "Úr Balázs <ur.balazs at fsf dot hu>"
 
-#: meld/resources/ui/appwindow.ui:29
+#: meld/resources/ui/appwindow.ui:30
 msgid "Start a new comparison"
 msgstr "Új összehasonlítás indítása"
 
-#: meld/resources/ui/appwindow.ui:45
+#: meld/resources/ui/appwindow.ui:46
 msgid "Open a recent comparison"
 msgstr "Friss összehasonlítás megnyitása"
 
-#: meld/resources/ui/appwindow.ui:73
+#: meld/resources/ui/appwindow.ui:74
 msgid "Go to the previous change"
 msgstr "Ugrás az előző változásra"
 
-#: meld/resources/ui/appwindow.ui:93
+#: meld/resources/ui/appwindow.ui:94
 msgid "Go to the next change"
 msgstr "Ugrás a következő változásra"
 
-#: meld/resources/ui/appwindow.ui:123
+#: meld/resources/ui/appwindow.ui:124
 msgid "Go to the previous conflict"
 msgstr "Ugrás az előző ütközésre"
 
-#: meld/resources/ui/appwindow.ui:143
+#: meld/resources/ui/appwindow.ui:144
 msgid "Go to the next conflict"
 msgstr "Ugrás a következő ütközésre"
 
-#: meld/resources/ui/appwindow.ui:192
+#: meld/resources/ui/appwindow.ui:193
 msgid "Version Filters"
 msgstr "Verziószűrők"
 
-#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1456
+#: meld/resources/ui/appwindow.ui:208 meld/resources/ui/preferences.ui:1472
 msgid "File Filters"
 msgstr "Fájlszűrők"
 
-#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1641
+#: meld/resources/ui/appwindow.ui:223 meld/resources/ui/preferences.ui:1657
 msgid "Text Filters"
 msgstr "Szövegszűrők"
 
@@ -932,7 +951,7 @@ msgid "Column Name"
 msgstr "Oszlopnév"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:128
-#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:736
+#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:741
 msgid "_Remove"
 msgstr "_Eltávolítás"
 
@@ -989,32 +1008,63 @@ msgid "_Compare selected files"
 msgstr "_Kijelölt fájlok összehasonlítása"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
+#| msgid "_Compare selected files"
+msgid "_Mark selected file"
+msgstr "_Kijelölt fájl megjelölése"
+
+#: meld/resources/ui/dirdiff-menus.ui:18
+#| msgid "_Compare selected files"
+msgid "Compare _with marked file"
+msgstr "Össze_hasonlítás a kijelölt fájllal"
+
+#: meld/resources/ui/dirdiff-menus.ui:25
 msgid "Copy to _left"
 msgstr "Másolás a _balra"
 
-#: meld/resources/ui/dirdiff-menus.ui:18
+#: meld/resources/ui/dirdiff-menus.ui:29
 msgid "Copy to _right"
 msgstr "Másolás a _jobbra"
 
-#: meld/resources/ui/dirdiff-menus.ui:22
+#: meld/resources/ui/dirdiff-menus.ui:33
 msgid "_Delete selected"
 msgstr "Kijelölt _törlése"
 
-#: meld/resources/ui/dirdiff-menus.ui:29
+#: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
 msgstr "Összecsukás rekurzívan"
 
-#: meld/resources/ui/dirdiff-menus.ui:33
+#: meld/resources/ui/dirdiff-menus.ui:44
 msgid "Expand Recursively"
 msgstr "Kinyitás rekurzívan"
 
-#: meld/resources/ui/dirdiff-menus.ui:40
+#: meld/resources/ui/dirdiff-menus.ui:51
 msgid "_Open Externally"
 msgstr "Megnyitás _külső alkalmazással"
 
-#: meld/resources/ui/dirdiff-menus.ui:44
+#: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "_Fájlútvonalak másolása"
+
+#: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:76
+#: meld/resources/ui/dirdiff.ui:117
+#| msgid "Save file in this pane"
+msgid "Select folder to open in this pane"
+msgstr "Ebben az ablaktáblában megnyitandó mappa kijelölése"
+
+#: meld/resources/ui/dirdiff.ui:43
+#| msgid "Folder"
+msgid "Folder 1"
+msgstr "1. mappa"
+
+#: meld/resources/ui/dirdiff.ui:84
+#| msgid "Folder"
+msgid "Folder 2"
+msgstr "2. mappa"
+
+#: meld/resources/ui/dirdiff.ui:125
+#| msgid "Folder"
+msgid "Folder 3"
+msgstr "3. mappa"
 
 #: meld/resources/ui/encoding-selector.ui:31
 msgid "Search text encoding…"
@@ -1072,8 +1122,17 @@ msgstr "_Másolás"
 msgid "_Paste"
 msgstr "_Beillesztés"
 
-#: meld/resources/ui/filediff.ui:33 meld/resources/ui/filediff.ui:102
-#: meld/resources/ui/filediff.ui:171
+#: meld/resources/ui/filediff-menus.ui:54
+msgid "Open Containing Folder"
+msgstr "Tartalmazó mappa megnyitása"
+
+#: meld/resources/ui/filediff-menus.ui:58
+#| msgid "_Copy File Paths"
+msgid "Copy Full Path"
+msgstr "Teljes útvonal másolása"
+
+#: meld/resources/ui/filediff.ui:31 meld/resources/ui/filediff.ui:100
+#: meld/resources/ui/filediff.ui:169
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -1081,31 +1140,31 @@ msgstr ""
 "Ebbe a fájlba nem lehet írni. Ide kattintva feloldhatja a fájlt és "
 "módosításokat végezhet, de ezeket a módosításokat új fájlba kell mentenie."
 
-#: meld/resources/ui/filediff.ui:47 meld/resources/ui/filediff.ui:116
-#: meld/resources/ui/filediff.ui:185
-msgid "Open file in this pane"
-msgstr "Fájl megnyitása ebben az ablaktáblában"
-
-#: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:125
-#: meld/resources/ui/filediff.ui:194
+#: meld/resources/ui/filediff.ui:45 meld/resources/ui/filediff.ui:114
+#: meld/resources/ui/filediff.ui:183
 msgid "Save file in this pane"
 msgstr "Fájl mentése ebben az ablaktáblában"
 
-#: meld/resources/ui/filediff.ui:73
+#: meld/resources/ui/filediff.ui:71 meld/resources/ui/filediff.ui:140
+#: meld/resources/ui/filediff.ui:209
+msgid "Open file in this pane"
+msgstr "Fájl megnyitása ebben az ablaktáblában"
+
+#: meld/resources/ui/filediff.ui:79
 msgid "File 3"
 msgstr "3. fájl"
 
-#: meld/resources/ui/filediff.ui:142
+#: meld/resources/ui/filediff.ui:148
 msgid "File 2"
 msgstr "2. fájl"
 
-#: meld/resources/ui/filediff.ui:207
+#: meld/resources/ui/filediff.ui:217 meld/resources/ui/vcview.ui:148
 msgid "File 1"
 msgstr "1. fájl"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:208
-#: meld/dirdiff.py:517
+#: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
+#: meld/dirdiff.py:602
 msgid "Name"
 msgstr "Név"
 
@@ -1117,7 +1176,7 @@ msgstr "Minta"
 msgid "Add new filter"
 msgstr "Új szűrő hozzáadása"
 
-#: meld/resources/ui/filter-list.ui:112 meld/resources/ui/vcview-menus.ui:22
+#: meld/resources/ui/filter-list.ui:112 meld/resources/ui/vcview-menus.ui:18
 msgid "_Add"
 msgstr "Hozzá_adás"
 
@@ -1145,7 +1204,7 @@ msgstr "Körbeért"
 msgid "Replace _All"
 msgstr "Öss_zes cseréje"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1067 meld/iohelpers.py:113
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1230 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "_Csere"
 
@@ -1157,7 +1216,7 @@ msgstr "Váltás a Keresés és a Keresés és csere között"
 msgid "Search highlight mode…"
 msgstr "Kiemelési mód keresése…"
 
-#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:349
+#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:342
 #: meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Új összehasonlítás"
@@ -1174,43 +1233,43 @@ msgstr "Mappa"
 msgid "Version control"
 msgstr "Verziókövetés"
 
-#: meld/resources/ui/new-diff-tab.ui:235 meld/resources/ui/new-diff-tab.ui:352
+#: meld/resources/ui/new-diff-tab.ui:236 meld/resources/ui/new-diff-tab.ui:357
 msgid "_3-way comparison"
 msgstr "_3 utas összehasonlítás"
 
-#: meld/resources/ui/new-diff-tab.ui:254
+#: meld/resources/ui/new-diff-tab.ui:256
 msgid "Select First File"
 msgstr "Válasszon első fájlt"
 
-#: meld/resources/ui/new-diff-tab.ui:267
+#: meld/resources/ui/new-diff-tab.ui:270
 msgid "Select Second File"
 msgstr "Válasszon második fájlt"
 
-#: meld/resources/ui/new-diff-tab.ui:281
+#: meld/resources/ui/new-diff-tab.ui:285
 msgid "Select Third File"
 msgstr "Válasszon harmadik fájlt"
 
-#: meld/resources/ui/new-diff-tab.ui:316
+#: meld/resources/ui/new-diff-tab.ui:321
 msgid "Select First Folder"
 msgstr "Válasszon első mappát"
 
-#: meld/resources/ui/new-diff-tab.ui:329
+#: meld/resources/ui/new-diff-tab.ui:334
 msgid "Select Second Folder"
 msgstr "Válasszon második mappát"
 
-#: meld/resources/ui/new-diff-tab.ui:343
+#: meld/resources/ui/new-diff-tab.ui:348
 msgid "Select Third Folder"
 msgstr "Válasszon harmadik mappát"
 
-#: meld/resources/ui/new-diff-tab.ui:393
+#: meld/resources/ui/new-diff-tab.ui:399
 msgid "Select A Version-Controlled Folder"
 msgstr "Válasszon egy verziókövetés alatti mappát"
 
-#: meld/resources/ui/new-diff-tab.ui:442
+#: meld/resources/ui/new-diff-tab.ui:448
 msgid "_Blank comparison"
 msgstr "Ü_res összehasonlítás"
 
-#: meld/resources/ui/new-diff-tab.ui:459
+#: meld/resources/ui/new-diff-tab.ui:466
 msgid "C_ompare"
 msgstr "Össze_hasonlítás"
 
@@ -1245,6 +1304,20 @@ msgstr "Középső és jobb ablaktáblák"
 #: meld/resources/ui/patch-dialog.ui:149
 msgid "_Reverse patch direction"
 msgstr "F_olt irányának megfordítása"
+
+#: meld/resources/ui/path-label.ui:23
+msgid "Path"
+msgstr "Útvonal"
+
+#: meld/resources/ui/path-label.ui:62
+#| msgid "_Copy File Paths"
+msgid "Copy Path"
+msgstr "Útvonal másolása"
+
+#: meld/resources/ui/path-label.ui:78
+#| msgid "Open File"
+msgid "Open Folder"
+msgstr "Mappa megnyitása"
 
 #: meld/resources/ui/preferences.ui:22 meld/resources/ui/preferences.ui:31
 msgid "Preferences"
@@ -1297,104 +1370,109 @@ msgid "Show w_hitespace"
 msgstr "Ü_res helyek megjelenítése"
 
 #: meld/resources/ui/preferences.ui:381
+#| msgid "Meld dark scheme"
+msgid "Prefer dark theme"
+msgstr "Sötét téma előnyben részesítése"
+
+#: meld/resources/ui/preferences.ui:397
 msgid "Use s_yntax highlighting"
 msgstr "S_zintaxiskiemelés használata"
 
-#: meld/resources/ui/preferences.ui:404
+#: meld/resources/ui/preferences.ui:420
 msgid "Syntax highlighting color scheme:"
 msgstr "Szintaxiskiemelés színsémája:"
 
-#: meld/resources/ui/preferences.ui:469
+#: meld/resources/ui/preferences.ui:485
 msgid "Code Overview"
 msgstr "Kódáttekintés"
 
-#: meld/resources/ui/preferences.ui:506
+#: meld/resources/ui/preferences.ui:522
 msgid "Show overview map"
 msgstr "Áttekintő térkép megjelenítése"
 
-#: meld/resources/ui/preferences.ui:529
+#: meld/resources/ui/preferences.ui:545
 msgid "Overview map style:"
 msgstr "Áttekintő térkép stílusa:"
 
-#: meld/resources/ui/preferences.ui:596
+#: meld/resources/ui/preferences.ui:612
 msgid "External Editor"
 msgstr "Külső szerkesztő"
 
-#: meld/resources/ui/preferences.ui:632
+#: meld/resources/ui/preferences.ui:648
 msgid "Use _default system editor"
 msgstr "Alapértelmezett _rendszerszerkesztő használata"
 
-#: meld/resources/ui/preferences.ui:655
+#: meld/resources/ui/preferences.ui:671
 msgid "Edito_r command:"
 msgstr "Szerkesztő_parancs:"
 
-#: meld/resources/ui/preferences.ui:711
+#: meld/resources/ui/preferences.ui:727
 msgid "Editor"
 msgstr "Szerkesztő"
 
-#: meld/resources/ui/preferences.ui:732
+#: meld/resources/ui/preferences.ui:748
 msgid "Shallow Comparison"
 msgstr "Sekély összehasonlítás"
 
-#: meld/resources/ui/preferences.ui:768
+#: meld/resources/ui/preferences.ui:784
 msgid "C_ompare files based only on size and timestamp"
 msgstr "_Fájlok összehasonlítása csak méret és időbélyeg alapján"
 
-#: meld/resources/ui/preferences.ui:791
+#: meld/resources/ui/preferences.ui:807
 msgid "_Timestamp resolution:"
 msgstr "_Időbélyeg felbontása:"
 
-#: meld/resources/ui/preferences.ui:855
+#: meld/resources/ui/preferences.ui:871
 msgid "Note: enabling text filters may make comparing large files much slower"
 msgstr ""
 "Megjegyzés: a szövegszűrők engedélyezése sokkal lassabbá teszi a nagy fájlok "
 "összehasonlítását"
 
-#: meld/resources/ui/preferences.ui:904
+#: meld/resources/ui/preferences.ui:920
 msgid "Symbolic Links"
 msgstr "Szimbolikus linkek"
 
-#: meld/resources/ui/preferences.ui:972
+#: meld/resources/ui/preferences.ui:988
 msgid "Visible Columns"
 msgstr "Látható oszlopok"
 
-#: meld/resources/ui/preferences.ui:1039
+#: meld/resources/ui/preferences.ui:1055
 msgid "Folder Comparisons"
 msgstr "Mappa-összehasonlítás"
 
-#: meld/resources/ui/preferences.ui:1061
+#: meld/resources/ui/preferences.ui:1077
 msgid "Version Comparisons"
 msgstr "Verzió-összehasonlítás"
 
-#: meld/resources/ui/preferences.ui:1104
+#: meld/resources/ui/preferences.ui:1120
 msgid "_Order when comparing file revisions:"
 msgstr "So_rrend fájlrevíziók összehasonlításakor:"
 
-#: meld/resources/ui/preferences.ui:1151
+#: meld/resources/ui/preferences.ui:1167
 msgid "Order when _merging files:"
 msgstr "Sorrend _fájlok összefésülésekor:"
 
-#: meld/resources/ui/preferences.ui:1219
+#: meld/resources/ui/preferences.ui:1235
 msgid "Commit Messages"
 msgstr "Véglegesítés-üzenetek"
 
-#: meld/resources/ui/preferences.ui:1260
+#: meld/resources/ui/preferences.ui:1276
 msgid "Show _right margin at:"
 msgstr "_Jobb margó megjelenítése:"
 
-#: meld/resources/ui/preferences.ui:1301
+#: meld/resources/ui/preferences.ui:1317
 msgid "Automatically _break lines at right margin on commit"
 msgstr "Sorok a_utomatikus tördelése a jobb margónál véglegesítéskor"
 
-#: meld/resources/ui/preferences.ui:1351
+#: meld/resources/ui/preferences.ui:1367
 msgid "Version Control"
 msgstr "Verziókövetés"
 
-#: meld/resources/ui/preferences.ui:1373
+#: meld/resources/ui/preferences.ui:1389
 msgid "Filename filters"
 msgstr "Fájlnévszűrők"
 
-#: meld/resources/ui/preferences.ui:1411
+#: meld/resources/ui/preferences.ui:1427
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
@@ -1404,19 +1482,19 @@ msgstr ""
 "alapján. Minden minta egy shell-stílusú helyettesítőkarakter-lista "
 "szóközökkel elválasztva."
 
-#: meld/resources/ui/preferences.ui:1478
+#: meld/resources/ui/preferences.ui:1494
 msgid "Change trimming"
 msgstr "Módosítások nyírása"
 
-#: meld/resources/ui/preferences.ui:1514
+#: meld/resources/ui/preferences.ui:1530
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Üres sorokból álló eltérés lenyírása a módosítások elejéről és végéről"
 
-#: meld/resources/ui/preferences.ui:1558
+#: meld/resources/ui/preferences.ui:1574
 msgid "Text filters"
 msgstr "Szövegszűrők"
 
-#: meld/resources/ui/preferences.ui:1596
+#: meld/resources/ui/preferences.ui:1612
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1430,47 +1508,47 @@ msgstr ""
 "csoportokat tartalmaz, csak a csoportok lesznek kicserélve. További "
 "részletekért lásd a felhasználói kézikönyvet."
 
-#: meld/resources/ui/preferences.ui:1687
+#: meld/resources/ui/preferences.ui:1703
 msgid "Left is remote, right is local"
 msgstr "Bal a távoli, jobb a helyi"
 
-#: meld/resources/ui/preferences.ui:1691
+#: meld/resources/ui/preferences.ui:1707
 msgid "Left is local, right is remote"
 msgstr "Bal a helyi, jobb a távoli"
 
-#: meld/resources/ui/preferences.ui:1705
+#: meld/resources/ui/preferences.ui:1721
 msgid "Simple change map"
 msgstr "Egyszerű változástérkép"
 
-#: meld/resources/ui/preferences.ui:1709
+#: meld/resources/ui/preferences.ui:1725
 msgid "Compact source map"
 msgstr "Kompakt forrástérkép"
 
-#: meld/resources/ui/preferences.ui:1713
+#: meld/resources/ui/preferences.ui:1729
 msgid "Full source map"
 msgstr "Teljes forrástérkép"
 
-#: meld/resources/ui/preferences.ui:1727
+#: meld/resources/ui/preferences.ui:1743
 msgid "Remote, merge, local"
 msgstr "Távoli, összefésült, helyi"
 
-#: meld/resources/ui/preferences.ui:1731
+#: meld/resources/ui/preferences.ui:1747
 msgid "Local, merge, remote"
 msgstr "Helyi, összefésült, távoli"
 
-#: meld/resources/ui/preferences.ui:1753
+#: meld/resources/ui/preferences.ui:1769
 msgid "1ns (ext4)"
 msgstr "1ns (ext4)"
 
-#: meld/resources/ui/preferences.ui:1757
+#: meld/resources/ui/preferences.ui:1773
 msgid "100ns (NTFS)"
 msgstr "100ns (NTFS)"
 
-#: meld/resources/ui/preferences.ui:1761
+#: meld/resources/ui/preferences.ui:1777
 msgid "1s (ext2/ext3)"
 msgstr "1s (ext2/ext3)"
 
-#: meld/resources/ui/preferences.ui:1765
+#: meld/resources/ui/preferences.ui:1781
 msgid "2s (VFAT)"
 msgstr "2s (VFAT)"
 
@@ -1514,12 +1592,12 @@ msgstr "Ha nem ment, akkor a változtatások véglegesen elvesznek."
 msgid "Close _without Saving"
 msgstr "Bezárás mentés _nélkül"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1066
-#: meld/iohelpers.py:55 meld/iohelpers.py:112
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1228
+#: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "Mé_gse"
 
-#: meld/resources/ui/save-confirm-dialog.ui:52
+#: meld/resources/ui/save-confirm-dialog.ui:55
 msgid "_Save"
 msgstr "M_entés"
 
@@ -1539,95 +1617,70 @@ msgstr "Össze_hasonlítás"
 msgid "Co_mmit…"
 msgstr "_Véglegesítés…"
 
-#: meld/resources/ui/vcview-menus.ui:15
-msgid "_Update"
-msgstr "_Frissítés"
-
-#: meld/resources/ui/vcview-menus.ui:30
+#: meld/resources/ui/vcview-menus.ui:26
 msgid "Re_vert"
 msgstr "Vissz_aállítás"
 
-#: meld/resources/ui/vcview-menus.ui:34 meld/resources/ui/vcview.ui:164
+#: meld/resources/ui/vcview-menus.ui:30
 msgid "Delete"
 msgstr "Törlés"
 
-#: meld/resources/ui/vcview-menus.ui:41
-msgid "Mar_k as Resolved"
-msgstr "Megjelölés _feloldottként"
+#: meld/resources/ui/vcview-menus.ui:37
+#| msgid "Conflict"
+msgid "Resolve Conflict"
+msgstr "Ütközés feloldása"
 
-#: meld/resources/ui/vcview.ui:73
-msgid "Commit…"
-msgstr "Véglegesítés…"
-
-#: meld/resources/ui/vcview.ui:74
+#: meld/resources/ui/vcview.ui:16
 msgid "Commit changes to version control"
 msgstr "Változtatások véglegesítése a verziókövetőbe"
 
-#: meld/resources/ui/vcview.ui:86
-msgid "Update"
-msgstr "Frissítés"
+#: meld/resources/ui/vcview.ui:21
+msgid "Commit…"
+msgstr "Véglegesítés…"
 
-#: meld/resources/ui/vcview.ui:87
-msgid "Update working copy from version control"
-msgstr "Munkapéldány frissítése a verziókövetőből"
+#: meld/resources/ui/vcview.ui:38
+#| msgid "Push current change to the left"
+msgid "Pull remote changes to the local repository"
+msgstr "Távoli változtatások letöltése a helyi tárolóba"
 
-#: meld/resources/ui/vcview.ui:99
-msgid "Push"
-msgstr "Elküldés"
-
-#: meld/resources/ui/vcview.ui:100
+#: meld/resources/ui/vcview.ui:51
 msgid "Push local changes to remote"
 msgstr "Helyi változások elküldése a távoli tárolóba"
 
-#: meld/resources/ui/vcview.ui:112
-msgid "Add"
-msgstr "Hozzáadás"
-
-#: meld/resources/ui/vcview.ui:113
+#: meld/resources/ui/vcview.ui:74
 msgid "Add to version control"
 msgstr "Hozzáadás verziókövetéshez"
 
-#: meld/resources/ui/vcview.ui:125
-msgid "Remove"
-msgstr "Eltávolítás"
-
-#: meld/resources/ui/vcview.ui:126
+#: meld/resources/ui/vcview.ui:87
 msgid "Remove from version control"
 msgstr "Eltávolítás a verziókövetőből"
 
-#: meld/resources/ui/vcview.ui:138
-msgid "Mark as Resolved"
-msgstr "Megjelölés feloldottként"
-
-#: meld/resources/ui/vcview.ui:139
-msgid "Mark as resolved in version control"
-msgstr "Megjelölés feloldottként a verziókövetőben"
-
-#: meld/resources/ui/vcview.ui:151
-msgid "Revert"
-msgstr "Visszaállítás"
-
-#: meld/resources/ui/vcview.ui:152
+#: meld/resources/ui/vcview.ui:100
 msgid "Revert working copy to original state"
 msgstr "Munkapéldány visszaállítása az eredeti állapotba"
 
-#: meld/resources/ui/vcview.ui:165
-msgid "Delete from working copy"
-msgstr "Törlés a munkapéldányból"
+#: meld/resources/ui/vcview.ui:113
+msgid "Mark as resolved in version control"
+msgstr "Megjelölés feloldottként a verziókövetőben"
 
-#: meld/resources/ui/vcview.ui:220
+#: meld/resources/ui/vcview.ui:140
+#| msgid "No valid version control system found in this folder"
+msgid "Open version controlled folder in this pane"
+msgstr "Verziókövetés alatti mappa megnyitása ebben az ablaktáblában"
+
+#: meld/resources/ui/vcview.ui:229
 msgid "Location"
 msgstr "Hely"
 
-#: meld/resources/ui/vcview.ui:229
+#: meld/resources/ui/vcview.ui:238
 msgid "Status"
 msgstr "Állapot"
 
-#: meld/resources/ui/vcview.ui:238
+#: meld/resources/ui/vcview.ui:247
 msgid "Extra"
 msgstr "Extra"
 
-#: meld/resources/ui/vcview.ui:270
+#: meld/resources/ui/vcview.ui:279
 msgid "Console output"
 msgstr "Konzolkimenet"
 
@@ -1652,45 +1705,54 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:538 meld/preferences.py:132
+#: meld/dirdiff.py:623 meld/preferences.py:132
 msgid "Size"
 msgstr "Méret"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:546 meld/preferences.py:133
+#: meld/dirdiff.py:631 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Módosítási idő"
 
+#. Create ISO-format date-time CellRenderer
+#: meld/dirdiff.py:639 meld/preferences.py:134
+#| msgid "Modification time"
+msgid "Modification time (ISO)"
+msgstr "Módosítási idő (ISO)"
+
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:554 meld/preferences.py:134
+#: meld/dirdiff.py:647 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Jogosultságok"
 
-#: meld/dirdiff.py:778 meld/dirdiff.py:802
+#: meld/dirdiff.py:900
+#, python-brace-format
+msgid "{filename} (scanning…)"
+msgstr "{filename} (átvizsgálás…)"
+
+#: meld/dirdiff.py:932 meld/dirdiff.py:964
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] {folder} vizsgálata"
 
-#: meld/dirdiff.py:942
+#: meld/dirdiff.py:1100
 #, python-brace-format
-#| msgid "[%s] Done"
 msgid "[{label}] Done"
 msgstr "[{label}] Kész"
 
-#: meld/dirdiff.py:951
-#| msgid "Folder {duplicate_directory} is being compared to itself"
+#: meld/dirdiff.py:1113
 msgid "Folder {} is being compared to itself"
 msgstr "A(z) {} mappa saját magával lesz összehasonlítva"
 
-#: meld/dirdiff.py:957
+#: meld/dirdiff.py:1119
 msgid "Folders have no differences"
 msgstr "A mappák közt nincs eltérés"
 
-#: meld/dirdiff.py:959
+#: meld/dirdiff.py:1121
 msgid "Contents of scanned files in folders are identical."
 msgstr "A mappákban vizsgált fájlok tartalma azonos."
 
-#: meld/dirdiff.py:961
+#: meld/dirdiff.py:1123
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1698,46 +1760,46 @@ msgstr ""
 "A mappákban vizsgált fájlok azonosnak tűnnek, de a tartalom nem lett "
 "vizsgálva."
 
-#: meld/dirdiff.py:964
+#: meld/dirdiff.py:1126
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "A fájlszűrők használata miatt nem lett megvizsgálva minden fájl."
 
-#: meld/dirdiff.py:966
+#: meld/dirdiff.py:1128
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Szöveges szűrők vannak használatban, és elfedhetik a fájlok közti "
 "különbségeket."
 
-#: meld/dirdiff.py:982 meld/filediff.py:1874
+#: meld/dirdiff.py:1144 meld/filediff.py:1919
 msgid "Hide"
 msgstr "Elrejtés"
 
-#: meld/dirdiff.py:984 meld/filediff.py:1876 meld/filediff.py:1906
-#: meld/filediff.py:1908 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1146 meld/filediff.py:1921 meld/filediff.py:1951
+#: meld/filediff.py:1953 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "_Elrejtés"
 
-#: meld/dirdiff.py:993
+#: meld/dirdiff.py:1155
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Több hiba történt a mappa vizsgálatakor"
 
-#: meld/dirdiff.py:994
+#: meld/dirdiff.py:1156
 msgid "Files with invalid encodings found"
 msgstr "Érvénytelen kódolású fájlok találhatók"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:996
+#: meld/dirdiff.py:1158
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Egyes fájlok kódolása érvénytelen. A nevek a következők:"
 
-#: meld/dirdiff.py:998
+#: meld/dirdiff.py:1160
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 "Kis- és nagybetűket meg nem különböztető összehasonlítás által elrejtett "
 "fájlok"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1000
+#: meld/dirdiff.py:1162
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1745,18 +1807,17 @@ msgstr ""
 "Kis- és nagybetűkre nem érzékeny összehasonlítást futtat nagybetűérzékeny "
 "fájlrendszeren. A mappa alábbi fájljai el lettek rejtve:"
 
-#: meld/dirdiff.py:1011
+#: meld/dirdiff.py:1173
 #, python-brace-format
-#| msgid "“%s” hidden by “%s”"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "„{first_file}” rejtve „{second_file}” által"
 
-#: meld/dirdiff.py:1070
+#: meld/dirdiff.py:1235
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Cseréli ezt a mappát: „%s”?"
 
-#: meld/dirdiff.py:1072
+#: meld/dirdiff.py:1237
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1765,17 +1826,12 @@ msgstr ""
 "Már létezik ugyanilyen nevű mappa itt: „%s”.\n"
 "Ha cseréli a meglévő mappát, akkor minden benne lévő fájl elvész."
 
-#: meld/dirdiff.py:1085
+#: meld/dirdiff.py:1250
 msgid "Error copying file"
 msgstr "Hiba a fájl másolásakor"
 
-#: meld/dirdiff.py:1086
+#: meld/dirdiff.py:1251
 #, python-brace-format
-#| msgid ""
-#| "Couldn’t copy %s\n"
-#| "to %s.\n"
-#| "\n"
-#| "%s"
 msgid ""
 "Couldn’t copy {source}\n"
 "to {dest}.\n"
@@ -1787,19 +1843,19 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1111 meld/vcview.py:759
+#: meld/dirdiff.py:1276 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Hiba a(z) {} törlésekor"
 
-#: meld/dirdiff.py:1604
+#: meld/dirdiff.py:1819
 msgid "No folder"
 msgstr "Nincs mappa"
 
-#: meld/filediff.py:1144
+#: meld/filediff.py:1149
 msgid "Comparison results will be inaccurate"
 msgstr "Az összehasonlítás eredményei pontatlanok lesznek"
 
-#: meld/filediff.py:1146
+#: meld/filediff.py:1151
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1807,75 +1863,74 @@ msgstr ""
 "Egy szűrő megváltoztatta a fájl sorainak számát, ami nem támogatott. Az "
 "összehasonlítás pontatlan lesz."
 
-#: meld/filediff.py:1218
+#: meld/filediff.py:1223
 msgid "Mark conflict as resolved?"
 msgstr "Megjelöli az ütközést feloldottként?"
 
-#: meld/filediff.py:1220
+#: meld/filediff.py:1225
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Ha az ütközést sikeresen feloldotta, akkor most megjelölheti feloldottként."
 
-#: meld/filediff.py:1222
+#: meld/filediff.py:1228
 msgid "Cancel"
 msgstr "Mégse"
 
-#: meld/filediff.py:1223
+#: meld/filediff.py:1229
 msgid "Mark _Resolved"
 msgstr "Megjelölés _feloldottként"
 
-#: meld/filediff.py:1556
+#: meld/filediff.py:1593
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Hiba történt a fájl („%s”) megnyitásakor."
 
-#: meld/filediff.py:1564
+#: meld/filediff.py:1602
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "%s bináris fájlnak tűnik."
 
-#: meld/filediff.py:1566
+#: meld/filediff.py:1604
 msgid "Do you want to open the file using the default application?"
 msgstr "Meg szeretné nyitni a fájlt az alapértelmezett alkalmazással?"
 
-#: meld/filediff.py:1568
+#: meld/filediff.py:1606
 msgid "Open"
 msgstr "Megnyitás"
 
-#: meld/filediff.py:1582
+#: meld/filediff.py:1628
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Fájlok összefésülése"
 
-#: meld/filediff.py:1596
+#: meld/filediff.py:1642
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Eltérések számítása"
 
-#: meld/filediff.py:1657
+#: meld/filediff.py:1702
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "%s fájl megváltozott a lemezen"
 
-#: meld/filediff.py:1658
+#: meld/filediff.py:1703
 msgid "Do you want to reload the file?"
 msgstr "Újratölti a fájlt?"
 
-#: meld/filediff.py:1660
+#: meld/filediff.py:1705
 msgid "_Reload"
 msgstr "Új_ratöltés"
 
-#: meld/filediff.py:1830
-#| msgid "File {duplicate_files[0]} is being compared to itself"
+#: meld/filediff.py:1875
 msgid "File {} is being compared to itself"
 msgstr "A(z) {} fájl saját magával lesz összehasonlítva"
 
-#: meld/filediff.py:1839
+#: meld/filediff.py:1884
 msgid "Files are identical"
 msgstr "A fájlok azonosak"
 
-#: meld/filediff.py:1852
+#: meld/filediff.py:1897
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1883,11 +1938,11 @@ msgstr ""
 "Szöveges szűrők vannak használatban, és elfedhetik a fájlok közti "
 "különbségeket. Szeretné a szűretlen fájlokat összehasonlítani?"
 
-#: meld/filediff.py:1857
+#: meld/filediff.py:1902
 msgid "Files differ in line endings only"
 msgstr "A fájlok csak a sorvégekben térnek el"
 
-#: meld/filediff.py:1859
+#: meld/filediff.py:1904
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1896,15 +1951,15 @@ msgstr ""
 "A fájlok azonosak a sorvégjelektől eltekintve:\n"
 "%s"
 
-#: meld/filediff.py:1879
+#: meld/filediff.py:1924
 msgid "Show without filters"
 msgstr "Megjelenítés szűrők nélkül"
 
-#: meld/filediff.py:1901
+#: meld/filediff.py:1946
 msgid "Change highlighting incomplete"
 msgstr "Részleges kiemelés módosítása"
 
-#: meld/filediff.py:1902
+#: meld/filediff.py:1947
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1912,19 +1967,19 @@ msgstr ""
 "Egyes változtatások nincsenek kiemelve, mert túl nagyok. A Meld kiemelheti "
 "ezeket a nagyobb változtatásokat, de lassú lehet."
 
-#: meld/filediff.py:1910
+#: meld/filediff.py:1955
 msgid "Keep highlighting"
 msgstr "Kiemelés továbbra is"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:1957
 msgid "_Keep highlighting"
 msgstr "_Kiemelés továbbra is"
 
-#: meld/filediff.py:1925
+#: meld/filediff.py:1970
 msgid "Saving failed"
 msgstr "A mentés sikertelen"
 
-#: meld/filediff.py:1926
+#: meld/filediff.py:1971
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1932,36 +1987,36 @@ msgstr ""
 "Fontolja meg a kritikus változtatások átmásolását egy másik programba vagy "
 "fájlba az adatvesztés elkerülése érdekében."
 
-#: meld/filediff.py:1935
+#: meld/filediff.py:1980
 msgid "Save Left Pane As"
 msgstr "Bal ablaktábla mentése másként"
 
-#: meld/filediff.py:1937
+#: meld/filediff.py:1982
 msgid "Save Middle Pane As"
 msgstr "Középső ablaktábla mentése másként"
 
-#: meld/filediff.py:1939
+#: meld/filediff.py:1984
 msgid "Save Right Pane As"
 msgstr "Jobb ablaktábla mentése másként"
 
-#: meld/filediff.py:1950
+#: meld/filediff.py:1995
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "A(z) %s fájl megváltozott a lemezen a megnyitása óta"
 
-#: meld/filediff.py:1952
+#: meld/filediff.py:1997
 msgid "If you save it, any external changes will be lost."
 msgstr "Ha menti, minden külső változtatás elvész."
 
-#: meld/filediff.py:1955
+#: meld/filediff.py:2000
 msgid "Save Anyway"
 msgstr "Mentés mindenképp"
 
-#: meld/filediff.py:1956
+#: meld/filediff.py:2001
 msgid "Don’t Save"
 msgstr "Ne mentse"
 
-#: meld/filediff.py:1998
+#: meld/filediff.py:2043
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -1969,7 +2024,7 @@ msgstr ""
 "A(z) „{}” fájl olyan karaktereket tartalmaz, amelyek nem kódolhatók a "
 "jelenlegi „{}” kódolás használatával."
 
-#: meld/filediff.py:2002 meld/patchdialog.py:138
+#: meld/filediff.py:2047 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -1978,20 +2033,16 @@ msgstr ""
 "A fájl nem menthető. Ok:\n"
 "%s"
 
-#: meld/filediff.py:2006 meld/patchdialog.py:137
+#: meld/filediff.py:2051 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "A fájl (%s) nem menthető."
 
-#: meld/filediff.py:2067
-msgid "Open File"
-msgstr "Fájl megnyitása"
-
-#: meld/filediff.py:2420
+#: meld/filediff.py:2452
 msgid "Live comparison updating disabled"
 msgstr "Az élő összehasonlítás-frissítés kikapcsolva"
 
-#: meld/filediff.py:2421
+#: meld/filediff.py:2453
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2001,32 +2052,32 @@ msgstr ""
 "pontok aktívak. Saját kezűleg továbbra is frissítheti az összehasonlítást, "
 "és az élő frissítések folytatódnak a szinkronizálási pontok törlésekor."
 
-#: meld/iohelpers.py:40
+#: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
 msgstr "A távoli mappák törlése nem támogatott"
 
-#: meld/iohelpers.py:42
+#: meld/iohelpers.py:43
 msgid "Not a file or directory"
 msgstr "Nem fájl vagy könyvtár"
 
-#: meld/iohelpers.py:46
+#: meld/iohelpers.py:47
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr "A(z) „{}” nem tehető a Kukába. Szeretné azonnal törölni?"
 
-#: meld/iohelpers.py:51
+#: meld/iohelpers.py:52
 msgid "This remote location does not support sending items to the trash."
 msgstr "Ez a távoli hely nem támogatja az elemek Kukába küldését."
 
-#: meld/iohelpers.py:56
+#: meld/iohelpers.py:58
 msgid "_Delete Permanently"
 msgstr "_Végleges törlés"
 
-#: meld/iohelpers.py:106
+#: meld/iohelpers.py:110
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Cseréli a fájlt: „%s”?"
 
-#: meld/iohelpers.py:108
+#: meld/iohelpers.py:112
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2035,124 +2086,124 @@ msgstr ""
 "Már létezik ilyen nevű fájl itt: „%s”.\n"
 "Ha lecseréli a meglévő fájlt, akkor a tartalma elvész."
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
 msgstr "hibás számú argumentum a --diff kapcsolóhoz"
 
-#: meld/meldapp.py:188
+#: meld/meldapp.py:193
 msgid "Start with an empty window"
 msgstr "Indítás üres ablakkal"
 
-#: meld/meldapp.py:189 meld/meldapp.py:191
+#: meld/meldapp.py:194 meld/meldapp.py:196
 msgid "file"
 msgstr "fájl"
 
-#: meld/meldapp.py:189 meld/meldapp.py:193
+#: meld/meldapp.py:194 meld/meldapp.py:198
 msgid "folder"
 msgstr "mappa"
 
-#: meld/meldapp.py:190
+#: meld/meldapp.py:195
 msgid "Start a version control comparison"
 msgstr "Verziókövető-összehasonlítás indítása"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
 msgstr "2 vagy 3 utas fájl-összehasonlítás indítása"
 
-#: meld/meldapp.py:194
+#: meld/meldapp.py:199
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "2 vagy 3 utas mappa-összehasonlítás indítása"
 
-#: meld/meldapp.py:237
+#: meld/meldapp.py:242
 #, python-format
 msgid "Error: %s\n"
 msgstr "Hiba: %s\n"
 
-#: meld/meldapp.py:244
+#: meld/meldapp.py:249
 msgid "Meld is a file and directory comparison tool."
 msgstr "A Meld egy fájl- és könyvtár-összehasonlító eszköz."
 
-#: meld/meldapp.py:248
+#: meld/meldapp.py:253
 msgid "Set label to use instead of file name"
 msgstr "A fájlnevek helyett használandó címke beállítása"
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:256
 msgid "Open a new tab in an already running instance"
 msgstr "Új lap megnyitása már futó példányban"
 
-#: meld/meldapp.py:254
+#: meld/meldapp.py:259
 msgid "Automatically compare all differing files on startup"
 msgstr "Minden eltérő fájl automatikus összehasonlítása indításkor"
 
-#: meld/meldapp.py:257
+#: meld/meldapp.py:262
 msgid "Ignored for compatibility"
 msgstr "Mellőzve a kompatibilitás érdekében"
 
-#: meld/meldapp.py:261
+#: meld/meldapp.py:266
 msgid "Set the target file for saving a merge result"
 msgstr "Célfájl beállítása összefésülés eredményének mentéséhez"
 
-#: meld/meldapp.py:264
+#: meld/meldapp.py:269
 msgid "Automatically merge files"
 msgstr "Fájlok automatikus összefésülése"
 
-#: meld/meldapp.py:268
+#: meld/meldapp.py:273
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Mentett összehasonlítás betöltése Meld összehasonlítás-fájlból"
 
-#: meld/meldapp.py:272
+#: meld/meldapp.py:277
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Különbséglap létrehozása a megadott fájlokhoz vagy mappákhoz"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:297
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "túl sok argumentum (0-3 helyett %d)"
 
-#: meld/meldapp.py:295
+#: meld/meldapp.py:300
 msgid "can’t auto-merge less than 3 files"
 msgstr "nem lehet 3-nál kevesebb fájlt automatikusan összefésülni"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:302
 msgid "can’t auto-merge directories"
 msgstr "könyvtárak nem fésülhetők össze automatikusan"
 
-#: meld/meldapp.py:312
+#: meld/meldapp.py:317
 msgid "Error reading saved comparison file"
 msgstr "Hiba az elmentett összehasonlítás-fájl olvasása közben"
 
-#: meld/meldapp.py:329
+#: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "érvénytelen útvonal vagy URI: „%s”"
 
-#: meld/meldapp.py:336
+#: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
 msgstr "a „{}” távoli mappa nem támogatott"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: meld/meldbuffer.py:114
+#: meld/meldbuffer.py:115
 msgid "<unnamed>"
 msgstr "<névtelen>"
 
-#: meld/melddoc.py:61
+#: meld/melddoc.py:124
 msgid "untitled"
 msgstr "névtelen"
 
-#: meld/meldwindow.py:155
+#: meld/meldwindow.py:158
 msgid "Filename"
 msgstr "Fájlnév"
 
-#: meld/meldwindow.py:384
+#: meld/meldwindow.py:381
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Az automatikus összefésüléshez három fájl kell, érkezett: %r"
 
-#: meld/meldwindow.py:406
+#: meld/meldwindow.py:411
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Fájlok és könyvtárak keveréke nem hasonlítható össze"
 
-#: meld/misc.py:150
+#: meld/misc.py:154
 msgid ""
 "{}\n"
 "\n"
@@ -2164,7 +2215,7 @@ msgstr ""
 "A Meld kritikus hibát észlelt futás közben:\n"
 "<tt>{}</tt>"
 
-#: meld/misc.py:201
+#: meld/misc.py:205
 msgid "[None]"
 msgstr "[Semmi]"
 
@@ -2176,12 +2227,11 @@ msgstr "címke"
 msgid "pattern"
 msgstr "minta"
 
-#: meld/recent.py:104
+#: meld/recent.py:111
 msgid "Version control:"
 msgstr "Verziókövetés:"
 
 #: meld/style.py:91
-#| msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgstr "Nem találhatók a színséma részletei ehhez: {}, ez telepítési hiba"
 
@@ -2193,6 +2243,11 @@ msgstr "{name} ({charset})"
 #: meld/ui/bufferselectors.py:140 meld/ui/bufferselectors.py:148
 msgid "Plain Text"
 msgstr "Egyszerű szöveg"
+
+#: meld/ui/pathlabel.py:36
+#| msgid "Filename filters"
+msgid "Unnamed file"
+msgstr "Névtelen fájl"
 
 #. Abbreviation for line, column so that it will fit in the status bar
 #: meld/ui/statusbar.py:125
@@ -2216,9 +2271,7 @@ msgstr "Nem lesznek fájlok véglegesítve"
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} {unpushed_branches}"
 
-#. Translators: These messages cover the case where there is
-#. only one branch, and are not part of another message.
-#: meld/vc/git.py:94 meld/vc/git.py:103
+#: meld/vc/git.py:94 meld/vc/git.py:104
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
@@ -2232,17 +2285,16 @@ msgid_plural "%d branches"
 msgstr[0] "%d ágban"
 msgstr[1] "%d ágban"
 
-#: meld/vc/git.py:344
+#: meld/vc/git.py:345
 #, python-brace-format
-#| msgid "Mode changed from %s to %s"
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Mód megváltoztatva: {old_mode} -> {new_mode}"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 msgid "Partially staged"
 msgstr "Részben sorba állítva"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 msgid "Staged"
 msgstr "Sorba állítva"
 
@@ -2301,97 +2353,101 @@ msgstr "Hiányzó"
 msgid "Not present"
 msgstr "Nincs jelen"
 
+#: meld/vc/_vc.py:82
+#| msgid "Scanning %s"
+msgid "Scanning…"
+msgstr "Átvizsgálás…"
+
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:333
+#: meld/vcview.py:334
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (nem található)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:337
+#: meld/vcview.py:338
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s nincs telepítve)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:341
+#: meld/vcview.py:342
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (érvénytelen tároló)"
 
-#: meld/vcview.py:355
+#: meld/vcview.py:356
 msgid "No valid version control system found in this folder"
 msgstr "Nem található használható verziókövető rendszer ebben a mappában"
 
-#: meld/vcview.py:357
+#: meld/vcview.py:358
 msgid "Choose which version control system to use"
 msgstr "Válassza ki a használandó verziókövető rendszert"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: meld/vcview.py:411
+#: meld/vcview.py:412
 #, python-brace-format
-#| msgid "Location"
 msgid "Location: {path}"
 msgstr "Hely: {path}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:418
+#: meld/vcview.py:419
 msgid "Scanning repository"
 msgstr "Tároló vizsgálata"
 
-#: meld/vcview.py:447
+#: meld/vcview.py:448
 #, python-format
 msgid "Scanning %s"
 msgstr "%s vizsgálata"
 
-#: meld/vcview.py:486
+#: meld/vcview.py:487
 msgid "(Empty)"
 msgstr "(Üres)"
 
-#: meld/vcview.py:533
+#: meld/vcview.py:535
 #, python-format
 msgid "%s — local"
 msgstr "%s – helyi"
 
-#: meld/vcview.py:534
+#: meld/vcview.py:536
 #, python-format
 msgid "%s — remote"
 msgstr "%s – távoli"
 
-#: meld/vcview.py:542
+#: meld/vcview.py:544
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (helyi, összefésült, távoli)"
 
-#: meld/vcview.py:547
+#: meld/vcview.py:549
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (távoli, összefésült, helyi)"
 
-#: meld/vcview.py:558
+#: meld/vcview.py:560
 #, python-format
 msgid "%s — repository"
 msgstr "%s – tároló"
 
-#: meld/vcview.py:564
+#: meld/vcview.py:566
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (munka, tároló)"
 
-#: meld/vcview.py:568
+#: meld/vcview.py:570
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (tároló, munka)"
 
-#: meld/vcview.py:730
+#: meld/vcview.py:735
 msgid "Remove folder and all its files?"
 msgstr "Eltávolítja a mappát és benne minden fájlt?"
 
-#: meld/vcview.py:732
+#: meld/vcview.py:737
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2399,6 +2455,6 @@ msgstr ""
 "Ez eltávolítja az összes kijelölt fájlt és mappát, valamint minden fájlt a "
 "kijelölt mappákon belül a verziókövetőből."
 
-#: meld/vcview.py:845
+#: meld/vcview.py:850
 msgid "Clear"
 msgstr "Törlés"
