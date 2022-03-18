@@ -44,6 +44,7 @@ from meld.meldbuffer import (
     BufferLines,
 )
 from meld.melddoc import ComparisonState, MeldDoc, open_files_external
+from meld.menuhelpers import replace_menu_section
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.recent import RecentType
@@ -222,8 +223,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
         default=False,
     )
 
-    ADD_SYNCPOINT_OFFSET = 10
-
     def __init__(
         self,
         num_panes,
@@ -367,21 +366,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-menus.ui')
-        context_menu = builder.get_object('filediff-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
+        self.popup_menu_model = builder.get_object('filediff-context-menu')
+        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
         self.popup_menu.attach_to_widget(self)
-
-        popup_options = self.popup_menu.get_children()
-
-        offset = FileDiff.ADD_SYNCPOINT_OFFSET
-        self.add_sync_point_opt = popup_options[offset]
-        self.move_sync_point_opt = popup_options[offset + 1]
-        self.match_sync_point_opt = popup_options[offset + 2]
-        self.remove_sync_point_opt = popup_options[offset + 3]
-
-        self.popup_menu.remove(self.move_sync_point_opt)
-        self.popup_menu.remove(self.match_sync_point_opt)
-        self.popup_menu.remove(self.remove_sync_point_opt)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-actions.ui')
@@ -1437,34 +1424,50 @@ class FileDiff(Gtk.VBox, MeldDoc):
             return self._syncpoint_action(self.textview.index(self.focus_pane))
 
     def set_syncpoint_menuitem(self, pane):
+        menu_actions = {
+            SyncpointState.CAN_ADD: [
+                _("Add Synchronization Point"),
+                "view.add-sync-point"
+            ],
+            SyncpointState.CAN_DELETE: [
+                _("Remove Synchronization Point"),
+                "view.remove-sync-point"
+            ],
+            SyncpointState.CAN_MOVE: [
+                _("Move Synchronization Point"),
+                "view.add-sync-point"
+            ],
+            SyncpointState.CAN_MATCH: [
+                _("Match Synchronization Point"),
+                "view.add-sync-point"
+            ],
+            SyncpointState.DISABLED: [
+                _("Add Synchronization Point"),
+                "view.add-sync-point"
+            ],
+        }
+
         action = self._syncpoint_action(pane)
-
-        popup_options = self.popup_menu.get_children()
-        current_option = popup_options[FileDiff.ADD_SYNCPOINT_OFFSET]
-        next_option = None
-
-        if action == SyncpointState.CAN_ADD:
-            next_option = self.add_sync_point_opt
-        elif action == SyncpointState.CAN_MATCH:
-            next_option = self.match_sync_point_opt
-        elif action == SyncpointState.CAN_DELETE:
-            next_option = self.remove_sync_point_opt
-        elif action == SyncpointState.CAN_MOVE:
-            next_option = self.move_sync_point_opt
-        elif action is SyncpointState.DISABLED:
-            next_option = self.move_sync_point_opt
 
         self.set_action_enabled(
             "add-sync-point",
             action != SyncpointState.DISABLED
         )
 
-        if next_option is not current_option:
-            self.popup_menu.insert(
-                next_option,
-                FileDiff.ADD_SYNCPOINT_OFFSET + 1
-            )
-            self.popup_menu.remove(current_option)
+        label, action_id = menu_actions[action]
+
+        syncpoint_menu = Gio.Menu()
+        syncpoint_menu.append(label=label, detailed_action=action_id)
+        syncpoint_menu.append(
+            label=_("Clear Synchronization Points"),
+            detailed_action='view.clear-sync-point',
+        )
+        section = Gio.MenuItem.new_section(None, syncpoint_menu)
+        section.set_attribute([("id", "s", "syncpoint-section")])
+        replace_menu_section(self.popup_menu_model, section)
+
+        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
+        self.popup_menu.attach_to_widget(self)
 
     def _syncpoint_action(self, pane):
         def get_mark():
