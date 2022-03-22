@@ -363,24 +363,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             doc.scheduler.add_task(doc.auto_compare)
         return doc
 
-    @Gtk.Template.Callback()
-    def on_gear_popup_menu(self, menubutton):
-        if not menubutton.get_active():
-            return
-
-        current_page_idx = self.notebook.get_current_page()
-
-        if current_page_idx == -1:
-            return
-
-        page = self.notebook.get_nth_page(current_page_idx)
-
-        if not isinstance(page, FileDiff):
-            return
-
-        # TODO: recompute menu items
-        # action = page.syncpoint_action()
-
     def append_filediff(
             self, gfiles, *, encodings=None, merge_output=None, meta=None):
         assert len(gfiles) in (1, 2, 3)

@@ -1419,39 +1419,38 @@ class FileDiff(Gtk.VBox, MeldDoc):
             return True
         return False
 
-    def syncpoint_action(self):
-        if self.focus_pane:
-            return self._syncpoint_action(self.textview.index(self.focus_pane))
-
     def set_syncpoint_menuitem(self, pane):
         menu_actions = {
-            SyncpointState.CAN_ADD: [
+            SyncpointAction.ADD: [
                 _("Add Synchronization Point"),
                 "view.add-sync-point"
             ],
-            SyncpointState.CAN_DELETE: [
+            SyncpointAction.DELETE: [
                 _("Remove Synchronization Point"),
                 "view.remove-sync-point"
             ],
-            SyncpointState.CAN_MOVE: [
+            SyncpointAction.MOVE: [
                 _("Move Synchronization Point"),
                 "view.add-sync-point"
             ],
-            SyncpointState.CAN_MATCH: [
+            SyncpointAction.MATCH: [
                 _("Match Synchronization Point"),
                 "view.add-sync-point"
             ],
-            SyncpointState.DISABLED: [
+            SyncpointAction.DISABLED: [
                 _("Add Synchronization Point"),
                 "view.add-sync-point"
             ],
         }
 
-        action = self._syncpoint_action(pane)
+        def get_mark():
+            return self.textbuffer[pane].get_insert()
+
+        action = self.syncpoints.action(pane, get_mark)
 
         self.set_action_enabled(
             "add-sync-point",
-            action != SyncpointState.DISABLED
+            action != SyncpointAction.DISABLED
         )
 
         label, action_id = menu_actions[action]
@@ -1468,12 +1467,6 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
         self.popup_menu.attach_to_widget(self)
-
-    def _syncpoint_action(self, pane):
-        def get_mark():
-            return self.textbuffer[pane].get_insert()
-
-        return self.syncpoints.state(pane, get_mark)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -2548,16 +2541,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
 FileDiff.set_css_name('meld-file-diff')
 
 
-class SyncpointState(Enum):
-    # The state of a line when a dangling syncpoint can be moved to it
-    CAN_MOVE = "can_move"
-    # The state of a line where a dangling syncpoint sits
-    CAN_DELETE = "can_delete"
-    # The state of a line when a syncpoint can be added to match existing ones
-    CAN_MATCH = "can_match"
-    # The state of a line when a new, dangling syncpoint can be added to it
-    CAN_ADD = "can_add"
-    # The state of a line when no syncpoint action can be taken
+class SyncpointAction(Enum):
+    # A dangling syncpoint can be moved to the line
+    MOVE = "move"
+    # A dangling syncpoint sits can be remove from this line
+    DELETE = "delete"
+    # A syncpoint can be added to this line to match existing ones
+    # in other panes
+    MATCH = "match"
+    # A new, dangling syncpoint can be added to this line
+    ADD = "add"
+    # No syncpoint-related action can be taken on this line
     DISABLED = "disabled"
 
 
@@ -2633,11 +2627,11 @@ class Syncpoints:
         else:
             return self.PaneState.DANGLING
 
-    def state(self, pane_idx: int, get_mark):
+    def action(self, pane_idx: int, get_mark):
         state = self._pane_state(pane_idx)
 
         if state == self.PaneState.SHORT:
-            return SyncpointState.CAN_MATCH
+            return SyncpointAction.MATCH
 
         target = self._comparator(pane_idx, get_mark())
 
@@ -2650,13 +2644,13 @@ class Syncpoints:
             )
 
             if is_syncpoint:
-                return SyncpointState.CAN_DELETE
+                return SyncpointAction.DELETE
             else:
-                return SyncpointState.CAN_ADD
+                return SyncpointAction.ADD
 
         # state == DANGLING
         if target == self._comparator(pane_idx, points[-1]):
-            return SyncpointState.CAN_DELETE
+            return SyncpointAction.DELETE
 
         is_syncpoint = any(
             self._comparator(pane_idx, point) == target
@@ -2664,9 +2658,9 @@ class Syncpoints:
         )
 
         if is_syncpoint:
-            return SyncpointState.DISABLED
+            return SyncpointAction.DISABLED
         else:
-            return SyncpointState.CAN_MOVE
+            return SyncpointAction.MOVE
 
     class PaneState(Enum):
         # The state of a pane with all its syncpoints matched
