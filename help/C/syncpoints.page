@@ -1,0 +1,52 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="syncpoints">
+<info>
+  <title type="sort">2</title>
+  <link type="guide" xref="index#file-mode"/>
+  <revision docversion="1.6" status="draft"/>
+  <include href="legal.xml" xmlns="http://www.w3.org/2001/XInclude"/>
+  <credit type="author copyright">
+    <name>Roberto Vidal</name>
+    <email>vidal.roberto.j@gmail.com</email>
+    <years>2022</years>
+  </credit>
+</info>
+
+<title>Synchronization Points</title>
+
+<p>
+Synchronization points help <app>Meld</app> perform a more fine-grained comparison between your files. When a synchronization point is added to each file, <app>Meld</app> effectively performs two comparisons: one for the chunk above the synchronization point and another for the one below.
+</p>
+
+<p>
+To add a synchronization point, click on a line and then right-click and select <gui style="menu">Add Synchronization Point</gui>. Repeat this with each file in your comparison: click on a line and then right-click and select <gui style="menu">Match Synchronization Point</gui>. Once every file has a synchronization point, they will match each other and the comparison will be updated to take them into account.
+</p>
+
+<p>
+You can add successive synchronization points and subdivide your files even further by repeating the steps above. Note that synchronization points are matched to each other in the order they appear in the text, which might not correspond to the order they were created.
+</p>
+
+<p>
+To remove all synchronization points from a comparison, right-click anywhere in the file and select <gui style="menu">Clear Synchronization Points</gui>.
+</p>
+
+
+<section id="dangling-syncpoints">
+<title>Dangling and matched syncpoints</title>
+
+<p>
+A synchronization point is "dangling" if it has not been matched yet to other files. For instance, if you have 1 synchronization point in each file, they are all matched together and affect the comparison. If you now add a synchronization point to the first file, it is dangling until we add a second synchronization point to the rest of the files.
+</p>
+
+<p>
+Dangling synchronization points can be moved around: click on a different line, and then right-click and select <gui style="menu">Move Synchronization Point</gui>. Dangling synchronization points can be removed: click on the line where it was set, right-click and select <gui style="menu">Remove Synchronization Point</gui>.
+</p>
+
+<p>
+Matched synchronization points can be removed as well. Note that removing a matched synchronization point also removes its siblings in the other files. To remove a matched synchronization point, click on the line where it is set, then right-click and select <gui style="menu">Remove Synchronization Point</gui>.
+</p>
+
+</section>
+
+</page>
