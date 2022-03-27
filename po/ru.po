@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meld 1.4.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-01-30 21:55+0000\n"
-"PO-Revision-Date: 2022-02-20 20:20+1000\n"
+"POT-Creation-Date: 2022-03-15 12:52+0000\n"
+"PO-Revision-Date: 2022-03-19 08:23+1000\n"
 "Last-Translator: Ser82-png <sw@atrus.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -1011,30 +1011,38 @@ msgid "_Compare selected files"
 msgstr "Сравнить выбранные файлы"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
+msgid "_Mark selected file"
+msgstr "_Отметить выбранные файлы"
+
+#: meld/resources/ui/dirdiff-menus.ui:18
+msgid "Compare _with marked file"
+msgstr "Сравнить _выбранные файлы"
+
+#: meld/resources/ui/dirdiff-menus.ui:25
 msgid "Copy to _left"
 msgstr "Копировать в левую панель"
 
-#: meld/resources/ui/dirdiff-menus.ui:18
+#: meld/resources/ui/dirdiff-menus.ui:29
 msgid "Copy to _right"
 msgstr "Копировать в правую панель"
 
-#: meld/resources/ui/dirdiff-menus.ui:22
+#: meld/resources/ui/dirdiff-menus.ui:33
 msgid "_Delete selected"
 msgstr "Удалить выделенное"
 
-#: meld/resources/ui/dirdiff-menus.ui:29
+#: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
 msgstr "Свернуть рекурсивно"
 
-#: meld/resources/ui/dirdiff-menus.ui:33
+#: meld/resources/ui/dirdiff-menus.ui:44
 msgid "Expand Recursively"
 msgstr "Развернуть рекурсивно"
 
-#: meld/resources/ui/dirdiff-menus.ui:40
+#: meld/resources/ui/dirdiff-menus.ui:51
 msgid "_Open Externally"
 msgstr "Открыть внешним приложением"
 
-#: meld/resources/ui/dirdiff-menus.ui:44
+#: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "Копировать пути файлов"
 
@@ -1153,7 +1161,7 @@ msgstr "Файл 1"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:556
+#: meld/dirdiff.py:602
 msgid "Name"
 msgstr "Имя"
 
@@ -1193,7 +1201,7 @@ msgstr "Перенесённый"
 msgid "Replace _All"
 msgstr "Заменить _все"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1180 meld/iohelpers.py:114
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1230 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "_Заменить"
 
@@ -1578,12 +1586,12 @@ msgstr "Если вы не сохраните изменения они буду
 msgid "Close _without Saving"
 msgstr "Закрыть _без сохранения"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1179
-#: meld/iohelpers.py:56 meld/iohelpers.py:113
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1228
+#: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "_Отменить"
 
-#: meld/resources/ui/save-confirm-dialog.ui:52
+#: meld/resources/ui/save-confirm-dialog.ui:55
 msgid "_Save"
 msgstr "С_охранить"
 
@@ -1688,98 +1696,97 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:577 meld/preferences.py:132
+#: meld/dirdiff.py:623 meld/preferences.py:132
 msgid "Size"
 msgstr "Размер"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:585 meld/preferences.py:133
+#: meld/dirdiff.py:631 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Время изменения"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:593 meld/preferences.py:134
+#: meld/dirdiff.py:639 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Время изменения (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:601 meld/preferences.py:135
+#: meld/dirdiff.py:647 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Права доступа"
 
-#: meld/dirdiff.py:851
+#: meld/dirdiff.py:900
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "{filename} (сканирование…)"
 
-#: meld/dirdiff.py:883 meld/dirdiff.py:915
+#: meld/dirdiff.py:932 meld/dirdiff.py:964
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Сканирование {folder}"
 
-#: meld/dirdiff.py:1051
+#: meld/dirdiff.py:1100
 #, python-brace-format
-#| msgid "[%s] Done"
 msgid "[{label}] Done"
 msgstr "[{label}] Готово"
 
-#: meld/dirdiff.py:1064
+#: meld/dirdiff.py:1113
 msgid "Folder {} is being compared to itself"
 msgstr "Выполняется сравнение папки {} с самой собой"
 
-#: meld/dirdiff.py:1070
+#: meld/dirdiff.py:1119
 msgid "Folders have no differences"
 msgstr "Папки не имеют различий"
 
-#: meld/dirdiff.py:1072
+#: meld/dirdiff.py:1121
 msgid "Contents of scanned files in folders are identical."
 msgstr "Содержание сканированных файлов в папках идентично."
 
-#: meld/dirdiff.py:1074
+#: meld/dirdiff.py:1123
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 "Структура папок идентична, но содержание файлов не было просканированно."
 
-#: meld/dirdiff.py:1077
+#: meld/dirdiff.py:1126
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Включены фильтры файлов, поэтому часть файлов не учтена."
 
-#: meld/dirdiff.py:1079
+#: meld/dirdiff.py:1128
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Используются текстовые фильтры, которые могут маскировать различия между "
 "файлами."
 
-#: meld/dirdiff.py:1095 meld/filediff.py:1917
+#: meld/dirdiff.py:1144 meld/filediff.py:1919
 msgid "Hide"
 msgstr "Скрыть"
 
-#: meld/dirdiff.py:1097 meld/filediff.py:1919 meld/filediff.py:1949
-#: meld/filediff.py:1951 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1146 meld/filediff.py:1921 meld/filediff.py:1951
+#: meld/filediff.py:1953 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "С_крыть"
 
-#: meld/dirdiff.py:1106
+#: meld/dirdiff.py:1155
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "При сканировании этой папки произошло несколько ошибок"
 
-#: meld/dirdiff.py:1107
+#: meld/dirdiff.py:1156
 msgid "Files with invalid encodings found"
 msgstr "Найдены файлы с неверными кодировками"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1109
+#: meld/dirdiff.py:1158
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Некоторые файлы имеют неправильную кодировку. Названия что-то вроде:"
 
-#: meld/dirdiff.py:1111
+#: meld/dirdiff.py:1160
 msgid "Files hidden by case insensitive comparison"
 msgstr "Файлы, исключённые из сравнения из-за разного регистра"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1113
+#: meld/dirdiff.py:1162
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1787,18 +1794,17 @@ msgstr ""
 "Вы запускаете сравнение без учёта регистра в файловой системе, "
 "чувствительной к регистру. Следующие файлы в этой папке скрыты:"
 
-#: meld/dirdiff.py:1124
+#: meld/dirdiff.py:1173
 #, python-brace-format
-#| msgid "“%s” hidden by “%s”"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "“{first_file}” скрыто “{second_file}”"
 
-#: meld/dirdiff.py:1183
+#: meld/dirdiff.py:1235
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Заменить папку “%s”?"
 
-#: meld/dirdiff.py:1185
+#: meld/dirdiff.py:1237
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1807,17 +1813,12 @@ msgstr ""
 "Другая папка с таким же именем уже существует в “%s”.\n"
 "При замене существующей папки всё содержимое будет утеряно."
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1250
 msgid "Error copying file"
 msgstr "Ошибка при копировании файла"
 
-#: meld/dirdiff.py:1199
+#: meld/dirdiff.py:1251
 #, python-brace-format
-#| msgid ""
-#| "Couldn’t copy %s\n"
-#| "to %s.\n"
-#| "\n"
-#| "%s"
 msgid ""
 "Couldn’t copy {source}\n"
 "to {dest}.\n"
@@ -1829,11 +1830,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1224 meld/vcview.py:764
+#: meld/dirdiff.py:1276 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Ошибка при удалении {}"
 
-#: meld/dirdiff.py:1715
+#: meld/dirdiff.py:1819
 msgid "No folder"
 msgstr "Нет папки"
 
@@ -1857,64 +1858,64 @@ msgid ""
 msgstr ""
 "Если конфликт был успешно разрешён, вы можете отметить его как решённый."
 
-#: meld/filediff.py:1227
+#: meld/filediff.py:1228
 msgid "Cancel"
 msgstr "Отменить"
 
-#: meld/filediff.py:1228
+#: meld/filediff.py:1229
 msgid "Mark _Resolved"
 msgstr "Отметить как _разрешённый"
 
-#: meld/filediff.py:1591
+#: meld/filediff.py:1593
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Возникла проблема при открытии файла “%s”."
 
-#: meld/filediff.py:1600
+#: meld/filediff.py:1602
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Файл %s выглядит как двоичный файл."
 
-#: meld/filediff.py:1602
+#: meld/filediff.py:1604
 msgid "Do you want to open the file using the default application?"
 msgstr "Открыть выбранный файл в приложении по умолчанию?"
 
-#: meld/filediff.py:1604
+#: meld/filediff.py:1606
 msgid "Open"
 msgstr "Открыть"
 
-#: meld/filediff.py:1626
+#: meld/filediff.py:1628
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Объединение файлов"
 
-#: meld/filediff.py:1640
+#: meld/filediff.py:1642
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Вычисление различий"
 
-#: meld/filediff.py:1700
+#: meld/filediff.py:1702
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Файл %s изменился на диске"
 
-#: meld/filediff.py:1701
+#: meld/filediff.py:1703
 msgid "Do you want to reload the file?"
 msgstr "Хотите перезагрузить файл?"
 
-#: meld/filediff.py:1703
+#: meld/filediff.py:1705
 msgid "_Reload"
 msgstr "_Перезагрузить"
 
-#: meld/filediff.py:1873
+#: meld/filediff.py:1875
 msgid "File {} is being compared to itself"
 msgstr "Выполняется сравнение файла {} с самим собой"
 
-#: meld/filediff.py:1882
+#: meld/filediff.py:1884
 msgid "Files are identical"
 msgstr "Файлы идентичны"
 
-#: meld/filediff.py:1895
+#: meld/filediff.py:1897
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1922,11 +1923,11 @@ msgstr ""
 "Используются текстовые фильтры, которые могут маскировать различия между "
 "файлами. Хотите сравнить файлы без использования фильтров?"
 
-#: meld/filediff.py:1900
+#: meld/filediff.py:1902
 msgid "Files differ in line endings only"
 msgstr "Файлы различаются только окончаниями строк"
 
-#: meld/filediff.py:1902
+#: meld/filediff.py:1904
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1935,15 +1936,15 @@ msgstr ""
 "Файлы идентичны, но различаются окончаниями строк:\n"
 "%s"
 
-#: meld/filediff.py:1922
+#: meld/filediff.py:1924
 msgid "Show without filters"
 msgstr "Показать без фильтров"
 
-#: meld/filediff.py:1944
+#: meld/filediff.py:1946
 msgid "Change highlighting incomplete"
 msgstr "Выделение изменений неполное"
 
-#: meld/filediff.py:1945
+#: meld/filediff.py:1947
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1952,19 +1953,19 @@ msgstr ""
 "можете дать Meld больше времени, чтобы их выделить, возможно это будет "
 "медленно."
 
-#: meld/filediff.py:1953
+#: meld/filediff.py:1955
 msgid "Keep highlighting"
 msgstr "Сохранить выделение"
 
-#: meld/filediff.py:1955
+#: meld/filediff.py:1957
 msgid "_Keep highlighting"
 msgstr "Сохранить в_ыделение"
 
-#: meld/filediff.py:1968
+#: meld/filediff.py:1970
 msgid "Saving failed"
 msgstr "Сохранение не удалось"
 
-#: meld/filediff.py:1969
+#: meld/filediff.py:1971
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1972,42 +1973,42 @@ msgstr ""
 "Рекомендуется скопировать критичные изменения в другую программу или файл "
 "для избежания потери данных."
 
-#: meld/filediff.py:1978
+#: meld/filediff.py:1980
 msgid "Save Left Pane As"
 msgstr "Сохранить левую панель как"
 
-#: meld/filediff.py:1980
+#: meld/filediff.py:1982
 msgid "Save Middle Pane As"
 msgstr "Сохранить среднюю панель как"
 
-#: meld/filediff.py:1982
+#: meld/filediff.py:1984
 msgid "Save Right Pane As"
 msgstr "Сохранить правую панель как"
 
-#: meld/filediff.py:1993
+#: meld/filediff.py:1995
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Файл %s изменился на диске, так как он был открыт"
 
-#: meld/filediff.py:1995
+#: meld/filediff.py:1997
 msgid "If you save it, any external changes will be lost."
 msgstr "Если вы сохраните его, любые внешние изменения будут потеряны."
 
-#: meld/filediff.py:1998
+#: meld/filediff.py:2000
 msgid "Save Anyway"
 msgstr "Всё равно сохранить"
 
-#: meld/filediff.py:1999
+#: meld/filediff.py:2001
 msgid "Don’t Save"
 msgstr "Не сохранять"
 
-#: meld/filediff.py:2041
+#: meld/filediff.py:2043
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Файл “{}” содержит символы, недопустимые для текущей кодировки “{}”."
 
-#: meld/filediff.py:2045 meld/patchdialog.py:138
+#: meld/filediff.py:2047 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2016,16 +2017,16 @@ msgstr ""
 "Нельзя сохранить файл по следующей причине:\n"
 "%s"
 
-#: meld/filediff.py:2049 meld/patchdialog.py:137
+#: meld/filediff.py:2051 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Не удалось сохранить файл %s."
 
-#: meld/filediff.py:2450
+#: meld/filediff.py:2452
 msgid "Live comparison updating disabled"
 msgstr "Обновление Онлайн сравнения отключено"
 
-#: meld/filediff.py:2451
+#: meld/filediff.py:2453
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2052,16 +2053,16 @@ msgstr ""
 msgid "This remote location does not support sending items to the trash."
 msgstr "Этот сетевой адрес не поддерживает удаление элементов в корзину."
 
-#: meld/iohelpers.py:57
+#: meld/iohelpers.py:58
 msgid "_Delete Permanently"
 msgstr "Удалить изменения навсегда"
 
-#: meld/iohelpers.py:107
+#: meld/iohelpers.py:110
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Заменить файл “%s”?"
 
-#: meld/iohelpers.py:109
+#: meld/iohelpers.py:112
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2187,7 +2188,7 @@ msgstr "Необходимо три файла для автоматическо
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Можно сравнивать только файлы или только каталоги"
 
-#: meld/misc.py:150
+#: meld/misc.py:154
 msgid ""
 "{}\n"
 "\n"
@@ -2199,7 +2200,7 @@ msgstr ""
 "Meld столкнулся с критической ошибкой во время запуска:\n"
 "<tt>{}</tt>"
 
-#: meld/misc.py:201
+#: meld/misc.py:205
 msgid "[None]"
 msgstr "[Нет]"
 
