@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meld 1.4.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-03-15 12:52+0000\n"
-"PO-Revision-Date: 2022-03-19 08:23+1000\n"
+"POT-Creation-Date: 2022-03-27 12:07+0000\n"
+"PO-Revision-Date: 2022-03-30 17:13+1000\n"
 "Last-Translator: Ser82-png <sw@atrus.ru>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -822,72 +822,64 @@ msgstr "Объединить все с правой панели"
 msgid "Merge All"
 msgstr "Объединить все"
 
-#: meld/resources/gtk/menus.ui:92 meld/resources/ui/filediff-menus.ui:65
-msgid "Add Synchronization Point"
-msgstr "Добавить точку синхронизации"
-
-#: meld/resources/gtk/menus.ui:96 meld/resources/ui/filediff-menus.ui:69
-msgid "Clear Synchronization Points"
-msgstr "Удалить точки синхронизации"
-
-#: meld/resources/gtk/menus.ui:103
+#: meld/resources/gtk/menus.ui:92
 msgid "Format as Patch…"
 msgstr "Сформировать патч…"
 
-#: meld/resources/gtk/menus.ui:112
+#: meld/resources/gtk/menus.ui:101
 msgid "_Preferences"
 msgstr "_Параметры"
 
-#: meld/resources/gtk/menus.ui:116
+#: meld/resources/gtk/menus.ui:105
 msgid "Keyboard Shortcuts"
 msgstr "Клавиатурные сочетания"
 
-#: meld/resources/gtk/menus.ui:120
+#: meld/resources/gtk/menus.ui:109
 msgid "_Help"
 msgstr "_Справка"
 
-#: meld/resources/gtk/menus.ui:125
+#: meld/resources/gtk/menus.ui:114
 msgid "_About Meld"
 msgstr "О приложении Meld"
 
-#: meld/resources/gtk/menus.ui:138
+#: meld/resources/gtk/menus.ui:127
 msgid "File status"
 msgstr "Статус файла"
 
-#: meld/resources/gtk/menus.ui:140
+#: meld/resources/gtk/menus.ui:129
 msgid "Same"
 msgstr "Одинаковые"
 
-#: meld/resources/gtk/menus.ui:144
+#: meld/resources/gtk/menus.ui:133
 msgid "New"
 msgstr "Новые"
 
-#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:171
+#: meld/resources/gtk/menus.ui:137 meld/resources/gtk/menus.ui:160
 #: meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Изменён"
 
-#: meld/resources/gtk/menus.ui:158
+#: meld/resources/gtk/menus.ui:147
 msgid "Ignore filename case"
 msgstr "Игнорировать регистр имени файла"
 
-#: meld/resources/gtk/menus.ui:162
+#: meld/resources/gtk/menus.ui:151
 msgid "Normalize Unicode paths"
 msgstr "Нормализовать пути в Unicode"
 
-#: meld/resources/gtk/menus.ui:175
+#: meld/resources/gtk/menus.ui:164
 msgid "Normal"
 msgstr "Стандартные"
 
-#: meld/resources/gtk/menus.ui:179 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:168 meld/vc/_vc.py:70
 msgid "Unversioned"
 msgstr "Без версии"
 
-#: meld/resources/gtk/menus.ui:183 meld/vc/_vc.py:69
+#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:69
 msgid "Ignored"
 msgstr "Игнорируемые"
 
-#: meld/resources/gtk/menus.ui:190
+#: meld/resources/gtk/menus.ui:179
 msgid "Flatten folders"
 msgstr "Выровнять каталоги"
 
@@ -1759,12 +1751,12 @@ msgstr ""
 "Используются текстовые фильтры, которые могут маскировать различия между "
 "файлами."
 
-#: meld/dirdiff.py:1144 meld/filediff.py:1919
+#: meld/dirdiff.py:1144 meld/filediff.py:1980
 msgid "Hide"
 msgstr "Скрыть"
 
-#: meld/dirdiff.py:1146 meld/filediff.py:1921 meld/filediff.py:1951
-#: meld/filediff.py:1953 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1146 meld/filediff.py:1982 meld/filediff.py:2012
+#: meld/filediff.py:2014 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "С_крыть"
 
@@ -1838,84 +1830,104 @@ msgstr "Ошибка при удалении {}"
 msgid "No folder"
 msgstr "Нет папки"
 
-#: meld/filediff.py:1149
+#: meld/filediff.py:1156
 msgid "Comparison results will be inaccurate"
 msgstr "Результаты сравнения будут некорректными"
 
-#: meld/filediff.py:1151
+#: meld/filediff.py:1158
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr "Фильтр изменил количество строк в файле. Сравнение будет не точным."
 
-#: meld/filediff.py:1223
+#: meld/filediff.py:1230
 msgid "Mark conflict as resolved?"
 msgstr "Отметить конфликт как разрешённый?"
 
-#: meld/filediff.py:1225
+#: meld/filediff.py:1232
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Если конфликт был успешно разрешён, вы можете отметить его как решённый."
 
-#: meld/filediff.py:1228
+#: meld/filediff.py:1235
 msgid "Cancel"
 msgstr "Отменить"
 
-#: meld/filediff.py:1229
+#: meld/filediff.py:1236
 msgid "Mark _Resolved"
 msgstr "Отметить как _разрешённый"
 
-#: meld/filediff.py:1593
+#: meld/filediff.py:1427 meld/filediff.py:1443
+msgid "Add Synchronization Point"
+msgstr "Добавить точку синхронизации"
+
+#: meld/filediff.py:1431
+msgid "Remove Synchronization Point"
+msgstr "Удалить точку синхронизации"
+
+#: meld/filediff.py:1435
+msgid "Move Synchronization Point"
+msgstr "Переместить точку синхронизации"
+
+#: meld/filediff.py:1439
+msgid "Match Synchronization Point"
+msgstr "Установить соответствие точки синхронизации"
+
+#: meld/filediff.py:1463
+msgid "Clear Synchronization Points"
+msgstr "Удалить точки синхронизации"
+
+#: meld/filediff.py:1654
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Возникла проблема при открытии файла “%s”."
 
-#: meld/filediff.py:1602
+#: meld/filediff.py:1663
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Файл %s выглядит как двоичный файл."
 
-#: meld/filediff.py:1604
+#: meld/filediff.py:1665
 msgid "Do you want to open the file using the default application?"
 msgstr "Открыть выбранный файл в приложении по умолчанию?"
 
-#: meld/filediff.py:1606
+#: meld/filediff.py:1667
 msgid "Open"
 msgstr "Открыть"
 
-#: meld/filediff.py:1628
+#: meld/filediff.py:1689
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Объединение файлов"
 
-#: meld/filediff.py:1642
+#: meld/filediff.py:1703
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Вычисление различий"
 
-#: meld/filediff.py:1702
+#: meld/filediff.py:1763
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Файл %s изменился на диске"
 
-#: meld/filediff.py:1703
+#: meld/filediff.py:1764
 msgid "Do you want to reload the file?"
 msgstr "Хотите перезагрузить файл?"
 
-#: meld/filediff.py:1705
+#: meld/filediff.py:1766
 msgid "_Reload"
 msgstr "_Перезагрузить"
 
-#: meld/filediff.py:1875
+#: meld/filediff.py:1936
 msgid "File {} is being compared to itself"
 msgstr "Выполняется сравнение файла {} с самим собой"
 
-#: meld/filediff.py:1884
+#: meld/filediff.py:1945
 msgid "Files are identical"
 msgstr "Файлы идентичны"
 
-#: meld/filediff.py:1897
+#: meld/filediff.py:1958
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1923,11 +1935,11 @@ msgstr ""
 "Используются текстовые фильтры, которые могут маскировать различия между "
 "файлами. Хотите сравнить файлы без использования фильтров?"
 
-#: meld/filediff.py:1902
+#: meld/filediff.py:1963
 msgid "Files differ in line endings only"
 msgstr "Файлы различаются только окончаниями строк"
 
-#: meld/filediff.py:1904
+#: meld/filediff.py:1965
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1936,15 +1948,15 @@ msgstr ""
 "Файлы идентичны, но различаются окончаниями строк:\n"
 "%s"
 
-#: meld/filediff.py:1924
+#: meld/filediff.py:1985
 msgid "Show without filters"
 msgstr "Показать без фильтров"
 
-#: meld/filediff.py:1946
+#: meld/filediff.py:2007
 msgid "Change highlighting incomplete"
 msgstr "Выделение изменений неполное"
 
-#: meld/filediff.py:1947
+#: meld/filediff.py:2008
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1953,19 +1965,19 @@ msgstr ""
 "можете дать Meld больше времени, чтобы их выделить, возможно это будет "
 "медленно."
 
-#: meld/filediff.py:1955
+#: meld/filediff.py:2016
 msgid "Keep highlighting"
 msgstr "Сохранить выделение"
 
-#: meld/filediff.py:1957
+#: meld/filediff.py:2018
 msgid "_Keep highlighting"
 msgstr "Сохранить в_ыделение"
 
-#: meld/filediff.py:1970
+#: meld/filediff.py:2031
 msgid "Saving failed"
 msgstr "Сохранение не удалось"
 
-#: meld/filediff.py:1971
+#: meld/filediff.py:2032
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1973,42 +1985,42 @@ msgstr ""
 "Рекомендуется скопировать критичные изменения в другую программу или файл "
 "для избежания потери данных."
 
-#: meld/filediff.py:1980
+#: meld/filediff.py:2041
 msgid "Save Left Pane As"
 msgstr "Сохранить левую панель как"
 
-#: meld/filediff.py:1982
+#: meld/filediff.py:2043
 msgid "Save Middle Pane As"
 msgstr "Сохранить среднюю панель как"
 
-#: meld/filediff.py:1984
+#: meld/filediff.py:2045
 msgid "Save Right Pane As"
 msgstr "Сохранить правую панель как"
 
-#: meld/filediff.py:1995
+#: meld/filediff.py:2056
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Файл %s изменился на диске, так как он был открыт"
 
-#: meld/filediff.py:1997
+#: meld/filediff.py:2058
 msgid "If you save it, any external changes will be lost."
 msgstr "Если вы сохраните его, любые внешние изменения будут потеряны."
 
-#: meld/filediff.py:2000
+#: meld/filediff.py:2061
 msgid "Save Anyway"
 msgstr "Всё равно сохранить"
 
-#: meld/filediff.py:2001
+#: meld/filediff.py:2062
 msgid "Don’t Save"
 msgstr "Не сохранять"
 
-#: meld/filediff.py:2043
+#: meld/filediff.py:2104
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Файл “{}” содержит символы, недопустимые для текущей кодировки “{}”."
 
-#: meld/filediff.py:2047 meld/patchdialog.py:138
+#: meld/filediff.py:2108 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2017,16 +2029,16 @@ msgstr ""
 "Нельзя сохранить файл по следующей причине:\n"
 "%s"
 
-#: meld/filediff.py:2051 meld/patchdialog.py:137
+#: meld/filediff.py:2112 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Не удалось сохранить файл %s."
 
-#: meld/filediff.py:2452
+#: meld/filediff.py:2522
 msgid "Live comparison updating disabled"
 msgstr "Обновление Онлайн сравнения отключено"
 
-#: meld/filediff.py:2453
+#: meld/filediff.py:2523
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
