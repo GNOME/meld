@@ -47,6 +47,8 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     # Version control actions
     'view.vc-commit': '<Primary>M',
     'view.vc-console-visible': 'F9',
+    # Swap the two panes
+    'view.swap-2-panes': '<Alt>backslash',
 }
 
 

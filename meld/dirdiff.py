@@ -497,7 +497,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             ('folder-compare-marked', self.action_diff_marked),
             ('folder-copy-left', self.action_copy_left),
             ('folder-copy-right', self.action_copy_right),
-            ('folder-switch', self.action_switch),
+            ('swap-2-panes', self.action_swap),
             ('folder-delete', self.action_delete),
             ('folder-expand', self.action_folder_expand),
             ('next-change', self.action_next_change),
@@ -1328,7 +1328,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.set_action_enabled(
                 'folder-compare-marked',
                 self.marked is not None and self.marked.pane != pane)
-            self.set_action_enabled('folder-switch', self.num_panes == 2)
+            self.set_action_enabled('swap-2-panes', self.num_panes == 2)
             self.set_action_enabled('folder-delete', is_valid)
             self.set_action_enabled('folder-copy-left', is_valid and pane > 0)
             self.set_action_enabled(
@@ -1581,7 +1581,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
     def action_copy_right(self, *args):
         self.copy_selected(1)
 
-    def action_switch(self, *args):
+    def action_swap(self, *args):
         folder_x = self.folders[0]
         self.folders[0] = self.folders[1]
         self.folders[1] = folder_x

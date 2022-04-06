@@ -351,7 +351,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
             ('save-all', self.action_save_all),
             ('save-as', self.action_save_as),
             ('undo', self.action_undo),
-            ('file-switch', self.action_switch),
+            ('swap-2-panes', self.action_swap),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -726,7 +726,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.set_action_enabled('file-copy-right-down', copy_right)
         self.set_action_enabled('previous-pane', pane > 0)
         self.set_action_enabled('next-pane', pane < self.num_panes - 1)
-        self.set_action_enabled('file-switch', self.num_panes == 2)
+        self.set_action_enabled('swap-2-panes', self.num_panes == 2)
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
@@ -2471,7 +2471,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 mgr.clear()
         self.refresh_comparison()
 
-    def action_switch(self, *args):
+    def action_swap(self, *args):
         buffer0 = self.textbuffer[0]
         buffer1 = self.textbuffer[1]
         self.set_files([buffer1.data.gfile, buffer0.data.gfile])
