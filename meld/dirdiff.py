@@ -1582,9 +1582,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.copy_selected(1)
 
     def action_swap(self, *args):
-        folder_x = self.folders[0]
-        self.folders[0] = self.folders[1]
-        self.folders[1] = folder_x
+        self.folders.reverse()
         self.refresh()
 
     def action_delete(self, *args):
