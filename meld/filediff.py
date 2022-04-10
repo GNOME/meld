@@ -1474,9 +1474,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
-        for label, buf in zip(labels, self.textbuffer):
+        for label, buf, flabel in zip(labels, self.textbuffer, self.filelabel):
             if label:
                 buf.data.label = label
+                flabel.props.custom_label = label
 
     def set_merge_output_file(self, gfile):
         if self.num_panes < 2:
