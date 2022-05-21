@@ -112,7 +112,7 @@ class DiffTreeStore(SearchableTreeStore):
             ("text-x-generic", "folder", None,   None),    # NONE
             ("text-x-generic", "folder", None,   None),    # NORMAL
             ("text-x-generic", "folder", None,   None),    # NOCHANGE
-            ("dialog-warning", None,     None,   None),    # ERROR
+            ("dialog-warning-symbolic", None,     None,   None),    # ERROR
             (None,             None,     None,   None),    # EMPTY
             ("text-x-generic", "folder", new_fg, None),    # NEW
             ("text-x-generic", "folder", mod_fg, None),    # MODIFIED
