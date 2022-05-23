@@ -78,8 +78,8 @@ class FilterList(Gtk.Box, EditableListWidget):
 
     def valid_icon_celldata(self, col, cell, model, it, user_data=None):
         is_valid = model.get_value(it, 3)
-        icon_name = "gtk-dialog-warning" if not is_valid else None
-        cell.set_property("stock-id", icon_name)
+        icon_name = "dialog-warning-symbolic" if not is_valid else None
+        cell.set_property("icon-name", icon_name)
 
     @Gtk.Template.Callback()
     def on_add_clicked(self, button):

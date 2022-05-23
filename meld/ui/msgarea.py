@@ -24,8 +24,8 @@ from gi.repository import Gtk, Pango
 from meld.conf import _
 
 
-def layout_text_and_icon(stockid, primary_text, secondary_text=None):
-    image = Gtk.Image.new_from_icon_name(stockid, Gtk.IconSize.DIALOG)
+def layout_text_and_icon(icon_name, primary_text, secondary_text=None):
+    image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
     image.set_alignment(0.5, 0.5)
 
     vbox = Gtk.VBox(homogeneous=False, spacing=6)
@@ -86,7 +86,7 @@ class MsgAreaController(Gtk.HBox):
         self.__msgid = None
 
     def new_from_text_and_icon(
-            self, stockid, primary, secondary=None, buttons=None):
+            self, icon_name, primary, secondary=None, buttons=None):
         self.clear()
         msgarea = self.__msgarea = Gtk.InfoBar()
 
@@ -94,7 +94,7 @@ class MsgAreaController(Gtk.HBox):
             for (text, respid) in buttons:
                 self.add_button(text, respid)
 
-        content = layout_text_and_icon(stockid, primary, secondary)
+        content = layout_text_and_icon(icon_name, primary, secondary)
 
         content_area = msgarea.get_content_area()
         content_area.foreach(content_area.remove, None)
