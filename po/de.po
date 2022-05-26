@@ -11,25 +11,26 @@
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2017.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2019.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
+# Tim Sabsch <tim@sabsch.com>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2021-09-18 05:50+0000\n"
-"PO-Revision-Date: 2021-09-20 01:19+0200\n"
-"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"POT-Creation-Date: 2022-05-23 07:43+0000\n"
+"PO-Revision-Date: 2022-05-26 17:39+0200\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: Poedit 3.0.1\n"
 "X-Poedit-Bookmarks: -1,351,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
-#: meld/resources/ui/appwindow.ui:9
+#: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
 msgid "Meld"
 msgstr "Meld"
 
@@ -94,13 +95,16 @@ msgstr "Voreingestellter Vollbildzustand des Fensters"
 
 #: data/org.gnome.meld.gschema.xml:58
 msgid "Prefer application-wide dark theme"
-msgstr ""
+msgstr "Programmübergreifendes dunkles Thema bevorzugen"
 
 #: data/org.gnome.meld.gschema.xml:59
 msgid ""
 "If true, the GTK dark theme variant will be used, if available. Note that "
 "this is separate from the syntax highlighting scheme."
 msgstr ""
+"Falls gesetzt, wird die dunkle Variante des GTK-Themas verwendet, falls "
+"verfügbar. Beachten Sie, dass dies getrennt ist vom Schema der "
+"Syntaxhervorhebung."
 
 #: data/org.gnome.meld.gschema.xml:65
 msgid "Additional automatically detected text encodings"
@@ -546,218 +550,223 @@ msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: meld/resources/gtk/help-overlay.ui:63
+#: meld/resources/gtk/help-overlay.ui:61
+msgctxt "shortcut window"
+msgid "Swap left and right panes"
+msgstr "Linken und rechten Bereich tauschen"
+
+#: meld/resources/gtk/help-overlay.ui:70
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Bereiche"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Vorheriger Vergleichsbereich"
 
-#: meld/resources/gtk/help-overlay.ui:75
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Nächster Vergleichsbereich"
 
-#: meld/resources/gtk/help-overlay.ui:84
+#: meld/resources/gtk/help-overlay.ui:91
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Änderungen"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:96
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Zur vorherigen Änderung gehen"
 
-#: meld/resources/gtk/help-overlay.ui:96
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Zur nächsten Änderung gehen"
 
-#: meld/resources/gtk/help-overlay.ui:105
+#: meld/resources/gtk/help-overlay.ui:112
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Reiter"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:117
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Zum vorherigen Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:117
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Zum nächsten Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Zum Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:138
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Reiter nach links verschieben"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Reiter nach rechts verschieben"
 
-#: meld/resources/gtk/help-overlay.ui:147
+#: meld/resources/gtk/help-overlay.ui:154
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Bearbeitung"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: meld/resources/gtk/help-overlay.ui:159
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Wiederholen"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:180
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Einfügen"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Suchen"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Weitersuchen"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Rückwärts suchen"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Ersetzen"
 
-#: meld/resources/gtk/help-overlay.ui:217
+#: meld/resources/gtk/help-overlay.ui:224
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Dateivergleich"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Aktuelle Datei speichern"
 
-#: meld/resources/gtk/help-overlay.ui:229
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Aktuelle Datei an einem anderen Ort speichern"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Alle Dateien im aktuellen Vergleich speichern"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:250
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Vorheriger Konflikt"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Nächster Konflikt"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Änderung nach links schieben"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Änderung nach rechts schieben"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Änderung von links ziehen"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Änderung von rechts ziehen"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Änderung über den linken Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Änderung unter den linken Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Änderung über den rechten Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Änderung unter den rechten Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:313
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:348
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Änderung löschen"
 
-#: meld/resources/gtk/help-overlay.ui:322
+#: meld/resources/gtk/help-overlay.ui:329
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Ordnervergleiche"
 
-#: meld/resources/gtk/help-overlay.ui:327
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Nach links kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:334
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Nach rechts kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:350
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Versionskontrollvergleich"
 
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Änderungen in die Versionskontrolle einspielen"
 
-#: meld/resources/gtk/help-overlay.ui:362
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Konsolenausgabe anzeigen/verbergen"
@@ -814,70 +823,70 @@ msgstr "Versionskontrollkonsole"
 msgid "Lock scrolling"
 msgstr "Rollen sperren"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:74
+msgid "Swap left and right panes"
+msgstr "Linken und rechten Bereich tauschen"
+
+#: meld/resources/gtk/menus.ui:80
 msgid "Comparison"
 msgstr "Vergleich"
 
-#: meld/resources/gtk/menus.ui:77
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Left"
 msgstr "Alle Änderungen von links zusammenführen"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All from Right"
 msgstr "Alle Änderungen von rechts zusammenführen"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:92
 msgid "Merge All"
 msgstr "Alles zusammenfügen"
 
-#: meld/resources/gtk/menus.ui:92 meld/resources/ui/filediff-menus.ui:54
-msgid "Add Synchronization Point"
-msgstr "Synchronisationspunkt hinzufügen"
-
-#: meld/resources/gtk/menus.ui:96 meld/resources/ui/filediff-menus.ui:58
-msgid "Clear Synchronization Points"
-msgstr "Synchronisationspunkte entfernen"
-
-#: meld/resources/gtk/menus.ui:103
+#: meld/resources/gtk/menus.ui:99
 msgid "Format as Patch…"
 msgstr "Als Patch formatieren …"
 
-#: meld/resources/gtk/menus.ui:112
+#: meld/resources/gtk/menus.ui:108
 msgid "_Preferences"
 msgstr "_Einstellungen"
 
-#: meld/resources/gtk/menus.ui:116
+#: meld/resources/gtk/menus.ui:112
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkombinationen"
 
-#: meld/resources/gtk/menus.ui:120
+#: meld/resources/gtk/menus.ui:116
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: meld/resources/gtk/menus.ui:125
+#: meld/resources/gtk/menus.ui:121
 msgid "_About Meld"
 msgstr "_Info zu Meld"
 
-#: meld/resources/gtk/menus.ui:138
+#: meld/resources/gtk/menus.ui:134
 msgid "File status"
 msgstr "Dateistatus"
 
-#: meld/resources/gtk/menus.ui:140
+#: meld/resources/gtk/menus.ui:136
 msgid "Same"
 msgstr "Identisch"
 
-#: meld/resources/gtk/menus.ui:144
+#: meld/resources/gtk/menus.ui:140
 msgid "New"
 msgstr "Neu"
 
-#: meld/resources/gtk/menus.ui:148 meld/resources/gtk/menus.ui:167
+#: meld/resources/gtk/menus.ui:144 meld/resources/gtk/menus.ui:167
 #: meld/vc/_vc.py:76
 msgid "Modified"
 msgstr "Geändert"
 
-#: meld/resources/gtk/menus.ui:158
+#: meld/resources/gtk/menus.ui:154
 msgid "Ignore filename case"
 msgstr "Groß-/Kleinschreibung in Dateinamen ignorieren"
+
+#: meld/resources/gtk/menus.ui:158
+msgid "Normalize Unicode paths"
+msgstr "Unicode-Pfade vereinheitlichen"
 
 #: meld/resources/gtk/menus.ui:171
 msgid "Normal"
@@ -915,41 +924,42 @@ msgstr ""
 "Christian Kirbach <christian.kirbach@gmail.com>\n"
 "Bernd Homuth <dev@hmt.im>\n"
 "Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
-"Philipp Kiemle <philipp.kiemle@gmail.com>"
+"Philipp Kiemle <philipp.kiemle@gmail.com>\n"
+"Tim Sabsch <tim@sabsch.com>"
 
-#: meld/resources/ui/appwindow.ui:29
+#: meld/resources/ui/appwindow.ui:30
 msgid "Start a new comparison"
 msgstr "Neuen Vergleich starten"
 
-#: meld/resources/ui/appwindow.ui:45
+#: meld/resources/ui/appwindow.ui:46
 msgid "Open a recent comparison"
 msgstr "Einen aktuellen Vergleich öffnen"
 
-#: meld/resources/ui/appwindow.ui:73
+#: meld/resources/ui/appwindow.ui:74
 msgid "Go to the previous change"
 msgstr "Zur vorherigen Änderung gehen"
 
-#: meld/resources/ui/appwindow.ui:93
+#: meld/resources/ui/appwindow.ui:94
 msgid "Go to the next change"
 msgstr "Zur nächsten Änderung gehen"
 
-#: meld/resources/ui/appwindow.ui:123
+#: meld/resources/ui/appwindow.ui:124
 msgid "Go to the previous conflict"
 msgstr "Zum vorherigen Konflikt gehen"
 
-#: meld/resources/ui/appwindow.ui:143
+#: meld/resources/ui/appwindow.ui:144
 msgid "Go to the next conflict"
 msgstr "Zum nächsten Konflikt gehen"
 
-#: meld/resources/ui/appwindow.ui:192
+#: meld/resources/ui/appwindow.ui:193
 msgid "Version Filters"
 msgstr "Versionsfilter"
 
-#: meld/resources/ui/appwindow.ui:207 meld/resources/ui/preferences.ui:1472
+#: meld/resources/ui/appwindow.ui:208 meld/resources/ui/preferences.ui:1472
 msgid "File Filters"
 msgstr "Dateifilter"
 
-#: meld/resources/ui/appwindow.ui:222 meld/resources/ui/preferences.ui:1657
+#: meld/resources/ui/appwindow.ui:223 meld/resources/ui/preferences.ui:1657
 msgid "Text Filters"
 msgstr "Textfilter"
 
@@ -962,7 +972,7 @@ msgid "Column Name"
 msgstr "Spaltenname"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:128
-#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:736
+#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:741
 msgid "_Remove"
 msgstr "_Löschen"
 
@@ -1019,32 +1029,57 @@ msgid "_Compare selected files"
 msgstr "Markierte Dateien _vergleichen"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
+msgid "_Mark selected file"
+msgstr "Gewählte Datei _markieren"
+
+#: meld/resources/ui/dirdiff-menus.ui:18
+msgid "Compare _with marked file"
+msgstr "Mit markierter Datei _vergleichen"
+
+#: meld/resources/ui/dirdiff-menus.ui:25
 msgid "Copy to _left"
 msgstr "Nach _links kopieren"
 
-#: meld/resources/ui/dirdiff-menus.ui:18
+#: meld/resources/ui/dirdiff-menus.ui:29
 msgid "Copy to _right"
 msgstr "Nach _rechts kopieren"
 
-#: meld/resources/ui/dirdiff-menus.ui:22
+#: meld/resources/ui/dirdiff-menus.ui:33
 msgid "_Delete selected"
 msgstr "Markierte _löschen"
 
-#: meld/resources/ui/dirdiff-menus.ui:29
+#: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
 msgstr "Rekursiv einklappen"
 
-#: meld/resources/ui/dirdiff-menus.ui:33
+#: meld/resources/ui/dirdiff-menus.ui:44
 msgid "Expand Recursively"
 msgstr "Rekursiv ausklappen"
 
-#: meld/resources/ui/dirdiff-menus.ui:40
+#: meld/resources/ui/dirdiff-menus.ui:51
 msgid "_Open Externally"
 msgstr "_Extern öffnen"
 
-#: meld/resources/ui/dirdiff-menus.ui:44
+#: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "Dateipfade _kopieren"
+
+#: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:76
+#: meld/resources/ui/dirdiff.ui:117
+msgid "Select folder to open in this pane"
+msgstr "Ordner wählen, der in diesem Bereich geöffnet werden soll"
+
+#: meld/resources/ui/dirdiff.ui:43
+msgid "Folder 1"
+msgstr "Ordner 1"
+
+#: meld/resources/ui/dirdiff.ui:84
+msgid "Folder 2"
+msgstr "Ordner 2"
+
+#: meld/resources/ui/dirdiff.ui:125
+msgid "Folder 3"
+msgstr "Ordner 3"
 
 #: meld/resources/ui/encoding-selector.ui:31
 msgid "Search text encoding…"
@@ -1102,8 +1137,16 @@ msgstr "_Kopieren"
 msgid "_Paste"
 msgstr "E_infügen"
 
-#: meld/resources/ui/filediff.ui:33 meld/resources/ui/filediff.ui:102
-#: meld/resources/ui/filediff.ui:171
+#: meld/resources/ui/filediff-menus.ui:54
+msgid "Open Containing Folder"
+msgstr "Den beinhaltenden Ordner öffnen"
+
+#: meld/resources/ui/filediff-menus.ui:58
+msgid "Copy Full Path"
+msgstr "Vollständigen Dateipfad _kopieren"
+
+#: meld/resources/ui/filediff.ui:31 meld/resources/ui/filediff.ui:100
+#: meld/resources/ui/filediff.ui:169
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
@@ -1112,31 +1155,31 @@ msgstr ""
 "Datei zu entsperren und Ihre Änderungen vorzunehmen, aber Sie müssen diese "
 "Änderungen in eine neue Datei speichern."
 
-#: meld/resources/ui/filediff.ui:47 meld/resources/ui/filediff.ui:116
-#: meld/resources/ui/filediff.ui:185
-msgid "Open file in this pane"
-msgstr "Datei in diesem Bereich öffnen"
-
-#: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:125
-#: meld/resources/ui/filediff.ui:194
+#: meld/resources/ui/filediff.ui:45 meld/resources/ui/filediff.ui:114
+#: meld/resources/ui/filediff.ui:183
 msgid "Save file in this pane"
 msgstr "Datei in diesem Bereich speichern"
 
-#: meld/resources/ui/filediff.ui:73
+#: meld/resources/ui/filediff.ui:71 meld/resources/ui/filediff.ui:140
+#: meld/resources/ui/filediff.ui:209
+msgid "Open file in this pane"
+msgstr "Datei in diesem Bereich öffnen"
+
+#: meld/resources/ui/filediff.ui:79
 msgid "File 3"
 msgstr "Datei 3"
 
-#: meld/resources/ui/filediff.ui:142
+#: meld/resources/ui/filediff.ui:148
 msgid "File 2"
 msgstr "Datei 2"
 
-#: meld/resources/ui/filediff.ui:207
+#: meld/resources/ui/filediff.ui:217 meld/resources/ui/vcview.ui:148
 msgid "File 1"
 msgstr "Datei 1"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:208
-#: meld/dirdiff.py:517
+#: meld/resources/ui/filter-list.ui:54 meld/resources/ui/vcview.ui:217
+#: meld/dirdiff.py:603
 msgid "Name"
 msgstr "Name"
 
@@ -1148,7 +1191,7 @@ msgstr "Muster"
 msgid "Add new filter"
 msgstr "Neuen Filter hinzufügen"
 
-#: meld/resources/ui/filter-list.ui:112 meld/resources/ui/vcview-menus.ui:22
+#: meld/resources/ui/filter-list.ui:112 meld/resources/ui/vcview-menus.ui:18
 msgid "_Add"
 msgstr "_Hinzufügen"
 
@@ -1176,7 +1219,7 @@ msgstr "Umgebrochen"
 msgid "Replace _All"
 msgstr "_Alle ersetzen"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1067 meld/iohelpers.py:113
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1231 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "E_rsetzen"
 
@@ -1188,7 +1231,7 @@ msgstr "Zwischen Suchen und Suchen und Ersetzen wechseln"
 msgid "Search highlight mode…"
 msgstr "Hervorhebungsmodus suchen …"
 
-#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:349
+#: meld/resources/ui/new-diff-tab.ui:20 meld/meldwindow.py:342
 #: meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Neuer Vergleich"
@@ -1276,6 +1319,18 @@ msgstr "Mittlerer und rechter Bereich"
 #: meld/resources/ui/patch-dialog.ui:149
 msgid "_Reverse patch direction"
 msgstr "Patch-_Richtung umkehren"
+
+#: meld/resources/ui/path-label.ui:23
+msgid "Path"
+msgstr "Pfad"
+
+#: meld/resources/ui/path-label.ui:62
+msgid "Copy Path"
+msgstr "Pfad _kopieren"
+
+#: meld/resources/ui/path-label.ui:78
+msgid "Open Folder"
+msgstr "Ordner öffnen"
 
 #: meld/resources/ui/preferences.ui:22 meld/resources/ui/preferences.ui:31
 msgid "Preferences"
@@ -1551,12 +1606,12 @@ msgstr "Wenn Sie nicht speichern, gehen die Änderungen verloren."
 msgid "Close _without Saving"
 msgstr "Schließen _ohne zu Speichern"
 
-#: meld/resources/ui/save-confirm-dialog.ui:38 meld/dirdiff.py:1066
-#: meld/iohelpers.py:55 meld/iohelpers.py:112
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
+#: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "A_bbrechen"
 
-#: meld/resources/ui/save-confirm-dialog.ui:52
+#: meld/resources/ui/save-confirm-dialog.ui:55
 msgid "_Save"
 msgstr "_Speichern"
 
@@ -1574,97 +1629,69 @@ msgstr "_Vergleichen"
 
 #: meld/resources/ui/vcview-menus.ui:11
 msgid "Co_mmit…"
-msgstr "Co_mmit …"
+msgstr "Eins_pielen …"
 
-#: meld/resources/ui/vcview-menus.ui:15
-msgid "_Update"
-msgstr "_Aktualisieren"
-
-#: meld/resources/ui/vcview-menus.ui:30
+#: meld/resources/ui/vcview-menus.ui:26
 msgid "Re_vert"
 msgstr "Zu_rücksetzen"
 
-#: meld/resources/ui/vcview-menus.ui:34 meld/resources/ui/vcview.ui:164
+#: meld/resources/ui/vcview-menus.ui:30
 msgid "Delete"
 msgstr "Löschen"
 
-#: meld/resources/ui/vcview-menus.ui:41
-msgid "Mar_k as Resolved"
-msgstr "Als _gelöst markieren"
+#: meld/resources/ui/vcview-menus.ui:37
+msgid "Resolve Conflict"
+msgstr "Konflikt auflösen"
 
-#: meld/resources/ui/vcview.ui:73
-msgid "Commit…"
-msgstr "Commit …"
-
-#: meld/resources/ui/vcview.ui:74
+#: meld/resources/ui/vcview.ui:16
 msgid "Commit changes to version control"
 msgstr "Änderungen in die Versionskontrolle einspielen"
 
-#: meld/resources/ui/vcview.ui:86
-msgid "Update"
-msgstr "Aktualisieren"
+#: meld/resources/ui/vcview.ui:21
+msgid "Commit…"
+msgstr "Einspielen …"
 
-#: meld/resources/ui/vcview.ui:87
-msgid "Update working copy from version control"
-msgstr "Arbeitsverzeichnis aus der Versionskontrolle aktualisieren"
+#: meld/resources/ui/vcview.ui:38
+msgid "Pull remote changes to the local repository"
+msgstr "Änderungen der Gegenstelle in das lokale Repository herunterladen"
 
-#: meld/resources/ui/vcview.ui:99
-msgid "Push"
-msgstr "Hochladen"
-
-#: meld/resources/ui/vcview.ui:100
+#: meld/resources/ui/vcview.ui:51
 msgid "Push local changes to remote"
-msgstr "Lokale Änderungen nach entfernt schieben"
+msgstr "Lokale Änderungen zur Gegenstelle hochladen"
 
-#: meld/resources/ui/vcview.ui:112
-msgid "Add"
-msgstr "Hinzufügen"
-
-#: meld/resources/ui/vcview.ui:113
+#: meld/resources/ui/vcview.ui:74
 msgid "Add to version control"
 msgstr "Zur Versionskontrolle hinzufügen"
 
-#: meld/resources/ui/vcview.ui:125
-msgid "Remove"
-msgstr "Entfernen"
-
-#: meld/resources/ui/vcview.ui:126
+#: meld/resources/ui/vcview.ui:87
 msgid "Remove from version control"
 msgstr "Von der Versionskontrolle entfernen"
 
-#: meld/resources/ui/vcview.ui:138
-msgid "Mark as Resolved"
-msgstr "Als gelöst markieren"
-
-#: meld/resources/ui/vcview.ui:139
-msgid "Mark as resolved in version control"
-msgstr "Für die Versionskontrolle als gelöst markieren"
-
-#: meld/resources/ui/vcview.ui:151
-msgid "Revert"
-msgstr "Zurücksetzen"
-
-#: meld/resources/ui/vcview.ui:152
+#: meld/resources/ui/vcview.ui:100
 msgid "Revert working copy to original state"
 msgstr "Die Arbeitskopie auf Original zurücksetzen"
 
-#: meld/resources/ui/vcview.ui:165
-msgid "Delete from working copy"
-msgstr "Aus der Arbeitskopie löschen"
+#: meld/resources/ui/vcview.ui:113
+msgid "Mark as resolved in version control"
+msgstr "Für die Versionskontrolle als gelöst markieren"
 
-#: meld/resources/ui/vcview.ui:220
+#: meld/resources/ui/vcview.ui:140
+msgid "Open version controlled folder in this pane"
+msgstr "Ordner unter Versionskontrolle in diesem Bereich öffnen"
+
+#: meld/resources/ui/vcview.ui:229
 msgid "Location"
 msgstr "Ort"
 
-#: meld/resources/ui/vcview.ui:229
+#: meld/resources/ui/vcview.ui:238
 msgid "Status"
 msgstr "Status"
 
-#: meld/resources/ui/vcview.ui:238
+#: meld/resources/ui/vcview.ui:247
 msgid "Extra"
 msgstr "Extra"
 
-#: meld/resources/ui/vcview.ui:270
+#: meld/resources/ui/vcview.ui:279
 msgid "Console output"
 msgstr "Konsolenausgabe"
 
@@ -1689,44 +1716,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:538 meld/preferences.py:132
+#: meld/dirdiff.py:624 meld/preferences.py:132
 msgid "Size"
 msgstr "Größe"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:546 meld/preferences.py:133
+#: meld/dirdiff.py:632 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Änderungszeit"
 
+#. Create ISO-format date-time CellRenderer
+#: meld/dirdiff.py:640 meld/preferences.py:134
+msgid "Modification time (ISO)"
+msgstr "Änderungszeit (ISO)"
+
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:554 meld/preferences.py:134
+#: meld/dirdiff.py:648 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: meld/dirdiff.py:778 meld/dirdiff.py:802
+#: meld/dirdiff.py:901
+#, python-brace-format
+msgid "{filename} (scanning…)"
+msgstr "(durchsucht …) {filename}"
+
+#: meld/dirdiff.py:933 meld/dirdiff.py:965
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
-msgstr ""
+msgstr "[{label}] Durchsucht {folder}"
 
-#: meld/dirdiff.py:942
+#: meld/dirdiff.py:1101
 #, python-brace-format
-#| msgid "[%s] Done"
 msgid "[{label}] Done"
 msgstr "[{label}] Fertig"
 
-#: meld/dirdiff.py:951
+#: meld/dirdiff.py:1114
 msgid "Folder {} is being compared to itself"
 msgstr "Der Ordner »{}« wird mit sich selbst verglichen"
 
-#: meld/dirdiff.py:957
+#: meld/dirdiff.py:1120
 msgid "Folders have no differences"
 msgstr "Keine Unterschiede zwischen Ordnern"
 
-#: meld/dirdiff.py:959
+#: meld/dirdiff.py:1122
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhalte der untersuchten Dateien in den Ordnern sind identisch."
 
-#: meld/dirdiff.py:961
+#: meld/dirdiff.py:1124
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1734,47 +1770,47 @@ msgstr ""
 "Untersuchte Dateien in den Ordner scheinen identisch zu sein, jedoch wurden "
 "die Dateiinhalte nicht geprüft."
 
-#: meld/dirdiff.py:964
+#: meld/dirdiff.py:1127
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Dateifilter wurden verwendet, deshalb wurden nicht alle Dateien untersucht."
 
-#: meld/dirdiff.py:966
+#: meld/dirdiff.py:1129
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten."
 
-#: meld/dirdiff.py:982 meld/filediff.py:1874
+#: meld/dirdiff.py:1145 meld/filediff.py:1983
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:984 meld/filediff.py:1876 meld/filediff.py:1906
-#: meld/filediff.py:1908 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1147 meld/filediff.py:1985 meld/filediff.py:2015
+#: meld/filediff.py:2017 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:993
+#: meld/dirdiff.py:1156
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Beim Einlesen dieses Ordners traten mehrere Fehler auf"
 
-#: meld/dirdiff.py:994
+#: meld/dirdiff.py:1157
 msgid "Files with invalid encodings found"
 msgstr "Dateien mit ungültigen Kodierungen gefunden"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:996
+#: meld/dirdiff.py:1159
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Einige Dateien lagen in einer inkorrekten Kodierung vor. Folgende Namen sind "
 "davon betroffen:"
 
-#: meld/dirdiff.py:998
+#: meld/dirdiff.py:1161
 msgid "Files hidden by case insensitive comparison"
 msgstr "Dateien durch von Schreibweise unabhängigen Vergleich verborgen"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1000
+#: meld/dirdiff.py:1163
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1783,18 +1819,17 @@ msgstr ""
 "auf einem Dateisystem durch, welches zwischen Groß- und Kleinschreibung "
 "unterscheidet. Die folgenden Dateien in diesem Ordner sind nicht sichtbar:"
 
-#: meld/dirdiff.py:1011
+#: meld/dirdiff.py:1174
 #, python-brace-format
-#| msgid "“%s” hidden by “%s”"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "»{first_file}« verborgen durch »{second_file}«"
 
-#: meld/dirdiff.py:1070
+#: meld/dirdiff.py:1236
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Ordner »%s« ersetzen?"
 
-#: meld/dirdiff.py:1072
+#: meld/dirdiff.py:1238
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1803,11 +1838,11 @@ msgstr ""
 "Ein Ordner mit diesem Namen existiert bereits in »%s«.\n"
 "Wenn Sie den vorhandenen Ordner ersetzen, gehen alle Dateien darin verloren."
 
-#: meld/dirdiff.py:1085
+#: meld/dirdiff.py:1251
 msgid "Error copying file"
 msgstr "Fehler beim Kopieren der Datei"
 
-#: meld/dirdiff.py:1086
+#: meld/dirdiff.py:1252
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1820,19 +1855,19 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1111 meld/vcview.py:759
+#: meld/dirdiff.py:1277 meld/vcview.py:764
 msgid "Error deleting {}"
 msgstr "Fehler beim Löschen von {}"
 
-#: meld/dirdiff.py:1604
+#: meld/dirdiff.py:1825
 msgid "No folder"
 msgstr "Kein Ordner"
 
-#: meld/filediff.py:1144
+#: meld/filediff.py:1158
 msgid "Comparison results will be inaccurate"
 msgstr "Ergebnisse werden ungenau sein"
 
-#: meld/filediff.py:1146
+#: meld/filediff.py:1160
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1841,75 +1876,95 @@ msgstr ""
 "nicht unterstützt, deshalb wird ein Vergleich keine korrekten Ergebnisse "
 "liefern."
 
-#: meld/filediff.py:1218
+#: meld/filediff.py:1232
 msgid "Mark conflict as resolved?"
 msgstr "Konflikt als _gelöst markieren?"
 
-#: meld/filediff.py:1220
+#: meld/filediff.py:1234
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Wenn der Konflikt erfolgreich gelöst wurde, können Sie ihn jetzt als gelöst "
 "markieren."
 
-#: meld/filediff.py:1222
+#: meld/filediff.py:1237
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: meld/filediff.py:1223
+#: meld/filediff.py:1238
 msgid "Mark _Resolved"
 msgstr "Als _gelöst markieren"
 
-#: meld/filediff.py:1556
+#: meld/filediff.py:1429 meld/filediff.py:1445
+msgid "Add Synchronization Point"
+msgstr "Synchronisationspunkt hinzufügen"
+
+#: meld/filediff.py:1433
+msgid "Remove Synchronization Point"
+msgstr "Synchronisationspunkt entfernen"
+
+#: meld/filediff.py:1437
+msgid "Move Synchronization Point"
+msgstr "Synchronisationspunkt verschieben"
+
+#: meld/filediff.py:1441
+msgid "Match Synchronization Point"
+msgstr "An Synchronisationspunkt anpassen"
+
+#: meld/filediff.py:1465
+msgid "Clear Synchronization Points"
+msgstr "Synchronisationspunkte entfernen"
+
+#: meld/filediff.py:1657
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Beim Öffnen der Datei »%s« ist ein Fehler aufgetreten."
 
-#: meld/filediff.py:1564
+#: meld/filediff.py:1666
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Datei %s scheint eine Binärdatei zu sein."
 
-#: meld/filediff.py:1566
+#: meld/filediff.py:1668
 msgid "Do you want to open the file using the default application?"
 msgstr "Gewählte Datei in der vorgegebenen externen Anwendung öffnen?"
 
-#: meld/filediff.py:1568
+#: meld/filediff.py:1670
 msgid "Open"
 msgstr "Öffnen"
 
-#: meld/filediff.py:1582
+#: meld/filediff.py:1692
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Dateien werden zusammengeführt"
 
-#: meld/filediff.py:1596
+#: meld/filediff.py:1706
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: meld/filediff.py:1657
+#: meld/filediff.py:1766
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Die Datei %s wurde auf dem Datenträger geändert"
 
-#: meld/filediff.py:1658
+#: meld/filediff.py:1767
 msgid "Do you want to reload the file?"
 msgstr "Möchten Sie die Datei neu laden?"
 
-#: meld/filediff.py:1660
+#: meld/filediff.py:1769
 msgid "_Reload"
 msgstr "_Neu laden"
 
-#: meld/filediff.py:1830
+#: meld/filediff.py:1939
 msgid "File {} is being compared to itself"
 msgstr "Die Datei »{}« wird mit sich selbst verglichen"
 
-#: meld/filediff.py:1839
+#: meld/filediff.py:1948
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: meld/filediff.py:1852
+#: meld/filediff.py:1961
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1917,11 +1972,11 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten. Wollen Sie die ungefilterten Dateien vergleichen?"
 
-#: meld/filediff.py:1857
+#: meld/filediff.py:1966
 msgid "Files differ in line endings only"
 msgstr "Dateien unterscheiden sich nur in den Zeilenendungen"
 
-#: meld/filediff.py:1859
+#: meld/filediff.py:1968
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1930,15 +1985,15 @@ msgstr ""
 "Dateien sind identisch, abgesehen von unterschiedlichen Zeilenenden:\n"
 "%s"
 
-#: meld/filediff.py:1879
+#: meld/filediff.py:1988
 msgid "Show without filters"
 msgstr "Ungefiltert anzeigen"
 
-#: meld/filediff.py:1901
+#: meld/filediff.py:2010
 msgid "Change highlighting incomplete"
 msgstr "Änderungsmarkierung unvollständig"
 
-#: meld/filediff.py:1902
+#: meld/filediff.py:2011
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -1947,19 +2002,19 @@ msgstr ""
 "Sie können Meld zur Hervorhebung längerer Änderungen zwingen, was jedoch "
 "langsam sein könnte."
 
-#: meld/filediff.py:1910
+#: meld/filediff.py:2019
 msgid "Keep highlighting"
 msgstr "Hervorhebung fortführen"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:2021
 msgid "_Keep highlighting"
 msgstr "Hervorhebung _fortführen"
 
-#: meld/filediff.py:1925
+#: meld/filediff.py:2034
 msgid "Saving failed"
 msgstr "Speichern ist fehlgeschlagen"
 
-#: meld/filediff.py:1926
+#: meld/filediff.py:2035
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -1967,37 +2022,37 @@ msgstr ""
 "Bitte denken Sie darüber nach, kritische Änderungen in ein anderes Programm "
 "oder eine andere Datei zu kopieren, um Datenverlust zu vermeiden."
 
-#: meld/filediff.py:1935
+#: meld/filediff.py:2044
 msgid "Save Left Pane As"
 msgstr "Linken Bereich speichern unter"
 
-#: meld/filediff.py:1937
+#: meld/filediff.py:2046
 msgid "Save Middle Pane As"
 msgstr "Mittleren Bereich speichern unter"
 
-#: meld/filediff.py:1939
+#: meld/filediff.py:2048
 msgid "Save Right Pane As"
 msgstr "Rechten Bereich speichern unter"
 
-#: meld/filediff.py:1950
+#: meld/filediff.py:2059
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr ""
 "Die Datei %s wurde auf dem Datenträger geändert, seit sie geöffnet wurde"
 
-#: meld/filediff.py:1952
+#: meld/filediff.py:2061
 msgid "If you save it, any external changes will be lost."
 msgstr "Wenn Sie speichern, gehen externe Änderungen verloren."
 
-#: meld/filediff.py:1955
+#: meld/filediff.py:2064
 msgid "Save Anyway"
 msgstr "Dennoch speichern"
 
-#: meld/filediff.py:1956
+#: meld/filediff.py:2065
 msgid "Don’t Save"
 msgstr "Nicht speichern"
 
-#: meld/filediff.py:1998
+#: meld/filediff.py:2107
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2005,7 +2060,7 @@ msgstr ""
 "Die Datei »{}« enthält Zeichen, die mit der aktuellen Kodierung »{}« nicht "
 "kodierbar sind."
 
-#: meld/filediff.py:2002 meld/patchdialog.py:138
+#: meld/filediff.py:2111 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2014,20 +2069,16 @@ msgstr ""
 "Datei konnte nicht gespeichert werden:\n"
 "%s"
 
-#: meld/filediff.py:2006 meld/patchdialog.py:137
+#: meld/filediff.py:2115 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Datei %s konnte nicht gespeichert werden."
 
-#: meld/filediff.py:2067
-msgid "Open File"
-msgstr "Datei öffnen"
-
-#: meld/filediff.py:2421
+#: meld/filediff.py:2525
 msgid "Live comparison updating disabled"
 msgstr "Direkte Vergleichsaktualisierung deaktiviert"
 
-#: meld/filediff.py:2422
+#: meld/filediff.py:2526
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2038,36 +2089,36 @@ msgstr ""
 "aktualisieren. Die direkten Aktualisierungen werden beim Löschen der "
 "Synchronisierungspunkte wieder fortgeführt."
 
-#: meld/iohelpers.py:40
+#: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
-msgstr "Lösche entfernter Ordner wird nicht unterstützt"
+msgstr "Löschen entfernter Ordner wird nicht unterstützt"
 
-#: meld/iohelpers.py:42
+#: meld/iohelpers.py:43
 msgid "Not a file or directory"
 msgstr "Weder eine Datei noch ein Ordner"
 
-#: meld/iohelpers.py:46
+#: meld/iohelpers.py:47
 msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
 msgstr ""
 "»{}« kann nicht in den Papierkorb verschoben werden. Wollen Sie es dauerhaft "
 "löschen?"
 
-#: meld/iohelpers.py:51
+#: meld/iohelpers.py:52
 msgid "This remote location does not support sending items to the trash."
 msgstr ""
 "Dieser entfernte Ort unterstützt kein Verschieben von Objekten in den "
 "Papierkorb."
 
-#: meld/iohelpers.py:56
+#: meld/iohelpers.py:58
 msgid "_Delete Permanently"
 msgstr "_Dauerhaft löschen"
 
-#: meld/iohelpers.py:106
+#: meld/iohelpers.py:110
 #, python-format
 msgid "Replace file “%s”?"
 msgstr "Datei »%s« ersetzen?"
 
-#: meld/iohelpers.py:108
+#: meld/iohelpers.py:112
 #, python-format
 msgid ""
 "A file with this name already exists in “%s”.\n"
@@ -2177,24 +2228,24 @@ msgstr "Entfernter Ordner »{}« wird nicht unterstützt"
 msgid "<unnamed>"
 msgstr "<unbenannt>"
 
-#: meld/melddoc.py:61
+#: meld/melddoc.py:124
 msgid "untitled"
 msgstr "unbenannt"
 
-#: meld/meldwindow.py:155
+#: meld/meldwindow.py:158
 msgid "Filename"
 msgstr "Dateiname"
 
-#: meld/meldwindow.py:384
+#: meld/meldwindow.py:381
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
-msgstr "Drei Dateien zum automatischen Zusammenführen benötigt, %r erhalten."
+msgstr "Drei Dateien zum automatischen Zusammenführen benötigt, %r erhalten"
 
-#: meld/meldwindow.py:406
+#: meld/meldwindow.py:411
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Es kann keine Mischung aus Dateien und Ordnern verglichen werden"
 
-#: meld/misc.py:150
+#: meld/misc.py:154
 msgid ""
 "{}\n"
 "\n"
@@ -2206,7 +2257,7 @@ msgstr ""
 "Meld entdeckte einen kritischen Fehler während der Ausführung:\n"
 "<tt>{}</tt>"
 
-#: meld/misc.py:201
+#: meld/misc.py:205
 msgid "[None]"
 msgstr "[Nichts]"
 
@@ -2218,7 +2269,7 @@ msgstr "Bezeichnung"
 msgid "pattern"
 msgstr "Muster"
 
-#: meld/recent.py:104
+#: meld/recent.py:111
 msgid "Version control:"
 msgstr "Versionskontrolle:"
 
@@ -2236,6 +2287,10 @@ msgstr "{name} ({charset})"
 #: meld/ui/bufferselectors.py:140 meld/ui/bufferselectors.py:148
 msgid "Plain Text"
 msgstr "Einfacher Text"
+
+#: meld/ui/pathlabel.py:36
+msgid "Unnamed file"
+msgstr "Unbenannte Datei"
 
 #. Abbreviation for line, column so that it will fit in the status bar
 #: meld/ui/statusbar.py:125
@@ -2259,14 +2314,12 @@ msgstr "Keine Dateien zum Einspielen"
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} in {unpushed_branches}"
 
-#. Translators: These messages cover the case where there is
-#. only one branch, and are not part of another message.
-#: meld/vc/git.py:94 meld/vc/git.py:103
+#: meld/vc/git.py:94 meld/vc/git.py:104
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
-msgstr[0] "%d nicht geschobene Einbringung"
-msgstr[1] "%d nicht geschobene Einbringungen"
+msgstr[0] "%d nicht hochgeladener Commit"
+msgstr[1] "%d nicht hochgeladene Commits"
 
 #: meld/vc/git.py:97
 #, python-format
@@ -2275,16 +2328,16 @@ msgid_plural "%d branches"
 msgstr[0] "%d Zweig"
 msgstr[1] "%d Zweige"
 
-#: meld/vc/git.py:344
+#: meld/vc/git.py:345
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modus wechselte von {old_mode} zu {new_mode}"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 msgid "Partially staged"
 msgstr "Teilweise bereitgestellt"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 msgid "Staged"
 msgstr "Bereitgestellt"
 
@@ -2313,7 +2366,7 @@ msgstr "Lokal"
 
 #: meld/vc/_vc.py:54
 msgid "Remote"
-msgstr "Entfernt"
+msgstr "Gegenstelle"
 
 #: meld/vc/_vc.py:73
 msgid "Error"
@@ -2343,96 +2396,100 @@ msgstr "Fehlend"
 msgid "Not present"
 msgstr "Nicht vorhanden"
 
+#: meld/vc/_vc.py:82
+msgid "Scanning…"
+msgstr "Wird durchsucht …"
+
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:333
+#: meld/vcview.py:334
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (nicht gefunden)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:337
+#: meld/vcview.py:338
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s ist nicht installiert"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:341
+#: meld/vcview.py:342
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (ungültiges Repository)"
 
-#: meld/vcview.py:355
+#: meld/vcview.py:356
 msgid "No valid version control system found in this folder"
 msgstr "Kein gültiges Versionskontrollsystem in diesem Verzeichnis gefunden"
 
-#: meld/vcview.py:357
+#: meld/vcview.py:358
 msgid "Choose which version control system to use"
 msgstr "Wählen Sie die zu verwendende Versionskontrolle"
 
 #. TRANSLATORS: This is the location of the directory being viewed
-#: meld/vcview.py:411
+#: meld/vcview.py:412
 #, python-brace-format
 msgid "Location: {path}"
 msgstr "Ort: {path}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:418
+#: meld/vcview.py:419
 msgid "Scanning repository"
-msgstr "Softwarebestand wird durchsucht"
+msgstr "Repository wird durchsucht"
 
-#: meld/vcview.py:447
+#: meld/vcview.py:448
 #, python-format
 msgid "Scanning %s"
 msgstr "%s wird durchsucht"
 
-#: meld/vcview.py:486
+#: meld/vcview.py:487
 msgid "(Empty)"
 msgstr "(Leer)"
 
-#: meld/vcview.py:533
+#: meld/vcview.py:535
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokal"
 
-#: meld/vcview.py:534
+#: meld/vcview.py:536
 #, python-format
 msgid "%s — remote"
-msgstr "%s — entfernt"
+msgstr "%s — Gegenstelle"
 
-#: meld/vcview.py:542
+#: meld/vcview.py:544
 #, python-format
 msgid "%s (local, merge, remote)"
-msgstr "%s (lokal, zusammengeführt, entfernt)"
+msgstr "%s (lokal, zusammengeführt, Gegenstelle)"
 
-#: meld/vcview.py:547
+#: meld/vcview.py:549
 #, python-format
 msgid "%s (remote, merge, local)"
-msgstr "%s (entfernt, zusammengeführt, lokal)"
+msgstr "%s (Gegenstelle, zusammengeführt, lokal)"
 
-#: meld/vcview.py:558
+#: meld/vcview.py:560
 #, python-format
 msgid "%s — repository"
-msgstr "%s — Softwarebestand"
+msgstr "%s — Repository"
 
-#: meld/vcview.py:564
+#: meld/vcview.py:566
 #, python-format
 msgid "%s (working, repository)"
-msgstr "%s (Arbeitskopie, Softwarebestand)"
+msgstr "%s (Arbeitskopie, Repository)"
 
-#: meld/vcview.py:568
+#: meld/vcview.py:570
 #, python-format
 msgid "%s (repository, working)"
-msgstr "%s (Softwarebestand, Arbeitskopie)"
+msgstr "%s (Repository, Arbeitskopie)"
 
-#: meld/vcview.py:730
+#: meld/vcview.py:735
 msgid "Remove folder and all its files?"
 msgstr "Den Ordner und alle Dateien entfernen?"
 
-#: meld/vcview.py:732
+#: meld/vcview.py:737
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2440,9 +2497,39 @@ msgstr ""
 "Dadurch werden alle gewählten Dateien, Ordner und deren Inhalte aus der "
 "Versionskontrolle entfernt."
 
-#: meld/vcview.py:845
+#: meld/vcview.py:850
 msgid "Clear"
 msgstr "Leeren"
+
+#~ msgid "_Update"
+#~ msgstr "_Aktualisieren"
+
+#~ msgid "Mar_k as Resolved"
+#~ msgstr "Als _gelöst markieren"
+
+#~ msgid "Update"
+#~ msgstr "Aktualisieren"
+
+#~ msgid "Update working copy from version control"
+#~ msgstr "Arbeitsverzeichnis aus der Versionskontrolle aktualisieren"
+
+#~ msgid "Push"
+#~ msgstr "Hochladen"
+
+#~ msgid "Add"
+#~ msgstr "Hinzufügen"
+
+#~ msgid "Remove"
+#~ msgstr "Entfernen"
+
+#~ msgid "Mark as Resolved"
+#~ msgstr "Als gelöst markieren"
+
+#~ msgid "Revert"
+#~ msgstr "Zurücksetzen"
+
+#~ msgid "Delete from working copy"
+#~ msgstr "Aus der Arbeitskopie löschen"
 
 #~ msgid "[%s] Scanning %s"
 #~ msgstr "[%s] %s wird durchsucht"
@@ -2557,9 +2644,6 @@ msgstr "Leeren"
 
 #~ msgid "Previous Conflict"
 #~ msgstr "Vorheriger Konflikt"
-
-#~ msgid "Next Conflict"
-#~ msgstr "Nächster Konflikt"
 
 #~ msgid "Push to Left"
 #~ msgstr "Nach links schieben"
@@ -2741,9 +2825,6 @@ msgstr "Leeren"
 
 #~ msgid "Open Recent"
 #~ msgstr "Zuletzt verwendete Dateien öffnen"
-
-#~ msgid "Only one version control system found in this folder"
-#~ msgstr "Nur eine Versionskontrolle in diesem Ordner gefunden"
 
 #~ msgid "Show toolbar"
 #~ msgstr "Werkzeugleiste anzeigen"
