@@ -1,4 +1,76 @@
 
+2022-06-18 meld 3.21.2
+======================
+
+  Features:
+
+   * Folder comparison now supports compare differently-named files across
+     panes, by marking files for comparison (Helly Guo)
+   * Synchronization points are now significantly easier to use and more
+     robust, and have new user documentation (Roberto Vidal)
+   * Added option to ignore Unicode normalisation form differences when
+     comparing paths (Dan B)
+   * The files or folders being compared can now be swapped in two pane mode,
+     using the new View -> Swap left and right panes menu item (Helly Guo)
+   * Folder comparisons now show a "(scanning...)" indication in tree view
+     rows as an additional visual cue that the comparison is still running
+     (Kai Willadsen)
+   * Folder comparisons have a new optional ISO-format time column (Kai
+     Willadsen)
+
+  Fixes:
+
+   * Update icon usage to support stock icon removal from new Adwaita versions
+     (Jan Tojnar)
+   * Build fix for Meson 0.61.0 (Silvio Fricke)
+   * The new pathlabel widgets now support user-provided custom labels (Kai
+     Willadsen)
+   * Fix file selectors in folder comparisons to always open in the current
+     folder (Kai Willadsen)
+   * Using a custom save path (i.e., the --output flag) now sets a buffer as
+     modified, so that unchanged merges can be saved (Kai Willadsen)
+   * Comparing new or deleted rows in folder comparison now opens a two-pane
+     file comparisons for consistency (Kai Willadsen)
+   * Destructive dialog actions now have appropriate styling (Kai Willadsen)
+   * Invalid user settings for folder comparison columns are now handled more
+     gracefully (Kai Willadsen)
+   * The nightly flatpak build now includes Git to make version control
+     comparisons somewhat functional (Kai Willadsen)
+   * Issues fixed: #11, #85, #188, #319, #381, #475, #492, #581, #620, #638,
+     #645, #660, #662, #672
+
+  Translations:
+
+   * Alan Mortensen (da)
+   * Anders Jonsson (sv)
+   * Andre Klapper (ru)
+   * Asier Sarasua Garmendia (eu)
+   * Balázs Úr (hu)
+   * Boyuan Yang (zh_CN)
+   * Daniel Mustieles (es)
+   * Daniel Șerbănescu (ro)
+   * Emin Tufan Çetin (tr)
+   * Enrico Nicoletto (pt_BR)
+   * Hugo Carvalho (pt)
+   * Jiri Grönroos (fi)
+   * Jordi Mas (ca)
+   * Jürgen Benvenuti (de)
+   * Kjell Cato Heskjestad (nb)
+   * Luming Zh (zh_CN)
+   * Luna Jernberg (sv)
+   * Marek Černocký (cs)
+   * Matej Urbančič (sl)
+   * Matheus Barbosa (pt_BR)
+   * Milo Casagrande (it)
+   * Piotr Drąg (pl)
+   * Roberto Vidal ()
+   * Sabri Ünal (tr)
+   * Sergej A (ru)
+   * sicklylife (ja)
+   * Yuri Chornoivan (uk)
+   * Мирослав Николић (sr)
+
+
 2022-01-07 meld 3.21.1
 ======================
 
