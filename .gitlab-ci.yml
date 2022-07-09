@@ -1,6 +1,9 @@
 include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
 
-image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:master
+variables:
+  GNOME_SDK: 42
+
+image: registry.gitlab.gnome.org/gnome/gnome-runtime-images/gnome:${GNOME_SDK}"
 
 stages:
   - check
