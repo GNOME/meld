@@ -77,46 +77,6 @@ APPDATA_TEMPLATE = """
     </release>
 """
 
-EMAIL_TEMPLATE = """
-{{ app|title }} {{version}} has been released, and is now available at:
-  https://download.gnome.org/sources/meld/{{ version|minor_version }}/{{ app }}-{{ version }}.tar.xz
-{%- if features %}
-
-
-Features
---------
-{% for feature in features %}
- {{ feature }}
-{%- endfor %}
-{%- endif %}
-
-
-Fixes
------
-{% for fix in fixes %}
- {{ fix }}
-{%- endfor %}
-
-
-Translations
-------------
-{% for translator in translators %}
- {{ translator }}
-{%- endfor %}
-
-
-What is Meld?
--------------
-
-Meld is a visual diff and merge tool. It lets you compare two or three files,
-and updates the comparisons while you edit them in-place. You can also compare
-folders, launching comparisons of individual files as desired. Last but by no
-means least, Meld lets you work with your current changes in a wide variety of
-version control systems, including Git, Bazaar, Mercurial, CVS and Subversion.
-
-"""
-
-
 MARKDOWN_TEMPLATE = """
 <!--
 {{ [date, app, version]|join(' ') }}
@@ -453,12 +413,6 @@ def write_somewhere(filename, output):
 
 @cli.command()
 @click.argument('filename', type=click.Path(), default=None, required=False)
-def email(filename):
-    write_somewhere(filename, render_template(EMAIL_TEMPLATE))
-
-
-@cli.command()
-@click.argument('filename', type=click.Path(), default=None, required=False)
 def markdown(filename):
     write_somewhere(filename, render_template(MARKDOWN_TEMPLATE))
 
@@ -572,7 +526,6 @@ def make_release(ctx):
     ctx.forward(tag)
     ctx.forward(gitlab_release)
     file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
-    ctx.forward(email, filename=file_prefix + '-email')
     ctx.forward(markdown, filename=file_prefix + '.md')
     ctx.forward(version_bump)
     commit(message='Post-release version bump')
