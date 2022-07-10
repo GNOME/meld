@@ -1518,9 +1518,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
         label = self.meta.get("tablabel", "")
         if label:
             self.label_text = label
+            tooltip_names = [label]
         else:
             self.label_text = " — ".join(shortnames)
-        self.tooltip_text = self.label_text
+            tooltip_names = filenames
+        self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
         self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def pre_comparison_init(self):

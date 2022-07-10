@@ -408,8 +408,12 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     def recompute_label(self):
         self.label_text = os.path.basename(self.location)
-        # TRANSLATORS: This is the location of the directory being viewed
-        self.tooltip_text = _("Location: {path}").format(path=self.location)
+        self.tooltip_text = "\n".join((
+            # TRANSLATORS: This is the name of the version control
+            # system being used, e.g., "Git" or "Subversion"
+            _("{vc} comparison:").format(vc=self.vc.NAME),
+            self.location,
+        ))
         self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def _search_recursively_iter(self, start_path, replace=False):

@@ -1824,12 +1824,20 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         filenames = self.model.value_paths(root)
         filenames = [f or _('No folder') for f in filenames]
         if self.custom_labels:
-            label_options = zip(self.custom_labels, filenames)
-            shortnames = [l[0] or l[1] for l in label_options]
+            shortnames = [
+                custom or filename for custom, filename in
+                zip(self.custom_labels, filenames)
+            ]
+            tooltip_names = shortnames
         else:
             shortnames = misc.shorten_names(*filenames)
+            tooltip_names = filenames
+
         self.label_text = " : ".join(shortnames)
-        self.tooltip_text = self.label_text
+        self.tooltip_text = "\n".join((
+            _("Folder comparison:"),
+            *tooltip_names,
+        ))
         self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def set_labels(self, labels):
