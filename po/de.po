@@ -12,21 +12,22 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2019.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
 # Tim Sabsch <tim@sabsch.com>, 2022.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-05-23 07:43+0000\n"
-"PO-Revision-Date: 2022-05-26 17:39+0200\n"
-"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
+"POT-Creation-Date: 2022-07-10 20:06+0000\n"
+"PO-Revision-Date: 2022-07-29 21:30+0200\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: Deutsch <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.1.1\n"
 "X-Poedit-Bookmarks: -1,351,-1,-1,-1,-1,-1,-1,-1,-1\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
@@ -45,7 +46,7 @@ msgstr "Vergleichen und Zusammenführen von Dateien"
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.meld.desktop.in.in:7
 msgid "diff;merge;"
-msgstr "diff;merge;"
+msgstr "diff;merge;vergleichen;zusammenführen;"
 
 #: data/org.gnome.meld.appdata.xml.in.in:14
 msgid ""
@@ -56,7 +57,7 @@ msgid ""
 msgstr ""
 "Meld ist ein visuelles Vergleichs- und Zusammenführungsprogramm, das an "
 "Entwickler gerichtet ist. Meld hilft Ihnen beim Vergleichen von Dateien, "
-"Ordern und versionierten Projekten. Es stellt zwei- und drei-Wege Vergleiche "
+"Ordern und versionierten Projekten. Es stellt Zwei- und Drei-Wege-Vergleiche "
 "für Dateien und Ordner zur Verfügung. Die Versionskontrollsysteme Git, "
 "Mercurial, Bazaar und Subversion werden unterstützt."
 
@@ -65,8 +66,8 @@ msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
 msgstr ""
-"Meld hilft Ihnen Quelltext-Änderungen durchzusehen, Patches zu verstehen und "
-"bereitet Ihnen bei großen Zusammenführungskonflikten etwas weniger "
+"Meld hilft Ihnen, Quelltext-Änderungen durchzusehen, Patches zu verstehen "
+"und bereitet Ihnen bei großen Zusammenführungskonflikten etwas weniger "
 "Kopfschmerzen."
 
 #: data/org.gnome.meld.appdata.xml.in.in:51
@@ -191,7 +192,7 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:108
 msgid "Wrap mode"
-msgstr "Wortumbruch-Modus"
+msgstr "Umbruchmodus"
 
 #: data/org.gnome.meld.gschema.xml:109
 msgid ""
@@ -228,7 +229,7 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:126
 msgid "Custom font"
-msgstr "Eigene Schriftart"
+msgstr "Benutzerdefinierte Schriftart"
 
 #: data/org.gnome.meld.gschema.xml:127
 msgid ""
@@ -290,7 +291,7 @@ msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
-"Der Befehl zum Starten des benutzerdefinierten Bearbeitungsprogrammes. Als "
+"Der Befehl zum Starten des benutzerdefinierten Bearbeitungsprogramms. Als "
 "zusätzliche Parameter können »{file}« (Datei) und »{line}« (Zeile) verwendet "
 "werden."
 
@@ -364,11 +365,12 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:191
 msgid "File status filters"
-msgstr "Dateistatusfilter"
+msgstr "Dateizustandsfilter"
 
 #: data/org.gnome.meld.gschema.xml:192
 msgid "List of statuses used to filter visible files in folder comparison."
-msgstr "Liste von Status, um sichtbare Dateien im Ordnervergleich zu filtern."
+msgstr ""
+"Liste von Zuständen, um sichtbare Dateien im Ordnervergleich zu filtern."
 
 #: data/org.gnome.meld.gschema.xml:198
 msgid "Show the version control console output"
@@ -413,7 +415,7 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:213
 msgid "Order for files in three-way version control merge comparisons"
 msgstr ""
-"Dateireihenfolge in einem Drei-Wege Versionskontroll Zusammenfügevergleich"
+"Dateireihenfolge in einem Drei-Wege-Versionskontroll-Zusammenführvergleich"
 
 #: data/org.gnome.meld.gschema.xml:214
 msgid ""
@@ -429,7 +431,7 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:218
 msgid "Show margin in commit message editor"
-msgstr "Den Rand im Einbringungsnachrichten-Editor anzeigen"
+msgstr "Den Rand im Einspielnachrichten-Editor anzeigen"
 
 #: data/org.gnome.meld.gschema.xml:219
 msgid ""
@@ -447,8 +449,7 @@ msgstr "Randspalte im Einspielnachrichteneditor"
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
-msgstr ""
-"Die Randspalte des Einbringungsnachrichten-Editors für Versionskontrolle."
+msgstr "Die Randspalte des Einspielnachrichten-Editors zur Versionskontrolle."
 
 #: data/org.gnome.meld.gschema.xml:228
 msgid "Automatically hard-wrap commit messages"
@@ -465,13 +466,13 @@ msgstr ""
 
 #: data/org.gnome.meld.gschema.xml:233
 msgid "Version control status filters"
-msgstr "Versionskontrollstatus-Filter"
+msgstr "Versionskontroll-Zuständefilter"
 
 #: data/org.gnome.meld.gschema.xml:234
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr ""
-"Liste von Status, um sichtbare Dateien im Versionsvergleich zu filtern."
+"Liste von Zuständen, um sichtbare Dateien im Versionsvergleich zu filtern."
 
 #: data/org.gnome.meld.gschema.xml:248
 msgid "Filename-based filters"
@@ -865,7 +866,7 @@ msgstr "_Info zu Meld"
 
 #: meld/resources/gtk/menus.ui:134
 msgid "File status"
-msgstr "Dateistatus"
+msgstr "Dateizustand"
 
 #: meld/resources/gtk/menus.ui:136
 msgid "Same"
@@ -925,7 +926,8 @@ msgstr ""
 "Bernd Homuth <dev@hmt.im>\n"
 "Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>\n"
 "Philipp Kiemle <philipp.kiemle@gmail.com>\n"
-"Tim Sabsch <tim@sabsch.com>"
+"Tim Sabsch <tim@sabsch.com>\n"
+"Jürgen Benvenuti <gastornis@posteo.org>"
 
 #: meld/resources/ui/appwindow.ui:30
 msgid "Start a new comparison"
@@ -972,7 +974,7 @@ msgid "Column Name"
 msgstr "Spaltenname"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:128
-#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:741
+#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:745
 msgid "_Remove"
 msgstr "_Löschen"
 
@@ -994,11 +996,11 @@ msgstr "Hin_unter schieben"
 
 #: meld/resources/ui/commit-dialog.ui:8
 msgid "Commit"
-msgstr "Commit"
+msgstr "Einspielen"
 
 #: meld/resources/ui/commit-dialog.ui:36
 msgid "Commit Files"
-msgstr "Commit der Dateien"
+msgstr "Dateien einspielen"
 
 #: meld/resources/ui/commit-dialog.ui:117
 msgid "Log Message"
@@ -1010,7 +1012,7 @@ msgstr "Vorherige Mitteilungen:"
 
 #: meld/resources/ui/commit-dialog.ui:259
 msgid "Co_mmit"
-msgstr "Co_mmit"
+msgstr "Ei_nspielen"
 
 #: meld/resources/ui/dirdiff-actions.ui:20
 msgid "Copy to left"
@@ -1238,7 +1240,7 @@ msgstr "Neuer Vergleich"
 
 #: meld/resources/ui/new-diff-tab.ui:72
 msgid "File"
-msgstr "File"
+msgstr "Datei"
 
 #: meld/resources/ui/new-diff-tab.ui:121
 msgid "Folder"
@@ -1465,7 +1467,7 @@ msgstr "Reihenfolge beim _Zusammenführen von Dateien:"
 
 #: meld/resources/ui/preferences.ui:1235
 msgid "Commit Messages"
-msgstr "Änderungsmitteilungen"
+msgstr "Einspielnachrichten"
 
 #: meld/resources/ui/preferences.ui:1276
 msgid "Show _right margin at:"
@@ -1566,17 +1568,17 @@ msgstr "2s (VFAT)"
 
 #: meld/resources/ui/push-dialog.ui:9
 msgid "Push local commits to remote?"
-msgstr "Lokale Einbringungen in einen entfernten Ort einspielen?"
+msgstr "Lokale Einspielungen zur Gegenstelle hochladen?"
 
 #: meld/resources/ui/push-dialog.ui:10
 msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
-"Die einzuspielenden Einbringungen werden durch Ihr Versionskontrollsystem "
+"Die hochzuladenden Einspielungen werden durch Ihr Versionskontrollsystem "
 "bestimmt."
 
 #: meld/resources/ui/push-dialog.ui:38
 msgid "_Push commits"
-msgstr "Einbringungen _einspielen"
+msgstr "Einspielungen _hochladen"
 
 #: meld/resources/ui/recent-selector.ui:16
 msgid "Search recent comparisons…"
@@ -1653,7 +1655,7 @@ msgstr "Einspielen …"
 
 #: meld/resources/ui/vcview.ui:38
 msgid "Pull remote changes to the local repository"
-msgstr "Änderungen der Gegenstelle in das lokale Repository herunterladen"
+msgstr "Änderungen der Gegenstelle in das lokale Softwaredepot herunterladen"
 
 #: meld/resources/ui/vcview.ui:51
 msgid "Push local changes to remote"
@@ -1685,7 +1687,7 @@ msgstr "Ort"
 
 #: meld/resources/ui/vcview.ui:238
 msgid "Status"
-msgstr "Status"
+msgstr "Zustand"
 
 #: meld/resources/ui/vcview.ui:247
 msgid "Extra"
@@ -1781,12 +1783,12 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten."
 
-#: meld/dirdiff.py:1145 meld/filediff.py:1983
+#: meld/dirdiff.py:1145 meld/filediff.py:1985
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1147 meld/filediff.py:1985 meld/filediff.py:2015
-#: meld/filediff.py:2017 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
+#: meld/dirdiff.py:1147 meld/filediff.py:1987 meld/filediff.py:2017
+#: meld/filediff.py:2019 meld/ui/msgarea.py:114 meld/ui/msgarea.py:127
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
@@ -1855,13 +1857,17 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1277 meld/vcview.py:764
+#: meld/dirdiff.py:1277 meld/vcview.py:768
 msgid "Error deleting {}"
 msgstr "Fehler beim Löschen von {}"
 
 #: meld/dirdiff.py:1825
 msgid "No folder"
 msgstr "Kein Ordner"
+
+#: meld/dirdiff.py:1838
+msgid "Folder comparison:"
+msgstr "Ordnervergleich:"
 
 #: meld/filediff.py:1158
 msgid "Comparison results will be inaccurate"
@@ -1915,56 +1921,60 @@ msgstr "An Synchronisationspunkt anpassen"
 msgid "Clear Synchronization Points"
 msgstr "Synchronisationspunkte entfernen"
 
-#: meld/filediff.py:1657
+#: meld/filediff.py:1525
+msgid "File comparison:"
+msgstr "Dateivergleich:"
+
+#: meld/filediff.py:1659
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Beim Öffnen der Datei »%s« ist ein Fehler aufgetreten."
 
-#: meld/filediff.py:1666
+#: meld/filediff.py:1668
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Datei %s scheint eine Binärdatei zu sein."
 
-#: meld/filediff.py:1668
+#: meld/filediff.py:1670
 msgid "Do you want to open the file using the default application?"
 msgstr "Gewählte Datei in der vorgegebenen externen Anwendung öffnen?"
 
-#: meld/filediff.py:1670
+#: meld/filediff.py:1672
 msgid "Open"
 msgstr "Öffnen"
 
-#: meld/filediff.py:1692
+#: meld/filediff.py:1694
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Dateien werden zusammengeführt"
 
-#: meld/filediff.py:1706
+#: meld/filediff.py:1708
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: meld/filediff.py:1766
+#: meld/filediff.py:1768
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Die Datei %s wurde auf dem Datenträger geändert"
 
-#: meld/filediff.py:1767
+#: meld/filediff.py:1769
 msgid "Do you want to reload the file?"
 msgstr "Möchten Sie die Datei neu laden?"
 
-#: meld/filediff.py:1769
+#: meld/filediff.py:1771
 msgid "_Reload"
 msgstr "_Neu laden"
 
-#: meld/filediff.py:1939
+#: meld/filediff.py:1941
 msgid "File {} is being compared to itself"
 msgstr "Die Datei »{}« wird mit sich selbst verglichen"
 
-#: meld/filediff.py:1948
+#: meld/filediff.py:1950
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: meld/filediff.py:1961
+#: meld/filediff.py:1963
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -1972,11 +1982,11 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten. Wollen Sie die ungefilterten Dateien vergleichen?"
 
-#: meld/filediff.py:1966
+#: meld/filediff.py:1968
 msgid "Files differ in line endings only"
 msgstr "Dateien unterscheiden sich nur in den Zeilenendungen"
 
-#: meld/filediff.py:1968
+#: meld/filediff.py:1970
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1985,15 +1995,15 @@ msgstr ""
 "Dateien sind identisch, abgesehen von unterschiedlichen Zeilenenden:\n"
 "%s"
 
-#: meld/filediff.py:1988
+#: meld/filediff.py:1990
 msgid "Show without filters"
 msgstr "Ungefiltert anzeigen"
 
-#: meld/filediff.py:2010
+#: meld/filediff.py:2012
 msgid "Change highlighting incomplete"
 msgstr "Änderungsmarkierung unvollständig"
 
-#: meld/filediff.py:2011
+#: meld/filediff.py:2013
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2002,19 +2012,19 @@ msgstr ""
 "Sie können Meld zur Hervorhebung längerer Änderungen zwingen, was jedoch "
 "langsam sein könnte."
 
-#: meld/filediff.py:2019
+#: meld/filediff.py:2021
 msgid "Keep highlighting"
 msgstr "Hervorhebung fortführen"
 
-#: meld/filediff.py:2021
+#: meld/filediff.py:2023
 msgid "_Keep highlighting"
 msgstr "Hervorhebung _fortführen"
 
-#: meld/filediff.py:2034
+#: meld/filediff.py:2036
 msgid "Saving failed"
 msgstr "Speichern ist fehlgeschlagen"
 
-#: meld/filediff.py:2035
+#: meld/filediff.py:2037
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2022,37 +2032,37 @@ msgstr ""
 "Bitte denken Sie darüber nach, kritische Änderungen in ein anderes Programm "
 "oder eine andere Datei zu kopieren, um Datenverlust zu vermeiden."
 
-#: meld/filediff.py:2044
+#: meld/filediff.py:2046
 msgid "Save Left Pane As"
 msgstr "Linken Bereich speichern unter"
 
-#: meld/filediff.py:2046
+#: meld/filediff.py:2048
 msgid "Save Middle Pane As"
 msgstr "Mittleren Bereich speichern unter"
 
-#: meld/filediff.py:2048
+#: meld/filediff.py:2050
 msgid "Save Right Pane As"
 msgstr "Rechten Bereich speichern unter"
 
-#: meld/filediff.py:2059
+#: meld/filediff.py:2061
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr ""
 "Die Datei %s wurde auf dem Datenträger geändert, seit sie geöffnet wurde"
 
-#: meld/filediff.py:2061
+#: meld/filediff.py:2063
 msgid "If you save it, any external changes will be lost."
 msgstr "Wenn Sie speichern, gehen externe Änderungen verloren."
 
-#: meld/filediff.py:2064
+#: meld/filediff.py:2066
 msgid "Save Anyway"
 msgstr "Dennoch speichern"
 
-#: meld/filediff.py:2065
+#: meld/filediff.py:2067
 msgid "Don’t Save"
 msgstr "Nicht speichern"
 
-#: meld/filediff.py:2107
+#: meld/filediff.py:2109
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2060,7 +2070,7 @@ msgstr ""
 "Die Datei »{}« enthält Zeichen, die mit der aktuellen Kodierung »{}« nicht "
 "kodierbar sind."
 
-#: meld/filediff.py:2111 meld/patchdialog.py:138
+#: meld/filediff.py:2113 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2069,16 +2079,16 @@ msgstr ""
 "Datei konnte nicht gespeichert werden:\n"
 "%s"
 
-#: meld/filediff.py:2115 meld/patchdialog.py:137
+#: meld/filediff.py:2117 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Datei %s konnte nicht gespeichert werden."
 
-#: meld/filediff.py:2525
+#: meld/filediff.py:2527
 msgid "Live comparison updating disabled"
 msgstr "Direkte Vergleichsaktualisierung deaktiviert"
 
-#: meld/filediff.py:2526
+#: meld/filediff.py:2528
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2125,7 +2135,7 @@ msgid ""
 "If you replace the existing file, its contents will be lost."
 msgstr ""
 "﻿Eine Datei mit diesem Namen existiert bereits in »%s«.\n"
-"Wenn Sie die vorhandene Datei ersetzen, geht dessen Inhalt verloren."
+"Wenn Sie die vorhandene Datei ersetzen, geht deren Inhalt verloren."
 
 #: meld/meldapp.py:188
 msgid "wrong number of arguments supplied to --diff"
@@ -2217,7 +2227,7 @@ msgstr "Fehler beim Lesen der gespeicherten Vergleichsdatei"
 #: meld/meldapp.py:334
 #, python-format
 msgid "invalid path or URI “%s”"
-msgstr "Ungültiger Pfad oder Adresse »%s«"
+msgstr "Ungültiger Pfad oder ungültige Adresse »%s«"
 
 #: meld/meldapp.py:341
 msgid "remote folder “{}” not supported"
@@ -2318,8 +2328,8 @@ msgstr "{unpushed_commits} in {unpushed_branches}"
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
-msgstr[0] "%d nicht hochgeladener Commit"
-msgstr[1] "%d nicht hochgeladene Commits"
+msgstr[0] "%d nicht hochgeladene Einspielung"
+msgstr[1] "%d nicht hochgeladene Einspielungen"
 
 #: meld/vc/git.py:97
 #, python-format
@@ -2354,7 +2364,7 @@ msgstr "Rev %s"
 
 #: meld/vc/_vc.py:54
 msgid "Merged"
-msgstr "Zusammengefügt"
+msgstr "Zusammengeführt"
 
 #: meld/vc/_vc.py:54
 msgid "Base"
@@ -2419,7 +2429,7 @@ msgstr "%(name)s (%(cmd)s ist nicht installiert"
 #: meld/vcview.py:342
 #, python-format
 msgid "%(name)s (invalid repository)"
-msgstr "%(name)s (ungültiges Repository)"
+msgstr "%(name)s (ungültiges Softwaredepot)"
 
 #: meld/vcview.py:356
 msgid "No valid version control system found in this folder"
@@ -2429,67 +2439,68 @@ msgstr "Kein gültiges Versionskontrollsystem in diesem Verzeichnis gefunden"
 msgid "Choose which version control system to use"
 msgstr "Wählen Sie die zu verwendende Versionskontrolle"
 
-#. TRANSLATORS: This is the location of the directory being viewed
-#: meld/vcview.py:412
+#. TRANSLATORS: This is the name of the version control
+#. system being used, e.g., "Git" or "Subversion"
+#: meld/vcview.py:414
 #, python-brace-format
-msgid "Location: {path}"
-msgstr "Ort: {path}"
+msgid "{vc} comparison:"
+msgstr "{vc}-Vergleich:"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:419
+#: meld/vcview.py:423
 msgid "Scanning repository"
-msgstr "Repository wird durchsucht"
+msgstr "Softwaredepot wird durchsucht"
 
-#: meld/vcview.py:448
+#: meld/vcview.py:452
 #, python-format
 msgid "Scanning %s"
 msgstr "%s wird durchsucht"
 
-#: meld/vcview.py:487
+#: meld/vcview.py:491
 msgid "(Empty)"
 msgstr "(Leer)"
 
-#: meld/vcview.py:535
+#: meld/vcview.py:539
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokal"
 
-#: meld/vcview.py:536
+#: meld/vcview.py:540
 #, python-format
 msgid "%s — remote"
 msgstr "%s — Gegenstelle"
 
-#: meld/vcview.py:544
+#: meld/vcview.py:548
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokal, zusammengeführt, Gegenstelle)"
 
-#: meld/vcview.py:549
+#: meld/vcview.py:553
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (Gegenstelle, zusammengeführt, lokal)"
 
-#: meld/vcview.py:560
+#: meld/vcview.py:564
 #, python-format
 msgid "%s — repository"
-msgstr "%s — Repository"
-
-#: meld/vcview.py:566
-#, python-format
-msgid "%s (working, repository)"
-msgstr "%s (Arbeitskopie, Repository)"
+msgstr "%s — Softwaredepot"
 
 #: meld/vcview.py:570
 #, python-format
-msgid "%s (repository, working)"
-msgstr "%s (Repository, Arbeitskopie)"
+msgid "%s (working, repository)"
+msgstr "%s (Arbeitskopie, Softwaredepot)"
 
-#: meld/vcview.py:735
+#: meld/vcview.py:574
+#, python-format
+msgid "%s (repository, working)"
+msgstr "%s (Softwaredepot, Arbeitskopie)"
+
+#: meld/vcview.py:739
 msgid "Remove folder and all its files?"
 msgstr "Den Ordner und alle Dateien entfernen?"
 
-#: meld/vcview.py:737
+#: meld/vcview.py:741
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2497,9 +2508,13 @@ msgstr ""
 "Dadurch werden alle gewählten Dateien, Ordner und deren Inhalte aus der "
 "Versionskontrolle entfernt."
 
-#: meld/vcview.py:850
+#: meld/vcview.py:854
 msgid "Clear"
 msgstr "Leeren"
+
+#, python-brace-format
+#~ msgid "Location: {path}"
+#~ msgstr "Ort: {path}"
 
 #~ msgid "_Update"
 #~ msgstr "_Aktualisieren"
@@ -2710,9 +2725,6 @@ msgstr "Leeren"
 
 #~ msgid "Replace _with:"
 #~ msgstr "Ersetzen _mit:"
-
-#~ msgid "File comparison"
-#~ msgstr "Dateivergleich"
 
 #~ msgid "Directory comparison"
 #~ msgstr "Ordnervergleich"
