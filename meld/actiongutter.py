@@ -174,6 +174,7 @@ class ActionGutter(Gtk.DrawingArea):
 
     def do_realize(self):
         self.set_events(
+            Gdk.EventMask.ENTER_NOTIFY_MASK |
             Gdk.EventMask.LEAVE_NOTIFY_MASK |
             Gdk.EventMask.POINTER_MOTION_MASK |
             Gdk.EventMask.BUTTON_PRESS_MASK |
@@ -187,14 +188,14 @@ class ActionGutter(Gtk.DrawingArea):
 
         return Gtk.DrawingArea.do_realize(self)
 
-    def do_motion_notify_event(self, event):
+    def update_pointer_chunk(self, x, y):
         # This is the simplest button/intersection implementation in
         # the world, but it basically works for our purposes.
         for button in self.buttons:
             x1, y1, x2, y2, chunk = button
 
             # Check y first; it's more likely to be out of range
-            if y1 <= event.y <= y2 and x1 <= event.x <= x2:
+            if y1 <= y <= y2 and x1 <= x <= x2:
                 new_pointer_chunk = chunk
                 break
         else:
@@ -203,6 +204,12 @@ class ActionGutter(Gtk.DrawingArea):
         if new_pointer_chunk != self.pointer_chunk:
             self.pointer_chunk = new_pointer_chunk
             self.queue_draw()
+
+    def do_motion_notify_event(self, event):
+        self.update_pointer_chunk(event.x, event.y)
+
+    def do_enter_notify_event(self, event):
+        self.update_pointer_chunk(event.x, event.y)
 
     def do_leave_notify_event(self, event):
         if self.pointer_chunk:
