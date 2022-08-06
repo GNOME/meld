@@ -970,9 +970,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
     @with_focused_pane
     def action_delete_change(self, pane, *args):
+        if self.cursor.chunk is None:
+            return
+
         chunk = self.linediffer.get_chunk(self.cursor.chunk, pane)
-        assert(self.cursor.chunk is not None)
-        assert(chunk is not None)
+        if chunk is None:
+            return
+
         self.delete_chunk(pane, chunk)
 
     def _synth_chunk(self, pane0, pane1, line):
