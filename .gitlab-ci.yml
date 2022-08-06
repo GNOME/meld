@@ -29,6 +29,13 @@ nightly:
 
 .pythonchecks:
   stage: check
+  image: registry.fedoraproject.org/fedora:latest
+  script:
+   - pip3 install --user -r dev-requirements.txt
+   - $PYTHON_CHECK_COMMAND
+
+.pythonflatpak:
+  stage: check
   tags: # test in the same org.gnome.Sdk environment that is used for creating flatpaks
     - flatpak
   script:
@@ -43,6 +50,14 @@ pytest:
   extends: .pythonchecks
   variables:
       PYTHON_CHECK_COMMAND: "pytest"
+
+pytest-flatpak:
+  extends: .pythonflatpak
+  variables:
+      PYTHON_CHECK_COMMAND: "pytest"
+  # Ideally this wouldn't allow failure, but currently the flatpak environment
+  # is broken. https://gitlab.gnome.org/GNOME/gnome-runtime-images/-/issues/7
+  allow_failure: true
 
 .mingw-common:
   stage: build
