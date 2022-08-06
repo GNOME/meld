@@ -31,7 +31,7 @@ nightly:
   stage: check
   image: registry.fedoraproject.org/fedora:latest
   script:
-   - dnf install -y python3-pip
+   - dnf install -y git python3-pip
    - pip3 install -r dev-requirements.txt
    - $PYTHON_CHECK_COMMAND
 
