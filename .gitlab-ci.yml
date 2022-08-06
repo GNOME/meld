@@ -72,12 +72,15 @@ pytest-flatpak:
     - $env:Path = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;${env:PATH}"
     - >
       C:\msys64\usr\bin\pacman --noconfirm -S --refresh --sysupgrade --needed
+      mingw-w64-${env:MSYS2_ARCH}-adwaita-icon-theme
+      mingw-w64-${env:MSYS2_ARCH}-gsettings-desktop-schemas
+      mingw-w64-${env:MSYS2_ARCH}-gtk-update-icon-cache
+      mingw-w64-${env:MSYS2_ARCH}-gtk3
+      mingw-w64-${env:MSYS2_ARCH}-gtksourceview4
       mingw-w64-${env:MSYS2_ARCH}-python3-cx_Freeze
       mingw-w64-${env:MSYS2_ARCH}-python3-gobject
       mingw-w64-${env:MSYS2_ARCH}-python3-pytest
       mingw-w64-${env:MSYS2_ARCH}-python3-setuptools
-      mingw-w64-${env:MSYS2_ARCH}-gtksourceview4
-      mingw-w64-${env:MSYS2_ARCH}-gsettings-desktop-schemas
       glib2-devel
       intltool
   script:
