@@ -127,12 +127,12 @@ console_executable_options = dict(executable_options)
 if 'mingw' in sysconfig.get_platform():
     executable_options.update({
         "base": "Win32GUI",  # comment to build console version to see stderr
-        "targetName": "Meld.exe",
-        "shortcutName": "Meld",
-        "shortcutDir": "ProgramMenuFolder",
+        "target_name": "Meld.exe",
+        "shortcut_name": "Meld",
+        "shortcut_dir": "ProgramMenuFolder",
     })
     console_executable_options.update({
-        "targetName": "MeldConsole.exe",
+        "target_name": "MeldConsole.exe",
     })
 
 # Copy conf.py in place if necessary
