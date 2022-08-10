@@ -27,18 +27,8 @@ import distutils.dir_util
 import distutils.dist
 import glob
 import os.path
-import platform
 import sys
 from distutils.log import info
-
-try:
-    import distro
-except ImportError:
-    python_version = tuple(int(x) for x in platform.python_version_tuple()[:2])
-    if python_version >= (3, 8):
-        print(
-            'Missing build requirement "distro" Python module; '
-            'install paths may be incorrect', file=sys.stderr)
 
 windows_build = os.name == 'nt'
 if windows_build:
@@ -70,18 +60,6 @@ command_base.command.build.Build.sub_commands.extend([
     ("build_help", has_help),
     ("build_data", has_data),
 ])
-
-
-class MeldDistribution(distutils.dist.Distribution):
-    global_options = distutils.dist.Distribution.global_options + [
-        ("no-update-icon-cache", None, "Don't run gtk-update-icon-cache"),
-        ("no-compile-schemas", None, "Don't compile gsettings schemas"),
-    ]
-
-    def __init__(self, *args, **kwargs):
-        self.no_update_icon_cache = False
-        self.no_compile_schemas = False
-        super().__init__(*args, **kwargs)
 
 
 class build_data(distutils.cmd.Command):
@@ -459,44 +437,3 @@ class build_py(distutils.command.build_py.build_py):
 
         distutils.command.build_py.build_py.build_module(
             self, module, module_file, package)
-
-
-class install(distutils.command.install.install):
-
-    def finalize_options(self):
-        special_cases = ('debian', 'ubuntu', 'linuxmint')
-        if platform.system() == 'Linux':
-            # linux_distribution has been removed in Python 3.8; we require
-            # the third-party distro package for future handling.
-            try:
-                distribution = platform.linux_distribution()[0].lower()
-            except AttributeError:
-                try:
-                    distribution = distro.id()
-                except NameError:
-                    distribution = 'unknown'
-
-            if distribution in special_cases:
-                # Maintain an explicit install-layout, but use deb by default
-                specified_layout = getattr(self, 'install_layout', None)
-                self.install_layout = specified_layout or 'deb'
-
-        distutils.command.install.install.finalize_options(self)
-
-
-class install_data(distutils.command.install_data.install_data):
-
-    def run(self):
-        distutils.command.install_data.install_data.run(self)
-
-        if not self.distribution.no_update_icon_cache:
-            # TODO: Generalise to non-hicolor icon themes
-            info("running gtk-update-icon-cache")
-            icon_path = os.path.join(self.install_dir, "share/icons/hicolor")
-            self.spawn(["gtk-update-icon-cache", "-q", "-t", icon_path])
-
-        if not self.distribution.no_compile_schemas:
-            info("compiling gsettings schemas")
-            gschema_path = build_data.gschemas[0][0]
-            gschema_install = os.path.join(self.install_dir, gschema_path)
-            self.spawn(["glib-compile-schemas", gschema_install])
