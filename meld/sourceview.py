@@ -230,6 +230,10 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # contain GtkTextTags, by requesting and setting plain text.
 
         def text_received_cb(clipboard, text, *user_data):
+            # On clipboard failure, text will be None
+            if not text:
+                return
+
             # Manual encoding is required here, or the length will be
             # incorrect, and the API requires a UTF-8 bytestring.
             utf8_text = text.encode('utf-8')

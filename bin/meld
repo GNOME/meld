@@ -24,7 +24,6 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
-
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
 # these streams seem to have issues with flush() so we just redirect stdout and
@@ -184,12 +183,8 @@ def show_error_and_exit(error_text):
         # tkinter is imported here only to show a UI warning about
         # missing dependencies.
         try:
-            if sys.version_info < (3, 0):
-                from Tkinter import Tk
-                from tkMessageBox import showerror
-            else:
-                from tkinter import Tk
-                from tkinter.messagebox import showerror
+            from tkinter import Tk
+            from tkinter.messagebox import showerror
             toplevel = Tk(className="Meld")
             toplevel.wait_visibility()
             showerror("Meld", error_text, parent=toplevel)

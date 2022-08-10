@@ -205,6 +205,15 @@ def shorten_names(*names: str) -> List[str]:
     return [name or _("[None]") for name in basenames]
 
 
+def get_hide_window_startupinfo():
+    if os.name != "nt":
+        return None
+
+    startupinfo = subprocess.STARTUPINFO()
+    startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    return startupinfo
+
+
 SubprocessGenerator = Generator[Union[Tuple[int, str], None], None, None]
 
 
@@ -238,7 +247,9 @@ def read_pipe_iter(
             self.proc = subprocess.Popen(
                 command, cwd=workdir, stdin=subprocess.PIPE,
                 stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                universal_newlines=True)
+                universal_newlines=True,
+                startupinfo=get_hide_window_startupinfo(),
+            )
             self.proc.stdin.close()
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits: List[str] = []
@@ -272,16 +283,6 @@ def read_pipe_iter(
             yield status, "".join(bits)
 
     return Sentinel()()
-
-
-def write_pipe(
-        command: List[str], text: str, error: Optional[int] = None) -> int:
-    """Write 'text' into a shell command and discard its stdout output.
-    """
-    proc = subprocess.Popen(command, stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE, stderr=error)
-    proc.communicate(text)
-    return proc.wait()
 
 
 def copy2(src: str, dst: str) -> None:

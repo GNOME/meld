@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+from typing import Optional
 
 from gi.repository import Gio, GObject, Gtk, GtkSource, Pango
 
@@ -78,9 +79,11 @@ class MeldSettings(GObject.GObject):
         if settings.get_boolean('use-system-font'):
             if sys.platform == 'win32':
                 font_string = 'Consolas 11'
-            else:
+            elif interface_settings:
                 font_string = interface_settings.get_string(
                     'monospace-font-name')
+            else:
+                font_string = 'monospace'
         else:
             font_string = settings.get_string('custom-font')
         return Pango.FontDescription(font_string)
@@ -101,11 +104,23 @@ def load_settings_schema(schema_id):
     return settings
 
 
+def load_interface_settings() -> Optional[Gio.Settings]:
+
+    # We conditionally load these since they're only used for default
+    # fonts and can sometimes be missing (e.g., in some Windows setups)
+    default_source = Gio.SettingsSchemaSource.get_default()
+    schema = default_source.lookup("org.gnome.desktop.interface", False)
+    if not schema:
+        return None
+
+    return Gio.Settings.new_full(schema=schema, backend=None, path=None)
+
+
 def create_settings():
     global settings, interface_settings, _meldsettings
 
     settings = load_settings_schema(meld.conf.SETTINGS_SCHEMA_ID)
-    interface_settings = Gio.Settings.new('org.gnome.desktop.interface')
+    interface_settings = load_interface_settings()
     _meldsettings = MeldSettings()
 
 

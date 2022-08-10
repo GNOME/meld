@@ -34,6 +34,7 @@ from typing import ClassVar
 from gi.repository import Gio, GLib
 
 from meld.conf import _
+from meld.misc import get_hide_window_startupinfo
 
 # ignored, new, normal, ignored changes,
 # error, placeholder, vc added
@@ -163,7 +164,9 @@ class Vc:
         cmd = (self.CMD,) + args
         return subprocess.Popen(
             cmd, cwd=self.location, stdout=subprocess.PIPE,
-            universal_newlines=use_locale_encoding)
+            universal_newlines=use_locale_encoding,
+            startupinfo=get_hide_window_startupinfo(),
+        )
 
     def get_files_to_commit(self, paths):
         """Get a list of files that will be committed from paths
@@ -408,9 +411,12 @@ def popen(cmd, cwd=None, use_locale_encoding=True):
     text stream with universal newlines.
     If use_locale_encoding is False output is treated as binary stream.
     """
+
     process = subprocess.Popen(
         cmd, cwd=cwd, stdout=subprocess.PIPE,
-        universal_newlines=use_locale_encoding)
+        universal_newlines=use_locale_encoding,
+        startupinfo=get_hide_window_startupinfo(),
+    )
     return process.stdout
 
 
@@ -427,7 +433,9 @@ def call_temp_output(cmd, cwd, file_id='', suffix=None):
     of the temporary file's name.
     """
     process = subprocess.Popen(
-        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        startupinfo=get_hide_window_startupinfo(),
+    )
     vc_file = process.stdout
 
     # Error handling here involves doing nothing; in most cases, the only
@@ -443,7 +451,10 @@ def call_temp_output(cmd, cwd, file_id='', suffix=None):
 # Return the return value of a given command
 def call(cmd, cwd=None):
     devnull = open(os.devnull, "wb")
-    return subprocess.call(cmd, cwd=cwd, stdout=devnull, stderr=devnull)
+    return subprocess.call(
+        cmd, cwd=cwd, stdout=devnull, stderr=devnull,
+        startupinfo=get_hide_window_startupinfo(),
+    )
 
 
 base_re = re.compile(
