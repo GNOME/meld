@@ -274,16 +274,6 @@ def read_pipe_iter(
     return Sentinel()()
 
 
-def write_pipe(
-        command: List[str], text: str, error: Optional[int] = None) -> int:
-    """Write 'text' into a shell command and discard its stdout output.
-    """
-    proc = subprocess.Popen(command, stdin=subprocess.PIPE,
-                            stdout=subprocess.PIPE, stderr=error)
-    proc.communicate(text)
-    return proc.wait()
-
-
 def copy2(src: str, dst: str) -> None:
     """Like shutil.copy2 but ignores chmod errors, and copies symlinks as links
     See [Bug 568000] Copying to NTFS fails
