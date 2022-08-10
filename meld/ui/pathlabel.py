@@ -16,7 +16,7 @@
 import logging
 from typing import Optional
 
-from gi.repository import Gdk, Gio, GObject, Gtk
+from gi.repository import Gdk, Gio, GObject, Gtk, Pango
 
 from meld.conf import _
 from meld.iohelpers import (
@@ -152,6 +152,10 @@ class PathLabel(Gtk.MenuButton):
 
         self.insert_action_group('widget', action_group)
 
+        # GtkButton recreates its GtkLabel child whenever the label
+        # prop changes, so we need this notify callback.
+        self.connect('notify::label', self.label_changed_cb)
+
     def do_realize(self):
         # As a workaround for pygobject#341, we delay this binding until
         # realize, at which point the child object is correct.
@@ -162,6 +166,14 @@ class PathLabel(Gtk.MenuButton):
         )
 
         return Gtk.MenuButton.do_realize(self)
+
+    def label_changed_cb(self, *args):
+        # Our label needs ellipsization to avoid forcing minimum window
+        # sizes for long filenames. This child iteration hack is
+        # required as GtkButton has no label access.
+        for child in self.get_children():
+            if isinstance(child, Gtk.Label):
+                child.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
 
     def get_display_label(self, binding, from_value) -> str:
         if self.custom_label:
