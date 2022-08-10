@@ -30,12 +30,9 @@ import os.path
 import sys
 from distutils.log import info
 
-windows_build = os.name == 'nt'
-if windows_build:
-    import cx_Freeze
-    command_base = cx_Freeze
-else:
-    command_base = distutils
+import cx_Freeze
+
+windows_build = True
 
 
 def has_help(self):
@@ -54,7 +51,7 @@ def has_data(self):
     return "build_data" in self.distribution.cmdclass
 
 
-command_base.command.build.Build.sub_commands.extend([
+cx_Freeze.command.build.Build.sub_commands.extend([
     ("build_i18n", has_i18n),
     ("build_icons", has_icons),
     ("build_help", has_help),
