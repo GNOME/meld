@@ -1,8 +1,13 @@
+from unittest import mock
 
 import pytest
 from gi.repository import Gio
 
-from meld.iohelpers import find_shared_parent_path, format_parent_relative_path
+from meld.iohelpers import (
+    find_shared_parent_path,
+    format_home_relative_path,
+    format_parent_relative_path,
+)
 
 
 @pytest.mark.parametrize(
@@ -41,6 +46,23 @@ def test_find_shared_parent_path(paths, expected_parent):
             assert parent is None
         else:
             assert parent.equal(Gio.File.new_for_path(expected_parent))
+
+
+@pytest.mark.parametrize(
+    "path, expected_format",
+    [
+        ("/home/hey/foo", "~/foo"),
+        ("/home/hmph/foo", "/home/hmph/foo"),
+    ]
+)
+def test_format_home_relative_path(path, expected_format):
+
+    with mock.patch(
+        "meld.iohelpers.GLib.get_home_dir",
+        return_value="/home/hey/",
+    ):
+        gfile = Gio.File.new_for_path(path)
+        assert format_home_relative_path(gfile) == expected_format
 
 
 @pytest.mark.parametrize(
