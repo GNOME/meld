@@ -64,11 +64,25 @@ def test_find_shared_parent_path(paths, expected_parent):
             '/home/hey/project/foo.txt',
             '…/project/foo.txt',
         ),
-        # Child is a more-than-2-depth child of parent
+        # Child is a 3-depth child of parent
         (
             '/home/hey/',
-            '/home/hey/project/hey/hey/foo.txt',
-            '…/project/…/foo.txt',
+            '/home/hey/project/package/foo.txt',
+            '…/project/package/foo.txt',
+        ),
+        # Child is a more-than-3-depth child of parent, with long
+        # immediate parent
+        (
+            '/home/hey/',
+            '/home/hey/project/package/subpackage/foo.txt',
+            '…/project/…/subpackage/foo.txt',
+        ),
+        # Child is a more-than-3-depth child of parent, with short
+        # immediate parent
+        (
+            '/home/hey/',
+            '/home/hey/project/package/src/foo.txt',
+            '…/project/package/src/foo.txt',
         ),
     ],
 )

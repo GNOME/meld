@@ -202,7 +202,8 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     # components will often be the same but that's not guaranteed.
 
     base_path_str = None
-    elided_path = None
+    immediate_parent_strs = []
+    has_elided_path = False
 
     descendant_parent = descendant.get_parent()
     if descendant_parent is None:
@@ -213,15 +214,24 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     if relative_path_str:
         relative_path = pathlib.Path(relative_path_str)
 
+        # We always try to leave the first and last path segments, to
+        # try to handle e.g., <parent>/<project>/src/<module>/main.py.
         base_path_str = relative_path.parts[0]
-        if len(relative_path.parts) == 1:
-            # No directory components, so we have no elided path
-            # segment
-            elided_path = None
-        else:
-            base_path_gfile = parent.get_child(base_path_str)
-            elided_path = base_path_gfile.get_relative_path(
-                descendant_parent)
+        if len(relative_path.parts) > 1:
+            immediate_parent_strs.append(relative_path.parts[-1])
+
+        # As an additional heuristic, we try to include the second-last
+        # path segment as well, to handle paths like e.g.,
+        # <parent>/<some packge structure>/<module>/src/main.py.
+        # We only do this if the last component is short, to
+        # handle src, dist, pkg, etc. without using too much space.
+        if len(relative_path.parts) > 2 and len(immediate_parent_strs[0]) < 5:
+            immediate_parent_strs.insert(0, relative_path.parts[-2])
+
+        # We have elided paths if we have more parts than our immediate
+        # parent count plus one for the base component.
+        included_path_count = len(immediate_parent_strs) + 1
+        has_elided_path = len(relative_path.parts) > included_path_count
 
     show_parent = not parent.has_parent()
     # It looks odd to have a single component, so if we don't have a
@@ -233,7 +243,8 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     label_segments = [
         '…' if not show_parent else None,
         base_path_str,
-        '…' if elided_path else None,
+        '…' if has_elided_path else None,
+        *immediate_parent_strs,
         descendant.get_basename(),
     ]
     label_text = format_home_relative_path(parent) if show_parent else ""
