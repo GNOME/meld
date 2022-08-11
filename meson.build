@@ -48,11 +48,10 @@ gio_schemasdir = dependency('gio-2.0').get_pkgconfig_variable(
   default: datadir / 'glib-2.0/schemas',
 )
 
+subdir('bin')
 subdir('meld')
 subdir('data')
 subdir('help')
 subdir('po')
-
-install_data('bin/meld', install_dir: bindir)
 
 meson.add_install_script('meson_post_install.py', get_option('byte-compile') ? python3.get_install_dir() : '')
