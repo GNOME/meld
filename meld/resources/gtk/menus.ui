@@ -2,25 +2,6 @@
 <interface>
   <menu id="gear-menu">
     <section>
-      <attribute name="display-hint">horizontal-buttons</attribute>
-      <item>
-        <attribute name="label" translatable="yes">Refresh</attribute>
-        <attribute name="action">view.refresh</attribute>
-        <attribute name="verb-icon">view-refresh-symbolic</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Stop</attribute>
-        <attribute name="action">win.stop</attribute>
-        <attribute name="verb-icon">process-stop-symbolic</attribute>
-      </item>
-      <item>
-        <attribute name="label" translatable="yes">Fullscreen</attribute>
-        <attribute name="action">win.fullscreen</attribute>
-        <attribute name="verb-icon">view-fullscreen-symbolic</attribute>
-        <attribute name="accel">F11</attribute>
-      </item>
-    </section>
-    <section>
       <attribute name="id">file-section</attribute>
       <item>
         <attribute name="label" translatable="yes">Save As…</attribute>
@@ -40,6 +21,13 @@
       </item>
     </section>
     <section>
+      <attribute name="id">refresh-section</attribute>
+      <item>
+        <attribute name="label" translatable="yes">Refresh Comparison</attribute>
+        <attribute name="action">view.refresh</attribute>
+      </item>
+    </section>
+    <section>
       <attribute name="id">find-section</attribute>
       <item>
         <attribute name="label" translatable="yes">_Find…</attribute>
@@ -55,6 +43,11 @@
         <attribute name="label" translatable="yes">View</attribute>
         <section>
           <attribute name="id">view-section</attribute>
+          <item>
+            <attribute name="label" translatable="yes">Fullscreen</attribute>
+            <attribute name="action">win.fullscreen</attribute>
+            <attribute name="accel">F11</attribute>
+          </item>
           <item>
             <attribute name="label" translatable="yes">Overview Map</attribute>
             <attribute name="action">view.show-overview-map</attribute>
@@ -78,6 +71,10 @@
       </submenu>
       <submenu>
         <attribute name="label" translatable="yes">Comparison</attribute>
+        <item>
+          <attribute name="label" translatable="yes">Stop</attribute>
+          <attribute name="action">win.stop</attribute>
+        </item>
         <section>
           <attribute name="id">merge-section</attribute>
           <item>
