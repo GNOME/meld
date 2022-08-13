@@ -146,7 +146,6 @@ if not conf_path.exists():
 import meld.build_helpers  # noqa: E402
 import meld.conf  # noqa: E402
 
-
 setup(
     name="Meld",
     version=meld.conf.__version__,
@@ -211,8 +210,6 @@ setup(
          ),
     ] + gtk_data_files,
     cmdclass={
-        "build_i18n": meld.build_helpers.build_i18n,
-        "build_help": meld.build_helpers.build_help,
         "build_icons": meld.build_helpers.build_icons,
         "build_data": meld.build_helpers.build_data,
     }

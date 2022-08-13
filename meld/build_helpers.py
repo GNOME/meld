@@ -27,24 +27,14 @@ import distutils.dir_util
 import distutils.dist
 import glob
 import os.path
-import sys
+import shutil
 from distutils.log import info
 
 import cx_Freeze
 
-windows_build = True
-
-
-def has_help(self):
-    return "build_help" in self.distribution.cmdclass and not windows_build
-
 
 def has_icons(self):
     return "build_icons" in self.distribution.cmdclass
-
-
-def has_i18n(self):
-    return "build_i18n" in self.distribution.cmdclass and not windows_build
 
 
 def has_data(self):
@@ -52,7 +42,6 @@ def has_data(self):
 
 
 cx_Freeze.command.build.Build.sub_commands.extend([
-    ("build_i18n", has_i18n),
     ("build_icons", has_icons),
     ("build_data", has_data),
 ])
@@ -72,6 +61,9 @@ class build_data(distutils.cmd.Command):
 
     style_source = "data/styles/*.style-scheme.xml.in"
     style_target_dir = 'share/meld/styles'
+
+    mime_source = "data/mime/*.xml.in"
+    mime_target_dir = "share/mime/packages"
 
     # FIXME: This is way too much hard coding, but I really hope
     # it also doesn't last that long.
@@ -104,37 +96,44 @@ class build_data(distutils.cmd.Command):
 
         data_files.append(('share/meld', [target]))
 
-        if windows_build:
-            # Write out a default settings.ini for Windows to make
-            # e.g., dark theme selection slightly easier.
-            settings_dir = os.path.join('build', 'etc', 'gtk-3.0')
-            if not os.path.exists(settings_dir):
-                os.makedirs(settings_dir)
-            settings_path = os.path.join(settings_dir, 'settings.ini')
-            with open(settings_path, 'w') as f:
-                print(self.win32_settings_ini, file=f)
+        # Write out a default settings.ini for Windows to make
+        # e.g., dark theme selection slightly easier.
+        settings_dir = os.path.join('build', 'etc', 'gtk-3.0')
+        if not os.path.exists(settings_dir):
+            os.makedirs(settings_dir)
+        settings_path = os.path.join(settings_dir, 'settings.ini')
+        with open(settings_path, 'w') as f:
+            print(self.win32_settings_ini, file=f)
 
-            gschemas = self.frozen_gschemas + [
-                ('etc/gtk-3.0', [settings_path])
-            ]
-        else:
-            gschemas = self.gschemas
+        gschemas = self.frozen_gschemas + [
+            ('etc/gtk-3.0', [settings_path])
+        ]
+
         data_files.extend(gschemas)
 
-        if windows_build:
-            # These should get moved/installed by i18n, but until that
-            # runs on Windows we need this hack.
-            styles = glob.glob(self.style_source)
+        # We don't support i18n on Windows, so we just copy these here
+        styles = glob.glob(self.style_source)
 
-            import shutil
-            targets = []
-            for style in styles:
-                assert style.endswith('.in')
-                target = style[:-len('.in')]
-                shutil.copyfile(style, target)
-                targets.append(target)
+        targets = []
+        for style in styles:
+            assert style.endswith('.in')
+            target = style[:-len('.in')]
+            shutil.copyfile(style, target)
+            targets.append(target)
 
-            data_files.append((self.style_target_dir, targets))
+        data_files.append((self.style_target_dir, targets))
+
+        # We don't support i18n on Windows, so we just copy these here
+        mime_definitions = glob.glob(self.mime_source)
+
+        targets = []
+        for mime in mime_definitions:
+            assert mime.endswith('.in')
+            target = mime[:-len('.in')]
+            shutil.copyfile(mime, target)
+            targets.append(target)
+
+        data_files.append((self.mime_target_dir, targets))
 
         return data_files
 
@@ -156,7 +155,7 @@ class build_icons(distutils.cmd.Command):
         pass
 
     def run(self):
-        target_dir = self.frozen_target if windows_build else self.target
+        target_dir = self.frozen_target
         data_files = self.distribution.data_files
 
         for theme in glob.glob(os.path.join(self.icon_dir, "*")):
@@ -174,126 +173,3 @@ class build_icons(distutils.cmd.Command):
                                         os.path.basename(size),
                                         os.path.basename(category)),
                                        icons))
-
-
-class build_i18n(distutils.cmd.Command):
-
-    bug_contact = None
-    domain = "meld"
-    po_dir = "po"
-    merge_po = False
-
-    # FIXME: It's ridiculous to specify these here, but I know of no other
-    # way except magically extracting them from self.distribution.data_files
-    desktop_files = [('share/applications', glob.glob("data/*.desktop.in"))]
-    xml_files = [
-        ('share/meld/styles', glob.glob("data/styles/*.style-scheme.xml.in")),
-        ('share/metainfo', glob.glob("data/*.appdata.xml.in")),
-        ('share/mime/packages', glob.glob("data/mime/*.xml.in"))
-    ]
-    schemas_files = []
-    key_files = []
-
-    def initialize_options(self):
-        pass
-
-    def finalize_options(self):
-        pass
-
-    def _rebuild_po(self):
-        # If there is a po/LINGUAS file, or the LINGUAS environment variable
-        # is set, only compile the languages listed there.
-        selected_languages = None
-        linguas_file = os.path.join(self.po_dir, "LINGUAS")
-        if "LINGUAS" in os.environ:
-            selected_languages = os.environ["LINGUAS"].split()
-        elif os.path.isfile(linguas_file):
-            selected_languages = open(linguas_file).read().split()
-
-        # If we're on Windows, assume we're building frozen and make a bunch
-        # of insane assumptions.
-        if windows_build:
-            msgfmt = "C:\\Python27\\Tools\\i18n\\msgfmt"
-        else:
-            msgfmt = "msgfmt"
-
-        # Update po(t) files and print a report
-        # We have to change the working dir to the po dir for intltool
-        cmd = [
-            "intltool-update",
-            (self.merge_po and "-r" or "-p"), "-g", self.domain
-        ]
-        wd = os.getcwd()
-        os.chdir(self.po_dir)
-        self.spawn(cmd)
-        os.chdir(wd)
-        max_po_mtime = 0
-        for po_file in glob.glob("%s/*.po" % self.po_dir):
-            lang = os.path.basename(po_file[:-3])
-            if selected_languages and lang not in selected_languages:
-                continue
-            mo_dir = os.path.join("build", "mo", lang, "LC_MESSAGES")
-            mo_file = os.path.join(mo_dir, "%s.mo" % self.domain)
-            if not os.path.exists(mo_dir):
-                os.makedirs(mo_dir)
-            cmd = [msgfmt, po_file, "-o", mo_file]
-            po_mtime = os.path.getmtime(po_file)
-            mo_mtime = (
-                os.path.exists(mo_file) and os.path.getmtime(mo_file) or 0)
-            if po_mtime > max_po_mtime:
-                max_po_mtime = po_mtime
-            if po_mtime > mo_mtime:
-                self.spawn(cmd)
-
-            targetpath = os.path.join("share/locale", lang, "LC_MESSAGES")
-            self.distribution.data_files.append((targetpath, (mo_file,)))
-        self.max_po_mtime = max_po_mtime
-
-    def run(self):
-        if self.bug_contact is not None:
-            os.environ["XGETTEXT_ARGS"] = "--msgid-bugs-address=%s " % \
-                                          self.bug_contact
-
-        # These copies are pure hacks to work around not having the
-        # Meson-based initial variable templating in distutils.
-        import shutil
-        shutil.copyfile(
-            'data/org.gnome.meld.desktop.in.in',
-            'data/org.gnome.meld.desktop.in',
-        )
-        shutil.copyfile(
-            'data/org.gnome.meld.appdata.xml.in.in',
-            'data/org.gnome.meld.appdata.xml.in',
-        )
-
-        self._rebuild_po()
-
-        intltool_switches = [
-            (self.xml_files, "-x"),
-            (self.desktop_files, "-d"),
-            (self.schemas_files, "-s"),
-            (self.key_files, "-k"),
-        ]
-
-        for file_set, switch in intltool_switches:
-            for target, files in file_set:
-                build_target = os.path.join("build", target)
-                if not os.path.exists(build_target):
-                    os.makedirs(build_target)
-                files_merged = []
-                for file in files:
-                    file_merged = os.path.basename(file)
-                    if file_merged.endswith(".in"):
-                        file_merged = file_merged[:-3]
-                    file_merged = os.path.join(build_target, file_merged)
-                    cmd = ["intltool-merge", switch, self.po_dir, file,
-                           file_merged]
-                    mtime_merged = (os.path.exists(file_merged) and
-                                    os.path.getmtime(file_merged) or 0)
-                    mtime_file = os.path.getmtime(file)
-                    if (mtime_merged < self.max_po_mtime or
-                            mtime_merged < mtime_file):
-                        # Only build if output is older than input (.po,.in)
-                        self.spawn(cmd)
-                    files_merged.append(file_merged)
-                self.distribution.data_files.append((target, files_merged))
