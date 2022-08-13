@@ -319,11 +319,10 @@ def gitlab_release_tag(tag):
     cmd = ['git', 'tag', '-l', "--format=%(contents)", tag]
     description = subprocess.check_output(cmd).decode('utf-8')
 
-    endpoint = '{base}/projects/{id}/repository/tags/{tag_name}/release'
+    endpoint = '{base}/projects/{id}/releases'
     release_url = endpoint.format(
         base=GITLAB_API_BASE,
         id=urllib.parse.quote_plus(GITLAB_PROJECT_ID),
-        tag_name=tag,
     )
     release_data = {
         "tag_name": tag,
