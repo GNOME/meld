@@ -615,6 +615,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         return (line, offset)
 
     def on_cursor_position_changed(self, buf, pspec, force=False):
+
+        # Avoid storing cursor changes for non-focused panes. These
+        # happen when we e.g., copy a chunk between panes.
+        if not self.focus_pane or self.focus_pane.get_buffer() != buf:
+            return
+
         pane = self.textbuffer.index(buf)
         pos = buf.props.cursor_position
         if pane == self.cursor.pane and pos == self.cursor.pos and not force:
