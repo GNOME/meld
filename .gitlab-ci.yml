@@ -26,5 +26,6 @@ cloudflareworkers:
   script:
     - npm install @cloudflare/wrangler
     - npx wrangler publish --env production
+    - npx wrangler publish --env oldproduction
   only:
     - pages
