@@ -8,7 +8,7 @@
 * SSL/TLS is handled by Cloudflare
 * Website is served by Cloudflare Workers
 * Windows binaries are hosted on the GNOME FTP server mirrors
-* Other package options, including Flatpak releases, are built ond hosted by
+* Other package options, including Flatpak releases, are built and hosted by
   external providers
 
 Note that the Cloudflare site runs on a private account.
@@ -29,10 +29,8 @@ Gitlab pages, and then deploying the built static site to Cloudflare. See
 Both domains are privately registered.
 
 
-## Infrastructure TODO list (May 2021)
+## Infrastructure TODO list (August 2022)
 
-* Move meldmerge.org hosting from GitHub pages to Cloudflare, or have the
-  GitHub pages site redirect
 * Automate CI release tarball uploads
 * Automate CI release MSI uploads
 * Set release branches to protected if possible; this might not be possible if
