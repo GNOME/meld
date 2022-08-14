@@ -3,14 +3,7 @@ from os import path
 
 import pytest
 
-from .fixture import make
-
 DiffResult = Enum('DiffResult', 'Same SameFiltered DodgySame DodgyDifferent Different FileError')
-
-
-@pytest.fixture
-def differnt_dirs():
-    make()
 
 
 def abspath(*args):
@@ -37,42 +30,49 @@ dodgy_args['shallow-comparison'] = True
     # empty file list
     ((), [], cmp_args, DiffResult.Same),
     # dirs are same
-    (('diffs/a', 'diffs/b'), [], cmp_args, DiffResult.Same),
+    (('a', 'b'), [], cmp_args, DiffResult.Same),
     # dir and file ar diffent
-    (('diffs/a', 'diffs/b/b.txt'), [], cmp_args, DiffResult.Different),
+    (('a', 'b/b.txt'), [], cmp_args, DiffResult.Different),
     # shallow equal (time + size)
-    (('diffs/a/d/d.txt', 'diffs/b/d/d.1.txt'), [], dodgy_args, DiffResult.DodgySame),
+    (('a/d/d.txt', 'b/d/d.1.txt'), [], dodgy_args, DiffResult.DodgySame),
     # empty files (fastest equal, wont read files)
-    (('diffs/a/c/c.txt', 'diffs/b/c/c.txt'), [], cmp_args, DiffResult.Same),
+    (('a/c/c.txt', 'b/c/c.txt'), [], cmp_args, DiffResult.Same),
     # 4.1kb vs 4.1kb file (slow equal, read both until end)
-    (('diffs/a/d/d.txt', 'diffs/b/d/d.txt'), [], cmp_args, DiffResult.Same),
+    (('a/d/d.txt', 'b/d/d.txt'), [], cmp_args, DiffResult.Same),
     # 4.1kb vs 4.1kb file (fast different, first chunk diff)
-    (('diffs/a/d/d.txt', 'diffs/b/d/d.1.txt'), [], cmp_args, DiffResult.Different),
+    (('a/d/d.txt', 'b/d/d.1.txt'), [], cmp_args, DiffResult.Different),
     # 4.1kb vs 4.1kb file (slow different, read both until end)
-    (('diffs/a/d/d.txt', 'diffs/b/d/d.2.txt'), [], cmp_args, DiffResult.Different),
+    (('a/d/d.txt', 'b/d/d.2.txt'), [], cmp_args, DiffResult.Different),
     # empty vs 1b file (fast different, first chunk diff)
-    (('diffs/a/e/g/g.txt', 'diffs/b/e/g/g.txt'), [], cmp_args, DiffResult.Different),
+    (('a/e/g/g.txt', 'b/e/g/g.txt'), [], cmp_args, DiffResult.Different),
     # CRLF vs CRLF with trailing, ignoring blank lines
-    (('diffs/a/crlf.txt', 'diffs/a/crlftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
+    (('a/crlf.txt', 'a/crlftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
     # CRLF vs CRLF with trailing, not ignoring blank lines
-    (('diffs/a/crlf.txt', 'diffs/a/crlftrailing.txt'), [], no_ignore_args, DiffResult.Different),
+    (('a/crlf.txt', 'a/crlftrailing.txt'), [], no_ignore_args, DiffResult.Different),
     # LF vs LF with trailing, ignoring blank lines
-    (('diffs/b/lf.txt', 'diffs/b/lftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
+    (('b/lf.txt', 'b/lftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
     # LF vs LF with trailing, not ignoring blank lines
-    (('diffs/b/lf.txt', 'diffs/b/lftrailing.txt'), [], no_ignore_args, DiffResult.Different),
+    (('b/lf.txt', 'b/lftrailing.txt'), [], no_ignore_args, DiffResult.Different),
     # CRLF vs LF, ignoring blank lines
-    (('diffs/a/crlf.txt', 'diffs/b/lf.txt'), [], cmp_args, DiffResult.SameFiltered),
+    (('a/crlf.txt', 'b/lf.txt'), [], cmp_args, DiffResult.SameFiltered),
     # CRLF vs LF, not ignoring blank lines
-    (('diffs/a/crlf.txt', 'diffs/b/lf.txt'), [], no_ignore_args, DiffResult.Different),
+    (('a/crlf.txt', 'b/lf.txt'), [], no_ignore_args, DiffResult.Different),
     # CRLF with trailing vs LF with trailing, ignoring blank lines
-    (('diffs/a/crlftrailing.txt', 'diffs/b/lftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
+    (('a/crlftrailing.txt', 'b/lftrailing.txt'), [], cmp_args, DiffResult.SameFiltered),
     # CRLF with trailing vs LF with trailing, not ignoring blank lines
-    (('diffs/a/crlftrailing.txt', 'diffs/b/lftrailing.txt'), [], no_ignore_args, DiffResult.Different),
+    (('a/crlftrailing.txt', 'b/lftrailing.txt'), [], no_ignore_args, DiffResult.Different),
 ])
-def test_files_same(files, regexes, comparison_args, expected, differnt_dirs):
+def test_files_same(
+    make_comparison_folders,
+    files,
+    regexes,
+    comparison_args,
+    expected
+) -> None:
     from meld.dirdiff import _files_same
 
-    files_path = abspath(*files)
+    base_path = make_comparison_folders
+    files_path = [base_path.join(f) for f in files]
     result = _files_same(files_path, regexes, comparison_args)
     actual = DiffResult(result + 1)
     assert actual == expected

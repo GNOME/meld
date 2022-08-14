@@ -1,5 +1,7 @@
 from os import mkdir, path
 
+import pytest
+
 CHUNK_SIZE = 4096 * 10
 
 diff_definition = {
@@ -51,11 +53,8 @@ diff_definition = {
     }
 }
 
-CUR_DIR = path.dirname(__file__)
-ROOT_DIR = path.join(CUR_DIR, 'diffs')
 
-
-def make(definition=diff_definition, root_dir=ROOT_DIR):
+def make(definition, root_dir):
     if not path.exists(root_dir):
         mkdir(root_dir, 0o755)
 
@@ -68,5 +67,7 @@ def make(definition=diff_definition, root_dir=ROOT_DIR):
                 open_file.write(v())
 
 
-if __name__ == '__main__':
-    make()
+@pytest.fixture
+def make_comparison_folders(tmpdir, definition=diff_definition):
+    make(definition, tmpdir)
+    yield tmpdir
