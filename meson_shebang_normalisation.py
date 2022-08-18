@@ -15,6 +15,9 @@ def main():
     lines[0] = "".join(lines[0].split("env "))
     out_path.write_text("".join(lines))
 
+    stat = in_path.stat()
+    out_path.chmod(stat.st_mode)
+
 
 if __name__ == "__main__":
     main()
