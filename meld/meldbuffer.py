@@ -248,6 +248,9 @@ class BufferLines:
                 f"{len(self.lines)} != {len(self)}",
             )
 
+    def clear_cache(self) -> None:
+        self.lines = [None] * self.buf.get_line_count()
+
     def on_insert_text(self, buf, it, text, textlen):
         buf.move_mark(self.mark, it)
 

@@ -1538,6 +1538,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
     def pre_comparison_init(self):
         self._disconnect_buffer_handlers()
         self.linediffer.clear()
+        for bufferlines in self.buffer_filtered:
+            bufferlines.clear_cache()
 
         for buf in self.textbuffer:
             tag = buf.get_tag_table().lookup("inline")
