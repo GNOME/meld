@@ -3,7 +3,7 @@ stages:
   - publish
 
 variables:
-  DEPENDENCIES: findutils git libxslt rubygem-jekyll yelp-tools
+  DEPENDENCIES: findutils git libxslt python3-pip rubygem-jekyll yelp-tools
 
 pages:
   stage: deploy
@@ -12,7 +12,7 @@ pages:
     - dnf install -y $DEPENDENCIES
     - jekyll build -d public/
     - git checkout master
-    - pip install pintail
+    - pip3 install pintail
     - cd help/C/
     - pintail build -o ../../public/help/
   artifacts:
