@@ -12,8 +12,9 @@ pages:
     - dnf install -y $DEPENDENCIES
     - jekyll build -d public/
     - git checkout master
-    - mkdir public/help/
-    - yelp-build html -o public/help help/C
+    - pip install pintail
+    - cd help/C/
+    - pintail build -o ../../public/help/
   artifacts:
     paths:
       - public
