@@ -119,6 +119,6 @@ Links
 
 Home page:      http://meldmerge.org
 
-Documentation:  http://meldmerge.org/help
+Documentation:  http://meldmerge.org/help/
 
 Wiki:           https://wiki.gnome.org/Apps/Meld
