@@ -122,7 +122,7 @@ class MeldApp(Gtk.Application):
 
     def help_callback(self, action, parameter):
         if meld.conf.DATADIR_IS_UNINSTALLED:
-            uri = "http://meldmerge.org/help/"
+            uri = "https://meld.app/help/"
         else:
             uri = "help:meld"
         Gtk.show_uri(

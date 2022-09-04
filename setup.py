@@ -21,7 +21,7 @@ setup(
     description='Visual diff and merge tool',
     author='Kai Willadsen',
     author_email='kai.willadsen@gmail.com',
-    url='http://meldmerge.org',
+    url='https://meld.app',
     license='GPLv2+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

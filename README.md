@@ -56,7 +56,7 @@ Unix users should get Meld from their distribution package manager, or from
 [Flathub](https://flathub.org/).
 
 Windows users should download the provided MSIs on the
-[Meld home page](https://meldmerge.org/).
+[Meld home page](https://meld.app/).
 
 OSX users can install Meld using Homebrew (or Macports, Fink, etc.), or there
 are unofficial native builds available from the
@@ -117,8 +117,8 @@ Support forum:  https://discourse.gnome.org/tag/meld
 Links
 -----
 
-Home page:      http://meldmerge.org
+Home page:      https://meld.app/
 
-Documentation:  http://meldmerge.org/help/
+Documentation:  https://meld.app/help/
 
 Wiki:           https://wiki.gnome.org/Apps/Meld

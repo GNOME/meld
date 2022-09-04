@@ -154,7 +154,7 @@ setup(
     author='The Meld project',
     author_email='meld-list@gnome.org',
     maintainer='Kai Willadsen',
-    url='http://meldmerge.org',
+    url='https://meld.app',
     license='GPLv2+',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
