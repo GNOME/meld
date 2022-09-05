@@ -264,7 +264,7 @@ def call_with_output(
 def check_release_branch():
     cmd = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
     branch = subprocess.check_output(cmd).strip().decode('utf-8')
-    if branch != 'master' and not re.match(RELEASE_BRANCH_RE, branch):
+    if branch != 'main' and not re.match(RELEASE_BRANCH_RE, branch):
         click.echo(
             '\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
         click.confirm('Are you sure you wish to continue?', abort=True)
