@@ -77,34 +77,6 @@ APPDATA_TEMPLATE = """
     </release>
 """
 
-MARKDOWN_TEMPLATE = """
-<!--
-{{ [date, app, version]|join(' ') }}
-{{ '=' * [date, app, version]|join(' ')|length }}
--->
-{%- if features %}
-
-Features
---------
-{% for feature in features %}
-{{ feature }}
-{%- endfor %}
-{%- endif %}
-
-Fixes
------
-{% for fix in fixes %}
-{{ fix }}
-{%- endfor %}
-
-Translations
-------------
-{% for translator in translators %}
-{{ translator }}
-{%- endfor %}
-
-"""
-
 
 def get_last_release_tag():
     cmd = ['git', 'describe', '--abbrev=0', '--tags']
@@ -411,12 +383,6 @@ def write_somewhere(filename, output):
 
 
 @cli.command()
-@click.argument('filename', type=click.Path(), default=None, required=False)
-def markdown(filename):
-    write_somewhere(filename, render_template(MARKDOWN_TEMPLATE))
-
-
-@cli.command()
 def dist():
     build_dir = '_build'
     archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
@@ -524,8 +490,6 @@ def make_release(ctx):
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
     ctx.forward(gitlab_release)
-    file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
-    ctx.forward(markdown, filename=file_prefix + '.md')
     ctx.forward(version_bump)
     commit(message='Post-release version bump')
     push()
