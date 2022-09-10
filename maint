@@ -2,13 +2,10 @@
 
 import collections
 import datetime
-import importlib.machinery
-import importlib.util
 import json
 import os
 import re
 import subprocess
-import sys
 import urllib.parse
 from pathlib import Path
 
@@ -16,20 +13,6 @@ import click
 import keyring
 import requests
 from jinja2 import Environment
-
-# Import system hackery to import conf.py.in without copying it to
-# have a .py suffix. This is entirely so that we can run from a git
-# checkout without any user intervention.
-
-loader = importlib.machinery.SourceFileLoader('meld.conf', 'meld/conf.py.in')
-spec = importlib.util.spec_from_loader(loader.name, loader)
-mod = importlib.util.module_from_spec(spec)
-loader.exec_module(mod)
-
-import meld  # noqa: E402 isort:skip
-meld.conf = mod
-sys.modules['meld.conf'] = mod
-import meld.conf  # noqa: E402 isort:skip
 
 APPLICATION_NAME = "meld"
 
