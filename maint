@@ -10,6 +10,7 @@ import re
 import subprocess
 import sys
 import urllib.parse
+from pathlib import Path
 
 import click
 import keyring
@@ -370,23 +371,29 @@ def appdata():
 
 
 @cli.command()
-def dist():
-    build_dir = '_build'
-    archive = f"{APPLICATION_NAME}-{meld.conf.__version__}.tar.xz"
-    dist_archive_path = os.path.abspath(
-        os.path.join(build_dir, 'meson-dist', archive))
+@click.option(
+    "--skip-dirty-check", is_flag=True,
+    help="Skip Meson's check for uncommitted changes",
+)
+def dist(skip_dirty_check: bool) -> Path:
+    build_dir = Path("_build").resolve()
+    archive = f"{APPLICATION_NAME}-{get_version()}.tar.xz"
+    dist_archive_path = build_dir / "meson-dist" / archive
 
-    click.echo('Running meson...')
-    cmd = ['meson', build_dir]
+    click.echo("Setting up meson build...")
+    cmd = ["meson", "setup", build_dir]
     call_with_output(cmd, echo_stdout=False)
 
-    click.echo('Creating distribution...')
-    cmd = ['ninja', '-C', build_dir, 'dist']
+    click.echo("Generating source distribution...")
+    cmd = ["meson", "dist", "-C", build_dir]
+    if skip_dirty_check:
+        cmd += ["--allow-dirty"]
     call_with_output(cmd, echo_stdout=False)
 
-    if not os.path.exists(dist_archive_path):
-        click.echo('Failed to create archive file %s' % dist_archive_path)
+    if not dist_archive_path.exists():
+        click.echo(f"Failed to create archive file {dist_archive_path}")
         raise click.Abort()
+
     return dist_archive_path
 
 
@@ -476,12 +483,12 @@ def make_release(ctx):
     commit(message='Post-release version bump')
     push()
 
-    ctx.forward(upload, path=archive_path)
+    ctx.forward(upload, path=str(archive_path))
 
     # TODO: ssh in and run ftpadmin install
     click.echo('\nNow run:')
     click.echo('ssh %s' % UPLOAD_SERVER)
-    click.echo('ftpadmin install %s' % os.path.basename(archive_path))
+    click.echo(f"ftpadmin install {archive_path.name}")
 
 
 if __name__ == '__main__':
