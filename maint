@@ -4,6 +4,7 @@ import collections
 import datetime
 import importlib.machinery
 import importlib.util
+import json
 import os
 import re
 import subprocess
@@ -33,7 +34,6 @@ import meld.conf  # noqa: E402 isort:skip
 PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
-VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
 UPLOAD_SERVER = 'master.gnome.org'
 GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
 GITLAB_PROJECT_ID = 'GNOME/meld'
@@ -453,30 +453,20 @@ def upload(path):
 
 @cli.command('version-bump')
 def version_bump():
-    with open(meld.conf.__file__) as f:
-        conf_data = f.read().splitlines()
+    rewrite = ["meson", "rewrite", "kwargs"]
+    cmd = rewrite + ["info", "project", "/", "version", ""]
+    proc = subprocess.run(cmd, capture_output=True, text=True, check=True)
+    meson_dict = json.loads(proc.stderr)
+    version = meson_dict["kwargs"]["project#/"]["version"]
+    click.echo(f"Current version is: {version}")
 
-    for i, line in enumerate(conf_data):
-        if line.startswith('__version__'):
-            match = re.match(VERSION_RE, line)
-            version = match.group('version')
-            if version != meld.conf.__version__:
-                continue
-            version_line = i
-            break
-    else:
-        click.echo('Couldn\'t determine version from %s' % meld.conf.__file__)
-        raise click.Abort()
-
-    click.echo('Current version is: %s' % meld.conf.__version__)
-    default_version = meld.conf.__version__.split('.')
+    default_version = version.split('.')
     default_version[-1] = str(int(default_version[-1]) + 1)
     default_version = '.'.join(default_version)
     new_version = click.prompt('Enter new version', default=default_version)
 
-    conf_data[version_line] = '__version__ = "%s"' % new_version
-    with open(meld.conf.__file__, 'w') as f:
-        f.write('\n'.join(conf_data) + '\n')
+    cmd = rewrite + ["set", "project", "/", "version", new_version]
+    subprocess.run(cmd, check=True)
 
 
 @cli.command('release')
