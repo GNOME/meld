@@ -87,6 +87,8 @@ endforeach
 # Install the executable file
 app_config = {
   'profile': profile,
+  'project': meson.project_name(),
+  'version': meson.project_version(),
   'application_id': application_id,
   'resource_base_id': resource_base_id,
   'localedir': prefix / localedir,

@@ -1,10 +1,8 @@
-
 import os
+import re
 import sys
 from pathlib import Path
-
-__package__ = "meld"
-__version__ = "3.23.0"
+from typing import Tuple
 
 APPLICATION_NAME = 'Meld'
 APPLICATION_ID = 'org.gnome.Meld'
@@ -25,6 +23,9 @@ if CONFIGURED == 'True':
     LOCALEDIR = '@localedir@'
     PROFILE = '@profile@'
 
+    __package__ = '@project@'
+    __version__ = '@version@'
+
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
 PYTHON_REQUIREMENT_TUPLE = (3, 6)
@@ -39,6 +40,18 @@ _ = no_translation
 ngettext = no_translation
 
 
+def project_version_from_meson(meson_path: Path) -> Tuple[str, str]:
+    project_line = meson_path.read_text().splitlines()[0]
+    meson_project = re.match(
+        r"project\('(?P<project>\w+)', version : '(?P<version>[0-9.]+)'.*",
+        project_line,
+    )
+    if not meson_project:
+        raise RuntimeError("Couldn't parse version from meson.build")
+
+    return meson_project.group("project"), meson_project.group("version")
+
+
 def frozen():
     global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
 
@@ -50,9 +63,12 @@ def frozen():
 
 
 def uninstalled():
-    global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
+    global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED, __package__, __version__
 
     melddir = Path(__file__).resolve().parent.parent
+    meson_path = melddir / "meson.build"
+
+    __package__, __version__ = project_version_from_meson(meson_path)
 
     DATADIR = melddir / "data"
     LOCALEDIR = melddir / "build" / "mo"
