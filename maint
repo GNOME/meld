@@ -191,7 +191,7 @@ def make_env():
 def get_tokens():
     news = get_last_news_entry()
     features, fixes, translators = parse_news_entry(news)
-    version = meld.conf.__version__
+    version = get_version()
     major, minor, *release = version.split('.')
     stable_release = int(minor) % 2 == 0
     release_series = '{}.{}'.format(major, minor)
@@ -393,25 +393,26 @@ def dist():
 @cli.command()
 def tag():
     last_release = get_last_release_tag()
+    new_release = get_version()
     click.echo('\nLast release tag was: ', nl=False)
     click.secho(last_release, fg='green', bold=True)
     click.echo('New release tag will be: ', nl=False)
-    click.secho(meld.conf.__version__, fg='green', bold=True)
+    click.secho(new_release, fg='green', bold=True)
     click.confirm('\nTag this release?', default=True, abort=True)
 
     news_text = get_last_news_entry().encode('utf-8')
     # FIXME: Should be signing tags
-    cmd = ['git', 'tag', '-a', '--file=-', meld.conf.__version__]
+    cmd = ["git", "tag", "-a", "--file=-", new_release]
     call_with_output(cmd, news_text)
-    click.echo('Tagged %s' % meld.conf.__version__)
+    click.echo(f"Tagged {new_release}")
 
-    cmd = ['git', 'show', '-s', meld.conf.__version__]
+    cmd = ["git", "show", "-s", new_release]
     call_with_output(cmd, echo_stdout=True)
     confirm = click.confirm('\nPush this tag?', default=True)
     if not confirm:
         return
 
-    cmd = ['git', 'push', 'origin', meld.conf.__version__]
+    cmd = ["git", "push", "origin", new_release]
     call_with_output(cmd, echo_stdout=True)
 
 
@@ -438,13 +439,17 @@ def upload(path):
     call_with_output(cmd, timeout=120)
 
 
-@cli.command('version-bump')
-def version_bump():
-    rewrite = ["meson", "rewrite", "kwargs"]
-    cmd = rewrite + ["info", "project", "/", "version", ""]
+def get_version() -> str:
+    cmd = ["meson", "rewrite", "kwargs", "info", "project", "/", "version", ""]
     proc = subprocess.run(cmd, capture_output=True, text=True, check=True)
     meson_dict = json.loads(proc.stderr)
     version = meson_dict["kwargs"]["project#/"]["version"]
+    return version
+
+
+@cli.command('version-bump')
+def version_bump():
+    version = get_version()
     click.echo(f"Current version is: {version}")
 
     default_version = version.split('.')
@@ -452,8 +457,8 @@ def version_bump():
     default_version = '.'.join(default_version)
     new_version = click.prompt('Enter new version', default=default_version)
 
-    cmd = rewrite + ["set", "project", "/", "version", new_version]
-    subprocess.run(cmd, check=True)
+    cmd = ["meson", "rewrite", "kwargs", "set", "project", "/", "version"]
+    subprocess.run(cmd + [new_version], check=True)
 
 
 @cli.command('release')
