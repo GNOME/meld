@@ -30,10 +30,11 @@ meld.conf = mod
 sys.modules['meld.conf'] = mod
 import meld.conf  # noqa: E402 isort:skip
 
+APPLICATION_NAME = "meld"
 
 PO_DIR = "po"
 HELP_DIR = "help"
-RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
+RELEASE_BRANCH_RE = fr"{APPLICATION_NAME}-\d+-\d+"
 UPLOAD_SERVER = 'master.gnome.org'
 GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
 GITLAB_PROJECT_ID = 'GNOME/meld'
@@ -199,7 +200,7 @@ def get_tokens():
         'date': datetime.date.today().isoformat(),
         # Appstream appears to expect release dates in UTC.
         'utcdate': datetime.datetime.utcnow().date().isoformat(),
-        'app': meld.conf.__package__,
+        'app': APPLICATION_NAME,
         'version': version,
         'release_series': release_series,
         'stable_release': stable_release,
@@ -371,7 +372,7 @@ def appdata():
 @cli.command()
 def dist():
     build_dir = '_build'
-    archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
+    archive = f"{APPLICATION_NAME}-{meld.conf.__version__}.tar.xz"
     dist_archive_path = os.path.abspath(
         os.path.join(build_dir, 'meson-dist', archive))
 
