@@ -16,28 +16,28 @@ Meld is licensed under the GPL v2 or later.
 Requirements
 ------------
 
-* Python 3.6
+* Python 3.9
 * pycairo (Python3 bindings for cairo without GObject layer)
-* PyGObject 3.30 (Python3 bindings for GObject introspection)
+* PyGObject 3.40 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
 
 And following packages with GObject introspection:
 
-* GLib 2.36
+* GLib 2.56
 * Pango
 * PangoCairo
-* GTK+ 3.20
+* GTK+ 3.24
 * GtkSourceView 4.0
 
 
 Build requirements
 ------------------
 
-* Python 3.6
-* Meson 0.48
+* Python 3.9
+* Meson 0.58
 * Ninja
 * gettext
-* GLib 2.36 and its development utilities such as `glib-compile-schemas`
+* GLib 2.56 and its development utilities such as `glib-compile-schemas`
 
 For Windows build requirements, see `mingw-common` section `.gitlab-ci.yml`
 
