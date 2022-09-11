@@ -49,7 +49,8 @@ APPDATA_TEMPLATE = """
           {%- if stable_release %}
           This is a stable release in the {{ release_series }} series.
           {%- else %}
-          This is an unstable release in the {{ release_series }} development series.
+          This is an unstable release in the {{ release_series }} development
+          series.
           {%- endif %}
         </p>
         <ul>
@@ -124,10 +125,14 @@ def get_non_translation_commits():
 
 
 def get_last_news_entry():
+    def diff_filter(line: str) -> bool:
+        if not line or line[0] not in ("+", "-"):
+            return False
+        return len(line) < 2 or line[1] not in ("+", "-")
+
     cmd = ['git', 'log', '--pretty=format:', '-p', '-1', 'NEWS']
     lines = subprocess.check_output(cmd).strip().decode('utf-8').splitlines()
-    lines = [l[1:] for l in lines if (l and l[0] in ('+', '-')) and
-             (len(l) < 2 or l[1] not in ('+', '-'))]
+    lines = [line[1:] for line in lines if diff_filter(line)]
     return "\n".join(lines)
 
 
@@ -157,8 +162,8 @@ def parse_news_entry(news):
                     break
             return i - 1
 
-        indent = min(space_prefix(l) for l in section)
-        return [l[indent:] for l in section]
+        indent = min(space_prefix(s) for s in section)
+        return [s[indent:] for s in section]
 
     return reformat(features), reformat(fixes), reformat(translators)
 
@@ -201,7 +206,7 @@ def render_template(template):
     tokens = get_tokens()
     jinja_env = make_env()
     template = jinja_env.from_string(template)
-    return(template.render(tokens))
+    return template.render(tokens)
 
 
 def call_with_output(
