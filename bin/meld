@@ -23,6 +23,7 @@ import signal
 import subprocess
 import sys
 from multiprocessing import freeze_support
+from pathlib import Path
 
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
@@ -254,18 +255,16 @@ def check_requirements():
         show_error_and_exit(_('Meld requires %s or higher.') % str(r))
 
 
-def setup_resources():
+def setup_resources(data_dir: Path) -> None:
     from gi.repository import Gio
-    from gi.repository import GtkSource
 
-    resource_filename = meld.conf.APPLICATION_ID + ".gresource"
-    resource_file = os.path.join(meld.conf.DATADIR, resource_filename)
+    resource_file = data_dir / "compiled.gresource"
 
-    if not os.path.exists(resource_file) and uninstalled:
+    if not resource_file.exists() and uninstalled:
         subprocess.call(
             [
                 "glib-compile-resources",
-                "--target={}".format(resource_file),
+                f"--target={resource_file}",
                 "--sourcedir=meld/resources",
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
@@ -274,43 +273,45 @@ def setup_resources():
         )
 
     try:
-        resources = Gio.resource_load(resource_file)
+        resources = Gio.resource_load(str(resource_file))
         Gio.resources_register(resources)
     except Exception:
         # Allow resources to be missing when running uninstalled
         if not uninstalled:
             raise
 
-    style_path = os.path.join(meld.conf.DATADIR, "styles")
-    GtkSource.StyleSchemeManager.get_default().append_search_path(style_path)
+
+def setup_source_style_schemes(data_dir: Path) -> None:
+    from gi.repository import GtkSource
+
+    style_folder_path = data_dir / "styles"
+    GtkSource.StyleSchemeManager.get_default().append_search_path(
+        str(style_folder_path)
+    )
 
     # Just copy style schemes to the file ending expected by
     # GtkSourceView if we're uninstalled and they're missing
     if uninstalled:
         for style in {'meld-base', 'meld-dark'}:
-            path = os.path.join(
-                style_path, '{}.style-scheme.xml'.format(style))
-            if not os.path.exists(path):
+            style_path = style_folder_path / f"{style}.style-scheme.xml"
+            if not style_path.exists():
                 import shutil
-                shutil.copyfile(path + '.in', path)
+                shutil.copyfile(f"{style_path}.in", style_path)
 
 
-def setup_settings():
-    import meld.conf
-
-    schema_path = os.path.join(meld.conf.DATADIR, "org.gnome.meld.gschema.xml")
-    compiled_schema_path = os.path.join(meld.conf.DATADIR, "gschemas.compiled")
+def setup_settings(data_dir: Path) -> None:
+    schema_path = data_dir / "org.gnome.meld.gschema.xml"
+    compiled_schema_path = data_dir / "gschemas.compiled"
 
     try:
-        schema_mtime = os.path.getmtime(schema_path)
-        compiled_mtime = os.path.getmtime(compiled_schema_path)
+        schema_mtime = schema_path.stat().st_mtime
+        compiled_mtime = compiled_schema_path.stat().st_mtime
         have_schema = schema_mtime < compiled_mtime
     except OSError:
         have_schema = False
 
     if uninstalled and not have_schema:
-        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR],
-                        cwd=melddir)
+        subprocess.call(["glib-compile-schemas", data_dir], cwd=melddir)
 
     import meld.settings
     meld.settings.create_settings()
@@ -448,13 +449,16 @@ def run_application():
 
 
 def main():
+    data_dir = meld.conf.DATADIR
+
     environment_hacks()
     setup_logging()
     disable_stdout_buffering()
     check_requirements()
     setup_glib_logging()
-    setup_resources()
-    setup_settings()
+    setup_resources(data_dir)
+    setup_source_style_schemes(data_dir)
+    setup_settings(data_dir)
     return run_application()
 
 
