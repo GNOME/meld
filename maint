@@ -3,11 +3,11 @@
 import collections
 import datetime
 import json
-import os
 import re
 import subprocess
 import urllib.parse
 from pathlib import Path
+from typing import Dict, Mapping, Optional, Set
 
 import click
 import keyring
@@ -88,10 +88,10 @@ def get_translation_commits(folder):
     return commits
 
 
-def get_translator_langs(folders=[PO_DIR, HELP_DIR]):
+def get_translator_langs(*folders: str) -> Mapping[str, Set[str]]:
 
-    def get_lang(path):
-        filename = os.path.basename(path)
+    def get_lang(path: str) -> Optional[str]:
+        filename = Path(path).name
         if not filename.endswith('.po'):
             return None
         return filename[:-3]
@@ -100,9 +100,10 @@ def get_translator_langs(folders=[PO_DIR, HELP_DIR]):
     for folder in folders:
         translation_commits.extend(get_translation_commits(folder))
 
-    author_map = collections.defaultdict(set)
-    for author, langs in translation_commits:
-        langs = [get_lang(lang) for lang in langs if get_lang(lang)]
+    author_map: Dict[str, Set[str]] = collections.defaultdict(set)
+    for author, lang_paths in translation_commits:
+        path_langs = [get_lang(path) for path in lang_paths]
+        langs = [lang for lang in path_langs if lang]
         author_map[author] |= set(langs)
 
     return author_map
@@ -188,7 +189,7 @@ def get_tokens():
         'version': version,
         'release_series': release_series,
         'stable_release': stable_release,
-        'translator_langs': get_translator_langs(),
+        'translator_langs': get_translator_langs(PO_DIR, HELP_DIR),
         'features': features,
         'fixes': fixes,
         'translators': translators,
