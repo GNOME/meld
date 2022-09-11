@@ -14,8 +14,8 @@ PROFILE = ''
 
 if CONFIGURED == 'True':
     APPLICATION_ID = '@application_id@'
-    DATADIR = '@pkgdatadir@'
-    LOCALEDIR = '@localedir@'
+    DATADIR = Path("@pkgdatadir@")
+    LOCALEDIR = Path("@localedir@")
     PROFILE = '@profile@'
 
     __package__ = '@project@'
@@ -49,10 +49,10 @@ def project_version_from_meson(meson_path: Path) -> Tuple[str, str]:
 def frozen():
     global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
 
-    melddir = os.path.dirname(sys.executable)
+    melddir = Path(sys.executable).parent
 
-    DATADIR = os.path.join(melddir, "share", "meld")
-    LOCALEDIR = os.path.join(melddir, "share", "mo")
+    DATADIR = melddir / "share" / "meld"
+    LOCALEDIR = melddir / "share" / "mo"
     DATADIR_IS_UNINSTALLED = True
 
 
