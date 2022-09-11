@@ -306,7 +306,9 @@ def gitlab_release_tag(tag):
 
 @click.group()
 def cli():
-    pass
+    if not Path("meld.doap").exists():
+        click.echo("Can only be run from the top folder of the project")
+        raise click.Abort()
 
 
 @cli.command()
@@ -476,6 +478,4 @@ def make_release(ctx):
 
 
 if __name__ == '__main__':
-    # FIXME: Should include sanity check that we're at the top level of the
-    # project
     cli()
