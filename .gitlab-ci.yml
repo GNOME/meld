@@ -11,7 +11,7 @@ pages:
   script:
     - dnf install -y $DEPENDENCIES
     - jekyll build -d public/
-    - git checkout master
+    - git checkout main
     - mkdir public/help/
     - yelp-build html -o public/help help/C
   artifacts:
