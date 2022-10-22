@@ -1401,11 +1401,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     @Gtk.Template.Callback()
     def on_treeview_popup_menu(self, treeview):
-        tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
+        return tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
 
     @Gtk.Template.Callback()
     def on_treeview_button_press_event(self, treeview, event):
-        tree.TreeviewCommon.on_treeview_button_press_event(
+        return tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
 
     @with_focused_pane
