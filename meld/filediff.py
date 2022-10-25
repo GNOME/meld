@@ -2557,9 +2557,29 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.refresh_comparison()
 
     def action_swap(self, *args):
-        buffer0 = self.textbuffer[0]
-        buffer1 = self.textbuffer[1]
-        self.set_files([buffer1.data.gfile, buffer0.data.gfile])
+        buffers = self.textbuffer[:self.num_panes]
+        gfiles = [buf.data.gfile for buf in buffers]
+
+        if any(gfile is None for gfile in gfiles) \
+                or any(buf.get_modified() for buf in buffers):
+            misc.error_dialog(
+                primary=_("Should save file before swap panes"),
+                secondary=_("Make sure save the content to "
+                            "disk before swap the panes")
+            )
+            return
+
+        if self.meta.get('tablabel', None):
+            misc.error_dialog(
+                primary=_("Cannot swap panes in Version Control Mode"),
+                secondary=_(
+                    "Swapping panes is not supported in Version Control Mode")
+            )
+            return
+
+        self.set_labels([self.filelabel[1].props.label,
+                        self.filelabel[0].props.label])
+        self.set_files([gfiles[1], gfiles[0]])
 
 
 FileDiff.set_css_name('meld-file-diff')
