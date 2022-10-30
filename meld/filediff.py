@@ -2565,17 +2565,19 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         if have_unnamed_files or have_modified_files:
             misc.error_dialog(
-                primary=_("Should save file before swap panes"),
-                secondary=_("Make sure save the content to "
-                            "disk before swap the panes")
+                primary=_("Can't swap unsaved files"),
+                secondary=_(
+                    "Files must be saved to disk before swapping panes."
+                )
             )
             return
 
-        if self.meta.get('tablabel', None):
+        if self.meta.get("tablabel", None):
             misc.error_dialog(
-                primary=_("Cannot swap panes in Version Control Mode"),
+                primary=_("Can't swap version control comparisons"),
                 secondary=_(
-                    "Swapping panes is not supported in Version Control Mode")
+                    "Swapping panes is not supported in version control mode."
+                )
             )
             return
 
