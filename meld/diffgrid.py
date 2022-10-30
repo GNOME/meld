@@ -278,9 +278,10 @@ class HandleWindow():
                            Gdk.EventMask.ENTER_NOTIFY_MASK |
                            Gdk.EventMask.LEAVE_NOTIFY_MASK |
                            Gdk.EventMask.POINTER_MOTION_MASK)
-        attr.cursor = Gdk.Cursor.new_for_display(widget.get_display(),
-                                                 Gdk.CursorType.
-                                                 SB_H_DOUBLE_ARROW)
+        attr.cursor = Gdk.Cursor.new_from_name(
+            widget.get_display(),
+            "col-resize",
+        )
         attr_mask = (Gdk.WindowAttributesType.X |
                      Gdk.WindowAttributesType.Y |
                      Gdk.WindowAttributesType.CURSOR)
