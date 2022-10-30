@@ -2560,8 +2560,10 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buffers = self.textbuffer[:self.num_panes]
         gfiles = [buf.data.gfile for buf in buffers]
 
-        if any(gfile is None for gfile in gfiles) \
-                or any(buf.get_modified() for buf in buffers):
+        have_unnamed_files = any(gfile is None for gfile in gfiles)
+        have_modified_files = any(buf.get_modified() for buf in buffers)
+
+        if have_unnamed_files or have_modified_files:
             misc.error_dialog(
                 primary=_("Should save file before swap panes"),
                 secondary=_("Make sure save the content to "
