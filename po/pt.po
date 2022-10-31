@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-17 02:16+0000\n"
-"PO-Revision-Date: 2022-10-21 13:27+0100\n"
+"POT-Creation-Date: 2022-10-31 02:02+0000\n"
+"PO-Revision-Date: 2022-10-31 11:18+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.1.1\n"
+"X-Generator: Poedit 3.2\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -273,7 +273,7 @@ msgid ""
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr ""
 "O comando usado para executar o editor personalizado. É suportada a "
-"utilização de alguns modelos; no momento file} e {line} são símbolos "
+"utilização de alguns modelos; no momento '{file}' e '{line}' são símbolos "
 "reconhecidos."
 
 #: data/org.gnome.meld.gschema.xml:166
@@ -901,6 +901,7 @@ msgstr ""
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
 msgstr ""
+"Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Pedro Albuquerque <palbuquerque73@gmail.com>\n"
 "Tiago Santos <tiagofsantos81@sapo.pt>\n"
 "Hugo Carvalho <hugokarvalho@hotmail.com>"
@@ -2056,7 +2057,7 @@ msgstr ""
 #: meld/filediff.py:2129 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
-msgstr "Impossível guardar o ficheiro %s."
+msgstr "Não foi possível guardar o ficheiro %s."
 
 #: meld/filediff.py:2539
 msgid "Live comparison updating disabled"
@@ -2071,6 +2072,22 @@ msgstr ""
 "A atualização ao vivo de comparações é desativada quando os pontos de "
 "sincronização estão ativos. Ainda pode atualizar manualmente a comparação e "
 "as atualizações ao vivo retomarão quando limpar os pontos de sincronização."
+
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Não é possível trocar ficheiros não guardados"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr "Os ficheiros devem ser guardados em disco antes da troca de painéis."
+
+#: meld/filediff.py:2577
+msgid "Can't swap version control comparisons"
+msgstr "Não é possível trocar comparações de controlo de versões"
+
+#: meld/filediff.py:2579
+msgid "Swapping panes is not supported in version control mode."
+msgstr "A troca de painéis não é suportada no modo de controlo de versão."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
