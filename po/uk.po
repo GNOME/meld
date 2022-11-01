@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-09-04 02:49+0000\n"
-"PO-Revision-Date: 2022-09-04 11:20+0300\n"
+"POT-Creation-Date: 2022-10-31 11:15+0000\n"
+"PO-Revision-Date: 2022-11-01 22:46+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -906,9 +906,6 @@ msgid "Flatten folders"
 msgstr "Сплощувати теки"
 
 #: meld/resources/ui/about-dialog.ui:8
-#| msgid ""
-#| "Copyright © 2002-2009 Stephen Kennedy\n"
-#| "Copyright © 2009-2021 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
 "Copyright © 2009-2022 Kai Willadsen"
@@ -1562,8 +1559,7 @@ msgid "Push local commits to remote?"
 msgstr "Надіслати локальні внески до віддаленого сховища?"
 
 #: meld/resources/ui/push-dialog.ui:10
-msgid ""
-"The commits to be pushed are determined by your version control system."
+msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Внески, які буде надіслано, визначаються вашою системою керування версіями."
 
@@ -1794,8 +1790,7 @@ msgstr "Знайдено файли із некоректним кодуванн
 
 #. TRANSLATORS: This is followed by a list of files
 #: meld/dirdiff.py:1159
-msgid ""
-"Some files were in an incorrect encoding. The names are something like:"
+msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Кодування деяких файлів є помилковим. Назви десь такі:"
 
 #: meld/dirdiff.py:1161
@@ -2085,6 +2080,26 @@ msgstr ""
 "Якщо задіяно точки синхронізації, інтерактивне оновлення вмісту буде "
 "вимкнено. Ви можете оновити вміст об'єктів порівняння вручну. Інтерактивне "
 "оновлення буде увімкнено після вилучення усіх точок синхронізації."
+
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Не можна міняти місцями незбережені файли"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr "До обміну місцями панелями файли має бути збережено на диск."
+
+#: meld/filediff.py:2577
+#| msgid "Start a version control comparison"
+msgid "Can't swap version control comparisons"
+msgstr "Не можна міняти місцями порівняння керування версіями"
+
+#: meld/filediff.py:2579
+#| msgid "Mark as resolved in version control"
+msgid "Swapping panes is not supported in version control mode."
+msgstr ""
+"У режимі керування версіями не передбачено можливості обміну місцями для"
+" панелей."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
