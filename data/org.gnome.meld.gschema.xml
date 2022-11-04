@@ -236,7 +236,12 @@
 
       <!-- Filters -->
       <key name="filename-filters" type="a(sbs)">
-          <default>
+          <!--
+            Translators: A list of default filters, each of which is
+            composed of a (name, enabled, pattern) in GVariant syntax.
+            Please only translate the name of each filter.
+          -->
+          <default l10n="messages">
             [
               ("Backups", true, "#*# .#* ~* *~ *.{orig,bak,swp}"),
               ("OS-specific metadata", true, ".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini"),
@@ -249,7 +254,12 @@
           <description>List of predefined filename-based filters that, if active, will remove matching files from a folder comparison.</description>
       </key>
       <key name="text-filters" type="a(sbs)">
-          <default>
+          <!--
+            Translators: A list of default filters, each of which is
+            composed of a (name, enabled, pattern) in GVariant syntax.
+            Please only translate the name of each filter.
+          -->
+          <default l10n="messages">
             [
               ("CVS/SVN keywords", false, "\\$\\w+(:[^\\n$]+)?\\$"),
               ("C++ comment", false, "//.*"),
