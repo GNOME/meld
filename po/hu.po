@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-09-06 06:29+0000\n"
-"PO-Revision-Date: 2022-09-07 01:57+0200\n"
+"POT-Creation-Date: 2022-11-04 21:30+0000\n"
+"PO-Revision-Date: 2022-11-06 00:25+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Lokalize 19.12.3\n"
+"X-Generator: Lokalize 22.08.2\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -61,8 +61,8 @@ msgstr ""
 "összefésülési ütközéseket valamivel fájdalommentesebbé teszi."
 
 #: data/org.gnome.meld.appdata.xml.in.in:51
-msgid "The GNOME Project"
-msgstr "A GNOME projekt"
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
 
 #: data/mime/org.gnome.meld.xml.in:4
 msgid "Meld comparison description"
@@ -389,7 +389,7 @@ msgid ""
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr ""
-"Ha igaz, akkor a verziókövető összehasonlítások a bal-helyi, jobb-távoli "
+"Ha igaz, akkor a verziókövetési összehasonlítások a bal-helyi, jobb-távoli "
 "sémát használják-e a fájlok megjelenítéséhez az ablaktáblákon. Ha nincs "
 "bejelölve, a bal-övék, jobb-enyém séma kerül felhasználásra."
 
@@ -457,11 +457,40 @@ msgstr ""
 "A verziókövetési összehasonlításban látható fájlok szűrésére használt "
 "állapotok listája."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"Biztonsági mentések\", true, \"#*# .#* ~* *~"
+" *.{orig,bak,swp}\"),\n"
+"              (\"Operációs rendszerre jellemző metaadatok\", true,"
+" \".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Verziókövető\", true, \"_MTN .bzr .svn .svn .hg .fslckout"
+" _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binárisok\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Média\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg"
+",xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Fájlnév alapú szűrők"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -469,11 +498,44 @@ msgstr ""
 "Előre megadott fájlnév alapú szűrők listája, amelyekre illeszkedő fájlok "
 "eltávolításra kerülnek a mappa-összehasonlításból."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"CVS/SVN kulcsszavak\", false,"
+" \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$\"),\n"
+"              (\"C++ megjegyzés\", false, \"//.*\"),\n"
+"              (\"C megjegyzés\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"Összes üres karakter\", false, \"["
+" \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Elején lévő üres karakterek\", false, \"^["
+" \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Végén lévő üres karakterek\", false, \"["
+" \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
+"              (\"Parancsfájl megjegyzések\", false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Szöveg alapú szűrők"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -530,7 +592,6 @@ msgid "Refresh comparison"
 msgstr "Összehasonlítás frissítése"
 
 #: meld/resources/gtk/help-overlay.ui:54
-#| msgid "Open Externally"
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Megnyitás külsőleg"
@@ -541,7 +602,6 @@ msgid "Fullscreen"
 msgstr "Teljes képernyő"
 
 #: meld/resources/gtk/help-overlay.ui:68
-#| msgid "Middle and right panes"
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Bal és jobb ablaktáblák felcserélése"
@@ -750,7 +810,7 @@ msgstr "Másolás a jobb oldalra"
 #: meld/resources/gtk/help-overlay.ui:364
 msgctxt "shortcut window"
 msgid "Version control comparison"
-msgstr "Verziókövető-összehasonlítás"
+msgstr "Verziókövetési összehasonlítás"
 
 #: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
@@ -779,8 +839,6 @@ msgid "Open Externally"
 msgstr "Megnyitás alkalmazással"
 
 #: meld/resources/gtk/menus.ui:26
-#| msgctxt "shortcut window"
-#| msgid "Refresh comparison"
 msgid "Refresh Comparison"
 msgstr "Összehasonlítás frissítése"
 
@@ -813,7 +871,6 @@ msgid "Lock scrolling"
 msgstr "Görgetés zárolása"
 
 #: meld/resources/gtk/menus.ui:67
-#| msgid "Middle and right panes"
 msgid "Swap left and right panes"
 msgstr "Bal és jobb ablaktáblák felcserélése"
 
@@ -899,9 +956,6 @@ msgid "Flatten folders"
 msgstr "Könyvtárak simítása"
 
 #: meld/resources/ui/about-dialog.ui:8
-#| msgid ""
-#| "Copyright © 2002-2009 Stephen Kennedy\n"
-#| "Copyright © 2009-2021 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
 "Copyright © 2009-2022 Kai Willadsen"
@@ -1849,8 +1903,6 @@ msgid "No folder"
 msgstr "Nincs mappa"
 
 #: meld/dirdiff.py:1838
-#| msgctxt "shortcut window"
-#| msgid "Folder comparison"
 msgid "Folder comparison:"
 msgstr "Mappa-összehasonlítás:"
 
@@ -1905,8 +1957,6 @@ msgid "Clear Synchronization Points"
 msgstr "Szinkronizálási pontok törlése"
 
 #: meld/filediff.py:1535
-#| msgctxt "shortcut window"
-#| msgid "File comparison"
 msgid "File comparison:"
 msgstr "Fájl-összehasonlítás:"
 
@@ -2081,6 +2131,24 @@ msgstr ""
 "pontok aktívak. Saját kezűleg továbbra is frissítheti az összehasonlítást, "
 "és az élő frissítések folytatódnak a szinkronizálási pontok törlésekor."
 
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Nem lehet felcserélni mentetlen fájlokat"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr "A fájlokat el kell menteni a lemezre a panelek felcserélése előtt."
+
+#: meld/filediff.py:2577
+#| msgid "Start a version control comparison"
+msgid "Can't swap version control comparisons"
+msgstr "Nem lehet felcserélni a verziókövetési összehasonlításokat"
+
+#: meld/filediff.py:2579
+#| msgid "Mark as resolved in version control"
+msgid "Swapping panes is not supported in version control mode."
+msgstr "A panelek felcserélése nem támogatott verziókövető módban."
+
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
 msgstr "A távoli mappák törlése nem támogatott"
@@ -2133,7 +2201,7 @@ msgstr "mappa"
 
 #: meld/meldapp.py:195
 msgid "Start a version control comparison"
-msgstr "Verziókövető-összehasonlítás indítása"
+msgstr "Verziókövetési összehasonlítás indítása"
 
 #: meld/meldapp.py:197
 msgid "Start a 2- or 3-way file comparison"
@@ -2418,7 +2486,6 @@ msgstr "Válassza ki a használandó verziókövető rendszert"
 #. system being used, e.g., "Git" or "Subversion"
 #: meld/vcview.py:414
 #, python-brace-format
-#| msgid "New comparison"
 msgid "{vc} comparison:"
 msgstr "{vc}-összehasonlítás:"
 
