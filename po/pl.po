@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-08 21:54+0000\n"
-"PO-Revision-Date: 2022-08-14 15:58+0200\n"
+"POT-Creation-Date: 2022-11-04 21:30+0000\n"
+"PO-Revision-Date: 2022-11-06 15:24+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -461,11 +461,41 @@ msgstr ""
 "Lista stanów używanych do filtrowania widocznych plików w porównaniu "
 "kontroli wersji."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"Kopie zapasowe\", true, \"#*# .#* ~* *~ *.{orig,bak,"
+"swp}\"),\n"
+"              (\"Metadane systemu operacyjnego\", true, \".DS_Store ._* ."
+"Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Kontrola wersji\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Pliki binarne\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+"exe}\"),\n"
+"              (\"Multimedia\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,"
+"avi,mpg,xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Filtry na podstawie nazw plików"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -473,11 +503,44 @@ msgstr ""
 "Lista uprzednio podanych filtrów na podstawie nazw plików, które jeśli są "
 "aktywne, będą usuwały pasujące pliki z porównania katalogów."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"Słowa kluczowe CVS/SVN\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?"
+"\\\\$\"),\n"
+"              (\"Komentarz języka C++\", false, \"//.*\"),\n"
+"              (\"Komentarz języka C\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"Wszystkie białe znaki\", false, \"[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Białe znaki na początku wiersza\", false, \"^[ \\\\t\\\\r\\"
+"\\f\\\\v]*\"),\n"
+"              (\"Białe znaki na końcu wiersza\", false, \"[ \\\\t\\\\r\\\\f\\"
+"\\v]*$\"),\n"
+"              (\"Komentarz skryptu\", false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Filtry na podstawie tekstu"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -2081,6 +2144,22 @@ msgstr ""
 "Aktualizowanie porównań na żywo jest wyłączone, kiedy punkty synchronizacji "
 "są aktywne. Można ręcznie odświeżać porównanie, a aktualizowanie na żywo "
 "zostanie wznowione po wyczyszczeniu punktów synchronizacji."
+
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Nie można wymienić niezapisanych plików"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr "Pliki muszą być zapisane na dysku przed wymianą paneli."
+
+#: meld/filediff.py:2577
+msgid "Can't swap version control comparisons"
+msgstr "Nie można wymienić porównań systemu kontroli wersji"
+
+#: meld/filediff.py:2579
+msgid "Swapping panes is not supported in version control mode."
+msgstr "Wymiana paneli nie jest obsługiwana w trybie kontroli wersji."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
