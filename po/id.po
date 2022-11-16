@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-30 22:10+0000\n"
-"PO-Revision-Date: 2022-11-16 13:56+0700\n"
+"POT-Creation-Date: 2022-11-16 06:57+0000\n"
+"PO-Revision-Date: 2022-11-16 13:58+0700\n"
 "Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
@@ -58,8 +58,8 @@ msgstr ""
 "konflik merge yang besar sedikit lebih mudah."
 
 #: data/org.gnome.meld.appdata.xml.in.in:51
-msgid "The GNOME Project"
-msgstr "Proyek GNOME"
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
 
 #: data/mime/org.gnome.meld.xml.in:4
 msgid "Meld comparison description"
@@ -454,11 +454,39 @@ msgstr ""
 "Daftar status yang dipakai untuk menyaring berkas yang tampak dalam "
 "perbandingan kendali versi."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Penyaring berbasis nama berkas"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -466,11 +494,43 @@ msgstr ""
 "Daftar penyaring berbasis nama berkas yang terpradefinisi, yang bila aktif, "
 "akan menghapus berkas yang cocok dari perbandingan folder."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Penyaring berbasis teks"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -2490,6 +2550,9 @@ msgstr ""
 #: meld/vcview.py:854
 msgid "Clear"
 msgstr "Bersihkan"
+
+#~ msgid "The GNOME Project"
+#~ msgstr "Proyek GNOME"
 
 #~ msgid "Refresh"
 #~ msgstr "Segarkan"
