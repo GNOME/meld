@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-09 18:55+0000\n"
-"PO-Revision-Date: 2022-10-09 22:27+0200\n"
+"POT-Creation-Date: 2022-11-16 06:57+0000\n"
+"PO-Revision-Date: 2022-11-20 14:39+0100\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <српски <gnome-sr@googlegroups.org>>\n"
 "Language: sr\n"
@@ -522,7 +522,6 @@ msgid "Refresh comparison"
 msgstr "Освежава поређење"
 
 #: meld/resources/gtk/help-overlay.ui:54
-#| msgid "Open Externally"
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Отвара спољним"
@@ -770,8 +769,6 @@ msgid "Open Externally"
 msgstr "Отвори спољним"
 
 #: meld/resources/gtk/menus.ui:26
-#| msgctxt "shortcut window"
-#| msgid "Refresh comparison"
 msgid "Refresh Comparison"
 msgstr "Освежи поређење"
 
@@ -889,9 +886,6 @@ msgid "Flatten folders"
 msgstr "Поравнате фасцикле"
 
 #: meld/resources/ui/about-dialog.ui:8
-#| msgid ""
-#| "Copyright © 2002-2009 Stephen Kennedy\n"
-#| "Copyright © 2009-2021 Kai Willadsen"
 msgid ""
 "Copyright © 2002-2009 Stephen Kennedy\n"
 "Copyright © 2009-2022 Kai Willadsen"
@@ -1836,8 +1830,6 @@ msgid "No folder"
 msgstr "Нема фасцикле"
 
 #: meld/dirdiff.py:1838
-#| msgctxt "shortcut window"
-#| msgid "Folder comparison"
 msgid "Folder comparison:"
 msgstr "Поређење фасцикли:"
 
@@ -1891,7 +1883,6 @@ msgid "Clear Synchronization Points"
 msgstr "Очисти тачке усклађивања"
 
 #: meld/filediff.py:1535
-#| msgid "File comparison"
 msgid "File comparison:"
 msgstr "Поређење датотека:"
 
@@ -2065,6 +2056,24 @@ msgstr ""
 "Живо ажурирање поређења је искључено када су активне тачке усклађивања. Још "
 "увек можете ручно да освежите поређење, а жива ажурирања ће наставити са "
 "радом након чишћења тачака усклађивања."
+
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Не могу да заменим несачуване датотеке"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr "Датотеке се морају сачувати на диск пре замене окана."
+
+#: meld/filediff.py:2577
+#| msgid "Start a version control comparison"
+msgid "Can't swap version control comparisons"
+msgstr "Не могу да заменим поређења контроле верзије"
+
+#: meld/filediff.py:2579
+#| msgid "Mark as resolved in version control"
+msgid "Swapping panes is not supported in version control mode."
+msgstr "Размена окана није подржана у режиму управљања издањем."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
@@ -2409,7 +2418,6 @@ msgstr "Изаберите који систем управљања издање
 #. system being used, e.g., "Git" or "Subversion"
 #: meld/vcview.py:414
 #, python-brace-format
-#| msgid "New comparison"
 msgid "{vc} comparison:"
 msgstr "„{vc}“ поређење:"
 
