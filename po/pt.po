@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-31 02:02+0000\n"
-"PO-Revision-Date: 2022-10-31 11:18+0000\n"
+"POT-Creation-Date: 2022-11-23 01:58+0000\n"
+"PO-Revision-Date: 2022-12-01 15:16+0000\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -454,11 +454,39 @@ msgstr ""
 "Lista de estados usados para filtrar ficheiros visíveis em comparação de "
 "controlo de versão."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Filtros baseados em nome de ficheiros"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -466,11 +494,43 @@ msgstr ""
 "Lista de filtros predefinidos baseados em nomes de ficheiro que, se ativa, "
 "vai remover ficheiros que cumpram o critério de uma comparação entre pastas."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Filtros baseados em texto"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
