@@ -21,8 +21,8 @@
 msgid ""
 msgstr "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-30 22:10+0000\n"
-"PO-Revision-Date: 2022-12-03 10:00+0100\n"
+"POT-Creation-Date: 2022-11-04 21:30+0000\n"
+"PO-Revision-Date: 2022-12-08 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -64,8 +64,8 @@ msgid ""
 msgstr "Meld-ek zure kodearen aldaketak gainbegiratzen, adabakiak ulertzen lagunduko dizu. Kode handiak batzean gerta daitezkeen gatazkak sortzen dituzte buruhausteak leunduz."
 
 #: data/org.gnome.meld.appdata.xml.in.in:51
-msgid "The GNOME Project"
-msgstr "GNOME proiektua"
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
 
 #: data/mime/org.gnome.meld.xml.in:4
 msgid "Meld comparison description"
@@ -390,21 +390,73 @@ msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr "Bertsio-kontrolen konparazioan fitxategi ikusgaiak iragazteko erabiliko den egoeren zerrenda."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr "[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Fitxategi-izenean oinarritutako iragazkiak"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
 msgstr "Aurredefinitutako fitxategi-izenetan oinarritutako iragazkien zerrenda. Aktibo dauden iragazkiek bat datozen fitxategiak kenduko dituzte karpeten konparaziotik."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr "[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Testuan oinarritutako iragazkiak"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -1956,7 +2008,7 @@ msgstr "Konparazioen zuzeneko eguneraketa desgaitu egiten da sinkronizazio-puntu
 
 #: meld/filediff.py:2568
 msgid "Can't swap unsaved files"
-msgstr "Ezin dira gorde gabeko fitxategiak trukatu"
+msgstr "Ezin dira trukatu gorde gabeko fitxategiak"
 
 #: meld/filediff.py:2570
 msgid "Files must be saved to disk before swapping panes."
@@ -1964,11 +2016,11 @@ msgstr "Fitxategiak diskoan gorde behar dira panelak trukatu baino lehen."
 
 #: meld/filediff.py:2577
 msgid "Can't swap version control comparisons"
-msgstr "Ezin dira bertsio-kontrolen konparazioak trukatu"
+msgstr "Ezin dira trukatu bertsio-kontrolaren konparazioak"
 
 #: meld/filediff.py:2579
 msgid "Swapping panes is not supported in version control mode."
-msgstr "Panelak trukatzea ez da onartzen bertsio-kontrolaren moduan."
+msgstr "Panelak trukatzerik ez da onartzen bertsio-kontrolaren moduan."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
@@ -2371,6 +2423,9 @@ msgstr "Honek hautatutako fitxategi eta karpeta guztiak, baita hautatutako karpe
 #: meld/vcview.py:854
 msgid "Clear"
 msgstr "Garbitu"
+
+#~ msgid "The GNOME Project"
+#~ msgstr "GNOME proiektua"
 
 #~ msgid "Refresh"
 #~ msgstr "Freskatu"
