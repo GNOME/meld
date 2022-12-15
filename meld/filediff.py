@@ -1122,7 +1122,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
     @Gtk.Template.Callback()
     def on_textview_focus_in_event(self, view, event):
         self.focus_pane = view
-        self.findbar.textview = view
+        self.findbar.set_text_view(self.focus_pane)
         self.on_cursor_position_changed(view.get_buffer(), None, True)
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
