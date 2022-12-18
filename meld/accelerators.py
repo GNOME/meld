@@ -28,7 +28,7 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'win.new-tab': '<Primary>N',
     'win.stop': 'Escape',
     # File comparison actions
-    'view.file-previous-conflict': '<Primary>I',
+    'view.file-previous-conflict': '<Primary>J',
     'view.file-next-conflict': '<Primary>K',
     'view.file-push-left': '<Alt>Left',
     'view.file-push-right': '<Alt>Right',
