@@ -74,7 +74,7 @@ class MeldFileButton(Gtk.Button):
             local_only=self.local_only
         )
 
-        if self.file:
+        if self.file and self.file.get_path():
             dialog.set_file(self.file)
 
         response = dialog.run()
