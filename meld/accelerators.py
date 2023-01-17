@@ -5,6 +5,8 @@ from gi.repository import Gtk
 
 VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'app.quit': '<Primary>Q',
+    'app.help': 'F1',
+    'app.preferences': '<Primary>comma',
     'view.find': '<Primary>F',
     'view.find-next': ('<Primary>G', 'F3'),
     'view.find-previous': ('<Primary><Shift>G', '<Shift>F3'),
@@ -25,6 +27,7 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.undo': '<Primary>Z',
     'win.close': '<Primary>W',
     'win.gear-menu': 'F10',
+    'win.fullscreen': 'F11',
     'win.new-tab': '<Primary>N',
     'win.stop': 'Escape',
     # File comparison actions
