@@ -17,7 +17,13 @@ help_files = [
   'vc-supported.page',
 ]
 
+media_files = [
+  'figures/Meld.svg'
+]
+
+
 gnome.yelp(
   meson.project_name(),
   sources: help_files,
+  media: media_files,
 )
