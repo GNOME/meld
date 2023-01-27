@@ -3,14 +3,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-11-04 21:30+0000\n"
-"PO-Revision-Date: 2022-11-05 20:45+0200\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2023-01-25 21:12+0000\n"
+"PO-Revision-Date: 2023-01-27 18:51+0200\n"
+"Last-Translator: Fracture dept <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -486,18 +486,16 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (\"Резервні копії\", true, \"#*# .#* ~* *~"
-" *.{orig,bak,swp}\"),\n"
-"              (\"Специфічні для ОС метадані\", true, \".DS_Store ._*"
-" .Spotlight-"
-"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-"              (\"Файли керування версіями\", true, \"_MTN .bzr .svn .svn .hg ."
-"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-"              (\"Двійкові файли\", true,"
-" \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Мультимедійні файли\", false,"
-" \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
-"mpg,xcf,xpm}\")\n"
+"              (\"Резервні копії\", true, \"#*# .#* ~* *~ *.{orig,bak,"
+"swp}\"),\n"
+"              (\"Специфічні для ОС метадані\", true, \".DS_Store ._* ."
+"Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Файли керування версіями\", true, \"_MTN .bzr .svn .svn ."
+"hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Двійкові файли\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+"exe}\"),\n"
+"              (\"Мультимедійні файли\", false, \"*.{jpg,gif,png,bmp,wav,mp3,"
+"ogg,flac,avi,mpg,xcf,xpm}\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:253
@@ -532,16 +530,14 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (\"Ключові слова CVS/SVN\", false,"
-" \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
-"\"),\n"
+"              (\"Ключові слова CVS/SVN\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?"
+"\\\\$\"),\n"
 "              (\"Коментар C++\", false, \"//.*\"),\n"
 "              (\"Коментар C\", false, \"/\\\\*.*?\\\\*/\"),\n"
 "              (\"Усі пробіли\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
 "              (\"Початкові пробіли\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
 "\"),\n"
-"              (\"Кінцеві пробіли\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
+"              (\"Кінцеві пробіли\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
 "              (\"Коментарі у скрипті\", false, \"#.*\")\n"
 "            ]"
 
@@ -597,242 +593,260 @@ msgid "Quit Meld"
 msgstr "Вийти з Meld"
 
 #: meld/resources/gtk/help-overlay.ui:40
+#| msgid "Show whitespace"
+msgctxt "shortcut window"
+msgid "Show help"
+msgstr "Показати довідку"
+
+#: meld/resources/gtk/help-overlay.ui:47
+#| msgid "Preferences"
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Показати налаштування"
+
+#: meld/resources/gtk/help-overlay.ui:54
+#| msgid "Keyboard Shortcuts"
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Клавіатурні скорочення"
+
+#: meld/resources/gtk/help-overlay.ui:61
 msgctxt "shortcut window"
 msgid "Stop the current action"
 msgstr "Припинити виконання поточної дії"
 
-#: meld/resources/gtk/help-overlay.ui:47
+#: meld/resources/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Refresh comparison"
 msgstr "Освіжити порівняння"
 
-#: meld/resources/gtk/help-overlay.ui:54
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Відкрити у сторонній програмі"
 
-#: meld/resources/gtk/help-overlay.ui:61
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "На весь екран"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:89
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Поміняти місцями ліву і праву панелі"
 
-#: meld/resources/gtk/help-overlay.ui:77
+#: meld/resources/gtk/help-overlay.ui:98
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Панелі"
 
-#: meld/resources/gtk/help-overlay.ui:82
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Попередня панель порівняння"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:110
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Наступна панель порівняння"
 
-#: meld/resources/gtk/help-overlay.ui:98
+#: meld/resources/gtk/help-overlay.ui:119
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Зміни"
 
-#: meld/resources/gtk/help-overlay.ui:103
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Перейти до попередньої зміни"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Перейти до наступної зміни"
 
-#: meld/resources/gtk/help-overlay.ui:119
+#: meld/resources/gtk/help-overlay.ui:140
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Вкладки"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Перейти до попередньої вкладки"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:152
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Перейти до наступної вкладки"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Перемкнутися на вкладку"
 
-#: meld/resources/gtk/help-overlay.ui:145
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Пересунути вкладку ліворуч"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Перемістити вкладку праворуч"
 
-#: meld/resources/gtk/help-overlay.ui:161
+#: meld/resources/gtk/help-overlay.ui:182
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Редагування"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Скасувати"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Повторити"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Вирізати"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Копіювати"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Вставити"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:222
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Знайти"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Знайти далі"
 
-#: meld/resources/gtk/help-overlay.ui:215
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Знайти позаду"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Замінити"
 
-#: meld/resources/gtk/help-overlay.ui:231
+#: meld/resources/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Порівняння файлів"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Зберегти поточний файл"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Зберегти поточний файл до нового місця"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Зберегти усі файли у порівнянні"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Попередній конфлікт"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Наступний конфлікт"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Перенести зміну ліворуч"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Перенести зміну праворуч"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Отримати зміну з лівої частини"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Отримати зміну з правої частини"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:320
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Копіювати зміну вище ліворуч"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:327
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Копіювати зміну нижче ліворуч"
 
-#: meld/resources/gtk/help-overlay.ui:313
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Копіювати зміну вище праворуч"
 
-#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Копіювати зміну нижче праворуч"
 
-#: meld/resources/gtk/help-overlay.ui:327
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:376
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Вилучити зміну"
 
-#: meld/resources/gtk/help-overlay.ui:336
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Порівняння тек"
 
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Копіювати з правого боку на лівий"
 
-#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Копіювати з лівого боку на правий"
 
-#: meld/resources/gtk/help-overlay.ui:364
+#: meld/resources/gtk/help-overlay.ui:385
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Порівняння у системі керування версіями"
 
-#: meld/resources/gtk/help-overlay.ui:369
+#: meld/resources/gtk/help-overlay.ui:390
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Внести до системи керування версіями"
 
-#: meld/resources/gtk/help-overlay.ui:376
+#: meld/resources/gtk/help-overlay.ui:397
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Показати або приховати виведення до консолі"
@@ -873,100 +887,100 @@ msgstr "Перегляд"
 msgid "Fullscreen"
 msgstr "На весь екран"
 
-#: meld/resources/gtk/menus.ui:52
+#: meld/resources/gtk/menus.ui:51
 msgid "Overview Map"
 msgstr "Мапа огляду"
 
-#: meld/resources/gtk/menus.ui:56
+#: meld/resources/gtk/menus.ui:55
 msgid "Version control console"
 msgstr "Консоль системи керування версіями"
 
-#: meld/resources/gtk/menus.ui:60
+#: meld/resources/gtk/menus.ui:59
 msgid "Lock scrolling"
 msgstr "Блокувати гортання"
 
-#: meld/resources/gtk/menus.ui:67
+#: meld/resources/gtk/menus.ui:66
 msgid "Swap left and right panes"
 msgstr "Поміняти місцями ліву і праву панелі"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:72
 msgid "Comparison"
 msgstr "Порівняння"
 
-#: meld/resources/gtk/menus.ui:75
+#: meld/resources/gtk/menus.ui:74
 msgid "Stop"
 msgstr "Зупинити"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:80
 msgid "Merge All from Left"
 msgstr "Об'єднати все з лівої панелі"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Right"
 msgstr "Об'єднати все з правої панелі"
 
-#: meld/resources/gtk/menus.ui:89
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All"
 msgstr "Об'єднати усе"
 
-#: meld/resources/gtk/menus.ui:96
+#: meld/resources/gtk/menus.ui:95
 msgid "Format as Patch…"
 msgstr "Форматувати як латку…"
 
-#: meld/resources/gtk/menus.ui:105
+#: meld/resources/gtk/menus.ui:104
 msgid "_Preferences"
 msgstr "_Налаштування"
 
-#: meld/resources/gtk/menus.ui:109
+#: meld/resources/gtk/menus.ui:108
 msgid "Keyboard Shortcuts"
 msgstr "Клавіатурні скорочення"
 
-#: meld/resources/gtk/menus.ui:113
+#: meld/resources/gtk/menus.ui:112
 msgid "_Help"
 msgstr "_Довідка"
 
-#: meld/resources/gtk/menus.ui:118
+#: meld/resources/gtk/menus.ui:116
 msgid "_About Meld"
 msgstr "_Про Meld"
 
-#: meld/resources/gtk/menus.ui:131
+#: meld/resources/gtk/menus.ui:129
 msgid "File status"
 msgstr "Стан файла"
 
-#: meld/resources/gtk/menus.ui:133
+#: meld/resources/gtk/menus.ui:131
 msgid "Same"
 msgstr "Однакові"
 
-#: meld/resources/gtk/menus.ui:137
+#: meld/resources/gtk/menus.ui:135
 msgid "New"
 msgstr "Новий"
 
-#: meld/resources/gtk/menus.ui:141 meld/resources/gtk/menus.ui:164
+#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
 #: meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Змінено"
 
-#: meld/resources/gtk/menus.ui:151
+#: meld/resources/gtk/menus.ui:149
 msgid "Ignore filename case"
 msgstr "Ігнорувати регістр літер у назвах файлів"
 
-#: meld/resources/gtk/menus.ui:155
+#: meld/resources/gtk/menus.ui:153
 msgid "Normalize Unicode paths"
 msgstr "Нормалізувати шляхи у Unicode"
 
-#: meld/resources/gtk/menus.ui:168
+#: meld/resources/gtk/menus.ui:166
 msgid "Normal"
 msgstr "Звичайний"
 
-#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Поза керуванням версіями"
 
-#: meld/resources/gtk/menus.ui:176 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
 msgid "Ignored"
 msgstr "Проігноровано"
 
-#: meld/resources/gtk/menus.ui:183
+#: meld/resources/gtk/menus.ui:181
 msgid "Flatten folders"
 msgstr "Сплощувати теки"
 
@@ -1624,7 +1638,8 @@ msgid "Push local commits to remote?"
 msgstr "Надіслати локальні внески до віддаленого сховища?"
 
 #: meld/resources/ui/push-dialog.ui:10
-msgid "The commits to be pushed are determined by your version control system."
+msgid ""
+"The commits to be pushed are determined by your version control system."
 msgstr ""
 "Внески, які буде надіслано, визначаються вашою системою керування версіями."
 
@@ -1855,7 +1870,8 @@ msgstr "Знайдено файли із некоректним кодуванн
 
 #. TRANSLATORS: This is followed by a list of files
 #: meld/dirdiff.py:1159
-msgid "Some files were in an incorrect encoding. The names are something like:"
+msgid ""
+"Some files were in an incorrect encoding. The names are something like:"
 msgstr "Кодування деяких файлів є помилковим. Назви десь такі:"
 
 #: meld/dirdiff.py:1161
