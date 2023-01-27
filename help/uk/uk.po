@@ -2,21 +2,21 @@
 # Copyright (C) 2020 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2023.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2020-06-15 22:06+0000\n"
-"PO-Revision-Date: 2020-07-02 20:05+0300\n"
-"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2023-01-25 21:12+0000\n"
+"PO-Revision-Date: 2023-01-27 18:57+0200\n"
+"Last-Translator: Fracture dept <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: uk\n"
 "Plural-Forms: nplurals=4; plural=n==1 ? 3 : n%10==1 && n%100!=11 ? 0 : n"
 "%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Lokalize 20.07.70\n"
+"X-Generator: Lokalize 20.12.0\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -34,7 +34,7 @@ msgstr "2"
 #. (itstool) path: credit/name
 #: C/command-line.page:10 C/file-changes.page:10 C/file-filters.page:10
 #: C/file-mode.page:11 C/flattened-view.page:10 C/folder-mode.page:10
-#: C/index.page:8 C/introduction.page:10 C/keyboard-shortcuts.page:10
+#: C/index.page:12 C/introduction.page:10 C/keyboard-shortcuts.page:10
 #: C/missing-functionality.page:10 C/preferences.page:10
 #: C/resolving-conflicts.page:10 C/text-filters.page:11 C/vc-mode.page:10
 #: C/vc-supported.page:10
@@ -44,7 +44,7 @@ msgstr "Kai Willadsen"
 #. (itstool) path: credit/years
 #: C/command-line.page:12 C/file-changes.page:12 C/file-filters.page:12
 #: C/file-mode.page:13 C/flattened-view.page:12 C/folder-mode.page:12
-#: C/index.page:10 C/introduction.page:12 C/keyboard-shortcuts.page:12
+#: C/index.page:14 C/introduction.page:12 C/keyboard-shortcuts.page:12
 #: C/missing-functionality.page:12 C/resolving-conflicts.page:12
 #: C/text-filters.page:13 C/vc-mode.page:12 C/vc-supported.page:12
 msgid "2012"
@@ -61,8 +61,8 @@ msgid ""
 "If you start <app>Meld</app> from the command line, you can tell it what to "
 "do when it starts."
 msgstr ""
-"Якщо ви запустили <app>Meld</app> з командного рядка, ви можете вказати"
-" програмі дію, яку слід виконати після запуску."
+"Якщо ви запустили <app>Meld</app> з командного рядка, ви можете вказати "
+"програмі дію, яку слід виконати після запуску."
 
 #. (itstool) path: page/p
 #: C/command-line.page:20
@@ -72,11 +72,10 @@ msgid ""
 "or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
 "respectively."
 msgstr ""
-"Для <link xref=\"file-mode\">порівняння файлів</link> з двома або трьома"
-" вхідними файлами, запустіть <app>Meld</app> за допомогою команди <cmd>meld <"
-"var>файл1</var> <var>файл2</var></cmd> "
-"або <cmd>meld <var>файл1</var> <var>файл2</var> <var>файл3</var></cmd>,"
-" відповідно."
+"Для <link xref=\"file-mode\">порівняння файлів</link> з двома або трьома "
+"вхідними файлами, запустіть <app>Meld</app> за допомогою команди <cmd>meld "
+"<var>файл1</var> <var>файл2</var></cmd> або <cmd>meld <var>файл1</var> "
+"<var>файл2</var> <var>файл3</var></cmd>, відповідно."
 
 #. (itstool) path: page/p
 #: C/command-line.page:26
@@ -85,10 +84,10 @@ msgid ""
 "link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
 "cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
 msgstr ""
-"Для <link xref=\"folder-mode\">порівняння каталогів</link> з двома або трьома"
-" вхідними каталогами, запустіть <app>Meld</app> за допомогою команди <cmd"
-">meld <var>каталог1</var> <var>каталог2</var></cmd> або <cmd>meld <var"
-">каталог1</var> <var>каталог2</var> <var>каталог3</var></cmd>."
+"Для <link xref=\"folder-mode\">порівняння каталогів</link> з двома або "
+"трьома вхідними каталогами, запустіть <app>Meld</app> за допомогою команди "
+"<cmd>meld <var>каталог1</var> <var>каталог2</var></cmd> або <cmd>meld "
+"<var>каталог1</var> <var>каталог2</var> <var>каталог3</var></cmd>."
 
 #. (itstool) path: page/p
 #: C/command-line.page:31
@@ -100,20 +99,20 @@ msgid ""
 "<cmd>meld .</cmd> would start a version control view of the current "
 "directory."
 msgstr ""
-"Ви можете запустити порівняння за <link xref=\"vc-mode\">системою керування"
-" версіями</link>, передавши програмі один аргумент. Якщо відповідний файл або"
-" каталог перебуває під керуванням <link xref=\"vc-supported\">відомої"
-" програмі системи керування версіями</link>, буде запущено порівняння за"
-" системою керування версіями для аргументу команди. Наприклад, <cmd>meld .<"
-"/cmd> запустить перегляд змін у системі керування версіями для поточного"
-" каталогу."
+"Ви можете запустити порівняння за <link xref=\"vc-mode\">системою керування "
+"версіями</link>, передавши програмі один аргумент. Якщо відповідний файл або "
+"каталог перебуває під керуванням <link xref=\"vc-supported\">відомої "
+"програмі системи керування версіями</link>, буде запущено порівняння за "
+"системою керування версіями для аргументу команди. Наприклад, <cmd>meld .</"
+"cmd> запустить перегляд змін у системі керування версіями для поточного "
+"каталогу."
 
 #. (itstool) path: note/p
 #: C/command-line.page:40
 msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
 msgstr ""
-"Віддайте команду <cmd>meld --help</cmd>, щоб ознайомитися зі списком усіх"
-" параметрів командного рядка."
+"Віддайте команду <cmd>meld --help</cmd>, щоб ознайомитися зі списком усіх "
+"параметрів командного рядка."
 
 #. (itstool) path: page/title
 #: C/file-changes.page:16
@@ -130,12 +129,12 @@ msgid ""
 "these changes and to edit them. You can find these tools in the <gui style="
 "\"menu\">Changes</gui> menu."
 msgstr ""
-"<app>Meld</app> працює із відмінностями між файлами як зі списком <em>блоків"
-" змін</em> або простіше <em>змінами</em>. Кожна зміна є групою рядків, які є"
-" відповідними між файлами. Оскільки ці зміни і є тим, чим ви зазвичай"
-" цікавитеся, <app>Meld</app> надасть вам особливі інструмент для навігації"
-" між змінами та їхнього редагування. Пункти цих інструментів зібрано у меню <"
-"gui style=\"menu\">Зміни</gui>."
+"<app>Meld</app> працює із відмінностями між файлами як зі списком <em>блоків "
+"змін</em> або простіше <em>змінами</em>. Кожна зміна є групою рядків, які є "
+"відповідними між файлами. Оскільки ці зміни і є тим, чим ви зазвичай "
+"цікавитеся, <app>Meld</app> надасть вам особливі інструмент для навігації "
+"між змінами та їхнього редагування. Пункти цих інструментів зібрано у меню "
+"<gui style=\"menu\">Зміни</gui>."
 
 #. (itstool) path: section/title
 #: C/file-changes.page:30
@@ -151,12 +150,12 @@ msgid ""
 "change</gui></guiseq> menu items. You can also use your mouse's scroll wheel "
 "to move between changes, by scrolling on the central change bar."
 msgstr ""
-"Навігацію між змінами можна здійснювати за допомогою пунктів меню <guiseq><"
-"gui style=\"menu\">Зміни</gui><gui style=\"menuitem\">Попередня зміна</gui><"
-"/guiseq> і "
-"<guiseq><gui style=\"menu\">Зміни</gui><gui style=\"menuitem\">Наступна"
-" зміна</gui></guiseq>. Ви також можете скористатися коліщатком гортання миші"
-" для пересування між змінами шляхом гортання центральної панелі змін."
+"Навігацію між змінами можна здійснювати за допомогою пунктів меню "
+"<guiseq><gui style=\"menu\">Зміни</gui><gui style=\"menuitem\">Попередня "
+"зміна</gui></guiseq> і <guiseq><gui style=\"menu\">Зміни</gui><gui style="
+"\"menuitem\">Наступна зміна</gui></guiseq>. Ви також можете скористатися "
+"коліщатком гортання миші для пересування між змінами шляхом гортання "
+"центральної панелі змін."
 
 #. (itstool) path: section/title
 #: C/file-changes.page:46
@@ -172,13 +171,13 @@ msgid ""
 "but also lets you selectively merge or delete differing changes by clicking "
 "the arrow or cross icons next to the start of each change."
 msgstr ""
-"Окрім безпосереднього редагування текстових файлів, у <app>Meld</app>"
-" передбачено інструмент для пересування, копіювання та вилучення окремих змін"
-" між файлами. На панелі між двома файлами буде показано не лише те, які з"
-" частин двох файлів є відповідними, але і кнопки, за допомогою яких ви"
-" зможете об'єднувати або вилучати зміни. Ви можете робити це натисканням"
-" кнопок зі стрілками та хрестиком, які розташовано на початку кожного з"
-" блоків змін."
+"Окрім безпосереднього редагування текстових файлів, у <app>Meld</app> "
+"передбачено інструмент для пересування, копіювання та вилучення окремих змін "
+"між файлами. На панелі між двома файлами буде показано не лише те, які з "
+"частин двох файлів є відповідними, але і кнопки, за допомогою яких ви "
+"зможете об'єднувати або вилучати зміни. Ви можете робити це натисканням "
+"кнопок зі стрілками та хрестиком, які розташовано на початку кожного з "
+"блоків змін."
 
 #. (itstool) path: section/p
 #: C/file-changes.page:52
@@ -186,8 +185,8 @@ msgid ""
 "The default action is <em>replace</em>. This action replaces the contents of "
 "the corresponding change with the current change."
 msgstr ""
-"Типовою дією є <em>заміна</em>. У результаті виконання цієї дії вміст"
-" відповідної зміни буде замінено на поточну зміну."
+"Типовою дією є <em>заміна</em>. У результаті виконання цієї дії вміст "
+"відповідної зміни буде замінено на поточну зміну."
 
 #. (itstool) path: section/p
 #: C/file-changes.page:59
@@ -195,8 +194,9 @@ msgid ""
 "Hold down the <key>Shift</key> key to change the current action to "
 "<em>delete</em>. This action deletes the current change."
 msgstr ""
-"Утримуйте натиснутою клавішу <key>Shift</key>, щоб змінити поточну дію на <em"
-">вилучити</em>. У результаті виконання цієї дії поточну зміну буде вилучено."
+"Утримуйте натиснутою клавішу <key>Shift</key>, щоб змінити поточну дію на "
+"<em>вилучити</em>. У результаті виконання цієї дії поточну зміну буде "
+"вилучено."
 
 #. (itstool) path: section/p
 #: C/file-changes.page:62
@@ -205,9 +205,9 @@ msgid ""
 "<em>insert</em>. This action inserts the current change above or below (as "
 "selected) the corresponding change."
 msgstr ""
-"Утримуйте натиснутою клавішу <key>Ctrl</key>, щоб змінити поточну дію на <em"
-">вставити</em>. У результаті виконання цієї дії буде вставлено поточну зміну"
-" вище або нижче (залежно від вибраного) відповідної зміни."
+"Утримуйте натиснутою клавішу <key>Ctrl</key>, щоб змінити поточну дію на "
+"<em>вставити</em>. У результаті виконання цієї дії буде вставлено поточну "
+"зміну вище або нижче (залежно від вибраного) відповідної зміни."
 
 #. (itstool) path: page/title
 #: C/file-filters.page:15
@@ -223,11 +223,11 @@ msgid ""
 "Alternatively, you might want to ignore all the files in your <file>.git</"
 "file> directory, or ignore all images."
 msgstr ""
-"При порівнянні тек у вас може виникнути потреба у ігноруванні деяких файлів."
-" Наприклад, ви хочете переглянути лише файли, які є у обох теках і які є"
-" різними, ігноруючи файли, які є однаковими або існують лише в одній з тек."
-" Крім того, ви можете хотіти проігнорувати усі файли у каталозі <file>.git<"
-"/file> або проігнорувати усі файли зображень."
+"При порівнянні тек у вас може виникнути потреба у ігноруванні деяких файлів. "
+"Наприклад, ви хочете переглянути лише файли, які є у обох теках і які є "
+"різними, ігноруючи файли, які є однаковими або існують лише в одній з тек. "
+"Крім того, ви можете хотіти проігнорувати усі файли у каталозі <file>.git</"
+"file> або проігнорувати усі файли зображень."
 
 #. (itstool) path: page/p
 #: C/file-filters.page:25
@@ -240,15 +240,15 @@ msgid ""
 "\">case insensitive</link>. Finally, you can use <link xref=\"text-filters"
 "\">text filters</link> to change what both folder and file comparisons see."
 msgstr ""
-"У <app>Meld</app> передбачено декілька різних способів керування тим, які"
-" файли і якого типу відмінності слід показувати. Фільтрування можна"
-" виконувати на основі <link xref=\"#file-"
-"state-filter\">відмінностей між файлами у різних теках</link> або <link"
-" xref=\"#file-name-filter\">назв файлів та тек</link>. Ви можете наказати <"
-"app>Meld</app> обробляти назви файлів <link xref=\"#file-case-filter\">без"
-" врахування регістру символів</link>. Нарешті, ви можете скористатися <link"
-" xref=\"text-filters\">текстовими фільтрами</link> для зміни області"
-" застосування порівнянь тек і файлів."
+"У <app>Meld</app> передбачено декілька різних способів керування тим, які "
+"файли і якого типу відмінності слід показувати. Фільтрування можна "
+"виконувати на основі <link xref=\"#file-state-filter\">відмінностей між "
+"файлами у різних теках</link> або <link xref=\"#file-name-filter\">назв "
+"файлів та тек</link>. Ви можете наказати <app>Meld</app> обробляти назви "
+"файлів <link xref=\"#file-case-filter\">без врахування регістру символів</"
+"link>. Нарешті, ви можете скористатися <link xref=\"text-filters"
+"\">текстовими фільтрами</link> для зміни області застосування порівнянь тек "
+"і файлів."
 
 #. (itstool) path: note/p
 #: C/file-filters.page:37
@@ -258,10 +258,10 @@ msgid ""
 "identical after all of the text filters are applied are not highlighted as "
 "being different, but are shown in italics."
 msgstr ""
-"Усі визначені вами <link xref=\"text-filters\">текстові фільтри</link> <em"
-">застосовуються автоматично</em> при порівнянні тек. Файли, які є ідентичними"
-" після застосування усіх текстових фільтрів не буде підсвічено як різні, але"
-" буде показано курсивним шрифтом."
+"Усі визначені вами <link xref=\"text-filters\">текстові фільтри</link> "
+"<em>застосовуються автоматично</em> при порівнянні тек. Файли, які є "
+"ідентичними після застосування усіх текстових фільтрів не буде підсвічено як "
+"різні, але буде показано курсивним шрифтом."
 
 #. (itstool) path: section/title
 #: C/file-filters.page:48
@@ -276,10 +276,10 @@ msgid ""
 "is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</"
 "em>:"
 msgstr ""
-"При порівнянні тек кожен рядок міститиме один пункт файла або теки, що"
-" зберігаються у принаймні одній з тек, порівняння яких виконується. Кожен з"
-" цих рядків класифікується як <em>Змінено</em>, <em>Новий</em> або <em"
-">Однакові</em>:"
+"При порівнянні тек кожен рядок міститиме один пункт файла або теки, що "
+"зберігаються у принаймні одній з тек, порівняння яких виконується. Кожен з "
+"цих рядків класифікується як <em>Змінено</em>, <em>Новий</em> або "
+"<em>Однакові</em>:"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
@@ -294,7 +294,8 @@ msgstr "Файл існує у декількох теках, але файли 
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
-#: C/file-filters.page:62 C/folder-mode.page:162 C/vc-mode.page:121
+#: C/file-filters.page:62 C/folder-mode.page:162 C/folder-mode.page:234
+#: C/vc-mode.page:121
 msgid "New"
 msgstr "Новий"
 
@@ -323,13 +324,11 @@ msgid ""
 "<guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Status</"
 "gui></guiseq> menu."
 msgstr ""
-"Ви можете змінити, які типи відмінностей ви бачитимете у вашому поточному"
-" порівнянні, за допомогою кнопок <gui style=\"button\">Однакові</gui>, <gui"
-" style=\"button\">Новий</"
-"gui> та <gui style=\"button\">Змінено</gui> на панелі інструментів або"
-" пунктів меню <guiseq><gui style=\"menu\">Перегляд</gui><gui"
-" style=\"menuitem\">Стан файла</"
-"gui></guiseq>."
+"Ви можете змінити, які типи відмінностей ви бачитимете у вашому поточному "
+"порівнянні, за допомогою кнопок <gui style=\"button\">Однакові</gui>, <gui "
+"style=\"button\">Новий</gui> та <gui style=\"button\">Змінено</gui> на "
+"панелі інструментів або пунктів меню <guiseq><gui style=\"menu\">Перегляд</"
+"gui><gui style=\"menuitem\">Стан файла</gui></guiseq>."
 
 #. (itstool) path: note/p
 #: C/file-filters.page:80
@@ -339,11 +338,11 @@ msgid ""
 "all folders that contain only new files. A folder containing only \"New\" "
 "files would show up as empty, but still present."
 msgstr ""
-"У поточній версії фільтрування можливе лише на основі стану. Теки не можна"
-" фільтрувати у цей спосіб. Наприклад, ви можете наказати <app>Meld</app>"
-" ігнорувати усі теки, які містять лише нові файли. Теку, у якій зберігаються"
-" лише «нові» файли, буде показано як порожню, але її пункт все ж буде у"
-" списку."
+"У поточній версії фільтрування можливе лише на основі стану. Теки не можна "
+"фільтрувати у цей спосіб. Наприклад, ви можете наказати <app>Meld</app> "
+"ігнорувати усі теки, які містять лише нові файли. Теку, у якій зберігаються "
+"лише «нові» файли, буде показано як порожню, але її пункт все ж буде у "
+"списку."
 
 #. (itstool) path: section/title
 #: C/file-filters.page:94
@@ -360,13 +359,13 @@ msgid ""
 "gui> button on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui "
 "style=\"menuitem\">File Filters</gui></guiseq> menu."
 msgstr ""
-"<app>Meld</app> постачається із корисним набором фільтрів назв файлів, за"
-" допомогою яких ви можете наказати програмі ігнорувати нецікаві для вас файли"
-" і теки, зокрема файли типових резервних копій та теки з метаданими систем"
-" керування версіями. Кожен із фільтрів назв файлів можна вмикати і вимикати"
-" окремо за допомогою кнопки <gui style=\"button\">Фільтри</"
-"gui> на панелі інструментів або меню <guiseq><gui style=\"menu\">Перегляд<"
-"/gui><gui style=\"menuitem\">Фільтр файлів</gui></guiseq>."
+"<app>Meld</app> постачається із корисним набором фільтрів назв файлів, за "
+"допомогою яких ви можете наказати програмі ігнорувати нецікаві для вас файли "
+"і теки, зокрема файли типових резервних копій та теки з метаданими систем "
+"керування версіями. Кожен із фільтрів назв файлів можна вмикати і вимикати "
+"окремо за допомогою кнопки <gui style=\"button\">Фільтри</gui> на панелі "
+"інструментів або меню <guiseq><gui style=\"menu\">Перегляд</gui><gui style="
+"\"menuitem\">Фільтр файлів</gui></guiseq>."
 
 #. (itstool) path: section/p
 #: C/file-filters.page:106
@@ -379,14 +378,14 @@ msgid ""
 "and folders; if a folder matches a filter, it and all of its contents are "
 "ignored."
 msgstr ""
-"Ви можете додавати, вилучати і змінювати фільтри назв файлів за допомогою"
-" розділу <gui style=\"tab\">Фільтр файлів</gui> діалогового вікна <gui"
-">Параметри</gui>. Фільтри назв файлів визначають взірці назв файлів, у яких"
-" програма <em>не</em> шукатиме відмінності при виконанні порівняння тек."
-" Жодного з файлів, які відповідають активному фільтру, не буде навіть"
-" показано у ієрархії порівняння. Фільтри назв файлів застосовуються і до"
-" файлів, і до тек; якщо тека відповідає фільтру, її і увесь її вміст буде"
-" проігноровано."
+"Ви можете додавати, вилучати і змінювати фільтри назв файлів за допомогою "
+"розділу <gui style=\"tab\">Фільтр файлів</gui> діалогового вікна "
+"<gui>Параметри</gui>. Фільтри назв файлів визначають взірці назв файлів, у "
+"яких програма <em>не</em> шукатиме відмінності при виконанні порівняння тек. "
+"Жодного з файлів, які відповідають активному фільтру, не буде навіть "
+"показано у ієрархії порівняння. Фільтри назв файлів застосовуються і до "
+"файлів, і до тек; якщо тека відповідає фільтру, її і увесь її вміст буде "
+"проігноровано."
 
 #. (itstool) path: section/p
 #: C/file-filters.page:116
@@ -396,11 +395,11 @@ msgid ""
 "following table lists all of the shell glob characters that <app>Meld</app> "
 "recognises."
 msgstr ""
-"Встановлення відповідності фільтрів назв файлів відбувається з використанням"
-" загальних правил взірців командної оболонки. Наприклад, <code>*.jpg</code>"
-" відповідає усім назвам файлів, які завершуються на <code>.jpg</code>. У"
-" наведеній нижче таблиці вказано усі символи-замінники командної оболонки,"
-" які розпізнає <app>Meld</app>."
+"Встановлення відповідності фільтрів назв файлів відбувається з використанням "
+"загальних правил взірців командної оболонки. Наприклад, <code>*.jpg</code> "
+"відповідає усім назвам файлів, які завершуються на <code>.jpg</code>. У "
+"наведеній нижче таблиці вказано усі символи-замінники командної оболонки, "
+"які розпізнає <app>Meld</app>."
 
 #. (itstool) path: table/title
 #: C/file-filters.page:124
@@ -455,7 +454,8 @@ msgstr "<code>[!abc]</code>"
 #. (itstool) path: td/p
 #: C/file-filters.page:147
 msgid "anything <em>except</em> one of the listed characters"
-msgstr "будь-який символ, <em>окрім</em> символів із вказаного у дужках набору"
+msgstr ""
+"будь-який символ, <em>окрім</em> символів із вказаного у дужках набору"
 
 #. (itstool) path: td/p
 #: C/file-filters.page:150
@@ -473,8 +473,8 @@ msgid ""
 "Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> "
 "dialog changes whether that filter is active <em>by default</em>."
 msgstr ""
-"Зміна параметра <gui>Активний</gui> у діалоговому вікні <gui>Параметри</gui>"
-" визначає, чи буде фільтр <em>типово</em> активним."
+"Зміна параметра <gui>Активний</gui> у діалоговому вікні <gui>Параметри</gui> "
+"визначає, чи буде фільтр <em>типово</em> активним."
 
 #. (itstool) path: note/p
 #: C/file-filters.page:163
@@ -482,8 +482,8 @@ msgid ""
 "Activating a filter from the menu or the toolbar turns the filter on or off "
 "for <em>this comparison only</em>."
 msgstr ""
-"Активація фільтра з меню або панелі інструментів вмикає або вимикає фільтр <"
-"em>лише для поточного порівняння</em>."
+"Активація фільтра з меню або панелі інструментів вмикає або вимикає фільтр "
+"<em>лише для поточного порівняння</em>."
 
 #. (itstool) path: section/title
 #: C/file-filters.page:174
@@ -498,10 +498,10 @@ msgid ""
 "file>, <file>readme</file> and <file>ReadMe</file> would all be seen as "
 "different files."
 msgstr ""
-"Порівняння файлів між каталогами відбувається відповідно до назв файлів."
-" Типово, під час такого порівняння буде враховано регістр символів; тобто"
-" файли <file>README</file>, <file>readme</file> та <file>ReadMe</file>"
-" вважатимуться різними файлами."
+"Порівняння файлів між каталогами відбувається відповідно до назв файлів. "
+"Типово, під час такого порівняння буде враховано регістр символів; тобто "
+"файли <file>README</file>, <file>readme</file> та <file>ReadMe</file> "
+"вважатимуться різними файлами."
 
 #. (itstool) path: section/p
 #: C/file-filters.page:183
@@ -511,12 +511,12 @@ msgid ""
 "by selecting <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem"
 "\">Ignore filename case</gui></guiseq> from the menus."
 msgstr ""
-"При порівнянні тек у деяких файлових системах (наприклад, HFS+ або FAT) може"
-" виникнути потреба не брати до уваги регістр символів у назвах файлів у <app"
-">Meld</app>. Налаштувати програму на те, щоб вона не зважала на регістр"
-" символів, можна за допомогою пункту меню <guiseq><gui style=\"menu\""
-">Перегляд</gui><gui style=\"menuitem"
-"\">Ігнорувати регістр літер у назвах файлів</gui></guiseq>."
+"При порівнянні тек у деяких файлових системах (наприклад, HFS+ або FAT) може "
+"виникнути потреба не брати до уваги регістр символів у назвах файлів у "
+"<app>Meld</app>. Налаштувати програму на те, щоб вона не зважала на регістр "
+"символів, можна за допомогою пункту меню <guiseq><gui style=\"menu"
+"\">Перегляд</gui><gui style=\"menuitem\">Ігнорувати регістр літер у назвах "
+"файлів</gui></guiseq>."
 
 #. (itstool) path: info/title
 #: C/file-mode.page:5 C/folder-mode.page:5 C/introduction.page:5
@@ -537,10 +537,10 @@ msgid ""
 "can start a new file comparison by selecting the <guiseq><gui style=\"menu"
 "\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
 msgstr ""
-"За допомогою <app>Meld</app> ви можете порівнювати два або три текстових"
-" файлів у режимі паралельного перегляду. Розпочати нове порівняння файлів"
-" можна за допомогою пункту меню <guiseq><gui style=\"menu"
-"\">Файл</gui><gui style=\"menuitem\">Нове порівняння...</gui></guiseq>."
+"За допомогою <app>Meld</app> ви можете порівнювати два або три текстових "
+"файлів у режимі паралельного перегляду. Розпочати нове порівняння файлів "
+"можна за допомогою пункту меню <guiseq><gui style=\"menu\">Файл</gui><gui "
+"style=\"menuitem\">Нове порівняння...</gui></guiseq>."
 
 #. (itstool) path: page/p
 #: C/file-mode.page:26
@@ -551,11 +551,11 @@ msgid ""
 "on-the-fly. For details on navigating between individual changes, and on how "
 "to use change-based editing, see <link xref=\"file-changes\"/>."
 msgstr ""
-"Після того, як ви виберете файли, <app>Meld</app> покаже у паралельному"
-" режимі. Відмінності між файлами буде підсвічено, щоб окремі зміни було"
-" простіше побачити. Редагування файлів призводитиме до інтерактивного даних у"
-" порівнянні. Докладніше про навігацію між окремими змінами та редагування на"
-" основі змін оповідається у розділі <link xref=\"file-changes\"/>."
+"Після того, як ви виберете файли, <app>Meld</app> покаже у паралельному "
+"режимі. Відмінності між файлами буде підсвічено, щоб окремі зміни було "
+"простіше побачити. Редагування файлів призводитиме до інтерактивного даних у "
+"порівнянні. Докладніше про навігацію між окремими змінами та редагування на "
+"основі змін оповідається у розділі <link xref=\"file-changes\"/>."
 
 #. (itstool) path: section/title
 #: C/file-mode.page:35
@@ -570,10 +570,10 @@ msgid ""
 "the areas around and between your files give you a visual overview and "
 "actions to help you handle changes between the files."
 msgstr ""
-"Панель порівняння файлів поділено на декілька різних частин. Найважливішими"
-" частинами є панелі редакторів, де буде показано файли. Крім цих панелей"
-" редакторів передбачено області навколо і між панелями файлів, які надають"
-" вам можливість переглядати і виконувати дії над відмінностями між файлами."
+"Панель порівняння файлів поділено на декілька різних частин. Найважливішими "
+"частинами є панелі редакторів, де буде показано файли. Крім цих панелей "
+"редакторів передбачено області навколо і між панелями файлів, які надають "
+"вам можливість переглядати і виконувати дії над відмінностями між файлами."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:43
@@ -584,11 +584,11 @@ msgid ""
 "block represents a section that is inserted, deleted, changed or in conflict "
 "between your files, depending on the block's colour used."
 msgstr ""
-"У лівій і правій частинах вікна розташовано вертикальні смужки, на яких буде"
-" показано різні кольорові блоки. Ці смужки надають вам огляд усіх"
-" відмінностей між двома файлами. Кожен кольоровий блок відповідає розділу,"
-" який вставлено, вилучено і змінено або який є конфліктним між файлами,"
-" залежно від використаного кольору блоку."
+"У лівій і правій частинах вікна розташовано вертикальні смужки, на яких буде "
+"показано різні кольорові блоки. Ці смужки надають вам огляд усіх "
+"відмінностей між двома файлами. Кожен кольоровий блок відповідає розділу, "
+"який вставлено, вилучено і змінено або який є конфліктним між файлами, "
+"залежно від використаного кольору блоку."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:50
@@ -600,13 +600,12 @@ msgid ""
 "can do with individual change segments, see <link xref=\"file-changes#change-"
 "actions\"/>."
 msgstr ""
-"Між усіма парами файлів буде розташовано сегменти на яких буде показано, як"
-" змінені розділи між файлами відповідають один одному. Ви зможете натискати"
-" стрілки на сегментах, щоб замінити розділи у одному з файлів розділами з"
-" інших. Ви також можете вилучати, копіювати або об'єднувати зміни. Докладний"
-" опис того, що ви можете робити із окремими сегментами зміни, наведено у"
-" розділі <link xref=\"file-changes#change-"
-"actions\"/>."
+"Між усіма парами файлів буде розташовано сегменти на яких буде показано, як "
+"змінені розділи між файлами відповідають один одному. Ви зможете натискати "
+"стрілки на сегментах, щоб замінити розділи у одному з файлів розділами з "
+"інших. Ви також можете вилучати, копіювати або об'єднувати зміни. Докладний "
+"опис того, що ви можете робити із окремими сегментами зміни, наведено у "
+"розділі <link xref=\"file-changes#change-actions\"/>."
 
 #. (itstool) path: section/title
 #: C/file-mode.page:62
@@ -619,8 +618,8 @@ msgid ""
 "Once you've finished editing your files, you need to save each file you've "
 "changed."
 msgstr ""
-"Після завершення редагування ваших файлів вам слід зберегти кожен змінений"
-" файл."
+"Після завершення редагування ваших файлів вам слід зберегти кожен змінений "
+"файл."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:68
@@ -630,10 +629,11 @@ msgid ""
 "notebook label will show an asterisk (<code>*</code>) after any file that "
 "hasn't been saved."
 msgstr ""
-"Зрозуміти, які файли було збережено з часу останнього внесення змін, можна за"
-" допомогою піктограми збереження, яку буде показано поруч із назвою кожного з"
-" файлів на панеллю файла. Крім того, у мітці нотатника буде показано зірочку"
-" (<code>*</code>) поряд з пунктом кожного файла, який не було збережено."
+"Зрозуміти, які файли було збережено з часу останнього внесення змін, можна "
+"за допомогою піктограми збереження, яку буде показано поруч із назвою "
+"кожного з файлів на панеллю файла. Крім того, у мітці нотатника буде "
+"показано зірочку (<code>*</code>) поряд з пунктом кожного файла, який не "
+"було збережено."
 
 #. (itstool) path: section/p
 #: C/file-mode.page:74
@@ -642,9 +642,9 @@ msgid ""
 "\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using "
 "the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
 msgstr ""
-"Зберегти поточний файл можна за допомогою пункту меню <guiseq><gui"
-" style=\"menu\">Файл</gui><gui style=\"menuitem\">Зберегти</gui></guiseq> або"
-" клавіатурного скорочення <keyseq><key>Ctrl</key><key>S</key></keyseq>."
+"Зберегти поточний файл можна за допомогою пункту меню <guiseq><gui style="
+"\"menu\">Файл</gui><gui style=\"menuitem\">Зберегти</gui></guiseq> або "
+"клавіатурного скорочення <keyseq><key>Ctrl</key><key>S</key></keyseq>."
 
 #. (itstool) path: note/p
 #: C/file-mode.page:81
@@ -653,10 +653,10 @@ msgid ""
 "containing the cursor. If you can't tell which file is focused, you can "
 "click on the file to focus it before saving."
 msgstr ""
-"Дія зі збереження призводить до збереження лише <em>поточного фокусованого<"
-"/em> файла, тобто файла, у якому перебуває курсор. Якщо ви не можете"
-" визначити, який з файлів фокусовано, ви можете клацнути на панелі файла для"
-" його фокусування перед збереженням."
+"Дія зі збереження призводить до збереження лише <em>поточного фокусованого</"
+"em> файла, тобто файла, у якому перебуває курсор. Якщо ви не можете "
+"визначити, який з файлів фокусовано, ви можете клацнути на панелі файла для "
+"його фокусування перед збереженням."
 
 #. (itstool) path: page/title
 #: C/flattened-view.page:15
@@ -673,13 +673,13 @@ msgid ""
 "shown, and the folder hierarchy is stripped away, with file paths shown in "
 "the <em>Location</em> column."
 msgstr ""
-"Якщо ви переглядаєте теки, де зберігається багато файлів, цікавими для вас"
-" можуть бути, скажімо, лише декілька файлів серед тисяч можливих файлів, які"
-" зберігаються у теці. Для полегшення роботи у <app>Meld</app> передбачено <em"
-">сплощений перегляд</em> теки — у цьому режимі буде показано лише файли, які"
-" не було відфільтровано (наприклад, за допомогою <link"
-" xref=\"vc-mode#vc-state-filtering\"/>), а ієрархію тек буде прибрано з"
-" перегляду — шляхи до файлів буде показано у стовпчику <em>Розташування</em>."
+"Якщо ви переглядаєте теки, де зберігається багато файлів, цікавими для вас "
+"можуть бути, скажімо, лише декілька файлів серед тисяч можливих файлів, які "
+"зберігаються у теці. Для полегшення роботи у <app>Meld</app> передбачено "
+"<em>сплощений перегляд</em> теки — у цьому режимі буде показано лише файли, "
+"які не було відфільтровано (наприклад, за допомогою <link xref=\"vc-mode#vc-"
+"state-filtering\"/>), а ієрархію тек буде прибрано з перегляду — шляхи до "
+"файлів буде показано у стовпчику <em>Розташування</em>."
 
 #. (itstool) path: page/p
 #: C/flattened-view.page:27
@@ -689,10 +689,10 @@ msgid ""
 "item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
 "button on the toolbar."
 msgstr ""
-"Увімкнути або вимкнути спрощений перегляду можна за допомогою пункту меню <"
-"guiseq><gui style=\"menu\">Перегляд</gui><gui style=\"menuitem\">Сплощувати"
-" теки</gui></guiseq> або натисканням відповідної кнопки <gui style=\"button\""
-">Сплощувати теки</gui> на панелі інструментів."
+"Увімкнути або вимкнути спрощений перегляду можна за допомогою пункту меню "
+"<guiseq><gui style=\"menu\">Перегляд</gui><gui style=\"menuitem\">Сплощувати "
+"теки</gui></guiseq> або натисканням відповідної кнопки <gui style=\"button"
+"\">Сплощувати теки</gui> на панелі інструментів."
 
 #. (itstool) path: page/title
 #: C/folder-mode.page:16
@@ -707,11 +707,11 @@ msgid ""
 "\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and "
 "clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
 msgstr ""
-"За допомогою <app>Meld</app> ви можете порівнювати дві або три теки у режимі"
-" паралельного перегляду. Розпочати нове порівняння файлів можна за допомогою"
-" пункту меню <guiseq><gui style=\"menu"
-"\">Файл</gui><gui style=\"menuitem\">Нове порівняння...</gui></guiseq> з"
-" наступним переходом до вкладки <gui style=\"tab\">Порівняння каталогів</gui>."
+"За допомогою <app>Meld</app> ви можете порівнювати дві або три теки у режимі "
+"паралельного перегляду. Розпочати нове порівняння файлів можна за допомогою "
+"пункту меню <guiseq><gui style=\"menu\">Файл</gui><gui style=\"menuitem"
+"\">Нове порівняння...</gui></guiseq> з наступним переходом до вкладки <gui "
+"style=\"tab\">Порівняння каталогів</gui>."
 
 #. (itstool) path: page/p
 #: C/folder-mode.page:26
@@ -720,10 +720,10 @@ msgid ""
 "between files in each folder highlighted. You can copy or delete files from "
 "either folder, or compare individual text files in more detail."
 msgstr ""
-"Вибрані вами теки буде показано як паралельні ієрархічні дерева із"
-" підсвічуванням відмінностей між файлами у кожній з тек. Ви можете копіювати"
-" або вилучати файли з будь-якої з тек або виконувати докладне порівняння"
-" окремих текстових файлів."
+"Вибрані вами теки буде показано як паралельні ієрархічні дерева із "
+"підсвічуванням відмінностей між файлами у кожній з тек. Ви можете копіювати "
+"або вилучати файли з будь-якої з тек або виконувати докладне порівняння "
+"окремих текстових файлів."
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:36
@@ -742,15 +742,15 @@ msgid ""
 "side <link xref=\"file-mode\">file comparison</link> of the files in a new "
 "tab, but this will only work properly if they're text files!"
 msgstr ""
-"Основними частинами панелі порівняння тек є панелі ієрархічного перегляду, де"
-" буде показано теки, які ви порівнюєте. Ви можете без проблем <link"
-" xref=\"#folder-navigation\">пересуватися</link> між цими панелями порівняння"
-" для пошуку потрібних вам змін. Ви можете вибрати файл або теку — докладні"
-" дані буде показано на смужці стану у нижній частині вікна. Натисканням"
-" клавіші <key>Enter</key> на вибраному файлі або подвійним клацанням на"
-" пункті файла в ієрархії призведе до відкриття паралельного <link"
-" xref=\"file-mode\">порівняння файлів</link> для файлів у новій вкладці, але"
-" таке порівняння працює належним чином лише для текстових файлів!"
+"Основними частинами панелі порівняння тек є панелі ієрархічного перегляду, "
+"де буде показано теки, які ви порівнюєте. Ви можете без проблем <link xref="
+"\"#folder-navigation\">пересуватися</link> між цими панелями порівняння для "
+"пошуку потрібних вам змін. Ви можете вибрати файл або теку — докладні дані "
+"буде показано на смужці стану у нижній частині вікна. Натисканням клавіші "
+"<key>Enter</key> на вибраному файлі або подвійним клацанням на пункті файла "
+"в ієрархії призведе до відкриття паралельного <link xref=\"file-mode"
+"\">порівняння файлів</link> для файлів у новій вкладці, але таке порівняння "
+"працює належним чином лише для текстових файлів!"
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:50
@@ -762,12 +762,12 @@ msgid ""
 "any actually important differences. You can click anywhere on this bar to "
 "jump straight to that place in the comparison."
 msgstr ""
-"У лівій і правій частина вікна програми буде показано смужки із простим"
-" кольоровим резюме результатів порівняння. Кожному файлу або теці у"
-" порівнянні відповідає малий розділ на смужках, і <app>Meld</app> не показує"
-" <em>Однакові</em> файли, тому спостерігати за справді важливим відмінностями"
-" простіше. Ви можете клацнути на будь-якому місці смужки, щоб перейти"
-" безпосередньо до відповідного місця у порівнянні."
+"У лівій і правій частина вікна програми буде показано смужки із простим "
+"кольоровим резюме результатів порівняння. Кожному файлу або теці у "
+"порівнянні відповідає малий розділ на смужках, і <app>Meld</app> не показує "
+"<em>Однакові</em> файли, тому спостерігати за справді важливим відмінностями "
+"простіше. Ви можете клацнути на будь-якому місці смужки, щоб перейти "
+"безпосередньо до відповідного місця у порівнянні."
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:63
@@ -784,12 +784,12 @@ msgid ""
 "change</gui></guiseq> menu items, or using the corresponding buttons on the "
 "toolbar."
 msgstr ""
-"Переходити між зміненим файлами (тобто будь-якими файлами або теками, які <em"
-">не</em> вважаються програмою однаковими) можна за допомогою пунктів меню <"
-"guiseq><gui style=\"menu\">Зміни</gui><gui style=\"menuitem\">Попередня"
-" зміна</gui></guiseq> і <guiseq><gui style=\"menu\">Зміни</gui><gui"
-" style=\"menuitem\">Наступна зміна</gui></guiseq> або за допомогою"
-" відповідних кнопок на панелі інструментів."
+"Переходити між зміненим файлами (тобто будь-якими файлами або теками, які "
+"<em>не</em> вважаються програмою однаковими) можна за допомогою пунктів меню "
+"<guiseq><gui style=\"menu\">Зміни</gui><gui style=\"menuitem\">Попередня "
+"зміна</gui></guiseq> і <guiseq><gui style=\"menu\">Зміни</gui><gui style="
+"\"menuitem\">Наступна зміна</gui></guiseq> або за допомогою відповідних "
+"кнопок на панелі інструментів."
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:73
@@ -798,9 +798,9 @@ msgid ""
 "between the folders you're comparing. This is useful so that you can select "
 "an individual file for copying or deletion."
 msgstr ""
-"Ви можете скористатися клавішами зі стрілками <key>←</key> і <key>→</key> для"
-" пересування між теками, вміст яких ви порівнюєте. Це корисно для вибору"
-" окремого файла для копіювання або вилучення."
+"Ви можете скористатися клавішами зі стрілками <key>←</key> і <key>→</key> "
+"для пересування між теками, вміст яких ви порівнюєте. Це корисно для вибору "
+"окремого файла для копіювання або вилучення."
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:83
@@ -813,9 +813,9 @@ msgid ""
 "Each file or folder in a tree has its own <em>state</em>, telling you how it "
 "differed from its corresponding files/folders. The possible states are:"
 msgstr ""
-"У кожного файла або теки у ієрархії є власний <em>стан</em>, який відповідає"
-" тому, як він відрізняється від відповідних файлів або тек у інших теках."
-" Можливі такі стани:"
+"У кожного файла або теки у ієрархії є власний <em>стан</em>, який відповідає "
+"тому, як він відрізняється від відповідних файлів або тек у інших теках. "
+"Можливі такі стани:"
 
 #. (itstool) path: table/title
 #: C/folder-mode.page:106
@@ -828,12 +828,12 @@ msgid "State"
 msgstr "Стан"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:111 C/vc-mode.page:86
+#: C/folder-mode.page:111 C/folder-mode.page:227 C/vc-mode.page:86
 msgid "Appearance"
 msgstr "Вигляд"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:112 C/vc-mode.page:87
+#: C/folder-mode.page:112 C/folder-mode.page:228 C/vc-mode.page:87
 msgid "Meaning"
 msgstr "Значення"
 
@@ -864,9 +864,8 @@ msgid ""
 "These files are different across folders, but once <link xref=\"text-filters"
 "\">text filters</link> are applied, these files become identical."
 msgstr ""
-"Ці файли є різними у різних теках, але після застосування <link"
-" xref=\"text-filters\">текстових фільтрів</link> ці файли було визначено"
-" ідентичними."
+"Ці файли є різними у різних теках, але після застосування <link xref=\"text-"
+"filters\">текстових фільтрів</link> ці файли було визначено ідентичними."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:150
@@ -903,8 +902,8 @@ msgstr "Сірий текст із прямою лінією посередин�
 msgid ""
 "This file/folder doesn't exist in this folder, but does in one of the others."
 msgstr ""
-"Цього файла або теки не існує у цій теці, але він зберігається у якійсь іншій"
-" теці."
+"Цього файла або теки не існує у цій теці, але він зберігається у якійсь "
+"іншій теці."
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:191 C/vc-mode.page:212
@@ -923,57 +922,138 @@ msgid ""
 "are file permissions (i.e., <app>Meld</app> was not allowed to open the "
 "file) and filename encoding errors."
 msgstr ""
-"При порівнянні цього файла сталася помилка. Типові помилки трапляються через"
-" права доступу (тобто <app>Meld</app> просто не вдалося відкрити файл для"
-" читання) та помилки із кодуванням назв файлів."
+"При порівнянні цього файла сталася помилка. Типові помилки трапляються через "
+"права доступу (тобто <app>Meld</app> просто не вдалося відкрити файл для "
+"читання) та помилки із кодуванням назв файлів."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:217
+#: C/folder-mode.page:209
 msgid ""
 "You can filter out files based on these states, for example, to show only "
 "files that have been <em>Modified</em>. You can read more about this in "
 "<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
-"Ви можете наказати програмі відфільтрувати файли на основі станів, наприклад,"
-" показати лише файли, які було <em>Змінено</em>. Докладніше про це у розділі"
-" <link xref=\"file-filters#file-state-filter\"/>."
+"Ви можете наказати програмі відфільтрувати файли на основі станів, "
+"наприклад, показати лише файли, які було <em>Змінено</em>. Докладніше про це "
+"у розділі <link xref=\"file-filters#file-state-filter\"/>."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:223
+#: C/folder-mode.page:215
 msgid ""
-"Finally, the most recently modified file/folder has a small star emblem "
-"attached to it."
+"The icons in some rows have emblems added to them to show additional "
+"information. Note that these icons may change depending on your icon theme, "
+"so these descriptions are only a guide."
 msgstr ""
-"Нарешті, для найсвіжішого зміненого файла або найсвіжішої зміненої теки буде"
-" показано невеличку емблему із зірочкою."
+"До піктограм у деяких рядках буде додано емблеми для показу додаткових"
+" відомостей. Зауважте, що ці піктограми можуть залежати від вашої теми"
+" піктограм, тому наведені описи є лише орієнтовними."
 
-#. (itstool) path: page/title
-#: C/index.page:14
+#. (itstool) path: table/title
+#: C/folder-mode.page:222
+msgid "Additional emblems"
+msgstr "Додаткові емблеми"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:226
+msgid "Emblem"
+msgstr "Емблема"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:235
+msgid "Small blue dot"
+msgstr "Мала синя крапка"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:236
+msgid ""
+"Used to indicate the \"newest\" (i.e., most recently modified) file in the "
+"row"
+msgstr ""
+"Використано для позначення «найновішого» (тобто такого, до якого зміни було"
+" внесено останнім) файла у рядку"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:240
+msgid "Symbolic link"
+msgstr "Символічне посилання"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:241
+msgid "Arrow"
+msgstr "Стрілка"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:242
+msgid "Shows that the row item is a symbolic link"
+msgstr "Показує, що запис рядка є символічним посиланням"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:245
+msgid "Selected"
+msgstr "Позначено"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:246
+msgid "Tick mark"
+msgstr "Позначка"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:247
+msgid ""
+"Shows that a file has been selected for a marked comparison, used to compare "
+"differently named files across folders"
+msgstr ""
+"Показує, що файл було позначено для порівняння, використано для порівняння"
+" файлів із різними назвами між теками"
+
+#. (itstool) path: info/title
+#: C/index.page:6
+#| msgid "Meld Help"
+msgctxt "link:trail"
 msgid "Meld Help"
 msgstr "Довідка з Meld"
 
+#. (itstool) path: info/title
+#: C/index.page:7
+#| msgid "Meld Help"
+msgctxt "link"
+msgid "Meld Help"
+msgstr "Довідка з Meld"
+
+#. (itstool) path: info/title
+#: C/index.page:8
+#| msgid "Meld Help"
+msgctxt "text"
+msgid "Meld Help"
+msgstr "Довідка з Meld"
+
+#. (itstool) path: page/title
+#: C/index.page:18
+msgid "<_:media-1/> Meld Help"
+msgstr "<_:media-1/> Довідка з Meld"
+
 #. (itstool) path: section/title
-#: C/index.page:17
+#: C/index.page:24
 msgid "Introduction"
 msgstr "Вступ"
 
 #. (itstool) path: section/title
-#: C/index.page:21
+#: C/index.page:28
 msgid "Comparing Files"
 msgstr "Порівняння файлів"
 
 #. (itstool) path: section/title
-#: C/index.page:25
+#: C/index.page:32
 msgid "Comparing Folders"
 msgstr "Порівняння тек"
 
 #. (itstool) path: section/title
-#: C/index.page:29
+#: C/index.page:36
 msgid "Using Meld with Version Control"
 msgstr "Користування Meld із системами керування версіями"
 
 #. (itstool) path: section/title
-#: C/index.page:33
+#: C/index.page:40
 msgid "Advanced Usage"
 msgstr "Додаткові можливості"
 
@@ -989,9 +1069,9 @@ msgid ""
 "resolving differences between them. It is also useful for comparing changes "
 "captured by version control systems."
 msgstr ""
-"<app>Meld</app> — програма для порівняння файлів та каталогів і усування"
-" відмінностей між файлами та каталогами. Програма також може бути корисною"
-" для порівняння змін у журналі систем керування версіями."
+"<app>Meld</app> — програма для порівняння файлів та каталогів і усування "
+"відмінностей між файлами та каталогами. Програма також може бути корисною "
+"для порівняння змін у журналі систем керування версіями."
 
 #. (itstool) path: page/p
 #: C/introduction.page:22
@@ -1002,11 +1082,11 @@ msgid ""
 "merge source files, and get a visual overview of changes in their favourite "
 "version control system."
 msgstr ""
-"<app>Meld</app> показує відмінності між двома або трьома файлами (або двома"
-" чи трьома каталогами) і надає вам змогу пересувати дані між ними або"
-" редагувати файли вручну. Акцент у <app>Meld</app> зроблено на полегшенні"
-" порівняння та об'єднання файлів початкового коду для розробників та наданні"
-" візуального огляду змін у популярних системах керування версіями."
+"<app>Meld</app> показує відмінності між двома або трьома файлами (або двома "
+"чи трьома каталогами) і надає вам змогу пересувати дані між ними або "
+"редагувати файли вручну. Акцент у <app>Meld</app> зроблено на полегшенні "
+"порівняння та об'єднання файлів початкового коду для розробників та наданні "
+"візуального огляду змін у популярних системах керування версіями."
 
 #. (itstool) path: page/title
 #: C/keyboard-shortcuts.page:15
@@ -1168,8 +1248,8 @@ msgid ""
 "Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></"
 "keyseq>)"
 msgstr ""
-"Перейти до наступної відмінності. (Також <keyseq><key>Ctrl</key><key>D</key></"
-"keyseq>)"
+"Перейти до наступної відмінності. (Також <keyseq><key>Ctrl</key><key>D</"
+"key></keyseq>)"
 
 #. (itstool) path: td/p
 #: C/keyboard-shortcuts.page:96
@@ -1182,9 +1262,8 @@ msgid ""
 "Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></"
 "keyseq>)"
 msgstr ""
-"Перейти до попередньої відмінності. (Також <keyseq><key>Ctrl</key><key>E</key"
-"></"
-"keyseq>)"
+"Перейти до попередньої відмінності. (Також <keyseq><key>Ctrl</key><key>E</"
+"key></keyseq>)"
 
 #. (itstool) path: table/title
 #: C/keyboard-shortcuts.page:105
@@ -1284,9 +1363,9 @@ msgid ""
 "out how to do something, thinking that <em>surely</em> there must be an "
 "option for this?"
 msgstr ""
-"Чи доводилося вам колись витрачати по пів години шукати спосіб виконати якусь"
-" дію у програмі, коли ви <em>достеменно</em> знаєте, що відповідну можливість"
-" у програмі передбачено?"
+"Чи доводилося вам колись витрачати по пів години шукати спосіб виконати "
+"якусь дію у програмі, коли ви <em>достеменно</em> знаєте, що відповідну "
+"можливість у програмі передбачено?"
 
 #. (itstool) path: page/p
 #: C/missing-functionality.page:23
@@ -1295,10 +1374,10 @@ msgid ""
 "<em>doesn't</em> do, either as a deliberate choice, or because we just "
 "haven't had time."
 msgstr ""
-"У цьому розділі наведено опис декількох типових дій, які <app>Meld</app> <em"
-">не може</em> виконувати або через свідоме небажання розробників"
-" реалізовувати їхню підтримку, або через те, що у розробників просто не"
-" вистачило часу їх реалізувати."
+"У цьому розділі наведено опис декількох типових дій, які <app>Meld</app> "
+"<em>не може</em> виконувати або через свідоме небажання розробників "
+"реалізовувати їхню підтримку, або через те, що у розробників просто не "
+"вистачило часу їх реалізувати."
 
 #. (itstool) path: section/title
 #: C/missing-functionality.page:30
@@ -1313,11 +1392,11 @@ msgid ""
 "additional lines so that the left and right sides of a particular change are "
 "the same size. There is no option to do this."
 msgstr ""
-"Коли <app>Meld</app> показує відмінності між файлами, програма показує обидва"
-" файли так, як вони виглядають у звичайному текстовому редакторі. Програма <"
-"em>не</em> вставляє додаткових рядків, щоб ліва і права частини певної"
-" відмінності мали однакові розміри. Параметра, який би змінив цю поведінку не"
-" передбачено."
+"Коли <app>Meld</app> показує відмінності між файлами, програма показує "
+"обидва файли так, як вони виглядають у звичайному текстовому редакторі. "
+"Програма <em>не</em> вставляє додаткових рядків, щоб ліва і права частини "
+"певної відмінності мали однакові розміри. Параметра, який би змінив цю "
+"поведінку не передбачено."
 
 #. (itstool) path: credit/years
 #: C/preferences.page:12
@@ -1349,13 +1428,13 @@ msgid ""
 "which case <app>Meld</app> will substitute the file path and current line "
 "number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
 msgstr ""
-"Назва програми, яку буде запущено для відкриття текстових файлів у"
-" зовнішньому редакторі. Це може бути сама команда запуску (наприклад, <cmd"
-">gedit</cmd>) — у цьому випадку файл, який слід відкрити, буде передано як"
-" останній аргумент командного рядка. Крім того, ви можете додати до команди"
-" записи <code>{file}</code> або <code>{line}</code>. Якщо такі записи буде"
-" додано, <app>Meld</app> замінить їх на шлях до файла та номер поточного"
-" рядка, відповідно (приклад: <cmd>gedit {file}:{line}</cmd>)."
+"Назва програми, яку буде запущено для відкриття текстових файлів у "
+"зовнішньому редакторі. Це може бути сама команда запуску (наприклад, "
+"<cmd>gedit</cmd>) — у цьому випадку файл, який слід відкрити, буде передано "
+"як останній аргумент командного рядка. Крім того, ви можете додати до "
+"команди записи <code>{file}</code> або <code>{line}</code>. Якщо такі записи "
+"буде додано, <app>Meld</app> замінить їх на шлях до файла та номер поточного "
+"рядка, відповідно (приклад: <cmd>gedit {file}:{line}</cmd>)."
 
 #. (itstool) path: terms/title
 #: C/preferences.page:31
@@ -1376,11 +1455,11 @@ msgid ""
 "line trimming option will be applied as appropriate, and differences in line "
 "endings will be ignored."
 msgstr ""
-"При порівнянні файлів у режимі порівняння тек можна застосувати до вмісту"
-" файлів текстові фільтри та інші параметри обробки текстових файлів. Якщо"
-" увімкнено цю можливість, буде застосовано усі поточні увімкнені текстові"
-" фільтри; якщо потрібно, буде застосовано можливість вирізання порожніх"
-" рядків, а відмінності у символах розривів рядків буде проігноровано."
+"При порівнянні файлів у режимі порівняння тек можна застосувати до вмісту "
+"файлів текстові фільтри та інші параметри обробки текстових файлів. Якщо "
+"увімкнено цю можливість, буде застосовано усі поточні увімкнені текстові "
+"фільтри; якщо потрібно, буде застосовано можливість вирізання порожніх "
+"рядків, а відмінності у символах розривів рядків буде проігноровано."
 
 #. (itstool) path: item/p
 #: C/preferences.page:40
@@ -1389,10 +1468,10 @@ msgid ""
 "binary files into memory during the folder comparison. With large text "
 "files, this can be slow and may cause memory issues."
 msgstr ""
-"Вмикання цієї можливості означає, що <app>Meld</app> має повністю прочитати"
-" усі файли, які не є двійковими, до пам'яті під час порівняння тек. Якщо"
-" файли є доволі великими, це може спричинити уповільнення роботи програми та"
-" проблеми із вільною пам'яттю."
+"Вмикання цієї можливості означає, що <app>Meld</app> має повністю прочитати "
+"усі файли, які не є двійковими, до пам'яті під час порівняння тек. Якщо "
+"файли є доволі великими, це може спричинити уповільнення роботи програми та "
+"проблеми із вільною пам'яттю."
 
 #. (itstool) path: item/p
 #: C/preferences.page:44
@@ -1400,8 +1479,8 @@ msgid ""
 "This option only has an effect if \"Compare files based only on size and "
 "timestamp\" is not enabled."
 msgstr ""
-"Цей пункт ні на що не вплине, якщо не позначено пункт «Порівняти файли лише"
-" на основі розміру і часової позначки»."
+"Цей пункт ні на що не вплине, якщо не позначено пункт «Порівняти файли лише "
+"на основі розміру і часової позначки»."
 
 #. (itstool) path: page/title
 #: C/resolving-conflicts.page:15
@@ -1414,8 +1493,8 @@ msgid ""
 "One of the best uses of <app>Meld</app> is to resolve conflicts that occur "
 "while merging different branches."
 msgstr ""
-"Одним із найкорисніших використань <app>Meld</app> є розв'язання конфліктів,"
-" які трапляються при злитті різних гілок у системі керування версіями."
+"Одним із найкорисніших використань <app>Meld</app> є розв'язання конфліктів, "
+"які трапляються при злитті різних гілок у системі керування версіями."
 
 #. (itstool) path: page/p
 #: C/resolving-conflicts.page:22
@@ -1424,10 +1503,10 @@ msgid ""
 "a 'merge helper'; <app>Meld</app> is one such helper. If you want to make "
 "<app>git mergetool</app> use <app>Meld</app> by default, you can add"
 msgstr ""
-"Наприклад, при використанні <app>Git</app>, <cmd>git mergetool</cmd> запускає"
-" «допоміжну програму для об'єднання». <app>Meld</app> є однією із таких"
-" програм. Якщо ви хочете, щоб <app>git mergetool</app> типово використовував"
-" <app>Meld</app>, ви можете додати рядки"
+"Наприклад, при використанні <app>Git</app>, <cmd>git mergetool</cmd> "
+"запускає «допоміжну програму для об'єднання». <app>Meld</app> є однією із "
+"таких програм. Якщо ви хочете, щоб <app>git mergetool</app> типово "
+"використовував <app>Meld</app>, ви можете додати рядки"
 
 #. (itstool) path: page/code
 #: C/resolving-conflicts.page:27
@@ -1447,8 +1526,8 @@ msgid ""
 "to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for "
 "details."
 msgstr ""
-"до файла <file>.git/gitconfig</file>. Докладніший опис можна знайти у"
-" підручнику з <app>git mergetool</app>."
+"до файла <file>.git/gitconfig</file>. Докладніший опис можна знайти у "
+"підручнику з <app>git mergetool</app>."
 
 #. (itstool) path: page/title
 #: C/text-filters.page:17
@@ -1464,12 +1543,12 @@ msgid ""
 "filters you can tell <app>Meld</app> to ignore text that matches a pattern "
 "(i.e., a regular expression) when showing differences between files."
 msgstr ""
-"При порівнянні декількох файлів можуть трапитися частини тексту, де"
-" відмінності не є насправді суттєвими. Наприклад, ви хочете зосередитися на"
-" змінених фрагментах коду і проігнорувати усі зміни у коментарях. За"
-" допомогою текстових фільтрів ви можете наказати <app>Meld</app> під час"
-" показу відмінностей між файлами ігнорувати текст, який відповідає певному"
-" взірцю (тобто формальному виразу)."
+"При порівнянні декількох файлів можуть трапитися частини тексту, де "
+"відмінності не є насправді суттєвими. Наприклад, ви хочете зосередитися на "
+"змінених фрагментах коду і проігнорувати усі зміни у коментарях. За "
+"допомогою текстових фільтрів ви можете наказати <app>Meld</app> під час "
+"показу відмінностей між файлами ігнорувати текст, який відповідає певному "
+"взірцю (тобто формальному виразу)."
 
 #. (itstool) path: note/p
 #: C/text-filters.page:28
@@ -1478,9 +1557,9 @@ msgid ""
 "comparisons. Check the <link xref=\"file-filters\">file filtering notes</"
 "link> for more details."
 msgstr ""
-"Текстові фільтри застосовуються не лише для порівняння файлів, але і до"
-" порівняння тек. Ознайомтеся із <link xref=\"file-filters\">нотатками щодо"
-" фільтрування файлів</link>, щоб дізнатися більше."
+"Текстові фільтри застосовуються не лише для порівняння файлів, але і до "
+"порівняння тек. Ознайомтеся із <link xref=\"file-filters\">нотатками щодо "
+"фільтрування файлів</link>, щоб дізнатися більше."
 
 #. (itstool) path: section/title
 #: C/text-filters.page:37
@@ -1494,10 +1573,10 @@ msgid ""
 "in <gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple "
 "filters that you might find useful, but you can add your own as well."
 msgstr ""
-"Ви можете увімкнути або вимкнути текстові фільтри за допомогою вкладки <gui"
-">Текстові фільтри</gui> діалогового вікна <gui>Параметри</gui>. <app>Meld<"
-"/app> постачається із декількома простими фільтрами, які можуть стати вам у"
-" пригоді, але ви можете додати і власні фільтри."
+"Ви можете увімкнути або вимкнути текстові фільтри за допомогою вкладки "
+"<gui>Текстові фільтри</gui> діалогового вікна <gui>Параметри</gui>. "
+"<app>Meld</app> постачається із декількома простими фільтрами, які можуть "
+"стати вам у пригоді, але ви можете додати і власні фільтри."
 
 #. (itstool) path: section/p
 #: C/text-filters.page:45
@@ -1509,13 +1588,13 @@ msgid ""
 "filters are applied in order, so it's possible for the first filter to "
 "remove text that now makes the second filter match, and so on."
 msgstr ""
-"У <app>Meld</app> текстові фільтри є формальними виразами, які при порівнянні"
-" буде застосовано до тексту файлів. Будь-які фрагменти тексту, які буде"
-" визнано відповідними, буде проігноровано під час порівняння; текст буде"
-" показано на панелях перегляду порівняння, але він не братиметься до уваги"
-" при пошуку відмінностей. Текстові фільтри буде застосовано у вказаному"
-" порядку, тому можлива ситуація, коли застосування першого фільтра вилучатиме"
-" текст, який робить можливим встановлення відповідності другому фільтру, тощо."
+"У <app>Meld</app> текстові фільтри є формальними виразами, які при "
+"порівнянні буде застосовано до тексту файлів. Будь-які фрагменти тексту, які "
+"буде визнано відповідними, буде проігноровано під час порівняння; текст буде "
+"показано на панелях перегляду порівняння, але він не братиметься до уваги "
+"при пошуку відмінностей. Текстові фільтри буде застосовано у вказаному "
+"порядку, тому можлива ситуація, коли застосування першого фільтра вилучатиме "
+"текст, який робить можливим встановлення відповідності другому фільтру, тощо."
 
 #. (itstool) path: note/p
 #: C/text-filters.page:55
@@ -1524,9 +1603,9 @@ msgid ""
 "the Python <link href=\"http://docs.python.org/howto/regex.html\">Regular "
 "Expression HOWTO</link>."
 msgstr ""
-"Якщо ви не дуже знайомі із синтаксисом формальних виразів, вам варто"
-" ознайомитися з <link href=\"http://docs.python.org/howto/regex.html\""
-">настановими щодо формальних виразів у Python</link>."
+"Якщо ви не дуже знайомі із синтаксисом формальних виразів, вам варто "
+"ознайомитися з <link href=\"http://docs.python.org/howto/regex.html"
+"\">настановими щодо формальних виразів у Python</link>."
 
 #. (itstool) path: section/title
 #: C/text-filters.page:67
@@ -1541,11 +1620,11 @@ msgid ""
 "lines in a file. For example, if we had the built-in <gui>Script comment</"
 "gui> filter enabled, and compared the following files:"
 msgstr ""
-"Доволі ймовірною є ситуація, коли текстове фільтрування працюватиме не так,"
-" як слід, а підтримка фільтрування у Meld не є повною. Зокрема, текстовий"
-" фільтр не може змінювати кількість рядків у файлі. Наприклад, якщо увімкнено"
-" вбудований фільтр <gui>Коментарі у скриптах</gui> і виконано порівняння"
-" таких файлів:"
+"Доволі ймовірною є ситуація, коли текстове фільтрування працюватиме не так, "
+"як слід, а підтримка фільтрування у Meld не є повною. Зокрема, текстовий "
+"фільтр не може змінювати кількість рядків у файлі. Наприклад, якщо увімкнено "
+"вбудований фільтр <gui>Коментарі у скриптах</gui> і виконано порівняння "
+"таких файлів:"
 
 #. (itstool) path: listing/title
 #: C/text-filters.page:80
@@ -1599,12 +1678,12 @@ msgid ""
 "itself can not be removed; <app>Meld</app> will show the <code>d</code> line "
 "as being different to what it sees as a blank line on the other side."
 msgstr ""
-"рядки, які починаються з <code>b</code> буде показано як ідентичні (коментар"
-" буде вилучено), але рядок <code>d</code> буде показано як різний до рядка"
-" коментаря праворуч. Причиною цього є те, що <code>#коментар</code> буде"
-" вилучено з правої частини, але сам рядок вилучень не буде; <app>Meld</app>"
-" покаже рядок <code>d</code> як відмінний від того, який буде показано як"
-" порожній рядок на іншій панелі файлів."
+"рядки, які починаються з <code>b</code> буде показано як ідентичні (коментар "
+"буде вилучено), але рядок <code>d</code> буде показано як різний до рядка "
+"коментаря праворуч. Причиною цього є те, що <code>#коментар</code> буде "
+"вилучено з правої частини, але сам рядок вилучень не буде; <app>Meld</app> "
+"покаже рядок <code>d</code> як відмінний від того, який буде показано як "
+"порожній рядок на іншій панелі файлів."
 
 #. (itstool) path: section/title
 #: C/text-filters.page:114
@@ -1621,13 +1700,13 @@ msgid ""
 "change in the text, but it may also arise if your active text filters have "
 "removed all of the other content from a change, leaving only blank lines."
 msgstr ""
-"Пункт <gui>Ігнорувати зміни, які вставляють або вилучають порожні рядки</gui>"
-" на вкладці <gui>Текстові фільтри</gui> потребує особливого пояснення. Якщо"
-" увімкнено цей особливий фільтр, будь-які зміни, які складаються лише з"
-" порожніх рядків, буде повністю проігноровано. Таке може статися через"
-" справжні відмінності у пробілах у тексті, але також може трапитися, якщо"
-" вашими активними текстовими фільтрами було вилучено усі інші дані зі зміни"
-" після чого, лишилися лише порожні рядки."
+"Пункт <gui>Ігнорувати зміни, які вставляють або вилучають порожні рядки</"
+"gui> на вкладці <gui>Текстові фільтри</gui> потребує особливого пояснення. "
+"Якщо увімкнено цей особливий фільтр, будь-які зміни, які складаються лише з "
+"порожніх рядків, буде повністю проігноровано. Таке може статися через "
+"справжні відмінності у пробілах у тексті, але також може трапитися, якщо "
+"вашими активними текстовими фільтрами було вилучено усі інші дані зі зміни "
+"після чого, лишилися лише порожні рядки."
 
 #. (itstool) path: section/p
 #: C/text-filters.page:125
@@ -1636,11 +1715,10 @@ msgid ""
 "problems\">problems and limitations</link> resulting from filters not being "
 "able to remove whole lines, but it can also be useful in and of itself."
 msgstr ""
-"Ви можете скористатися цим пунктом для усування деяких <link"
-" xref=\"#text-filter-"
-"problems\">проблем і обмежень</link>, які є результатом того, що фільтри не"
-" можуть вилучати цілі рядки, але ним можна скористатися і з будь-якою іншою"
-" метою."
+"Ви можете скористатися цим пунктом для усування деяких <link xref=\"#text-"
+"filter-problems\">проблем і обмежень</link>, які є результатом того, що "
+"фільтри не можуть вилучати цілі рядки, але ним можна скористатися і з будь-"
+"якою іншою метою."
 
 #. (itstool) path: info/title
 #: C/vc-mode.page:5
@@ -1663,14 +1741,13 @@ msgid ""
 "\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab"
 "\">Version Control</gui> tab."
 msgstr ""
-"<app>Meld</app> інтегрується із <link xref=\"vc-supported\">багатьма"
-" системами керування версіями</link> з метою надання можливостей перегляду"
-" локальних змін і виконання простих завдань із керування версіями. Розпочати"
-" порівняння за системою керування версіями можна за допомогою пункту меню <"
-"guiseq><gui style=\"menu\">Файл</gui><gui style=\"menuitem\">Нове"
-" порівняння...</gui></guiseq> із наступним переходом на вкладку <gui"
-" style=\"tab"
-"\">Керування версіями</gui>."
+"<app>Meld</app> інтегрується із <link xref=\"vc-supported\">багатьма "
+"системами керування версіями</link> з метою надання можливостей перегляду "
+"локальних змін і виконання простих завдань із керування версіями. Розпочати "
+"порівняння за системою керування версіями можна за допомогою пункту меню "
+"<guiseq><gui style=\"menu\">Файл</gui><gui style=\"menuitem\">Нове "
+"порівняння...</gui></guiseq> із наступним переходом на вкладку <gui style="
+"\"tab\">Керування версіями</gui>."
 
 #. (itstool) path: section/title
 #: C/vc-mode.page:30
@@ -1685,10 +1762,10 @@ msgid ""
 "has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
 "from the repository copy."
 msgstr ""
-"На панелі порівняння керування версіями буде показано відмінності між вмістом"
-" вашої теки і поточною версією зі сховища. Кожен файл у вашій локальній копії"
-" має <link xref=\"#vc-state\">стан</link>, який вказує на те, чим він"
-" відрізняється від копії у сховищі."
+"На панелі порівняння керування версіями буде показано відмінності між "
+"вмістом вашої теки і поточною версією зі сховища. Кожен файл у вашій "
+"локальній копії має <link xref=\"#vc-state\">стан</link>, який вказує на те, "
+"чим він відрізняється від копії у сховищі."
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:46
@@ -1698,12 +1775,11 @@ msgid ""
 "\"file-mode\">file comparison</link>. You can also interact with your "
 "version control system using the <gui style=\"menu\">Changes</gui> menu."
 msgstr ""
-"Якщо ви хочете переглянути відмінності для певного файла, ви можете позначити"
-" його і натиснути клавішу <key>Enter</key> або двічі клацнути лівою кнопкою"
-" миші на пункті файла, щоб запустити <link xref="
-"\"file-mode\">порівняння файлів</link>. Ви також можете взаємодіяти із вашою"
-" системою керування версіями за допомогою меню <gui style=\"menu\">Зміни</gui"
-">."
+"Якщо ви хочете переглянути відмінності для певного файла, ви можете "
+"позначити його і натиснути клавішу <key>Enter</key> або двічі клацнути лівою "
+"кнопкою миші на пункті файла, щоб запустити <link xref=\"file-mode"
+"\">порівняння файлів</link>. Ви також можете взаємодіяти із вашою системою "
+"керування версіями за допомогою меню <gui style=\"menu\">Зміни</gui>."
 
 #. (itstool) path: section/title
 #. (itstool) path: table/title
@@ -1720,11 +1796,12 @@ msgid ""
 "<app>Meld</app> might use slightly different names for states than your "
 "version control system does. The possible states are:"
 msgstr ""
-"У кожного файла або теки при порівнянні у системі керування версіями є <em"
-">стан</em>, який визначається з самої системи керування версіями. <app>Meld<"
-"/app> встановлює відповідність цих станів стандартному набору дуже подібних"
-" понять. У результаті у <app>Meld</app> може бути використано дещо іншу"
-" систему назв станів, ніж у системі керування версіями. Можливі такі стани:"
+"У кожного файла або теки при порівнянні у системі керування версіями є "
+"<em>стан</em>, який визначається з самої системи керування версіями. "
+"<app>Meld</app> встановлює відповідність цих станів стандартному набору дуже "
+"подібних понять. У результаті у <app>Meld</app> може бути використано дещо "
+"іншу систему назв станів, ніж у системі керування версіями. Можливі такі "
+"стани:"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:101
@@ -1781,9 +1858,9 @@ msgid ""
 "file and the repository could not be resolved, and the file is now in "
 "conflict with the repository contents"
 msgstr ""
-"При спробі об'єднання даних із записами у сховищі відмінності між локальним"
-" файлом і сховищем не вдалося розв'язати, і файл тепер конфліктує із вмістом"
-" сховища."
+"При спробі об'єднання даних із записами у сховищі відмінності між локальним "
+"файлом і сховищем не вдалося розв'язати, і файл тепер конфліктує із вмістом "
+"сховища."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:169
@@ -1811,10 +1888,9 @@ msgid ""
 "This file/folder has been explicitly ignored (e.g., by an entry in <file>."
 "gitignore</file>) and is not being tracked by version control."
 msgstr ""
-"Цей файл або теку вказано як явним чином ігноровані (наприклад, за допомогою"
-" запису у <file>."
-"gitignore</file>), стеження за ними з боку системи керування версіями не"
-" ведеться."
+"Цей файл або теку вказано як явним чином ігноровані (наприклад, за допомогою "
+"запису у <file>.gitignore</file>), стеження за ними з боку системи керування "
+"версіями не ведеться."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:197
@@ -1826,8 +1902,8 @@ msgstr "Поза керуванням версіями"
 msgid ""
 "This file is not in the version control system; it is only in the local copy."
 msgstr ""
-"Цей файл не перебуває під керуванням системи керування версіями — це лише"
-" локальна копія."
+"Цей файл не перебуває під керуванням системи керування версіями — це лише "
+"локальна копія."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:220
@@ -1850,14 +1926,14 @@ msgid ""
 "style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and "
 "<gui style=\"button\">Ignored</gui> buttons on the toolbar."
 msgstr ""
-"Найпоширенішим є випадок, коли вам потрібно переглянути файли, які певним"
-" чином є різними; це типовий варіант роботи <app>Meld</app>. Змінити перелік"
-" станів, за яких програма показуватиме файли, можна за допомогою меню <guiseq"
-"><gui style=\"menu\">Перегляд</gui><gui style=\"menuitem\">Стан версії</gui><"
-"/guiseq> або натискання кнопок <gui style=\"button\">Змінено</gui>, <gui"
-" style=\"button\">Звичайний</gui>, <gui style=\"button\">Поза керуванням"
-" версіями</gui> та <gui style=\"button\">Проігноровано</gui> на панелі"
-" інструментів."
+"Найпоширенішим є випадок, коли вам потрібно переглянути файли, які певним "
+"чином є різними; це типовий варіант роботи <app>Meld</app>. Змінити перелік "
+"станів, за яких програма показуватиме файли, можна за допомогою меню "
+"<guiseq><gui style=\"menu\">Перегляд</gui><gui style=\"menuitem\">Стан "
+"версії</gui></guiseq> або натискання кнопок <gui style=\"button\">Змінено</"
+"gui>, <gui style=\"button\">Звичайний</gui>, <gui style=\"button\">Поза "
+"керуванням версіями</gui> та <gui style=\"button\">Проігноровано</gui> на "
+"панелі інструментів."
 
 #. (itstool) path: info/title
 #: C/vc-supported.page:5
@@ -1874,8 +1950,8 @@ msgstr "Підтримувані системи керування версія�
 #: C/vc-supported.page:17
 msgid "<app>Meld</app> supports a wide range of version control systems:"
 msgstr ""
-"У <app>Meld</app> передбачено підтримку широкого діапазону систем керування"
-" версіями:"
+"У <app>Meld</app> передбачено підтримку широкого діапазону систем керування "
+"версіями:"
 
 #. (itstool) path: item/p
 #: C/vc-supported.page:22
@@ -1910,8 +1986,15 @@ msgid ""
 "href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Meld issue tracker</"
 "link>."
 msgstr ""
-"Підтримку малопоширених систем керування версіями або нетипових налаштувань"
-" систем керування версіями може бути недостатньо перевірено. Будь ласка,"
-" повідомляйте про вади у підтримці будь-яких систем керування версіями до <"
-"link href=\"https://gitlab.gnome.org/GNOME/meld/issues\">системи стеження за"
-" вадами у Meld</link>."
+"Підтримку малопоширених систем керування версіями або нетипових налаштувань "
+"систем керування версіями може бути недостатньо перевірено. Будь ласка, "
+"повідомляйте про вади у підтримці будь-яких систем керування версіями до "
+"<link href=\"https://gitlab.gnome.org/GNOME/meld/issues\">системи стеження "
+"за вадами у Meld</link>."
+
+#~ msgid ""
+#~ "Finally, the most recently modified file/folder has a small star emblem "
+#~ "attached to it."
+#~ msgstr ""
+#~ "Нарешті, для найсвіжішого зміненого файла або найсвіжішої зміненої теки "
+#~ "буде показано невеличку емблему із зірочкою."
