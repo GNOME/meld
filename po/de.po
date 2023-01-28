@@ -12,16 +12,16 @@
 # Wolfgang Stöggl <c72578@yahoo.de>, 2019.
 # Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
 # Tim Sabsch <tim@sabsch.com>, 2022.
-# Jürgen Benvenuti <gastornis@posteo.org>, 2022.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-10-09 11:39+0000\n"
-"PO-Revision-Date: 2022-10-10 10:11+0200\n"
+"POT-Creation-Date: 2023-01-25 21:12+0000\n"
+"PO-Revision-Date: 2023-01-26 16:05+0100\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
-"Language-Team: Deutsch <gnome-de@gnome.org>\n"
+"Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -56,9 +56,9 @@ msgid ""
 msgstr ""
 "Meld ist ein visuelles Vergleichs- und Zusammenführungsprogramm, das an "
 "Entwickler gerichtet ist. Meld hilft Ihnen beim Vergleichen von Dateien, "
-"Ordern und versionierten Projekten. Es stellt Zwei- und Drei-Wege-Vergleiche "
-"für Dateien und Ordner zur Verfügung. Die Versionskontrollsysteme Git, "
-"Mercurial, Bazaar und Subversion werden unterstützt."
+"Ordnern und versionierten Projekten. Es stellt Zwei- und Drei-Wege-"
+"Vergleiche für Dateien und Ordner zur Verfügung. Die Versionskontrollsysteme "
+"Git, Mercurial, Bazaar und Subversion werden unterstützt."
 
 #: data/org.gnome.meld.appdata.xml.in.in:21
 msgid ""
@@ -473,11 +473,41 @@ msgid ""
 msgstr ""
 "Liste von Zuständen, um sichtbare Dateien im Versionsvergleich zu filtern."
 
-#: data/org.gnome.meld.gschema.xml:248
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:244
+msgid ""
+"[\n"
+"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (»Datensicherungen«, true, \"#*# .#* ~* *~ *.{orig,bak,"
+"swp}\"),\n"
+"              (»Betriebssystem-spezifische Metadaten«, true, \".DS_Store ."
+"_* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (»Versionskontrolle«, true, \"_MTN .bzr .svn .svn .hg ."
+"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (»Binäre Dateien«, true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+"exe}\"),\n"
+"              (»Medien«, false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:253
 msgid "Filename-based filters"
 msgstr "Auf Dateinamen basierende Filter"
 
-#: data/org.gnome.meld.gschema.xml:249
+#: data/org.gnome.meld.gschema.xml:254
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -485,11 +515,43 @@ msgstr ""
 "Liste von vordefinierten, Dateinamen-basierten Filtern. Falls aktiviert, "
 "werden treffende Dateien aus einem Ordnervergleich entfernt."
 
-#: data/org.gnome.meld.gschema.xml:263
+#.
+#. Translators: A list of default filters, each of which is
+#. composed of a (name, enabled, pattern) in GVariant syntax.
+#. Please only translate the name of each filter.
+#: data/org.gnome.meld.gschema.xml:262
+msgid ""
+"[\n"
+"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"\"),\n"
+"              (\"C++ comment\", false, \"//.*\"),\n"
+"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (\"Script comment\", false, \"#.*\")\n"
+"            ]"
+msgstr ""
+"[\n"
+"              (»CVS/SVN-Schlüsselwörter«, false, \"\\\\$\\\\w+(:[^\\\\n$]+)?"
+"\\\\$\"),\n"
+"              (»C++-Kommentar«, false, \"//.*\"),\n"
+"              (»C-Kommentar«, false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (»Alle Leerzeichen«, false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (»Vorangestellte Leerzeichen«, false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (»Angehängte Leerzeichen«, false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"\"),\n"
+"              (»Skript-Kommentar«, false, \"#.*\")\n"
+"            ]"
+
+#: data/org.gnome.meld.gschema.xml:273
 msgid "Text-based filters"
 msgstr "Auf Text basierende Filter"
 
-#: data/org.gnome.meld.gschema.xml:264
+#: data/org.gnome.meld.gschema.xml:274
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -537,241 +599,256 @@ msgstr "Meld beenden"
 
 #: meld/resources/gtk/help-overlay.ui:40
 msgctxt "shortcut window"
+msgid "Show help"
+msgstr "Hilfe anzeigen"
+
+#: meld/resources/gtk/help-overlay.ui:47
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Einstellungen anzeigen"
+
+#: meld/resources/gtk/help-overlay.ui:54
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Tastenkombinationen"
+
+#: meld/resources/gtk/help-overlay.ui:61
+msgctxt "shortcut window"
 msgid "Stop the current action"
 msgstr "Aktuelle Aktion abbrechen"
 
-#: meld/resources/gtk/help-overlay.ui:47
+#: meld/resources/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Refresh comparison"
 msgstr "Vergleich aktualisieren"
 
-#: meld/resources/gtk/help-overlay.ui:54
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Extern öffnen"
 
-#: meld/resources/gtk/help-overlay.ui:61
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:89
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Linken und rechten Bereich tauschen"
 
-#: meld/resources/gtk/help-overlay.ui:77
+#: meld/resources/gtk/help-overlay.ui:98
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Bereiche"
 
-#: meld/resources/gtk/help-overlay.ui:82
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Vorheriger Vergleichsbereich"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:110
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Nächster Vergleichsbereich"
 
-#: meld/resources/gtk/help-overlay.ui:98
+#: meld/resources/gtk/help-overlay.ui:119
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Änderungen"
 
-#: meld/resources/gtk/help-overlay.ui:103
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Zur vorherigen Änderung gehen"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Zur nächsten Änderung gehen"
 
-#: meld/resources/gtk/help-overlay.ui:119
+#: meld/resources/gtk/help-overlay.ui:140
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Reiter"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Zum vorherigen Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:152
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Zum nächsten Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Zum Reiter wechseln"
 
-#: meld/resources/gtk/help-overlay.ui:145
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Reiter nach links verschieben"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Reiter nach rechts verschieben"
 
-#: meld/resources/gtk/help-overlay.ui:161
+#: meld/resources/gtk/help-overlay.ui:182
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Bearbeitung"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Rückgängig"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Wiederholen"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Ausschneiden"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Einfügen"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:222
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Suchen"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Weitersuchen"
 
-#: meld/resources/gtk/help-overlay.ui:215
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Rückwärts suchen"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Ersetzen"
 
-#: meld/resources/gtk/help-overlay.ui:231
+#: meld/resources/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Dateivergleich"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Aktuelle Datei speichern"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Aktuelle Datei an einem anderen Ort speichern"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Alle Dateien im aktuellen Vergleich speichern"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Vorheriger Konflikt"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Nächster Konflikt"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Änderung nach links schieben"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Änderung nach rechts schieben"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Änderung von links ziehen"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Änderung von rechts ziehen"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:320
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Änderung über den linken Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:327
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Änderung unter den linken Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:313
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Änderung über den rechten Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Änderung unter den rechten Teil kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:327
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:376
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Änderung löschen"
 
-#: meld/resources/gtk/help-overlay.ui:336
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Ordnervergleiche"
 
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Nach links kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Nach rechts kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:364
+#: meld/resources/gtk/help-overlay.ui:385
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Versionskontrollvergleich"
 
-#: meld/resources/gtk/help-overlay.ui:369
+#: meld/resources/gtk/help-overlay.ui:390
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Änderungen in die Versionskontrolle einspielen"
 
-#: meld/resources/gtk/help-overlay.ui:376
+#: meld/resources/gtk/help-overlay.ui:397
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Konsolenausgabe anzeigen/verbergen"
@@ -812,100 +889,100 @@ msgstr "Ansicht"
 msgid "Fullscreen"
 msgstr "Vollbild"
 
-#: meld/resources/gtk/menus.ui:52
+#: meld/resources/gtk/menus.ui:51
 msgid "Overview Map"
 msgstr "Übersichtskarte"
 
-#: meld/resources/gtk/menus.ui:56
+#: meld/resources/gtk/menus.ui:55
 msgid "Version control console"
 msgstr "Versionskontrollkonsole"
 
-#: meld/resources/gtk/menus.ui:60
+#: meld/resources/gtk/menus.ui:59
 msgid "Lock scrolling"
 msgstr "Rollen sperren"
 
-#: meld/resources/gtk/menus.ui:67
+#: meld/resources/gtk/menus.ui:66
 msgid "Swap left and right panes"
 msgstr "Linken und rechten Bereich tauschen"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:72
 msgid "Comparison"
 msgstr "Vergleich"
 
-#: meld/resources/gtk/menus.ui:75
+#: meld/resources/gtk/menus.ui:74
 msgid "Stop"
 msgstr "Stop"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:80
 msgid "Merge All from Left"
 msgstr "Alle Änderungen von links zusammenführen"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Right"
 msgstr "Alle Änderungen von rechts zusammenführen"
 
-#: meld/resources/gtk/menus.ui:89
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All"
 msgstr "Alles zusammenfügen"
 
-#: meld/resources/gtk/menus.ui:96
+#: meld/resources/gtk/menus.ui:95
 msgid "Format as Patch…"
 msgstr "Als Patch formatieren …"
 
-#: meld/resources/gtk/menus.ui:105
+#: meld/resources/gtk/menus.ui:104
 msgid "_Preferences"
 msgstr "_Einstellungen"
 
-#: meld/resources/gtk/menus.ui:109
+#: meld/resources/gtk/menus.ui:108
 msgid "Keyboard Shortcuts"
 msgstr "Tastenkombinationen"
 
-#: meld/resources/gtk/menus.ui:113
+#: meld/resources/gtk/menus.ui:112
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: meld/resources/gtk/menus.ui:118
+#: meld/resources/gtk/menus.ui:116
 msgid "_About Meld"
 msgstr "_Info zu Meld"
 
-#: meld/resources/gtk/menus.ui:131
+#: meld/resources/gtk/menus.ui:129
 msgid "File status"
 msgstr "Dateizustand"
 
-#: meld/resources/gtk/menus.ui:133
+#: meld/resources/gtk/menus.ui:131
 msgid "Same"
 msgstr "Identisch"
 
-#: meld/resources/gtk/menus.ui:137
+#: meld/resources/gtk/menus.ui:135
 msgid "New"
 msgstr "Neu"
 
-#: meld/resources/gtk/menus.ui:141 meld/resources/gtk/menus.ui:164
+#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
 #: meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Geändert"
 
-#: meld/resources/gtk/menus.ui:151
+#: meld/resources/gtk/menus.ui:149
 msgid "Ignore filename case"
 msgstr "Groß-/Kleinschreibung in Dateinamen ignorieren"
 
-#: meld/resources/gtk/menus.ui:155
+#: meld/resources/gtk/menus.ui:153
 msgid "Normalize Unicode paths"
 msgstr "Unicode-Pfade vereinheitlichen"
 
-#: meld/resources/gtk/menus.ui:168
+#: meld/resources/gtk/menus.ui:166
 msgid "Normal"
 msgstr "Normal"
 
-#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Nicht versioniert"
 
-#: meld/resources/gtk/menus.ui:176 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
 msgid "Ignored"
 msgstr "Ignoriert"
 
-#: meld/resources/gtk/menus.ui:183
+#: meld/resources/gtk/menus.ui:181
 msgid "Flatten folders"
 msgstr "Ordner einklappen"
 
@@ -1272,19 +1349,19 @@ msgstr "Die dritte Datei wählen"
 
 #: meld/resources/ui/new-diff-tab.ui:321
 msgid "Select First Folder"
-msgstr "Den ersten Ordner wählen"
+msgstr "Den ersten Ordner auswählen"
 
 #: meld/resources/ui/new-diff-tab.ui:334
 msgid "Select Second Folder"
-msgstr "Den zweiten Ordner wählen"
+msgstr "Den zweiten Ordner auswählen"
 
 #: meld/resources/ui/new-diff-tab.ui:348
 msgid "Select Third Folder"
-msgstr "Den dritten Ordner wählen"
+msgstr "Den dritten Ordner auswählen"
 
 #: meld/resources/ui/new-diff-tab.ui:399
 msgid "Select A Version-Controlled Folder"
-msgstr "Wählen Sie einen Ordner mit Versionskontrolle"
+msgstr "Wählen Sie einen Ordner unter Versionskontrolle"
 
 #: meld/resources/ui/new-diff-tab.ui:448
 msgid "_Blank comparison"
@@ -1610,7 +1687,7 @@ msgstr "Wenn Sie nicht speichern, gehen die Änderungen verloren."
 
 #: meld/resources/ui/save-confirm-dialog.ui:24
 msgid "Close _without Saving"
-msgstr "Schließen _ohne zu Speichern"
+msgstr "Schließen, _ohne zu speichern"
 
 #: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
 #: meld/iohelpers.py:56 meld/iohelpers.py:116
@@ -1773,7 +1850,7 @@ msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
-"Untersuchte Dateien in den Ordner scheinen identisch zu sein, jedoch wurden "
+"Untersuchte Dateien in den Ordnern scheinen identisch zu sein, jedoch wurden "
 "die Dateiinhalte nicht geprüft."
 
 #: meld/dirdiff.py:1127
@@ -2102,6 +2179,25 @@ msgstr ""
 "Synchronisationspunkte aktiv sind. Sie können den Vergleich manuell "
 "aktualisieren. Die direkten Aktualisierungen werden beim Löschen der "
 "Synchronisierungspunkte wieder fortgeführt."
+
+#: meld/filediff.py:2568
+msgid "Can't swap unsaved files"
+msgstr "Ungespeicherte Dateien können nicht getauscht werden"
+
+#: meld/filediff.py:2570
+msgid "Files must be saved to disk before swapping panes."
+msgstr ""
+"Dateien müssen auf einen Datenträger gespeichert werden vor dem Tauschen der "
+"Bereiche."
+
+#: meld/filediff.py:2577
+msgid "Can't swap version control comparisons"
+msgstr "Versionskontrollvergleiche können nicht getauscht werden"
+
+#: meld/filediff.py:2579
+msgid "Swapping panes is not supported in version control mode."
+msgstr ""
+"Das Tauschen der Bereiche wird nicht unterstützt im Versionskontrollmodus."
 
 #: meld/iohelpers.py:41
 msgid "Deleting remote folders is not supported"
@@ -2637,9 +2733,6 @@ msgstr "Leeren"
 
 #~ msgid "Show identical"
 #~ msgstr "Identische anzeigen"
-
-#~ msgid "Show new"
-#~ msgstr "Neue anzeigen"
 
 #~ msgid "Show modified"
 #~ msgstr "Geänderte anzeigen"
