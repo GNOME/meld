@@ -4,20 +4,21 @@
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2009, 2016.
 # Benjamin Steinwender <b@stbe.at>, 2014-2015.
 # Christian Kirbach <Christian.Kirbach@gmail.com>, 2015-2016.
+# Jürgen Benvenuti <gastornis@posteo.org>, 2023
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld meld-3-14\n"
-"POT-Creation-Date: 2018-02-25 22:59+0000\n"
-"PO-Revision-Date: 2018-02-27 22:04+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2023-01-09 20:07+0000\n"
+"PO-Revision-Date: 2023-01-13 19:44+0100\n"
+"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.1.1\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -25,7 +26,8 @@ msgid "translator-credits"
 msgstr ""
 "Mario Blättermann <mario.blaettermann@gmail.com>, 2009, 2016, 2018\n"
 "Benjamin Steinwender <b@stbe.at>, 2014-2015\n"
-"Christian Kirbach <christian.kirbach@gmail.com>, 2014, 2016"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2014, 2016\n"
+"Jürgen Benvenuti <gastornis@posteo.org>, 2023"
 
 #. (itstool) path: info/title
 #: C/command-line.page:5 C/file-changes.page:5 C/file-filters.page:5
@@ -301,7 +303,8 @@ msgstr ""
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
-#: C/file-filters.page:62 C/folder-mode.page:162 C/vc-mode.page:121
+#: C/file-filters.page:62 C/folder-mode.page:162 C/folder-mode.page:234
+#: C/vc-mode.page:121
 msgid "New"
 msgstr "Neu"
 
@@ -835,12 +838,12 @@ msgid "State"
 msgstr "Status"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:111 C/vc-mode.page:86
+#: C/folder-mode.page:111 C/folder-mode.page:227 C/vc-mode.page:86
 msgid "Appearance"
 msgstr "Erscheinungsbild"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:112 C/vc-mode.page:87
+#: C/folder-mode.page:112 C/folder-mode.page:228 C/vc-mode.page:87
 msgid "Meaning"
 msgstr "Bedeutung"
 
@@ -937,7 +940,7 @@ msgstr ""
 "des Dateinamens."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:217
+#: C/folder-mode.page:209
 msgid ""
 "You can filter out files based on these states, for example, to show only "
 "files that have been <em>Modified</em>. You can read more about this in "
@@ -948,13 +951,76 @@ msgstr ""
 "finden Sie in <link xref=\"file-filters#file-state-filter\"/>."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:223
+#: C/folder-mode.page:215
 msgid ""
-"Finally, the most recently modified file/folder has a small star emblem "
-"attached to it."
+"The icons in some rows have emblems added to them to show additional "
+"information. Note that these icons may change depending on your icon theme, "
+"so these descriptions are only a guide."
 msgstr ""
-"Außerdem wird die zuletzt geänderte Datei oder der zuletzt geänderte Ordner "
-"mit einem kleinen Stern-Emblem versehen."
+"Die Symbole in einigen Zeilen sind mit Emblemen versehen, um zusätzliche "
+"Informationen anzuzeigen. Beachten Sie, dass sich diese Symbole ändern "
+"können, abhängig von Ihrem Symbol-Thema. Diese Beschreibungen dienen daher "
+"nur als Anhaltspunkt."
+
+#. (itstool) path: table/title
+#: C/folder-mode.page:222
+msgid "Additional emblems"
+msgstr "Zusätzliche Embleme"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:226
+msgid "Emblem"
+msgstr "Emblem"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:235
+msgid "Small blue dot"
+msgstr "Kleiner blauer Punkt"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:236
+msgid ""
+"Used to indicate the \"newest\" (i.e., most recently modified) file in the "
+"row"
+msgstr ""
+"Wird verwendet, um die »neueste« (d.h., die zuletzt geänderte) Datei in der "
+"Zeile anzuzeigen"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:240
+msgid "Symbolic link"
+msgstr "Symbolische Verknüpfung"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:241
+msgid "Arrow"
+msgstr "Pfeil"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:242
+msgid "Shows that the row item is a symbolic link"
+msgstr ""
+"Zeigt an, dass der Eintrag in der Zeile eine symbolische Verknüpfung ist"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:245
+msgid "Selected"
+msgstr "Ausgewählt"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:246
+msgid "Tick mark"
+msgstr "Häkchen"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:247
+msgid ""
+"Shows that a file has been selected for a marked comparison, used to compare "
+"differently named files across folders"
+msgstr ""
+"Zeigt an, dass eine Datei für einen markierten Vergleich ausgewählt wurde. "
+"Dies wird zum Vergleichen unterschiedlich benannter Dateien in verschiedenen "
+"Ordnern verwendet."
 
 #. (itstool) path: page/title
 #: C/index.page:14
@@ -1927,3 +1993,10 @@ msgstr ""
 "Unterstützung der Versionskontrollsysteme im <link href=\"https://gitlab."
 "gnome.org/GNOME/meld/issues\"> Bugzilla-Fehlererfassungssystem von Meld</"
 "link>."
+
+#~ msgid ""
+#~ "Finally, the most recently modified file/folder has a small star emblem "
+#~ "attached to it."
+#~ msgstr ""
+#~ "Außerdem wird die zuletzt geänderte Datei oder der zuletzt geänderte "
+#~ "Ordner mit einem kleinen Stern-Emblem versehen."
