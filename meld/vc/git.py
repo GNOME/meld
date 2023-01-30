@@ -31,6 +31,7 @@ import os
 import re
 import shutil
 import stat
+import subprocess
 import tempfile
 from collections import defaultdict
 
@@ -267,6 +268,11 @@ class Vc(_vc.Vc):
     def _get_modified_files(self, path):
         # Update the index to avoid reading stale status information
         proc = self.run("update-index", "--refresh")
+        try:
+            proc.communicate(timeout=5)
+        except subprocess.TimeoutExpired:
+            proc.terminate()
+            proc.communicate()
 
         # Get status differences between the index and the repo HEAD
         proc = self.run("diff-index", "--cached", "HEAD", "--relative", path)
