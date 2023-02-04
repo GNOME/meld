@@ -252,7 +252,7 @@ def check_requirements():
         for r in requirements:
             r.check()
     except (AttributeError, ImportError, RuntimeError, ValueError):
-        show_error_and_exit(_('Meld requires %s or higher.') % str(r))
+        show_error_and_exit(_('Meld requires %s.') % str(r))
 
 
 def setup_resources():
