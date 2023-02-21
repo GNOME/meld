@@ -1,17 +1,17 @@
 # Hungarian translation for meld.
-# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022 Free Software Foundation, Inc.
+# Copyright (C) 2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023 Free Software Foundation, Inc.
 # This file is distributed under the same license as the meld package.
 #
 # Csécsy László <boobaa at ajrg dot hu>, 2005.
 # Gabor Kelemen <kelemeng at gnome dot hu>, 2005, 2006, 2007, 2008, 2009, 2010, 2012, 2013, 2014, 2015, 2016.
-# Balázs Úr <ur.balazs at fsf dot hu>, 2017, 2018, 2019, 2020, 2021, 2022.
+# Balázs Úr <ur.balazs at fsf dot hu>, 2017, 2018, 2019, 2020, 2021, 2022, 2023.
 # Balázs Meskó <mesko.balazs at fsf dot hu>, 2019.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-11-04 21:30+0000\n"
-"PO-Revision-Date: 2022-11-06 00:25+0100\n"
+"POT-Creation-Date: 2023-02-05 13:57+0000\n"
+"PO-Revision-Date: 2023-02-21 01:36+0100\n"
 "Last-Translator: Balázs Úr <ur.balazs at fsf dot hu>\n"
 "Language-Team: Hungarian <gnome-hu-list at gnome dot org>\n"
 "Language: hu\n"
@@ -475,15 +475,15 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (\"Biztonsági mentések\", true, \"#*# .#* ~* *~"
-" *.{orig,bak,swp}\"),\n"
-"              (\"Operációs rendszerre jellemző metaadatok\", true,"
-" \".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-"              (\"Verziókövető\", true, \"_MTN .bzr .svn .svn .hg .fslckout"
-" _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Biztonsági mentések\", true, \"#*# .#* ~* *~ *.{orig,bak,"
+"swp}\"),\n"
+"              (\"Operációs rendszerre jellemző metaadatok\", true, \"."
+"DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Verziókövető\", true, \"_MTN .bzr .svn .svn .hg .fslckout "
+"_FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              (\"Binárisok\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Média\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg"
-",xcf,xpm}\")\n"
+"              (\"Média\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"mpg,xcf,xpm}\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:253
@@ -518,16 +518,16 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (\"CVS/SVN kulcsszavak\", false,"
-" \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$\"),\n"
+"              (\"CVS/SVN kulcsszavak\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\"
+"\\$\"),\n"
 "              (\"C++ megjegyzés\", false, \"//.*\"),\n"
 "              (\"C megjegyzés\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"Összes üres karakter\", false, \"["
-" \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Elején lévő üres karakterek\", false, \"^["
-" \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Végén lévő üres karakterek\", false, \"["
-" \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
+"              (\"Összes üres karakter\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
+"              (\"Elején lévő üres karakterek\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Végén lévő üres karakterek\", false, \"[ \\\\t\\\\r\\\\f\\"
+"\\v]*$\"),\n"
 "              (\"Parancsfájl megjegyzések\", false, \"#.*\")\n"
 "            ]"
 
@@ -582,242 +582,260 @@ msgid "Quit Meld"
 msgstr "Kilépés a Meldből"
 
 #: meld/resources/gtk/help-overlay.ui:40
+#| msgid "Show whitespace"
+msgctxt "shortcut window"
+msgid "Show help"
+msgstr "Súgó megjelenítése"
+
+#: meld/resources/gtk/help-overlay.ui:47
+#| msgid "Preferences"
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Beállítások megjelenítése"
+
+#: meld/resources/gtk/help-overlay.ui:54
+#| msgid "Keyboard Shortcuts"
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Gyorsbillentyűk"
+
+#: meld/resources/gtk/help-overlay.ui:61
 msgctxt "shortcut window"
 msgid "Stop the current action"
 msgstr "Aktuális művelet leállítása"
 
-#: meld/resources/gtk/help-overlay.ui:47
+#: meld/resources/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Refresh comparison"
 msgstr "Összehasonlítás frissítése"
 
-#: meld/resources/gtk/help-overlay.ui:54
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Megnyitás külsőleg"
 
-#: meld/resources/gtk/help-overlay.ui:61
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "Teljes képernyő"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:89
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Bal és jobb ablaktáblák felcserélése"
 
-#: meld/resources/gtk/help-overlay.ui:77
+#: meld/resources/gtk/help-overlay.ui:98
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Ablaktáblák"
 
-#: meld/resources/gtk/help-overlay.ui:82
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Előző összehasonlító ablaktábla"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:110
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Következő összehasonlító ablaktábla"
 
-#: meld/resources/gtk/help-overlay.ui:98
+#: meld/resources/gtk/help-overlay.ui:119
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Változások"
 
-#: meld/resources/gtk/help-overlay.ui:103
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Ugrás az előző változásra"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Ugrás a következő változásra"
 
-#: meld/resources/gtk/help-overlay.ui:119
+#: meld/resources/gtk/help-overlay.ui:140
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Lapok"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Ugrás az előző lapra"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:152
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Ugrás a következő lapra"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Váltás lapra"
 
-#: meld/resources/gtk/help-overlay.ui:145
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Lap mozgatása balra"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Lap mozgatása jobbra"
 
-#: meld/resources/gtk/help-overlay.ui:161
+#: meld/resources/gtk/help-overlay.ui:182
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Szerkesztés"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Visszavonás"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Mégis"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Kivágás"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Másolás"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Beillesztés"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:222
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Keresés"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Következő találat"
 
-#: meld/resources/gtk/help-overlay.ui:215
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Előző találat"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Csere"
 
-#: meld/resources/gtk/help-overlay.ui:231
+#: meld/resources/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Fájl-összehasonlítás"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Aktuális fájl mentése"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Aktuális fájl mentése új útvonalra"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Minden fájl mentése az összehasonlításban"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Előző ütközés"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Következő ütközés"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Változás balra küldése"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Változás jobbra küldése"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Változás áthúzása balról"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Változás áthúzása jobbról"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:320
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Változás másolása a bal oldali fölé"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:327
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Változás másolása a bal oldali alá"
 
-#: meld/resources/gtk/help-overlay.ui:313
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Változás másolása a jobb oldali fölé"
 
-#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Változás másolása a jobb oldali alá"
 
-#: meld/resources/gtk/help-overlay.ui:327
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:376
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Változás törlése"
 
-#: meld/resources/gtk/help-overlay.ui:336
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Mappa-összehasonlítás"
 
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Másolás a bal oldalra"
 
-#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Másolás a jobb oldalra"
 
-#: meld/resources/gtk/help-overlay.ui:364
+#: meld/resources/gtk/help-overlay.ui:385
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Verziókövetési összehasonlítás"
 
-#: meld/resources/gtk/help-overlay.ui:369
+#: meld/resources/gtk/help-overlay.ui:390
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Véglegesítés verziókövetőbe"
 
-#: meld/resources/gtk/help-overlay.ui:376
+#: meld/resources/gtk/help-overlay.ui:397
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Konzolkimenet megjelenítése/elrejtése"
@@ -858,100 +876,100 @@ msgstr "Nézet"
 msgid "Fullscreen"
 msgstr "Teljes képernyő"
 
-#: meld/resources/gtk/menus.ui:52
+#: meld/resources/gtk/menus.ui:51
 msgid "Overview Map"
 msgstr "Áttekintő térkép"
 
-#: meld/resources/gtk/menus.ui:56
+#: meld/resources/gtk/menus.ui:55
 msgid "Version control console"
 msgstr "Verziókövető-konzol"
 
-#: meld/resources/gtk/menus.ui:60
+#: meld/resources/gtk/menus.ui:59
 msgid "Lock scrolling"
 msgstr "Görgetés zárolása"
 
-#: meld/resources/gtk/menus.ui:67
+#: meld/resources/gtk/menus.ui:66
 msgid "Swap left and right panes"
 msgstr "Bal és jobb ablaktáblák felcserélése"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:72
 msgid "Comparison"
 msgstr "Összehasonlítás"
 
-#: meld/resources/gtk/menus.ui:75
+#: meld/resources/gtk/menus.ui:74
 msgid "Stop"
 msgstr "Leállítás"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:80
 msgid "Merge All from Left"
 msgstr "Minden egyesítése balról"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Right"
 msgstr "Minden egyesítése jobbról"
 
-#: meld/resources/gtk/menus.ui:89
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All"
 msgstr "Minden egyesítése"
 
-#: meld/resources/gtk/menus.ui:96
+#: meld/resources/gtk/menus.ui:95
 msgid "Format as Patch…"
 msgstr "Formázás foltként…"
 
-#: meld/resources/gtk/menus.ui:105
+#: meld/resources/gtk/menus.ui:104
 msgid "_Preferences"
 msgstr "_Beállítások"
 
-#: meld/resources/gtk/menus.ui:109
+#: meld/resources/gtk/menus.ui:108
 msgid "Keyboard Shortcuts"
 msgstr "Gyorsbillentyűk"
 
-#: meld/resources/gtk/menus.ui:113
+#: meld/resources/gtk/menus.ui:112
 msgid "_Help"
 msgstr "_Súgó"
 
-#: meld/resources/gtk/menus.ui:118
+#: meld/resources/gtk/menus.ui:116
 msgid "_About Meld"
 msgstr "A Meld _névjegye"
 
-#: meld/resources/gtk/menus.ui:131
+#: meld/resources/gtk/menus.ui:129
 msgid "File status"
 msgstr "Fájlállapot"
 
-#: meld/resources/gtk/menus.ui:133
+#: meld/resources/gtk/menus.ui:131
 msgid "Same"
 msgstr "Egyezik"
 
-#: meld/resources/gtk/menus.ui:137
+#: meld/resources/gtk/menus.ui:135
 msgid "New"
 msgstr "Új"
 
-#: meld/resources/gtk/menus.ui:141 meld/resources/gtk/menus.ui:164
+#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
 #: meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Módosítva"
 
-#: meld/resources/gtk/menus.ui:151
+#: meld/resources/gtk/menus.ui:149
 msgid "Ignore filename case"
 msgstr "Kis- és nagybetűk nem különböznek a fájlnévben"
 
-#: meld/resources/gtk/menus.ui:155
+#: meld/resources/gtk/menus.ui:153
 msgid "Normalize Unicode paths"
 msgstr "Unicode útvonalak normalizálása"
 
-#: meld/resources/gtk/menus.ui:168
+#: meld/resources/gtk/menus.ui:166
 msgid "Normal"
 msgstr "Normál"
 
-#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Verziózatlan"
 
-#: meld/resources/gtk/menus.ui:176 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
 msgid "Ignored"
 msgstr "Mellőzve"
 
-#: meld/resources/gtk/menus.ui:183
+#: meld/resources/gtk/menus.ui:181
 msgid "Flatten folders"
 msgstr "Könyvtárak simítása"
 
@@ -2140,12 +2158,10 @@ msgid "Files must be saved to disk before swapping panes."
 msgstr "A fájlokat el kell menteni a lemezre a panelek felcserélése előtt."
 
 #: meld/filediff.py:2577
-#| msgid "Start a version control comparison"
 msgid "Can't swap version control comparisons"
 msgstr "Nem lehet felcserélni a verziókövetési összehasonlításokat"
 
 #: meld/filediff.py:2579
-#| msgid "Mark as resolved in version control"
 msgid "Swapping panes is not supported in version control mode."
 msgstr "A panelek felcserélése nem támogatott verziókövető módban."
 
@@ -2362,35 +2378,35 @@ msgstr "Nem lesznek fájlok véglegesítve"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d nem továbbított véglegesítés"
 msgstr[1] "%d nem továbbított véglegesítés"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d ágban"
 msgstr[1] "%d ágban"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Mód megváltoztatva: {old_mode} -> {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Részben sorba állítva"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Sorba állítva"
 
