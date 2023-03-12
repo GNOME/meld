@@ -7,7 +7,6 @@ help_files = [
   'folder-mode.page',
   'index.page',
   'introduction.page',
-  'keyboard-shortcuts.page',
   'legal.xml',
   'missing-functionality.page',
   'preferences.page',
