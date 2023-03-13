@@ -1,6 +1,7 @@
 # German translation of meld.
 # Copyright (C) 2005 Stephen Kennedy
 # This file is distributed under the same license as the meld package.
+#
 # Hendrik Brandt <eru@gmx.li>, 2004.
 # Frank Arnold <frank@scirocco-5v-turbo.de>, 2005.
 # Hendrik Richter <hendrikr@gnome.org>, 2006.
@@ -10,17 +11,18 @@
 # Bernd Homuth <dev@hmt.im>, 2015.
 # Paul Seyfert <pseyfert@mathphys.fsk.uni-heidelberg.de>, 2017.
 # Wolfgang Stöggl <c72578@yahoo.de>, 2019.
-# Philipp Kiemle <philipp.kiemle@gmail.com>, 2021.
+# Philipp Kiemle <philipp.kiemle@gmail.com>, 2021, 2023.
 # Tim Sabsch <tim@sabsch.com>, 2022.
 # Jürgen Benvenuti <gastornis@posteo.org>, 2022, 2023.
+#
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-01-25 21:12+0000\n"
-"PO-Revision-Date: 2023-01-26 16:05+0100\n"
-"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
+"POT-Creation-Date: 2023-03-12 21:55+0000\n"
+"PO-Revision-Date: 2023-03-13 19:07+0100\n"
+"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -481,7 +483,7 @@ msgstr ""
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -491,15 +493,15 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (»Datensicherungen«, true, \"#*# .#* ~* *~ *.{orig,bak,"
+"              (\"Datensicherungen\", true, \"#*# .#* ~* *~ *.{orig,bak,"
 "swp}\"),\n"
-"              (»Betriebssystem-spezifische Metadaten«, true, \".DS_Store ."
+"              (\"Betriebssystem-spezifische Metadaten\", true, \".DS_Store ."
 "_* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-"              (»Versionskontrolle«, true, \"_MTN .bzr .svn .svn .hg ."
+"              (\"Versionskontrolle\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-"              (»Binäre Dateien«, true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+"              (\"Binäre Dateien\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
 "exe}\"),\n"
-"              (»Medien«, false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
+"              (\"Medien\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
 "mpg,xcf,xpm}\")\n"
 "            ]"
 
@@ -522,29 +524,29 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:262
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
-"              (»CVS/SVN-Schlüsselwörter«, false, \"\\\\$\\\\w+(:[^\\\\n$]+)?"
-"\\\\$\"),\n"
-"              (»C++-Kommentar«, false, \"//.*\"),\n"
-"              (»C-Kommentar«, false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (»Alle Leerzeichen«, false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (»Vorangestellte Leerzeichen«, false, \"^[ \\\\t\\\\r\\\\f\\"
+"              (\"CVS/SVN-Schlüsselwörter\", false, \"\\\\$\\\\w+(:[^\\"
+"\\n$]+)?\\\\$\"),\n"
+"              (\"C++-Kommentar\", false, \"//.*\"),\n"
+"              (\"C-Kommentar\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"Alle Leerzeichen\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Vorangestellte Leerzeichen\", false, \"^[ \\\\t\\\\r\\\\f\\"
 "\\v]*\"),\n"
-"              (»Angehängte Leerzeichen«, false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"              (\"Angehängte Leerzeichen\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (»Skript-Kommentar«, false, \"#.*\")\n"
+"              (\"Skript-Kommentar\", false, \"#.*\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:273
@@ -838,17 +840,27 @@ msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Nach rechts kopieren"
 
-#: meld/resources/gtk/help-overlay.ui:385
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Den aktuellen Ordner ausklappen"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Den aktuellen Ordner einklappen"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Versionskontrollvergleich"
 
-#: meld/resources/gtk/help-overlay.ui:390
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Änderungen in die Versionskontrolle einspielen"
 
-#: meld/resources/gtk/help-overlay.ui:397
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Konsolenausgabe anzeigen/verbergen"
@@ -862,7 +874,7 @@ msgid "Save A_ll"
 msgstr "A_lles speichern"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Dateien wiederherstellen …"
 
 #: meld/resources/gtk/menus.ui:19
@@ -894,15 +906,15 @@ msgid "Overview Map"
 msgstr "Übersichtskarte"
 
 #: meld/resources/gtk/menus.ui:55
-msgid "Version control console"
+msgid "Version Control Console"
 msgstr "Versionskontrollkonsole"
 
 #: meld/resources/gtk/menus.ui:59
-msgid "Lock scrolling"
+msgid "Lock Scrolling"
 msgstr "Rollen sperren"
 
 #: meld/resources/gtk/menus.ui:66
-msgid "Swap left and right panes"
+msgid "Swap Left and Right Panes"
 msgstr "Linken und rechten Bereich tauschen"
 
 #: meld/resources/gtk/menus.ui:72
@@ -946,8 +958,8 @@ msgid "_About Meld"
 msgstr "_Info zu Meld"
 
 #: meld/resources/gtk/menus.ui:129
-msgid "File status"
-msgstr "Dateizustand"
+msgid "File Status"
+msgstr "Dateistatus"
 
 #: meld/resources/gtk/menus.ui:131
 msgid "Same"
@@ -963,11 +975,11 @@ msgid "Modified"
 msgstr "Geändert"
 
 #: meld/resources/gtk/menus.ui:149
-msgid "Ignore filename case"
+msgid "Ignore Filename Case"
 msgstr "Groß-/Kleinschreibung in Dateinamen ignorieren"
 
 #: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode paths"
+msgid "Normalize Unicode Paths"
 msgstr "Unicode-Pfade vereinheitlichen"
 
 #: meld/resources/gtk/menus.ui:166
@@ -983,7 +995,7 @@ msgid "Ignored"
 msgstr "Ignoriert"
 
 #: meld/resources/gtk/menus.ui:181
-msgid "Flatten folders"
+msgid "Flatten Folders"
 msgstr "Ordner einklappen"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -1108,27 +1120,27 @@ msgid "Delete selected"
 msgstr "Markierte löschen"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "Markierte Dateien _vergleichen"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "Gewählte Datei _markieren"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "Mit markierter Datei _vergleichen"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "Nach _links kopieren"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Nach _rechts kopieren"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "Markierte _löschen"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
@@ -2419,35 +2431,35 @@ msgstr "Keine Dateien zum Einspielen"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} in {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d nicht hochgeladene Einspielung"
 msgstr[1] "%d nicht hochgeladene Einspielungen"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d Zweig"
 msgstr[1] "%d Zweige"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modus wechselte von {old_mode} zu {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Teilweise bereitgestellt"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Bereitgestellt"
 
@@ -2612,6 +2624,12 @@ msgstr ""
 msgid "Clear"
 msgstr "Leeren"
 
+#~ msgid "Copy to _left"
+#~ msgstr "Nach _links kopieren"
+
+#~ msgid "Copy to _right"
+#~ msgstr "Nach _rechts kopieren"
+
 #~ msgid "The GNOME Project"
 #~ msgstr "Das GNOME-Projekt"
 
@@ -2714,12 +2732,6 @@ msgstr "Leeren"
 
 #~ msgid "Expand selected folder and all subfolders"
 #~ msgstr "Ausgewählten Ordner und alle Unterordner ausklappen"
-
-#~ msgid "Copy to _Left"
-#~ msgstr "Nach _links kopieren"
-
-#~ msgid "Copy to _Right"
-#~ msgstr "Nach _rechts kopieren"
 
 #~ msgid "Hide selected"
 #~ msgstr "Markierte verbergen"
@@ -2868,14 +2880,8 @@ msgstr "Leeren"
 #~ msgid "_New Comparison…"
 #~ msgstr "Neuer _Vergleich …"
 
-#~ msgid "Save the current file"
-#~ msgstr "Aktuelle Datei speichern"
-
 #~ msgid "Save the current file with a different name"
 #~ msgstr "Aktuelle Datei unter einem anderen Namen speichern"
-
-#~ msgid "Close the current file"
-#~ msgstr "Aktuelle Datei schließen"
 
 #~ msgid "_Edit"
 #~ msgstr "_Bearbeiten"
