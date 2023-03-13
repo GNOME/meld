@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-01-25 21:12+0000\n"
-"PO-Revision-Date: 2023-01-27 18:51+0200\n"
-"Last-Translator: Fracture dept <yurchor@ukr.net>\n"
+"POT-Creation-Date: 2023-03-12 21:49+0000\n"
+"PO-Revision-Date: 2023-03-13 22:28+0200\n"
+"Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
@@ -473,10 +473,22 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.meld.gschema.xml:244
+#| msgid ""
+#| "[\n"
+#| "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+#| "              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+#| "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+#| "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+#| "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+#| "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+#| "exe}\"),\n"
+#| "              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,"
+#| "avi,mpg,xcf,xpm}\")\n"
+#| "            ]"
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -515,18 +527,31 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.meld.gschema.xml:262
+#| msgid ""
+#| "[\n"
+#| "              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\"
+#| "\\$\"),\n"
+#| "              (\"C++ comment\", false, \"//.*\"),\n"
+#| "              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+#| "              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+#| "              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+#| "\\v]*\"),\n"
+#| "              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+#| "\"),\n"
+#| "              (\"Script comment\", false, \"#.*\")\n"
+#| "            ]"
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
@@ -535,8 +560,8 @@ msgstr ""
 "              (\"Коментар C++\", false, \"//.*\"),\n"
 "              (\"Коментар C\", false, \"/\\\\*.*?\\\\*/\"),\n"
 "              (\"Усі пробіли\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Початкові пробіли\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
-"\"),\n"
+"              (\"Початкові пробіли\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
 "              (\"Кінцеві пробіли\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
 "              (\"Коментарі у скрипті\", false, \"#.*\")\n"
 "            ]"
@@ -593,19 +618,16 @@ msgid "Quit Meld"
 msgstr "Вийти з Meld"
 
 #: meld/resources/gtk/help-overlay.ui:40
-#| msgid "Show whitespace"
 msgctxt "shortcut window"
 msgid "Show help"
 msgstr "Показати довідку"
 
 #: meld/resources/gtk/help-overlay.ui:47
-#| msgid "Preferences"
 msgctxt "shortcut window"
 msgid "Show preferences"
 msgstr "Показати налаштування"
 
 #: meld/resources/gtk/help-overlay.ui:54
-#| msgid "Keyboard Shortcuts"
 msgctxt "shortcut window"
 msgid "Keyboard shortcuts"
 msgstr "Клавіатурні скорочення"
@@ -836,17 +858,31 @@ msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Копіювати з лівого боку на правий"
 
-#: meld/resources/gtk/help-overlay.ui:385
+#: meld/resources/gtk/help-overlay.ui:383
+#| msgctxt "shortcut window"
+#| msgid "Save current file"
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Розгорнути поточну теку"
+
+#: meld/resources/gtk/help-overlay.ui:390
+#| msgctxt "shortcut window"
+#| msgid "Stop the current action"
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Згорнути поточну теку"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Порівняння у системі керування версіями"
 
-#: meld/resources/gtk/help-overlay.ui:390
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Внести до системи керування версіями"
 
-#: meld/resources/gtk/help-overlay.ui:397
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Показати або приховати виведення до консолі"
@@ -860,7 +896,8 @@ msgid "Save A_ll"
 msgstr "Зберегти _усе"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+#| msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Скасувати зміни у файлах…"
 
 #: meld/resources/gtk/menus.ui:19
@@ -892,15 +929,18 @@ msgid "Overview Map"
 msgstr "Мапа огляду"
 
 #: meld/resources/gtk/menus.ui:55
-msgid "Version control console"
+#| msgid "Version control console"
+msgid "Version Control Console"
 msgstr "Консоль системи керування версіями"
 
 #: meld/resources/gtk/menus.ui:59
-msgid "Lock scrolling"
+#| msgid "Lock scrolling"
+msgid "Lock Scrolling"
 msgstr "Блокувати гортання"
 
 #: meld/resources/gtk/menus.ui:66
-msgid "Swap left and right panes"
+#| msgid "Swap left and right panes"
+msgid "Swap Left and Right Panes"
 msgstr "Поміняти місцями ліву і праву панелі"
 
 #: meld/resources/gtk/menus.ui:72
@@ -944,7 +984,8 @@ msgid "_About Meld"
 msgstr "_Про Meld"
 
 #: meld/resources/gtk/menus.ui:129
-msgid "File status"
+#| msgid "File status"
+msgid "File Status"
 msgstr "Стан файла"
 
 #: meld/resources/gtk/menus.ui:131
@@ -961,11 +1002,13 @@ msgid "Modified"
 msgstr "Змінено"
 
 #: meld/resources/gtk/menus.ui:149
-msgid "Ignore filename case"
+#| msgid "Ignore filename case"
+msgid "Ignore Filename Case"
 msgstr "Ігнорувати регістр літер у назвах файлів"
 
 #: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode paths"
+#| msgid "Normalize Unicode paths"
+msgid "Normalize Unicode Paths"
 msgstr "Нормалізувати шляхи у Unicode"
 
 #: meld/resources/gtk/menus.ui:166
@@ -981,7 +1024,8 @@ msgid "Ignored"
 msgstr "Проігноровано"
 
 #: meld/resources/gtk/menus.ui:181
-msgid "Flatten folders"
+#| msgid "Flatten folders"
+msgid "Flatten Folders"
 msgstr "Сплощувати теки"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -1094,27 +1138,33 @@ msgid "Delete selected"
 msgstr "Видалити вибране"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+#| msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "По_рівняти позначені файли"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+#| msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "Поз_начити вибраний файл"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+#| msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "Порівняти _із позначеним файлом"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+#| msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "Копіювати _ліворуч"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+#| msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Копіювати _праворуч"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+#| msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "Ви_лучити позначене"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
@@ -2395,12 +2445,12 @@ msgstr "Жодного файла не буде внесено"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} у {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
@@ -2409,7 +2459,7 @@ msgstr[1] "%d ненадісланих внески"
 msgstr[2] "%d ненадісланиих внесків"
 msgstr[3] "%d ненадісланий внесок"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
@@ -2418,16 +2468,16 @@ msgstr[1] "%d гілки"
 msgstr[2] "%d гілок"
 msgstr[3] "%d гілка"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Режим змінено з {old_mode} на {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Частково сформатовано"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Позначено"
 
