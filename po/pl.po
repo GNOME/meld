@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-02-05 13:57+0000\n"
-"PO-Revision-Date: 2023-02-05 14:59+0100\n"
+"POT-Creation-Date: 2023-03-12 21:49+0000\n"
+"PO-Revision-Date: 2023-03-18 13:35+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
@@ -469,7 +469,7 @@ msgstr ""
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -510,16 +510,16 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:262
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
@@ -527,8 +527,8 @@ msgstr ""
 "\\\\$\"),\n"
 "              (\"Komentarz języka C++\", false, \"//.*\"),\n"
 "              (\"Komentarz języka C\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"Wszystkie białe znaki\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*"
-"\"),\n"
+"              (\"Wszystkie białe znaki\", false, \"[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
 "              (\"Białe znaki na początku wiersza\", false, \"^[ \\\\t\\\\r\\"
 "\\f\\\\v]*\"),\n"
 "              (\"Białe znaki na końcu wiersza\", false, \"[ \\\\t\\\\r\\\\f\\"
@@ -831,17 +831,27 @@ msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Skopiowanie na prawo"
 
-#: meld/resources/gtk/help-overlay.ui:385
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Rozwinięcie bieżącego katalogu"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Zwinięcie bieżącego katalogu"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Porównanie systemu kontroli wersji"
 
-#: meld/resources/gtk/help-overlay.ui:390
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Zatwierdzenie zmiany w systemie kontroli wersji"
 
-#: meld/resources/gtk/help-overlay.ui:397
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Wyświetlenie/ukrycie wyjścia konsoli"
@@ -855,7 +865,7 @@ msgid "Save A_ll"
 msgstr "Z_apisz wszystkie"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Przywróć pliki…"
 
 #: meld/resources/gtk/menus.ui:19
@@ -887,15 +897,15 @@ msgid "Overview Map"
 msgstr "Mapa przeglądowa"
 
 #: meld/resources/gtk/menus.ui:55
-msgid "Version control console"
+msgid "Version Control Console"
 msgstr "Konsola systemu kontroli wersji"
 
 #: meld/resources/gtk/menus.ui:59
-msgid "Lock scrolling"
+msgid "Lock Scrolling"
 msgstr "Synchronizacja przewijania"
 
 #: meld/resources/gtk/menus.ui:66
-msgid "Swap left and right panes"
+msgid "Swap Left and Right Panes"
 msgstr "Wymień lewy i prawy panel"
 
 #: meld/resources/gtk/menus.ui:72
@@ -939,7 +949,7 @@ msgid "_About Meld"
 msgstr "_O programie"
 
 #: meld/resources/gtk/menus.ui:129
-msgid "File status"
+msgid "File Status"
 msgstr "Stan pliku"
 
 #: meld/resources/gtk/menus.ui:131
@@ -956,11 +966,11 @@ msgid "Modified"
 msgstr "Zmodyfikowane"
 
 #: meld/resources/gtk/menus.ui:149
-msgid "Ignore filename case"
+msgid "Ignore Filename Case"
 msgstr "Ignorowanie wielkości liter w nazwach plików"
 
 #: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode paths"
+msgid "Normalize Unicode Paths"
 msgstr "Normalizowanie ścieżek Unicode"
 
 #: meld/resources/gtk/menus.ui:166
@@ -976,7 +986,7 @@ msgid "Ignored"
 msgstr "Zignorowane"
 
 #: meld/resources/gtk/menus.ui:181
-msgid "Flatten folders"
+msgid "Flatten Folders"
 msgstr "Uprość wyświetlaną strukturę katalogów"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -1092,27 +1102,27 @@ msgid "Delete selected"
 msgstr "Usuwa zaznaczone"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "_Porównaj zaznaczone pliki"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "O_znacz zaznaczony plik"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "Poró_wnaj z oznaczonym plikiem"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "S_kopiuj element na lewo"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Sk_opiuj element na prawo"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "_Usuń zaznaczone"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
