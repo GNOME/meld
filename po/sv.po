@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-01-25 21:12+0000\n"
-"PO-Revision-Date: 2023-01-25 23:15+0100\n"
+"POT-Creation-Date: 2023-03-12 21:49+0000\n"
+"PO-Revision-Date: 2023-03-12 23:16+0100\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -457,7 +457,7 @@ msgstr ""
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -497,16 +497,16 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:262
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
 "\\v]*\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
@@ -813,17 +813,27 @@ msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Kopiera till höger"
 
-#: meld/resources/gtk/help-overlay.ui:385
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Expandera aktuell mapp"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Fäll ihop aktuell mapp"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Versionshanterad jämförelse"
 
-#: meld/resources/gtk/help-overlay.ui:390
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Checka in i versionshanteraren"
 
-#: meld/resources/gtk/help-overlay.ui:397
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Visa/dölj konsolutskrift"
@@ -837,7 +847,7 @@ msgid "Save A_ll"
 msgstr "Spara _alla"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Återställ filer…"
 
 #: meld/resources/gtk/menus.ui:19
@@ -869,15 +879,15 @@ msgid "Overview Map"
 msgstr "Översiktskarta"
 
 #: meld/resources/gtk/menus.ui:55
-msgid "Version control console"
+msgid "Version Control Console"
 msgstr "Versionshanteringskonsol"
 
 #: meld/resources/gtk/menus.ui:59
-msgid "Lock scrolling"
+msgid "Lock Scrolling"
 msgstr "Lås rullning"
 
 #: meld/resources/gtk/menus.ui:66
-msgid "Swap left and right panes"
+msgid "Swap Left and Right Panes"
 msgstr "Byt plats på vänster- och högerpanelen"
 
 #: meld/resources/gtk/menus.ui:72
@@ -921,7 +931,7 @@ msgid "_About Meld"
 msgstr "_Om Meld"
 
 #: meld/resources/gtk/menus.ui:129
-msgid "File status"
+msgid "File Status"
 msgstr "Filstatus"
 
 #: meld/resources/gtk/menus.ui:131
@@ -938,11 +948,11 @@ msgid "Modified"
 msgstr "Ändrade"
 
 #: meld/resources/gtk/menus.ui:149
-msgid "Ignore filename case"
+msgid "Ignore Filename Case"
 msgstr "Ignorera skiftlägeskänslighet för filnamn"
 
 #: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode paths"
+msgid "Normalize Unicode Paths"
 msgstr "Normalisera Unicode-sökvägar"
 
 #: meld/resources/gtk/menus.ui:166
@@ -958,7 +968,7 @@ msgid "Ignored"
 msgstr "Ignorerade"
 
 #: meld/resources/gtk/menus.ui:181
-msgid "Flatten folders"
+msgid "Flatten Folders"
 msgstr "Platta till mappar"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -1079,27 +1089,27 @@ msgid "Delete selected"
 msgstr "Ta bort markerade"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "_Jämför markerade filer"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "_Märk markerad fil"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "Jäm_för med märkt fil"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "Kopiera till _vänster"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Kopiera till _höger"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "_Ta bort markerade"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
@@ -2369,35 +2379,35 @@ msgstr "Inga filer kommer att checkas in"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} i {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d ej sänd incheckning"
 msgstr[1] "%d ej sända incheckningar"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d gren"
 msgstr[1] "%d grenar"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Läge ändrat från {old_mode} till {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Delvis köad"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Köad"
 
@@ -2562,6 +2572,12 @@ msgstr ""
 msgid "Clear"
 msgstr "Töm"
 
+#~ msgid "Copy to _left"
+#~ msgstr "Kopiera till _vänster"
+
+#~ msgid "Copy to _right"
+#~ msgstr "Kopiera till _höger"
+
 #~ msgid "The GNOME Project"
 #~ msgstr "GNOME-projektet"
 
@@ -2659,12 +2675,6 @@ msgstr "Töm"
 
 #~ msgid "Expand selected folder and all subfolders"
 #~ msgstr "Expandera markerad mapp och alla undermappar"
-
-#~ msgid "Copy to _Left"
-#~ msgstr "Kopiera till _vänster"
-
-#~ msgid "Copy to _Right"
-#~ msgstr "Kopiera till _höger"
 
 #~ msgid "Hide selected"
 #~ msgstr "Dölj markerade"
@@ -2813,14 +2823,8 @@ msgstr "Töm"
 #~ msgid "_New Comparison…"
 #~ msgstr "_Ny jämförelse…"
 
-#~ msgid "Save the current file"
-#~ msgstr "Spara den aktuella filen"
-
 #~ msgid "Save the current file with a different name"
 #~ msgstr "Spara den aktuella filen med ett annat namn"
-
-#~ msgid "Close the current file"
-#~ msgstr "Stäng den aktuella filen"
 
 #~ msgid "_Edit"
 #~ msgstr "_Redigera"
