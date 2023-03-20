@@ -1,22 +1,22 @@
 # Indonesian translation for meld.
 # Copyright (C) 2013 meld's COPYRIGHT HOLDER
 # This file is distributed under the same license as the meld package.
-# Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016, 2017, 2018.
+# Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016-2018, 2020, 2021, 2023.
 # Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019, 2022.
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-11-16 06:57+0000\n"
-"PO-Revision-Date: 2022-11-16 13:58+0700\n"
-"Last-Translator: Kukuh Syafaat <kukuhsyafaat@gnome.org>\n"
+"POT-Creation-Date: 2023-03-12 21:49+0000\n"
+"PO-Revision-Date: 2023-03-20 16:55+0700\n"
+"Last-Translator: Andika Triwidada <andika@gmail.com>\n"
 "Language-Team: Indonesian <gnome@i15n.org>\n"
 "Language: id\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.2.1\n"
+"X-Generator: Poedit 3.2.2\n"
 
 #: data/org.gnome.meld.desktop.in.in:3 data/org.gnome.meld.appdata.xml.in.in:11
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -90,8 +90,8 @@ msgid ""
 "If true, the GTK dark theme variant will be used, if available. Note that "
 "this is separate from the syntax highlighting scheme."
 msgstr ""
-"Jika tr,ue varian tema gelap GTK akan digunakan, jika tersedia. Perhatikan "
-"bahwa ini terpisah dari skema penyorotan sintaks."
+"Jika berisi true, varian tema gelap GTK akan digunakan, jika tersedia. "
+"Perhatikan bahwa ini terpisah dari skema penyorotan sintaks."
 
 #: data/org.gnome.meld.gschema.xml:65
 msgid "Additional automatically detected text encodings"
@@ -462,7 +462,7 @@ msgstr ""
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -472,12 +472,12 @@ msgid ""
 "            ]"
 msgstr ""
 "[\n"
-"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"Backup\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"Metadata Spesifik OS\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
-"fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Kontrol Versi\", true, \"_MTN .bzr .svn .svn .hg .fslckout "
+"_FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Biner\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
 "              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
 "mpg,xcf,xpm}\")\n"
 "            ]"
@@ -501,29 +501,29 @@ msgstr ""
 #: data/org.gnome.meld.gschema.xml:262
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"Kata kunci CVS/SVN\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\"
+"$\"),\n"
+"              (\"Komentar C++\", false, \"//.*\"),\n"
+"              (\"Komentar C\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"Semua whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Whitespace di awal\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Whitespace di akhir\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
-"\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Komentar skrip\", false, \"#.*\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:273
@@ -578,241 +578,266 @@ msgstr "Keluar Meld"
 
 #: meld/resources/gtk/help-overlay.ui:40
 msgctxt "shortcut window"
+msgid "Show help"
+msgstr "Tampilkan bantuan"
+
+#: meld/resources/gtk/help-overlay.ui:47
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Tampilkan preferensi"
+
+#: meld/resources/gtk/help-overlay.ui:54
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Pintasan papan ketik"
+
+#: meld/resources/gtk/help-overlay.ui:61
+msgctxt "shortcut window"
 msgid "Stop the current action"
 msgstr "Hentikan aksi saat ini"
 
-#: meld/resources/gtk/help-overlay.ui:47
+#: meld/resources/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Refresh comparison"
 msgstr "Segarkan perbandingan"
 
-#: meld/resources/gtk/help-overlay.ui:54
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Buka secara eksternal"
 
-#: meld/resources/gtk/help-overlay.ui:61
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "Layar Penuh"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:89
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Menukar panel kiri dan kanan"
 
-#: meld/resources/gtk/help-overlay.ui:77
+#: meld/resources/gtk/help-overlay.ui:98
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Panel"
 
-#: meld/resources/gtk/help-overlay.ui:82
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Panel perbandingan sebelumnya"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:110
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Panel perbandingan selanjutnya"
 
-#: meld/resources/gtk/help-overlay.ui:98
+#: meld/resources/gtk/help-overlay.ui:119
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Perubahan"
 
-#: meld/resources/gtk/help-overlay.ui:103
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Ke perubahan sebelumnya"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Ke perubahan selanjutnya"
 
-#: meld/resources/gtk/help-overlay.ui:119
+#: meld/resources/gtk/help-overlay.ui:140
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Tab"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Ke tab sebelumnya"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:152
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Ke tab selanjutnya"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Tukar ke tab"
 
-#: meld/resources/gtk/help-overlay.ui:145
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Pindahkan tab ke kiri"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Pindahkan tab ke kanan"
 
-#: meld/resources/gtk/help-overlay.ui:161
+#: meld/resources/gtk/help-overlay.ui:182
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Menyunting"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Tak jadi"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Jadi lagi"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Potong"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Salin"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Tempel"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:222
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Cari"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Cari Selanjutnya"
 
-#: meld/resources/gtk/help-overlay.ui:215
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Cari Sebelumnya"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Ganti"
 
-#: meld/resources/gtk/help-overlay.ui:231
+#: meld/resources/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Perbandingan berkas"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Simpan berkas kini"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Simpan berkas saat ini ke path baru"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Simpan semua berkas dalam perbandingan"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Konflik sebelumnya"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Konflik selanjutnya"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Push perubahan ke kiri"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Push perubahan ke kanan"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Pull perubahan dari kiri"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Pull perubahan dari kanan"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:320
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Salin perubahan di atas kiri"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:327
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Salin perubahan di bawah kiri"
 
-#: meld/resources/gtk/help-overlay.ui:313
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Salin perubahan di atas kanan"
 
-#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Salin perubahan di bawah kanan"
 
-#: meld/resources/gtk/help-overlay.ui:327
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:376
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Hapus perubahan"
 
-#: meld/resources/gtk/help-overlay.ui:336
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Perbandingan folder"
 
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Salin ke kiri"
 
-#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Salin ke kanan"
 
-#: meld/resources/gtk/help-overlay.ui:364
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Kembangkan folder saat ini"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Kuncupkan folder saat ini"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Perbandingan kendali versi"
 
-#: meld/resources/gtk/help-overlay.ui:369
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Komit ke kendali versi"
 
-#: meld/resources/gtk/help-overlay.ui:376
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Tampilkan/sembunyikan keluaran konsol"
@@ -826,8 +851,8 @@ msgid "Save A_ll"
 msgstr "Simpan Semu_a"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
-msgstr "Pulihkan berkas…"
+msgid "Revert Files…"
+msgstr "Pulihkan Berkas…"
 
 #: meld/resources/gtk/menus.ui:19
 msgid "Open Externally"
@@ -853,102 +878,102 @@ msgstr "Tampilan"
 msgid "Fullscreen"
 msgstr "Layar Penuh"
 
-#: meld/resources/gtk/menus.ui:52
+#: meld/resources/gtk/menus.ui:51
 msgid "Overview Map"
 msgstr "Peta Ikhtisar"
 
-#: meld/resources/gtk/menus.ui:56
-msgid "Version control console"
-msgstr "Konsol kendali versi"
+#: meld/resources/gtk/menus.ui:55
+msgid "Version Control Console"
+msgstr "Konsol Kontrol Versi"
 
-#: meld/resources/gtk/menus.ui:60
-msgid "Lock scrolling"
-msgstr "Kunci pengguliran"
+#: meld/resources/gtk/menus.ui:59
+msgid "Lock Scrolling"
+msgstr "Kunci Pengguliran"
 
-#: meld/resources/gtk/menus.ui:67
-msgid "Swap left and right panes"
-msgstr "Menukar panel kiri dan kanan"
+#: meld/resources/gtk/menus.ui:66
+msgid "Swap Left and Right Panes"
+msgstr "Tukar Panel Kiri dan Kanan"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:72
 msgid "Comparison"
 msgstr "Perbandingan"
 
-#: meld/resources/gtk/menus.ui:75
+#: meld/resources/gtk/menus.ui:74
 msgid "Stop"
 msgstr "Berhenti"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:80
 msgid "Merge All from Left"
 msgstr "Merge Semua dari Kiri"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Right"
 msgstr "Merge Semua dari Kanan"
 
-#: meld/resources/gtk/menus.ui:89
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All"
 msgstr "Merge Semua"
 
-#: meld/resources/gtk/menus.ui:96
+#: meld/resources/gtk/menus.ui:95
 msgid "Format as Patch…"
 msgstr "Format sebagai Patch…"
 
-#: meld/resources/gtk/menus.ui:105
+#: meld/resources/gtk/menus.ui:104
 msgid "_Preferences"
 msgstr "_Preferensi"
 
-#: meld/resources/gtk/menus.ui:109
+#: meld/resources/gtk/menus.ui:108
 msgid "Keyboard Shortcuts"
 msgstr "Tombol Pintas"
 
-#: meld/resources/gtk/menus.ui:113
+#: meld/resources/gtk/menus.ui:112
 msgid "_Help"
 msgstr "_Bantuan"
 
-#: meld/resources/gtk/menus.ui:118
+#: meld/resources/gtk/menus.ui:116
 msgid "_About Meld"
 msgstr "Tent_ang Meld"
 
-#: meld/resources/gtk/menus.ui:131
-msgid "File status"
-msgstr "Status berkas"
+#: meld/resources/gtk/menus.ui:129
+msgid "File Status"
+msgstr "Status Berkas"
 
-#: meld/resources/gtk/menus.ui:133
+#: meld/resources/gtk/menus.ui:131
 msgid "Same"
 msgstr "Sama"
 
-#: meld/resources/gtk/menus.ui:137
+#: meld/resources/gtk/menus.ui:135
 msgid "New"
 msgstr "Baru"
 
-#: meld/resources/gtk/menus.ui:141 meld/resources/gtk/menus.ui:164
+#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
 #: meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Diubah"
 
-#: meld/resources/gtk/menus.ui:151
-msgid "Ignore filename case"
-msgstr "Abaikan besar kecil huruf nama berkas"
+#: meld/resources/gtk/menus.ui:149
+msgid "Ignore Filename Case"
+msgstr "Abaikan Besar Kecil Huruf Nama Berkas"
 
-#: meld/resources/gtk/menus.ui:155
-msgid "Normalize Unicode paths"
-msgstr "Menormalkan path Unicode"
+#: meld/resources/gtk/menus.ui:153
+msgid "Normalize Unicode Paths"
+msgstr "Normalkan Path Unicode"
 
-#: meld/resources/gtk/menus.ui:168
+#: meld/resources/gtk/menus.ui:166
 msgid "Normal"
 msgstr "Normal"
 
-#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Tanpa versi"
 
-#: meld/resources/gtk/menus.ui:176 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
 msgid "Ignored"
 msgstr "Diabaikan"
 
-#: meld/resources/gtk/menus.ui:183
-msgid "Flatten folders"
-msgstr "Ratakan direktori"
+#: meld/resources/gtk/menus.ui:181
+msgid "Flatten Folders"
+msgstr "Ratakan Direktori"
 
 #: meld/resources/ui/about-dialog.ui:8
 msgid ""
@@ -961,7 +986,8 @@ msgstr ""
 #: meld/resources/ui/about-dialog.ui:14
 msgid "translator-credits"
 msgstr ""
-"Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016, 2018, 2020, 2021.\n"
+"Andika Triwidada <andika@gmail.com>, 2013, 2014, 2016-2018, 2020, 2021, "
+"2023.\n"
 "Kukuh Syafaat <kukuhsyafaat@gnome.org>, 2017, 2018, 2019, 2022."
 
 #: meld/resources/ui/appwindow.ui:30
@@ -1062,28 +1088,28 @@ msgid "Delete selected"
 msgstr "Hapus yang dipilih"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
-msgstr "_Bandingkan berkas-berkas yang dipilih"
+msgid "_Compare Selected Files"
+msgstr "_Bandingkan Berkas Yang Dipilih"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
-msgstr "_Tandai berkas-berkas yang dipilih"
+msgid "_Mark Selected File"
+msgstr "_Tandai Berkas Yang Dipilih"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
-msgstr "_Bandingkan dengan berkas yang ditandai"
+msgid "Compare _with Marked File"
+msgstr "_Bandingkan dengan Berkas Yang Ditandai"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
-msgstr "Salin ke k_iri"
+msgid "Copy to _Left"
+msgstr "Salin ke K_iri"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
-msgstr "Salin ke k_anan"
+msgid "Copy to _Right"
+msgstr "Salin ke K_anan"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
-msgstr "_Hapus yang dipilih"
+msgid "_Delete Selected"
+msgstr "_Hapus Yang Dipilih"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
 msgid "Collapse Recursively"
@@ -2360,33 +2386,33 @@ msgstr "Tak ada berkas yang akan dikomit"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} dalam {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d komit belum didorong"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d cabang"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Mode berubah dari {old_mode} menjadi {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Di-stage sebagian"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Di-stage"
 
@@ -2550,42 +2576,3 @@ msgstr ""
 #: meld/vcview.py:854
 msgid "Clear"
 msgstr "Bersihkan"
-
-#~ msgid "The GNOME Project"
-#~ msgstr "Proyek GNOME"
-
-#~ msgid "Refresh"
-#~ msgstr "Segarkan"
-
-#~ msgid "_Update"
-#~ msgstr "M_utakhirkan"
-
-#~ msgid "Mar_k as Resolved"
-#~ msgstr "Tandai sebagai Terselesai_kan"
-
-#~ msgid "Update"
-#~ msgstr "Mutakhiran"
-
-#~ msgid "Update working copy from version control"
-#~ msgstr "Mutakhirkan salinan kerja dari kendali versi"
-
-#~ msgid "Push"
-#~ msgstr "Push"
-
-#~ msgid "Add"
-#~ msgstr "Tambah"
-
-#~ msgid "Remove"
-#~ msgstr "Hapus"
-
-#~ msgid "Mark as Resolved"
-#~ msgstr "Tandai sebagai Terselesaikan"
-
-#~ msgid "Revert"
-#~ msgstr "Kembalikan"
-
-#~ msgid "Delete from working copy"
-#~ msgstr "Hapus dari salinan kerja"
-
-#~ msgid "Location: {path}"
-#~ msgstr "Lokasi: {path}"
