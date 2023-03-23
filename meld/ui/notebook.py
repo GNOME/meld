@@ -53,23 +53,23 @@ class MeldNotebook(Gtk.Notebook):
     )
 
     ui = """
-        <?xml version="1.0" encoding="UTF-8"?>
-        <interface>
-          <menu id="tab-menu">
-            <item>
-              <attribute name="label">Move _Left</attribute>
-              <attribute name="action">popup.tabmoveleft</attribute>
-            </item>
-            <item>
-              <attribute name="label">Move _Right</attribute>
-              <attribute name="action">popup.tabmoveright</attribute>
-            </item>
-            <item>
-              <attribute name="label">_Close</attribute>
-              <attribute name="action">win.close</attribute>
-            </item>
-          </menu>
-        </interface>
+      <?xml version="1.0" encoding="UTF-8"?>
+      <interface>
+        <menu id="tab-menu">
+          <item>
+            <attribute name="label" translatable="yes">Move _Left</attribute>
+            <attribute name="action">popup.tabmoveleft</attribute>
+          </item>
+          <item>
+            <attribute name="label" translatable="yes">Move _Right</attribute>
+            <attribute name="action">popup.tabmoveright</attribute>
+          </item>
+          <item>
+            <attribute name="label" translatable="yes">_Close</attribute>
+            <attribute name="action">win.close</attribute>
+          </item>
+        </menu>
+      </interface>
     """
 
     def __init__(self, *args, **kwargs):
