@@ -24,7 +24,7 @@ cloudflareworkers:
   stage: publish
   image: node:12-alpine
   script:
-    - npm install @cloudflare/wrangler
+    - npm install -g wrangler
     - npx wrangler publish --env production
     - npx wrangler publish --env oldproduction
   only:
