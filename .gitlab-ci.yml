@@ -22,7 +22,7 @@ pages:
 
 cloudflareworkers:
   stage: publish
-  image: node:12-alpine
+  image: node:18-alpine
   script:
     - npm install -g wrangler
     - npx wrangler publish --env production
