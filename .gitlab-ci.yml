@@ -25,6 +25,7 @@ cloudflareworkers:
   image: node:18-alpine
   script:
     - npm install -g wrangler
+    - npm install workers-site/
     - npx wrangler publish --env production
     - npx wrangler publish --env oldproduction
   only:
