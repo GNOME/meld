@@ -41,11 +41,6 @@ except ImportError:
             'install paths may be incorrect', file=sys.stderr)
 
 windows_build = os.name == 'nt'
-if windows_build:
-    import cx_Freeze
-    command_base = cx_Freeze
-else:
-    command_base = distutils
 
 
 def has_help(self):
@@ -64,7 +59,7 @@ def has_data(self):
     return "build_data" in self.distribution.cmdclass
 
 
-command_base.command.build.Build.sub_commands.extend([
+distutils.command.build.build.sub_commands.extend([
     ("build_i18n", has_i18n),
     ("build_icons", has_icons),
     ("build_help", has_help),
