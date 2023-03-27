@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
-"POT-Creation-Date: 2023-01-25 21:12+0000\n"
-"PO-Revision-Date: 2023-02-05 14:40+0100\n"
+"POT-Creation-Date: 2023-03-24 16:46+0000\n"
+"PO-Revision-Date: 2023-03-27 14:02+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -21,12 +21,13 @@ msgstr ""
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
-msgstr "Josef Andersson <josef.andersson@fripost.org>, 2015"
+msgstr ""
+"Josef Andersson <josef.andersson@fripost.org>, 2015\n"
+"Anders Jonsson <anders.jonsson@norsjovallen.se>, 2023"
 
 #. (itstool) path: info/title
 #: C/command-line.page:5 C/file-changes.page:5 C/file-filters.page:5
-#: C/flattened-view.page:5 C/keyboard-shortcuts.page:5
-#: C/resolving-conflicts.page:5 C/text-filters.page:5
+#: C/flattened-view.page:5 C/resolving-conflicts.page:5 C/text-filters.page:5
 msgctxt "sort"
 msgid "2"
 msgstr "2"
@@ -34,19 +35,18 @@ msgstr "2"
 #. (itstool) path: credit/name
 #: C/command-line.page:10 C/file-changes.page:10 C/file-filters.page:10
 #: C/file-mode.page:11 C/flattened-view.page:10 C/folder-mode.page:10
-#: C/index.page:12 C/introduction.page:10 C/keyboard-shortcuts.page:10
-#: C/missing-functionality.page:10 C/preferences.page:10
-#: C/resolving-conflicts.page:10 C/text-filters.page:11 C/vc-mode.page:10
-#: C/vc-supported.page:10
+#: C/index.page:12 C/introduction.page:10 C/missing-functionality.page:10
+#: C/preferences.page:10 C/resolving-conflicts.page:10 C/text-filters.page:11
+#: C/vc-mode.page:10 C/vc-supported.page:10
 msgid "Kai Willadsen"
 msgstr "Kai Willadsen"
 
 #. (itstool) path: credit/years
 #: C/command-line.page:12 C/file-changes.page:12 C/file-filters.page:12
 #: C/file-mode.page:13 C/flattened-view.page:12 C/folder-mode.page:12
-#: C/index.page:14 C/introduction.page:12 C/keyboard-shortcuts.page:12
-#: C/missing-functionality.page:12 C/resolving-conflicts.page:12
-#: C/text-filters.page:13 C/vc-mode.page:12 C/vc-supported.page:12
+#: C/index.page:14 C/introduction.page:12 C/missing-functionality.page:12
+#: C/resolving-conflicts.page:12 C/text-filters.page:13 C/vc-mode.page:12
+#: C/vc-supported.page:12
 msgid "2012"
 msgstr "2012"
 
@@ -83,7 +83,7 @@ msgid ""
 "link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
 "cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
 msgstr ""
-"För en två- eller trevägs <link xref=\"folder-mode\">mappjämförelse</link>, "
+"För en två- eller trevägs<link xref=\"folder-mode\">mappjämförelse</link>, "
 "starta <app>Meld</app> med <cmd>meld <var>kat1</var> <var>kat2</var></cmd> "
 "eller <cmd>meld <var>kat1</var> <var>kat2</var> <var>kat3</var></cmd>."
 
@@ -100,8 +100,9 @@ msgstr ""
 "Du kan starta en <link xref=\"vc-mode\">versionshantering</link>sjämförelse "
 "genom att endast ange ett argument; om filen eller katalogen hanteras av ett "
 "<link xref=\"vc-supported\">versionshanteringssystem</link>, kommer det att "
-"starta en versionshanteringsjämförelse med det argumentet. Till exempel, "
-"<cmd>meld .</cmd> skulle starta en versionskontroll av aktuell katalog."
+"starta en versionshanteringsjämförelse med det argumentet. Till exempel "
+"skulle <cmd>meld .</cmd> skulle starta en versionshanteringsvy över aktuell "
+"katalog."
 
 #. (itstool) path: note/p
 #: C/command-line.page:40
@@ -125,10 +126,10 @@ msgid ""
 msgstr ""
 "<app>Meld</app> hanterar skillnader mellan filer som en lista av "
 "<em>ändringsblock</em> eller enklare, <em>ändringar</em>. Varje ändring är "
-"en grupp rader som motsvaras mellan filer. Eftersom dessa ändringar är vad "
-"du vanligtvis är intresserad av, ger dig <app>Meld</app> specifika verktyg "
-"för att navigera mellan ändringarna och redigera dem. Du kan hitta dessa "
-"verktyg i menyn <gui style=\"menu\">Ändringar</gui>."
+"en grupp rader som motsvarar varandra mellan filer. Eftersom dessa ändringar "
+"är vad du vanligtvis är intresserad av, ger dig <app>Meld</app> specifika "
+"verktyg för att navigera mellan ändringarna och redigera dem. Du kan hitta "
+"dessa verktyg i menyn <gui style=\"menu\">Ändringar</gui>."
 
 #. (itstool) path: section/title
 #: C/file-changes.page:30
@@ -138,27 +139,21 @@ msgstr "Navigera mellan ändringar"
 #. (itstool) path: section/p
 #: C/file-changes.page:32
 msgid ""
-"You can navigate between changes with the <guiseq><gui "
-"style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></"
-"guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui "
-"style=\"menuitem\">Next change</gui></guiseq> menu items. You can also use "
-"your mouse's scroll wheel to move between changes, by scrolling on the "
-"central change bar."
+"You can navigate between changes with the previous and next change buttons "
+"in the toolbar. You can also use your mouse's scroll wheel to move between "
+"changes, by scrolling on the central change bar."
 msgstr ""
-"Du kan navigera mellan ändringar med menyobjekten <guiseq><gui "
-"style=\"menu\">Ändringar</gui><gui style=\"menuitem\">Föregående ändring</"
-"gui></guiseq> och <guiseq><gui style=\"menu\">Ändringar</gui><gui "
-"style=\"menuitem\">Nästa ändring</gui></guiseq>. Du kan också använda din "
-"mus rullhjul för flytta mellan ändringar genom att rulla på ändringsraden i "
-"mitten."
+"Du kan navigera mellan ändringar med knapparna för föregående och nästa "
+"ändring i verktygsfältet. Du kan också använda musens rullhjul för att "
+"flytta mellan ändringar genom att rulla på ändringsraden i mitten."
 
 #. (itstool) path: section/title
-#: C/file-changes.page:46
+#: C/file-changes.page:43
 msgid "Changing changes"
 msgstr "Ändra ändringar"
 
 #. (itstool) path: section/p
-#: C/file-changes.page:48
+#: C/file-changes.page:45
 msgid ""
 "In addition to directly editing text files, <app>Meld</app> gives you tools "
 "to move, copy or delete individual differences between files. The bar "
@@ -169,12 +164,12 @@ msgstr ""
 "Förutom att direkt redigera textfiler ger dig <app>Meld</app> verktyg för "
 "att flytta, kopiera eller ta bort individuella skillnader mellan filer. "
 "Raden mellan två filer visar inte bara vilka delar av de två filerna som "
-"motsvaras utan låter dig också selektivt välja att sammanfoga eller ta bort "
-"olika ändringar genom att klicka på pilen eller kryssikonen intill början på "
-"varje ändring."
+"motsvarar varandra, utan låter dig också selektivt välja att sammanfoga "
+"eller ta bort olika ändringar genom att klicka på pilen eller kryssikonen "
+"intill början på varje ändring."
 
 #. (itstool) path: section/p
-#: C/file-changes.page:52
+#: C/file-changes.page:49
 msgid ""
 "The default action is <em>replace</em>. This action replaces the contents of "
 "the corresponding change with the current change."
@@ -183,7 +178,7 @@ msgstr ""
 "motsvarande ändring med den aktuella ändringen."
 
 #. (itstool) path: section/p
-#: C/file-changes.page:59
+#: C/file-changes.page:56
 msgid ""
 "Hold down the <key>Shift</key> key to change the current action to "
 "<em>delete</em>. This action deletes the current change."
@@ -192,7 +187,7 @@ msgstr ""
 "bort</em>. Denna åtgärd tar bort aktuell ändring."
 
 #. (itstool) path: section/p
-#: C/file-changes.page:62
+#: C/file-changes.page:59
 msgid ""
 "Hold down the <key>Ctrl</key> key to change the current action to "
 "<em>insert</em>. This action inserts the current change above or below (as "
@@ -275,7 +270,7 @@ msgstr ""
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
-#: C/file-filters.page:58 C/folder-mode.page:148 C/vc-mode.page:107
+#: C/file-filters.page:58 C/folder-mode.page:144 C/vc-mode.page:105
 msgid "Modified"
 msgstr "Ändrad"
 
@@ -286,19 +281,19 @@ msgstr "Filen existerar i flera mappar, men filerna har skillnader"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
-#: C/file-filters.page:62 C/folder-mode.page:162 C/folder-mode.page:234
-#: C/vc-mode.page:121
+#: C/file-filters.page:62 C/folder-mode.page:158 C/folder-mode.page:230
+#: C/vc-mode.page:119
 msgid "New"
 msgstr "Ny"
 
 #. (itstool) path: item/p
 #: C/file-filters.page:63
 msgid "The file exists in one folder but not in the others"
-msgstr "Filen existerar i en mapp men inte i andra"
+msgstr "Filen existerar i en mapp men inte i de andra"
 
 #. (itstool) path: item/title
 #. (itstool) path: td/p
-#: C/file-filters.page:66 C/folder-mode.page:118 C/vc-mode.page:93
+#: C/file-filters.page:66 C/folder-mode.page:114 C/vc-mode.page:91
 msgid "Same"
 msgstr "Samma"
 
@@ -311,19 +306,13 @@ msgstr "Filen existerar i alla mappar, och är densamma överallt"
 #: C/file-filters.page:70
 msgid ""
 "You can change which types of differences you see in your current comparison "
-"by using the <gui style=\"button\">Same</gui>, <gui style=\"button\">New</"
-"gui> and <gui style=\"button\">Modified</gui> buttons on the toolbar or the "
-"<guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Status</"
-"gui></guiseq> menu."
+"by using the <gui style=\"button\">File Filters</gui> button on the toolbar."
 msgstr ""
-"Du kan ändra de typer av skillnader du kan se i nuvarande jämförelse genom "
-"att använda knapparna <gui style=\"button\">Samma</gui>, <gui "
-"style=\"button\">Nya</gui> och <gui style=\"button\">Ändrade</gui> på "
-"verktygsfältet eller menyn <guiseq><gui style=\"menu\">Visa</gui><gui "
-"style=\"menuitem\">Filstatus</gui></guiseq>."
+"Du kan ändra de typer av skillnader du ser i nuvarande jämförelse genom att "
+"använda knappen <gui style=\"button\">Filfilter</gui> i verktygsfältet."
 
 #. (itstool) path: note/p
-#: C/file-filters.page:80
+#: C/file-filters.page:77
 msgid ""
 "Currently, you can only filter files based on their state; folders can't be "
 "filtered in this way. For example, you can't tell <app>Meld</app> to ignore "
@@ -337,29 +326,27 @@ msgstr ""
 "finnas med."
 
 #. (itstool) path: section/title
-#: C/file-filters.page:94
+#: C/file-filters.page:91
 msgid "Filename filtering"
 msgstr "Filnamnsfiltrering"
 
 #. (itstool) path: section/p
-#: C/file-filters.page:96
+#: C/file-filters.page:93
 msgid ""
 "<app>Meld</app> comes with a useful set of filename filters that let you "
 "ignore uninteresting files and folders like common backup files and the "
 "metadata folders of version control systems. Each filename filter can be "
-"separately activated or deactivated from the <gui style=\"button\">Filters</"
-"gui> button on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui "
-"style=\"menuitem\">File Filters</gui></guiseq> menu."
+"separately activated or deactivated from the <gui style=\"button\">File "
+"Filters</gui> button on the toolbar."
 msgstr ""
 "<app>Meld</app> kommer med en användbar samling filnamnsfilter som låter dig "
 "ignorera ointressanta filer och mappar som vanliga säkerhetskopior och "
 "metadatamapparna för versionshanteringssystem. Varje filnamnsfilter kan "
 "aktiveras eller inaktiveras enskilt från knappen <gui "
-"style=\"button\">Filter</gui> i verktygsfältet eller menyn <guiseq><gui "
-"style=\"menu\">Visa</gui><gui style=\"menuitem\">Filfilter</gui></guiseq>."
+"style=\"button\">Filfilter</gui> i verktygsfältet."
 
 #. (itstool) path: section/p
-#: C/file-filters.page:106
+#: C/file-filters.page:101
 msgid ""
 "You can add, remove or change filename filters from the <gui "
 "style=\"tab\">File Filters</gui> section of the <gui>Preferences</gui> "
@@ -378,7 +365,7 @@ msgstr ""
 "att ignoreras."
 
 #. (itstool) path: section/p
-#: C/file-filters.page:116
+#: C/file-filters.page:111
 msgid ""
 "Filename filters match according to shell glob patterns. For example, "
 "<code>*.jpg</code> will match all filenames ending in <code>.jpg</code>. The "
@@ -390,72 +377,72 @@ msgstr ""
 "tabell listar alla skal-glob-tecken som <app>Meld</app> känner igen."
 
 #. (itstool) path: table/title
-#: C/file-filters.page:124
+#: C/file-filters.page:119
 msgid "Shell glob patterns"
 msgstr "Skal-glob-mönster"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:128
+#: C/file-filters.page:123
 msgid "Wildcard"
 msgstr "Jokertecken"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:128
+#: C/file-filters.page:123
 msgid "Matches"
 msgstr "Matchar"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:134
+#: C/file-filters.page:129
 msgid "<code>*</code>"
 msgstr "<code>*</code>"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:135
+#: C/file-filters.page:130
 msgid "anything (i.e., zero or more characters)"
 msgstr "vad som helst (d.v.s. inget eller flera tecken)"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:138
+#: C/file-filters.page:133
 msgid "<code>?</code>"
 msgstr "<code>?</code>"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:139
+#: C/file-filters.page:134
 msgid "exactly one character"
 msgstr "precis ett tecken"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:142
+#: C/file-filters.page:137
 msgid "<code>[abc]</code>"
 msgstr "<code>[abc]</code>"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:143
+#: C/file-filters.page:138
 msgid "any one of the listed characters"
-msgstr "vilken som helst av de listade tecknen"
+msgstr "vilket som helst av de listade tecknen"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:146
+#: C/file-filters.page:141
 msgid "<code>[!abc]</code>"
 msgstr "<code>[!abc]</code>"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:147
+#: C/file-filters.page:142
 msgid "anything <em>except</em> one of the listed characters"
 msgstr "vad som helst <em>utom</em> de listade tecknen"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:150
+#: C/file-filters.page:145
 msgid "<code>{cat,dog}</code>"
 msgstr "<code>{katt,hund}</code>"
 
 #. (itstool) path: td/p
-#: C/file-filters.page:151
+#: C/file-filters.page:146
 msgid "either \"cat\" or \"dog\""
 msgstr "antingen ”katt” eller ”hund”"
 
 #. (itstool) path: note/p
-#: C/file-filters.page:157
+#: C/file-filters.page:152
 msgid ""
 "Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> "
 "dialog changes whether that filter is active <em>by default</em>."
@@ -465,21 +452,21 @@ msgstr ""
 "standard</em>."
 
 #. (itstool) path: note/p
-#: C/file-filters.page:163
+#: C/file-filters.page:158
 msgid ""
 "Activating a filter from the menu or the toolbar turns the filter on or off "
 "for <em>this comparison only</em>."
 msgstr ""
 "Att aktivera ett filter från menyn eller verktygsfältet slår av eller på "
-"filtret för <em>endast denna jämförelse</em>."
+"filtret <em>endast för denna jämförelse</em>."
 
 #. (itstool) path: section/title
-#: C/file-filters.page:174
+#: C/file-filters.page:169
 msgid "Case insensitive filenames"
 msgstr "Ej skiftlägeskänsliga filnamn"
 
 #. (itstool) path: section/p
-#: C/file-filters.page:176
+#: C/file-filters.page:171
 msgid ""
 "Files are compared across directories according to their name. This "
 "comparison is case sensitive by default; that is, the files <file>README</"
@@ -491,18 +478,18 @@ msgstr ""
 "file>, <file>readme</file> och <file>ReadMe</file> ses som olika."
 
 #. (itstool) path: section/p
-#: C/file-filters.page:183
+#: C/file-filters.page:178
 msgid ""
 "When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish "
 "to make <app>Meld</app> treat filenames as case insensitive. You can do this "
-"by selecting <guiseq><gui style=\"menu\">View</gui><gui "
-"style=\"menuitem\">Ignore filename case</gui></guiseq> from the menus."
+"by using the <gui style=\"button\">File Filters</gui> button on the toolbar "
+"and selecting <gui style=\"menuitem\">Ignore Filename Case</gui>."
 msgstr ""
 "När jämförelse av mappar sker på vissa filsystem (t.ex. HFS+ eller FAT) kan "
 "du vilja be <app>Meld</app> hantera filnamn som icke skiftlägeskänsliga. Du "
-"kan göra detta genom att välja <guiseq><gui style=\"menu\">Visa</gui><gui "
-"style=\"menuitem\">Ignorera skiftlägeskänslighet för filnamn</gui></guiseq> "
-"i menyerna."
+"kan göra detta genom att använda knappen <gui style=\"button\">Filfilter</"
+"gui> i verktygsfältet och välja <gui style=\"menuitem\">Ignorera "
+"skiftlägeskänslighet för filnamn</gui>."
 
 #. (itstool) path: info/title
 #: C/file-mode.page:5 C/folder-mode.page:5 C/introduction.page:5
@@ -520,16 +507,15 @@ msgstr "Att komma igång med att jämföra filer"
 #: C/file-mode.page:19
 msgid ""
 "<app>Meld</app> lets you compare two or three text files side-by-side. You "
-"can start a new file comparison by selecting the <guiseq><gui "
-"style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu "
-"item."
+"can start a new file comparison using the new comparison button on the "
+"toolbar."
 msgstr ""
 "<app>Meld</app> låter dig jämföra två eller tre textfiler sida-vid-sida. Du "
-"kan starta en ny filjämförelse genom att välj menyobjektet <guiseq><gui "
-"style=\"menu\">Arkiv</gui><gui style=\"menuitem\">Ny...</gui></guiseq>."
+"kan starta en ny filjämförelse genom att använda den nya jämförelseknappen i "
+"verktygsfältet."
 
 #. (itstool) path: page/p
-#: C/file-mode.page:26
+#: C/file-mode.page:24
 msgid ""
 "Once you've selected your files, <app>Meld</app> will show them side-by-"
 "side. Differences between the files will be highlighted to make individual "
@@ -541,16 +527,16 @@ msgstr ""
 "vid-sida. Skillnader mellan filerna kommer att markeras för att göra "
 "individuella ändringar enklare att se. Att redigera filer kommer att få "
 "jämförelsen att uppdatera direkt. För detaljer om navigering mellan "
-"individuella ändringar och hur man använder ändrings-baserad redigering, se "
+"individuella ändringar och hur man använder ändringsbaserad redigering, se "
 "<link xref=\"file-changes\"/>."
 
 #. (itstool) path: section/title
-#: C/file-mode.page:35
+#: C/file-mode.page:33
 msgid "<app>Meld</app>'s file comparisons"
 msgstr "<app>Meld</app>s filjämförelser"
 
 #. (itstool) path: section/p
-#: C/file-mode.page:37
+#: C/file-mode.page:35
 msgid ""
 "There are several different parts to a file comparison. The most important "
 "parts are the editors where your files appear. In addition to these editors, "
@@ -562,23 +548,24 @@ msgstr ""
 "kring och mellan dina filer en visuell överblick samt åtgärder för att "
 "hjälpa dig att hantera ändringar mellan filerna."
 
+# TODO: colored, color
 #. (itstool) path: section/p
-#: C/file-mode.page:43
+#: C/file-mode.page:41
 msgid ""
-"On the left and right-hand sides of the window, there are two small vertical "
-"bars showing various coloured blocks. These bars are designed to give you an "
-"overview of all of the differences between your two files. Each coloured "
-"block represents a section that is inserted, deleted, changed or in conflict "
-"between your files, depending on the block's colour used."
+"On the right-hand side of the window, there are small vertical bars showing "
+"various coloured blocks. These bars are designed to give you an overview of "
+"all of the differences between your files. Each coloured block represents a "
+"section that is inserted, deleted, changed or in conflict between your "
+"files, depending on the block's colour used."
 msgstr ""
-"På den vänstra och den högra sidan av fönstret finns två vertikala rullister "
-"som visar olika färgade block. Dessa rullister är designade för att ge dig "
-"en överblick av alla skillnader mellan dina två filer. Varje färgat block "
-"representerar ett avsnitt som är infogat, borttaget, ändrat eller i konflikt "
-"mellan dina filer beroende på färgen blocket använder."
+"På den högra sidan av fönstret finns små vertikala rullister som visar olika "
+"färgade block. Dessa rullister är designade för att ge dig en överblick av "
+"alla skillnader mellan dina filer. Varje färgat block representerar ett "
+"avsnitt som är infogat, borttaget, ändrat eller i konflikt mellan dina filer "
+"beroende på färgen blocket använder."
 
 #. (itstool) path: section/p
-#: C/file-mode.page:50
+#: C/file-mode.page:48
 msgid ""
 "In between each pair of files is a segment that shows how the changed "
 "sections between your files correspond to each other. You can click on the "
@@ -595,12 +582,12 @@ msgstr ""
 "changes#change-actions\"/>."
 
 #. (itstool) path: section/title
-#: C/file-mode.page:62
+#: C/file-mode.page:60
 msgid "Saving your changes"
 msgstr "Spara dina ändringar"
 
 #. (itstool) path: section/p
-#: C/file-mode.page:64
+#: C/file-mode.page:62
 msgid ""
 "Once you've finished editing your files, you need to save each file you've "
 "changed."
@@ -609,33 +596,31 @@ msgstr ""
 "ändrat."
 
 #. (itstool) path: section/p
-#: C/file-mode.page:68
+#: C/file-mode.page:66
 msgid ""
 "You can tell whether your files have been saved since they last changed by "
-"the save icon that appears next to the file name above each file. Also, the "
-"notebook label will show an asterisk (<code>*</code>) after any file that "
-"hasn't been saved."
+"the save icon that appears next to the file name above each file. Also, if "
+"you have multiple comparisons open, their notebook labels will show an "
+"asterisk (<code>*</code>) after any file that hasn't been saved."
 msgstr ""
 "Du kan avgöra huruvida dina filer har ändrats sedan senaste ändringen genom "
-"spara-ikonen som visas intill filnamnet ovanför varje fil. Anteckningsfliken "
-"kommer också att visa en asterisk (<code>*</code>) efter varje fil som inte "
-"har sparats."
+"spara-ikonen som visas intill filnamnet ovanför varje fil. Om du har flera "
+"jämförelser öppna kommer deras anteckningsetiketter att visa en asterisk "
+"(<code>*</code>) efter varje fil som inte har sparats."
 
 #. (itstool) path: section/p
-#: C/file-mode.page:74
+#: C/file-mode.page:73
 msgid ""
-"You can save the current file by selecting the <guiseq><gui "
-"style=\"menu\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu "
-"item, or using the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard "
-"shortcut."
+"You can save the current file by selecting the save button above the file "
+"being compared, or using the <keyseq><key>Ctrl</key><key>S</key></keyseq> "
+"keyboard shortcut."
 msgstr ""
-"Du kan spara aktuell fil genom att välja menyobjektet <guiseq><gui "
-"style=\"menu\">Arkiv</gui><gui style=\"menuitem\">Spara</gui></guiseq> eller "
-"genom att använda tangentbordsgenvägen <keyseq><key>Ctrl</key><key>S</key></"
-"keyseq>."
+"Du kan spara aktuell fil genom att välja spara-knappen ovanför filen som "
+"jämförs eller genom att använda tangentbordsgenvägen <keyseq><key>Ctrl</"
+"key><key>S</key></keyseq>."
 
 #. (itstool) path: note/p
-#: C/file-mode.page:81
+#: C/file-mode.page:79
 msgid ""
 "Saving only saves the <em>currently focused</em> file, which is the file "
 "containing the cursor. If you can't tell which file is focused, you can "
@@ -669,15 +654,13 @@ msgstr ""
 #. (itstool) path: page/p
 #: C/flattened-view.page:27
 msgid ""
-"You can turn this flattened view on or off by unchecking the <guiseq><gui "
-"style=\"menu\">View</gui><gui style=\"menuitem\">Flatten</gui></guiseq> menu "
-"item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
-"button on the toolbar."
+"You can toggle the flattened view on or off using the <gui "
+"style=\"button\">Version Filters</gui> button on the toolbar and selecting "
+"<gui style=\"menuitem\">Flatten Folders</gui>."
 msgstr ""
-"Du kan aktivera och inaktivera den platta vyn genom att kryssa menyobjektet "
-"<guiseq><gui style=\"menu\">Visa</gui><gui style=\"menuitem\">Platta till</"
-"gui></guiseq> eller genom att klicka i motsvarande knapp <gui "
-"style=\"button\">Platta till</gui> i verktygsfältet."
+"Du kan aktivera eller inaktivera den utplattade vyn genom knappen <gui "
+"style=\"button\">Versionsfilter</gui> i verktygsfältet och välja <gui "
+"style=\"menuitem\">Platta till mappar</gui>."
 
 #. (itstool) path: page/title
 #: C/folder-mode.page:16
@@ -688,17 +671,17 @@ msgstr "Kom igång med att jämföra mappar"
 #: C/folder-mode.page:18
 msgid ""
 "<app>Meld</app> lets you compare two or three folders side-by-side. You can "
-"start a new folder comparison by selecting the <guiseq><gui "
-"style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu "
-"item, and clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
+"start a new folder comparison using the new comparison button on the "
+"toolbar, and clicking on the <gui style=\"tab\">Directory Comparison</gui> "
+"tab."
 msgstr ""
 "<app>Meld</app> låter dig jämföra två eller tre mappar sida-vid-sida. Du kan "
-"starta en ny mappjämförelse genom att markera menyobjektet <guiseq><gui "
-"style=\"menu\">Arkiv</gui><gui style=\"menuitem\">Ny...</gui></guiseq> och "
-"klicka på fliken <gui style=\"tab\">Katalogjämförelse</gui>."
+"starta en ny mappjämförelse genom att genom att använda den nya "
+"jämförelseknappen i verktygsfältet och klicka på fliken <gui "
+"style=\"tab\">Katalogjämförelse</gui>."
 
 #. (itstool) path: page/p
-#: C/folder-mode.page:26
+#: C/folder-mode.page:25
 msgid ""
 "Your selected folders will be shown as side-by-side trees, with differences "
 "between files in each folder highlighted. You can copy or delete files from "
@@ -709,12 +692,12 @@ msgstr ""
 "antingen från var mapp, eller jämföra enskilda textfiler i mer detalj."
 
 #. (itstool) path: section/title
-#: C/folder-mode.page:36
+#: C/folder-mode.page:35
 msgid "The folder comparison view"
 msgstr "Vyn för mappjämförelse"
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:38
+#: C/folder-mode.page:37
 msgid ""
 "The main parts of a folder comparison are the trees showing the folders "
 "you're comparing. You can easily <link xref=\"#folder-navigation\">move "
@@ -735,46 +718,40 @@ msgstr ""
 "att fungera korrekt om de är textfiler!"
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:50
+#: C/folder-mode.page:49
 msgid ""
-"There are bars on the left and right-hand sides of the window that show you "
-"a simple coloured summary of the comparison results. Each file or folder in "
-"the comparison corresponds to a small section of these bars, though "
-"<app>Meld</app> doesn't show <em>Same</em> files so that it's easier to see "
-"any actually important differences. You can click anywhere on this bar to "
-"jump straight to that place in the comparison."
+"There are bars on the right-hand side of the window that show you a simple "
+"coloured summary of the comparison results. Each file or folder in the "
+"comparison corresponds to a small section of these bars, though <app>Meld</"
+"app> doesn't show <em>Same</em> files so that it's easier to see any "
+"actually important differences. You can click anywhere on this bar to jump "
+"straight to that place in the comparison."
 msgstr ""
-"Det finns paneler till vänster och höger om fönstret som visar en enkel "
-"färgad summering av jämförelseresultaten. Varje fil eller mapp i jämförelsen "
-"motsvaras av ett litet avsnitt i dessa paneler, men <app>Meld</app> visar "
-"inte <em>Samma</em> filer så det är enkelt att se viktiga skillnader. Du kan "
-"klicka varsomhelst på denna panel för att hoppa direkt till det stället i "
-"jämförelsen."
+"Det finns rullister till höger om fönstret som visar en enkel färgad "
+"summering av jämförelseresultaten. Varje fil eller mapp i jämförelsen "
+"motsvaras av ett litet avsnitt i dessa rullister, men <app>Meld</app> visar "
+"inte filer som är <em>Samma</em>, så det är enkelt att se viktiga "
+"skillnader. Du kan klicka varsomhelst på denna rullist för att hoppa direkt "
+"till det stället i jämförelsen."
 
 #. (itstool) path: section/title
-#: C/folder-mode.page:63
+#: C/folder-mode.page:62
 msgid "Navigating folder comparisons"
 msgstr "Navigera mappjämförelser"
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:65
+#: C/folder-mode.page:64
 msgid ""
 "You can jump between changed files (that is, any files/folders that are "
-"<em>not</em> classified as being identical) with the <guiseq><gui "
-"style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></"
-"guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui "
-"style=\"menuitem\">Next change</gui></guiseq> menu items, or using the "
-"corresponding buttons on the toolbar."
+"<em>not</em> classified as being identical) with the previous and next "
+"change buttons in the toolbar."
 msgstr ""
 "Du kan hoppa mellan ändrade filer (det vill säga filer/mappar som <em>inte</"
-"em> är klassificerade som identiska) med menyobjektet <guiseq><gui "
-"style=\"menu\">Ändringar</gui><gui style=\"menuitem\">Föregående ändring</"
-"gui></guiseq> och <guiseq><gui style=\"menu\">Ändringar</gui><gui "
-"style=\"menuitem\">Nästa ändring</gui></guiseq> eller genom att använda "
-"motsvarande knappar på verktygsfältet."
+"em> är klassificerade som identiska) med knapparna för föregående och nästa "
+"ändring i verktygsfältet."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:73
+#: C/folder-mode.page:69
 msgid ""
 "You can use the <key>Left</key> and <key>Right</key> arrow keys to move "
 "between the folders you're comparing. This is useful so that you can select "
@@ -785,12 +762,12 @@ msgstr ""
 "individuell fil för kopiering eller borttagning."
 
 #. (itstool) path: section/title
-#: C/folder-mode.page:83
+#: C/folder-mode.page:79
 msgid "States in folder comparisons"
 msgstr "Tillstånd i mappjämförelser"
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:85
+#: C/folder-mode.page:81
 msgid ""
 "Each file or folder in a tree has its own <em>state</em>, telling you how it "
 "differed from its corresponding files/folders. The possible states are:"
@@ -800,47 +777,47 @@ msgstr ""
 "tillstånd är:"
 
 #. (itstool) path: table/title
-#: C/folder-mode.page:106
+#: C/folder-mode.page:102
 msgid "Folder comparison states"
 msgstr "Tillstånd för mappjämförelser"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:110 C/vc-mode.page:85
+#: C/folder-mode.page:106 C/vc-mode.page:83
 msgid "State"
 msgstr "Tillstånd"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:111 C/folder-mode.page:227 C/vc-mode.page:86
+#: C/folder-mode.page:107 C/folder-mode.page:223 C/vc-mode.page:84
 msgid "Appearance"
 msgstr "Utseende"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:112 C/folder-mode.page:228 C/vc-mode.page:87
+#: C/folder-mode.page:108 C/folder-mode.page:224 C/vc-mode.page:85
 msgid "Meaning"
 msgstr "Betyder"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:120 C/vc-mode.page:95
+#: C/folder-mode.page:116 C/vc-mode.page:93
 msgid "Normal font"
 msgstr "Normalt typsnitt"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:126
+#: C/folder-mode.page:122
 msgid "The file/folder is the same across all compared folders."
 msgstr "Filen/mappen är densamma över alla jämförda mappar."
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:132
+#: C/folder-mode.page:128
 msgid "Same when filtered"
 msgstr "Samma när filtrerad"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:134
+#: C/folder-mode.page:130
 msgid "Italics"
 msgstr "Kursiv"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:140
+#: C/folder-mode.page:136
 msgid ""
 "These files are different across folders, but once <link xref=\"text-"
 "filters\">text filters</link> are applied, these files become identical."
@@ -849,54 +826,55 @@ msgstr ""
 "filters\">textfilter</link> verkställs blir dessa filer identiska."
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:150
+#: C/folder-mode.page:146
 msgid "Blue and bold"
 msgstr "Blå och fet"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:156
+#: C/folder-mode.page:152
 msgid "These files differ between the folders being compared."
 msgstr "Dessa filer skiljer mellan mapparna som jämförs."
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:164 C/vc-mode.page:123
+#: C/folder-mode.page:160 C/vc-mode.page:121
 msgid "Green and bold"
 msgstr "Grön och fet"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:170
+#: C/folder-mode.page:166
 msgid "This file/folder exists in this folder, but not in the others."
 msgstr "Denna fil/mapp existerar i denna mapp, men inte i de andra."
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:176 C/vc-mode.page:167
+#: C/folder-mode.page:172 C/vc-mode.page:165
 msgid "Missing"
 msgstr "Saknad"
 
+# TODO: Grayed?
 #. (itstool) path: td/p
-#: C/folder-mode.page:178
+#: C/folder-mode.page:174
 msgid "Greyed out text with a line through the middle"
 msgstr "Utgråad genomstruken text"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:184
+#: C/folder-mode.page:180
 msgid ""
 "This file/folder doesn't exist in this folder, but does in one of the others."
 msgstr ""
 "Denna fil/mapp existerar inte i denna mapp, men finns i en av de andra."
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:191 C/vc-mode.page:212
+#: C/folder-mode.page:187 C/vc-mode.page:210
 msgid "Error"
 msgstr "Fel"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:193 C/vc-mode.page:214
+#: C/folder-mode.page:189 C/vc-mode.page:212
 msgid "Bright red with a yellow background and bold"
 msgstr "Ljust röd med en gul bakgrund och fet"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:199
+#: C/folder-mode.page:195
 msgid ""
 "When comparing this file, an error occurred. The most common error causes "
 "are file permissions (i.e., <app>Meld</app> was not allowed to open the "
@@ -907,18 +885,18 @@ msgstr ""
 "kodningsproblem med filnamn."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:209
+#: C/folder-mode.page:205
 msgid ""
 "You can filter out files based on these states, for example, to show only "
 "files that have been <em>Modified</em>. You can read more about this in "
 "<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
-"Du kan filtrera bort filer baserat på dessa tillstånd, till exempel, för att "
+"Du kan filtrera bort filer baserat på dessa tillstånd för att exempelvis "
 "endast visa filer som har <em>Ändrats</em>. Du kan läsa mer om detta i <link "
 "xref=\"file-filters#file-state-filter\"/>."
 
 #. (itstool) path: section/p
-#: C/folder-mode.page:215
+#: C/folder-mode.page:211
 msgid ""
 "The icons in some rows have emblems added to them to show additional "
 "information. Note that these icons may change depending on your icon theme, "
@@ -929,22 +907,22 @@ msgstr ""
 "ikontema, så dessa beskrivningar är endast en guide."
 
 #. (itstool) path: table/title
-#: C/folder-mode.page:222
+#: C/folder-mode.page:218
 msgid "Additional emblems"
 msgstr "Ytterligare emblem"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:226
+#: C/folder-mode.page:222
 msgid "Emblem"
 msgstr "Emblem"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:235
+#: C/folder-mode.page:231
 msgid "Small blue dot"
 msgstr "Liten blå punkt"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:236
+#: C/folder-mode.page:232
 msgid ""
 "Used to indicate the \"newest\" (i.e., most recently modified) file in the "
 "row"
@@ -952,32 +930,32 @@ msgstr ""
 "Används för att indikera den ”nyaste” (d.v.s. senast ändrade) filen på raden"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:240
+#: C/folder-mode.page:236
 msgid "Symbolic link"
 msgstr "Symbolisk länk"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:241
+#: C/folder-mode.page:237
 msgid "Arrow"
 msgstr "Pil"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:242
+#: C/folder-mode.page:238
 msgid "Shows that the row item is a symbolic link"
 msgstr "Visar att radobjektet är en symbolisk länk"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:245
+#: C/folder-mode.page:241
 msgid "Selected"
 msgstr "Vald"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:246
+#: C/folder-mode.page:242
 msgid "Tick mark"
 msgstr "Bock"
 
 #. (itstool) path: td/p
-#: C/folder-mode.page:247
+#: C/folder-mode.page:243
 msgid ""
 "Shows that a file has been selected for a marked comparison, used to compare "
 "differently named files across folders"
@@ -1046,9 +1024,10 @@ msgid ""
 "captured by version control systems."
 msgstr ""
 "<app>Meld</app> är ett verktyg för att jämföra filer och kataloger, och för "
-"att lösa skillnader mellan dem. Den är också användbar för att jämföra "
+"att lösa skillnader mellan dem. Det är också användbart för att jämföra "
 "ändringar registrerade i versionshanteringssystem."
 
+# TODO: favorite?
 #. (itstool) path: page/p
 #: C/introduction.page:22
 msgid ""
@@ -1063,247 +1042,6 @@ msgstr ""
 "filerna manuellt. <app>Meld</app>s fokus ligger på att hjälpa utvecklare "
 "jämföra och sammanfoga källfiler, och att ge en visuell överblick av "
 "ändringar i deras favorit-versionshanteringssystem."
-
-#. (itstool) path: page/title
-#: C/keyboard-shortcuts.page:15
-msgid "Keyboard shortcuts"
-msgstr "Tangentbordsgenvägar"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:18
-msgid "Shortcuts for working with files and comparisons"
-msgstr "Genvägar för att arbeta med filer och jämförelser"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
-#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
-#: C/keyboard-shortcuts.page:153
-msgid "Shortcut"
-msgstr "Genväg"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56
-#: C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131
-#: C/keyboard-shortcuts.page:153
-msgid "Description"
-msgstr "Beskrivning"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:29
-msgid "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:30
-msgid "Start a new comparison."
-msgstr "Påbörja en ny jämförelse."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:33
-msgid "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:34
-msgid "Save the current document to disk."
-msgstr "Spara aktuellt dokument till disk."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:37
-msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Skift</key><key>S</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:38
-msgid "Save the current document with a new filename."
-msgstr "Spara det aktuella dokumentet med ett nytt filnamn."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:41
-msgid "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:42
-msgid "Close the current comparison."
-msgstr "Stäng aktuell jämförelse."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:45
-msgid "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:46
-msgid "Quit <app>Meld</app>."
-msgstr "Avsluta <app>Meld</app>."
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:52
-msgid "Shortcuts for editing documents"
-msgstr "Genvägar för att redigera dokument"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:62
-msgid "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:63
-msgid "Undo the last action."
-msgstr "Ångra den senaste åtgärden."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:66
-msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>Skift</key><key>Z</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:67
-msgid "Redo the last undone action."
-msgstr "Gör om den senast ångrade åtgärden."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:70
-msgid "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:71
-msgid "Cut the selected text or region and place it on the clipboard."
-msgstr "Klipp ut markerad text eller området och placera den i Urklipp."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:74
-msgid "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:75
-msgid "Copy the selected text or region onto the clipboard."
-msgstr "Kopiera den markerade texten eller området till Urklipp."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:78
-msgid "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:79
-msgid "Paste the contents of the clipboard."
-msgstr "Klistra in innehållet i Urklipp."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:82
-msgid "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:83
-msgid "Find a string."
-msgstr "Hitta en sträng."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:86
-msgid "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:87
-msgid "Find the next instance of the string."
-msgstr "Hitta nästa förekomst av strängen."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:90
-msgid "<keyseq><key>Alt</key><key>Down</key></keyseq>"
-msgstr "<keyseq><key>Alt</key><key>Ned</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:91
-msgid ""
-"Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></"
-"keyseq>)"
-msgstr ""
-"Gå till nästa skillnad. (också <keyseq><key>Ctrl</key><key>D</key></keyseq>)"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:96
-msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
-msgstr "<keyseq><key>Alt</key><key>Upp</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:97
-msgid ""
-"Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></"
-"keyseq>)"
-msgstr ""
-"Gå till föregående skillnad. (också <keyseq><key>Ctrl</key><key>E</key></"
-"keyseq>)"
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:105
-msgid "Shortcuts for folder comparison"
-msgstr "Genvägar för mappjämförelse"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:115
-msgid "<keyseq><key>+</key></keyseq>"
-msgstr "<keyseq><key>+</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:116
-msgid "Expand the current folder."
-msgstr "Expandera aktuell mapp."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:119
-msgid "<keyseq><key>-</key></keyseq>"
-msgstr "<keyseq><key>-</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:120
-msgid "Collapse the current folder."
-msgstr "Fäll ihop aktuell mapp."
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:127
-msgid "Shortcuts for view settings"
-msgstr "Genvägar för visa-inställningar"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:137
-msgid "<keyseq><key>Escape</key></keyseq>"
-msgstr "<keyseq><key>Escape</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:138
-msgid "Stop the current comparison."
-msgstr "Avsluta pågående jämförelse."
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:141
-msgid "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
-msgstr "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:142
-msgid "Refresh the current comparison."
-msgstr "Uppdatera pågående jämförelse."
-
-#. (itstool) path: table/title
-#: C/keyboard-shortcuts.page:149
-msgid "Shortcuts for help"
-msgstr "Genvägar för hjälp"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:159
-msgid "<keyseq><key>F1</key></keyseq>"
-msgstr "<keyseq><key>F1</key></keyseq>"
-
-#. (itstool) path: td/p
-#: C/keyboard-shortcuts.page:160
-msgid "Open <app>Meld</app>'s user manual."
-msgstr "Öppna <app>Meld</app>s användarhandbok."
 
 #. (itstool) path: p/link
 #: C/legal.xml:4
@@ -1322,9 +1060,9 @@ msgid ""
 "modify, and distribute the example code contained in this document under the "
 "terms of your choosing, without restriction."
 msgstr ""
-"Som ett speciellt undantag, ger upphovsrättsinnehavarna dig tillåtelse att "
-"kopiera, modifiera och distribuera exempelkoden som finns i detta dokument "
-"under de villkor som du väljer, utan restriktioner."
+"Som ett speciellt undantag ger upphovsrättsinnehavarna dig rätten att "
+"kopiera, ändra och distribuera exempelkoden i detta dokument under de "
+"villkor du väljer, utan restriktioner."
 
 #. (itstool) path: page/title
 #: C/missing-functionality.page:15
@@ -1349,7 +1087,7 @@ msgid ""
 "<em>doesn't</em> do, either as a deliberate choice, or because we just "
 "haven't had time."
 msgstr ""
-"Det här avsnittet listar några saker som <app>Meld</app><em>inte</em> gör, "
+"Det här avsnittet listar några saker som <app>Meld</app> <em>inte</em> gör, "
 "antingen med avsikt, eller för att vi inte hade tid."
 
 #. (itstool) path: section/title
@@ -1473,10 +1211,10 @@ msgid ""
 "a 'merge helper'; <app>Meld</app> is one such helper. If you want to make "
 "<app>git mergetool</app> use <app>Meld</app> by default, you can add"
 msgstr ""
-"Till exempel, vid användning av <app>Git</app> kommer <cmd>git mergetool</"
-"cmd> att starta en ”merge helper”; <app>Meld</app> är en sådan hjälp. Om du "
-"vill göra så att <app>git mergetool</app> använder <app>Meld</app> som "
-"standard kan du lägga till"
+"Vid användning av <app>Git</app> kommer exempelvis <cmd>git mergetool</cmd> "
+"att starta en ”merge helper”; <app>Meld</app> är en sådan hjälp. Om du vill "
+"göra så att <app>git mergetool</app> använder <app>Meld</app> som standard "
+"kan du lägga till"
 
 #. (itstool) path: page/code
 #: C/resolving-conflicts.page:27
@@ -1526,7 +1264,7 @@ msgid ""
 "comparisons. Check the <link xref=\"file-filters\">file filtering notes</"
 "link> for more details."
 msgstr ""
-"Textfilter påverkar inte bara filjämförelser, men också mappjämförelser. Se "
+"Textfilter påverkar inte bara filjämförelser, utan också mappjämförelser. Se "
 "<link xref=\"file-filters\">anteckningar om filfiltrering</link> för fler "
 "detaljer."
 
@@ -1644,7 +1382,7 @@ msgid ""
 "itself can not be removed; <app>Meld</app> will show the <code>d</code> line "
 "as being different to what it sees as a blank line on the other side."
 msgstr ""
-"kommer sedan raderna som börjar med <code>b</code>att visas som identiska "
+"kommer sedan raderna som börjar med <code>b</code> att visas som identiska "
 "(kommentaren är borttagen) men raden <code>d</code> kommer att visas som att "
 "den skiljer sig åt mot kommentarsraden till höger. Det beror på att "
 "<code>#kommentar</code> tas bort från den högra sidan, men att själva raden "
@@ -1670,7 +1408,7 @@ msgstr ""
 "rader</gui> i fliken <gui>Textfilter</gui> kräver en särskild förklaring. Om "
 "detta specialfilter är aktiverat kommer varje ändring bestående av tomma "
 "rader att helt ignoreras. Det kan också inträffa eftersom det var en faktisk "
-"blanktecken-ändring i texten, men kan också uppstå om dina aktiva textfilter "
+"blankteckenändring i texten, men kan också uppstå om dina aktiva textfilter "
 "har tagit bort allt det andra innehållet från en ändring och bara lämnar "
 "kvar tomma rader."
 
@@ -1702,25 +1440,24 @@ msgstr "Visa versionshanterade filer"
 msgid ""
 "<app>Meld</app> integrates with <link xref=\"vc-supported\">many version "
 "control systems</link> to let you review local changes and perform simple "
-"version control tasks. You can start a new version control comparison by "
-"selecting the <guiseq><gui style=\"menu\">File</gui><gui "
-"style=\"menuitem\">New...</gui></guiseq> menu item, and clicking on the <gui "
+"version control tasks. You can start a new version control comparison using "
+"the new comparison button on the toolbar, and clicking on the <gui "
 "style=\"tab\">Version Control</gui> tab."
 msgstr ""
 "<app>Meld</app> integrerar med <link xref=\"vc-supported\">många "
 "versionshanteringssystem</link> för att kunna låta dig se över lokala "
 "ändringar och utföra enkla versionshanteringsuppgifter. Du kan börja en ny "
-"versionshanteringsjämförelse genom att välja menyobjektet <guiseq><gui "
-"style=\"menu\">Arkiv</gui><gui style=\"menuitem\">Ny...</gui></guiseq> och "
-"klicka på fliken <gui style=\"tab\">Versionshantering</gui> tab."
+"versionshanteringsjämförelse genom att använda den nya jämförelseknappen i "
+"verktygsfältet och klicka på fliken <gui style=\"tab\">Versionshantering</"
+"gui>."
 
 #. (itstool) path: section/title
-#: C/vc-mode.page:30
+#: C/vc-mode.page:28
 msgid "Version control comparisons"
 msgstr "Versionshanteringsjämförelse"
 
 #. (itstool) path: section/p
-#: C/vc-mode.page:32
+#: C/vc-mode.page:30
 msgid ""
 "Version control comparisons show the differences between the contents of "
 "your folder and the current repository version. Each file in your local copy "
@@ -1733,7 +1470,7 @@ msgstr ""
 "förrådskopian."
 
 #. (itstool) path: section/p
-#: C/vc-mode.page:46
+#: C/vc-mode.page:44
 msgid ""
 "If you want to look at a particular file's differences, you can select it "
 "and press <key>Enter</key>, or double-click the file to start a <link "
@@ -1743,17 +1480,16 @@ msgstr ""
 "Om du vill se på en speciell fils skillnader kan du markera den och trycka "
 "<key>Retur</key> eller dubbelklicka filen för att starta en <link "
 "xref=\"file-mode\">filjämförelse</link>. Du kan också interagera med ditt "
-"versionshanteringssystem genom användarmenyn <gui style=\"menu\">Ändringar</"
-"gui>."
+"versionshanteringssystem genom menyn <gui style=\"menu\">Ändringar</gui>."
 
 #. (itstool) path: section/title
 #. (itstool) path: table/title
-#: C/vc-mode.page:56 C/vc-mode.page:81
+#: C/vc-mode.page:54 C/vc-mode.page:79
 msgid "Version control states"
 msgstr "Versionshanteringstillstånd"
 
 #. (itstool) path: section/p
-#: C/vc-mode.page:58
+#: C/vc-mode.page:56
 msgid ""
 "Each file or folder in a version control comparison has a <em>state</em>, "
 "obtained from the version control system itself. <app>Meld</app> maps these "
@@ -1768,55 +1504,55 @@ msgstr ""
 "ditt versionshanteringssystem gör. Möjliga tillstånd är:"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:101
+#: C/vc-mode.page:99
 msgid "The file/folder is the same as the repository version."
 msgstr "Filen/mappen är densamma som förrådsversionen."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:109
+#: C/vc-mode.page:107
 msgid "Red and bold"
 msgstr "Röd och fet"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:115
+#: C/vc-mode.page:113
 msgid "This file is different to the repository version."
 msgstr "Filen skiljer sig mot förrådsversionen."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:129
+#: C/vc-mode.page:127
 msgid ""
 "This file/folder is new, and is scheduled to be added to the repository."
 msgstr "Filen/mappen är ny och är schemalagd att läggas till i förrådet."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:136
+#: C/vc-mode.page:134
 msgid "Removed"
 msgstr "Borttagen"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:138
+#: C/vc-mode.page:136
 msgid "Red bold text with a line through the middle"
 msgstr "Röd fet genomstruken text"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:144
+#: C/vc-mode.page:142
 msgid ""
 "This file/folder existed, but is scheduled to be removed from the repository."
 msgstr ""
 "Filen/mappen existerade, men är schemalagd till att tas bort från förrådet."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:151
+#: C/vc-mode.page:149
 msgid "Conflict"
 msgstr "Konflikt"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:153
+#: C/vc-mode.page:151
 msgid "Bright red bold text"
 msgstr "Ljust röd fet text"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:159
+#: C/vc-mode.page:157
 msgid ""
 "When trying to merge with the repository, the differences between the local "
 "file and the repository could not be resolved, and the file is now in "
@@ -1827,27 +1563,28 @@ msgstr ""
 "förrådsinnehållet"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:169
+#: C/vc-mode.page:167
 msgid "Blue bold text with a line through the middle"
 msgstr "Blå fet genomstruken text"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:175
+#: C/vc-mode.page:173
 msgid "This file/folder should be present, but isn't."
 msgstr "Denna fil/mapp ska finnas, men finns inte."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:181
+#: C/vc-mode.page:179
 msgid "Ignored"
 msgstr "Ignorerad"
 
+# TODO: Grayed?
 #. (itstool) path: td/p
-#: C/vc-mode.page:183 C/vc-mode.page:199
+#: C/vc-mode.page:181 C/vc-mode.page:197
 msgid "Greyed out text"
 msgstr "Utgråad text"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:189
+#: C/vc-mode.page:187
 msgid ""
 "This file/folder has been explicitly ignored (e.g., by an entry in <file>."
 "gitignore</file>) and is not being tracked by version control."
@@ -1856,12 +1593,12 @@ msgstr ""
 "gitignore</file>) och spåras inte av versionshantering."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:197
+#: C/vc-mode.page:195
 msgid "Unversioned"
 msgstr "Oversionerad"
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:205
+#: C/vc-mode.page:203
 msgid ""
 "This file is not in the version control system; it is only in the local copy."
 msgstr ""
@@ -1869,35 +1606,36 @@ msgstr ""
 "lokala kopian."
 
 #. (itstool) path: td/p
-#: C/vc-mode.page:220
+#: C/vc-mode.page:218
 msgid "The version control system has reported a problem with this file."
 msgstr ""
 "Versionshanteringssystemet har rapporterat att denna fil har ett problem."
 
 #. (itstool) path: section/title
-#: C/vc-mode.page:230
+#: C/vc-mode.page:228
 msgid "Version control state filtering"
 msgstr "Filtrering av versionshanteringstillstånd"
 
 #. (itstool) path: section/p
-#: C/vc-mode.page:232
+#: C/vc-mode.page:230
 msgid ""
 "Most often, you will only want to see files that are identified as being in "
 "some way different; this is the default setting in <app>Meld</app>. You can "
-"change which file states you see by using the <guiseq><gui "
-"style=\"menu\">View</gui><gui style=\"menuitem\">Version Status</gui></"
-"guiseq> menu, or by clicking the corresponding <gui "
-"style=\"button\">Modified</gui>, <gui style=\"button\">Normal</gui>, <gui "
-"style=\"button\">Unversioned</gui> and <gui style=\"button\">Ignored</gui> "
-"buttons on the toolbar."
+"change which file states you see by using the <gui style=\"button\">Version "
+"Filters</gui> button on the toolbar and selecting <gui "
+"style=\"menuitem\">Flatten Folders</gui> and selecting the <gui "
+"style=\"menuitem\">Modified</gui>, <gui style=\"menuitem\">Normal</gui>, "
+"<gui style=\"menuitem\">Unversioned</gui> and <gui "
+"style=\"menuitem\">Ignored</gui> buttons on the toolbar."
 msgstr ""
 "Oftast vill du endast se filer som identifieras som annorlunda på något "
 "sätt; det är standardinställningen i <app>Meld</app>. Du kan ändra vilka "
-"filtillstånd du er genom att använda menyn <guiseq><gui style=\"menu\">Vy</"
-"gui><gui style=\"menuitem\">Versionstillstånd</gui></guiseq> eller genom att "
-"klicka motsvarande knapparna <gui style=\"button\">Ändrade</gui>, <gui "
-"style=\"button\">Normala</gui>, <gui style=\"button\">Oversionerad</gui> och "
-"<gui style=\"button\">Ignorerade</gui> i verktygsfältet."
+"filtillstånd du ser genom att använda knappen <gui "
+"style=\"button\">Versionsfilter</gui> i verktygsfältet och välja <gui "
+"style=\"menuitem\">Platta till mappar</gui> och välja knapparna <gui "
+"style=\"menuitem\">Ändrade</gui>, <gui style=\"menuitem\">Normala</gui>, "
+"<gui style=\"menuitem\">Oversionerade</gui> och <gui "
+"style=\"menuitem\">Ignorerade</gui> i verktygsfältet."
 
 #. (itstool) path: info/title
 #: C/vc-supported.page:5
@@ -1950,35 +1688,4 @@ msgid ""
 msgstr ""
 "Mindre vanliga versionshanteringssystem eller ovanliga konfigurationer är "
 "inte lika vältestade; rapportera fel till <link href=\"https://gitlab.gnome."
-"org/GNOME/meld/issues\">Melds felrapporteringssystem</link>."
-
-#~ msgid ""
-#~ "Finally, the most recently modified file/folder has a small star emblem "
-#~ "attached to it."
-#~ msgstr ""
-#~ "Slutligen, den senast ändrade filen/mappen har ett litet stjärnemblem "
-#~ "fäst vid sig."
-
-#~ msgid "Arch"
-#~ msgstr "Arch"
-
-#~ msgid "Codeville"
-#~ msgstr "Codeville"
-
-#~ msgid "CVS"
-#~ msgstr "CVS"
-
-#~ msgid "Fossil"
-#~ msgstr "Fossil"
-
-#~ msgid "Monotone"
-#~ msgstr "Monotone"
-
-#~ msgid "RCS"
-#~ msgstr "RCS"
-
-#~ msgid "SVK"
-#~ msgstr "SVK"
-
-#~ msgid "Non VC"
-#~ msgstr "Ej VH"
+"org/GNOME/meld/issues\">Melds ärendehanteringssystem</link>."
