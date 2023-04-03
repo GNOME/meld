@@ -274,6 +274,10 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         for pane, gfile, encoding in files:
             self.load_file_in_pane(pane, gfile, encoding)
 
+        # Update tab label.
+        self.files = gfiles
+        self.recompute_label()
+
     def load_file_in_pane(
             self,
             pane: int,
@@ -308,3 +312,32 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self.state = ComparisonState.Closing
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
+
+    def recompute_label(self):
+        # ~ filenames = [f.get_basename() for f in self.files]
+        filenames = [f.get_path() for f in self.files]
+        shortnames = misc.shorten_names(*filenames)
+
+        # ~ for i, buf in enumerate(buffers):
+            # ~ if buf.get_modified():
+                # ~ shortnames[i] += "*"
+            # ~ self.file_save_button[i].set_sensitive(buf.get_modified())
+            # ~ self.file_save_button[i].get_child().props.icon_name = (
+                # ~ 'document-save-symbolic' if buf.data.writable else
+                # ~ 'document-save-as-symbolic')
+
+        # ~ parent_path = find_shared_parent_path(
+            # ~ self.files
+        # ~ )
+        # ~ for pathlabel in self.filelabel:
+            # ~ pathlabel.props.parent_gfile = parent_path
+
+        label = self.meta.get("tablabel", "")
+        if label:
+            self.label_text = label
+            tooltip_names = [label]
+        else:
+            self.label_text = " — ".join(shortnames)
+            tooltip_names = filenames
+        self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
+        self.label_changed.emit(self.label_text, self.tooltip_text)
