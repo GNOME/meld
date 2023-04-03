@@ -93,8 +93,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
+    image_event_box0 = Gtk.Template.Child()
     image_main0 = Gtk.Template.Child()
+    image_event_box1 = Gtk.Template.Child()
     image_main1 = Gtk.Template.Child()
+    image_event_box2 = Gtk.Template.Child()
     image_main2 = Gtk.Template.Child()
 
     keylookup = {
@@ -144,7 +147,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
-            "image_main",
+            "image_main", "image_event_box"
         ]
         map_widgets_into_lists(self, widget_lists)
 
@@ -161,22 +164,8 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self._sync_vscroll_lock = False
         self._sync_hscroll_lock = False
 
-        # ~ prop_action_group = Gio.SimpleActionGroup()
-        # ~ for prop in sourceview_prop_actions:
-            # ~ action = make_multiobject_property_action(self.textview, prop)
-            # ~ prop_action_group.add_action(action)
-        # ~ self.insert_action_group('view-local', prop_action_group)
-
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
-
-        # ~ property_actions = (
-            # ~ ('show-overview-map', self, 'show-overview-map'),
-            # ~ ('lock-scrolling', self, 'lock_scrolling'),
-        # ~ )
-        # ~ for action_name, obj, prop_name in property_actions:
-            # ~ action = Gio.PropertyAction.new(action_name, obj, prop_name)
-            # ~ self.view_action_group.add_action(action)
 
         # Manually handle GAction additions
         actions = (
@@ -222,10 +211,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
         If an element is None, the text of a pane is left as is.
         """
-        # Debug.
-        # ~ print ("MVZ: Setting files....")
-        # ~ print ("gfiles:", gfiles)
-        # ~ print ("self.num_panes:", self.num_panes)
+
 
         if len(gfiles) != self.num_panes:
             return
@@ -263,18 +249,16 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         duplicate handlers, etc. if you don't do this thing.
         """
 
-        # ~ print ("MVZ: Loading in pane....")
-        # ~ print ("self.image_main:", self.image_main)
         self.image_main[pane].set_from_file( gfile.get_path() )
 
     def set_num_panes(self, n):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
-        for widget in (self.image_main[:n]):
+        for widget in (self.image_main[:n] + self.image_event_box[:n]):
             widget.show()
 
-        for widget in (self.image_main[n:]):
+        for widget in (self.image_main[n:] + self.image_event_box[n:]):
             widget.hide()
 
         self.num_panes = n
@@ -285,23 +269,8 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         return Gtk.ResponseType.OK
 
     def recompute_label(self):
-        # ~ filenames = [f.get_basename() for f in self.files]
         filenames = [f.get_path() for f in self.files]
         shortnames = misc.shorten_names(*filenames)
-
-        # ~ for i, buf in enumerate(buffers):
-            # ~ if buf.get_modified():
-                # ~ shortnames[i] += "*"
-            # ~ self.file_save_button[i].set_sensitive(buf.get_modified())
-            # ~ self.file_save_button[i].get_child().props.icon_name = (
-                # ~ 'document-save-symbolic' if buf.data.writable else
-                # ~ 'document-save-as-symbolic')
-
-        # ~ parent_path = find_shared_parent_path(
-            # ~ self.files
-        # ~ )
-        # ~ for pathlabel in self.filelabel:
-            # ~ pathlabel.props.parent_gfile = parent_path
 
         label = self.meta.get("tablabel", "")
         if label:
@@ -325,35 +294,20 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
     @Gtk.Template.Callback()
     def on_imageview_popup_menu(self, imageview):
-        print ("MVZ: on_imageview_popup_menu called...")
-        # ~ buffer = textview.get_buffer()
-        # ~ cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
-        # ~ location = textview.get_iter_location(cursor_it)
-
-        # ~ rect = Gdk.Rectangle()
-        # ~ rect.x, rect.y = textview.buffer_to_window_coords(
-            # ~ Gtk.TextWindowType.WIDGET, location.x, location.y)
-
-        # ~ pane = self.imageview.index(imageview)
-        # ~ self.set_syncpoint_menuitem(pane)
-
-        # ~ self.popup_menu.popup_at_rect(
-            # ~ Gtk.Widget.get_window(textview),
-            # ~ rect,
-            # ~ Gdk.Gravity.SOUTH_EAST,
-            # ~ Gdk.Gravity.NORTH_WEST,
-            # ~ None,
-        # ~ )
         self.popup_menu.popup_at_pointer()
         return True
 
     @Gtk.Template.Callback()
-    def on_imageview_button_press_event(self, imageview, event):
-        print ("MVZ: Button press event...")
+    def on_imageview_button_press_event(self, event_box, event):
         if event.button == 3:
-            imageview.grab_focus()
-            pane = self.imageview.index(textview)
-            # ~ self.set_syncpoint_menuitem(pane)
+            event_box.grab_focus()
+            pane = self.image_event_box.index(event_box)
             self.popup_menu.popup_at_pointer(event)
             return True
         return False
+
+    def _get_focused_pane(self):
+        for i in range(self.num_panes):
+            if self.image_event_box[i].is_focus():
+                return i
+        return -1

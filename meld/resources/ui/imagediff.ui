@@ -15,12 +15,21 @@
         <property name="row-homogeneous">True</property>
         <property name="column-homogeneous">True</property>
         <child>
-          <object class="GtkImage" id="image_main0">
+          <object class="GtkEventBox" id="image_event_box0">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="stock">gtk-dialog-question</property>
+            <property name="above-child">True</property>
             <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
             <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="image_main0">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="stock">gtk-dialog-question</property>
+                <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
+                <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+              </object>
+            </child>
           </object>
           <packing>
             <property name="left-attach">0</property>
@@ -28,28 +37,44 @@
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="image_main1">
+          <object class="GtkEventBox" id="image_event_box2">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="stock">gtk-dialog-question</property>
             <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
             <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="image_main2">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="stock">gtk-dialog-question</property>
+                <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
+                <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="left-attach">1</property>
+            <property name="left-attach">2</property>
             <property name="top-attach">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkImage" id="image_main2">
+          <object class="GtkEventBox" id="image_event_box1">
             <property name="visible">True</property>
             <property name="can-focus">True</property>
-            <property name="stock">gtk-dialog-question</property>
             <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
             <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+            <child>
+              <object class="GtkImage" id="image_main1">
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="stock">gtk-dialog-question</property>
+                <signal name="button-press-event" handler="on_imageview_button_press_event" swapped="no"/>
+                <signal name="popup-menu" handler="on_imageview_popup_menu" swapped="no"/>
+              </object>
+            </child>
           </object>
           <packing>
-            <property name="left-attach">2</property>
+            <property name="left-attach">1</property>
             <property name="top-attach">0</property>
           </packing>
         </child>
