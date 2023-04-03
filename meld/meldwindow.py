@@ -374,7 +374,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             basename = gfile.get_basename()
             if basename.endswith(".png"):
                 filesAreImages = True
-                print ("MVZ: Files are images. Showing the image window...")
+                # ~ print ("MVZ: Files are images. Showing the image window...")
                 break
 
         if filesAreImages:

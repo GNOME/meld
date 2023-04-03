@@ -251,9 +251,9 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         If an element is None, the text of a pane is left as is.
         """
         # Debug.
-        print ("MVZ: Setting files....")
-        print ("gfiles:", gfiles)
-        print ("self.num_panes:", self.num_panes)
+        # ~ print ("MVZ: Setting files....")
+        # ~ print ("gfiles:", gfiles)
+        # ~ print ("self.num_panes:", self.num_panes)
 
         if len(gfiles) != self.num_panes:
             return
@@ -287,8 +287,8 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         duplicate handlers, etc. if you don't do this thing.
         """
 
-        print ("MVZ: Loading in pane....")
-        print ("self.image_main:", self.image_main)
+        # ~ print ("MVZ: Loading in pane....")
+        # ~ print ("self.image_main:", self.image_main)
         # ~ self.image_main[pane].props.file = gfile
         # ~ self.image_main[pane].set_from_file(gfile) # Causes error...
         self.image_main[pane].set_from_file( gfile.get_path() )
@@ -326,3 +326,9 @@ class ImageDiff(Gtk.VBox, MeldDoc):
             return
 
         self.num_panes = n
+
+
+    def on_delete_event(self):
+        self.state = ComparisonState.Closing
+        self.close_signal.emit(0)
+        return Gtk.ResponseType.OK
