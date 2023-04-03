@@ -170,7 +170,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         # Manually handle GAction additions
         actions = (
             # ~ ('copy', self.action_copy),
-            # ~ ('copy-full-path', self.action_copy_full_path),
+            ('copy-full-path', self.action_copy_full_path),
             # ~ ('next-pane', self.action_next_pane),
             # ~ ('open-external', self.action_open_external),
             ('open-folder', self.action_open_folder),
@@ -311,3 +311,14 @@ class ImageDiff(Gtk.VBox, MeldDoc):
             if self.image_event_box[i].is_focus():
                 return i
         return -1
+
+    @with_focused_pane
+    def action_copy_full_path(self, pane, *args):
+        gfile = self.files[pane]
+        if not gfile:
+            return
+
+        path = gfile.get_path() or gfile.get_uri()
+        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
+        clip.set_text(path, -1)
+        clip.store()
