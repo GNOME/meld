@@ -289,44 +289,19 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
         # ~ print ("MVZ: Loading in pane....")
         # ~ print ("self.image_main:", self.image_main)
-        # ~ self.image_main[pane].props.file = gfile
-        # ~ self.image_main[pane].set_from_file(gfile) # Causes error...
         self.image_main[pane].set_from_file( gfile.get_path() )
-
-        # ~ self.msgarea_mgr[pane].clear()
-
-        # ~ buf = self.textbuffer[pane]
-        # ~ buf.data.reset(gfile)
-        # ~ self.file_open_button[pane].props.file = gfile
-
-        # FIXME: this was self.textbuffer[pane].data.label, which could be
-        # either a custom label or the fallback
-        # ~ self.filelabel[pane].props.gfile = gfile
-
-        # ~ if buf.data.is_special:
-            # ~ loader = GtkSource.FileLoader.new_from_stream(
-                # ~ buf, buf.data.sourcefile, buf.data.gfile.read())
-        # ~ else:
-            # ~ loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
-
-        # ~ custom_candidates = get_custom_encoding_candidates()
-        # ~ if encoding:
-            # ~ custom_candidates = [encoding]
-        # ~ if custom_candidates:
-            # ~ loader.set_candidate_encodings(custom_candidates)
-
-        # ~ loader.load_async(
-            # ~ GLib.PRIORITY_HIGH,
-            # ~ callback=self.file_loaded,
-            # ~ user_data=(pane,)
-        # ~ )
 
     def set_num_panes(self, n):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
-        self.num_panes = n
+        for widget in (self.image_main[:n]):
+            widget.show()
 
+        for widget in (self.image_main[n:]):
+            widget.hide()
+
+        self.num_panes = n
 
     def on_delete_event(self):
         self.state = ComparisonState.Closing
