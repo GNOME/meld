@@ -80,15 +80,15 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
 
-class CursorDetails:
-    __slots__ = (
-        "pane", "pos", "line", "chunk", "prev", "next",
-        "prev_conflict", "next_conflict",
-    )
+# ~ class CursorDetails:
+    # ~ __slots__ = (
+        # ~ "pane", "pos", "line", "chunk", "prev", "next",
+        # ~ "prev_conflict", "next_conflict",
+    # ~ )
 
-    def __init__(self):
-        for var in self.__slots__:
-            setattr(self, var, None)
+    # ~ def __init__(self):
+        # ~ for var in self.__slots__:
+            # ~ setattr(self, var, None)
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
@@ -112,6 +112,9 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
     show_overview_map = GObject.Property(type=bool, default=True)
     overview_map_style = GObject.Property(type=str, default='chunkmap')
+
+    image_main0 = Gtk.Template.Child()
+    image_main1 = Gtk.Template.Child()
 
     keylookup = {
         Gdk.KEY_Shift_L: MASK_SHIFT,
@@ -167,6 +170,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
             # ~ "chunkmap",
         # ~ ]
         # ~ map_widgets_into_lists(self, widget_lists)
+
+        widget_lists = [
+            "image_main",
+        ]
+        map_widgets_into_lists(self, widget_lists)
 
         self.warned_bad_comparison = False
         self._keymask = 0
@@ -225,31 +233,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self.toolbar_actions = builder.get_object('view-toolbar')
         self.copy_action_button = builder.get_object('copy_action_button')
 
-        # Handle overview map visibility binding. Because of how we use
-        # grid packing, we need three revealers here instead of the
-        # more obvious one.
-        # ~ revealers = (
-            # ~ self.toolbar_sourcemap_revealer,
-            # ~ self.sourcemap_revealer,
-            # ~ self.statusbar_sourcemap_revealer,
-        # ~ )
-        # ~ for revealer in revealers:
-            # ~ self.bind_property(
-                # ~ 'show-overview-map', revealer, 'reveal-child',
-                # ~ (
-                    # ~ GObject.BindingFlags.DEFAULT |
-                    # ~ GObject.BindingFlags.SYNC_CREATE
-                # ~ ),
-            # ~ )
-
-        # Handle overview map style mapping manually
-        # ~ self.connect(
-            # ~ 'notify::overview-map-style', self.on_overview_map_style_changed)
-        # ~ self.on_overview_map_style_changed()
-
-        # ~ self.grid.attach(self.findbar, 0, 2, 10, 1)
-
-        # ~ self.set_num_panes(num_panes)
+        self.set_num_panes(num_panes)
 
     def do_realize(self):
         Gtk.VBox().do_realize(self)
@@ -266,6 +250,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
         If an element is None, the text of a pane is left as is.
         """
+        # Debug.
+        print ("MVZ: Setting files....")
+        print ("gfiles:", gfiles)
+        print ("self.num_panes:", self.num_panes)
+
         if len(gfiles) != self.num_panes:
             return
 
@@ -281,5 +270,59 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         # ~ if not files:
             # ~ self.scheduler.add_task(self._compare_files_internal())
 
-        # ~ for pane, gfile, encoding in files:
-            # ~ self.load_file_in_pane(pane, gfile, encoding)
+        for pane, gfile, encoding in files:
+            self.load_file_in_pane(pane, gfile, encoding)
+
+    def load_file_in_pane(
+            self,
+            pane: int,
+            gfile: Gio.File,
+            encoding: GtkSource.Encoding = None):
+        """Load a file into the given pane
+
+        Don't call this directly; use `set_file()` or `set_files()`,
+        which handle sensitivity and signal connection. Even if you
+        don't care about those things, you need it because they'll be
+        unconditionally added after file load, which will cause
+        duplicate handlers, etc. if you don't do this thing.
+        """
+
+        print ("MVZ: Loading in pane....")
+        print ("self.image_main:", self.image_main)
+        # ~ self.image_main[pane].props.file = gfile
+        # ~ self.image_main[pane].set_from_file(gfile) # Causes error...
+        self.image_main[pane].set_from_file( gfile.get_path() )
+
+        # ~ self.msgarea_mgr[pane].clear()
+
+        # ~ buf = self.textbuffer[pane]
+        # ~ buf.data.reset(gfile)
+        # ~ self.file_open_button[pane].props.file = gfile
+
+        # FIXME: this was self.textbuffer[pane].data.label, which could be
+        # either a custom label or the fallback
+        # ~ self.filelabel[pane].props.gfile = gfile
+
+        # ~ if buf.data.is_special:
+            # ~ loader = GtkSource.FileLoader.new_from_stream(
+                # ~ buf, buf.data.sourcefile, buf.data.gfile.read())
+        # ~ else:
+            # ~ loader = GtkSource.FileLoader.new(buf, buf.data.sourcefile)
+
+        # ~ custom_candidates = get_custom_encoding_candidates()
+        # ~ if encoding:
+            # ~ custom_candidates = [encoding]
+        # ~ if custom_candidates:
+            # ~ loader.set_candidate_encodings(custom_candidates)
+
+        # ~ loader.load_async(
+            # ~ GLib.PRIORITY_HIGH,
+            # ~ callback=self.file_loaded,
+            # ~ user_data=(pane,)
+        # ~ )
+
+    def set_num_panes(self, n):
+        if n == self.num_panes or n not in (1, 2, 3):
+            return
+
+        self.num_panes = n
