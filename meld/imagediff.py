@@ -80,17 +80,6 @@ MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
 
-# ~ class CursorDetails:
-    # ~ __slots__ = (
-        # ~ "pane", "pos", "line", "chunk", "prev", "next",
-        # ~ "prev_conflict", "next_conflict",
-    # ~ )
-
-    # ~ def __init__(self):
-        # ~ for var in self.__slots__:
-            # ~ setattr(self, var, None)
-
-
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
 class ImageDiff(Gtk.VBox, MeldDoc):
     """Two or three way comparison of image files"""
@@ -103,15 +92,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     label_changed = MeldDoc.label_changed
     move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
-
-    # ~ __gsettings_bindings_view__ = (
-        # ~ ('ignore-blank-lines', 'ignore-blank-lines'),
-        # ~ ('show-overview-map', 'show-overview-map'),
-        # ~ ('overview-map-style', 'overview-map-style'),
-    # ~ )
-
-    show_overview_map = GObject.Property(type=bool, default=True)
-    overview_map_style = GObject.Property(type=str, default='chunkmap')
 
     image_main0 = Gtk.Template.Child()
     image_main1 = Gtk.Template.Child()
@@ -150,6 +130,8 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     ):
         super().__init__()
 
+        self.files = [None, None, None]
+
         # FIXME:
         # This unimaginable hack exists because GObject (or GTK+?)
         # doesn't actually correctly chain init calls, even if they're
@@ -160,17 +142,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
-
-        # ~ widget_lists = [
-            # ~ "sourcemap", "file_save_button", "file_toolbar",
-            # ~ "linkmap", "msgarea_mgr", "readonlytoggle",
-            # ~ "scrolledwindow", "textview", "vbox",
-            # ~ "dummy_toolbar_linkmap", "filelabel",
-            # ~ "file_open_button", "statusbar",
-            # ~ "actiongutter", "dummy_toolbar_actiongutter",
-            # ~ "chunkmap",
-        # ~ ]
-        # ~ map_widgets_into_lists(self, widget_lists)
 
         widget_lists = [
             "image_main",
@@ -199,35 +170,35 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
 
-        property_actions = (
-            ('show-overview-map', self, 'show-overview-map'),
-            ('lock-scrolling', self, 'lock_scrolling'),
-        )
-        for action_name, obj, prop_name in property_actions:
-            action = Gio.PropertyAction.new(action_name, obj, prop_name)
-            self.view_action_group.add_action(action)
+        # ~ property_actions = (
+            # ~ ('show-overview-map', self, 'show-overview-map'),
+            # ~ ('lock-scrolling', self, 'lock_scrolling'),
+        # ~ )
+        # ~ for action_name, obj, prop_name in property_actions:
+            # ~ action = Gio.PropertyAction.new(action_name, obj, prop_name)
+            # ~ self.view_action_group.add_action(action)
 
         # Manually handle GAction additions
-        # ~ actions = (
+        actions = (
             # ~ ('copy', self.action_copy),
             # ~ ('copy-full-path', self.action_copy_full_path),
             # ~ ('next-pane', self.action_next_pane),
             # ~ ('open-external', self.action_open_external),
-            # ~ ('open-folder', self.action_open_folder),
+            ('open-folder', self.action_open_folder),
             # ~ ('previous-pane', self.action_prev_pane),
             # ~ ('refresh', self.action_refresh),
             # ~ ('swap-2-panes', self.action_swap),
-        # ~ )
-        # ~ for name, callback in actions:
-            # ~ action = Gio.SimpleAction.new(name, None)
-            # ~ action.connect('activate', callback)
-            # ~ self.view_action_group.add_action(action)
+        )
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
 
-        # ~ builder = Gtk.Builder.new_from_resource(
-            # ~ '/org/gnome/meld/ui/imagediff-menus.ui')
-        # ~ self.popup_menu_model = builder.get_object('imagediff-context-menu')
-        # ~ self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
-        # ~ self.popup_menu.attach_to_widget(self)
+        builder = Gtk.Builder.new_from_resource(
+            '/org/gnome/meld/ui/imagediff-menus.ui')
+        self.popup_menu_model = builder.get_object('imagediff-context-menu')
+        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
+        self.popup_menu.attach_to_widget(self)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/imagediff-actions.ui')
@@ -341,3 +312,48 @@ class ImageDiff(Gtk.VBox, MeldDoc):
             tooltip_names = filenames
         self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
         self.label_changed.emit(self.label_text, self.tooltip_text)
+
+    @with_focused_pane
+    def action_open_folder(self, pane, *args):
+        gfile = self.files[pane]
+        if not gfile:
+            return
+
+        parent = gfile.get_parent()
+        if parent:
+            open_files_external(gfiles=[parent])
+
+    @Gtk.Template.Callback()
+    def on_imageview_popup_menu(self, imageview):
+        print ("MVZ: on_imageview_popup_menu called...")
+        # ~ buffer = textview.get_buffer()
+        # ~ cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
+        # ~ location = textview.get_iter_location(cursor_it)
+
+        # ~ rect = Gdk.Rectangle()
+        # ~ rect.x, rect.y = textview.buffer_to_window_coords(
+            # ~ Gtk.TextWindowType.WIDGET, location.x, location.y)
+
+        # ~ pane = self.imageview.index(imageview)
+        # ~ self.set_syncpoint_menuitem(pane)
+
+        # ~ self.popup_menu.popup_at_rect(
+            # ~ Gtk.Widget.get_window(textview),
+            # ~ rect,
+            # ~ Gdk.Gravity.SOUTH_EAST,
+            # ~ Gdk.Gravity.NORTH_WEST,
+            # ~ None,
+        # ~ )
+        self.popup_menu.popup_at_pointer()
+        return True
+
+    @Gtk.Template.Callback()
+    def on_imageview_button_press_event(self, imageview, event):
+        print ("MVZ: Button press event...")
+        if event.button == 3:
+            imageview.grab_focus()
+            pane = self.imageview.index(textview)
+            # ~ self.set_syncpoint_menuitem(pane)
+            self.popup_menu.popup_at_pointer(event)
+            return True
+        return False
