@@ -115,6 +115,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
     image_main0 = Gtk.Template.Child()
     image_main1 = Gtk.Template.Child()
+    image_main2 = Gtk.Template.Child()
 
     keylookup = {
         Gdk.KEY_Shift_L: MASK_SHIFT,

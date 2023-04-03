@@ -8,7 +8,7 @@
     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
     <child>
-      <!-- n-columns=2 n-rows=1 -->
+      <!-- n-columns=3 n-rows=1 -->
       <object class="GtkGrid" id="grid_main">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
@@ -33,6 +33,17 @@
           </object>
           <packing>
             <property name="left-attach">1</property>
+            <property name="top-attach">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="image_main2">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <property name="stock">gtk-dialog-question</property>
+          </object>
+          <packing>
+            <property name="left-attach">2</property>
             <property name="top-attach">0</property>
           </packing>
         </child>
