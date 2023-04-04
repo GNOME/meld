@@ -27,10 +27,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 from meld import misc
 from meld.conf import _
 from meld.const import (
-    NEWLINES,
-    TEXT_FILTER_ACTION_FORMAT,
     ActionMode,
-    ChunkAction,
     FileComparisonMode,
 )
 from meld.iohelpers import find_shared_parent_path, prompt_save_filename
@@ -43,7 +40,6 @@ from meld.ui.util import (
     make_multiobject_property_action,
     map_widgets_into_lists,
 )
-from meld.undo import UndoSequence
 
 log = logging.getLogger(__name__)
 
@@ -90,7 +86,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     image_event_box0 = Gtk.Template.Child()
@@ -100,24 +95,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     image_event_box2 = Gtk.Template.Child()
     image_main2 = Gtk.Template.Child()
 
-    keylookup = {
-        Gdk.KEY_Shift_L: MASK_SHIFT,
-        Gdk.KEY_Shift_R: MASK_SHIFT,
-        Gdk.KEY_Control_L: MASK_CTRL,
-        Gdk.KEY_Control_R: MASK_CTRL,
-    }
-
     # Identifiers for MsgArea messages
     (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
     # Transient messages that should be removed if any file in the
     # comparison gets reloaded.
     TRANSIENT_MESSAGES = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
-
-    action_mode = GObject.Property(
-        type=int,
-        nick='Action mode for chunk change actions',
-        default=ActionMode.Replace,
-    )
 
     lock_scrolling = GObject.Property(
         type=bool,
@@ -158,18 +140,20 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self.focus_pane = None
         meld_settings = get_meld_settings()
 
+        # TODO: Add synchronized scrolling for large images.
         # ~ for (i, w) in enumerate(self.scrolledwindow):
             # ~ w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
             # ~ w.get_hadjustment().connect("value-changed", self._sync_hscroll)
-        self._sync_vscroll_lock = False
-        self._sync_hscroll_lock = False
+        # ~ self._sync_vscroll_lock = False
+        # ~ self._sync_hscroll_lock = False
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
 
         # Manually handle GAction additions
+        # TODO: Highlight the selected image for the "Next Pane" and
+        # "Open External" menu items to make sense.
         actions = (
-            # ~ ('copy', self.action_copy),
             ('copy-full-path', self.action_copy_full_path),
             # ~ ('next-pane', self.action_next_pane),
             # ~ ('open-external', self.action_open_external),
@@ -196,22 +180,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
 
         self.set_num_panes(num_panes)
 
-    def do_realize(self):
-        Gtk.VBox().do_realize(self)
-
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/imagediff-menus.ui')
-        # ~ filter_menu = builder.get_object('file-copy-actions-menu')
-
-        # ~ self.copy_action_button.set_popover(
-            # ~ Gtk.Popover.new_from_model(self.copy_action_button, filter_menu))
-
     def set_files(self, gfiles, encodings=None):
         """Load the given files
 
         If an element is None, the text of a pane is left as is.
         """
-
 
         if len(gfiles) != self.num_panes:
             return
@@ -222,11 +195,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         for pane, (gfile, encoding) in enumerate(zip(gfiles, encodings)):
             if gfile:
                 files.append((pane, gfile, encoding))
-            # ~ else:
-                # ~ self.textbuffer[pane].data.loaded = True
-
-        # ~ if not files:
-            # ~ self.scheduler.add_task(self._compare_files_internal())
 
         for pane, gfile, encoding in files:
             self.load_file_in_pane(pane, gfile, encoding)
