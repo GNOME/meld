@@ -22,15 +22,11 @@ from gi.repository import Gdk, Gio, GObject, Gtk, GtkSource
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _
-from meld.const import (
-    FileComparisonMode,
-)
+from meld.const import FileComparisonMode
 from meld.melddoc import ComparisonState, MeldDoc, open_files_external
 from meld.misc import with_focused_pane
-from meld.settings import bind_settings, get_meld_settings
-from meld.ui.util import (
-    map_widgets_into_lists,
-)
+from meld.settings import bind_settings
+from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
 
