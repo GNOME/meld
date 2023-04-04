@@ -369,15 +369,14 @@ class MeldWindow(Gtk.ApplicationWindow):
         assert len(gfiles) in (1, 2, 3)
 
         # Check whether to show image window or not.
-        filesAreImages = False
+        files_are_images = False
         for gfile in gfiles:
             basename = gfile.get_basename()
             if basename.endswith(".png"):
-                filesAreImages = True
-                # ~ print ("MVZ: Files are images. Showing the image window...")
+                files_are_images = True
                 break
 
-        if filesAreImages:
+        if files_are_images:
             doc = ImageDiff(len(gfiles))
         else:
             doc = FileDiff(len(gfiles))

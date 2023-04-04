@@ -25,7 +25,6 @@ import meld.accelerators
 import meld.conf
 from meld.conf import _
 from meld.filediff import FileDiff
-from meld.imagediff import ImageDiff
 from meld.meldwindow import MeldWindow
 from meld.preferences import PreferencesDialog
 

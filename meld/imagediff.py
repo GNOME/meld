@@ -14,30 +14,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import copy
 import functools
 import logging
-import math
-from enum import Enum
-from typing import Optional, Tuple, Type
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
+from gi.repository import Gdk, Gio, GObject, Gtk, GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
 from meld.conf import _
 from meld.const import (
-    ActionMode,
     FileComparisonMode,
 )
-from meld.iohelpers import find_shared_parent_path, prompt_save_filename
 from meld.melddoc import ComparisonState, MeldDoc, open_files_external
-from meld.menuhelpers import replace_menu_section
-from meld.misc import user_critical, with_focused_pane
-from meld.recent import RecentType
+from meld.misc import with_focused_pane
 from meld.settings import bind_settings, get_meld_settings
 from meld.ui.util import (
-    make_multiobject_property_action,
     map_widgets_into_lists,
 )
 
@@ -138,14 +129,8 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self.meta = {}
         self.lines_removed = 0
         self.focus_pane = None
-        meld_settings = get_meld_settings()
 
         # TODO: Add synchronized scrolling for large images.
-        # ~ for (i, w) in enumerate(self.scrolledwindow):
-            # ~ w.get_vadjustment().connect("value-changed", self._sync_vscroll, i)
-            # ~ w.get_hadjustment().connect("value-changed", self._sync_hscroll)
-        # ~ self._sync_vscroll_lock = False
-        # ~ self._sync_hscroll_lock = False
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
@@ -217,7 +202,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         duplicate handlers, etc. if you don't do this thing.
         """
 
-        self.image_main[pane].set_from_file( gfile.get_path() )
+        self.image_main[pane].set_from_file(gfile.get_path())
 
     def set_num_panes(self, n):
         if n == self.num_panes or n not in (1, 2, 3):
@@ -269,7 +254,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     def on_imageview_button_press_event(self, event_box, event):
         if event.button == 3:
             event_box.grab_focus()
-            pane = self.image_event_box.index(event_box)
             self.popup_menu.popup_at_pointer(event)
             return True
         return False
