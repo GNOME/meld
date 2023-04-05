@@ -75,10 +75,16 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
 
+    scroll_window0 = Gtk.Template.Child()
+    viewport0 = Gtk.Template.Child()
     image_event_box0 = Gtk.Template.Child()
     image_main0 = Gtk.Template.Child()
+    scroll_window1 = Gtk.Template.Child()
+    viewport1 = Gtk.Template.Child()
     image_event_box1 = Gtk.Template.Child()
     image_main1 = Gtk.Template.Child()
+    scroll_window2 = Gtk.Template.Child()
+    viewport2 = Gtk.Template.Child()
     image_event_box2 = Gtk.Template.Child()
     image_main2 = Gtk.Template.Child()
 
@@ -116,7 +122,10 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
-            "image_main", "image_event_box"
+            "image_main",
+            "image_event_box",
+            "scroll_window",
+            "viewport",
         ]
         map_widgets_into_lists(self, widget_lists)
 
@@ -204,10 +213,12 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
-        for widget in (self.image_main[:n] + self.image_event_box[:n]):
+        for widget in (self.image_main[:n] + self.image_event_box[:n] +
+            self.scroll_window[:n] + self.viewport[:n]):
             widget.show()
 
-        for widget in (self.image_main[n:] + self.image_event_box[n:]):
+        for widget in (self.image_main[n:] + self.image_event_box[n:] +
+            self.scroll_window[n:] + self.viewport[n:]):
             widget.hide()
 
         self.num_panes = n
