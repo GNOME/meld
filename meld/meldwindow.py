@@ -44,6 +44,30 @@ from meld.windowstate import SavedWindowState
 
 log = logging.getLogger(__name__)
 
+image_extensions = [
+    ".bmp",
+    ".eps",
+    ".gif",
+    ".ico",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".tif",
+]
+
+def file_is_image(gfile):
+    """Check if file is an image."""
+
+    # Check for null value.
+    if not gfile:
+        return False
+
+    basename = gfile.get_basename()
+    for extension in image_extensions:
+        if basename.endswith(extension):
+            return True
+
+    return False
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
 class MeldWindow(Gtk.ApplicationWindow):
@@ -371,8 +395,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         # Check whether to show image window or not.
         files_are_images = False
         for gfile in gfiles:
-            basename = gfile.get_basename()
-            if basename.endswith(".png"):
+            if file_is_image(gfile):
                 files_are_images = True
                 break
 
