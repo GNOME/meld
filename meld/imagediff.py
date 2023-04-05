@@ -218,7 +218,7 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         return Gtk.ResponseType.OK
 
     def recompute_label(self):
-        filenames = [f.get_path() for f in self.files]
+        filenames = [f.get_path() for f in self.files if f]
         shortnames = misc.shorten_names(*filenames)
 
         label = self.meta.get("tablabel", "")
