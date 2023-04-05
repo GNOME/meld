@@ -62,7 +62,7 @@ def file_is_image(gfile):
     if not gfile:
         return False
 
-    basename = gfile.get_basename()
+    basename = gfile.get_basename().lower()
     for extension in image_extensions:
         if basename.endswith(extension):
             return True
