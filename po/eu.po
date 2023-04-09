@@ -16,13 +16,13 @@
 # Larraitz Uriarte Erkoreka <larraitz.uriarte@gmail.com>, 2013.
 # Josune Zuzuarregui Lizarazu <josunezl@gmail.com>, 2013.
 # Iñaki Larrañaga Murgoitio <dooteo@zundan.com>, 2014.
-# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2021, 2022.
+# Asier Sarasua Garmendia <asiersarasua@ni.eus>, 2019, 2021, 2022, 2023.
 #
 msgid ""
 msgstr "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2022-11-04 21:30+0000\n"
-"PO-Revision-Date: 2022-12-08 10:00+0100\n"
+"POT-Creation-Date: 2023-03-24 16:46+0000\n"
+"PO-Revision-Date: 2023-04-08 10:00+0100\n"
 "Last-Translator: Asier Sarasua Garmendia <asiersarasua@ni.eus>\n"
 "Language-Team: Basque <librezale@librezale.eus>\n"
 "Language: eu\n"
@@ -398,7 +398,7 @@ msgstr "Bertsio-kontrolen konparazioan fitxategi ikusgaiak iragazteko erabiliko 
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -407,11 +407,11 @@ msgid ""
 "mpg,xcf,xpm}\")\n"
 "            ]"
 msgstr "[\n"
-"              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-"              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-"              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}\")\n"
+"              (\"Babeskopiak\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+"              (\"SE espezifikoak diren metadatuak\", true, \".DS_Store ._* .Spotlight-V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+"              (\"Bertsio-kontrola\", true, \"_MTN .bzr .svn .svn .hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+"              (\"Bitarrak\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
+"              (\"Multimedia\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,xcf,xpm}\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:253
@@ -431,25 +431,25 @@ msgstr "Aurredefinitutako fitxategi-izenetan oinarritutako iragazkien zerrenda. 
 #: data/org.gnome.meld.gschema.xml:262
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"\\v]*\"),\n"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
-"\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"CVS/SVN gako-hitzak\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$\"),\n"
+"              (\"C++ iruzkina\", false, \"//.*\"),\n"
+"              (\"C iruzkina\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"Zuriune guztiak\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Aurreko zuriunea\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Atzeko zuriunea\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$\"),\n"
+"              (\"Script iruzkina\", false, \"#.*\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:273
@@ -501,241 +501,266 @@ msgstr "Irten Meld-etik"
 
 #: meld/resources/gtk/help-overlay.ui:40
 msgctxt "shortcut window"
+msgid "Show help"
+msgstr "Erakutsi laguntza"
+
+#: meld/resources/gtk/help-overlay.ui:47
+msgctxt "shortcut window"
+msgid "Show preferences"
+msgstr "Erakutsi hobespenak"
+
+#: meld/resources/gtk/help-overlay.ui:54
+msgctxt "shortcut window"
+msgid "Keyboard shortcuts"
+msgstr "Laster-teklak"
+
+#: meld/resources/gtk/help-overlay.ui:61
+msgctxt "shortcut window"
 msgid "Stop the current action"
 msgstr "Gelditu uneko ekintza"
 
-#: meld/resources/gtk/help-overlay.ui:47
+#: meld/resources/gtk/help-overlay.ui:68
 msgctxt "shortcut window"
 msgid "Refresh comparison"
 msgstr "Freskatu konparazioa"
 
-#: meld/resources/gtk/help-overlay.ui:54
+#: meld/resources/gtk/help-overlay.ui:75
 msgctxt "shortcut window"
 msgid "Open externally"
 msgstr "Ireki kanpotik"
 
-#: meld/resources/gtk/help-overlay.ui:61
+#: meld/resources/gtk/help-overlay.ui:82
 msgctxt "shortcut window"
 msgid "Fullscreen"
 msgstr "Pantaila osoa"
 
-#: meld/resources/gtk/help-overlay.ui:68
+#: meld/resources/gtk/help-overlay.ui:89
 msgctxt "shortcut window"
 msgid "Swap left and right panes"
 msgstr "Trukatu ezkerreko eta eskuineko panelak"
 
-#: meld/resources/gtk/help-overlay.ui:77
+#: meld/resources/gtk/help-overlay.ui:98
 msgctxt "shortcut window"
 msgid "Panes"
 msgstr "Panelak"
 
-#: meld/resources/gtk/help-overlay.ui:82
+#: meld/resources/gtk/help-overlay.ui:103
 msgctxt "shortcut window"
 msgid "Previous comparison pane"
 msgstr "Aurreko konparazio-panela"
 
-#: meld/resources/gtk/help-overlay.ui:89
+#: meld/resources/gtk/help-overlay.ui:110
 msgctxt "shortcut window"
 msgid "Next comparison pane"
 msgstr "Hurrengo konparazio-panela"
 
-#: meld/resources/gtk/help-overlay.ui:98
+#: meld/resources/gtk/help-overlay.ui:119
 msgctxt "shortcut window"
 msgid "Changes"
 msgstr "Aldaketak"
 
-#: meld/resources/gtk/help-overlay.ui:103
+#: meld/resources/gtk/help-overlay.ui:124
 msgctxt "shortcut window"
 msgid "Go to previous change"
 msgstr "Joan aurreko aldaketara"
 
-#: meld/resources/gtk/help-overlay.ui:110
+#: meld/resources/gtk/help-overlay.ui:131
 msgctxt "shortcut window"
 msgid "Go to next change"
 msgstr "Joan hurrengo aldaketara"
 
-#: meld/resources/gtk/help-overlay.ui:119
+#: meld/resources/gtk/help-overlay.ui:140
 msgctxt "shortcut window"
 msgid "Tabs"
 msgstr "Fitxak"
 
-#: meld/resources/gtk/help-overlay.ui:124
+#: meld/resources/gtk/help-overlay.ui:145
 msgctxt "shortcut window"
 msgid "Go to previous tab"
 msgstr "Joan aurreko fitxara"
 
-#: meld/resources/gtk/help-overlay.ui:131
+#: meld/resources/gtk/help-overlay.ui:152
 msgctxt "shortcut window"
 msgid "Go to next tab"
 msgstr "Joan hurrengo fitxara"
 
-#: meld/resources/gtk/help-overlay.ui:138
+#: meld/resources/gtk/help-overlay.ui:159
 msgctxt "shortcut window"
 msgid "Switch to tab"
 msgstr "Aldatu fitxara"
 
-#: meld/resources/gtk/help-overlay.ui:145
+#: meld/resources/gtk/help-overlay.ui:166
 msgctxt "shortcut window"
 msgid "Move tab left"
 msgstr "Eraman fitxa ezkerrera"
 
-#: meld/resources/gtk/help-overlay.ui:152
+#: meld/resources/gtk/help-overlay.ui:173
 msgctxt "shortcut window"
 msgid "Move tab right"
 msgstr "Eraman fitxa eskuinera"
 
-#: meld/resources/gtk/help-overlay.ui:161
+#: meld/resources/gtk/help-overlay.ui:182
 msgctxt "shortcut window"
 msgid "Editing"
 msgstr "Edizioa"
 
-#: meld/resources/gtk/help-overlay.ui:166
+#: meld/resources/gtk/help-overlay.ui:187
 msgctxt "shortcut window"
 msgid "Undo"
 msgstr "Desegin"
 
-#: meld/resources/gtk/help-overlay.ui:173
+#: meld/resources/gtk/help-overlay.ui:194
 msgctxt "shortcut window"
 msgid "Redo"
 msgstr "Berregin"
 
-#: meld/resources/gtk/help-overlay.ui:180
+#: meld/resources/gtk/help-overlay.ui:201
 msgctxt "shortcut window"
 msgid "Cut"
 msgstr "Ebaki"
 
-#: meld/resources/gtk/help-overlay.ui:187
+#: meld/resources/gtk/help-overlay.ui:208
 msgctxt "shortcut window"
 msgid "Copy"
 msgstr "Kopiatu"
 
-#: meld/resources/gtk/help-overlay.ui:194
+#: meld/resources/gtk/help-overlay.ui:215
 msgctxt "shortcut window"
 msgid "Paste"
 msgstr "Itsatsi"
 
-#: meld/resources/gtk/help-overlay.ui:201
+#: meld/resources/gtk/help-overlay.ui:222
 msgctxt "shortcut window"
 msgid "Find"
 msgstr "Bilatu"
 
-#: meld/resources/gtk/help-overlay.ui:208
+#: meld/resources/gtk/help-overlay.ui:229
 msgctxt "shortcut window"
 msgid "Find Next"
 msgstr "Bilatu hurrengoa"
 
-#: meld/resources/gtk/help-overlay.ui:215
+#: meld/resources/gtk/help-overlay.ui:236
 msgctxt "shortcut window"
 msgid "Find Previous"
 msgstr "Bilatu aurrekoa"
 
-#: meld/resources/gtk/help-overlay.ui:222
+#: meld/resources/gtk/help-overlay.ui:243
 msgctxt "shortcut window"
 msgid "Replace"
 msgstr "Ordeztu"
 
-#: meld/resources/gtk/help-overlay.ui:231
+#: meld/resources/gtk/help-overlay.ui:252
 msgctxt "shortcut window"
 msgid "File comparison"
 msgstr "Fitxategi-konparazioa"
 
-#: meld/resources/gtk/help-overlay.ui:236
+#: meld/resources/gtk/help-overlay.ui:257
 msgctxt "shortcut window"
 msgid "Save current file"
 msgstr "Gorde uneko fitxategia"
 
-#: meld/resources/gtk/help-overlay.ui:243
+#: meld/resources/gtk/help-overlay.ui:264
 msgctxt "shortcut window"
 msgid "Save current file to new path"
 msgstr "Gorde uneko fitxategia bide berrian"
 
-#: meld/resources/gtk/help-overlay.ui:250
+#: meld/resources/gtk/help-overlay.ui:271
 msgctxt "shortcut window"
 msgid "Save all files in comparison"
 msgstr "Gorde fitxategi guztiak konparazioan"
 
-#: meld/resources/gtk/help-overlay.ui:257
+#: meld/resources/gtk/help-overlay.ui:278
 msgctxt "shortcut window"
 msgid "Previous conflict"
 msgstr "Aurreko gatazka"
 
-#: meld/resources/gtk/help-overlay.ui:264
+#: meld/resources/gtk/help-overlay.ui:285
 msgctxt "shortcut window"
 msgid "Next conflict"
 msgstr "Hurrengo gatazka"
 
-#: meld/resources/gtk/help-overlay.ui:271
+#: meld/resources/gtk/help-overlay.ui:292
 msgctxt "shortcut window"
 msgid "Push change to left"
 msgstr "Bidali aldaketa ezkerrera"
 
-#: meld/resources/gtk/help-overlay.ui:278
+#: meld/resources/gtk/help-overlay.ui:299
 msgctxt "shortcut window"
 msgid "Push change to right"
 msgstr "Bidali aldaketa eskuinera"
 
-#: meld/resources/gtk/help-overlay.ui:285
+#: meld/resources/gtk/help-overlay.ui:306
 msgctxt "shortcut window"
 msgid "Pull change from left"
 msgstr "Ekarri aldaketa ezkerretik"
 
-#: meld/resources/gtk/help-overlay.ui:292
+#: meld/resources/gtk/help-overlay.ui:313
 msgctxt "shortcut window"
 msgid "Pull change from right"
 msgstr "Ekarri aldaketa eskuinetik"
 
-#: meld/resources/gtk/help-overlay.ui:299
+#: meld/resources/gtk/help-overlay.ui:320
 msgctxt "shortcut window"
 msgid "Copy change above left"
 msgstr "Kopiatu aldaketa ezkerraren gainean"
 
-#: meld/resources/gtk/help-overlay.ui:306
+#: meld/resources/gtk/help-overlay.ui:327
 msgctxt "shortcut window"
 msgid "Copy change below left"
 msgstr "Kopiatu aldaketa ezkerraren azpian"
 
-#: meld/resources/gtk/help-overlay.ui:313
+#: meld/resources/gtk/help-overlay.ui:334
 msgctxt "shortcut window"
 msgid "Copy change above right"
 msgstr "Kopiatu aldaketa eskuinaren gainean"
 
-#: meld/resources/gtk/help-overlay.ui:320
+#: meld/resources/gtk/help-overlay.ui:341
 msgctxt "shortcut window"
 msgid "Copy change below right"
 msgstr "Kopiatu aldaketa eskuinaren azpian"
 
-#: meld/resources/gtk/help-overlay.ui:327
-#: meld/resources/gtk/help-overlay.ui:355
+#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:376
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "Ezabatu aldaketa"
 
-#: meld/resources/gtk/help-overlay.ui:336
+#: meld/resources/gtk/help-overlay.ui:357
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "Karpeta-konparazioa"
 
-#: meld/resources/gtk/help-overlay.ui:341
+#: meld/resources/gtk/help-overlay.ui:362
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "Ezkerrean kopiatzen du"
 
-#: meld/resources/gtk/help-overlay.ui:348
+#: meld/resources/gtk/help-overlay.ui:369
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Eskuinean kopiatzen du"
 
-#: meld/resources/gtk/help-overlay.ui:364
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Hedatu uneko karpeta"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Tolestu uneko karpeta"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Bertsio-kontrolaren konparazioa"
 
-#: meld/resources/gtk/help-overlay.ui:369
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Egikaritu bertsio-kontrolera"
 
-#: meld/resources/gtk/help-overlay.ui:376
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Erakutsi/ezkutatu kontsolaren irteera"
@@ -749,7 +774,7 @@ msgid "Save A_ll"
 msgstr "Gorde _denak"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Alderantzikatu fitxategiak…"
 
 #: meld/resources/gtk/menus.ui:19
@@ -776,101 +801,101 @@ msgstr "Ikusi"
 msgid "Fullscreen"
 msgstr "Pantaila osoa"
 
-#: meld/resources/gtk/menus.ui:52
+#: meld/resources/gtk/menus.ui:51
 msgid "Overview Map"
 msgstr "Ikuspegi orokorraren mapa"
 
-#: meld/resources/gtk/menus.ui:56
-msgid "Version control console"
+#: meld/resources/gtk/menus.ui:55
+msgid "Version Control Console"
 msgstr "Bertsio-kontrolaren kontsola"
 
-#: meld/resources/gtk/menus.ui:60
-msgid "Lock scrolling"
+#: meld/resources/gtk/menus.ui:59
+msgid "Lock Scrolling"
 msgstr "Blokeatu korritzea"
 
-#: meld/resources/gtk/menus.ui:67
-msgid "Swap left and right panes"
+#: meld/resources/gtk/menus.ui:66
+msgid "Swap Left and Right Panes"
 msgstr "Trukatu ezkerreko eta eskuineko panelak"
 
-#: meld/resources/gtk/menus.ui:73
+#: meld/resources/gtk/menus.ui:72
 msgid "Comparison"
 msgstr "Konparazioa"
 
-#: meld/resources/gtk/menus.ui:75
+#: meld/resources/gtk/menus.ui:74
 msgid "Stop"
 msgstr "Gelditu"
 
-#: meld/resources/gtk/menus.ui:81
+#: meld/resources/gtk/menus.ui:80
 msgid "Merge All from Left"
 msgstr "Batu guztiak ezkerretik"
 
-#: meld/resources/gtk/menus.ui:85
+#: meld/resources/gtk/menus.ui:84
 msgid "Merge All from Right"
 msgstr "Batu guztiak eskuinetik"
 
-#: meld/resources/gtk/menus.ui:89
+#: meld/resources/gtk/menus.ui:88
 msgid "Merge All"
 msgstr "Batu guztiak"
 
-#: meld/resources/gtk/menus.ui:96
+#: meld/resources/gtk/menus.ui:95
 msgid "Format as Patch…"
 msgstr "Formateatu adabaki gisa…"
 
-#: meld/resources/gtk/menus.ui:105
+#: meld/resources/gtk/menus.ui:104
 msgid "_Preferences"
 msgstr "_Hobespenak"
 
-#: meld/resources/gtk/menus.ui:109
+#: meld/resources/gtk/menus.ui:108
 msgid "Keyboard Shortcuts"
 msgstr "Laster-teklak"
 
-#: meld/resources/gtk/menus.ui:113
+#: meld/resources/gtk/menus.ui:112
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: meld/resources/gtk/menus.ui:118
+#: meld/resources/gtk/menus.ui:116
 msgid "_About Meld"
 msgstr "Meld aplikazioari _buruz"
 
-#: meld/resources/gtk/menus.ui:131
-msgid "File status"
+#: meld/resources/gtk/menus.ui:129
+msgid "File Status"
 msgstr "Fitxategiaren egoera"
 
-#: meld/resources/gtk/menus.ui:133
+#: meld/resources/gtk/menus.ui:131
 msgid "Same"
 msgstr "Berdinak"
 
-#: meld/resources/gtk/menus.ui:137
+#: meld/resources/gtk/menus.ui:135
 msgid "New"
 msgstr "Berria"
 
-#: meld/resources/gtk/menus.ui:141 meld/resources/gtk/menus.ui:164
+#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
 #: meld/vc/_vc.py:77
 msgid "Modified"
 msgstr "Aldatze-data"
 
-#: meld/resources/gtk/menus.ui:151
-msgid "Ignore filename case"
+#: meld/resources/gtk/menus.ui:149
+msgid "Ignore Filename Case"
 msgstr "Ez ikusi egin fitxategi-izeneko maiuskula/minuskulei"
 
-#: meld/resources/gtk/menus.ui:155
-msgid "Normalize Unicode paths"
+#: meld/resources/gtk/menus.ui:153
+msgid "Normalize Unicode Paths"
 msgstr "Normalizatu Unicode bide-izenak"
 
-#: meld/resources/gtk/menus.ui:168
+#: meld/resources/gtk/menus.ui:166
 msgid "Normal"
 msgstr "Arrunta"
 
-#: meld/resources/gtk/menus.ui:172 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
 msgid "Unversioned"
 msgstr "Bertsiorik gabekoa"
 
-#: meld/resources/gtk/menus.ui:176 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
 msgid "Ignored"
 msgstr "Ez ikusi eginda"
 
-#: meld/resources/gtk/menus.ui:183
-msgid "Flatten folders"
+#: meld/resources/gtk/menus.ui:181
+msgid "Flatten Folders"
 msgstr "Berdindu karpetak"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -965,6 +990,13 @@ msgstr "Egunkariaren mezua"
 msgid "Previous logs:"
 msgstr "Aurreko egunkaria:"
 
+#: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
+#: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
+#: meld/iohelpers.py:56 meld/iohelpers.py:116
+msgid "_Cancel"
+msgstr "_Utzi"
+
 #: meld/resources/ui/commit-dialog.ui:259
 msgid "Co_mmit"
 msgstr "_Egikaritu"
@@ -982,27 +1014,27 @@ msgid "Delete selected"
 msgstr "Ezabatu hautapena"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "_Konparatu hautatutako fitxategiak"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "_Markatu hautatutako fitxategia"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "K_onparatu markatutako fitxategiarekin"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "Kopiatu e_zkerrean"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Kopiatu e_skuinean"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "E_zabatu hautatutakoa"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
@@ -1020,6 +1052,11 @@ msgstr "_Ireki kanpotik"
 #: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "Kopiatu fitxategi-_adabakiak"
+
+#: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:75
+#: meld/resources/ui/dirdiff.ui:116 meld/resources/ui/vcview.ui:139
+msgid "Select Folder"
+msgstr "Hautatu karpeta"
 
 #: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:76
 #: meld/resources/ui/dirdiff.ui:117
@@ -1436,6 +1473,7 @@ msgstr "Bertsio-kontrola"
 msgid "Filename filters"
 msgstr "Fitxategi-izenen iragazkiak"
 
+#. Translators: 'filter out' refers to removing matched files and folders from the display
 #: meld/resources/ui/preferences.ui:1427
 msgid ""
 "When performing directory comparisons, you may filter out files and "
@@ -1524,6 +1562,10 @@ msgstr "_Bidali egikariketak"
 msgid "Search recent comparisons…"
 msgstr "Bilatu azken aldiko konparazioetan…"
 
+#: meld/resources/ui/recent-selector.ui:43
+msgid "_Open"
+msgstr "_Ireki"
+
 #: meld/resources/ui/revert-dialog.ui:9
 msgid "Discard unsaved changes to documents?"
 msgstr "Baztertu gorde gabeko dokumentu-aldaketak?"
@@ -1547,11 +1589,6 @@ msgstr "Gordetzen ez baduzu, aldaketak betiko galduko dira."
 #: meld/resources/ui/save-confirm-dialog.ui:24
 msgid "Close _without Saving"
 msgstr "Itxi gorde _gabe"
-
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
-#: meld/iohelpers.py:56 meld/iohelpers.py:116
-msgid "_Cancel"
-msgstr "_Utzi"
 
 #: meld/resources/ui/save-confirm-dialog.ui:55
 msgid "_Save"
@@ -2233,35 +2270,35 @@ msgstr "Ez da fitxategirik egikarituko"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} hemen: {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "Bidali gabeko egikaritze %d"
 msgstr[1] "Bidali gabeko %d egikaritze"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "adar %d"
 msgstr[1] "%d adar"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modua aldatu da {old_mode} modutik {new_mode} modura"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Partzialki gordailuan gordea"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Gordailuan gordea"
 
@@ -2562,9 +2599,6 @@ msgstr "Garbitu"
 #~ msgid "Show identical"
 #~ msgstr "Berdinak erakusten ditu"
 
-#~ msgid "Show new"
-#~ msgstr "Berriak erakusten ditu"
-
 #~ msgid "Show modified"
 #~ msgstr "Aldatuak erakusten ditu"
 
@@ -2750,9 +2784,6 @@ msgstr "Garbitu"
 
 #~ msgid "Save the current file with a different name"
 #~ msgstr "Gorde uneko fitxategia beste izen batekin"
-
-#~ msgid "Close the current file"
-#~ msgstr "Itxi uneko fitxategia"
 
 #~ msgid "Undo the last action"
 #~ msgstr "Desegin azken ekintza"
