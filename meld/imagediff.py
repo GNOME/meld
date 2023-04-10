@@ -213,12 +213,14 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
-        for widget in (self.image_main[:n] + self.image_event_box[:n] +
-            self.scroll_window[:n] + self.viewport[:n]):
+        for widget in (
+                self.image_main[:n] + self.image_event_box[:n] +
+                self.scroll_window[:n] + self.viewport[:n]):
             widget.show()
 
-        for widget in (self.image_main[n:] + self.image_event_box[n:] +
-            self.scroll_window[n:] + self.viewport[n:]):
+        for widget in (
+                self.image_main[n:] + self.image_event_box[n:] +
+                self.scroll_window[n:] + self.viewport[n:]):
             widget.hide()
 
         self.num_panes = n

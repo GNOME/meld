@@ -55,6 +55,7 @@ image_extensions = [
     ".tif",
 ]
 
+
 def file_is_image(gfile):
     """Check if file is an image."""
 
@@ -68,6 +69,7 @@ def file_is_image(gfile):
             return True
 
     return False
+
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
 class MeldWindow(Gtk.ApplicationWindow):
