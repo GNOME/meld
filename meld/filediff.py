@@ -1991,8 +1991,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
                         newline_strings.append("\t%s: %s" % (label, nl_string))
                     secondary_text %= "\n".join(newline_strings)
 
-                msgarea = mgr.new_from_text_and_icon(
-                    'dialog-information-symbolic', primary, secondary_text)
+                msgarea = mgr.new_from_text_and_icon(primary, secondary_text)
                 mgr.set_msg_id(FileDiff.MSG_SAME)
                 button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
                 if index == 0:
@@ -2020,11 +2019,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         for index, mgr in enumerate(self.msgarea_mgr):
             msgarea = mgr.new_from_text_and_icon(
-                'dialog-information-symbolic',
                 _("Change highlighting incomplete"),
                 _("Some changes were not highlighted because they were too "
                   "large. You can force Meld to take longer to highlight "
-                  "larger changes, though this may be slow."))
+                  "larger changes, though this may be slow."),
+            )
             mgr.set_msg_id(FileDiff.MSG_SLOW_HIGHLIGHT)
             button = msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
             if index == 0:
@@ -2074,7 +2073,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 bufdata.gfile.get_parse_name())
             secondary = _("If you save it, any external changes will be lost.")
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                'dialog-warning-symbolic', primary, secondary)
+                primary, secondary, "dialog-warning-symbolic"
+            )
             msgarea.add_button(_("Save Anyway"), Gtk.ResponseType.ACCEPT)
             msgarea.add_button(_("Don’t Save"), Gtk.ResponseType.CLOSE)
 
@@ -2535,12 +2535,12 @@ class FileDiff(Gtk.VBox, MeldDoc):
         if valid_points:
             for mgr in self.msgarea_mgr:
                 msgarea = mgr.new_from_text_and_icon(
-                    'dialog-information-symbolic',
                     _("Live comparison updating disabled"),
                     _("Live updating of comparisons is disabled when "
                       "synchronization points are active. You can still "
                       "manually refresh the comparison, and live updates will "
-                      "resume when synchronization points are cleared."))
+                      "resume when synchronization points are cleared."),
+                )
                 mgr.set_msg_id(FileDiff.MSG_SYNCPOINTS)
                 msgarea.show_all()
 

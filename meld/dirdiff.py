@@ -1141,7 +1141,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         for pane in range(self.num_panes):
             msgarea = self.msgarea_mgr[pane].new_from_text_and_icon(
-                'dialog-information-symbolic', primary, secondary)
+                primary, secondary)
             button = msgarea.add_button(_("Hide"), Gtk.ResponseType.CLOSE)
             if pane == 0:
                 button.props.label = _("Hi_de")

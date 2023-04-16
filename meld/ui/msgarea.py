@@ -19,14 +19,24 @@
 # newer GTK+.
 # Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
+from typing import Optional
+
 from gi.repository import Gtk, Pango
 
 from meld.conf import _
 
 
-def layout_text_and_icon(icon_name, primary_text, secondary_text=None):
-    image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
-    image.set_alignment(0.5, 0.5)
+def layout_text_and_icon(
+    primary_text: str,
+    secondary_text: Optional[str] = None,
+    icon_name: Optional[str] = None,
+):
+    hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
+
+    if icon_name:
+        image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
+        image.set_alignment(0.5, 0.5)
+        hbox_content.pack_start(image, False, False, 0)
 
     vbox = Gtk.VBox(homogeneous=False, spacing=6)
 
@@ -53,8 +63,6 @@ def layout_text_and_icon(icon_name, primary_text, secondary_text=None):
         )
         vbox.pack_start(secondary_label, True, True, 0)
 
-    hbox_content = Gtk.HBox(homogeneous=False, spacing=8)
-    hbox_content.pack_start(image, False, False, 0)
     hbox_content.pack_start(vbox, True, True, 0)
     hbox_content.show_all()
     return hbox_content
@@ -86,19 +94,22 @@ class MsgAreaController(Gtk.HBox):
         self.__msgid = None
 
     def new_from_text_and_icon(
-            self, icon_name, primary, secondary=None, buttons=None):
+        self,
+        primary: str,
+        secondary: Optional[str] = None,
+        icon_name: Optional[str] = None,
+    ):
         self.clear()
         msgarea = self.__msgarea = Gtk.InfoBar()
 
-        if buttons:
-            for (text, respid) in buttons:
-                self.add_button(text, respid)
-
-        content = layout_text_and_icon(icon_name, primary, secondary)
+        content = layout_text_and_icon(primary, secondary, icon_name)
 
         content_area = msgarea.get_content_area()
         content_area.foreach(content_area.remove, None)
         content_area.add(content)
+
+        action_area = msgarea.get_action_area()
+        action_area.set_orientation(Gtk.Orientation.VERTICAL)
 
         self.pack_start(msgarea, True, True, 0)
         return msgarea
@@ -110,7 +121,7 @@ class MsgAreaController(Gtk.HBox):
                     pane.clear()
             else:
                 self.clear()
-        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea = self.new_from_text_and_icon(primary, secondary, icon)
         msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
         msgarea.connect("response", clear_all)
         msgarea.show_all()
@@ -122,7 +133,7 @@ class MsgAreaController(Gtk.HBox):
             if response_id == Gtk.ResponseType.ACCEPT:
                 callback()
 
-        msgarea = self.new_from_text_and_icon(icon, primary, secondary)
+        msgarea = self.new_from_text_and_icon(primary, secondary, icon)
         msgarea.add_button(action_label, Gtk.ResponseType.ACCEPT)
         msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
         msgarea.connect("response", on_response)
