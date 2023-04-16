@@ -19,6 +19,8 @@
 # newer GTK+.
 # Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
+from typing import Optional
+
 from gi.repository import Gtk, Pango
 
 from meld.conf import _
@@ -86,13 +88,13 @@ class MsgAreaController(Gtk.HBox):
         self.__msgid = None
 
     def new_from_text_and_icon(
-            self, icon_name, primary, secondary=None, buttons=None):
+        self,
+        icon_name: str,
+        primary: str,
+        secondary: Optional[str] = None,
+    ):
         self.clear()
         msgarea = self.__msgarea = Gtk.InfoBar()
-
-        if buttons:
-            for (text, respid) in buttons:
-                self.add_button(text, respid)
 
         content = layout_text_and_icon(icon_name, primary, secondary)
 
