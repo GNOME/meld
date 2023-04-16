@@ -108,6 +108,9 @@ class MsgAreaController(Gtk.HBox):
         content_area.foreach(content_area.remove, None)
         content_area.add(content)
 
+        action_area = msgarea.get_action_area()
+        action_area.set_orientation(Gtk.Orientation.VERTICAL)
+
         self.pack_start(msgarea, True, True, 0)
         return msgarea
 
