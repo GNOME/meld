@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-01-25 21:12+0000\n"
-"PO-Revision-Date: 2023-01-27 23:18+0000\n"
+"POT-Creation-Date: 2023-03-24 16:46+0000\n"
+"PO-Revision-Date: 2023-04-23 13:09+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -459,10 +459,22 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.meld.gschema.xml:244
+#| msgid ""
+#| "[\n"
+#| "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
+#| "              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+#| "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
+#| "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
+#| "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
+#| "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
+#| "exe}\"),\n"
+#| "              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,"
+#| "avi,mpg,xcf,xpm}\")\n"
+#| "            ]"
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -473,7 +485,7 @@ msgid ""
 msgstr ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-"              (\"OS-specific metadata\", true, \".DS_Store ._* .Spotlight-"
+"              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
 "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
@@ -499,31 +511,44 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.meld.gschema.xml:262
+#| msgid ""
+#| "[\n"
+#| "              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\"
+#| "\\$\"),\n"
+#| "              (\"C++ comment\", false, \"//.*\"),\n"
+#| "              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+#| "              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+#| "              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+#| "\\v]*\"),\n"
+#| "              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+#| "\"),\n"
+#| "              (\"Script comment\", false, \"#.*\")\n"
+#| "            ]"
 msgid ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
 "\\v]*\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
-"              (\"CVS/SVN keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
+"              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
 "\"),\n"
-"              (\"C++ comment\", false, \"//.*\"),\n"
-"              (\"C comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
-"              (\"All whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
+"              (\"C++ Comment\", false, \"//.*\"),\n"
+"              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
+"              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
 "\\v]*\"),\n"
-"              (\"Trailing whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
+"              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
-"              (\"Script comment\", false, \"#.*\")\n"
+"              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 
 #: data/org.gnome.meld.gschema.xml:273
@@ -817,17 +842,27 @@ msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "Copiar para a direita"
 
-#: meld/resources/gtk/help-overlay.ui:385
+#: meld/resources/gtk/help-overlay.ui:383
+msgctxt "shortcut window"
+msgid "Expand the current folder"
+msgstr "Expandir a pasta atual"
+
+#: meld/resources/gtk/help-overlay.ui:390
+msgctxt "shortcut window"
+msgid "Collapse the current folder"
+msgstr "Recolher a pasta atual"
+
+#: meld/resources/gtk/help-overlay.ui:399
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "Comparação de controlo de versão"
 
-#: meld/resources/gtk/help-overlay.ui:390
+#: meld/resources/gtk/help-overlay.ui:404
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr "Submeter ao controlo de versão"
 
-#: meld/resources/gtk/help-overlay.ui:397
+#: meld/resources/gtk/help-overlay.ui:411
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Alternar saída da consola"
@@ -841,7 +876,7 @@ msgid "Save A_ll"
 msgstr "Guardar tudo"
 
 #: meld/resources/gtk/menus.ui:15
-msgid "Revert files…"
+msgid "Revert Files…"
 msgstr "Reverter ficheiros…"
 
 #: meld/resources/gtk/menus.ui:19
@@ -873,15 +908,15 @@ msgid "Overview Map"
 msgstr "Mapa de visão geral"
 
 #: meld/resources/gtk/menus.ui:55
-msgid "Version control console"
-msgstr "Console de controle de versão"
+msgid "Version Control Console"
+msgstr "Consola de controlo de versão"
 
 #: meld/resources/gtk/menus.ui:59
-msgid "Lock scrolling"
-msgstr "Bloquear deslocamento"
+msgid "Lock Scrolling"
+msgstr "Bloquear rolagem"
 
 #: meld/resources/gtk/menus.ui:66
-msgid "Swap left and right panes"
+msgid "Swap Left and Right Panes"
 msgstr "Troca de painéis à esquerda e à direita"
 
 #: meld/resources/gtk/menus.ui:72
@@ -925,7 +960,7 @@ msgid "_About Meld"
 msgstr "Acerca do Meld"
 
 #: meld/resources/gtk/menus.ui:129
-msgid "File status"
+msgid "File Status"
 msgstr "Estado do ficheiro"
 
 #: meld/resources/gtk/menus.ui:131
@@ -942,11 +977,11 @@ msgid "Modified"
 msgstr "Alterado"
 
 #: meld/resources/gtk/menus.ui:149
-msgid "Ignore filename case"
+msgid "Ignore Filename Case"
 msgstr "Ignorar maiúsculas/minúsculas em nomes de ficheiros"
 
 #: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode paths"
+msgid "Normalize Unicode Paths"
 msgstr "Normalizar as localizações Unicode"
 
 #: meld/resources/gtk/menus.ui:166
@@ -962,7 +997,7 @@ msgid "Ignored"
 msgstr "Ignorado"
 
 #: meld/resources/gtk/menus.ui:181
-msgid "Flatten folders"
+msgid "Flatten Folders"
 msgstr "Pastas planas"
 
 #: meld/resources/ui/about-dialog.ui:8
@@ -1062,6 +1097,13 @@ msgstr "Mensagem de Registo"
 msgid "Previous logs:"
 msgstr "Diários anteriores:"
 
+#: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
+#: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
+#: meld/iohelpers.py:56 meld/iohelpers.py:116
+msgid "_Cancel"
+msgstr "_Cancelar"
+
 #: meld/resources/ui/commit-dialog.ui:259
 msgid "Co_mmit"
 msgstr "Co_mmit"
@@ -1079,27 +1121,27 @@ msgid "Delete selected"
 msgstr "Apagar selecção"
 
 #: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare selected files"
+msgid "_Compare Selected Files"
 msgstr "Comparar ficheiros selecionados"
 
 #: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark selected file"
+msgid "_Mark Selected File"
 msgstr "_Marcar ficheiro selecionado"
 
 #: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with marked file"
+msgid "Compare _with Marked File"
 msgstr "Comparar _com ficheiro marcado"
 
 #: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _left"
+msgid "Copy to _Left"
 msgstr "Copiar para a _esquerda"
 
 #: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _right"
+msgid "Copy to _Right"
 msgstr "Copiar para a _direita"
 
 #: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete selected"
+msgid "_Delete Selected"
 msgstr "E_liminar selecionados"
 
 #: meld/resources/ui/dirdiff-menus.ui:40
@@ -1117,6 +1159,11 @@ msgstr "_Abrir externamente"
 #: meld/resources/ui/dirdiff-menus.ui:55
 msgid "_Copy File Paths"
 msgstr "_Copiar caminhos de ficheiros"
+
+#: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:75
+#: meld/resources/ui/dirdiff.ui:116 meld/resources/ui/vcview.ui:139
+msgid "Select Folder"
+msgstr "Selecionar pasta"
 
 #: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:76
 #: meld/resources/ui/dirdiff.ui:117
@@ -1537,6 +1584,7 @@ msgstr "Controlo de versão"
 msgid "Filename filters"
 msgstr "Filtros de nomes de ficheiros"
 
+#. Translators: 'filter out' refers to removing matched files and folders from the display
 #: meld/resources/ui/preferences.ui:1427
 msgid ""
 "When performing directory comparisons, you may filter out files and "
@@ -1635,6 +1683,10 @@ msgstr "Em_purrar commits"
 msgid "Search recent comparisons…"
 msgstr "Pesquisar comparações recentes…"
 
+#: meld/resources/ui/recent-selector.ui:43
+msgid "_Open"
+msgstr "A_brir"
+
 #: meld/resources/ui/revert-dialog.ui:9
 msgid "Discard unsaved changes to documents?"
 msgstr "Descartar alterações não guardadas nos documentos?"
@@ -1659,11 +1711,6 @@ msgstr "Se não guardar, as alterações serão perdidas permanentemente."
 #: meld/resources/ui/save-confirm-dialog.ui:24
 msgid "Close _without Saving"
 msgstr "Fechar sem guardar"
-
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
-#: meld/iohelpers.py:56 meld/iohelpers.py:116
-msgid "_Cancel"
-msgstr "_Cancelar"
 
 #: meld/resources/ui/save-confirm-dialog.ui:55
 msgid "_Save"
@@ -2379,35 +2426,35 @@ msgstr "Não serão submetidos nenhuns ficheiros"
 #. Translators: First element is replaced by translated "%d
 #. unpushed commits", second element is replaced by translated
 #. "%d branches"
-#: meld/vc/git.py:92
+#: meld/vc/git.py:93
 #, python-brace-format
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} em {unpushed_branches}"
 
-#: meld/vc/git.py:94 meld/vc/git.py:104
+#: meld/vc/git.py:95 meld/vc/git.py:105
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d commit não empurrado"
 msgstr[1] "%d commits não empurrados"
 
-#: meld/vc/git.py:97
+#: meld/vc/git.py:98
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d ramo"
 msgstr[1] "%d ramos"
 
-#: meld/vc/git.py:345
+#: meld/vc/git.py:351
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modo modificado de {old_mode} para {new_mode}"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Partially staged"
 msgstr "Parcialmente em estágio"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:359
 msgid "Staged"
 msgstr "Em estágio"
 
@@ -2572,6 +2619,12 @@ msgstr ""
 msgid "Clear"
 msgstr "Limpar"
 
+#~ msgid "Copy to _left"
+#~ msgstr "Copiar para a _esquerda"
+
+#~ msgid "Copy to _right"
+#~ msgstr "Copiar para a _direita"
+
 #~ msgid "The GNOME Project"
 #~ msgstr "O Projeto GNOME"
 
@@ -2665,12 +2718,6 @@ msgstr "Limpar"
 
 #~ msgid "_Quit"
 #~ msgstr "_Sair"
-
-#~ msgid "Copy to _Left"
-#~ msgstr "Copiar para a _esquerda"
-
-#~ msgid "Copy to _Right"
-#~ msgstr "Copiar para a _direita"
 
 #~ msgid "Hide selected"
 #~ msgstr "Esconder selecção"
@@ -2854,14 +2901,8 @@ msgstr "Limpar"
 #~ msgid "_New Comparison..."
 #~ msgstr "_Nova comparação..."
 
-#~ msgid "Save the current file"
-#~ msgstr "Gravar o ficheiro atual"
-
 #~ msgid "Save the current file with a different name"
 #~ msgstr "Gravar o ficheiro atual com um nome diferente"
-
-#~ msgid "Close the current file"
-#~ msgstr "Fechar o ficheiro atual"
 
 #~ msgid "_Edit"
 #~ msgstr "_Editar"
