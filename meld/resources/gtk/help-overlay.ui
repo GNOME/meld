@@ -15,35 +15,35 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;N</property>
+                <property name="action-name">win.new-tab</property>
                 <property name="title" translatable="yes" context="shortcut window">New comparison</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;W</property>
+                <property name="action-name">win.close</property>
                 <property name="title" translatable="yes" context="shortcut window">Close a comparison</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;Q</property>
+                <property name="action-name">app.quit</property>
                 <property name="title" translatable="yes" context="shortcut window">Quit Meld</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">F1</property>
+                <property name="action-name">app.help</property>
                 <property name="title" translatable="yes" context="shortcut window">Show help</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;comma</property>
+                <property name="action-name">app.preferences</property>
                 <property name="title" translatable="yes" context="shortcut window">Show preferences</property>
               </object>
             </child>
@@ -57,35 +57,34 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">Escape</property>
+                <property name="action-name">win.stop</property>
                 <property name="title" translatable="yes" context="shortcut window">Stop the current action</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;R</property>
+                <property name="action-name">view.refresh</property>
                 <property name="title" translatable="yes" context="shortcut window">Refresh comparison</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;&lt;shift&gt;O</property>
+                <property name="action-name">view.open-external</property>
                 <property name="title" translatable="yes" context="shortcut window">Open externally</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">F11</property>
                 <property name="title" translatable="yes" context="shortcut window">Fullscreen</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;backslash</property>
+                <property name="action-name">view.swap-2-panes</property>
                 <property name="title" translatable="yes" context="shortcut window">Swap left and right panes</property>
               </object>
             </child>
@@ -99,14 +98,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Page_Up</property>
+                <property name="action-name">view.previous-pane</property>
                 <property name="title" translatable="yes" context="shortcut window">Previous comparison pane</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Page_Down</property>
+                <property name="action-name">view.next-pane</property>
                 <property name="title" translatable="yes" context="shortcut window">Next comparison pane</property>
               </object>
             </child>
@@ -183,14 +182,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;Z</property>
+                <property name="action-name">view.undo</property>
                 <property name="title" translatable="yes" context="shortcut window">Undo</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;Z</property>
+                <property name="action-name">view.redo</property>
                 <property name="title" translatable="yes" context="shortcut window">Redo</property>
               </object>
             </child>
@@ -218,7 +217,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;F</property>
+                <property name="action-name">view.find</property>
                 <property name="title" translatable="yes" context="shortcut window">Find</property>
               </object>
             </child>
@@ -239,7 +238,7 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;H</property>
+                <property name="action-name">view.find-replace</property>
                 <property name="title" translatable="yes" context="shortcut window">Replace</property>
               </object>
             </child>
@@ -253,91 +252,91 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;S</property>
+                <property name="action-name">view.save</property>
                 <property name="title" translatable="yes" context="shortcut window">Save current file</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;S</property>
+                <property name="action-name">view.save-as</property>
                 <property name="title" translatable="yes" context="shortcut window">Save current file to new path</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;primary&gt;L</property>
+                <property name="action-name">view.save-all</property>
                 <property name="title" translatable="yes" context="shortcut window">Save all files in comparison</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;I</property>
+                <property name="action-name">view.file-previous-conflict</property>
                 <property name="title" translatable="yes" context="shortcut window">Previous conflict</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;K</property>
+                <property name="action-name">view.file-next-conflict</property>
                 <property name="title" translatable="yes" context="shortcut window">Next conflict</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Left</property>
+                <property name="action-name">view.file-push-left</property>
                 <property name="title" translatable="yes" context="shortcut window">Push change to left</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Right</property>
+                <property name="action-name">view.file-push-right</property>
                 <property name="title" translatable="yes" context="shortcut window">Push change to right</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;alt&gt;Left</property>
+                <property name="action-name">view.file-pull-left</property>
                 <property name="title" translatable="yes" context="shortcut window">Pull change from left</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;shift&gt;&lt;alt&gt;Right</property>
+                <property name="action-name">view.file-pull-right</property>
                 <property name="title" translatable="yes" context="shortcut window">Pull change from right</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;bracketleft</property>
+                <property name="action-name">view.file-copy-left-up</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy change above left</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;semicolon</property>
+                <property name="action-name">view.file-copy-left-down</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy change below left</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;bracketright</property>
+                <property name="action-name">view.file-copy-right-up</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy change above right</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;quoteright</property>
+                <property name="action-name">view.file-copy-right-down</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy change below right</property>
               </object>
             </child>
@@ -358,14 +357,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Left</property>
+                <property name="action-name">view.folder-copy-left</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy to left</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;alt&gt;Right</property>
+                <property name="action-name">view.folder-copy-right</property>
                 <property name="title" translatable="yes" context="shortcut window">Copy to right</property>
               </object>
             </child>
@@ -400,14 +399,14 @@
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">&lt;primary&gt;M</property>
+                <property name="action-name">view.vc-commit</property>
                 <property name="title" translatable="yes" context="shortcut window">Commit to version control</property>
               </object>
             </child>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
-                <property name="accelerator">F9</property>
+                <property name="action-name">view.vc-console-visible</property>
                 <property name="title" translatable="yes" context="shortcut window">Show/hide console output</property>
               </object>
             </child>
