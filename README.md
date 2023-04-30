@@ -26,7 +26,7 @@ And following packages with GObject introspection:
 * GLib 2.36
 * Pango
 * PangoCairo
-* GTK+ 3.20
+* GTK+ 3.22
 * GtkSourceView 4.0
 
 
