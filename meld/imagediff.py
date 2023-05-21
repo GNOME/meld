@@ -30,35 +30,6 @@ from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
 
-
-def with_scroll_lock(lock_attr):
-    """Decorator for locking a callback based on an instance attribute
-
-    This is used when scrolling panes. Since a scroll event in one pane
-    causes us to set the scroll position in other panes, we need to
-    stop these other panes re-scrolling the initial one.
-
-    Unlike a threading-style lock, this decorator discards any calls
-    that occur while the lock is held, rather than queuing them.
-
-    :param lock_attr: The instance attribute used to lock access
-    """
-    def wrap(function):
-        @functools.wraps(function)
-        def wrap_function(locked, *args, **kwargs):
-            force_locked = locked.props.lock_scrolling
-            if getattr(locked, lock_attr, False) or force_locked:
-                return
-
-            try:
-                setattr(locked, lock_attr, True)
-                return function(locked, *args, **kwargs)
-            finally:
-                setattr(locked, lock_attr, False)
-        return wrap_function
-    return wrap
-
-
 MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
