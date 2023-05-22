@@ -30,9 +30,6 @@ from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
 
-MASK_SHIFT, MASK_CTRL = 1, 2
-PANE_LEFT, PANE_RIGHT = -1, +1
-
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
 class ImageDiff(Gtk.VBox, MeldDoc):
