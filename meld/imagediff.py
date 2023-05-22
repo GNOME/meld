@@ -56,12 +56,6 @@ class ImageDiff(Gtk.VBox, MeldDoc):
     image_event_box2 = Gtk.Template.Child()
     image_main2 = Gtk.Template.Child()
 
-    # Identifiers for MsgArea messages
-    (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
-    # Transient messages that should be removed if any file in the
-    # comparison gets reloaded.
-    TRANSIENT_MESSAGES = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
-
     lock_scrolling = GObject.Property(
         type=bool,
         nick='Lock scrolling of all panes',
