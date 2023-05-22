@@ -103,16 +103,11 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         self.view_action_group = Gio.SimpleActionGroup()
 
         # Manually handle GAction additions
-        # TODO: Highlight the selected image for the "Next Pane" and
-        # "Open External" menu items to make sense.
+        # TODO: Highlight the selected image.
         actions = (
             ('copy-full-path', self.action_copy_full_path),
-            # ~ ('next-pane', self.action_next_pane),
-            # ~ ('open-external', self.action_open_external),
+            ('open-external', self.action_open_external),
             ('open-folder', self.action_open_folder),
-            # ~ ('previous-pane', self.action_prev_pane),
-            # ~ ('refresh', self.action_refresh),
-            # ~ ('swap-2-panes', self.action_swap),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -216,6 +211,15 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         if parent:
             open_files_external(gfiles=[parent])
 
+    @with_focused_pane
+    def action_open_external(self, pane, *args):
+        gfile = self.files[pane]
+        if not gfile:
+            return
+
+        gfiles = [gfile]
+        open_files_external(gfiles=gfiles)
+
     @Gtk.Template.Callback()
     def on_imageview_popup_menu(self, imageview):
         self.popup_menu.popup_at_pointer()
@@ -245,3 +249,19 @@ class ImageDiff(Gtk.VBox, MeldDoc):
         clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
         clip.set_text(path, -1)
         clip.store()
+
+    def _set_external_action_sensitivity(self):
+        # FIXME: This sensitivity is very confused. Essentially, it's always
+        # enabled because we don't unset focus_pane, but the action uses the
+        # current pane focus (i.e., _get_focused_pane) instead of focus_pane.
+        have_file = self.focus_pane is not None
+        self.set_action_enabled("open-external", have_file)
+
+    @Gtk.Template.Callback()
+    def on_imageview_focus_in_event(self, view, event):
+        self.focus_pane = view
+        self._set_external_action_sensitivity()
+
+    @Gtk.Template.Callback()
+    def on_imageview_focus_out_event(self, view, event):
+        self._set_external_action_sensitivity()
