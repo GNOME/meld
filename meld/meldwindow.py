@@ -31,7 +31,7 @@ from meld.const import (
 )
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
-from meld.imagediff import ImageDiff
+from meld.imagediff import ImageDiff, file_is_image
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
@@ -43,32 +43,6 @@ from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
 log = logging.getLogger(__name__)
-
-image_extensions = [
-    ".bmp",
-    ".eps",
-    ".gif",
-    ".ico",
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".tif",
-]
-
-
-def file_is_image(gfile):
-    """Check if file is an image."""
-
-    # Check for null value.
-    if not gfile:
-        return False
-
-    basename = gfile.get_basename().lower()
-    for extension in image_extensions:
-        if basename.endswith(extension):
-            return True
-
-    return False
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/appwindow.ui')

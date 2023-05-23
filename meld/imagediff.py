@@ -30,6 +30,31 @@ from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
 
+image_extensions = [
+    ".bmp",
+    ".eps",
+    ".gif",
+    ".ico",
+    ".jpg",
+    ".jpeg",
+    ".png",
+    ".tif",
+]
+
+def file_is_image(gfile):
+    """Check if file is an image."""
+
+    # Check for null value.
+    if not gfile:
+        return False
+
+    basename = gfile.get_basename().lower()
+    for extension in image_extensions:
+        if basename.endswith(extension):
+            return True
+
+    return False
+
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
 class ImageDiff(Gtk.VBox, MeldDoc):
