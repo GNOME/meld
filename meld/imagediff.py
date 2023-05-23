@@ -17,7 +17,7 @@
 import functools
 import logging
 
-from gi.repository import Gdk, Gio, GObject, Gtk, GtkSource
+from gi.repository import Gdk, Gio, GObject, Gtk, GtkSource, GdkPixbuf
 
 # TODO: Don't from-import whole modules
 from meld import misc
@@ -47,6 +47,26 @@ def file_is_image(gfile):
     # Check for null value.
     if not gfile:
         return False
+
+    # Get list of supported formats.
+    supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
+    # ~ print ("Supported formats:", supported_image_formats)
+
+    supported_mime_types = []
+
+    for image_format in supported_image_formats:
+        mime_types_for_format = image_format.get_mime_types()
+        # ~ print ("Supported MIME types for format:", mime_types_for_format)
+        supported_mime_types += mime_types_for_format
+
+    print ("Supported MIME types:", supported_mime_types)
+
+    # Get MIME type of the file.
+    info = gfile.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+                            Gio.FileQueryInfoFlags.NONE,
+                            None)
+    file_content_type = info.get_content_type()
+    print ("File content type:", file_content_type)
 
     basename = gfile.get_basename().lower()
     for extension in image_extensions:
