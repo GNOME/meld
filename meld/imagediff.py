@@ -30,17 +30,6 @@ from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
 
-image_extensions = [
-    ".bmp",
-    ".eps",
-    ".gif",
-    ".ico",
-    ".jpg",
-    ".jpeg",
-    ".png",
-    ".tif",
-]
-
 def file_is_image(gfile):
     """Check if file is an image."""
 
@@ -50,30 +39,16 @@ def file_is_image(gfile):
 
     # Get list of supported formats.
     supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
-    # ~ print ("Supported formats:", supported_image_formats)
-
     supported_mime_types = []
-
     for image_format in supported_image_formats:
-        mime_types_for_format = image_format.get_mime_types()
-        # ~ print ("Supported MIME types for format:", mime_types_for_format)
-        supported_mime_types += mime_types_for_format
+        supported_mime_types += image_format.get_mime_types()
 
-    print ("Supported MIME types:", supported_mime_types)
-
-    # Get MIME type of the file.
+    # Get MIME type of the file. Does this need to be asynchronous?
     info = gfile.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                             Gio.FileQueryInfoFlags.NONE,
                             None)
     file_content_type = info.get_content_type()
-    print ("File content type:", file_content_type)
-
-    basename = gfile.get_basename().lower()
-    for extension in image_extensions:
-        if basename.endswith(extension):
-            return True
-
-    return False
+    return file_content_type in supported_mime_types
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
