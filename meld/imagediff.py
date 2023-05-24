@@ -50,6 +50,15 @@ def file_is_image(gfile):
     file_content_type = info.get_content_type()
     return file_content_type in supported_mime_types
 
+def files_are_images(gfiles):
+    """Check if all files in the list are images."""
+
+    for gfile in gfiles:
+        if not file_is_image(gfile):
+            return False
+
+    # All files are images.
+    return True
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
 class ImageDiff(Gtk.VBox, MeldDoc):

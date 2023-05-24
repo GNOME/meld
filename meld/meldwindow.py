@@ -31,7 +31,7 @@ from meld.const import (
 )
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
-from meld.imagediff import ImageDiff, file_is_image
+from meld.imagediff import ImageDiff, files_are_images
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
@@ -369,13 +369,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         assert len(gfiles) in (1, 2, 3)
 
         # Check whether to show image window or not.
-        files_are_images = False
-        for gfile in gfiles:
-            if file_is_image(gfile):
-                files_are_images = True
-                break
-
-        if files_are_images:
+        if files_are_images(gfiles):
             doc = ImageDiff(len(gfiles))
         else:
             doc = FileDiff(len(gfiles))
