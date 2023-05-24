@@ -14,10 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import functools
 import logging
 
-from gi.repository import Gdk, Gio, GObject, Gtk, GtkSource, GdkPixbuf
+from gi.repository import Gdk, GdkPixbuf, Gio, GObject, Gtk, GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
@@ -29,6 +28,7 @@ from meld.settings import bind_settings
 from meld.ui.util import map_widgets_into_lists
 
 log = logging.getLogger(__name__)
+
 
 def file_is_image(gfile):
     """Check if file is an image."""
@@ -50,6 +50,7 @@ def file_is_image(gfile):
     file_content_type = info.get_content_type()
     return file_content_type in supported_mime_types
 
+
 def files_are_images(gfiles):
     """Check if all files in the list are images."""
 
@@ -59,6 +60,7 @@ def files_are_images(gfiles):
 
     # All files are images.
     return True
+
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
 class ImageDiff(Gtk.VBox, MeldDoc):
