@@ -123,6 +123,14 @@ class PathLabel(Gtk.MenuButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+        self.drag_dest_set(
+            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
+            Gtk.DestDefaults.DROP,
+            None,
+            Gdk.DragAction.COPY,
+        )
+        self.drag_dest_add_uri_targets()
+
         self._gfile = None
         self._parent_gfile = None
         self._path_label = None

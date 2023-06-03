@@ -418,6 +418,11 @@ class FileDiff(Gtk.VBox, MeldDoc):
             t.connect(
                 "drag_data_received", self.on_textview_drag_data_received)
 
+        for label in self.filelabel:
+            label.connect(
+                "drag_data_received", self.on_textview_drag_data_received
+            )
+
         # Bind all overwrite properties together, so that toggling
         # overwrite mode is per-FileDiff.
         for t in self.textview[1:]:
@@ -1113,7 +1118,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
                 if self.check_unsaved_changes():
                     self.set_files(gfiles)
             elif len(gfiles) == 1:
-                pane = self.textview.index(widget)
+                if widget in self.textview:
+                    pane = self.textview.index(widget)
+                elif widget in self.filelabel:
+                    pane = self.filelabel.index(widget)
+                else:
+                    log.error("Unrecognised drag destination")
+                    return True
                 buffer = self.textbuffer[pane]
                 if self.check_unsaved_changes([buffer]):
                     self.set_file(pane, gfiles[0])
