@@ -16,7 +16,7 @@
 import sys
 from typing import Optional
 
-from gi.repository import Gio, GObject, Gtk, GtkSource, Pango
+from gi.repository import Gio, GObject, GtkSource, Pango
 
 import meld.conf
 import meld.filters
@@ -52,11 +52,7 @@ class MeldSettings(GObject.GObject):
         elif key in ('use-system-font', 'custom-font'):
             self.font = self._current_font_from_gsetting()
             self.emit('changed', 'font')
-        elif key == 'prefer-dark-theme':
-            gtk_settings = Gtk.Settings.get_default()
-            prefer_dark = settings.get_boolean(key)
-            gtk_settings.props.gtk_application_prefer_dark_theme = prefer_dark
-        elif key in ('style-scheme'):
+        elif key in ('style-scheme', 'prefer-dark-theme'):
             self.style_scheme = self._style_scheme_from_gsettings()
             self.emit('changed', 'style-scheme')
 
@@ -64,7 +60,8 @@ class MeldSettings(GObject.GObject):
         from meld.style import set_base_style_scheme
         manager = GtkSource.StyleSchemeManager.get_default()
         scheme = manager.get_scheme(settings.get_string('style-scheme'))
-        set_base_style_scheme(scheme)
+        prefer_dark = settings.get_boolean("prefer-dark-theme")
+        set_base_style_scheme(scheme, prefer_dark)
         return scheme
 
     def _filters_from_gsetting(self, key, filt_type):
