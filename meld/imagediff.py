@@ -15,6 +15,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
+from collections.abc import Sequence
+from typing import Optional
 
 from gi.repository import Gdk, GdkPixbuf, Gio, GObject, Gtk, GtkSource
 
@@ -30,6 +32,23 @@ from meld.ui.util import map_widgets_into_lists
 log = logging.getLogger(__name__)
 
 
+# Cache the supported image MIME types.
+_supported_mime_types: Optional[Sequence[str]] = None
+
+
+def get_supported_image_mime_types() -> Sequence[str]:
+    global _supported_mime_types
+
+    if _supported_mime_types is None:
+        # Get list of supported formats.
+        _supported_mime_types = []
+        supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
+        for image_format in supported_image_formats:
+            _supported_mime_types += image_format.get_mime_types()
+
+    return _supported_mime_types
+
+
 def file_is_image(gfile):
     """Check if file is an image."""
 
@@ -37,18 +56,12 @@ def file_is_image(gfile):
     if not gfile:
         return False
 
-    # Get list of supported formats.
-    supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
-    supported_mime_types = []
-    for image_format in supported_image_formats:
-        supported_mime_types += image_format.get_mime_types()
-
-    # Get MIME type of the file. Does this need to be asynchronous?
+    # Check MIME type of the file.
     info = gfile.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
                             Gio.FileQueryInfoFlags.NONE,
                             None)
     file_content_type = info.get_content_type()
-    return file_content_type in supported_mime_types
+    return file_content_type in get_supported_image_mime_types()
 
 
 def files_are_images(gfiles):
