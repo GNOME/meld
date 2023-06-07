@@ -1,5 +1,6 @@
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009-2019 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2023 Martin van Zijl <martin.vanzijl@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
