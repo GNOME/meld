@@ -31,6 +31,7 @@ from meld.const import (
 )
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
+from meld.imagediff import ImageDiff, files_are_images
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.newdifftab import NewDiffTab
@@ -366,7 +367,12 @@ class MeldWindow(Gtk.ApplicationWindow):
     def append_filediff(
             self, gfiles, *, encodings=None, merge_output=None, meta=None):
         assert len(gfiles) in (1, 2, 3)
-        doc = FileDiff(len(gfiles))
+
+        # Check whether to show image window or not.
+        if files_are_images(gfiles):
+            doc = ImageDiff(len(gfiles))
+        else:
+            doc = FileDiff(len(gfiles))
         self._append_page(doc)
         doc.set_files(gfiles, encodings)
         if merge_output is not None:
