@@ -49,13 +49,10 @@ class SavedWindowState(GObject.GObject):
         self.settings.bind('width', self, 'width', bind_flags)
         self.settings.bind('height', self, 'height', bind_flags)
         self.settings.bind('is-maximized', self, 'is-maximized', bind_flags)
-        self.settings.bind('is-fullscreen', self, 'is-fullscreen', bind_flags)
 
         window.set_default_size(self.props.width, self.props.height)
         if self.props.is_maximized:
             window.maximize()
-        if self.props.is_fullscreen:
-            window.fullscreen()
 
     def on_size_allocate(self, window, allocation):
         if not (self.props.is_maximized or self.props.is_fullscreen):
