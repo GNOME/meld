@@ -1750,9 +1750,13 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self._connect_buffer_handlers()
         self._set_merge_action_sensitivity()
 
-        # Changing textview sensitivity destroys focus; we reestablish it here
+        # Changing textview sensitivity removes focus and so triggers
+        # our focus-out sensitivity handling. We manually trigger the
+        # focus-in here to restablish the previous state.
         if self.cursor.pane is not None:
-            self.textview[self.cursor.pane].grab_focus()
+            self.on_textview_focus_in_event(
+                self.textview[self.cursor.pane], None
+            )
 
         langs = [LanguageManager.get_language_from_file(buf.data.gfile)
                  for buf in self.textbuffer[:self.num_panes]]

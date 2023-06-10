@@ -871,7 +871,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         for m in self.msgarea_mgr:
             m.clear()
         child = self.model.add_entries(None, locations)
-        self.treeview0.grab_focus()
+        self.on_treeview_focus_in_event(self.treeview0, None)
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()

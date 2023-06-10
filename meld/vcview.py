@@ -377,7 +377,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.model.clear()
         self.filelabel.props.gfile = Gio.File.new_for_path(location)
         it = self.model.add_entries(None, [location])
-        self.treeview.grab_focus()
         self.treeview.get_selection().select_iter(it)
         self.model.set_path_state(it, 0, tree.STATE_NORMAL, isdir=1)
         self.recompute_label()
