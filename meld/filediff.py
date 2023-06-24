@@ -745,6 +745,9 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.set_action_enabled('previous-pane', pane > 0)
         self.set_action_enabled('next-pane', pane < self.num_panes - 1)
         self.set_action_enabled('swap-2-panes', self.num_panes == 2)
+
+        self.update_text_actions_sensitivity()
+
         # FIXME: don't queue_draw() on everything... just on what changed
         self.queue_draw()
 
