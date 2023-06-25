@@ -30,6 +30,10 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'win.fullscreen': 'F11',
     'win.new-tab': '<Primary>N',
     'win.stop': 'Escape',
+    # Shared bindings for per-view filter menu buttons
+    'view.vc-filter': 'F8',
+    'view.folder-filter': 'F8',
+    'view.text-filter': 'F8',
     # File comparison actions
     'view.file-previous-conflict': '<Primary>J',
     'view.file-next-conflict': '<Primary>K',

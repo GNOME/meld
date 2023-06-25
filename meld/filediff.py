@@ -365,6 +365,15 @@ class FileDiff(Gtk.VBox, MeldDoc):
             action.connect('activate', callback)
             self.view_action_group.add_action(action)
 
+        state_actions = (
+            ("text-filter", None, GLib.Variant.new_boolean(False)),
+        )
+        for (name, callback, state) in state_actions:
+            action = Gio.SimpleAction.new_stateful(name, None, state)
+            if callback:
+                action.connect("change-state", callback)
+            self.view_action_group.add_action(action)
+
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-menus.ui')
         self.popup_menu_model = builder.get_object('filediff-context-menu')

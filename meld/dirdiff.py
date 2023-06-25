@@ -514,6 +514,7 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
             self.view_action_group.add_action(action)
 
         actions = (
+            ("folder-filter", None, GLib.Variant.new_boolean(False)),
             ("folder-status-same", self.action_filter_state_change,
                 GLib.Variant.new_boolean(False)),
             ("folder-status-new", self.action_filter_state_change,
@@ -527,7 +528,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         )
         for (name, callback, state) in actions:
             action = Gio.SimpleAction.new_stateful(name, None, state)
-            action.connect('change-state', callback)
+            if callback:
+                action.connect("change-state", callback)
             self.view_action_group.add_action(action)
 
         builder = Gtk.Builder.new_from_resource(
