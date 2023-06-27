@@ -43,6 +43,23 @@ def map_widgets_into_lists(widget, widgetnames):
             i += 1
         setattr(widget, item, lst)
 
+def map_widgets_to_dict(widget, widgetnames):
+    """ Put sequentially numbered widgets into dict. """
+    for item in widgetnames:
+        i, map = 0, {}
+        while 1:
+            key = "%s%i" % (item, i)
+            try:
+                val = getattr(widget, key)
+            except AttributeError:
+                if i == 0:
+                    log.critical(
+                        f"Tried to map missing attribute {key}")
+                break
+            map[val] = None
+            i += 1
+        setattr(widget, item + "_values", map)
+
 
 def make_multiobject_property_action(
         obj_list: List[GObject.Object], prop_name: str) -> Gio.PropertyAction:
