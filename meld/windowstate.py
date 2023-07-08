@@ -59,9 +59,10 @@ class SavedWindowState(GObject.GObject):
     def on_size_allocate(self, window, property):
         if not (self.props.is_maximized or self.props.is_fullscreen):
             width, height = window.get_width(), window.get_height()
-            if width != self.props.width:
+            # ignore inital size of (0, 0)
+            if width != 0 and width != self.props.width:
                 self.props.width = width
-            if height != self.props.height:
+            if height != 0 and height != self.props.height:
                 self.props.height = height
 
     def on_window_state_event(self, window, event):
