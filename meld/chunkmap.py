@@ -15,7 +15,7 @@
 
 import collections
 import logging
-from typing import List, Mapping, Tuple
+from typing import Any, List, Mapping, Tuple
 
 import cairo
 from gi.repository import Gdk, GObject, Gtk
@@ -282,6 +282,15 @@ class TextViewChunkMap(ChunkMap):
             GObject.ParamFlags.CONSTRUCT_ONLY
         ),
     )
+
+    def do_realize(self):
+
+        def force_redraw(*args: Any) -> None:
+            self._cached_map = None
+            self.queue_draw()
+
+        self.textview.connect("notify::wrap-mode", force_redraw)
+        return ChunkMap.do_realize(self)
 
     def get_height_scale(self):
         adjustments = [
