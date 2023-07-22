@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import math
+from typing import Any
 
 from gi.repository import Gdk, GtkSource, Pango
 
@@ -137,7 +138,28 @@ class GutterRendererChunkLines(
 
         meld_settings = get_meld_settings()
         meld_settings.connect('changed', self.on_setting_changed)
+        self.font_string = meld_settings.font.to_string()
         self.on_setting_changed(meld_settings, 'style-scheme')
+
+        self.connect("notify::view", self.on_view_changed)
+
+    def on_view_changed(self, *args: Any) -> None:
+        if not self.get_view():
+            return
+
+        self.get_view().connect("style-updated", self.on_view_style_updated)
+
+    def on_view_style_updated(self, view: GtkSource.View) -> None:
+        stylecontext = view.get_style_context()
+        # We should be using stylecontext.get_property, but it doesn't work
+        # for reasons that according to the GTK code are "Yuck".
+        font = stylecontext.get_font(stylecontext.get_state())
+        font_string = font.to_string()
+        need_recalculate = font_string != self.font_string
+
+        buf = self.get_view().get_buffer()
+        self.font_string = font_string
+        self.recalculate_size(buf, force=need_recalculate)
 
     def do_change_buffer(self, old_buffer):
         if old_buffer:
@@ -157,13 +179,17 @@ class GutterRendererChunkLines(
         w, h = layout.get_size()
         return w / Pango.SCALE, h / Pango.SCALE
 
-    def recalculate_size(self, buf):
+    def recalculate_size(
+        self,
+        buf: GtkSource.Buffer,
+        force: bool = False,
+    ) -> None:
 
         # Always calculate display size for at least two-digit line counts
         num_lines = max(buf.get_line_count(), 99)
         num_digits = int(math.ceil(math.log(num_lines, 10)))
 
-        if num_digits == self.num_line_digits:
+        if num_digits == self.num_line_digits and not force:
             return
 
         self.num_line_digits = num_digits
