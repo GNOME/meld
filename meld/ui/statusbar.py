@@ -72,8 +72,7 @@ class MeldStatusMenuButton(Gtk.MenuButton):
             ellipsize=Pango.EllipsizeMode.END,
         )
 
-        arrow = Gtk.Image.new_from_icon_name(
-            'pan-down-symbolic', Gtk.IconSize.SMALL_TOOLBAR)
+        arrow = Gtk.Image.new_from_icon_name('pan-down-symbolic')
         arrow.props.valign = Gtk.Align.BASELINE
 
         box = Gtk.Box()

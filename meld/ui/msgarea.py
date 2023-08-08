@@ -34,7 +34,7 @@ def layout_text_and_icon(
     hbox_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
 
     if icon_name:
-        image = Gtk.Image.new_from_icon_name(icon_name, Gtk.IconSize.DIALOG)
+        image = Gtk.Image.new_from_icon_name(icon_name)
         image.set_alignment(0.5, 0.5)
         hbox_content.pack_start(image, False, False, 0)
 

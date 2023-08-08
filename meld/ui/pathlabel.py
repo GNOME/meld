@@ -77,8 +77,7 @@ class PathLabel(Gtk.MenuButton):
             return
 
         if icon_name:
-            image = Gtk.Image.new_from_icon_name(
-                icon_name, Gtk.IconSize.BUTTON)
+            image = Gtk.Image.new_from_icon_name(icon_name)
             self.set_image(image)
             self.props.always_show_image = True
         else:
