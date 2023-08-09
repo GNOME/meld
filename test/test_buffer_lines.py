@@ -90,8 +90,9 @@ def test_meld_buffer_insert_text(buffer_setup):
 
     # Delete from the start of line 5 to the start of line 7,
     # invalidating line 7 but leaving its contents intact.
+    _, iter = buffer.get_iter_at_line(5)
     buffer.insert(
-        buffer.get_iter_at_line(5),
+        iter,
         "hey\nthings",
     )
     assert buffer_lines.lines[4:8] == ["4", None, None, "6"]
@@ -111,9 +112,11 @@ def test_meld_buffer_delete_range(buffer_setup):
 
     # Delete from the start of line 5 to the start of line 7,
     # invalidating line 7 but leaving its contents intact.
+    _, iter1 = buffer.get_iter_at_line(5)
+    _, iter2 = buffer.get_iter_at_line(7)
     buffer.delete(
-        buffer.get_iter_at_line(5),
-        buffer.get_iter_at_line(7),
+        iter1,
+        iter2,
     )
     assert buffer_lines.lines[4:7] == ["4", None, "8"]
 
@@ -130,17 +133,20 @@ def test_meld_buffer_cache_debug(caplog, buffer_setup):
     buffer_lines.lines.append("invalid")
 
     # ...and check that insertion/deletion logs an error
+    _, iter = buffer.get_iter_at_line(5)
     buffer.insert(
-        buffer.get_iter_at_line(5),
+        iter,
         "hey",
     )
     assert len(caplog.records) == 1
     assert caplog.records[0].msg.startswith("Cache line count does not match")
     caplog.clear()
 
+    _, iter1 = buffer.get_iter_at_line(5)
+    _, iter2 = buffer.get_iter_at_line(7)
     buffer.delete(
-        buffer.get_iter_at_line(5),
-        buffer.get_iter_at_line(7),
+        iter1,
+        iter2,
     )
     assert len(caplog.records) == 1
     assert caplog.records[0].msg.startswith("Cache line count does not match")
