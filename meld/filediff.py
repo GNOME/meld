@@ -235,7 +235,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         *,
         comparison_mode: FileComparisonMode = FileComparisonMode.Compare,
     ):
-        super().__init__()
+        Gtk.Box.__init__(self)
         # FIXME:
         # This unimaginable hack exists because GObject (or GTK+?)
         # doesn't actually correctly chain init calls, even if they're
@@ -393,6 +393,8 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.create_text_filters()
 
+        self.create_event_controllers()
+
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need three revealers here instead of the
         # more obvious one.
@@ -536,8 +538,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     keymask = property(get_keymask, set_keymask)
 
-    @Gtk.Template.Callback()
-    def on_key_event(self, object, event):
+    def on_key_event(self, controller, keyval, keycode, state): # TODO controller
         keymap = Gdk.Keymap.get_default()
         ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
             event.hardware_keycode, 0, event.group)
@@ -599,6 +600,17 @@ class FileDiff(Gtk.Box, MeldDoc):
             self._action_text_filter_map[action] = filt
 
         return active_filters_changed
+
+    def create_event_controllers(self):
+        keycontroller = Gtk.EventControllerKey()
+        keycontroller.connect("key-pressed", self.on_key_event)
+        keycontroller.connect("key-released", self.on_key_event)
+        self.textview1.add_controller(keycontroller)
+
+        gesture = Gtk.GestureClick()
+        gesture.set_button(3)
+        gesture.connect("pressed", self.on_textview_button_press_event)
+
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
@@ -1458,15 +1470,12 @@ class FileDiff(Gtk.Box, MeldDoc):
         )
         return True
 
-    @Gtk.Template.Callback()
-    def on_textview_button_press_event(self, textview, event):
-        if event.button == 3:
-            textview.grab_focus()
-            pane = self.textview.index(textview)
-            self.set_syncpoint_menuitem(pane)
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
+    def on_textview_button_press_event(self, gesture, n_press, x, y): # TODO controller
+        textview = gesture.get_widget()
+        textview.grab_focus()
+        pane = self.textview.index(textview)
+        self.set_syncpoint_menuitem(pane)
+        self.popup_menu.popup_at_pointer(event)
 
     def set_syncpoint_menuitem(self, pane):
         menu_actions = {
