@@ -38,11 +38,11 @@ dodgy_args['shallow-comparison'] = True
     ((), [], cmp_args, DiffResult.Same),
     # dirs are same
     (('diffs/a', 'diffs/b'), [], cmp_args, DiffResult.Same),
-    # dir and file ar diffent
+    # dir and file are different
     (('diffs/a', 'diffs/b/b.txt'), [], cmp_args, DiffResult.Different),
     # shallow equal (time + size)
     (('diffs/a/d/d.txt', 'diffs/b/d/d.1.txt'), [], dodgy_args, DiffResult.DodgySame),
-    # empty files (fastest equal, wont read files)
+    # empty files (fastest equal, won't read files)
     (('diffs/a/c/c.txt', 'diffs/b/c/c.txt'), [], cmp_args, DiffResult.Same),
     # 4.1kb vs 4.1kb file (slow equal, read both until end)
     (('diffs/a/d/d.txt', 'diffs/b/d/d.txt'), [], cmp_args, DiffResult.Same),

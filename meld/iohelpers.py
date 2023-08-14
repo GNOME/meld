@@ -222,7 +222,7 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
 
         # As an additional heuristic, we try to include the second-last
         # path segment as well, to handle paths like e.g.,
-        # <parent>/<some packge structure>/<module>/src/main.py.
+        # <parent>/<some package structure>/<module>/src/main.py.
         # We only do this if the last component is short, to
         # handle src, dist, pkg, etc. without using too much space.
         if len(relative_path.parts) > 2 and len(immediate_parent_strs[0]) < 5:
