@@ -20,6 +20,8 @@ def test_accelerator_duplication():
         # Allowed because they're different copy actions across views
         Gtk.accelerator_parse("<Alt>Left"),
         Gtk.accelerator_parse("<Alt>Right"),
+        # Allowed because they activate different popovers across views
+        Gtk.accelerator_parse("F8"),
         # Allowed because they're different panel show/hide across views
         Gtk.accelerator_parse("F9"),
     }
