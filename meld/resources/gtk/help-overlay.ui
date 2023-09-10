@@ -11,7 +11,7 @@
         <child>
           <object class="GtkShortcutsGroup">
             <property name="visible">True</property>
-            <property name="title" translatable="yes" context="shortcut window">General</property>
+            <property name="title" translatable="yes" context="shortcut window">Windows and Tabs</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
@@ -33,6 +33,12 @@
                 <property name="title" translatable="yes" context="shortcut window">Quit Meld</property>
               </object>
             </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
+            <property name="title" translatable="yes" context="shortcut window">General</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
@@ -54,6 +60,28 @@
                 <property name="title" translatable="yes" context="shortcut window">Keyboard shortcuts</property>
               </object>
             </child>
+
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="action-name">win.gear-menu</property>
+                <property name="title" translatable="yes" context="shortcut window">Open menu</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="action-name">win.fullscreen</property>
+                <property name="title" translatable="yes" context="shortcut window">Fullscreen</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="GtkShortcutsGroup">
+            <property name="visible">True</property>
+            <property name="view">tab</property>
+            <property name="title" translatable="yes" context="shortcut window">Common Actions</property>
             <child>
               <object class="GtkShortcutsShortcut">
                 <property name="visible">True</property>
@@ -74,29 +102,7 @@
                 <property name="action-name">view.open-external</property>
                 <property name="title" translatable="yes" context="shortcut window">Open externally</property>
               </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="action-name">win.gear-menu</property>
-                <property name="title" translatable="yes" context="shortcut window">Open menu</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="action-name">win.fullscreen</property>
-                <property name="title" translatable="yes" context="shortcut window">Fullscreen</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkShortcutsShortcut">
-                <property name="visible">True</property>
-                <property name="action-name">view.swap-2-panes</property>
-                <property name="title" translatable="yes" context="shortcut window">Swap left and right panes</property>
-              </object>
-            </child>
-          </object>
+            </child>          </object>
         </child>
         <child>
           <object class="GtkShortcutsGroup">
@@ -115,6 +121,13 @@
                 <property name="visible">True</property>
                 <property name="action-name">view.next-pane</property>
                 <property name="title" translatable="yes" context="shortcut window">Next comparison pane</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkShortcutsShortcut">
+                <property name="visible">True</property>
+                <property name="action-name">view.swap-2-panes</property>
+                <property name="title" translatable="yes" context="shortcut window">Swap left and right panes</property>
               </object>
             </child>
           </object>
