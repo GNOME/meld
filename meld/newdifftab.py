@@ -173,8 +173,14 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
         tab = self.diff_methods[self.diff_type](gfiles)
         self.emit('diff-created', tab)
 
-    def on_container_switch_in_event(self, *args):
+    def on_container_switch_in_event(self, window):
         self.label_changed.emit(self.label_text, self.tooltip_text)
+
+        window.text_filter_button.set_visible(False)
+        window.folder_filter_button.set_visible(False)
+        window.vc_filter_button.set_visible(False)
+        window.next_conflict_button.set_visible(False)
+        window.previous_conflict_button.set_visible(False)
 
     def on_container_switch_out_event(self, *args):
         pass
