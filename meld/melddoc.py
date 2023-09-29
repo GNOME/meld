@@ -17,7 +17,6 @@
 import enum
 import logging
 import os
-import pipes
 import shlex
 import string
 import subprocess
@@ -45,7 +44,7 @@ def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
         log.error("Unsupported fields found")
         return [custom_command, path]
     else:
-        cmd = custom_command.format(file=pipes.quote(path), line=line)
+        cmd = custom_command.format(file=shlex.quote(path), line=line)
     return shlex.split(cmd)
 
 
