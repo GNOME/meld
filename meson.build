@@ -42,10 +42,10 @@ pkgdatadir = datadir / meson.project_name()
 itsdir = meson.current_source_dir() / 'gettext'
 podir = meson.current_source_dir() / 'po'
 
-gio_schemasdir = dependency('gio-2.0').get_pkgconfig_variable(
-  'schemasdir',
-  define_variable: ['datadir', datadir],
-  default: datadir / 'glib-2.0/schemas',
+gio_schemasdir = dependency('gio-2.0').get_variable(
+  pkgconfig: 'schemasdir',
+  pkgconfig_define: ['datadir', datadir],
+  default_value: datadir / 'glib-2.0/schemas',
 )
 
 subdir('bin')
@@ -60,4 +60,7 @@ gnome.post_install(
   update_desktop_database: true,
 )
 
-meson.add_install_script('meson_post_install.py', get_option('byte-compile') ? python3.get_install_dir() : '')
+meson.add_install_script(
+  'meson_post_install.py',
+  get_option('byte-compile') ? python3.get_install_dir() : '',
+)
