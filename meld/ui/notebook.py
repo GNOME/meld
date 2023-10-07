@@ -164,4 +164,6 @@ class MeldNotebook(Gtk.Notebook):
         # Only update the window title if the current page is active
         if self.get_current_page() == self.page_num(page):
             self.emit('page-label-changed', text)
-        self.child_set_property(page, "menu-label", text)
+
+        real_page = self.get_nth_page(self.get_current_page())
+        self.set_menu_label_text(real_page, text)
