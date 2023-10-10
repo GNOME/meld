@@ -393,7 +393,14 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.create_text_filters()
 
-        self.create_event_controllers()
+        self.create_event_controllers(self.textview0)
+        self.create_event_controllers(self.textview1)
+        self.create_event_controllers(self.textview2)
+
+        self.create_gutter_event_controllers(self.actiongutter0)
+        self.create_gutter_event_controllers(self.actiongutter1)
+        self.create_gutter_event_controllers(self.actiongutter2)
+        self.create_gutter_event_controllers(self.actiongutter3)
 
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need three revealers here instead of the
@@ -431,10 +438,12 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
         for t in self.textview:
-            t.connect("focus-in-event", self.on_current_diff_changed)
-            t.connect("focus-out-event", self.on_current_diff_changed)
-            t.connect(
-                "drag_data_received", self.on_textview_drag_data_received)
+            controller = Gtk.EventControllerFocus()
+            controller.connect("enter", self.on_current_diff_changed)
+            controller.connect("leave", self.on_current_diff_changed)
+            t.add_controller(controller)
+            # t.connect( TODO
+            #     "drag_data_received", self.on_textview_drag_data_received)
 
         for label in self.filelabel:
             label.connect(
@@ -538,7 +547,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     keymask = property(get_keymask, set_keymask)
 
-    def on_key_event(self, controller, keyval, keycode, state): # TODO controller
+    def on_key_event(self, controller, keyval, keycode, state):
         keymap = Gdk.Keymap.get_default()
         ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
             event.hardware_keycode, 0, event.group)
@@ -601,16 +610,26 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         return active_filters_changed
 
-    def create_event_controllers(self):
+    def create_event_controllers(self, widget):
         keycontroller = Gtk.EventControllerKey()
         keycontroller.connect("key-pressed", self.on_key_event)
         keycontroller.connect("key-released", self.on_key_event)
-        self.textview1.add_controller(keycontroller)
+        widget.add_controller(keycontroller)
 
         gesture = Gtk.GestureClick()
         gesture.set_button(3)
         gesture.connect("pressed", self.on_textview_button_press_event)
+        widget.add_controller(gesture)
 
+        focuscontroller = Gtk.EventControllerFocus()
+        focuscontroller.connect("enter", self.on_textview_focus_in_event)
+        focuscontroller.connect("leave", self.on_textview_focus_out_event)
+        widget.add_controller(focuscontroller)
+
+    def create_gutter_event_controllers(self, gutter):
+        controller = Gtk.EventControllerScroll()
+        controller.connect("scroll", self.on_linkmap_scroll_event)
+        gutter.add_controller(controller)
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
@@ -830,8 +849,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             mark0, mark1, 'focus-highlight', 400000, starting_alpha=0.3,
             anim_type=TextviewLineAnimationType.stroke)
 
-    @Gtk.Template.Callback()
-    def on_linkmap_scroll_event(self, linkmap, event):
+    def on_linkmap_scroll_event(self, dx, dy): # TODO controller
         self.next_diff(event.direction, use_viewport=True)
 
     def _is_chunk_in_area(
@@ -1470,12 +1488,11 @@ class FileDiff(Gtk.Box, MeldDoc):
         )
         return True
 
-    def on_textview_button_press_event(self, gesture, n_press, x, y): # TODO controller
+    def on_textview_button_press_event(self, gesture, n_press, x, y):
         textview = gesture.get_widget()
         textview.grab_focus()
         pane = self.textview.index(textview)
         self.set_syncpoint_menuitem(pane)
-        self.popup_menu.popup_at_pointer(event)
 
     def set_syncpoint_menuitem(self, pane):
         menu_actions = {
@@ -1523,8 +1540,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         section.set_attribute([("id", "s", "syncpoint-section")])
         replace_menu_section(self.popup_menu_model, section)
 
-        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
-        self.popup_menu.attach_to_widget(self)
+        self.popup_menu = Gtk.PopoverMenu.new_from_model(self.popup_menu_model)
+        self.popup_menu.set_parent(self)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
