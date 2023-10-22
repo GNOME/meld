@@ -201,6 +201,13 @@ class MeldApp(Gtk.Application):
         pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
         usage_lines = ["  %prog " + pad_args_fmt % u for u in usages]
         usage = "\n" + "\n".join(usage_lines)
+        usage += _(
+            "\n"
+            "\n"
+            "For file comparisons, the special argument @blank may be used "
+            "instead of\n"
+            "a <file> argument to create a blank pane."
+        )
 
         class GLibFriendlyOptionParser(optparse.OptionParser):
 
