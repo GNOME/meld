@@ -14,10 +14,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 from typing import Dict, Tuple
 
 import cairo
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
+
+log = logging.getLogger(__name__)
 
 
 class EmblemCellRenderer(Gtk.CellRenderer):
@@ -59,10 +62,21 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         self._emblem_size = 8
 
     def _get_pixbuf(self, name, size):
+        if not name:
+            return None
+
         if (name, size) not in self.icon_cache:
             icon_theme = Gtk.IconTheme.get_default()
-            pixbuf = icon_theme.load_icon(name, size, 0).copy()
+            try:
+                pixbuf = icon_theme.load_icon(name, size, 0).copy()
+            except GLib.GError as err:
+                if err.domain != GLib.quark_to_string(Gtk.IconThemeError.quark()):
+                    raise
+                log.error(f"Icon {name!r} not found; an icon theme is missing")
+                pixbuf = None
+
             self.icon_cache[(name, size)] = pixbuf
+
         return self.icon_cache[(name, size)]
 
     def do_render(self, context, widget, background_area, cell_area, flags):
@@ -72,7 +86,8 @@ class EmblemCellRenderer(Gtk.CellRenderer):
 
         # TODO: Incorporate padding
         context.push_group()
-        if self.icon_name:
+        pixbuf = self._get_pixbuf(self.icon_name, self._icon_size)
+        if pixbuf:
             pixbuf = self._get_pixbuf(self.icon_name, self._icon_size)
             context.set_operator(cairo.OPERATOR_SOURCE)
             # Assumes square icons; may break if we don't get the requested
