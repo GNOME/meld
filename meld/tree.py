@@ -119,8 +119,8 @@ class DiffTreeStore(SearchableTreeStore):
             ("text-x-generic", "folder", mod_fg),    # RENAMED
             ("text-x-generic", "folder", con_fg),    # CONFLICT
             ("text-x-generic", "folder", del_fg),    # REMOVED
-            ("text-x-generic", "folder", unk_fg),  # MISSING
-            ("text-x-generic", "folder", unk_fg),  # NONEXIST
+            (None, "folder", unk_fg),  # MISSING
+            (None, "folder", unk_fg),  # NONEXIST
             ("text-x-generic", "folder", None),    # SPINNER
         ]
 
