@@ -42,12 +42,6 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         blurb='Name for emblem icon to overlay',
     )
 
-    secondary_emblem_name = GObject.Property(
-        type=str,
-        nick='Named secondary emblem icon',
-        blurb='Name for secondary emblem icon to overlay',
-    )
-
     icon_tint = GObject.Property(
         type=Gdk.RGBA,
         nick='Icon tint',
@@ -88,7 +82,6 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         context.push_group()
         pixbuf = self._get_pixbuf(self.icon_name, self._icon_size)
         if pixbuf:
-            pixbuf = self._get_pixbuf(self.icon_name, self._icon_size)
             context.set_operator(cairo.OPERATOR_SOURCE)
             # Assumes square icons; may break if we don't get the requested
             # size
@@ -118,18 +111,6 @@ class EmblemCellRenderer(Gtk.CellRenderer):
                 Gdk.cairo_set_source_pixbuf(context, pixbuf, x_offset, 0)
                 context.rectangle(x_offset, 0,
                                   cell_area.width, self._emblem_size)
-                context.fill()
-
-            if self.secondary_emblem_name:
-                pixbuf = self._get_pixbuf(
-                    self.secondary_emblem_name, self._emblem_size)
-                x_offset = self._icon_size - self._emblem_size
-                y_offset = self._icon_size - self._emblem_size + height_offset
-                context.set_operator(cairo.OPERATOR_OVER)
-                Gdk.cairo_set_source_pixbuf(
-                    context, pixbuf, x_offset, y_offset)
-                context.rectangle(
-                    x_offset, y_offset, cell_area.width, self._emblem_size)
                 context.fill()
 
         context.pop_group_to_source()
