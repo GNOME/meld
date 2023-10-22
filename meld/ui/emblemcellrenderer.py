@@ -64,7 +64,9 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             try:
                 pixbuf = icon_theme.load_icon(name, size, 0).copy()
             except GLib.GError as err:
-                if err.domain != GLib.quark_to_string(Gtk.IconThemeError.quark()):
+                if err.domain != GLib.quark_to_string(
+                    Gtk.IconThemeError.quark()
+                ):
                     raise
                 log.error(f"Icon {name!r} not found; an icon theme is missing")
                 pixbuf = None
