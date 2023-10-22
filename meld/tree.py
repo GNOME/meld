@@ -107,21 +107,21 @@ class DiffTreeStore(SearchableTreeStore):
         ]
 
         self.icon_details = [
-            # file-icon, folder-icon, file-tint, folder-tint
-            ("text-x-generic", "folder", None,   None),    # IGNORED
-            ("text-x-generic", "folder", None,   None),    # NONE
-            ("text-x-generic", "folder", None,   None),    # NORMAL
-            ("text-x-generic", "folder", None,   None),    # NOCHANGE
-            ("dialog-warning-symbolic", None,     None,   None),    # ERROR
-            (None,             None,     None,   None),    # EMPTY
-            ("text-x-generic", "folder", new_fg, None),    # NEW
-            ("text-x-generic", "folder", mod_fg, None),    # MODIFIED
-            ("text-x-generic", "folder", mod_fg, None),    # RENAMED
-            ("text-x-generic", "folder", con_fg, None),    # CONFLICT
-            ("text-x-generic", "folder", del_fg, None),    # REMOVED
-            ("text-x-generic", "folder", unk_fg, unk_fg),  # MISSING
-            ("text-x-generic", "folder", unk_fg, unk_fg),  # NONEXIST
-            ("text-x-generic", "folder", None,   None),    # SPINNER
+            # file-icon, folder-icon, file-tint
+            ("text-x-generic", "folder", None),    # IGNORED
+            ("text-x-generic", "folder", None),    # NONE
+            ("text-x-generic", "folder", None),    # NORMAL
+            ("text-x-generic", "folder", None),    # NOCHANGE
+            ("dialog-warning-symbolic", None, None),    # ERROR
+            (None, None, None),    # EMPTY
+            ("text-x-generic", "folder", new_fg),    # NEW
+            ("text-x-generic", "folder", mod_fg),    # MODIFIED
+            ("text-x-generic", "folder", mod_fg),    # RENAMED
+            ("text-x-generic", "folder", con_fg),    # CONFLICT
+            ("text-x-generic", "folder", del_fg),    # REMOVED
+            ("text-x-generic", "folder", unk_fg),  # MISSING
+            ("text-x-generic", "folder", unk_fg),  # NONEXIST
+            ("text-x-generic", "folder", None),    # SPINNER
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
@@ -169,7 +169,7 @@ class DiffTreeStore(SearchableTreeStore):
 
     def set_state(self, it, pane, state, label, isdir=0):
         icon = self.icon_details[state][1 if isdir else 0]
-        tint = self.icon_details[state][3 if isdir else 2]
+        tint = None if isdir else self.icon_details[state][2]
         fg, style, weight, strike = self.text_attributes[state]
         self.unsafe_set(it, pane, {
             COL_STATE: str(state),
