@@ -1770,13 +1770,15 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                 else:
                     emblem = EMBLEM_NEW if j in newest else None
 
-                link_emblem = EMBLEM_SYMLINK if j in symlinks else None
                 self.model.unsafe_set(it, j, {
                     COL_EMBLEM: emblem,
-                    COL_EMBLEM_SECONDARY: link_emblem,
                     COL_TIME: times[j],
                     COL_PERMS: perms[j]
                 })
+                if j in symlinks:
+                    self.model.unsafe_set(it, j, {
+                        tree.COL_ICON: "symbolic-link-symbolic",
+                    })
                 # Size is handled independently, because unsafe_set
                 # can't correctly box GObject.TYPE_INT64.
                 self.model.set(
