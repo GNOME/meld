@@ -16,10 +16,10 @@ flatpak:
     extends: .flatpak
     stage: build
     variables:
-        MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
+        MANIFEST_PATH: "build-aux/org.gnome.Meld.Devel.json"
         FLATPAK_MODULE: "meld"
         RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        APP_ID: "org.gnome.MeldDevel"
+        APP_ID: "org.gnome.Meld.Devel"
         BUNDLE: "meld-dev.flatpak"
 
 nightly:

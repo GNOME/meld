@@ -33,8 +33,8 @@ endif
 
 appdata_file = i18n.merge_file(
   input: configure_file(
-    input: files('org.gnome.meld.appdata.xml.in.in'),
-    output: 'org.gnome.meld.appdata.xml.in',
+    input: files('org.gnome.Meld.appdata.xml.in.in'),
+    output: 'org.gnome.Meld.appdata.xml.in',
     configuration: {'appid': application_id},
   ),
   output: '@0@.appdata.xml'.format(application_id),

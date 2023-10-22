@@ -25,9 +25,9 @@ dependency('py3cairo', version: '>= 1.15.0')
 profile = get_option('profile')
 name_suffix = (profile == 'Devel' ? ' (Development Snapshot)' : '')
 
-resource_base_id = 'org.gnome.meld'
+resource_base_id = 'org.gnome.Meld'
 application_id_no_profile = 'org.gnome.Meld'
-application_id = 'org.gnome.Meld@0@'.format(profile)
+application_id = (profile == 'Devel' ? application_id_no_profile + '.' + profile : application_id_no_profile)
 
 prefix = get_option('prefix')
 

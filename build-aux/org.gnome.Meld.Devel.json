@@ -1,5 +1,5 @@
 {
-  "app-id": "org.gnome.MeldDevel",
+  "app-id": "org.gnome.Meld.Devel",
   "runtime": "org.gnome.Platform",
   "runtime-version": "master",
   "sdk": "org.gnome.Sdk",
@@ -49,6 +49,24 @@
       ]
     },
     {
+      "name": "git",
+      "make-args": [
+        "NO_TCLTK=1",
+        "INSTALL_SYMLINKS=1"
+      ],
+      "make-install-args": [
+        "NO_TCLTK=1",
+        "INSTALL_SYMLINKS=1"
+      ],
+      "sources": [
+        {
+          "type": "archive",
+          "url": "https://mirrors.edge.kernel.org/pub/software/scm/git/git-2.42.0.tar.xz",
+          "sha256": "3278210e9fd2994b8484dd7e3ddd9ea8b940ef52170cdb606daa94d887c93b0d"
+        }
+      ]
+    },
+    {
       "name": "meld",
       "buildsystem": "meson",
       "sources": [
@@ -60,13 +78,6 @@
       ],
       "config-opts": [
         "-Dprofile=Devel"
-      ]
-    },
-    {
-      "name": "git",
-      "buildsystem": "simple",
-      "build-commands": [
-        "cp /usr/bin/git ${FLATPAK_DEST}/bin"
       ]
     }
   ]
