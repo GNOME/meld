@@ -328,7 +328,18 @@ class MeldApp(Gtk.Application):
                 relative = Gio.File.resolve_relative_path(cwd, arg)
                 if relative.query_exists(cancellable=None):
                     return relative
-                # Return the original arg for a better error message
+
+                # We have special handling for not-a-file arguments:
+                #  * @blank is just a new blank tab
+                #
+                # The intention was to support @clipboard here as well, which
+                # would have started with a pasted clipboard, but Wayland's
+                # clipboard security makes this borderline impossible for us.
+                if arg == "@blank":
+                    return None
+
+                # Otherwise we fall through and return the original arg for
+                # a better error message
 
             if f.get_uri() is None:
                 raise ValueError(_("invalid path or URI “%s”") % arg)

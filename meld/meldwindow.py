@@ -358,6 +358,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         assert len(gfiles) in (1, 2, 3)
         doc = DirDiff(len(gfiles))
         self._append_page(doc)
+        gfiles = [f or Gio.File.new_for_path("") for f in gfiles]
         doc.folders = gfiles
         doc.set_locations()
         if auto_compare:
