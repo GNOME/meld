@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-10-02 06:52+0000\n"
-"PO-Revision-Date: 2023-10-02 10:15+0300\n"
+"POT-Creation-Date: 2023-10-22 06:16+0000\n"
+"PO-Revision-Date: 2023-10-23 19:18+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -77,7 +77,6 @@ msgid "Default window height"
 msgstr "Типова висота вікна програми"
 
 #: data/org.gnome.meld.gschema.xml:45
-#| msgid "Default window maximised state"
 msgid "Default window maximized state"
 msgstr "Стан максимізації типового вікна програми"
 
@@ -1108,7 +1107,7 @@ msgstr "Попередні журнали:"
 
 #: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
 #: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1231
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
 #: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "_Скасувати"
@@ -1327,7 +1326,7 @@ msgstr "Циклічний пошук"
 msgid "Replace _All"
 msgstr "Замінити _все"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1233 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1231 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "За_мінити"
 
@@ -1686,8 +1685,7 @@ msgid "Push local commits to remote?"
 msgstr "Надіслати локальні внески до віддаленого сховища?"
 
 #: meld/resources/ui/push-dialog.ui:10
-msgid ""
-"The commits to be pushed are determined by your version control system."
+msgid "The commits to be pushed are determined by your version control system."
 msgstr ""
 "Внески, які буде надіслано, визначаються вашою системою керування версіями."
 
@@ -1712,7 +1710,7 @@ msgid "Changes made to the following documents will be permanently lost:"
 msgstr ""
 "Зміни, які внесено до вказаних нижче документів, буде безповоротно втрачено:"
 
-#: meld/resources/ui/revert-dialog.ui:39
+#: meld/resources/ui/revert-dialog.ui:38
 msgid "_Discard"
 msgstr "_Відкинути"
 
@@ -1833,53 +1831,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:626 meld/preferences.py:132
+#: meld/dirdiff.py:625 meld/preferences.py:132
 msgid "Size"
 msgstr "Розмір"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:634 meld/preferences.py:133
+#: meld/dirdiff.py:633 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Час внесення змін"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:642 meld/preferences.py:134
+#: meld/dirdiff.py:641 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Час внесення змін (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:650 meld/preferences.py:135
+#: meld/dirdiff.py:649 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Права доступу"
 
-#: meld/dirdiff.py:903
+#: meld/dirdiff.py:902
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "{filename} (сканування…)"
 
-#: meld/dirdiff.py:935 meld/dirdiff.py:967
+#: meld/dirdiff.py:933 meld/dirdiff.py:965
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Скануємо {folder}"
 
-#: meld/dirdiff.py:1103
+#: meld/dirdiff.py:1101
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Виконано"
 
-#: meld/dirdiff.py:1116
+#: meld/dirdiff.py:1114
 msgid "Folder {} is being compared to itself"
 msgstr "Виконуємо порівняння теки {} із самою собою"
 
-#: meld/dirdiff.py:1122
+#: meld/dirdiff.py:1120
 msgid "Folders have no differences"
 msgstr "Між теками немає відмінностей"
 
-#: meld/dirdiff.py:1124
+#: meld/dirdiff.py:1122
 msgid "Contents of scanned files in folders are identical."
 msgstr "Вміст сканованих файлів у теках є тотожним."
 
-#: meld/dirdiff.py:1126
+#: meld/dirdiff.py:1124
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1887,46 +1885,45 @@ msgstr ""
 "Здається, скановані файли у теках є тотожними, але програма не перевіряла "
 "їхній вміст."
 
-#: meld/dirdiff.py:1129
+#: meld/dirdiff.py:1127
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Використано фільтри файлів, тому сканування виконувалося не для усіх файлів."
 
-#: meld/dirdiff.py:1131
+#: meld/dirdiff.py:1129
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Використано текстові фільтри, що могли замаскувати відмінності у вмісті "
 "файлів."
 
-#: meld/dirdiff.py:1147 meld/filediff.py:2023
+#: meld/dirdiff.py:1145 meld/filediff.py:2023
 msgid "Hide"
 msgstr "Приховати"
 
-#: meld/dirdiff.py:1149 meld/filediff.py:2025 meld/filediff.py:2055
+#: meld/dirdiff.py:1147 meld/filediff.py:2025 meld/filediff.py:2055
 #: meld/filediff.py:2057 meld/ui/msgarea.py:125 meld/ui/msgarea.py:138
 msgid "Hi_de"
 msgstr "_Сховати"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1156
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Під час сканування цієї теки було виявлено декілька помилок"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1157
 msgid "Files with invalid encodings found"
 msgstr "Знайдено файли із некоректним кодуванням"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1161
-msgid ""
-"Some files were in an incorrect encoding. The names are something like:"
+#: meld/dirdiff.py:1159
+msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Кодування деяких файлів є помилковим. Назви десь такі:"
 
-#: meld/dirdiff.py:1163
+#: meld/dirdiff.py:1161
 msgid "Files hidden by case insensitive comparison"
 msgstr "Файли приховано нечутливим до регістру порівнянням"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1163
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1934,17 +1931,17 @@ msgstr ""
 "Ви виконуєте нечутливе до регістру порівняння в чутливій до регістру "
 "файловій системі. Вказані нижче рядки у цій теці приховано:"
 
-#: meld/dirdiff.py:1176
+#: meld/dirdiff.py:1174
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "«{first_file}» приховано «{second_file}»"
 
-#: meld/dirdiff.py:1238
+#: meld/dirdiff.py:1236
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Замінити теку «%s»?"
 
-#: meld/dirdiff.py:1240
+#: meld/dirdiff.py:1238
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1953,11 +1950,11 @@ msgstr ""
 "У «%s» вже існує інша тека з такою ж назвою.\n"
 "Якщо ви замістите наявну теку, усі файли у ній буде втрачено."
 
-#: meld/dirdiff.py:1253
+#: meld/dirdiff.py:1251
 msgid "Error copying file"
 msgstr "Помилка під час копіювання файла"
 
-#: meld/dirdiff.py:1254
+#: meld/dirdiff.py:1252
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1970,7 +1967,7 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1279 meld/vcview.py:769
+#: meld/dirdiff.py:1277 meld/vcview.py:769
 msgid "Error deleting {}"
 msgstr "Помилка під час спроби вилучити {}"
 
@@ -2289,70 +2286,83 @@ msgstr "Розпочати порівняння двох або трьох фа�
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Розпочати порівняння двох або трьох тек"
 
-#: meld/meldapp.py:242
+#: meld/meldapp.py:205
+msgid ""
+"\n"
+"\n"
+"For file comparisons, the special argument @blank may be used instead of\n"
+"a <file> argument to create a blank pane."
+msgstr ""
+"\n"
+"\n"
+"Для порівняння файлів можна скористатися спеціальним аргументом @blank"
+" замість\n"
+"аргументу <file> для створення порожньої панелі."
+
+#: meld/meldapp.py:249
 #, python-format
 msgid "Error: %s\n"
 msgstr "Помилка: %s\n"
 
-#: meld/meldapp.py:249
+#: meld/meldapp.py:256
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld — інструмент для порівняння файлів і каталогів."
 
-#: meld/meldapp.py:253
+#: meld/meldapp.py:260
 msgid "Set label to use instead of file name"
 msgstr "Встановіть мітку, щоб використовувати замість назви файла"
 
-#: meld/meldapp.py:256
+#: meld/meldapp.py:263
 msgid "Open a new tab in an already running instance"
 msgstr "Відкрити вкладку у вже запущеному екземплярі"
 
-#: meld/meldapp.py:259
+#: meld/meldapp.py:266
 msgid "Automatically compare all differing files on startup"
 msgstr "Автоматично порівнювати усі файли, які відрізняються, під час запуску"
 
-#: meld/meldapp.py:262
+#: meld/meldapp.py:269
 msgid "Ignored for compatibility"
 msgstr "Ігнорується для сумісності"
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:273
 msgid "Set the target file for saving a merge result"
 msgstr "Встановити файл цілі для збереження результатів об'єднання"
 
-#: meld/meldapp.py:269
+#: meld/meldapp.py:276
 msgid "Automatically merge files"
 msgstr "Автоматично об'єднати файли"
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:280
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Завантажити збережене порівняння з файла порівняння Meld"
 
-#: meld/meldapp.py:277
+#: meld/meldapp.py:284
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Створити вкладку різниці для вказаних файлів або тек"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:304
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "забагато аргументів (мало бути від 0 до 3, маємо %d)"
 
-#: meld/meldapp.py:300
+#: meld/meldapp.py:307
 msgid "can’t auto-merge less than 3 files"
 msgstr "неможливо автоматично об'єднати менше за 3 файли"
 
-#: meld/meldapp.py:302
+#: meld/meldapp.py:309
 msgid "can’t auto-merge directories"
 msgstr "неможливо автоматично об'єднати каталоги"
 
-#: meld/meldapp.py:317
+#: meld/meldapp.py:324
 msgid "Error reading saved comparison file"
 msgstr "Помилка під час читання збереженого файла порівняння"
 
-#: meld/meldapp.py:334
+#: meld/meldapp.py:352
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "некоректний шлях або адреса «%s»"
 
-#: meld/meldapp.py:341
+#: meld/meldapp.py:359
 msgid "remote folder “{}” not supported"
 msgstr "підтримки віддалених тек «{}» не передбачено"
 
@@ -2369,12 +2379,12 @@ msgstr "без назви"
 msgid "Filename"
 msgstr "Назва файла"
 
-#: meld/meldwindow.py:387
+#: meld/meldwindow.py:388
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Для автоматичного об'єднання потрібно 3 файли. Маємо: %r"
 
-#: meld/meldwindow.py:417
+#: meld/meldwindow.py:418
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Неможливо порівняти суміш файлів і тек"
 
@@ -2407,7 +2417,6 @@ msgid "Version control:"
 msgstr "Керування версіями:"
 
 #: meld/style.py:96
-#| msgid "Couldn’t find colour scheme details for {}; this is a bad install"
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr ""
 "Не вдалося знайти параметри схеми кольорів для {} — якісь проблеми зі "
