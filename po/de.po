@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-10-02 06:52+0000\n"
-"PO-Revision-Date: 2023-10-08 14:26+0200\n"
-"Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
+"POT-Creation-Date: 2023-10-22 06:16+0000\n"
+"PO-Revision-Date: 2023-10-22 19:50+0200\n"
+"Last-Translator: Philipp Kiemle <philipp.kiemle@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -525,16 +525,16 @@ msgid ""
 "              (\"C++ Comment\", false, \"//.*\"),\n"
 "              (\"C Comment\", false, \"/\\\\*.*?\\\\*/\"),\n"
 "              (\"All Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
-"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\"
-"\\v]*\"),\n"
+"              (\"Leading Whitespace\", false, \"^[ \\\\t\\\\r\\\\f\\\\v]*"
+"\"),\n"
 "              (\"Trailing Whitespace\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*$"
 "\"),\n"
 "              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 msgstr ""
 "[\n"
-"              (\"CVS/SVN-Schlüsselwörter\", false, \"\\\\$\\\\w+(:[^\\"
-"\\n$]+)?\\\\$\"),\n"
+"              (\"CVS/SVN-Schlüsselwörter\", false, \"\\\\$\\\\w+(:[^\\\\n"
+"$]+)?\\\\$\"),\n"
 "              (\"C++-Kommentar\", false, \"//.*\"),\n"
 "              (\"C-Kommentar\", false, \"/\\\\*.*?\\\\*/\"),\n"
 "              (\"Alle Leerzeichen\", false, \"[ \\\\t\\\\r\\\\f\\\\v]*\"),\n"
@@ -1126,7 +1126,7 @@ msgstr "Vorherige Mitteilungen:"
 
 #: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
 #: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1231
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1229
 #: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "A_bbrechen"
@@ -1345,7 +1345,7 @@ msgstr "Umgebrochen"
 msgid "Replace _All"
 msgstr "_Alle ersetzen"
 
-#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1233 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:208 meld/dirdiff.py:1231 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "E_rsetzen"
 
@@ -1730,7 +1730,7 @@ msgstr "Nicht gespeicherte Dokumentenänderungen zurücknehmen?"
 msgid "Changes made to the following documents will be permanently lost:"
 msgstr "Änderungen der folgenden Dokumente werden verloren gehen:"
 
-#: meld/resources/ui/revert-dialog.ui:39
+#: meld/resources/ui/revert-dialog.ui:38
 msgid "_Discard"
 msgstr "_Verwerfen"
 
@@ -1851,53 +1851,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:626 meld/preferences.py:132
+#: meld/dirdiff.py:625 meld/preferences.py:132
 msgid "Size"
 msgstr "Größe"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:634 meld/preferences.py:133
+#: meld/dirdiff.py:633 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Änderungszeit"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:642 meld/preferences.py:134
+#: meld/dirdiff.py:641 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Änderungszeit (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:650 meld/preferences.py:135
+#: meld/dirdiff.py:649 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Berechtigungen"
 
-#: meld/dirdiff.py:903
+#: meld/dirdiff.py:902
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "(durchsucht …) {filename}"
 
-#: meld/dirdiff.py:935 meld/dirdiff.py:967
+#: meld/dirdiff.py:933 meld/dirdiff.py:965
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Durchsucht {folder}"
 
-#: meld/dirdiff.py:1103
+#: meld/dirdiff.py:1101
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Fertig"
 
-#: meld/dirdiff.py:1116
+#: meld/dirdiff.py:1114
 msgid "Folder {} is being compared to itself"
 msgstr "Der Ordner »{}« wird mit sich selbst verglichen"
 
-#: meld/dirdiff.py:1122
+#: meld/dirdiff.py:1120
 msgid "Folders have no differences"
 msgstr "Keine Unterschiede zwischen Ordnern"
 
-#: meld/dirdiff.py:1124
+#: meld/dirdiff.py:1122
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhalte der untersuchten Dateien in den Ordnern sind identisch."
 
-#: meld/dirdiff.py:1126
+#: meld/dirdiff.py:1124
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1905,47 +1905,47 @@ msgstr ""
 "Untersuchte Dateien in den Ordnern scheinen identisch zu sein, jedoch wurden "
 "die Dateiinhalte nicht geprüft."
 
-#: meld/dirdiff.py:1129
+#: meld/dirdiff.py:1127
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Dateifilter wurden verwendet, deshalb wurden nicht alle Dateien untersucht."
 
-#: meld/dirdiff.py:1131
+#: meld/dirdiff.py:1129
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten."
 
-#: meld/dirdiff.py:1147 meld/filediff.py:2023
+#: meld/dirdiff.py:1145 meld/filediff.py:2023
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1149 meld/filediff.py:2025 meld/filediff.py:2055
+#: meld/dirdiff.py:1147 meld/filediff.py:2025 meld/filediff.py:2055
 #: meld/filediff.py:2057 meld/ui/msgarea.py:125 meld/ui/msgarea.py:138
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1156
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Beim Einlesen dieses Ordners traten mehrere Fehler auf"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1157
 msgid "Files with invalid encodings found"
 msgstr "Dateien mit ungültigen Kodierungen gefunden"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1159
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Einige Dateien lagen in einer inkorrekten Kodierung vor. Folgende Namen sind "
 "davon betroffen:"
 
-#: meld/dirdiff.py:1163
+#: meld/dirdiff.py:1161
 msgid "Files hidden by case insensitive comparison"
 msgstr "Dateien durch von Schreibweise unabhängigen Vergleich verborgen"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1163
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1954,17 +1954,17 @@ msgstr ""
 "auf einem Dateisystem durch, welches zwischen Groß- und Kleinschreibung "
 "unterscheidet. Die folgenden Dateien in diesem Ordner sind nicht sichtbar:"
 
-#: meld/dirdiff.py:1176
+#: meld/dirdiff.py:1174
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "»{first_file}« verborgen durch »{second_file}«"
 
-#: meld/dirdiff.py:1238
+#: meld/dirdiff.py:1236
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Ordner »%s« ersetzen?"
 
-#: meld/dirdiff.py:1240
+#: meld/dirdiff.py:1238
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1973,11 +1973,11 @@ msgstr ""
 "Ein Ordner mit diesem Namen existiert bereits in »%s«.\n"
 "Wenn Sie den vorhandenen Ordner ersetzen, gehen alle Dateien darin verloren."
 
-#: meld/dirdiff.py:1253
+#: meld/dirdiff.py:1251
 msgid "Error copying file"
 msgstr "Fehler beim Kopieren der Datei"
 
-#: meld/dirdiff.py:1254
+#: meld/dirdiff.py:1252
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1990,7 +1990,7 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1279 meld/vcview.py:769
+#: meld/dirdiff.py:1277 meld/vcview.py:769
 msgid "Error deleting {}"
 msgstr "Fehler beim Löschen von {}"
 
@@ -2317,71 +2317,83 @@ msgstr "Im Zwei- oder Dreiwegevergleich starten"
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Einen Zwei- oder Dreiwegevergleich starten"
 
-#: meld/meldapp.py:242
+#: meld/meldapp.py:205
+msgid ""
+"\n"
+"\n"
+"For file comparisons, the special argument @blank may be used instead of\n"
+"a <file> argument to create a blank pane."
+msgstr ""
+"\n"
+"\n"
+"Für Dateivergleiche kann das spezielle Argument »@blank« anstatt\n"
+"eines <file>-Arguments verwendet werden, um einen leeren Bereich zu erzeugen."
+
+#: meld/meldapp.py:249
 #, python-format
 msgid "Error: %s\n"
 msgstr "Fehler: %s\n"
 
-#: meld/meldapp.py:249
+#: meld/meldapp.py:256
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld ist ein Werkzeug zum Vergleichen von Dateien und Ordnern."
 
-#: meld/meldapp.py:253
+#: meld/meldapp.py:260
 msgid "Set label to use instead of file name"
 msgstr "Zu verwendende Bezeichnung anstelle Dateinamen angeben"
 
-#: meld/meldapp.py:256
+#: meld/meldapp.py:263
 msgid "Open a new tab in an already running instance"
 msgstr "Einen neuen Reiter in einer bereits laufenden Instanz öffnen"
 
-#: meld/meldapp.py:259
+#: meld/meldapp.py:266
 msgid "Automatically compare all differing files on startup"
 msgstr "Automatisch alle sich unterscheidenden Dateien beim Start vergleichen"
 
-#: meld/meldapp.py:262
+#: meld/meldapp.py:269
 msgid "Ignored for compatibility"
 msgstr "Aus Kompatibilitätsgründen ignoriert"
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:273
 msgid "Set the target file for saving a merge result"
 msgstr "Zieldatei zum Speichern einer Zusammenführung festlegen"
 
-#: meld/meldapp.py:269
+#: meld/meldapp.py:276
 msgid "Automatically merge files"
 msgstr "Dateien automatisch zusammenführen"
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:280
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Einen abgespeicherten Vergleich aus einer Meld-Vergleichsdatei laden"
 
-#: meld/meldapp.py:277
+#: meld/meldapp.py:284
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Erzeugt einen Differenz-Reiter für die angegebenen Dateien oder Ordner"
 
-#: meld/meldapp.py:297
+#: meld/meldapp.py:304
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "zu viele Argumente (0-3 erforderlich, %d erhalten)"
 
-#: meld/meldapp.py:300
+#: meld/meldapp.py:307
 msgid "can’t auto-merge less than 3 files"
 msgstr ""
 "Mit weniger als 3 Dateien ist keine automatische Zusammenführung möglich"
 
-#: meld/meldapp.py:302
+#: meld/meldapp.py:309
 msgid "can’t auto-merge directories"
 msgstr "Ordner können nicht automatisch zusammengeführt werden"
 
-#: meld/meldapp.py:317
+#: meld/meldapp.py:324
 msgid "Error reading saved comparison file"
 msgstr "Fehler beim Lesen der gespeicherten Vergleichsdatei"
 
-#: meld/meldapp.py:334
+#: meld/meldapp.py:352
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "Ungültiger Pfad oder ungültige Adresse »%s«"
 
-#: meld/meldapp.py:341
+#: meld/meldapp.py:359
 msgid "remote folder “{}” not supported"
 msgstr "Entfernter Ordner »{}« wird nicht unterstützt"
 
@@ -2398,12 +2410,12 @@ msgstr "unbenannt"
 msgid "Filename"
 msgstr "Dateiname"
 
-#: meld/meldwindow.py:387
+#: meld/meldwindow.py:388
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Drei Dateien zum automatischen Zusammenführen benötigt, %r erhalten"
 
-#: meld/meldwindow.py:417
+#: meld/meldwindow.py:418
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Es kann keine Mischung aus Dateien und Ordnern verglichen werden"
 
@@ -2682,7 +2694,6 @@ msgstr "Leeren"
 #~ msgid "Refresh"
 #~ msgstr "Aktualisieren"
 
-#, python-brace-format
 #~ msgid "Location: {path}"
 #~ msgstr "Ort: {path}"
 
