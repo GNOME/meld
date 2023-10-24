@@ -9,8 +9,9 @@
   </object>
   <object class="GtkAdjustment" id="pane_adjustment2">
   </object>
-  <template class="FileDiff" parent="GtkVBox">
+  <template class="FileDiff" parent="GtkBox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="can_focus">False</property>
     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
@@ -229,8 +230,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox0">
+          <object class="GtkBox" id="vbox0">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr0">
@@ -277,8 +279,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox2">
+          <object class="GtkBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr2">
@@ -325,8 +328,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkBox" id="vbox1">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr1">
