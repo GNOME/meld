@@ -9,8 +9,9 @@
     <property name="xscale">0</property>
     <property name="yscale">0</property>
     <child>
-      <object class="GtkVBox" id="vbox6">
+      <object class="GtkBox" id="vbox6">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="can-focus">False</property>
         <property name="spacing">18</property>
         <child>
@@ -30,13 +31,15 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox7">
+          <object class="GtkBox" id="vbox7">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can-focus">False</property>
             <property name="spacing">12</property>
             <child>
-              <object class="GtkHBox" id="hbox1">
+              <object class="GtkBox" id="hbox1">
                 <property name="visible">True</property>
+                <property name="orientation">horizontal</property>
                 <property name="can-focus">False</property>
                 <property name="spacing">12</property>
                 <property name="homogeneous">True</property>
@@ -48,8 +51,9 @@
                     <property name="receives-default">True</property>
                     <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                     <child>
-                      <object class="GtkVBox" id="vbox1">
+                      <object class="GtkBox" id="vbox1">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="can-focus">False</property>
                         <property name="spacing">6</property>
                         <child>
@@ -97,8 +101,9 @@
                     <property name="receives-default">True</property>
                     <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                     <child>
-                      <object class="GtkVBox" id="vbox2">
+                      <object class="GtkBox" id="vbox2">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="can-focus">False</property>
                         <property name="spacing">6</property>
                         <child>
@@ -146,8 +151,9 @@
                     <property name="receives-default">True</property>
                     <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                     <child>
-                      <object class="GtkVBox" id="vbox3">
+                      <object class="GtkBox" id="vbox3">
                         <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
                         <property name="can-focus">False</property>
                         <property name="spacing">6</property>
                         <child>
@@ -201,8 +207,9 @@
                 <property name="show-tabs">False</property>
                 <property name="show-border">False</property>
                 <child>
-                  <object class="GtkHBox" id="hbox2">
+                  <object class="GtkBox" id="hbox2">
                     <property name="visible">True</property>
+                    <property name="orientation">horizontal</property>
                     <property name="can-focus">False</property>
                     <property name="spacing">12</property>
                     <property name="homogeneous">True</property>
