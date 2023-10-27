@@ -139,7 +139,11 @@ class MeldStatusBar(Gtk.Statusbar):
     def do_realize(self):
         Gtk.Statusbar.do_realize(self)
 
-        self.box_box = Gtk.HBox(homogeneous=False, spacing=6)
+        self.box_box = Gtk.Box(
+            homogeneous=False,
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing=6,
+        )
         self.pack_end(self.box_box, False, True, 0)
         self.box_box.pack_end(
             self.construct_line_display(), False, True, 0)
