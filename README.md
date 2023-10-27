@@ -96,6 +96,9 @@ Developing
 It's easy to get started developing Meld. From a git checkout, just run
 `bin/meld`.
 
+You'll need to have installed everything listed in the Requirements section
+above, and also GLib development tools (for `glib-compile-resources`).
+
 We also support development using Flatpak via GNOME Builder. At the Builder
 "Clone..." dialog, enter https://gitlab.gnome.org/GNOME/meld.git, and the
 default build + run development flow using Flatpak should work.
