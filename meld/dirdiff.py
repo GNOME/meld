@@ -360,7 +360,7 @@ class ComparisonMarker(NamedTuple):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
-class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
+class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "DirDiff"
 
