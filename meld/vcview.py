@@ -115,7 +115,7 @@ class VcTreeStore(tree.DiffTreeStore):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/vcview.ui')
-class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
+class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "VcView"
 

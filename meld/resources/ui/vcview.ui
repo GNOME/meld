@@ -2,8 +2,9 @@
 <interface>
   <!-- interface-requires gtk+ 3.20 -->
   <!-- interface-requires meld.ui.gladesupport 0.0 -->
-  <template class="VcView" parent="GtkVBox">
+  <template class="VcView" parent="GtkBox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkActionBar" id="file_toolbar">
