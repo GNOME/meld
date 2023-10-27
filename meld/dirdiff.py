@@ -1657,28 +1657,39 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
                roots - array of root directories
                fileslist - array of filename tuples of length len(roots)
         """
-        assert len(roots) == self.model.ntree
         ret = []
         regexes = [f.byte_filter for f in self.text_filters if f.active]
         for files in fileslist:
             curfiles = [os.path.join(r, f) for r, f in zip(roots, files)]
             is_present = [os.path.exists(f) for f in curfiles]
-            all_present = 0 not in is_present
-            if all_present:
+            if all(is_present):
                 comparison_result = self.file_compare(curfiles, regexes)
-                if comparison_result in (
-                        Same, DodgySame):
-                    state = tree.STATE_NORMAL
+                if comparison_result in (Same, DodgySame):
+                    states = {tree.STATE_NORMAL}
                 elif comparison_result == SameFiltered:
-                    state = tree.STATE_NOCHANGE
+                    states = {tree.STATE_NOCHANGE}
                 else:
-                    state = tree.STATE_MODIFIED
+                    states = {tree.STATE_MODIFIED}
+            elif is_present.count(True) > 1:
+                # In a three-way comparison, we can have files in e.g., pane
+                # 1 and 2 be different to each other, and there be no file in
+                # pane 3. This row should be considered both modified (1 -> 2)
+                # and new (2 -> 3).
+                curfiles = [
+                    f for f, exists in zip(curfiles, is_present) if exists
+                ]
+                comparison_result = self.file_compare(curfiles, regexes)
+                if comparison_result in (Same, DodgySame, SameFiltered):
+                    states = {tree.STATE_NEW}
+                else:
+                    states = {tree.STATE_NEW, tree.STATE_MODIFIED}
             else:
-                state = tree.STATE_NEW
+                states = {tree.STATE_NEW}
             # Always retain NORMAL folders for comparison; we remove these
             # later if they have no children.
-            if (state in self.state_filters or
-                    all(os.path.isdir(f) for f in curfiles)):
+            all_folders = all(os.path.isdir(f) for f in curfiles)
+            states_match_filters = bool(states & set(self.state_filters))
+            if states_match_filters or all_folders:
                 ret.append(files)
         return ret
 
