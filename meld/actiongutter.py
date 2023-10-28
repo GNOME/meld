@@ -163,6 +163,12 @@ class ActionGutter(Gtk.DrawingArea):
         self.pointer_chunk = None
         self.pressed_chunk = None
 
+        self.motion_controller = Gtk.EventControllerMotion(widget=self)
+        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.motion_controller.connect("enter", self.motion_event)
+        self.motion_controller.connect("leave", self.motion_event)
+        self.motion_controller.connect("motion", self.motion_event)
+
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
@@ -206,16 +212,20 @@ class ActionGutter(Gtk.DrawingArea):
             self.pointer_chunk = new_pointer_chunk
             self.queue_draw()
 
-    def do_motion_notify_event(self, event):
-        self.update_pointer_chunk(event.x, event.y)
-
-    def do_enter_notify_event(self, event):
-        self.update_pointer_chunk(event.x, event.y)
-
-    def do_leave_notify_event(self, event):
-        if self.pointer_chunk:
-            self.pointer_chunk = None
-            self.queue_draw()
+    def motion_event(
+        self,
+        controller: Gtk.EventControllerMotion,
+        x: float | None = None,
+        y: float | None = None,
+    ):
+        if x is None or y is None:
+            # Missing coordinates are leave events
+            if self.pointer_chunk:
+                self.pointer_chunk = None
+                self.queue_draw()
+        else:
+            # This is either an enter or motion event; we treat them the same
+            self.update_pointer_chunk(x, y)
 
     def do_button_press_event(self, event):
         if self.pointer_chunk:
