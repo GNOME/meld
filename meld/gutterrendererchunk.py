@@ -20,6 +20,7 @@ from gi.repository import Gdk, GtkSource, Pango
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
+from meld.ui.gtkutil import make_gdk_rgba
 
 
 def get_background_rgba(renderer):
@@ -49,15 +50,17 @@ class MeldGutterRenderer:
 
     def set_renderer_defaults(self):
         self.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
-        self.set_padding(3, 0)
-        self.set_alignment(0.5, 0.5)
+        self.props.xpad = 3
+        self.props.ypad = 0
+        self.props.xalign = 0.5
+        self.props.yalign = 0.5
 
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
             self.chunk_highlights = {
-                state: Gdk.RGBA(*[alpha + c * (1.0 - alpha) for c in colour])
+                state: make_gdk_rgba(*[alpha + c * (1.0 - alpha) for c in colour])
                 for state, colour in self.fill_colors.items()
             }
 
