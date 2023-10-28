@@ -70,27 +70,26 @@ class ActionGutter(Gtk.DrawingArea):
         self.chunk_starts = [c.start_a for c in chunks]
 
     @GObject.Property(
-        type=Gtk.IconLookupFlags,
+        type=Gtk.TextDirection,
         nick='Which direction should directional changes appear to go',
         flags=(
             GObject.ParamFlags.READABLE |
             GObject.ParamFlags.WRITABLE |
             GObject.ParamFlags.CONSTRUCT_ONLY
         ),
-        default=Gtk.IconLookupFlags.DIR_LTR,
+        default=Gtk.TextDirection.LTR,
     )
     def icon_direction(self):
         return self._icon_direction
 
     @icon_direction.setter
-    def icon_direction_set(self, direction: Gtk.IconLookupFlags):
-        if direction not in (
-                Gtk.IconLookupFlags.DIR_LTR, Gtk.IconLookupFlags.DIR_RTL):
+    def icon_direction_set(self, direction: Gtk.TextDirection):
+        if direction not in (Gtk.TextDirection.LTR, Gtk.TextDirection.RTL):
             raise ValueError('Invalid icon direction {}'.format(direction))
 
         replace_icons = {
-            Gtk.IconLookupFlags.DIR_LTR: 'apply-right',
-            Gtk.IconLookupFlags.DIR_RTL: 'apply-left',
+            Gtk.TextDirection.LTR: 'apply-right',
+            Gtk.TextDirection.RTL: 'apply-left',
         }
         self.action_map = {
             ActionMode.Replace: ActionIcons.load(replace_icons[direction]),
