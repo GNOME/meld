@@ -23,6 +23,7 @@ from meld.const import ActionMode, ChunkAction
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.ui.gtkcompat import get_style
+from meld.ui.gtkutil import make_gdk_rgba
 
 
 class ActionIcons:
@@ -167,7 +168,7 @@ class ActionGutter(Gtk.DrawingArea):
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
             self.chunk_highlights = {
-                state: Gdk.RGBA(*[alpha + c * (1.0 - alpha) for c in colour])
+                state: make_gdk_rgba(*[alpha + c * (1.0 - alpha) for c in colour])
                 for state, colour in self.fill_colors.items()
             }
 
