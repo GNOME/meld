@@ -34,6 +34,8 @@ class LinkMap(Gtk.DrawingArea):
         self.filediff = None
         self.views = []
 
+        self.set_draw_func(self.draw)
+
     def associate(self, filediff, left_view, right_view):
         self.filediff = filediff
         self.views = [left_view, right_view]
@@ -49,7 +51,7 @@ class LinkMap(Gtk.DrawingArea):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
 
-    def do_draw(self, context):
+    def draw(self, _linkmap, context, width, height):
         if not self.views:
             return
 
