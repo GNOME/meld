@@ -14,9 +14,64 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-from gi.repository import GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
-from meld.recent import RecentFiles
+from meld.recent import get_recent_comparisons
+
+
+class RecentListModelEntry(GObject.Object):
+    """ an entry in the recent list model, contains a Gtk.RecentInfo """
+
+    def __init__(self, item):
+        GObject.Object.__init__(self)
+        self.item = item
+
+class RecentListModel(GObject.Object, Gio.ListModel):
+    """ recent list model, contains a list of recent files """
+
+    items = []
+
+    def __init__(self):
+        GObject.Object.__init__(self)
+
+    def do_get_item(self, position):
+        """ get item in model """
+
+        if position < len(self.items):
+            item = self.items[position]
+            return item
+
+        return None
+
+    def do_get_n_items(self):
+        """ get model item list length """
+        size = len(self.items)
+        return size
+
+    def append(self, item):
+        """ append item to model """
+        if item.exists():
+            try:
+                _, _ = get_recent_comparisons().read(item.get_uri())
+                self.items.append(RecentListModelEntry(item))
+            except (IOError, ValueError):
+                pass
+
+class RecentFilter(Gtk.Filter):
+    """ recent list filter """
+
+    filter_text = ""
+
+    def __init__(self):
+        Gtk.Filter.__init__(self)
+
+    def set_filter_text(self, text):
+        self.filter_text = text.lower()
+        self.emit("changed", Gtk.FilterChange.DIFFERENT)
+
+    def do_match(self, item):
+        match = self.filter_text in item.item.get_display_name().lower()
+        return match
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/recent-selector.ui')
@@ -38,57 +93,51 @@ class RecentSelector(Gtk.Grid):
     search_entry = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
 
+    model = None
+    filter_model = None
+    filter = None
+
     def do_realize(self):
         self.filter_text = ''
-        self.recent_chooser.set_filter(self.make_recent_filter())
+        self.recent_manager = Gtk.RecentManager.get_default()
+        items = self.recent_manager.get_items()
+        self.model = RecentListModel()
+        self.filter = RecentFilter()
+        self.filter_model = Gtk.FilterListModel()
+        self.filter_model.set_filter(self.filter)
+        self.filter_model.set_model(self.model)
+
+        for item in items:
+            self.model.append(item)
+        self.recent_chooser.bind_model(self.filter_model, self.create_widget)
+
+        self.filter.emit("changed", Gtk.FilterChange.DIFFERENT)
 
         return Gtk.Grid.do_realize(self)
 
-    def custom_recent_filter_func(
-            self, filter_info: "Gtk.RecentFilterInfo") -> bool:
-        """Filter function for Meld-specific files
-
-        Normal GTK recent filter rules are all OR-ed together to check
-        whether an entry should be shown. This filter instead only ever
-        shows Meld-specific entries, and then filters down from there.
-        """
-
-        if filter_info.mime_type != RecentFiles.mime_type:
-            return False
-
-        if self.filter_text not in filter_info.display_name.lower():
-            return False
-
-        return True
-
-    def make_recent_filter(self) -> "Gtk.RecentFilter":
-        recent_filter = Gtk.RecentFilter()
-        recent_filter.add_custom(
-            (
-                Gtk.RecentFilterFlags.MIME_TYPE |
-                Gtk.RecentFilterFlags.DISPLAY_NAME
-            ),
-            self.custom_recent_filter_func,
-        )
-        return recent_filter
+    def create_widget(self, item):
+        label = Gtk.Label()
+        label.set_halign(Gtk.Align.START)
+        label.set_label(item.item.get_display_name())
+        return label
 
     @Gtk.Template.Callback()
     def on_filter_text_changed(self, *args):
-        self.filter_text = self.search_entry.get_text().lower()
-
-        # This feels unnecessary, but there's no other good way to get
-        # the RecentChooser to re-evaluate the filter.
-        self.recent_chooser.set_filter(self.make_recent_filter())
+        self.filter.set_filter_text(self.search_entry.get_text())
 
     @Gtk.Template.Callback()
-    def on_selection_changed(self, *args):
-        have_selection = bool(self.recent_chooser.get_current_uri())
-        self.open_button.set_sensitive(have_selection)
+    def on_selection_changed(self, _widget, row):
+        self.open_button.set_sensitive(row is not None)
 
     @Gtk.Template.Callback()
-    def on_activate(self, *args):
-        uri = self.recent_chooser.get_current_uri()
-        if uri:
-            self.open_recent.emit(uri)
+    def on_row_activate(self, _widget, row):
+        item = self.model.do_get_item(row.get_index())
+        self.open_recent.emit(item.item.get_uri())
+        self.get_parent().get_parent().popdown()
 
-        self.get_parent().popdown()
+    @Gtk.Template.Callback()
+    def on_activate(self, _button):
+        row = self.recent_chooser.get_selected_row()
+        item = self.model.do_get_item(row.get_index())
+        self.open_recent.emit(item.item.get_uri())
+        self.get_parent().get_parent().popdown()
