@@ -82,6 +82,8 @@ class ChunkMap(Gtk.DrawingArea):
         self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
         self.motion_controller.connect("motion", self.motion_event)
 
+        self.set_draw_func(self.draw)
+
     def do_realize(self):
         if not self.adjustment:
             log.critical(
@@ -146,15 +148,15 @@ class ChunkMap(Gtk.DrawingArea):
         """Map chunks to buffer offsets for drawing, ordered by tag"""
         raise NotImplementedError()
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, _chunkmap, context, width, height):
         if not self.adjustment or self.adjustment.get_upper() <= 0:
-            return False
+            return
 
         height = self.get_allocated_height()
         width = self.get_allocated_width()
 
         if width <= 0 or height <= 0:
-            return False
+            return
 
         base_bg, base_outline, handle_overdraw, handle_outline = (
             self.get_map_base_colors())
@@ -344,11 +346,11 @@ class TextViewChunkMap(ChunkMap):
 
         return tagged_diffs
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, chunkmap, context, width, height):
         if not self.textview:
-            return False
+            return
 
-        return ChunkMap.do_draw(self, context)
+        return ChunkMap.draw(self, chunkmap, context, width, height)
 
     def _scroll_to_location(self, location: float, animate: bool):
         if not self.textview:
@@ -450,11 +452,11 @@ class TreeViewChunkMap(ChunkMap):
 
         return tagged_diffs
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, chunkmap, context, width, height):
         if not self.treeview:
-            return False
+            return
 
-        return ChunkMap.do_draw(self, context)
+        return ChunkMap.draw(self, chunkmap, context, width, height)
 
     def _scroll_to_location(self, location: float, animate: bool):
         if not self.treeview or self.adjustment.get_upper() <= 0:
