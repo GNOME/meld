@@ -795,7 +795,7 @@
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkCheckButton" id="checkbutton_shallow_compare">
-                                <property name="label" translatable="yes">C_ompare files based only on size and timestamp</property>
+                                <property name="label" translatable="yes">C_ompare files based only on size or size+timestamp</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
@@ -1820,6 +1820,10 @@
       <row>
         <col id="0">2000000000</col>
         <col id="1" translatable="yes">2s (VFAT)</col>
+      </row>
+      <row>
+        <col id="0">2000000001</col>
+        <col id="1" translatable="yes">∞ (by size only)</col>
       </row>
     </data>
   </object>

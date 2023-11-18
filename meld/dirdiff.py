@@ -69,6 +69,10 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         if self.size != other.size:
             return False
 
+        # For "By size only" (time_resolution_ns hardcoded)
+        if time_resolution_ns == 2000000001:
+            return True
+
         # Shortcut to avoid expensive Decimal calculations. 2 seconds is our
         # current accuracy threshold (for VFAT), so should be safe for now.
         if abs(self.time - other.time) > 2:
