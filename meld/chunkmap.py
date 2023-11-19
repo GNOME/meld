@@ -213,7 +213,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         return True
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         raise NotImplementedError()
 
     def _scroll_fraction(self, position: float, *, animate: bool = True):
@@ -232,10 +232,7 @@ class ChunkMap(Gtk.DrawingArea):
         adj = self.adjustment
         location = fraction * (adj.get_upper() - adj.get_lower())
 
-        if animate:
-            self._scroll_to_location(location)
-        else:
-            adj.set_value(location)
+        self._scroll_to_location(location, animate)
 
     def button_press_event(
         self,
@@ -353,12 +350,17 @@ class TextViewChunkMap(ChunkMap):
 
         return ChunkMap.do_draw(self, context)
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         if not self.textview:
             return
 
         _, it = self.textview.get_iter_at_location(0, location)
-        self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+        if animate:
+            self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+        else:
+            # TODO: Add handling for centreing adjustment like we do
+            # for animated scroll above.
+            self.adjustment.set_value(location)
 
 
 class TreeViewChunkMap(ChunkMap):
@@ -454,9 +456,12 @@ class TreeViewChunkMap(ChunkMap):
 
         return ChunkMap.do_draw(self, context)
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         if not self.treeview or self.adjustment.get_upper() <= 0:
             return
 
         location -= self.adjustment.get_page_size() / 2
-        self.treeview.scroll_to_point(-1, location)
+        if animate:
+            self.treeview.scroll_to_point(-1, location)
+        else:
+            self.adjustment.set_value(location)
