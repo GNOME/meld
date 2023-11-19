@@ -74,6 +74,14 @@ class ChunkMap(Gtk.DrawingArea):
         self._have_grab = False
         self._cached_map = None
 
+        self.click_controller = Gtk.GestureMultiPress(widget=self)
+        self.click_controller.connect("pressed", self.button_press_event)
+        self.click_controller.connect("released", self.button_release_event)
+
+        self.motion_controller = Gtk.EventControllerMotion(widget=self)
+        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.motion_controller.connect("motion", self.motion_event)
+
     def do_realize(self):
         if not self.adjustment:
             log.critical(
@@ -229,26 +237,35 @@ class ChunkMap(Gtk.DrawingArea):
         else:
             adj.set_value(location)
 
-    def do_button_press_event(self, event: Gdk.EventButton) -> bool:
-        if event.button == 1:
-            self._scroll_fraction(event.y)
-            self.grab_add()
-            self._have_grab = True
-            return True
+    def button_press_event(
+        self,
+        controller: Gtk.GestureMultiPress,
+        npress: int,
+        x: float,
+        y: float,
+    ) -> None:
+        self._scroll_fraction(y)
+        self.grab_add()
+        self._have_grab = True
 
-        return False
+    def button_release_event(
+        self,
+        controller: Gtk.GestureMultiPress,
+        npress: int,
+        x: float,
+        y: float,
+    ) -> bool:
+        self.grab_remove()
+        self._have_grab = False
 
-    def do_button_release_event(self, event: Gdk.EventButton) -> bool:
-        if event.button == 1:
-            self.grab_remove()
-            self._have_grab = False
-            return True
-
-        return False
-
-    def do_motion_notify_event(self, event: Gdk.EventMotion) -> bool:
+    def motion_event(
+        self,
+        controller: Gtk.EventControllerMotion,
+        x: float | None = None,
+        y: float | None = None,
+    ):
         if self._have_grab:
-            self._scroll_fraction(event.y, animate=False)
+            self._scroll_fraction(y, animate=False)
 
         return True
 
