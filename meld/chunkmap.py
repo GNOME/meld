@@ -23,6 +23,7 @@ from gi.repository import Gdk, GObject, Gtk
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.tree import STATE_ERROR, STATE_MODIFIED, STATE_NEW
+from meld.ui.gtkutil import make_gdk_rgba
 
 log = logging.getLogger(__name__)
 
@@ -116,15 +117,15 @@ class ChunkMap(Gtk.DrawingArea):
         base_set, base = (
             stylecontext.lookup_color('theme_base_color'))
         if not base_set:
-            base = Gdk.RGBA(1.0, 1.0, 1.0, 1.0)
+            base = make_gdk_rgba(1.0, 1.0, 1.0, 1.0)
         text_set, text = (
             stylecontext.lookup_color('theme_text_color'))
         if not text_set:
-            base = Gdk.RGBA(0.0, 0.0, 0.0, 1.0)
+            base = make_gdk_rgba(0.0, 0.0, 0.0, 1.0)
         border_set, border = (
             stylecontext.lookup_color('borders'))
         if not border_set:
-            base = Gdk.RGBA(0.95, 0.95, 0.95, 1.0)
+            base = make_gdk_rgba(0.95, 0.95, 0.95, 1.0)
 
         handle_overdraw = text.copy()
         handle_overdraw.alpha = self.handle_overdraw_alpha
@@ -161,7 +162,7 @@ class ChunkMap(Gtk.DrawingArea):
             cache_ctx.set_line_width(1)
 
             cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
-            cache_ctx.set_source_rgba(*base_bg)
+            Gdk.cairo_set_source_rgba(cache_ctx, base_bg)
             cache_ctx.fill()
 
             # We get drawing coordinates by tag to minimise our source
@@ -169,17 +170,17 @@ class ChunkMap(Gtk.DrawingArea):
             tagged_diffs = self.chunk_coords_by_tag()
 
             for tag, diffs in tagged_diffs.items():
-                cache_ctx.set_source_rgba(*self.fill_colors[tag])
+                Gdk.cairo_set_source_rgba(cache_ctx, self.fill_colors[tag])
                 for y0, y1 in diffs:
                     y0 = round(y0 * height_scale) + 0.5
                     y1 = round(y1 * height_scale) - 0.5
                     cache_ctx.rectangle(x0, y0, x1, y1 - y0)
                 cache_ctx.fill_preserve()
-                cache_ctx.set_source_rgba(*self.line_colors[tag])
+                Gdk.cairo_set_source_rgba(cache_ctx, self.line_colors[tag])
                 cache_ctx.stroke()
 
             cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
-            cache_ctx.set_source_rgba(*base_outline)
+            Gdk.cairo_set_source_rgba(cache_ctx, base_outline)
             cache_ctx.stroke()
 
             self._cached_map = surface
@@ -189,7 +190,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         # Draw our scroll position indicator
         context.set_line_width(1)
-        context.set_source_rgba(*handle_overdraw)
+        Gdk.cairo_set_source_rgba(context, handle_overdraw)
 
         adj_y = self.adjustment.get_value() / self.adjustment.get_upper()
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
@@ -199,7 +200,7 @@ class ChunkMap(Gtk.DrawingArea):
             x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
         )
         context.fill_preserve()
-        context.set_source_rgba(*handle_outline)
+        Gdk.cairo_set_source_rgba(context, handle_outline)
         context.stroke()
 
         return True
