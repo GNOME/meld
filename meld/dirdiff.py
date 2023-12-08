@@ -586,9 +586,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
-        self.connect("style-updated", self.model.on_style_updated)
-        self.model.on_style_updated(self)
-
         self.do_to_others_lock = False
         for treeview in self.treeview:
             treeview.set_search_equal_func(tree.treeview_search_cb, None)
