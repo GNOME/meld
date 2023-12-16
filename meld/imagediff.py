@@ -84,7 +84,7 @@ def files_are_images(gfiles):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
-class ImageDiff(Gtk.VBox, MeldDoc):
+class ImageDiff(Gtk.Box, MeldDoc):
     """Two or three way comparison of image files"""
 
     __gtype_name__ = "ImageDiff"

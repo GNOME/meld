@@ -117,7 +117,7 @@ class FilterList(Gtk.Box, EditableListWidget):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/column-list.ui')
-class ColumnList(Gtk.VBox, EditableListWidget):
+class ColumnList(Gtk.Box, EditableListWidget):
 
     __gtype_name__ = "ColumnList"
 

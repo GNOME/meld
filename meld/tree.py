@@ -72,10 +72,6 @@ class DiffTreeStore(SearchableTreeStore):
         self.ntree = ntree
         self._setup_default_styles()
 
-    def on_style_updated(self, widget):
-        style = widget.get_style_context()
-        self._setup_default_styles(style)
-
     def _setup_default_styles(self, style=None):
         roman, italic = Pango.Style.NORMAL, Pango.Style.ITALIC
         normal, bold = Pango.Weight.NORMAL, Pango.Weight.BOLD

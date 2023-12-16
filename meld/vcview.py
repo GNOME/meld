@@ -115,7 +115,7 @@ class VcTreeStore(tree.DiffTreeStore):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/vcview.ui')
-class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
+class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "VcView"
 
@@ -242,8 +242,6 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         self.popup_menu.attach_to_widget(self)
 
         self.model = VcTreeStore()
-        self.connect("style-updated", self.model.on_style_updated)
-        self.model.on_style_updated(self)
         self.treeview.set_model(self.model)
         self.treeview.get_selection().connect(
             "changed", self.on_treeview_selection_changed)

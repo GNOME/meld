@@ -6,8 +6,9 @@
   <object class="GtkAdjustment" id="pane_adjustment0"/>
   <object class="GtkAdjustment" id="pane_adjustment1"/>
   <object class="GtkAdjustment" id="pane_adjustment2"/>
-  <template class="DirDiff" parent="GtkVBox">
+  <template class="DirDiff" parent="GtkBox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="can_focus">False</property>
     <child>
       <object class="GtkGrid" id="grid">
@@ -21,7 +22,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -62,7 +62,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -103,7 +102,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -191,8 +189,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox0">
+          <object class="GtkBox" id="vbox0">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
@@ -247,8 +246,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkBox" id="vbox1">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>
@@ -303,8 +303,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox2">
+          <object class="GtkBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <property name="hexpand">True</property>
             <child>

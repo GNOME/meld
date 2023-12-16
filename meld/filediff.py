@@ -108,7 +108,7 @@ class CursorDetails:
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/filediff.ui')
-class FileDiff(Gtk.VBox, MeldDoc):
+class FileDiff(Gtk.Box, MeldDoc):
     """Two or three way comparison of text files"""
 
     __gtype_name__ = "FileDiff"
@@ -505,7 +505,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.connect("notify::ignore-blank-lines", self.refresh_comparison)
 
     def do_realize(self):
-        Gtk.VBox().do_realize(self)
+        Gtk.Box().do_realize(self)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-menus.ui')
@@ -1775,7 +1775,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         # If we have only one identified language then we assume that all of
         # the files are actually of that type.
-        real_langs = [l for l in langs if l]
+        real_langs = [lang for lang in langs if lang]
         if real_langs and real_langs.count(real_langs[0]) == len(real_langs):
             langs = (real_langs[0],) * len(langs)
 
@@ -1794,8 +1794,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
         self.meta = meta
         labels = meta.get('labels', ())
         if labels:
-            for i, l in enumerate(labels):
-                self.filelabel[i].props.custom_label = l
+            for i, label in enumerate(labels):
+                self.filelabel[i].props.custom_label = label
 
     def notify_file_changed(self, data):
         try:
@@ -1860,46 +1860,41 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]
 
-        for chunk in need_clearing:
-            for i, c in enumerate(chunk):
-                if not c or c[0] != "replace":
+        for chunks in need_clearing:
+            for i, chunk in enumerate(chunks):
+                if not chunk or chunk.tag != "replace":
                     continue
                 to_idx = 2 if i == 1 else 0
                 bufs = self.textbuffer[1], self.textbuffer[to_idx]
                 tags = alltags[1], alltags[to_idx]
 
-                starts = [b.get_iter_at_line_or_eof(l) for b, l in
-                          zip(bufs, (c[1], c[3]))]
-                ends = [b.get_iter_at_line_or_eof(l) for b, l in
-                        zip(bufs, (c[2], c[4]))]
-                bufs[0].remove_tag(tags[0], starts[0], ends[0])
-                bufs[1].remove_tag(tags[1], starts[1], ends[1])
+                bufs[0].remove_tag(tags[0], *chunk.to_iters(buffer_a=bufs[0]))
+                bufs[1].remove_tag(tags[1], *chunk.to_iters(buffer_b=bufs[1]))
 
-        for chunk in need_highlighting:
-            clear = chunk == modified_chunks
-            for merge_cache_index, c in enumerate(chunk):
-                if not c or c[0] != "replace":
+        for chunks in need_highlighting:
+            clear = chunks == modified_chunks
+            for merge_cache_index, chunk in enumerate(chunks):
+                if not chunk or chunk[0] != "replace":
                     continue
                 to_pane = 2 if merge_cache_index == 1 else 0
                 bufs = self.textbuffer[1], self.textbuffer[to_pane]
                 tags = alltags[1], alltags[to_pane]
 
-                starts = [b.get_iter_at_line_or_eof(l) for b, l in
-                          zip(bufs, (c[1], c[3]))]
-                ends = [b.get_iter_at_line_or_eof(l) for b, l in
-                        zip(bufs, (c[2], c[4]))]
+                buf_from_iters = chunk.to_iters(buffer_a=bufs[0])
+                buf_to_iters = chunk.to_iters(buffer_b=bufs[1])
 
                 # We don't use self.buffer_texts here, as removing line
                 # breaks messes with inline highlighting in CRLF cases
-                text1 = bufs[0].get_text(starts[0], ends[0], False)
-                textn = bufs[1].get_text(starts[1], ends[1], False)
+                text1 = bufs[0].get_text(*buf_from_iters, False)
+                textn = bufs[1].get_text(*buf_to_iters, False)
 
                 # Bail on long sequences, rather than try a slow comparison
                 inline_limit = 20000
                 if len(text1) + len(textn) > inline_limit and \
                         not self.force_highlight:
-                    for i in range(2):
-                        bufs[i].apply_tag(tags[i], starts[i], ends[i])
+
+                    bufs[0].apply_tag(tags[0], *buf_from_iters)
+                    bufs[1].apply_tag(tags[1], *buf_to_iters)
                     self._prompt_long_highlighting()
                     continue
 
@@ -1957,13 +1952,17 @@ class FileDiff(Gtk.VBox, MeldDoc):
                             end.set_offset(offset + o[2 + 2 * i])
                             bufs[i].apply_tag(tags[i], start, end)
 
-                starts = [bufs[0].create_mark(None, starts[0], True),
-                          bufs[1].create_mark(None, starts[1], True)]
-                ends = [bufs[0].create_mark(None, ends[0], True),
-                        bufs[1].create_mark(None, ends[1], True)]
+                start_marks = [
+                    bufs[0].create_mark(None, buf_from_iters[0], True),
+                    bufs[1].create_mark(None, buf_to_iters[0], True),
+                ]
+                end_marks = [
+                    bufs[0].create_mark(None, buf_from_iters[1], True),
+                    bufs[1].create_mark(None, buf_to_iters[1], True),
+                ]
                 match_cb = functools.partial(
-                    apply_highlight, bufs, tags, starts, ends, (text1, textn),
-                    to_pane, c)
+                    apply_highlight, bufs, tags, start_marks, end_marks, (text1, textn),
+                    to_pane, chunk)
                 self._cached_match.match(text1, textn, match_cb)
 
         self._cached_match.clean(self.linediffer.diff_count())

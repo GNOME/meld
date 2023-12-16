@@ -1,0 +1,60 @@
+[build-system]
+build-backend = "mesonpy"
+requires = [
+    "meson-python>=0.5.0",
+    "wheel",
+]
+
+[project]
+name = "Meld"
+license = {file = "COPYING"}
+description = """
+Meld is a visual diff and merge tool targeted at developers. Meld helps you
+compare files, directories, and version controlled projects. It provides
+two- and three-way comparison of both files and directories, and supports
+many version control systems.
+"""
+
+maintainers = [
+    {name = "Kai Willadsen", email = "kai.willadsen@gmail.com"},
+]
+requires-python = ">=3.6"
+dependencies = [
+]
+readme = "README.md"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: X11 Applications :: GTK",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Desktop Environment :: Gnome",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Version Control",
+]
+
+[project.urls]
+homepage = "https://meld.app/"
+documentation = "https://meld.app/help/"
+source = "https://gitlab.gnome.org/GNOME/meld/-/tree/main"
+download = "https://gitlab.gnome.org/GNOME/meld/-/releases"
+tracker = "https://gitlab.gnome.org/GNOME/meld/-/issues"
+
+
+[tool.black]
+skip-string-normalization = true
+target-version = ["py36"]
+
+[tool.ruff]
+select = ["E4", "E7", "E9", "F", "I"]
+
+[tool.ruff.isort]
+known-first-party = [
+    "meld",
+]
+no-lines-before = [
+    "local-folder",
+]
+order-by-type = true

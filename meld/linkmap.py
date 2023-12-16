@@ -86,8 +86,8 @@ class LinkMap(Gtk.DrawingArea):
 
         for c in self.filediff.linediffer.pair_changes(left, right, visible):
             # f and t are short for "from" and "to"
-            f0, f1 = [view_offset_line(0, l) for l in c[1:3]]
-            t0, t1 = [view_offset_line(1, l) for l in c[3:5]]
+            f0, f1 = [view_offset_line(0, line) for line in c[1:3]]
+            t0, t1 = [view_offset_line(1, line) for line in c[3:5]]
             # We want the last pixel of the previous line
             f1 = f1 if f1 == f0 else f1 - 1
             t1 = t1 if t1 == t0 else t1 - 1

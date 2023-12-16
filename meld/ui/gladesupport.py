@@ -1,19 +1,14 @@
-
-# This file exists so that it can be referenced as an external Glade
-# module, allowing editing of our UI files without having widgets that
-# can't be instantiated everywhere.
-
-from meld import actiongutter  # noqa: F401
-from meld import chunkmap  # noqa: F401
-from meld import diffgrid  # noqa: F401
-from meld import linkmap  # noqa: F401
-from meld import preferences  # noqa: F401
-from meld import sourceview  # noqa: F401
-from meld.ui import emblemcellrenderer  # noqa: F401
-from meld.ui import filebutton  # noqa: F401
-from meld.ui import historyentry  # noqa: F401
-from meld.ui import msgarea  # noqa: F401
-from meld.ui import notebook  # noqa: F401
-from meld.ui import pathlabel  # noqa: F401
-from meld.ui import recentselector  # noqa: F401
-from meld.ui import statusbar  # noqa: F401
+import meld.actiongutter  # noqa: F401
+import meld.chunkmap  # noqa: F401
+import meld.diffgrid  # noqa: F401
+import meld.linkmap  # noqa: F401
+import meld.preferences  # noqa: F401
+import meld.sourceview  # noqa: F401
+import meld.ui.emblemcellrenderer  # noqa: F401
+import meld.ui.filebutton  # noqa: F401
+import meld.ui.historyentry  # noqa: F401
+import meld.ui.msgarea  # noqa: F401
+import meld.ui.notebook  # noqa: F401
+import meld.ui.pathlabel  # noqa: F401
+import meld.ui.recentselector  # noqa: F401
+import meld.ui.statusbar  # noqa: F401

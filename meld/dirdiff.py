@@ -360,7 +360,7 @@ class ComparisonMarker(NamedTuple):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
-class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
+class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     __gtype_name__ = "DirDiff"
 
@@ -585,9 +585,6 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         self.custom_labels = []
         self.set_num_panes(num_panes)
-
-        self.connect("style-updated", self.model.on_style_updated)
-        self.model.on_style_updated(self)
 
         self.do_to_others_lock = False
         for treeview in self.treeview:
@@ -861,10 +858,10 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
-        for i, l in enumerate(locations):
-            if l and not isinstance(l, str):
-                locations[i] = l.decode(sys.getfilesystemencoding())
-        locations = [os.path.abspath(l) if l else '' for l in locations]
+        for i, location in enumerate(locations):
+            if location and not isinstance(location, str):
+                locations[i] = location.decode(sys.getfilesystemencoding())
+        locations = [os.path.abspath(loc) if loc else '' for loc in locations]
 
         self.current_path = None
         self.marked = None

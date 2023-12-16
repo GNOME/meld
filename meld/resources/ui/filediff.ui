@@ -9,8 +9,9 @@
   </object>
   <object class="GtkAdjustment" id="pane_adjustment2">
   </object>
-  <template class="FileDiff" parent="GtkVBox">
+  <template class="FileDiff" parent="GtkBox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="can_focus">False</property>
     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
@@ -56,7 +57,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -125,7 +125,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -194,7 +193,6 @@
               <object class="GtkBox">
                 <property name="visible">True</property>
                 <property name="orientation">horizontal</property>
-                <property name="homogeneous">False</property>
                 <style>
                   <class name="linked"/>
                 </style>
@@ -229,8 +227,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox0">
+          <object class="GtkBox" id="vbox0">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr0">
@@ -277,8 +276,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox2">
+          <object class="GtkBox" id="vbox2">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr2">
@@ -325,8 +325,9 @@
           </packing>
         </child>
         <child>
-          <object class="GtkVBox" id="vbox1">
+          <object class="GtkBox" id="vbox1">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <property name="can_focus">False</property>
             <child>
               <object class="MsgAreaController" id="msgarea_mgr1">
@@ -550,7 +551,7 @@
             <property name="can_focus">False</property>
             <property name="source_view">textview0</property>
             <property name="target_view">textview1</property>
-            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_LTR</property>
+            <property name="icon_direction">GTK_TEXT_DIR_LTR</property>
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
@@ -565,7 +566,7 @@
             <property name="can_focus">False</property>
             <property name="source_view">textview1</property>
             <property name="target_view">textview0</property>
-            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_RTL</property>
+            <property name="icon_direction">GTK_TEXT_DIR_RTL</property>
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
@@ -580,7 +581,7 @@
             <property name="can_focus">False</property>
             <property name="source_view">textview1</property>
             <property name="target_view">textview2</property>
-            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_LTR</property>
+            <property name="icon_direction">GTK_TEXT_DIR_LTR</property>
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>
@@ -595,7 +596,7 @@
             <property name="can_focus">False</property>
             <property name="source_view">textview2</property>
             <property name="target_view">textview1</property>
-            <property name="icon_direction">GTK_ICON_LOOKUP_DIR_RTL</property>
+            <property name="icon_direction">GTK_TEXT_DIR_RTL</property>
             <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
           </object>
           <packing>

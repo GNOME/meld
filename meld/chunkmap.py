@@ -23,6 +23,7 @@ from gi.repository import Gdk, GObject, Gtk
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.tree import STATE_ERROR, STATE_MODIFIED, STATE_NEW
+from meld.ui.gtkutil import make_gdk_rgba
 
 log = logging.getLogger(__name__)
 
@@ -73,6 +74,14 @@ class ChunkMap(Gtk.DrawingArea):
         self._have_grab = False
         self._cached_map = None
 
+        self.click_controller = Gtk.GestureMultiPress(widget=self)
+        self.click_controller.connect("pressed", self.button_press_event)
+        self.click_controller.connect("released", self.button_release_event)
+
+        self.motion_controller = Gtk.EventControllerMotion(widget=self)
+        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        self.motion_controller.connect("motion", self.motion_event)
+
     def do_realize(self):
         if not self.adjustment:
             log.critical(
@@ -116,15 +125,15 @@ class ChunkMap(Gtk.DrawingArea):
         base_set, base = (
             stylecontext.lookup_color('theme_base_color'))
         if not base_set:
-            base = Gdk.RGBA(1.0, 1.0, 1.0, 1.0)
+            base = make_gdk_rgba(1.0, 1.0, 1.0, 1.0)
         text_set, text = (
             stylecontext.lookup_color('theme_text_color'))
         if not text_set:
-            base = Gdk.RGBA(0.0, 0.0, 0.0, 1.0)
+            base = make_gdk_rgba(0.0, 0.0, 0.0, 1.0)
         border_set, border = (
             stylecontext.lookup_color('borders'))
         if not border_set:
-            base = Gdk.RGBA(0.95, 0.95, 0.95, 1.0)
+            base = make_gdk_rgba(0.95, 0.95, 0.95, 1.0)
 
         handle_overdraw = text.copy()
         handle_overdraw.alpha = self.handle_overdraw_alpha
@@ -161,7 +170,7 @@ class ChunkMap(Gtk.DrawingArea):
             cache_ctx.set_line_width(1)
 
             cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
-            cache_ctx.set_source_rgba(*base_bg)
+            Gdk.cairo_set_source_rgba(cache_ctx, base_bg)
             cache_ctx.fill()
 
             # We get drawing coordinates by tag to minimise our source
@@ -169,17 +178,17 @@ class ChunkMap(Gtk.DrawingArea):
             tagged_diffs = self.chunk_coords_by_tag()
 
             for tag, diffs in tagged_diffs.items():
-                cache_ctx.set_source_rgba(*self.fill_colors[tag])
+                Gdk.cairo_set_source_rgba(cache_ctx, self.fill_colors[tag])
                 for y0, y1 in diffs:
                     y0 = round(y0 * height_scale) + 0.5
                     y1 = round(y1 * height_scale) - 0.5
                     cache_ctx.rectangle(x0, y0, x1, y1 - y0)
                 cache_ctx.fill_preserve()
-                cache_ctx.set_source_rgba(*self.line_colors[tag])
+                Gdk.cairo_set_source_rgba(cache_ctx, self.line_colors[tag])
                 cache_ctx.stroke()
 
             cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
-            cache_ctx.set_source_rgba(*base_outline)
+            Gdk.cairo_set_source_rgba(cache_ctx, base_outline)
             cache_ctx.stroke()
 
             self._cached_map = surface
@@ -189,7 +198,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         # Draw our scroll position indicator
         context.set_line_width(1)
-        context.set_source_rgba(*handle_overdraw)
+        Gdk.cairo_set_source_rgba(context, handle_overdraw)
 
         adj_y = self.adjustment.get_value() / self.adjustment.get_upper()
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
@@ -199,12 +208,12 @@ class ChunkMap(Gtk.DrawingArea):
             x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
         )
         context.fill_preserve()
-        context.set_source_rgba(*handle_outline)
+        Gdk.cairo_set_source_rgba(context, handle_outline)
         context.stroke()
 
         return True
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         raise NotImplementedError()
 
     def _scroll_fraction(self, position: float, *, animate: bool = True):
@@ -223,31 +232,37 @@ class ChunkMap(Gtk.DrawingArea):
         adj = self.adjustment
         location = fraction * (adj.get_upper() - adj.get_lower())
 
-        if animate:
-            self._scroll_to_location(location)
-        else:
-            adj.set_value(location)
+        self._scroll_to_location(location, animate)
 
-    def do_button_press_event(self, event: Gdk.EventButton) -> bool:
-        if event.button == 1:
-            self._scroll_fraction(event.y)
-            self.grab_add()
-            self._have_grab = True
-            return True
+    def button_press_event(
+        self,
+        controller: Gtk.GestureMultiPress,
+        npress: int,
+        x: float,
+        y: float,
+    ) -> None:
+        self._scroll_fraction(y)
+        self.grab_add()
+        self._have_grab = True
 
-        return False
+    def button_release_event(
+        self,
+        controller: Gtk.GestureMultiPress,
+        npress: int,
+        x: float,
+        y: float,
+    ) -> bool:
+        self.grab_remove()
+        self._have_grab = False
 
-    def do_button_release_event(self, event: Gdk.EventButton) -> bool:
-        if event.button == 1:
-            self.grab_remove()
-            self._have_grab = False
-            return True
-
-        return False
-
-    def do_motion_notify_event(self, event: Gdk.EventMotion) -> bool:
+    def motion_event(
+        self,
+        controller: Gtk.EventControllerMotion,
+        x: float | None = None,
+        y: float | None = None,
+    ):
         if self._have_grab:
-            self._scroll_fraction(event.y, animate=False)
+            self._scroll_fraction(y, animate=False)
 
         return True
 
@@ -335,12 +350,17 @@ class TextViewChunkMap(ChunkMap):
 
         return ChunkMap.do_draw(self, context)
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         if not self.textview:
             return
 
         _, it = self.textview.get_iter_at_location(0, location)
-        self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+        if animate:
+            self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
+        else:
+            # TODO: Add handling for centreing adjustment like we do
+            # for animated scroll above.
+            self.adjustment.set_value(location)
 
 
 class TreeViewChunkMap(ChunkMap):
@@ -436,9 +456,12 @@ class TreeViewChunkMap(ChunkMap):
 
         return ChunkMap.do_draw(self, context)
 
-    def _scroll_to_location(self, location: float):
+    def _scroll_to_location(self, location: float, animate: bool):
         if not self.treeview or self.adjustment.get_upper() <= 0:
             return
 
         location -= self.adjustment.get_page_size() / 2
-        self.treeview.scroll_to_point(-1, location)
+        if animate:
+            self.treeview.scroll_to_point(-1, location)
+        else:
+            self.adjustment.set_value(location)

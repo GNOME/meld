@@ -11,10 +11,10 @@
       <column type="gchararray"/>
     </columns>
   </object>
-  <template class="ColumnList" parent="GtkVBox">
+  <template class="ColumnList" parent="GtkBox">
     <property name="visible">True</property>
+    <property name="orientation">vertical</property>
     <property name="can_focus">False</property>
-    <property name="homogeneous">False</property>
     <child>
       <object class="GtkScrolledWindow" id="scrolledwindow2">
         <property name="visible">True</property>

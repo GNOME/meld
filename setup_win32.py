@@ -146,7 +146,6 @@ if not conf_path.exists():
 import meld.build_helpers  # noqa: E402
 import meld.conf  # noqa: E402
 
-
 setup(
     name="Meld",
     version=meld.conf.__version__,
