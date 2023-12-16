@@ -14,8 +14,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import collections
 import difflib
+import typing
+
+if typing.TYPE_CHECKING:
+    from gi.repository import Gtk
 
 
 def find_common_prefix(a, b):
@@ -54,10 +57,30 @@ def find_common_suffix(a, b):
     return 0
 
 
-class DiffChunk(collections.namedtuple(
-        'DiffChunk', 'tag, start_a, end_a, start_b, end_b')):
+class DiffChunk(typing.NamedTuple):
+    tag: str
+    start_a: int
+    end_a: int
+    start_b: int
+    end_b: int
 
-    __slots__ = ()
+    def to_iters(
+        self, *, buffer_a=None, buffer_b=None
+    ) -> tuple["Gtk.TextIter", "Gtk.TextIter"]:
+        if buffer_a and buffer_b:
+            raise ValueError("Only pass one buffer argument at a time")
+        elif not (buffer_a or buffer_b):
+            raise ValueError("Buffer argument missing")
+
+        if buffer_a:
+            buffer, start, end = buffer_a, self.start_a, self.end_a
+        else:
+            buffer, start, end = buffer_b, self.start_b, self.end_b
+
+        return (
+            buffer.get_iter_at_line_or_eof(start),
+            buffer.get_iter_at_line_or_eof(end),
+        )
 
 
 class MyersSequenceMatcher(difflib.SequenceMatcher):
