@@ -205,6 +205,14 @@ def shorten_names(*names: str) -> List[str]:
     return [name or _("[None]") for name in basenames]
 
 
+@functools.lru_cache
+def guess_if_remote_x11():
+    """Try to guess whether we're being X11 forwarded"""
+    display = os.environ.get("DISPLAY")
+    ssh_connection = os.environ.get("SSH_CONNECTION")
+    return bool(display and ssh_connection)
+
+
 def get_hide_window_startupinfo():
     if os.name != "nt":
         return None

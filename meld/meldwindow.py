@@ -34,6 +34,7 @@ from meld.filediff import FileDiff
 from meld.imagediff import ImageDiff, files_are_images
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
+from meld.misc import guess_if_remote_x11
 from meld.newdifftab import NewDiffTab
 from meld.recent import RecentType, recent_comparisons
 from meld.settings import get_meld_settings
@@ -93,8 +94,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         # Initialise sensitivity for important actions
         self.lookup_action('stop').set_enabled(False)
 
-        # Fake out the spinner on Windows. See Gitlab issue #133.
-        if os.name == 'nt':
+        # Fake out the spinner on Windows or X11 forwarding. See Gitlab
+        # issues #133 and #507.
+        if os.name == "nt" or guess_if_remote_x11():
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
 
