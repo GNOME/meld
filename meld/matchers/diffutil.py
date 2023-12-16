@@ -150,9 +150,9 @@ class Differ(GObject.GObject):
         next and previous chunks when the current cursor line changes,
         enabling better action sensitivity feedback.
         """
-        for i, l in enumerate(self.seqlength):
+        for i, length in enumerate(self.seqlength):
             # seqlength + 1 for after-last-line requests, which we do
-            self._line_cache[i] = [(None, None, None)] * (l + 1)
+            self._line_cache[i] = [(None, None, None)] * (length + 1)
 
         last_chunk = len(self._merge_cache)
 

@@ -858,10 +858,10 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         # will actually have had UTF-8 from GTK, which has been unicode-ed by
         # the time we get this far. This is a fallback, and may be wrong!
         locations = list(locations)
-        for i, l in enumerate(locations):
-            if l and not isinstance(l, str):
-                locations[i] = l.decode(sys.getfilesystemencoding())
-        locations = [os.path.abspath(l) if l else '' for l in locations]
+        for i, location in enumerate(locations):
+            if location and not isinstance(location, str):
+                locations[i] = location.decode(sys.getfilesystemencoding())
+        locations = [os.path.abspath(loc) if loc else '' for loc in locations]
 
         self.current_path = None
         self.marked = None

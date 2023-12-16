@@ -148,7 +148,8 @@ class Vc(_vc.Vc):
             with open(commit_path, encoding='utf-8') as f:
                 message = f.read()
             return "\n".join(
-                (l for l in message.splitlines() if not l.startswith("#")))
+                line for line in message.splitlines() if not line.startswith("#")
+            )
         return None
 
     def commit(self, runner, files, message):

@@ -1775,7 +1775,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         # If we have only one identified language then we assume that all of
         # the files are actually of that type.
-        real_langs = [l for l in langs if l]
+        real_langs = [lang for lang in langs if lang]
         if real_langs and real_langs.count(real_langs[0]) == len(real_langs):
             langs = (real_langs[0],) * len(langs)
 
@@ -1794,8 +1794,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.meta = meta
         labels = meta.get('labels', ())
         if labels:
-            for i, l in enumerate(labels):
-                self.filelabel[i].props.custom_label = l
+            for i, label in enumerate(labels):
+                self.filelabel[i].props.custom_label = label
 
     def notify_file_changed(self, data):
         try:

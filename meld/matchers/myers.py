@@ -385,8 +385,8 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                             blocks[0][0] == 0 and blocks[0][1] == 0):
                         block = blocks.pop(0)
                         matching_blocks[mb_len] = (aj, bj, bl + block[2])
-                for x, y, l in blocks[:-1]:
-                    matching_blocks.append((ai + x, bi + y, l))
+                for x, y, length in blocks[:-1]:
+                    matching_blocks.append((ai + x, bi + y, length))
                 self.matching_blocks.extend(matching_blocks)
                 # Split matching blocks each need to be terminated to get our
                 # split chunks correctly created
