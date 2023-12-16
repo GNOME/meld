@@ -168,8 +168,12 @@ def get_non_translation_commits():
 def get_last_news_entry():
     cmd = ['git', 'log', '--pretty=format:', '-p', '-1', 'NEWS']
     lines = subprocess.check_output(cmd).strip().decode('utf-8').splitlines()
-    lines = [l[1:] for l in lines if (l and l[0] in ('+', '-')) and
-             (len(l) < 2 or l[1] not in ('+', '-'))]
+    lines = [
+        line[1:]
+        for line in lines
+        if (line and line[0] in ('+', '-'))
+        and (len(line) < 2 or line[1] not in ('+', '-'))
+    ]
     return "\n".join(lines)
 
 
@@ -199,8 +203,8 @@ def parse_news_entry(news):
                     break
             return i - 1
 
-        indent = min(space_prefix(l) for l in section)
-        return [l[indent:] for l in section]
+        indent = min(space_prefix(line) for line in section)
+        return [line[indent:] for line in section]
 
     return reformat(features), reformat(fixes), reformat(translators)
 
