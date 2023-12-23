@@ -28,7 +28,7 @@ import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import DefaultDict, List, NamedTuple, Optional, Tuple
+from typing import DefaultDict, Dict, List, NamedTuple, Optional, Tuple
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -284,11 +284,15 @@ class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
     items: DefaultDict[str, List[Optional[str]]]
+    stripped_items: Dict[str, str]
     errors: List[Tuple[int, str, str]]
+    whitespace: List[Tuple[int, str]]
 
     def __init__(self, n: int, options: ComparisonOptions):
         self.items = collections.defaultdict(lambda: [None] * n)
+        self.stripped_items = {}
         self.errors = []
+        self.whitespace = []
         self.options = options
 
     def add(self, pane: int, item: str):
@@ -307,6 +311,15 @@ class CanonicalListing:
             self.items[ci][pane] = item
         else:
             self.errors.append((pane, item, existing_item))
+
+        stripped_item = ci.strip()
+        if stripped_item in self.stripped_items:
+            # If we have an existing stripped item and its pre-stripping
+            # value differs, then we have a case of misleading whitespace
+            if self.stripped_items[stripped_item] != ci:
+                self.whitespace.append((pane, item))
+        else:
+            self.stripped_items[stripped_item] = ci
 
     def get(self):
         def filled(seq):
@@ -940,6 +953,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
         shadowed_entries = []
         invalid_filenames = []
+        whitespace_filenames = []
 
         # TODO: Map these action states to GObject props instead?
         comparison_options = ComparisonOptions(
@@ -1034,6 +1048,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             for pane, f1, f2 in dirs.errors + files.errors:
                 shadowed_entries.append((pane, roots[pane], f1, f2))
 
+            for pane, f in dirs.whitespace + files.whitespace:
+                whitespace_filenames.append((pane, roots[pane], f))
+
             alldirs = self._filter_on_state(roots, dirs.get())
             allfiles = self._filter_on_state(roots, files.get())
 
@@ -1084,8 +1101,10 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 expanded.add(tree_path_as_tuple(path))
 
         duplicate_dirs = list(set(p for p in roots if roots.count(p) > 1))
-        if invalid_filenames or shadowed_entries:
-            self._show_tree_wide_errors(invalid_filenames, shadowed_entries)
+        if any((invalid_filenames, shadowed_entries, whitespace_filenames)):
+            self._show_tree_wide_errors(
+                invalid_filenames, shadowed_entries, whitespace_filenames
+            )
         elif duplicate_dirs:
             # Since we can only load 3 dirs we can have at most 1 duplicate
             self._show_duplicate_directory(duplicate_dirs[0])
@@ -1149,7 +1168,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             msgarea.connect("response", clear_all)
             msgarea.show_all()
 
-    def _show_tree_wide_errors(self, invalid_filenames, shadowed_entries):
+    def _show_tree_wide_errors(
+        self, invalid_filenames, shadowed_entries, whitespace_filenames
+    ) -> None:
         header = _("Multiple errors occurred while scanning this folder")
         invalid_header = _("Files with invalid encodings found")
         # TRANSLATORS: This is followed by a list of files
@@ -1160,6 +1181,12 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         shadowed_secondary = _("You are running a case insensitive comparison "
                                "on a case sensitive filesystem. The following "
                                "files in this folder are hidden:")
+        whitespace_header = _("Files had mismatched leading or trailing whitespace")
+        # TRANSLATORS: This is followed by a list of files
+        whitespace_secondary = _(
+            "This comparison found some files that differed only in leading or "
+            "trailing whitespace. Their names appear as:"
+        )
 
         invalid_entries = [[] for i in range(self.num_panes)]
         for pane, root, f in invalid_filenames:
@@ -1174,24 +1201,42 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             )
             formatted_entries[pane].append(entry_str)
 
-        if invalid_filenames or shadowed_entries:
+        whitespace_entries = [[] for i in range(self.num_panes)]
+        for _pane, root, f in whitespace_filenames:
+            for pane in range(self.num_panes):
+                whitespace_entries[pane].append(os.path.join(root, f))
+
+        if invalid_filenames or shadowed_entries or whitespace_filenames:
             for pane in range(self.num_panes):
                 invalid = "\n".join(invalid_entries[pane])
                 shadowed = "\n".join(formatted_entries[pane])
-                if invalid and shadowed:
-                    messages = (invalid_secondary, invalid, "",
-                                shadowed_secondary, shadowed)
-                elif invalid:
-                    header = invalid_header
-                    messages = (invalid_secondary, invalid)
-                elif shadowed:
-                    header = shadowed_header
-                    messages = (shadowed_secondary, shadowed)
-                else:
+                whitespace = "\n".join(whitespace_entries[pane])
+
+                error_type_count = [
+                    bool(err) for err in (invalid, shadowed, whitespace)
+                ].count(True)
+                if error_type_count == 0:
                     continue
-                secondary = "\n".join(messages)
+                elif error_type_count == 1:
+                    if invalid:
+                        header = invalid_header
+                    elif shadowed:
+                        header = shadowed_header
+                    elif whitespace:
+                        header = whitespace_header
+
+                messages = []
+                if invalid:
+                    messages.extend([invalid_secondary, invalid, ""])
+                if shadowed:
+                    messages.extend([shadowed_secondary, shadowed, ""])
+                if whitespace:
+                    messages.extend([whitespace_secondary, whitespace, ""])
+
+                secondary = ("\n".join(messages)).strip()
                 self.msgarea_mgr[pane].add_dismissable_msg(
-                    'dialog-error-symbolic', header, secondary)
+                    "dialog-error-symbolic", header, secondary
+                )
 
     def copy_selected(self, direction):
         assert direction in (-1, 1)
