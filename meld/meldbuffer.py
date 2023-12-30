@@ -26,6 +26,17 @@ from meld.settings import bind_settings
 log = logging.getLogger(__name__)
 
 
+newline_type_mapping = {
+    GtkSource.NewlineType.CR: "\r",
+    GtkSource.NewlineType.CR_LF: "\r\n",
+    GtkSource.NewlineType.LF: "\n",
+}
+
+
+def newline_from_newline_type(newline_type: GtkSource.NewlineType) -> str:
+    return newline_type_mapping[newline_type]
+
+
 class MeldBuffer(GtkSource.Buffer):
 
     __gtype_name__ = "MeldBuffer"
