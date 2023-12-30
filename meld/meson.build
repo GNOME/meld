@@ -104,4 +104,5 @@ configure_file(
   install_dir: python3.get_install_dir(pure: true, subdir: meson.project_name()),
 )
 
+subdir('plugins')
 subdir('resources')
