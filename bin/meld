@@ -443,46 +443,6 @@ def environment_hacks():
         os.environ['PANGOCAIRO_BACKEND'] = 'fontconfig'
 
 
-def setup_plugin_system():
-    import sys
-
-    from gi.repository import Gio, GObject, Peas, PeasGtk
-
-    from meld.confshim import get_meld_paths
-    from meld.settings import plugin_settings
-
-    # Make sure we have the plugin manager loaded, or the preferences
-    # dialog will fail to construct properly.
-    GObject.type_ensure(PeasGtk.PluginManager)
-
-    engine = Peas.Engine.get_default()
-    engine.enable_loader('python3')
-
-    meld_paths = get_meld_paths()
-
-    engine.add_search_path(
-        str(meld_paths.user_plugins_dir),
-        str(meld_paths.user_plugins_data_dir)
-    )
-    engine.add_search_path(
-        str(meld_paths.system_plugins_dir),
-        str(meld_paths.system_plugins_data_dir),
-    )
-
-    # Plugin initialisation changes sys.argv, so we copy and restore it
-    # here.
-    argv = sys.argv[:]
-
-    # Bind our active-plugins config to the engine, and rely upon it
-    # to load plugins appropriately.
-    plugin_settings.bind(
-        'active-plugins', engine, 'loaded-plugins',
-        Gio.SettingsBindFlags.DEFAULT,
-    )
-
-    sys.argv = argv
-
-
 def run_application():
     from meld.meldapp import MeldApp
 
@@ -504,7 +464,6 @@ def main():
     setup_glib_logging()
     setup_resources()
     setup_settings()
-    setup_plugin_system()
     return run_application()
 
 

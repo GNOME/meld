@@ -26,6 +26,7 @@ import meld.conf
 from meld.conf import _
 from meld.filediff import FileDiff
 from meld.meldwindow import MeldWindow
+from meld.pluginmanager import PluginManager
 from meld.preferences import PreferencesDialog
 
 log = logging.getLogger(__name__)
@@ -59,6 +60,8 @@ class MeldApp(Gtk.Application):
         Gtk.StyleContext.add_provider_for_screen(
             Gdk.Screen.get_default(), provider,
             Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
+        self.plugin_manager = PluginManager(self)
 
     def make_resource_path(self, resource_path: str) -> str:
         return f'{self.props.resource_base_path}/{resource_path}'
