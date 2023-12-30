@@ -344,6 +344,9 @@ class MeldWindow(Gtk.ApplicationWindow):
             page.tab_state_changed.connect(self.on_page_state_changed)
         page.close_signal.connect(self.page_removed)
 
+        app = self.get_application()
+        app.comparison_created_signal.emit(self, page)
+
         self.notebook.set_tab_reorderable(page, True)
 
     def append_new_comparison(self):

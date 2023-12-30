@@ -19,7 +19,7 @@ import logging
 import optparse
 import os
 
-from gi.repository import Gdk, Gio, GLib, Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 import meld.accelerators
 import meld.conf
@@ -38,6 +38,11 @@ optparse._ = _
 
 
 class MeldApp(Gtk.Application):
+
+    @GObject.Signal(name="comparison-created")
+    def comparison_created_signal(
+            self, window: Gtk.Window, page: object) -> None:
+        ...
 
     def __init__(self):
         super().__init__(
