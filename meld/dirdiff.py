@@ -65,12 +65,12 @@ class StatItem(namedtuple('StatItem', 'mode size time')):
         return StatItem(stat.S_IFMT(stat_result.st_mode),
                         stat_result.st_size, stat_result.st_mtime)
 
-    def shallow_equal(self, other, time_resolution_ns):
+    def shallow_equal(self, other: "StatItem", time_resolution_ns: int) -> bool:
         if self.size != other.size:
             return False
 
-        # For "By size only" (time_resolution_ns hardcoded)
-        if time_resolution_ns == 2000000001:
+        # Check for the ignore-timestamp configuration first
+        if time_resolution_ns == -1:
             return True
 
         # Shortcut to avoid expensive Decimal calculations. 2 seconds is our
