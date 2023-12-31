@@ -54,6 +54,7 @@ folders = {
     'ui/findbar.py',
     'ui/gladesupport.py',
     'ui/gtkcompat.py',
+    'ui/gtkutil.py',
     'ui/historyentry.py',
     'ui/listwidget.py',
     'ui/msgarea.py',
