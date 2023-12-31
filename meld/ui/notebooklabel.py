@@ -55,8 +55,8 @@ class NotebookLabel(Gtk.Box):
 
     def on_label_button_press_event(self, gesture, n_press, x, y):
         # Middle-click on the tab closes the tab.
-        self.page.on_delete_event()
+        self.page.request_close()
 
     @Gtk.Template.Callback()
     def on_close_button_clicked(self, widget):
-        self.page.on_delete_event()
+        self.page.request_close()

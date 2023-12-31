@@ -18,7 +18,7 @@ import enum
 import logging
 from typing import Sequence
 
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gio, GObject
 
 from meld.conf import _
 from meld.const import RecentType
@@ -150,12 +150,10 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
         window.insert_action_group('view', None)
 
-    # FIXME: Here and in subclasses, on_delete_event are not real GTK+
-    # event handlers, and should be renamed.
-    def on_delete_event(self) -> Gtk.ResponseType:
+    def request_close(self, external_callback=None):
         """Called when the docs container is about to close.
 
-        A doc normally returns Gtk.ResponseType.OK, but may instead return
-        Gtk.ResponseType.CANCEL to request that the container not delete it.
+        A doc calls the external_callback with True if the doc was closed.
         """
-        return Gtk.ResponseType.OK
+        if external_callback is not None and callable(external_callback):
+            external_callback(True)

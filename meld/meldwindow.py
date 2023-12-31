@@ -194,27 +194,29 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
     @Gtk.Template.Callback()
-    def on_close_request(self, *extra):
-        # Delete pages from right-to-left.  This ensures that if a version
-        # control page is open in the far left page, it will be closed last.
-        responses = []
-        for page in reversed(self.notebook.get_children()):
-            self.notebook.set_current_page(self.notebook.page_num(page))
-            responses.append(page.on_delete_event())
+    def on_close_request(self, window):
+        if self.notebook.get_n_pages() > 0:
+            GLib.idle_add(self.close_window_async, True)
 
-        have_cancelled_tabs = any(r == Gtk.ResponseType.CANCEL for r in responses)
-        have_saving_tabs = any(r == Gtk.ResponseType.APPLY for r in responses)
+            # prevent close, will be done by thread if all pages are closed
+            return True
 
-        # If we have tabs that are not straight OK responses, we cancel the
-        # close. Either something has cancelled the close, or we temporarily
-        # cancel the close while async saving is happening.
-        cancel_delete = have_cancelled_tabs or have_saving_tabs or self.has_pages()
-        # If we have only saving and no cancelled tabs, we record that we
-        # should close once the other tabs have closed (assuming the state)
-        # doesn't otherwise change.
-        self.should_close = have_saving_tabs and not have_cancelled_tabs
+        return False
 
-        return cancel_delete
+    def close_window_async(self, last_closed):
+        if last_closed:
+            # Delete pages from right-to-left.  This ensures that if a version
+            # control page is open in the far left page, it will be closed last.
+            n_pages = self.notebook.get_n_pages()
+
+            if n_pages > 0:
+                page = self.notebook.get_nth_page(n_pages - 1)
+                page_num = self.notebook.page_num(page)
+                self.notebook.set_current_page(page_num)
+                page.request_close(self.close_window_async)
+            else:
+                # all pages have been closed, close window
+                self.close()
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
@@ -255,7 +257,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         i = self.notebook.get_current_page()
         if i >= 0:
             page = self.notebook.get_nth_page(i)
-            page.on_delete_event()
+            page.request_close()
 
     def action_fullscreen_change(self, action, state):
         is_full = self.is_fullscreen()
@@ -340,7 +342,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         self.notebook.on_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
-            doc.on_delete_event()
+            doc.request_close()
             idx = self.notebook.page_num(newdoc)
             self.notebook.set_current_page(idx)
 
