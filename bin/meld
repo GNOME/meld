@@ -107,7 +107,7 @@ elif frozen:
     meld.conf.frozen()
 
 # TODO: Possibly move to elib.intl
-import gettext  # noqa: E402, I100
+import gettext  # noqa: E402, I001
 locale_domain = meld.conf.__package__
 locale_dir = meld.conf.LOCALEDIR
 
@@ -256,8 +256,7 @@ def check_requirements():
 
 
 def setup_resources():
-    from gi.repository import Gio
-    from gi.repository import GtkSource
+    from gi.repository import Gio, GtkSource
 
     resource_filename = meld.conf.APPLICATION_ID + ".gresource"
     resource_file = os.path.join(meld.conf.DATADIR, resource_filename)
