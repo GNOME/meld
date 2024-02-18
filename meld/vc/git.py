@@ -207,10 +207,18 @@ class Vc(_vc.Vc):
 
         return f.name, True
 
-    def get_path_for_conflict(self, path, conflict):
-        if not path.startswith(self.root + os.path.sep):
+    def get_repo_relative_path(self, path):
+        root_prefix = self.root if self.root == "/" else self.root + os.path.sep
+        if not path.startswith(root_prefix):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
+        path = path[len(root_prefix):]
+        if os.name == "nt":
+            path = path.replace("\\", "/")
+
+        return path
+
+    def get_path_for_conflict(self, path, conflict):
         if conflict == _vc.CONFLICT_MERGED:
             # Special case: no way to get merged result from git directly
             local, _ = self.get_path_for_conflict(path, _vc.CONFLICT_LOCAL)
@@ -232,12 +240,9 @@ class Vc(_vc.Vc):
 
             return filename, is_temp
 
-        path = path[len(self.root) + 1:]
-        if os.name == "nt":
-            path = path.replace("\\", "/")
-
-        suffix = os.path.splitext(path)[1]
-        args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], path)]
+        repo_path = self.get_repo_relative_path(path)
+        suffix = os.path.splitext(repo_path)[1]
+        args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], repo_path)]
         filename = _vc.call_temp_output(
             args, cwd=self.location,
             file_id=_vc.conflicts[conflict], suffix=suffix)
@@ -249,14 +254,10 @@ class Vc(_vc.Vc):
         else:
             raise NotImplementedError()
 
-        if not path.startswith(self.root + os.path.sep):
-            raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        path = path[len(self.root) + 1:]
-        if os.name == "nt":
-            path = path.replace("\\", "/")
+        repo_path = self.get_repo_relative_path(path)
 
-        obj = commit + ":" + path
-        suffix = os.path.splitext(path)[1]
+        obj = commit + ":" + repo_path
+        suffix = os.path.splitext(repo_path)[1]
         args = [self.CMD, "cat-file", "blob", obj]
         return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
