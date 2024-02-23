@@ -60,8 +60,12 @@ pytest-flatpak:
   # is broken. https://gitlab.gnome.org/GNOME/gnome-runtime-images/-/issues/7
   allow_failure: true
 
-.mingw-common:
+mingw64-dist:
   stage: build
+  variables:
+    MSYS2_ARCH: "x86_64"
+    MSYSTEM: "MINGW64"
+    CHERE_INVOKING: "yes"
   tags: # select gitlab runners with specific tag (unrelated to git repo tags)
     - win32-ps
   artifacts:
@@ -89,17 +93,3 @@ pytest-flatpak:
   # main purpose of this job is creating installers and not checking for breakage by changes in code
   # so allow failures since the status of the build may depend on updates of rolling-release msys2 packages
   allow_failure: true
-
-mingw64-dist:
-  extends: .mingw-common
-  variables:
-    MSYS2_ARCH: "x86_64"
-    MSYSTEM: "MINGW64"
-    CHERE_INVOKING: "yes"
-
-mingw32-dist:
-  extends: .mingw-common
-  variables:
-    MSYS2_ARCH: "i686"
-    MSYSTEM: "MINGW32"
-    CHERE_INVOKING: "yes"
