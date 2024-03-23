@@ -43,6 +43,7 @@ def frozen():
     global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
 
     melddir = os.path.dirname(sys.executable)
+    os.add_dll_directory(os.path.join(melddir, "lib"))
 
     DATADIR = os.path.join(melddir, "share", "meld")
     LOCALEDIR = os.path.join(melddir, "share", "mo")
