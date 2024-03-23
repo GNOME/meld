@@ -1,7 +1,7 @@
 project(
   'meld',
   version: '3.22.0',
-  meson_version: '>= 0.59.0',
+  meson_version: '>= 1.2.0',
 )
 
 python = import('python')
@@ -58,9 +58,4 @@ gnome.post_install(
   glib_compile_schemas: true,
   gtk_update_icon_cache: true,
   update_desktop_database: true,
-)
-
-meson.add_install_script(
-  'meson_post_install.py',
-  get_option('byte-compile') ? python3.get_install_dir() : '',
 )
