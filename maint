@@ -428,7 +428,7 @@ def dist():
     call_with_output(cmd, echo_stdout=False)
 
     click.echo('Creating distribution...')
-    cmd = ['ninja', '-C', build_dir, 'dist']
+    cmd = ['meson', 'dist', '-C', build_dir]
     call_with_output(cmd, echo_stdout=False)
 
     if not os.path.exists(dist_archive_path):
