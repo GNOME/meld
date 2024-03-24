@@ -124,4 +124,4 @@ Home page:      https://meld.app/
 
 Documentation:  https://meld.app/help/
 
-Wiki:           https://wiki.gnome.org/Apps/Meld
+Wiki:           https://gitlab.gnome.org/GNOME/meld/-/wikis/home
