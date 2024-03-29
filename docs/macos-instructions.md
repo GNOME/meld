@@ -58,8 +58,8 @@ brew uninstall meld
 # now install GTK+ v3
 brew install gtk+3
 # GTK+3 will automatically include dependencies like:
-# dbus, libxfixes, libxi, libxtst, at-spi2-core, gdk-pixbuf, 
-# gsettings-desktop-schemas, hicolor-icon-theme, libepoxy, 
+# dbus, libxfixes, libxi, libxtst, at-spi2-core, gdk-pixbuf,
+# gsettings-desktop-schemas, hicolor-icon-theme, libepoxy,
 # fribidi, graphite2, icu4c, harfbuzz and pango
 
 # Add the runtime dependencies for meld
@@ -103,7 +103,7 @@ Please do NOT execute these unless you have a specific reason
 MELD_MACOS_SVGLOADERFILE=(`brew list librsvg | grep libpixbufloader-svg.so`)
 # link the loader into where it is expected
 ln -s $MELD_MACOS_SVGLOADERFILE $(pkg-config --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0)/libpixbufloader-svg.so
-# there might have been a neater way such as 
+# there might have been a neater way such as
 # including its loader into the main cache
 # https://github.com/Homebrew/legacy-homebrew/issues/13786
 #GDK_PIXBUF_MODULEDIR=${MELD_MACOS_SVGLOADERFILE%/*} gdk-pixbuf-query-loaders --update-cache
