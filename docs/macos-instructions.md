@@ -66,6 +66,8 @@ brew install gtk+3
 # Add the runtime dependencies for meld
 brew install gtksourceview4 pygobject3 cairo pkg-config librsvg
 # svg loader was not included when gtk+3 loads depend gdk-pixbuf
+# and the utilities we use here
+brew install git
 
 # obtain the source from this project
 git clone https://gitlab.gnome.org/GNOME/meld.git
