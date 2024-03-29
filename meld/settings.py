@@ -104,8 +104,11 @@ def load_settings_schema(schema_id):
 def load_interface_settings() -> Optional[Gio.Settings]:
 
     # We conditionally load these since they're only used for default
-    # fonts and can sometimes be missing (e.g., in some Windows setups)
+    # fonts and can sometimes be missing 
+    # (e.g., in some Windows or macOS setups)
     default_source = Gio.SettingsSchemaSource.get_default()
+    if not default_source:
+        return None
     schema = default_source.lookup("org.gnome.desktop.interface", False)
     if not schema:
         return None
