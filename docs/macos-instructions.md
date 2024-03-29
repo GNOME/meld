@@ -84,3 +84,56 @@ export XDG_DATA_DIRS
 bin/meld
 ```
 
+### Instructions no longer needed
+
+These snippets were considered at certain points during development of the above, 
+but other workarounds mean that they are no longer needed. 
+We are keeping them to hand for now in case they could be of value later. 
+
+Please do NOT execute these unless you have a specific reason
+
+```zsh
+
+# librsvg workarounds
+# fortunately the brew package installs and integrates itself properly
+# so these are not needed for now
+
+# get the installed filename
+MELD_MACOS_SVGLOADERFILE=(`brew list librsvg | grep libpixbufloader-svg.so`)
+# link the loader into where it is expected
+ln -s $MELD_MACOS_SVGLOADERFILE $(pkg-config --variable=gdk_pixbuf_moduledir gdk-pixbuf-2.0)/libpixbufloader-svg.so
+# there might have been a neater way such as 
+# including its loader into the main cache
+# https://github.com/Homebrew/legacy-homebrew/issues/13786
+#GDK_PIXBUF_MODULEDIR=${MELD_MACOS_SVGLOADERFILE%/*} gdk-pixbuf-query-loaders --update-cache
+# but I didn't get that working
+
+```
+
+## About these instructions
+
+These instructions have been added into a new branch created directly off the `main` branch of the project. Although this means potentially less 'stability' than keeping a branch off a feature freeze release like 3.22, it hopefully means that the changes will be easier to bring in to the main project once they have proven stable enough through testing. 
+
+For validating the Terminal command line instructions, we encourage developers and alpha testers to clean their shell environment. 
+
+NOTE: these instructions are NOT required to run from source or to build the project
+
+* First check your homebrew prefix location:
+```zsh
+brew --prefix
+```
+* you will use the resulting location in the snippet below
+	* but you will add `bin/` to the end of it
+* then start a new shell with a completely blank environment
+```zsh
+env -i $SHELL -f
+```
+* finally add brew to the path using the location above with bin/ on the end
+	* e.g.
+```zsh
+path=('/opt/homebrew/bin' $path)
+export PATH
+```
+* note:
+	* this presumes that the location `/opt/homebrew/opt/python/libexec/bin` is NOT also required 
+
