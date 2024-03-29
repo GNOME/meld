@@ -104,7 +104,7 @@ def load_settings_schema(schema_id):
 def load_interface_settings() -> Optional[Gio.Settings]:
 
     # We conditionally load these since they're only used for default
-    # fonts and can sometimes be missing 
+    # fonts and can sometimes be missing
     # (e.g., in some Windows or macOS setups)
     default_source = Gio.SettingsSchemaSource.get_default()
     if not default_source:
