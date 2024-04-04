@@ -146,6 +146,11 @@ class PathLabel(Gtk.MenuButton):
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             self.get_display_label,
         )
+        self.bind_property(
+            'gfile', self.full_path_label, 'text',
+            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
+            self.get_display_path,
+        )
 
         action_group = Gio.SimpleActionGroup()
 
@@ -163,17 +168,6 @@ class PathLabel(Gtk.MenuButton):
         # GtkButton recreates its GtkLabel child whenever the label
         # prop changes, so we need this notify callback.
         self.connect('notify::label', self.label_changed_cb)
-
-    def do_realize(self):
-        # As a workaround for pygobject#341, we delay this binding until
-        # realize, at which point the child object is correct.
-        self.bind_property(
-            'gfile', self.full_path_label, 'text',
-            GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
-            self.get_display_path,
-        )
-
-        return Gtk.MenuButton.do_realize(self)
 
     def label_changed_cb(self, *args):
         # Our label needs ellipsization to avoid forcing minimum window
