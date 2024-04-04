@@ -42,10 +42,10 @@ class PathLabel(Gtk.MenuButton):
     _path_label: Optional[str]
     _icon_name: Optional[str]
 
-    def get_file(self) -> Optional[Gio.File]:
+    def __get_file(self) -> Optional[Gio.File]:
         return self._gfile
 
-    def set_file(self, file: Optional[Gio.File]) -> None:
+    def __set_file(self, file: Optional[Gio.File]) -> None:
         if file == self._gfile:
             return
 
@@ -54,10 +54,10 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f'Error setting GFile: {str(e)}')
 
-    def get_parent_file(self) -> Optional[Gio.File]:
+    def __get_parent_file(self) -> Optional[Gio.File]:
         return self._parent_gfile
 
-    def set_parent_file(self, parent_file: Optional[Gio.File]) -> None:
+    def __set_parent_file(self, parent_file: Optional[Gio.File]) -> None:
         if parent_file == self._parent_gfile:
             return
 
@@ -66,13 +66,13 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f'Error setting parent GFile: {str(e)}')
 
-    def get_path_label(self) -> Optional[str]:
+    def __get_path_label(self) -> Optional[str]:
         return self._path_label
 
-    def get_icon_name(self) -> Optional[str]:
+    def __get_icon_name(self) -> Optional[str]:
         return self._icon_name
 
-    def set_icon_name(self, icon_name: Optional[str]) -> None:
+    def __set_icon_name(self, icon_name: Optional[str]) -> None:
         if icon_name == self._icon_name:
             return
 
@@ -88,8 +88,8 @@ class PathLabel(Gtk.MenuButton):
     gfile = GObject.Property(
         type=Gio.File,
         nick='File being displayed',
-        getter=get_file,
-        setter=set_file,
+        getter=__get_file,
+        setter=__set_file,
     )
 
     parent_gfile = GObject.Property(
@@ -98,21 +98,21 @@ class PathLabel(Gtk.MenuButton):
             'Parent folder of the current file being displayed that '
             'determines where the path display will terminate'
         ),
-        getter=get_parent_file,
-        setter=set_parent_file,
+        getter=__get_parent_file,
+        setter=__set_parent_file,
     )
 
     path_label = GObject.Property(
         type=str,
         nick='Summarised path label relative to defined parent',
-        getter=get_path_label,
+        getter=__get_path_label,
     )
 
     icon_name = GObject.Property(
         type=str,
         nick='The name of the icon to display',
-        getter=get_icon_name,
-        setter=set_icon_name,
+        getter=__get_icon_name,
+        setter=__set_icon_name,
     )
 
     custom_label = GObject.Property(
