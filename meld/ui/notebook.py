@@ -72,6 +72,14 @@ class MeldNotebook(Gtk.Notebook):
       </interface>
     """
 
+    provider = Gtk.CssProvider()
+    provider.load_from_data(css)
+    Gtk.StyleContext.add_provider_for_screen(
+        Gdk.Screen.get_default(),
+        provider,
+        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -90,12 +98,6 @@ class MeldNotebook(Gtk.Notebook):
 
         builder = Gtk.Builder.new_from_string(self.ui, -1)
         self.popup_menu = builder.get_object("tab-menu")
-
-        provider = Gtk.CssProvider()
-        provider.load_from_data(self.css)
-        Gtk.StyleContext.add_provider_for_screen(
-            Gdk.Screen.get_default(), provider,
-            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
 
         stylecontext = self.get_style_context()
         stylecontext.add_class('meld-notebook')
