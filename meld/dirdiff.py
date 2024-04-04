@@ -852,8 +852,8 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
         parent_path = find_shared_parent_path(self.folders)
         for pane, folder in enumerate(self.folders):
-            self.folder_label[pane].set_file(folder)
-            self.folder_label[pane].set_parent_file(parent_path)
+            self.folder_label[pane].gfile = folder
+            self.folder_label[pane].parent_gfile = parent_path
             self.folder_open_button[pane].props.file = folder
 
         # This is difficult to trigger, and to test. Most of the time here we
