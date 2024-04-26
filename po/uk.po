@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-04-12 02:35+0000\n"
-"PO-Revision-Date: 2024-04-12 18:33+0300\n"
+"POT-Creation-Date: 2024-04-25 04:05+0000\n"
+"PO-Revision-Date: 2024-04-26 22:40+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -469,18 +469,6 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.Meld.gschema.xml:240
-#| msgid ""
-#| "[\n"
-#| "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-#| "              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
-#| "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-#| "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
-#| "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-#| "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
-#| "exe}\"),\n"
-#| "              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,"
-#| "avi,mpg,xcf,xpm}\")\n"
-#| "            ]"
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
@@ -504,11 +492,10 @@ msgstr ""
 "hg .fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              (\"Двійкові файли\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
 "exe}\"),\n"
-"              (\"Мультимедійні файли\", false,"
-" \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,"
-"heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,"
-"aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,"
-"ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
+"              (\"Мультимедійні файли\", false, \"*.{jxl,jpg,jpeg,gif,png,"
+"avif,webp,heif,heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,"
+"opus,flac,ac3,aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,"
+"mp4,m4v,webm,ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 
 #: data/org.gnome.Meld.gschema.xml:249
@@ -1323,31 +1310,52 @@ msgstr "_Додати"
 msgid "Remove selected filter"
 msgstr "Вилучити позначений фільтр"
 
-#: meld/resources/ui/findbar.ui:104
+#: meld/resources/ui/findbar.ui:16
+#| msgid "Previous logs:"
+msgid "Previous Result"
+msgstr "Попередній результат"
+
+#: meld/resources/ui/findbar.ui:38
+msgid "Next Result"
+msgstr "Наступний результат"
+
+#: meld/resources/ui/findbar.ui:69
+#| msgctxt "shortcut window"
+#| msgid "Find"
+msgid "Find"
+msgstr "Знайти"
+
+#: meld/resources/ui/findbar.ui:86
+#| msgctxt "shortcut window"
+#| msgid "Replace"
+msgid "Replace"
+msgstr "Замінити"
+
+#: meld/resources/ui/findbar.ui:108
 msgid "_Match case"
 msgstr "Враховувати _регістр"
 
-#: meld/resources/ui/findbar.ui:120
+#: meld/resources/ui/findbar.ui:124
 msgid "Who_le word"
 msgstr "_Цілі слова"
 
-#: meld/resources/ui/findbar.ui:136
+#: meld/resources/ui/findbar.ui:140
 msgid "Regular e_xpression"
 msgstr "_Регулярний вираз"
 
-#: meld/resources/ui/findbar.ui:177
+#: meld/resources/ui/findbar.ui:181
 msgid "Wrapped"
 msgstr "Циклічний пошук"
 
-#: meld/resources/ui/findbar.ui:195
+#: meld/resources/ui/findbar.ui:199
 msgid "Replace _All"
 msgstr "Замінити _все"
 
-#: meld/resources/ui/findbar.ui:210 meld/dirdiff.py:1277 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1277 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "За_мінити"
 
-#: meld/resources/ui/findbar.ui:228
+#: meld/resources/ui/findbar.ui:232
 msgid "Switch between Find and Find-and-Replace"
 msgstr "Перемикання між пошуком і пошуком із заміною"
 
