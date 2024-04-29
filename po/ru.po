@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Meld 1.4.0\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-01-01 12:21+0000\n"
-"PO-Revision-Date: 2024-01-05 12:25+1000\n"
+"POT-Creation-Date: 2024-04-25 04:05+0000\n"
+"PO-Revision-Date: 2024-04-25 20:12+1000\n"
 "Last-Translator: Ser82-png <asvmail.as@gmail.com>\n"
 "Language-Team: Русский <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
@@ -470,8 +470,10 @@ msgid ""
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
-"mpg,xcf,xpm}\")\n"
+"              (\"Media\", false, \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,"
+"heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,"
+"aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,"
+"ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 msgstr ""
 "[\n"
@@ -483,8 +485,10 @@ msgstr ""
 "_FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              («Бинарные файлы», true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
 "exe}\"),\n"
-"              («Медиа», false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,mpg,"
-"xcf,xpm}\")\n"
+"              («Медиа», false, \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,heic,"
+"bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,aac,"
+"aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,ogv,"
+"flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 
 #: data/org.gnome.Meld.gschema.xml:249
@@ -1304,31 +1308,47 @@ msgstr "_Добавить"
 msgid "Remove selected filter"
 msgstr "Удалить выбранный фильтр"
 
-#: meld/resources/ui/findbar.ui:104
+#: meld/resources/ui/findbar.ui:16
+msgid "Previous Result"
+msgstr "Предыдущий результат"
+
+#: meld/resources/ui/findbar.ui:38
+msgid "Next Result"
+msgstr "Следующий результат"
+
+#: meld/resources/ui/findbar.ui:69
+msgid "Find"
+msgstr "Найти"
+
+#: meld/resources/ui/findbar.ui:86
+msgid "Replace"
+msgstr "Заменить"
+
+#: meld/resources/ui/findbar.ui:108
 msgid "_Match case"
 msgstr "_Учитывать регистр"
 
-#: meld/resources/ui/findbar.ui:120
+#: meld/resources/ui/findbar.ui:124
 msgid "Who_le word"
 msgstr "Слово _целиком"
 
-#: meld/resources/ui/findbar.ui:136
+#: meld/resources/ui/findbar.ui:140
 msgid "Regular e_xpression"
 msgstr "_Регулярное выражение"
 
-#: meld/resources/ui/findbar.ui:177
+#: meld/resources/ui/findbar.ui:181
 msgid "Wrapped"
 msgstr "Перенесённый"
 
-#: meld/resources/ui/findbar.ui:195
+#: meld/resources/ui/findbar.ui:199
 msgid "Replace _All"
 msgstr "Заменить _все"
 
-#: meld/resources/ui/findbar.ui:210 meld/dirdiff.py:1277 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1277 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "_Заменить"
 
-#: meld/resources/ui/findbar.ui:228
+#: meld/resources/ui/findbar.ui:232
 msgid "Switch between Find and Find-and-Replace"
 msgstr "Переключение между Поиском и Заменой"
 
@@ -2474,16 +2494,16 @@ msgstr[0] "%d бранч"
 msgstr[1] "%d бранча"
 msgstr[2] "%d бранчей"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Режим был изменён {old_mode} на {new_mode}"
 
-#: meld/vc/git.py:360
+#: meld/vc/git.py:361
 msgid "Partially staged"
 msgstr "Подготовлен к фиксации (частично)"
 
-#: meld/vc/git.py:360
+#: meld/vc/git.py:361
 msgid "Staged"
 msgstr "Подготовлен к фиксации"
 
