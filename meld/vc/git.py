@@ -110,14 +110,14 @@ class Vc(_vc.Vc):
 
     def get_commits_to_push(self):
         proc = self.run(
-            "for-each-ref", "--format=%(refname:short) %(upstream:short)",
+            "for-each-ref", "--format=%(refname:short) %(upstream:short) %(upstream:trackshort)",
             "refs/heads")
         branch_remotes = proc.stdout.read().split("\n")[:-1]
 
         branch_revisions = {}
         for line in branch_remotes:
             try:
-                branch, remote = line.split()
+                branch, remote, track = line.split()
             except ValueError:
                 continue
 
