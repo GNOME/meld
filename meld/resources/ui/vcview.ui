@@ -166,10 +166,8 @@
             <property name="child">
               <object class="GtkTreeView" id="treeview">
                 <property name="focusable">1</property>
-                <!-- <signal name="button-press-event" handler="on_treeview_button_press_event" swapped="no"/> -->
                 <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>
-                <!-- <signal name="popup-menu" handler="on_treeview_popup_menu" swapped="no"/> -->
                 <child>
                   <object class="GtkTreeViewColumn" id="name_column">
                     <property name="title" translatable="yes">Name</property>

@@ -17,7 +17,7 @@
 import os
 
 from gi.module import get_introspection_module
-from gi.repository import Gdk, GLib, GObject, Pango
+from gi.repository import Gdk, GLib, GObject, Gtk, Pango
 
 from meld.style import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
@@ -233,6 +233,12 @@ class DiffTreeStore(SearchableTreeStore):
 
 class TreeviewCommon:
 
+    def _add_treeview_gesture_controller(self, treeview, callback=None):
+        controller = Gtk.GestureClick()
+        controller.connect("pressed", self.on_treeview_button_press_event if not callback else callback)
+        controller.set_button(3)
+        treeview.add_controller(controller)
+
     def on_treeview_popup_menu(self, treeview):
         cursor_path, cursor_col = treeview.get_cursor()
         if not cursor_path:
@@ -253,7 +259,9 @@ class TreeviewCommon:
         )
         return True
 
-    def on_treeview_button_press_event(self, treeview, event):
+    def on_treeview_button_press_event(self, controller, n_press, x, y):
+
+        treeview = controller.get_widget()
 
         # If we have multiple treeviews, unselect clear other tree selections
         num_panes = getattr(self, 'num_panes', 1)
@@ -262,26 +270,23 @@ class TreeviewCommon:
                 if t != treeview:
                     t.get_selection().unselect_all()
 
-        if (event.triggers_context_menu() and
-                event.type == Gdk.EventType.BUTTON_PRESS):
+        treeview.grab_focus()
 
-            treeview.grab_focus()
+        x, y = treeview.convert_widget_to_bin_window_coords(x, y)
+        path = treeview.get_path_at_pos(int(x), int(y))
+        if path is None:
+            return False
 
-            path = treeview.get_path_at_pos(int(event.x), int(event.y))
-            if path is None:
-                return False
+        selection = treeview.get_selection()
+        model, rows = selection.get_selected_rows()
 
-            selection = treeview.get_selection()
-            model, rows = selection.get_selected_rows()
+        if path[0] not in rows:
+            selection.unselect_all()
+            selection.select_path(path[0])
+            treeview.set_cursor(path[0])
 
-            if path[0] not in rows:
-                selection.unselect_all()
-                selection.select_path(path[0])
-                treeview.set_cursor(path[0])
-
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
+        self.popup_menu.popup() # TODO set row as parent for correct position
+        return True
 
 
 def treeview_search_cb(model, column, key, it, data):
