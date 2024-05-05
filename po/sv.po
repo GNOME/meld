@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2023-12-31 07:30+0000\n"
-"PO-Revision-Date: 2023-12-31 10:08+0100\n"
+"POT-Creation-Date: 2024-04-25 04:05+0000\n"
+"PO-Revision-Date: 2024-04-26 16:57+0200\n"
 "Last-Translator: Anders Jonsson <anders.jonsson@norsjovallen.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: sv\n"
@@ -458,8 +458,10 @@ msgid ""
 "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
-"mpg,xcf,xpm}\")\n"
+"              (\"Media\", false, \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,"
+"heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,"
+"aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,"
+"ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 msgstr ""
 "[\n"
@@ -470,8 +472,10 @@ msgstr ""
 "              (\"Versionshantering\", true, \"_MTN .bzr .svn .svn .hg ."
 "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
 "              (\"Binärer\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,exe}\"),\n"
-"              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,avi,"
-"mpg,xcf,xpm}\")\n"
+"              (\"Media\", false, \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,"
+"heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,"
+"aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,"
+"ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 
 #: data/org.gnome.Meld.gschema.xml:249
@@ -1293,31 +1297,47 @@ msgstr "_Lägg till"
 msgid "Remove selected filter"
 msgstr "Ta bort markerat filter"
 
-#: meld/resources/ui/findbar.ui:104
+#: meld/resources/ui/findbar.ui:16
+msgid "Previous Result"
+msgstr "Föregående resultat"
+
+#: meld/resources/ui/findbar.ui:38
+msgid "Next Result"
+msgstr "Nästa resultat"
+
+#: meld/resources/ui/findbar.ui:69
+msgid "Find"
+msgstr "Sök"
+
+#: meld/resources/ui/findbar.ui:86
+msgid "Replace"
+msgstr "Ersätt"
+
+#: meld/resources/ui/findbar.ui:108
 msgid "_Match case"
 msgstr "_Skiftlägeskänslig"
 
-#: meld/resources/ui/findbar.ui:120
+#: meld/resources/ui/findbar.ui:124
 msgid "Who_le word"
 msgstr "He_la ord"
 
-#: meld/resources/ui/findbar.ui:136
+#: meld/resources/ui/findbar.ui:140
 msgid "Regular e_xpression"
 msgstr "Reguljärt _uttryck"
 
-#: meld/resources/ui/findbar.ui:177
+#: meld/resources/ui/findbar.ui:181
 msgid "Wrapped"
 msgstr "Radbruten"
 
-#: meld/resources/ui/findbar.ui:195
+#: meld/resources/ui/findbar.ui:199
 msgid "Replace _All"
 msgstr "Ersätt _alla"
 
-#: meld/resources/ui/findbar.ui:210 meld/dirdiff.py:1277 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1277 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "_Ersätt"
 
-#: meld/resources/ui/findbar.ui:228
+#: meld/resources/ui/findbar.ui:232
 msgid "Switch between Find and Find-and-Replace"
 msgstr "Växla mellan Sök och Sök-och-ersätt"
 
@@ -2462,16 +2482,16 @@ msgid_plural "%d branches"
 msgstr[0] "%d gren"
 msgstr[1] "%d grenar"
 
-#: meld/vc/git.py:352
+#: meld/vc/git.py:353
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Läge ändrat från {old_mode} till {new_mode}"
 
-#: meld/vc/git.py:360
+#: meld/vc/git.py:361
 msgid "Partially staged"
 msgstr "Delvis köad"
 
-#: meld/vc/git.py:360
+#: meld/vc/git.py:361
 msgid "Staged"
 msgstr "Köad"
 
@@ -2832,15 +2852,9 @@ msgstr "Töm"
 #~ msgstr ""
 #~ "Sammanfoga alla ändringar utan konflikter från vänstra och högra panelen"
 
-#~ msgid "Previous Pane"
-#~ msgstr "Föregående panel"
-
 #~ msgid "Move keyboard focus to the previous document in this comparison"
 #~ msgstr ""
 #~ "Flytta tangentbordsfokus till föregående dokument i denna jämförelse"
-
-#~ msgid "Next Pane"
-#~ msgstr "Nästa panel"
 
 #~ msgid "Move keyboard focus to the next document in this comparison"
 #~ msgstr "Flytta tangentbordsfokus till nästa dokument i denna jämförelse"
