@@ -41,7 +41,8 @@ def set_base_style_scheme(
     global style_scheme
 
     gtk_settings = Gtk.Settings.get_default()
-    gtk_settings.props.gtk_application_prefer_dark_theme = prefer_dark
+    if gtk_settings:
+        gtk_settings.props.gtk_application_prefer_dark_theme = prefer_dark
 
     style_scheme = new_style_scheme
 
