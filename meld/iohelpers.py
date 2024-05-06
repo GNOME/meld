@@ -251,3 +251,23 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     label_text += GLib.build_filenamev([s for s in label_segments if s])
 
     return label_text
+
+
+def is_file_on_tmpfs(gfile: Gio.File) -> bool:
+    """Check whether a given file is on a tmpfs filesystem
+
+    This is a Unix-specific operation. On any exception, this will
+    return False.
+    """
+    try:
+        path = gfile.get_path()
+        if not path:
+            return False
+
+        mount, _timestamp = Gio.unix_mount_for(path)
+        if not mount:
+            return False
+
+        return Gio.unix_mount_get_fs_type(mount) == "tmpfs"
+    except Exception:
+        return False
