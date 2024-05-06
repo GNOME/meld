@@ -467,12 +467,14 @@ class MeldWindow(Gtk.ApplicationWindow):
                    focus=False):
         tab = None
         if len(gfiles) == 1:
-            a = gfiles[0]
-            if a.query_file_type(Gio.FileQueryInfoFlags.NONE, None) == \
-                    Gio.FileType.DIRECTORY:
-                tab = self.append_vcview(a, auto_compare)
+            gfile = gfiles[0]
+            if not gfile or (
+                gfile.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
+                == Gio.FileType.DIRECTORY
+            ):
+                tab = self.append_vcview(gfile, auto_compare)
             else:
-                self._single_file_open(a)
+                self._single_file_open(gfile)
 
         elif len(gfiles) in (2, 3):
             tab = self.append_diff(gfiles, auto_compare=auto_compare,
