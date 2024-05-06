@@ -93,6 +93,9 @@ class RecentFiles:
             return
 
         uris = [f.get_uri() for f in gfiles]
+        if not all(uris):
+            return
+
         names = [f.get_parse_name() for f in gfiles]
 
         # If a (type, uris) comparison is already registered, then re-add
