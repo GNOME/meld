@@ -402,7 +402,10 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.scheduler.add_task(self.on_treeview_cursor_changed)
 
     def get_comparison(self):
-        uris = [Gio.File.new_for_path(self.location)]
+        if self.location:
+            uris = [Gio.File.new_for_path(self.location)]
+        else:
+            uris = []
         return RecentType.VersionControl, uris
 
     def recompute_label(self):

@@ -85,7 +85,7 @@ class RecentFiles:
 
         # While Meld handles comparisons including None, recording these as
         # recently-used comparisons just isn't that sane.
-        if None in gfiles:
+        if not gfiles or None in gfiles:
             return
 
         if any(is_file_on_tmpfs(f) for f in gfiles):
