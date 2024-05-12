@@ -4,14 +4,14 @@
 # Duarte Loreto <happyguy_pt@hotmail.com>, 2003.
 # Pedro Albuquerque <palbuquerque73@gmail.com>, 2015.
 # Tiago Santos <tiagofsantos81@sapo.pt>, 2014 - 2016.
-# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021, 2022, 2023.
+# Hugo Carvalho <hugokarvalho@hotmail.com>, 2020, 2021, 2022, 2023, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.6\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-04-12 02:35+0000\n"
-"PO-Revision-Date: 2024-04-19 14:58+0100\n"
+"POT-Creation-Date: 2024-05-06 08:23+0000\n"
+"PO-Revision-Date: 2024-05-12 22:24+0100\n"
 "Last-Translator: Hugo Carvalho <hugokarvalho@hotmail.com>\n"
 "Language-Team: Português <https://l10n.gnome.org/teams/pt/>\n"
 "Language: pt\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: data/org.gnome.Meld.desktop.in.in:3 data/org.gnome.Meld.appdata.xml.in.in:10
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -455,18 +455,6 @@ msgstr ""
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
 #: data/org.gnome.Meld.gschema.xml:240
-#| msgid ""
-#| "[\n"
-#| "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
-#| "              (\"OS-Specific Metadata\", true, \".DS_Store ._* .Spotlight-"
-#| "V100 .Trashes Thumbs.db Desktop.ini\"),\n"
-#| "              (\"Version Control\", true, \"_MTN .bzr .svn .svn .hg ."
-#| "fslckout _FOSSIL_ .fos CVS _darcs .git .svn .osc\"),\n"
-#| "              (\"Binaries\", true, \"*.{pyc,a,obj,o,so,la,lib,dll,"
-#| "exe}\"),\n"
-#| "              (\"Media\", false, \"*.{jpg,gif,png,bmp,wav,mp3,ogg,flac,"
-#| "avi,mpg,xcf,xpm}\")\n"
-#| "            ]"
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
@@ -1309,31 +1297,47 @@ msgstr "_Adicionar"
 msgid "Remove selected filter"
 msgstr "Remover filtro selecionado"
 
-#: meld/resources/ui/findbar.ui:104
+#: meld/resources/ui/findbar.ui:16
+msgid "Previous Result"
+msgstr "Resultado anterior"
+
+#: meld/resources/ui/findbar.ui:38
+msgid "Next Result"
+msgstr "Resultado seguinte"
+
+#: meld/resources/ui/findbar.ui:69
+msgid "Find"
+msgstr "Localizar"
+
+#: meld/resources/ui/findbar.ui:86
+msgid "Replace"
+msgstr "Substituir"
+
+#: meld/resources/ui/findbar.ui:108
 msgid "_Match case"
 msgstr "_Comparar maiúsculas"
 
-#: meld/resources/ui/findbar.ui:120
+#: meld/resources/ui/findbar.ui:124
 msgid "Who_le word"
 msgstr "Pa_lavra completa"
 
-#: meld/resources/ui/findbar.ui:136
+#: meld/resources/ui/findbar.ui:140
 msgid "Regular e_xpression"
 msgstr "E_xpressão regular"
 
-#: meld/resources/ui/findbar.ui:177
+#: meld/resources/ui/findbar.ui:181
 msgid "Wrapped"
 msgstr "Ajustado"
 
-#: meld/resources/ui/findbar.ui:195
+#: meld/resources/ui/findbar.ui:199
 msgid "Replace _All"
 msgstr "Su_bstituir tudo"
 
-#: meld/resources/ui/findbar.ui:210 meld/dirdiff.py:1277 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1277 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "Substitui_r"
 
-#: meld/resources/ui/findbar.ui:228
+#: meld/resources/ui/findbar.ui:232
 msgid "Switch between Find and Find-and-Replace"
 msgstr "Alterna entre “Localizar” e “Localizar e substituir”"
 
@@ -2431,11 +2435,11 @@ msgstr "rótulo"
 msgid "pattern"
 msgstr "padrão"
 
-#: meld/recent.py:111
+#: meld/recent.py:119
 msgid "Version control:"
 msgstr "Controlo de versão:"
 
-#: meld/style.py:96
+#: meld/style.py:97
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr ""
 "Não foi possível localizar detalhes de esquema de cores para {}; esta é uma "
@@ -2861,14 +2865,8 @@ msgstr "Limpar"
 #~ "Unir todas as alterações não conflituosas a partir dos painéis esquerdo e "
 #~ "direito"
 
-#~ msgid "Previous Pane"
-#~ msgstr "Painel anterior"
-
 #~ msgid "Move keyboard focus to the previous document in this comparison"
 #~ msgstr "Mover o foco do teclado para o documento anterior nesta comparação"
-
-#~ msgid "Next Pane"
-#~ msgstr "Painel seguinte"
 
 #~ msgid "Move keyboard focus to the next document in this comparison"
 #~ msgstr "Mover o foco do teclado para o documento seguinte nesta comparação"
