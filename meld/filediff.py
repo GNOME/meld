@@ -1951,6 +1951,15 @@ class FileDiff(Gtk.Box, MeldDoc):
                         for o in matches:
                             start.set_offset(offset + o[1 + 2 * i])
                             end.set_offset(offset + o[2 + 2 * i])
+
+                            # Check whether the identified difference is just a
+                            # combining diacritic. If so, we want to highlight
+                            # the visual character it's a part of
+                            if not start.is_cursor_position():
+                                start.backward_cursor_position()
+                            if not end.is_cursor_position():
+                                end.forward_cursor_position()
+
                             bufs[i].apply_tag(tags[i], start, end)
 
                 start_marks = [
