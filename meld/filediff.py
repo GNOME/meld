@@ -33,6 +33,7 @@ from meld.const import (
     ChunkAction,
     FileComparisonMode,
 )
+from meld.externalhelpers import open_files_external
 from meld.gutterrendererchunk import GutterRendererChunkLines
 from meld.iohelpers import find_shared_parent_path, prompt_save_filename
 from meld.matchers.diffutil import Differ, merged_chunk_order
@@ -43,7 +44,7 @@ from meld.meldbuffer import (
     BufferInsertionAction,
     BufferLines,
 )
-from meld.melddoc import ComparisonState, MeldDoc, open_files_external
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog

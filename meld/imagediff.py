@@ -25,7 +25,8 @@ from gi.repository import Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk, GtkSource
 from meld import misc
 from meld.conf import _
 from meld.const import FileComparisonMode
-from meld.melddoc import ComparisonState, MeldDoc, open_files_external
+from meld.externalhelpers import open_files_external
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.misc import with_focused_pane
 from meld.settings import bind_settings
 from meld.ui.util import map_widgets_into_lists

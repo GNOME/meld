@@ -19,11 +19,11 @@ from typing import Optional
 from gi.repository import Gdk, Gio, GObject, Gtk, Pango
 
 from meld.conf import _
+from meld.externalhelpers import open_files_external
 from meld.iohelpers import (
     format_home_relative_path,
     format_parent_relative_path,
 )
-from meld.melddoc import open_files_external
 
 log = logging.getLogger(__name__)
 
