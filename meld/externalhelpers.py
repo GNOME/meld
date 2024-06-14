@@ -28,48 +28,55 @@ def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
     return shlex.split(cmd)
 
 
-def os_open(path: str, uri: str) -> None:
-    if not path:
-        return
-    if sys.platform == "win32":
-        os.startfile(path)
-    elif sys.platform == "darwin":
-        subprocess.Popen(["open", path])
+def launch_with_default_handler(gfile: Gio.File) -> None:
+    # Ideally this function wouldn't exist, but the gtk_show_uri cross-platform
+    # handling is less reliable than doing the below.
+    if sys.platform in ("darwin", "win32"):
+        path = gfile.get_path()
+        if not path:
+            log.warning(f"Couldn't open file {gfile.get_uri()}; no valid path")
+
+        if sys.platform == "win32":
+            os.startfile(gfile.get_path())
+        else:  # sys.platform == "darwin"
+            subprocess.Popen(["open", path])
     else:
-        Gtk.show_uri(Gdk.Screen.get_default(), uri, Gtk.get_current_event_time())
+        Gtk.show_uri(
+            Gdk.Screen.get_default(),
+            gfile.get_uri(),
+            Gtk.get_current_event_time(),
+        )
 
 
-def open_cb(source, result, user_data):
-    info = source.query_info_finish(result)
+def open_cb(gfile: Gio.File, result, user_data) -> None:
+    info = gfile.query_info_finish(result)
     file_type = info.get_file_type()
-    path, uri = source.get_path(), source.get_uri()
-    line = user_data.get("line", 0)
 
     if file_type == Gio.FileType.DIRECTORY:
-        os_open(path, uri)
+        launch_with_default_handler(gfile)
     elif file_type == Gio.FileType.REGULAR:
         content_type = info.get_content_type()
         # FIXME: Content types are broken on Windows with current gio
         # If we can't access a content type, assume it's text.
         if not content_type or Gio.content_type_is_a(content_type, "text/plain"):
             if settings.get_boolean("use-system-editor"):
-                gfile = Gio.File.new_for_path(path)
                 if sys.platform == "win32":
                     handler = gfile.query_default_handler(None)
                     result = handler.launch([gfile], None)
                 else:
-                    uri = gfile.get_uri()
-                    Gio.AppInfo.launch_default_for_uri(uri, None)
+                    Gio.AppInfo.launch_default_for_uri(gfile.get_uri(), None)
             else:
+                line = user_data.get("line", 0)
+                path = gfile.get_path()
                 editor = make_custom_editor_command(path, line)
                 if editor:
                     # TODO: If the editor is badly set up, this fails
                     # silently
                     subprocess.Popen(editor)
                 else:
-                    os_open(path, uri)
+                    launch_with_default_handler(gfile)
         else:
-            os_open(path, uri)
+            launch_with_default_handler(gfile)
     else:
         # TODO: Add some kind of 'failed to open' notification
         pass
