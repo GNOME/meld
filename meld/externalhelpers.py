@@ -14,13 +14,13 @@ log = logging.getLogger(__name__)
 
 
 def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
-    custom_command = settings.get_string('custom-editor-command')
+    custom_command = settings.get_string("custom-editor-command")
     fmt = string.Formatter()
     replacements = [tok[1] for tok in fmt.parse(custom_command)]
 
     if not any(replacements):
         return [custom_command, path]
-    elif not all(r in (None, 'file', 'line') for r in replacements):
+    elif not all(r in (None, "file", "line") for r in replacements):
         log.error("Unsupported fields found")
         return [custom_command, path]
     else:
@@ -55,7 +55,7 @@ def open_files_external(
             # FIXME: Content types are broken on Windows with current gio
             # If we can't access a content type, assume it's text.
             if not content_type or Gio.content_type_is_a(content_type, "text/plain"):
-                if settings.get_boolean('use-system-editor'):
+                if settings.get_boolean("use-system-editor"):
                     gfile = Gio.File.new_for_path(path)
                     if sys.platform == "win32":
                         handler = gfile.query_default_handler(None)
