@@ -1642,9 +1642,8 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             self.model.value_path(self.model.get_iter(p), pane)
             for p in self._get_selected_paths(pane)
         ]
-        files = [f for f in files if f]
-        if files:
-            open_files_external(files)
+        gfiles = [Gio.File.new_for_path(f) for f in files if f]
+        open_files_external(gfiles)
 
     def action_copy_file_paths(self, *args):
         pane = self._get_focused_pane()

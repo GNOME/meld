@@ -786,7 +786,8 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             self.run_diff(f)
 
     def action_open_external(self, *args):
-        open_files_external(self._get_selected_files())
+        gfiles = [Gio.File.new_for_path(f) for f in self._get_selected_files() if f]
+        open_files_external(gfiles)
 
     def refresh(self):
         root = self.model.get_iter_first()

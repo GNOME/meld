@@ -4,7 +4,7 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import List, Optional, Sequence
+from typing import List, Sequence
 
 from gi.repository import Gdk, Gio, GLib, Gtk
 
@@ -98,17 +98,13 @@ def open_cb(gfile: Gio.File, result, user_data) -> None:
 
 
 def open_files_external(
-    paths: Optional[List[str]] = None,
+    gfiles: List[Gio.File],
     *,
-    gfiles: Optional[List[Gio.File]] = None,
     line: int = 0,
 ) -> None:
     query_attrs = ",".join(
         (Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
     )
-
-    if not gfiles:
-        gfiles = [Gio.File.new_for_path(s) for s in paths]
 
     for f in gfiles:
         f.query_info_async(
