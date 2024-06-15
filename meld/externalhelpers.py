@@ -4,19 +4,27 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import List, Sequence
+from typing import List, Mapping, Sequence
 
 from gi.repository import Gdk, Gio, GLib, Gtk
 
 from meld.conf import _
 from meld.misc import modal_dialog
-from meld.settings import settings
+from meld.settings import get_settings
 
 log = logging.getLogger(__name__)
 
 
+OPEN_EXTERNAL_QUERY_ATTRS = ",".join(
+    (
+        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
+        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+    )
+)
+
+
 def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
-    custom_command = settings.get_string("custom-editor-command")
+    custom_command = get_settings().get_string("custom-editor-command")
     fmt = string.Formatter()
     replacements = [tok[1] for tok in fmt.parse(custom_command)]
 
@@ -50,18 +58,22 @@ def launch_with_default_handler(gfile: Gio.File) -> None:
         )
 
 
-def open_cb(gfile: Gio.File, result, user_data) -> None:
+def open_cb(
+    gfile: Gio.File,
+    result: Gio.AsyncResult,
+    user_data: Mapping[str, int],
+) -> None:
     info = gfile.query_info_finish(result)
     file_type = info.get_file_type()
 
     if file_type == Gio.FileType.DIRECTORY:
         launch_with_default_handler(gfile)
     elif file_type == Gio.FileType.REGULAR:
+        # If we can't access a content type, we assume it's text because
+        # context types aren't reliably detected cross-platform.
         content_type = info.get_content_type()
-        # FIXME: Content types are broken on Windows with current gio
-        # If we can't access a content type, assume it's text.
         if not content_type or Gio.content_type_is_a(content_type, "text/plain"):
-            if settings.get_boolean("use-system-editor"):
+            if get_settings().get_boolean("use-system-editor"):
                 if sys.platform == "win32":
                     handler = gfile.query_default_handler(None)
                     result = handler.launch([gfile], None)
@@ -102,13 +114,9 @@ def open_files_external(
     *,
     line: int = 0,
 ) -> None:
-    query_attrs = ",".join(
-        (Gio.FILE_ATTRIBUTE_STANDARD_TYPE, Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE)
-    )
-
     for f in gfiles:
         f.query_info_async(
-            query_attrs,
+            OPEN_EXTERNAL_QUERY_ATTRS,
             Gio.FileQueryInfoFlags.NONE,
             GLib.PRIORITY_LOW,
             None,

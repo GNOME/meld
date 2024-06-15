@@ -136,6 +136,10 @@ def bind_settings(obj):
         settings.bind(settings_id, obj, property_id, bind_flags)
 
 
+def get_settings() -> Gio.Settings:
+    return settings
+
+
 def get_meld_settings() -> MeldSettings:
     return _meldsettings
 
