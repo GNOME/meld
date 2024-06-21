@@ -12,6 +12,7 @@ folders = {
     'const.py',
     'diffgrid.py',
     'dirdiff.py',
+    'externalhelpers.py',
     'filediff.py',
     'filters.py',
     'gutterrendererchunk.py',
