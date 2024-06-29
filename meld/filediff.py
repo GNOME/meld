@@ -1241,11 +1241,10 @@ class FileDiff(Gtk.Box, MeldDoc):
                     if try_save[i]:
                         self.save_file(self.textbuffer.index(buf))
 
-                # Regardless of whether these saves are successful or not,
-                # we return a cancel here, so that other closing logic
-                # doesn't run. Instead, the file-saved callback from
-                # save_file() handles closing files and setting state.
-                return Gtk.ResponseType.CANCEL
+                # We return an APPLY instead of OK here to indicate that other
+                # closing logic shouldn't run. Instead, the file-saved callback
+                # from save_file() handles closing files and setting state.
+                return Gtk.ResponseType.APPLY
             elif response == Gtk.ResponseType.DELETE_EVENT:
                 response = Gtk.ResponseType.CANCEL
             elif response == Gtk.ResponseType.CLOSE:
@@ -1304,6 +1303,12 @@ class FileDiff(Gtk.Box, MeldDoc):
                 log.exception('Failed to shut down matcher process')
             # TODO: Base the return code on something meaningful for VC tools
             self.close_signal.emit(0)
+        elif response == Gtk.ResponseType.CANCEL:
+            self.state = ComparisonState.Normal
+        elif response == Gtk.ResponseType.APPLY:
+            # We have triggered an async save, and need to let it finish
+            ...
+
         return response
 
     def _scroll_to_actions(self, actions):

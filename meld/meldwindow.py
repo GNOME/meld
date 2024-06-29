@@ -211,19 +211,26 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_delete_event(self, *extra):
-        should_cancel = False
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
+        responses = []
         for page in reversed(self.notebook.get_children()):
             self.notebook.set_current_page(self.notebook.page_num(page))
-            response = page.on_delete_event()
-            if response == Gtk.ResponseType.CANCEL:
-                should_cancel = True
+            responses.append(page.on_delete_event())
 
-        should_cancel = should_cancel or self.has_pages()
-        if should_cancel:
-            self.should_close = True
-        return should_cancel
+        have_cancelled_tabs = any(r == Gtk.ResponseType.CANCEL for r in responses)
+        have_saving_tabs = any(r == Gtk.ResponseType.APPLY for r in responses)
+
+        # If we have tabs that are not straight OK responses, we cancel the
+        # close. Either something has cancelled the close, or we temporarily
+        # cancel the close while async saving is happening.
+        cancel_delete = have_cancelled_tabs or have_saving_tabs or self.has_pages()
+        # If we have only saving and no cancelled tabs, we record that we
+        # should close once the other tabs have closed (assuming the state)
+        # doesn't otherwise change.
+        self.should_close = have_saving_tabs and not have_cancelled_tabs
+
+        return cancel_delete
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
