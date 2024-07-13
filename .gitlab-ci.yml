@@ -52,14 +52,6 @@ pytest:
   variables:
       PYTHON_CHECK_COMMAND: "pytest"
 
-pytest-flatpak:
-  extends: .pythonflatpak
-  variables:
-      PYTHON_CHECK_COMMAND: "pytest"
-  # Ideally this wouldn't allow failure, but currently the flatpak environment
-  # is broken. https://gitlab.gnome.org/GNOME/gnome-runtime-images/-/issues/7
-  allow_failure: true
-
 mingw64-dist:
   stage: build
   variables:
