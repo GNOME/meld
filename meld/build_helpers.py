@@ -82,7 +82,7 @@ class MeldDistribution(distutils.dist.Distribution):
 class build_data(distutils.cmd.Command):
 
     gschemas = [
-        ('share/glib-2.0/schemas', ['data/org.gnome.meld.gschema.xml'])
+        ('share/glib-2.0/schemas', ['data/org.gnome.Meld.gschema.xml'])
     ]
 
     frozen_gschemas = [
@@ -367,12 +367,12 @@ class build_i18n(distutils.cmd.Command):
         # Meson-based initial variable templating in distutils.
         import shutil
         shutil.copyfile(
-            'data/org.gnome.meld.desktop.in.in',
-            'data/org.gnome.meld.desktop.in',
+            'data/org.gnome.Meld.desktop.in.in',
+            'data/org.gnome.Meld.desktop.in',
         )
         shutil.copyfile(
-            'data/org.gnome.meld.appdata.xml.in.in',
-            'data/org.gnome.meld.appdata.xml.in',
+            'data/org.gnome.Meld.appdata.xml.in.in',
+            'data/org.gnome.Meld.appdata.xml.in',
         )
 
         self._rebuild_po()

@@ -150,8 +150,6 @@ setup(
     name="Meld",
     version=meld.conf.__version__,
     description='Visual diff and merge tool',
-    author='The Meld project',
-    author_email='meld-list@gnome.org',
     maintainer='Kai Willadsen',
     url='https://meld.app',
     license='GPLv2+',
