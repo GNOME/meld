@@ -188,6 +188,14 @@ class MeldBufferData(GObject.GObject):
             return False
 
     @property
+    def file_id(self) -> Optional[str]:
+        try:
+            info = self._gfile.query_info(Gio.FILE_ATTRIBUTE_ID_FILE, 0, None)
+            return info.get_attribute_string(Gio.FILE_ATTRIBUTE_ID_FILE)
+        except (AttributeError, GLib.GError):
+            return None
+
+    @property
     def writable(self):
         try:
             info = self.gfiletarget.query_info(

@@ -1983,16 +1983,22 @@ class FileDiff(Gtk.Box, MeldDoc):
         self._cached_match.clean(self.linediffer.diff_count())
 
         self._set_merge_action_sensitivity()
-        paths = [
-            tb.data.gfile.get_path()
-            for tb in self.textbuffer if tb.data.gfile
-        ]
-        duplicate_files = list(set(p for p in paths if paths.count(p) > 1))
-        if duplicate_files:
+
+        # Check for self-comparison using Gio's file IDs, so that we catch
+        # symlinks, admin:// URIs and similar situations.
+        duplicate_file = None
+        seen_file_ids = []
+        for tb in self.textbuffer:
+            if not tb.data.gfile:
+                continue
+            if tb.data.file_id in seen_file_ids:
+                duplicate_file = tb.data.label
+                break
+            seen_file_ids.append(tb.data.file_id)
+
+        if duplicate_file:
             for index in range(self.num_panes):
-                primary = _(
-                    'File {} is being compared to itself').format(
-                    duplicate_files[0])
+                primary = _("File {} is being compared to itself").format(duplicate_file)
                 self.msgarea_mgr[index].add_dismissable_msg(
                     'dialog-warning-symbolic', primary, '', self.msgarea_mgr)
         elif self.linediffer.sequences_identical():
