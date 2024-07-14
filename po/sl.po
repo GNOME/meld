@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-07-09 17:29+0000\n"
-"PO-Revision-Date: 2024-07-10 03:35+0200\n"
+"POT-Creation-Date: 2024-07-14 02:01+0000\n"
+"PO-Revision-Date: 2024-07-14 11:13+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -1823,15 +1823,15 @@ msgstr "Kopiraj _navzgor"
 msgid "Copy _down"
 msgstr "Kopiraj _navzdol"
 
-#: meld/const.py:30
+#: meld/const.py:34
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: meld/const.py:31
+#: meld/const.py:35
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: meld/const.py:32
+#: meld/const.py:36
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1899,12 +1899,12 @@ msgstr ""
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtri za besedilo so v uporabi in lahko prikrijejo razlike v vsebini."
 
-#: meld/dirdiff.py:1166 meld/filediff.py:2037
+#: meld/dirdiff.py:1166 meld/filediff.py:2122
 msgid "Hide"
 msgstr "Skrij"
 
-#: meld/dirdiff.py:1168 meld/filediff.py:2039 meld/filediff.py:2069
-#: meld/filediff.py:2071 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1168 meld/filediff.py:2124 meld/filediff.py:2154
+#: meld/filediff.py:2156 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
 msgid "Hi_de"
 msgstr "S_krij"
 
@@ -2008,11 +2008,11 @@ msgstr "Nepodprta vrsta datoteke"
 msgid "External opening of files of type {file_type} is not supported"
 msgstr "Zunanje odpiranje datotek vrste {file_type} ni podprto"
 
-#: meld/filediff.py:1192
+#: meld/filediff.py:1198
 msgid "Comparison results will be inaccurate"
 msgstr "Rezultati primerjave ne bodo natančni"
 
-#: meld/filediff.py:1194
+#: meld/filediff.py:1200
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -2020,97 +2020,106 @@ msgstr ""
 "Filter je spremenil število vrstic v datoteki, ki ni podprta. Primerjava ne "
 "bo natančna."
 
-#: meld/filediff.py:1265
+#: meld/filediff.py:1271
 msgid "Mark conflict as resolved?"
 msgstr "Ali naj se spor označi kot razrešen?"
 
-#: meld/filediff.py:1267
+#: meld/filediff.py:1273
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Če je bil spor uspešno rešen, ga lahko označite kot razrešenega."
 
-#: meld/filediff.py:1270
+#: meld/filediff.py:1276
 msgid "Cancel"
 msgstr "Prekliči"
 
-#: meld/filediff.py:1271
+#: meld/filediff.py:1277
 msgid "Mark _Resolved"
 msgstr "Označi kot _razrešeno"
 
-#: meld/filediff.py:1468 meld/filediff.py:1484
+#: meld/filediff.py:1474 meld/filediff.py:1490
 msgid "Add Synchronization Point"
 msgstr "Dodaj točko usklajevanja"
 
-#: meld/filediff.py:1472
+#: meld/filediff.py:1478
 msgid "Remove Synchronization Point"
 msgstr "Odstrani točko usklajevanja"
 
-#: meld/filediff.py:1476
+#: meld/filediff.py:1482
 msgid "Move Synchronization Point"
 msgstr "Premakni točko usklajevanja"
 
-#: meld/filediff.py:1480
+#: meld/filediff.py:1486
 msgid "Match Synchronization Point"
 msgstr "Ujemi točko usklajevanja"
 
-#: meld/filediff.py:1504
+#: meld/filediff.py:1510
 msgid "Clear Synchronization Points"
 msgstr "Počisti točke usklajevanja"
 
-#: meld/filediff.py:1564 meld/imagediff.py:254
+#: meld/filediff.py:1570 meld/imagediff.py:254
 msgid "File comparison:"
 msgstr "Primerjava datotek:"
 
-#: meld/filediff.py:1700
+#: meld/filediff.py:1716
+#, python-brace-format
+msgid ""
+"Line {line_number} exceeded maximum line length ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+msgstr ""
+"Vrstica {line_number} presega največjo dolžino vrstice ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+
+#: meld/filediff.py:1766
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Prišlo je do napake med odpiranjem datoteke “%s”."
 
-#: meld/filediff.py:1709
+#: meld/filediff.py:1788
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Datoteka %s je videti kot dvojiška datoteka."
 
-#: meld/filediff.py:1711
+#: meld/filediff.py:1790
 msgid "Do you want to open the file using the default application?"
 msgstr "Ali želite odpreti datoteko z uporabo privzetega programa?"
 
-#: meld/filediff.py:1713
+#: meld/filediff.py:1792
 msgid "Open"
 msgstr "Odpri"
 
-#: meld/filediff.py:1735
+#: meld/filediff.py:1814
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Združevanje datotek"
 
-#: meld/filediff.py:1749
+#: meld/filediff.py:1828
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Računanje razlik"
 
-#: meld/filediff.py:1813
+#: meld/filediff.py:1892
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Datoteka %s je bila na disku spremenjena."
 
-#: meld/filediff.py:1814
+#: meld/filediff.py:1893
 msgid "Do you want to reload the file?"
 msgstr "Ali želite ponovno naložiti datoteko?"
 
-#: meld/filediff.py:1816
+#: meld/filediff.py:1895
 msgid "_Reload"
 msgstr "_Ponovno naloži"
 
-#: meld/filediff.py:1994
+#: meld/filediff.py:2080
 msgid "File {} is being compared to itself"
 msgstr "Datoteko {} primerjate samo s seboj"
 
-#: meld/filediff.py:2003
+#: meld/filediff.py:2088
 msgid "Files are identical"
 msgstr "Datoteki sta enaki"
 
-#: meld/filediff.py:2016
+#: meld/filediff.py:2101
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -2118,11 +2127,11 @@ msgstr ""
 "Uporabljani so filtri besedila, zato so lahko razlike med datotekami skrite. "
 "Ali naj se primerja vsebina brez dejavnih filtrov?"
 
-#: meld/filediff.py:2021
+#: meld/filediff.py:2106
 msgid "Files differ in line endings only"
 msgstr "Datoteki se razlikujeta le v končnih vrstičnih oznakah"
 
-#: meld/filediff.py:2023
+#: meld/filediff.py:2108
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2131,15 +2140,15 @@ msgstr ""
 "Datoteki sta enaki, razlikujeta se le v končnih vrstičnih oznakah:\n"
 "%s"
 
-#: meld/filediff.py:2042
+#: meld/filediff.py:2127
 msgid "Show without filters"
 msgstr "Pokaži brez filtrov"
 
-#: meld/filediff.py:2063
+#: meld/filediff.py:2148
 msgid "Change highlighting incomplete"
 msgstr "Spremeni označevanje kot nedokončano"
 
-#: meld/filediff.py:2064
+#: meld/filediff.py:2149
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2147,19 +2156,19 @@ msgstr ""
 "Nekaterih sprememb ni mogoče poudariti, ker so prevelike. Označevanje je "
 "mogoče vsiliti, vendar je postopek lahko zelo dolgotrajen."
 
-#: meld/filediff.py:2073
+#: meld/filediff.py:2158
 msgid "Keep highlighting"
 msgstr "Poudarjanje skladnje"
 
-#: meld/filediff.py:2075
+#: meld/filediff.py:2160
 msgid "_Keep highlighting"
 msgstr "_Poudarjanje skladnje"
 
-#: meld/filediff.py:2088
+#: meld/filediff.py:2173
 msgid "Saving failed"
 msgstr "Shranjevanje je spodletelo."
 
-#: meld/filediff.py:2089
+#: meld/filediff.py:2174
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2167,42 +2176,42 @@ msgstr ""
 "Razmislite o kopiranju kritičnih sprememb v drug program ali datoteko, da se "
 "izognete izgubi podatkov."
 
-#: meld/filediff.py:2098
+#: meld/filediff.py:2183
 msgid "Save Left Pane As"
 msgstr "Shrani levi pladenj kot"
 
-#: meld/filediff.py:2100
+#: meld/filediff.py:2185
 msgid "Save Middle Pane As"
 msgstr "Shrani srednji pladenj kot"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2187
 msgid "Save Right Pane As"
 msgstr "Shrani desni pladenj kot"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2198
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Datoteka %s je bila po odpiranju na disku spremenjena."
 
-#: meld/filediff.py:2115
+#: meld/filediff.py:2200
 msgid "If you save it, any external changes will be lost."
 msgstr "Če datoteko shranite, bodo vse zunanje spremembe izgubljene."
 
-#: meld/filediff.py:2119
+#: meld/filediff.py:2204
 msgid "Save Anyway"
 msgstr "Vseeno shrani"
 
-#: meld/filediff.py:2120
+#: meld/filediff.py:2205
 msgid "Don’t Save"
 msgstr "Ne shrani"
 
-#: meld/filediff.py:2162
+#: meld/filediff.py:2247
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Datoteka »{}« vsebuje znake, ki jih ni mogoče kodirati v naboru »{}«."
 
-#: meld/filediff.py:2166 meld/patchdialog.py:138
+#: meld/filediff.py:2251 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2211,16 +2220,16 @@ msgstr ""
 "Ni mogoče shraniti datoteko zaradi:\n"
 "%s"
 
-#: meld/filediff.py:2170 meld/patchdialog.py:137
+#: meld/filediff.py:2255 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Ni mogoče shraniti datoteke %s."
 
-#: meld/filediff.py:2579
+#: meld/filediff.py:2664
 msgid "Live comparison updating disabled"
 msgstr "Živo posodabljanje ob primerjavi je onemogočeno"
 
-#: meld/filediff.py:2580
+#: meld/filediff.py:2665
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2230,19 +2239,19 @@ msgstr ""
 "Še vedno je mogoče ročno osvežiti primerjavo, živo posodabljanje pa bo spet "
 "na voljo, ko bo usklajevanje končano."
 
-#: meld/filediff.py:2609
+#: meld/filediff.py:2694
 msgid "Can't swap unsaved files"
 msgstr "Neshranjenih datotek ni mogoče zamenjati"
 
-#: meld/filediff.py:2611
+#: meld/filediff.py:2696
 msgid "Files must be saved to disk before swapping panes."
 msgstr "Preden zamenjate podokna, morate datoteke shraniti na disk."
 
-#: meld/filediff.py:2618
+#: meld/filediff.py:2703
 msgid "Can't swap version control comparisons"
 msgstr "Ni mogoče zamenjati primerjav nadzora različic"
 
-#: meld/filediff.py:2620
+#: meld/filediff.py:2705
 msgid "Swapping panes is not supported in version control mode."
 msgstr "Zamenjava podoken v načinu nadzora različic ni podprta."
 
@@ -2388,7 +2397,7 @@ msgid "remote folder “{}” not supported"
 msgstr "oddaljena mapa »{}« ni podprta"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: meld/meldbuffer.py:115
+#: meld/meldbuffer.py:125
 msgid "<unnamed>"
 msgstr "<neimenovano>"
 
