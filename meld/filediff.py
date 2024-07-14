@@ -32,6 +32,7 @@ from meld.const import (
     ActionMode,
     ChunkAction,
     FileComparisonMode,
+    FileLoadError,
 )
 from meld.externalhelpers import open_files_external
 from meld.gutterrendererchunk import GutterRendererChunkLines
@@ -97,6 +98,9 @@ def with_scroll_lock(lock_attr):
 MASK_SHIFT, MASK_CTRL = 1, 2
 PANE_LEFT, PANE_RIGHT = -1, +1
 
+LOAD_PROGRESS_MARK = "meld-load-progress"
+#: Line length at which we'll cancel loads because of potential hangs
+LINE_LENGTH_LIMIT = 8 * 1024
 
 class CursorDetails:
     __slots__ = (
@@ -412,6 +416,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.on_overview_map_style_changed()
 
         for buf in self.textbuffer:
+            buf.create_mark(LOAD_PROGRESS_MARK, buf.get_start_iter(), True)
             buf.undo_sequence = self.undosequence
             buf.connect(
                 'notify::has-selection', self.update_text_actions_sensitivity)
@@ -1650,10 +1655,16 @@ class FileDiff(Gtk.Box, MeldDoc):
         if custom_candidates:
             loader.set_candidate_encodings(custom_candidates)
 
+        buf.move_mark_by_name(LOAD_PROGRESS_MARK, buf.get_start_iter())
+        cancellable = Gio.Cancellable()
+        errors = {}
         loader.load_async(
             GLib.PRIORITY_HIGH,
+            cancellable=cancellable,
+            progress_callback=self.file_load_progress,
+            progress_callback_data=(loader, cancellable, errors),
             callback=self.file_loaded,
-            user_data=(pane,)
+            user_data=(pane, errors),
         )
 
     def get_comparison(self):
@@ -1666,11 +1677,65 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         return comparison_type, uris
 
-    def file_loaded(self, loader, result, user_data):
+    def file_load_progress(
+        self,
+        current_bytes: int,
+        total_bytes: int,
+        loader: GtkSource.FileLoader,
+        cancellable: Gio.Cancellable,
+        errors: dict[int, str],
+    ) -> None:
+        failed_it = None
+        buffer = loader.get_buffer()
+        progress_mark = buffer.get_mark(LOAD_PROGRESS_MARK)
 
+        # If forward_line() returns False it points to the current end of the
+        # buffer after the movement; if this happens, we assume that we don't
+        # yet have a full line, and so don't can't check it for length.
+        it = buffer.get_iter_at_mark(progress_mark)
+        last_it = it.copy()
+        while it.forward_line():
+            # last_it is now on a fully-loaded line, so we can check it
+            if last_it.get_chars_in_line() > LINE_LENGTH_LIMIT:
+                failed_it = last_it
+                break
+            last_it.assign(it)
+
+        # We also have to check the last line in the file, which would
+        # otherwise be skipped by the above logic.
+        if (current_bytes == total_bytes) and (it.get_chars_in_line() > LINE_LENGTH_LIMIT):
+            failed_it = it
+
+        if failed_it:
+            # Ideally we'd have custom GError handling here instead, but
+            # set_error_if_cancelled() doesn't appear to work in pygobject
+            # bindings.
+            errors[self.textbuffer.index(buffer)] = (
+                FileLoadError.LINE_TOO_LONG,
+                _(
+                    "Line {line_number} exceeded maximum line length "
+                    "({line_length} > {LINE_LENGTH_LIMIT})"
+                ).format(
+                    line_number=failed_it.get_line() + 1,
+                    line_length=failed_it.get_chars_in_line(),
+                    LINE_LENGTH_LIMIT=LINE_LENGTH_LIMIT,
+                )
+            )
+            cancellable.cancel()
+
+        # Moving the mark invalidates the text iterators, so this must happen
+        # *last* here, or the above line length accesses will be incorrect.
+        buffer.move_mark(progress_mark, last_it)
+
+    def file_loaded(
+        self,
+        loader: GtkSource.FileLoader,
+        result: Gio.AsyncResult,
+        user_data: Tuple[int, dict[int, str]],
+    ):
         gfile = loader.get_location()
-        pane = user_data[0]
         buf = loader.get_buffer()
+        pane, errors = user_data
 
         try:
             loader.load_finish(result)
@@ -1698,10 +1763,15 @@ class FileDiff(Gtk.Box, MeldDoc):
 
             filename = GLib.markup_escape_text(
                 gfile.get_parse_name())
-            primary = _(
-                "There was a problem opening the file “%s”." % filename)
+            primary = _("There was a problem opening the file “%s”." % filename)
+            # If we have custom errors defined, use those instead
+            if errors.get(pane):
+                error, error_text = errors[pane]
+            else:
+                error_text = err.message
             self.msgarea_mgr[pane].add_dismissable_msg(
-                'dialog-error-symbolic', primary, err.message)
+                "dialog-error-symbolic", primary, error_text
+            )
             buf.data.state = MeldBufferState.LOAD_ERROR
 
         start, end = buf.get_bounds()

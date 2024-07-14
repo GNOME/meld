@@ -26,6 +26,10 @@ class FileComparisonMode(enum.Enum):
     Compare = 'Compare'
 
 
+class FileLoadError(enum.IntEnum):
+    LINE_TOO_LONG = 1
+
+
 NEWLINES = {
     GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),
     GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),
