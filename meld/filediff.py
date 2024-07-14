@@ -1704,7 +1704,14 @@ class FileDiff(Gtk.Box, MeldDoc):
         buf = loader.get_buffer()
         start, end = buf.get_bounds()
         buffer_text = buf.get_text(start, end, False)
-        if not loader.get_encoding() and '\\00' in buffer_text:
+
+        # Don't risk overwriting a more-important "we didn't load the file
+        # correctly" message with this semi-helpful "is it binary?" prompt
+        if (
+            not loader.get_encoding()
+            and "\\00" in buffer_text
+            and not self.msgarea_mgr[pane].has_message()
+        ):
             filename = GLib.markup_escape_text(gfile.get_parse_name())
             primary = _("File %s appears to be a binary file.") % filename
             secondary = _(
