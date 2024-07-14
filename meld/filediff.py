@@ -43,6 +43,7 @@ from meld.meldbuffer import (
     BufferDeletionAction,
     BufferInsertionAction,
     BufferLines,
+    MeldBufferState,
 )
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
@@ -1596,7 +1597,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             if gfile:
                 files.append((pane, gfile, encoding))
             else:
-                self.textbuffer[pane].data.loaded = True
+                self.textbuffer[pane].data.state = MeldBufferState.LOAD_FINISHED
 
         if not files:
             self.scheduler.add_task(self._compare_files_internal())
@@ -1630,7 +1631,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.msgarea_mgr[pane].clear()
 
         buf = self.textbuffer[pane]
-        buf.data.reset(gfile)
+        buf.data.reset(gfile, MeldBufferState.LOADING)
         self.file_open_button[pane].props.file = gfile
 
         # FIXME: this was self.textbuffer[pane].data.label, which could be
@@ -1669,9 +1670,11 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         gfile = loader.get_location()
         pane = user_data[0]
+        buf = loader.get_buffer()
 
         try:
             loader.load_finish(result)
+            buf.data.state = MeldBufferState.LOAD_FINISHED
         except GLib.Error as err:
             if err.matches(
                     GLib.convert_error_quark(),
@@ -1683,7 +1686,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                 #
                 # The handling here is fragile, but it's better than
                 # getting into a non-obvious corrupt state.
-                buf = loader.get_buffer()
                 buf.end_not_undoable_action()
                 buf.end_user_action()
 
@@ -1700,8 +1702,8 @@ class FileDiff(Gtk.Box, MeldDoc):
                 "There was a problem opening the file “%s”." % filename)
             self.msgarea_mgr[pane].add_dismissable_msg(
                 'dialog-error-symbolic', primary, err.message)
+            buf.data.state = MeldBufferState.LOAD_ERROR
 
-        buf = loader.get_buffer()
         start, end = buf.get_bounds()
         buffer_text = buf.get_text(start, end, False)
 
@@ -1732,9 +1734,9 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.update_buffer_writable(buf)
 
         buf.data.update_mtime()
-        buf.data.loaded = True
 
-        if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
+        buffer_states = [b.data.state for b in self.textbuffer[:self.num_panes]]
+        if all(state == MeldBufferState.LOAD_FINISHED for state in buffer_states):
             self.scheduler.add_task(self._compare_files_internal())
 
     def _merge_files(self):

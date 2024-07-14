@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import enum
 import logging
 from typing import Any, List, Optional
 
@@ -76,7 +77,16 @@ class MeldBuffer(GtkSource.Buffer):
         return it
 
 
+class MeldBufferState(enum.Enum):
+    EMPTY = "EMPTY"
+    LOADING = "LOADING"
+    LOAD_FINISHED = "LOAD_FINISHED"
+    LOAD_ERROR = "LOAD_ERROR"
+
+
 class MeldBufferData(GObject.GObject):
+
+    state: MeldBufferState
 
     @GObject.Signal('file-changed')
     def file_changed_signal(self) -> None:
@@ -94,16 +104,16 @@ class MeldBufferData(GObject.GObject):
         self._label = None
         self._monitor = None
         self._sourcefile = None
-        self.reset(gfile=None)
+        self.reset(gfile=None, state=MeldBufferState.EMPTY)
 
-    def reset(self, gfile):
+    def reset(self, gfile: Optional[Gio.File], state: MeldBufferState):
         same_file = gfile and self._gfile and gfile.equal(self._gfile)
         self.gfile = gfile
         if same_file:
             self.label = self._label
         else:
             self.label = gfile.get_parse_name() if gfile else None
-        self.loaded = False
+        self.state = state
         self.savefile = None
 
     def __del__(self):
