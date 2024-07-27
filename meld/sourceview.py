@@ -25,6 +25,10 @@ from meld.style import colour_lookup_with_fallback, get_common_theme
 
 log = logging.getLogger(__name__)
 
+CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
+SHIFT_MASK = Gdk.ModifierType.SHIFT_MASK
+ALT_MASK = Gdk.ModifierType.MOD1_MASK
+
 
 def get_custom_encoding_candidates():
     custom_candidates = []
@@ -160,29 +164,25 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
-        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
-
+        (Gdk.KEY_z, CONTROL_MASK),
+        (Gdk.KEY_z, CONTROL_MASK | SHIFT_MASK),
         # We replace the default line movement behaviour of Alt+Up/Down
-        (Gdk.KEY_Up, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
-        (Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
+        (Gdk.KEY_Up, ALT_MASK),
+        (Gdk.KEY_KP_Up, ALT_MASK),
+        (Gdk.KEY_KP_Up, ALT_MASK | SHIFT_MASK),
+        (Gdk.KEY_Down, ALT_MASK),
+        (Gdk.KEY_KP_Down, ALT_MASK),
+        (Gdk.KEY_KP_Down, ALT_MASK | SHIFT_MASK),
         # ...and Alt+Left/Right
-        (Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Left, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Right, Gdk.ModifierType.MOD1_MASK),
+        (Gdk.KEY_Left, ALT_MASK),
+        (Gdk.KEY_KP_Left, ALT_MASK),
+        (Gdk.KEY_Right, ALT_MASK),
+        (Gdk.KEY_KP_Right, ALT_MASK),
         # ...and Ctrl+Page Up/Down
-        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Up, CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, CONTROL_MASK),
+        (Gdk.KEY_Page_Down, CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, CONTROL_MASK),
     )
 
     def __init__(self, *args, **kwargs):
