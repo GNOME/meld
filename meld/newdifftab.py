@@ -19,7 +19,7 @@ from gi.repository import Gio, GLib, GObject, Gtk
 
 from meld.conf import _
 from meld.melddoc import LabeledObjectMixin, MeldDoc
-from meld.recent import recent_comparisons
+from meld.recent import get_recent_comparisons
 from meld.ui.util import map_widgets_into_lists
 
 
@@ -155,7 +155,7 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
 
         tab = self.diff_methods[self.diff_type](
             compare_gfiles, **compare_kwargs)
-        recent_comparisons.add(tab)
+        get_recent_comparisons().add(tab)
         self.emit('diff-created', tab)
 
     @Gtk.Template.Callback()

@@ -236,4 +236,12 @@ class RecentFiles:
         return "\n".join(descriptions)
 
 
-recent_comparisons = RecentFiles()
+_recent_comparisons = None
+
+
+def get_recent_comparisons() -> RecentFiles:
+    global _recent_comparisons
+
+    if not _recent_comparisons:
+        _recent_comparisons = RecentFiles()
+    return _recent_comparisons

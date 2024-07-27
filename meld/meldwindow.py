@@ -37,7 +37,7 @@ from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.misc import guess_if_remote_x11
 from meld.newdifftab import NewDiffTab
-from meld.recent import recent_comparisons
+from meld.recent import get_recent_comparisons
 from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
 from meld.ui.notebooklabel import NotebookLabel
@@ -446,6 +446,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         return doc
 
     def append_recent(self, uri):
+        recent_comparisons = get_recent_comparisons()
         comparison_type, gfiles = recent_comparisons.read(uri)
         comparison_method = {
             RecentType.File: self.append_filediff,
@@ -488,7 +489,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             tab = self.append_diff(gfiles, auto_compare=auto_compare,
                                    auto_merge=auto_merge)
         if tab:
-            recent_comparisons.add(tab)
+            get_recent_comparisons().add(tab)
             if focus:
                 self.notebook.set_current_page(self.notebook.page_num(tab))
 

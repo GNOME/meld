@@ -45,7 +45,7 @@ class RecentSelector(Gtk.Grid):
         return Gtk.Grid.do_realize(self)
 
     def custom_recent_filter_func(
-            self, filter_info: Gtk.RecentFilterInfo) -> bool:
+            self, filter_info: "Gtk.RecentFilterInfo") -> bool:
         """Filter function for Meld-specific files
 
         Normal GTK recent filter rules are all OR-ed together to check
@@ -61,7 +61,7 @@ class RecentSelector(Gtk.Grid):
 
         return True
 
-    def make_recent_filter(self) -> Gtk.RecentFilter:
+    def make_recent_filter(self) -> "Gtk.RecentFilter":
         recent_filter = Gtk.RecentFilter()
         recent_filter.add_custom(
             (
