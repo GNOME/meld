@@ -28,11 +28,11 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 
 from meld import tree
 from meld.conf import _
+from meld.const import RecentType
 from meld.externalhelpers import open_files_external
 from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
-from meld.recent import RecentType
 from meld.settings import bind_settings, settings
 from meld.ui.vcdialogs import CommitDialog, PushDialog
 from meld.vc import _null, get_vcs

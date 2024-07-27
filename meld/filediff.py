@@ -33,6 +33,7 @@ from meld.const import (
     ChunkAction,
     FileComparisonMode,
     FileLoadError,
+    RecentType,
 )
 from meld.externalhelpers import open_files_external
 from meld.gutterrendererchunk import GutterRendererChunkLines
@@ -50,7 +51,6 @@ from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.misc import user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
-from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
     LanguageManager,

@@ -30,6 +30,13 @@ class FileLoadError(enum.IntEnum):
     LINE_TOO_LONG = 1
 
 
+class RecentType(enum.Enum):
+    File = "File"
+    Folder = "Folder"
+    VersionControl = "Version control"
+    Merge = "Merge"
+
+
 NEWLINES = {
     GtkSource.NewlineType.LF: ('\n', _("UNIX (LF)")),
     GtkSource.NewlineType.CR_LF: ('\r\n', _("DOS/Windows (CR-LF)")),

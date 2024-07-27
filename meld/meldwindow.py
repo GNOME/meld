@@ -28,6 +28,7 @@ from meld.const import (
     FILE_FILTER_ACTION_FORMAT,
     TEXT_FILTER_ACTION_FORMAT,
     FileComparisonMode,
+    RecentType,
 )
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
@@ -36,7 +37,7 @@ from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.misc import guess_if_remote_x11
 from meld.newdifftab import NewDiffTab
-from meld.recent import RecentType, recent_comparisons
+from meld.recent import recent_comparisons
 from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
 from meld.ui.notebooklabel import NotebookLabel

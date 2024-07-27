@@ -25,7 +25,6 @@ infrastructure that that's actually what we opened.
 """
 
 import configparser
-import enum
 import logging
 import os
 import sys
@@ -36,16 +35,10 @@ from gi.repository import Gio, GLib, Gtk
 
 import meld.misc
 from meld.conf import _
+from meld.const import RecentType
 from meld.iohelpers import is_file_on_tmpfs
 
 log = logging.getLogger(__name__)
-
-
-class RecentType(enum.Enum):
-    File = "File"
-    Folder = "Folder"
-    VersionControl = "Version control"
-    Merge = "Merge"
 
 
 class RecentFiles:

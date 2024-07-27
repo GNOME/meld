@@ -21,7 +21,7 @@ from typing import Sequence
 from gi.repository import Gio, GObject, Gtk
 
 from meld.conf import _
-from meld.recent import RecentType
+from meld.const import RecentType
 from meld.task import FifoScheduler
 
 log = logging.getLogger(__name__)

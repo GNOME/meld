@@ -35,12 +35,11 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 # TODO: Don't from-import whole modules
 from meld import misc, tree
 from meld.conf import _
-from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
+from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP, RecentType
 from meld.externalhelpers import open_files_external
 from meld.iohelpers import find_shared_parent_path, trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
-from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui.cellrenderers import (
