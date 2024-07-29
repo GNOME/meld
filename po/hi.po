@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-07-10 03:39+0000\n"
-"PO-Revision-Date: 2024-07-10 16:46+0530\n"
+"POT-Creation-Date: 2024-07-14 02:01+0000\n"
+"PO-Revision-Date: 2024-07-15 19:16+0530\n"
 "Last-Translator: Scrambled777 <weblate.scrambled777@simplelogin.com>\n"
 "Language-Team: Hindi <indlinux-hindi@lists.sourceforge.net>\n"
 "Language: hi\n"
@@ -1791,15 +1791,15 @@ msgstr "ऊपर कॉपी करें (_u)"
 msgid "Copy _down"
 msgstr "नीचे कॉपी करें (_d)"
 
-#: meld/const.py:30
+#: meld/const.py:34
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: meld/const.py:31
+#: meld/const.py:35
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: meld/const.py:32
+#: meld/const.py:36
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1867,12 +1867,12 @@ msgstr ""
 "पाठ फिल्टर का प्रयोग किया जा रहा है और हो सकता है कि वे विषय-वस्तु के अंतर को छिपा रहे "
 "हों।"
 
-#: meld/dirdiff.py:1166 meld/filediff.py:2037
+#: meld/dirdiff.py:1166 meld/filediff.py:2122
 msgid "Hide"
 msgstr "छुपाएं"
 
-#: meld/dirdiff.py:1168 meld/filediff.py:2039 meld/filediff.py:2069
-#: meld/filediff.py:2071 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1168 meld/filediff.py:2124 meld/filediff.py:2154
+#: meld/filediff.py:2156 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
 msgid "Hi_de"
 msgstr "छुपाएं (_d)"
 
@@ -1974,11 +1974,11 @@ msgstr "असमर्थित फाइल प्रकार"
 msgid "External opening of files of type {file_type} is not supported"
 msgstr "{file_type} प्रकार की फाइलों को बाहरी रूप से खोलना समर्थित नहीं है"
 
-#: meld/filediff.py:1192
+#: meld/filediff.py:1198
 msgid "Comparison results will be inaccurate"
 msgstr "तुलना परिणाम अयथार्थ होंगे"
 
-#: meld/filediff.py:1194
+#: meld/filediff.py:1200
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -1986,99 +1986,108 @@ msgstr ""
 "किसी फिल्टर ने फाइल में पंक्तियों की संख्या बदल दी है, जो असमर्थित है। तुलना सटीक नहीं "
 "होगी।"
 
-#: meld/filediff.py:1265
+#: meld/filediff.py:1271
 msgid "Mark conflict as resolved?"
 msgstr "विवाद को हल हुआ के रूप में चिह्नित करें?"
 
-#: meld/filediff.py:1267
+#: meld/filediff.py:1273
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "यदि टकराव सफलतापूर्वक हल हो गया है, तो आप इसे अब हल हो गया के रूप में चिह्नित कर सकते "
 "हैं।"
 
-#: meld/filediff.py:1270
+#: meld/filediff.py:1276
 msgid "Cancel"
 msgstr "रद्द करें"
 
-#: meld/filediff.py:1271
+#: meld/filediff.py:1277
 msgid "Mark _Resolved"
 msgstr "सुलझा हुआ चिन्हित करें *_R)"
 
-#: meld/filediff.py:1468 meld/filediff.py:1484
+#: meld/filediff.py:1474 meld/filediff.py:1490
 msgid "Add Synchronization Point"
 msgstr "समन्वयन बिंदु जोड़ें"
 
-#: meld/filediff.py:1472
+#: meld/filediff.py:1478
 msgid "Remove Synchronization Point"
 msgstr "समन्वयन बिंदु हटाएं"
 
-#: meld/filediff.py:1476
+#: meld/filediff.py:1482
 msgid "Move Synchronization Point"
 msgstr "समन्वयन बिंदु को स्थानांतरित करें"
 
-#: meld/filediff.py:1480
+#: meld/filediff.py:1486
 msgid "Match Synchronization Point"
 msgstr "समन्वयन बिंदु का मिलान करें"
 
-#: meld/filediff.py:1504
+#: meld/filediff.py:1510
 msgid "Clear Synchronization Points"
 msgstr "समन्वयन बिंदु साफ़ करें"
 
-#: meld/filediff.py:1564 meld/imagediff.py:254
+#: meld/filediff.py:1570 meld/imagediff.py:254
 msgid "File comparison:"
 msgstr "फाइल तुलना:"
 
-#: meld/filediff.py:1700
+#: meld/filediff.py:1716
+#, python-brace-format
+msgid ""
+"Line {line_number} exceeded maximum line length ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+msgstr ""
+"पंक्ति {line_number} अधिकतम पंक्ति लंबाई से अधिक हो गई ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+
+#: meld/filediff.py:1766
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "फाइल “%s” को खोलने में समस्या हुई।"
 
-#: meld/filediff.py:1709
+#: meld/filediff.py:1788
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "फाइल %s एक बाइनरी फाइल प्रतीत होती है।"
 
-#: meld/filediff.py:1711
+#: meld/filediff.py:1790
 msgid "Do you want to open the file using the default application?"
 msgstr "क्या आप तयशुदा अनुप्रयोग का प्रयोग करके फाइल खोलना चाहते हैं?"
 
-#: meld/filediff.py:1713
+#: meld/filediff.py:1792
 msgid "Open"
 msgstr "खोलें"
 
-#: meld/filediff.py:1735
+#: meld/filediff.py:1814
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] फाइलें विलय की जा रही हैं"
 
-#: meld/filediff.py:1749
+#: meld/filediff.py:1828
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] अंतरों की गणना की जा रही हैं"
 
-#: meld/filediff.py:1813
+#: meld/filediff.py:1892
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "डिस्क पर फाइल %s बदल गई है"
 
-#: meld/filediff.py:1814
+#: meld/filediff.py:1893
 msgid "Do you want to reload the file?"
 msgstr "क्या आप फाइल पुनः लोड करना चाहते हैं?"
 
-#: meld/filediff.py:1816
+#: meld/filediff.py:1895
 msgid "_Reload"
 msgstr "पुनः लोड करें (_R)"
 
-#: meld/filediff.py:1994
+#: meld/filediff.py:2080
 msgid "File {} is being compared to itself"
 msgstr "फाइल {} की तुलना स्वयं से की जा रही है"
 
-#: meld/filediff.py:2003
+#: meld/filediff.py:2088
 msgid "Files are identical"
 msgstr "फाइलें समान हैं"
 
-#: meld/filediff.py:2016
+#: meld/filediff.py:2101
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -2086,11 +2095,11 @@ msgstr ""
 "पाठ फिल्टर का प्रयोग किया जा रहा है, और हो सकता है कि वे फाइलों के बीच अंतर छिपा रहे "
 "हों। क्या आप फिल्टर न की गई फाइलों की तुलना करना चाहेंगे?"
 
-#: meld/filediff.py:2021
+#: meld/filediff.py:2106
 msgid "Files differ in line endings only"
 msgstr "फाइलें केवल पंक्ति के अंत में भिन्न होती हैं"
 
-#: meld/filediff.py:2023
+#: meld/filediff.py:2108
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2099,15 +2108,15 @@ msgstr ""
 "फाइलें एक समान हैं, सिवाय पंक्ति के अंत में अंतर के:\n"
 "%s"
 
-#: meld/filediff.py:2042
+#: meld/filediff.py:2127
 msgid "Show without filters"
 msgstr "बिना फिल्टर के दिखाएं"
 
-#: meld/filediff.py:2063
+#: meld/filediff.py:2148
 msgid "Change highlighting incomplete"
 msgstr "परिवर्तन चिन्हांकन अपूर्ण"
 
-#: meld/filediff.py:2064
+#: meld/filediff.py:2149
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2116,19 +2125,19 @@ msgstr ""
 "चिन्हांकित करने के लिए मेल्ड को अधिक समय लेने के लिए बाध्य कर सकते हैं, हालांकि यह धीमा हो "
 "सकता है।"
 
-#: meld/filediff.py:2073
+#: meld/filediff.py:2158
 msgid "Keep highlighting"
 msgstr "चिन्हांकन करते रहें"
 
-#: meld/filediff.py:2075
+#: meld/filediff.py:2160
 msgid "_Keep highlighting"
 msgstr "चिन्हांकन करते रहें (_K)"
 
-#: meld/filediff.py:2088
+#: meld/filediff.py:2173
 msgid "Saving failed"
 msgstr "सहेजना विफल"
 
-#: meld/filediff.py:2089
+#: meld/filediff.py:2174
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2136,36 +2145,36 @@ msgstr ""
 "डेटा हानि से बचने के लिए कृपया किसी भी महत्वपूर्ण परिवर्तन को किसी अन्य प्रोग्राम या "
 "फाइल में कॉपी करने पर विचार करें।"
 
-#: meld/filediff.py:2098
+#: meld/filediff.py:2183
 msgid "Save Left Pane As"
 msgstr "बाएं फलक को ऐसे सहेजें"
 
-#: meld/filediff.py:2100
+#: meld/filediff.py:2185
 msgid "Save Middle Pane As"
 msgstr "मध्य फलक को ऐसे सहेजें"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2187
 msgid "Save Right Pane As"
 msgstr "दाएं फलक को ऐसे सहेजें"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2198
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "फाइल %s को खोले जाने के बाद से डिस्क पर इसमें परिवर्तन हो गया है"
 
-#: meld/filediff.py:2115
+#: meld/filediff.py:2200
 msgid "If you save it, any external changes will be lost."
 msgstr "यदि आप इसे सहेजते हैं, तो कोई भी बाहरी परिवर्तन खो जाएगा।"
 
-#: meld/filediff.py:2119
+#: meld/filediff.py:2204
 msgid "Save Anyway"
 msgstr "फिर भी सहेजें"
 
-#: meld/filediff.py:2120
+#: meld/filediff.py:2205
 msgid "Don’t Save"
 msgstr "सहेजें नहीं"
 
-#: meld/filediff.py:2162
+#: meld/filediff.py:2247
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2173,7 +2182,7 @@ msgstr ""
 "फाइल “{}” में ऐसे वर्ण हैं जिन्हें इसके वर्तमान एन्कोडिंग “{}” का प्रयोग करके एन्कोड नहीं "
 "किया जा सकता है।"
 
-#: meld/filediff.py:2166 meld/patchdialog.py:138
+#: meld/filediff.py:2251 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2182,16 +2191,16 @@ msgstr ""
 "फाइल को सहेजा नहीं जा सका क्योंकि:\n"
 "%s"
 
-#: meld/filediff.py:2170 meld/patchdialog.py:137
+#: meld/filediff.py:2255 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "फाइल %s सहेजी नहीं जा सकी।"
 
-#: meld/filediff.py:2579
+#: meld/filediff.py:2664
 msgid "Live comparison updating disabled"
 msgstr "लाइव तुलना अद्यतनीकरण अक्षम"
 
-#: meld/filediff.py:2580
+#: meld/filediff.py:2665
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2201,19 +2210,19 @@ msgstr ""
 "अभी भी हस्तचालित रूप से रिफ्रेश कर सकते हैं, और समन्वयन बिंदु साफ़ होने पर लाइव अद्यतन फिर "
 "से शुरू हो जाएंगे।"
 
-#: meld/filediff.py:2609
+#: meld/filediff.py:2694
 msgid "Can't swap unsaved files"
 msgstr "सहेजी न गई फाइलों की अदला-बदली नहीं की जा सकतीं"
 
-#: meld/filediff.py:2611
+#: meld/filediff.py:2696
 msgid "Files must be saved to disk before swapping panes."
 msgstr "फलकों की अदला-बदली करने से पहले फाइलों को डिस्क पर सहेजा जाना चाहिए।"
 
-#: meld/filediff.py:2618
+#: meld/filediff.py:2703
 msgid "Can't swap version control comparisons"
 msgstr "संस्करण नियंत्रण तुलनाओं की अदला-बदली नहीं की जा सकती"
 
-#: meld/filediff.py:2620
+#: meld/filediff.py:2705
 msgid "Swapping panes is not supported in version control mode."
 msgstr "संस्करण नियंत्रण मोड में फलकों की अदला-बदली समर्थित नहीं है।"
 
@@ -2359,7 +2368,7 @@ msgid "remote folder “{}” not supported"
 msgstr "रिमोट फोल्डर “{}” समर्थित नहीं है"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: meld/meldbuffer.py:115
+#: meld/meldbuffer.py:125
 msgid "<unnamed>"
 msgstr "<अनाम>"
 
