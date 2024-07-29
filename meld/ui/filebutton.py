@@ -31,15 +31,6 @@ class MeldFileButton(Gtk.Button):
         default=Gtk.FileChooserAction.OPEN,
     )
 
-    local_only: bool = GObject.Property(
-        type=bool,
-        nick="Whether selected files should be limited to local file:// URIs",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
-        default=True,
-    )
 
     dialog_label: str = GObject.Property(
         type=str,
@@ -71,7 +62,6 @@ class MeldFileButton(Gtk.Button):
             title=self.dialog_label,
             transient_for=self.get_toplevel(),
             action=self.action,
-            local_only=self.local_only
         )
 
         if self.file and self.file.get_path():
