@@ -121,23 +121,6 @@ class MeldWindow(Gtk.ApplicationWindow):
     def do_realize(self):
         Gtk.ApplicationWindow.do_realize(self)
 
-        app = self.get_application()
-        menu = app.get_menu_by_id("gear-menu")
-        self.gear_menu_button.set_popover(
-            Gtk.Popover.new_from_model(self.gear_menu_button, menu))
-
-        filter_model = app.get_menu_by_id("text-filter-menu")
-        self.text_filter_button.set_popover(
-            Gtk.Popover.new_from_model(self.text_filter_button, filter_model))
-
-        filter_menu = app.get_menu_by_id("folder-status-filter-menu")
-        self.folder_filter_button.set_popover(
-            Gtk.Popover.new_from_model(self.folder_filter_button, filter_menu))
-
-        vc_filter_model = app.get_menu_by_id('vc-status-filter-menu')
-        self.vc_filter_button.set_popover(
-            Gtk.Popover.new_from_model(self.vc_filter_button, vc_filter_model))
-
         meld_settings = get_meld_settings()
         self.update_text_filters(meld_settings)
         self.update_filename_filters(meld_settings)
@@ -148,6 +131,8 @@ class MeldWindow(Gtk.ApplicationWindow):
                 "file-filters-changed", self.update_filename_filters),
         ]
 
+        app = self.get_application()
+        menu = app.get_menu_by_id("gear-menu")
         meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
     def update_filename_filters(self, settings):
