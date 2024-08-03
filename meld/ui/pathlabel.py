@@ -69,21 +69,6 @@ class PathLabel(Gtk.MenuButton):
     def __get_path_label(self) -> Optional[str]:
         return self._path_label
 
-    def __get_icon_name(self) -> Optional[str]:
-        return self._icon_name
-
-    def __set_icon_name(self, icon_name: Optional[str]) -> None:
-        if icon_name == self._icon_name:
-            return
-
-        if icon_name:
-            image = Gtk.Image.new_from_icon_name(icon_name)
-            self.set_image(image)
-            self.props.always_show_image = True
-        else:
-            self.set_image(None)
-            self.props.always_show_image = False
-
     gfile = GObject.Property(
         type=Gio.File,
         nick='File being displayed',
@@ -105,13 +90,6 @@ class PathLabel(Gtk.MenuButton):
         type=str,
         nick='Summarised path label relative to defined parent',
         getter=__get_path_label,
-    )
-
-    icon_name = GObject.Property(
-        type=str,
-        nick='The name of the icon to display',
-        getter=__get_icon_name,
-        setter=__set_icon_name,
     )
 
     custom_label = GObject.Property(
