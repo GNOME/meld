@@ -100,14 +100,6 @@ class PathLabel(Gtk.MenuButton):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.drag_dest_set(
-            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
-            Gtk.DestDefaults.DROP,
-            None,
-            Gdk.DragAction.COPY,
-        )
-        self.drag_dest_add_uri_targets()
-
         self._gfile = None
         self._parent_gfile = None
         self._path_label = None
@@ -153,7 +145,7 @@ class PathLabel(Gtk.MenuButton):
         # Our label needs ellipsization to avoid forcing minimum window
         # sizes for long filenames. This child iteration hack is
         # required as GtkButton has no label access.
-        for child in self.get_children():
+        for child in self:
             if isinstance(child, Gtk.Label):
                 child.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
 
