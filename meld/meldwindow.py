@@ -18,7 +18,7 @@ import logging
 import os
 from typing import Any, Dict, Optional, Sequence
 
-from gi.repository import Gdk, Gio, GLib, Gtk
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
@@ -101,13 +101,10 @@ class MeldWindow(Gtk.ApplicationWindow):
             for attr in ('stop', 'hide', 'show', 'start'):
                 setattr(self.spinner, attr, lambda *args: True)
 
-        self.drag_dest_set(
-            Gtk.DestDefaults.MOTION | Gtk.DestDefaults.HIGHLIGHT |
-            Gtk.DestDefaults.DROP,
-            None, Gdk.DragAction.COPY)
-        self.drag_dest_add_uri_targets()
-        self.connect(
-            "drag_data_received", self.on_widget_drag_data_received)
+        drop_target = Gtk.DropTarget.new(GObject.TYPE_NONE, Gdk.DragAction.COPY)
+        drop_target.set_gtypes([Gdk.FileList])
+        drop_target.connect("drop", self.on_widget_drag_drop)
+        self.add_controller(drop_target)
 
         self.window_state = SavedWindowState()
         self.window_state.bind(self)
@@ -177,12 +174,20 @@ class MeldWindow(Gtk.ApplicationWindow):
         filter_model = app.get_menu_by_id("text-filter-menu")
         replace_menu_section(filter_model, section)
 
-    def on_widget_drag_data_received(
-            self, wid, context, x, y, selection_data, info, time):
-        uris = selection_data.get_uris()
-        if uris:
-            self.open_paths([Gio.File.new_for_uri(uri) for uri in uris])
-            return True
+    def on_widget_drag_drop(
+        self,
+        target: Gtk.DropTarget,
+        value: Gdk.FileList,
+        x: float,
+        y: float,
+        *data: Any,
+    ) -> bool:
+        files = value.get_files()
+        if not files:
+            return False
+
+        self.open_paths(files)
+        return True
 
     def on_idle(self):
         ret = self.scheduler.iteration()
@@ -211,7 +216,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.idle_hooked = GLib.idle_add(self.on_idle)
 
     @Gtk.Template.Callback()
-    def on_delete_event(self, *extra):
+    def on_close_request(self, *extra):
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
         responses = []
@@ -253,7 +258,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
-        self.view_toolbar.foreach(self.view_toolbar.remove)
+        toolbar_widgets = [child for child in self.view_toolbar]
+        for child in toolbar_widgets:
+            self.view_toolbar.remove(child)
+
         if hasattr(newdoc, 'toolbar_actions'):
             self.view_toolbar.add(newdoc.toolbar_actions)
 
@@ -315,7 +323,8 @@ class MeldWindow(Gtk.ApplicationWindow):
             if page != srcpage:
                 page.on_file_changed(filename)
 
-    @Gtk.Template.Callback()
+    # TODO: Reinstate callback
+    # @Gtk.Template.Callback()
     def on_open_recent(self, recent_selector, uri):
         try:
             self.append_recent(uri)
@@ -326,7 +335,8 @@ class MeldWindow(Gtk.ApplicationWindow):
     def _append_page(self, page):
         nbl = NotebookLabel(page=page)
         self.notebook.append_page(page, nbl)
-        self.notebook.child_set_property(page, 'tab-expand', True)
+        notebook_page = self.notebook.get_page(page)
+        notebook_page.props.tab_expand = True
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents

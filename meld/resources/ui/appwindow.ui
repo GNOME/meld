@@ -1,24 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.24 -->
-  <!-- interface-requires meld.ui.gladesupport 0.0 -->
+  <requires lib="gtk" version="4.0"/>
   <template class="MeldWindow" parent="GtkApplicationWindow">
     <property name="name">meldapp</property>
     <property name="height_request">400</property>
-    <property name="can_focus">False</property>
     <property name="title" translatable="yes">Meld</property>
-    <property name="show-menubar">false</property>
-    <signal name="delete-event" handler="on_delete_event" swapped="no"/>
-
+    <signal name="close-request" handler="on_close_request" swapped="no"/>
     <child type="titlebar">
       <object class="GtkHeaderBar" id="header_bar">
-        <property name="show-close-button">true</property>
-        <property name="visible">true</property>
-        <property name="title" translatable="yes">Meld</property>
         <child>
           <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="orientation">horizontal</property>
             <property name="homogeneous">True</property>
             <style>
               <class name="linked"/>
@@ -26,230 +17,105 @@
             <child>
               <object class="GtkButton">
                 <property name="action-name">win.new-tab</property>
-                <property name="visible">true</property>
                 <property name="tooltip-text" translatable="yes">Start a new comparison</property>
                 <property name="focus_on_click">False</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">tab-new-symbolic</property>
-                    <property name="visible">true</property>
-                  </object>
-                </child>
+                <property name="icon-name">tab-new-symbolic</property>
               </object>
-              <packing>
-                <property name="pack-type">start</property>
-              </packing>
             </child>
             <child>
               <object class="GtkMenuButton" id="recent_menu_button">
-                <property name="visible">true</property>
                 <property name="tooltip-text" translatable="yes">Open a recent comparison</property>
-                <property name="use_popover">True</property>
                 <property name="popover">recent_popover</property>
-                <child>
-                  <object class="GtkImage">
-                    <property name="icon-name">document-open-recent-symbolic</property>
-                    <property name="visible">true</property>
-                  </object>
-                </child>
+                <property name="icon-name">document-open-recent-symbolic</property>
               </object>
-              <packing>
-                <property name="pack-type">start</property>
-              </packing>
             </child>
           </object>
         </child>
-        <child>
+        <child type="start">
           <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="orientation">horizontal</property>
             <property name="homogeneous">True</property>
             <style>
               <class name="linked"/>
             </style>
             <child>
               <object class="GtkButton">
-                <property name="visible">True</property>
                 <property name="action-name">view.previous-change</property>
                 <property name="tooltip-text" translatable="yes">Go to the previous change</property>
                 <property name="focus_on_click">False</property>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="icon-name">go-up-symbolic</property>
-                  </object>
-                </child>
+                <property name="icon-name">go-up-symbolic</property>
               </object>
-              <packing>
-                <property name="pack-type">start</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton">
-                <property name="visible">True</property>
                 <property name="action-name">view.next-change</property>
                 <property name="tooltip-text" translatable="yes">Go to the next change</property>
                 <property name="focus_on_click">False</property>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="icon-name">go-down-symbolic</property>
-                  </object>
-                </child>
+                <property name="icon-name">go-down-symbolic</property>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
         </child>
         <child>
           <object class="GtkBox">
-            <property name="visible">True</property>
-            <property name="orientation">horizontal</property>
             <property name="homogeneous">True</property>
             <style>
               <class name="linked"/>
             </style>
             <child>
               <object class="GtkButton" id="previous_conflict_button">
-                <property name="visible">True</property>
                 <property name="action-name">view.file-previous-conflict</property>
                 <property name="tooltip-text" translatable="yes">Go to the previous conflict</property>
                 <property name="focus_on_click">False</property>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="icon-name">go-top-symbolic</property>
-                  </object>
-                </child>
+                <property name="icon-name">go-top-symbolic</property>
               </object>
-              <packing>
-                <property name="pack-type">start</property>
-              </packing>
             </child>
             <child>
               <object class="GtkButton" id="next_conflict_button">
-                <property name="visible">True</property>
                 <property name="action-name">view.file-next-conflict</property>
                 <property name="tooltip-text" translatable="yes">Go to the next conflict</property>
                 <property name="focus_on_click">False</property>
-                <style>
-                  <class name="image-button"/>
-                </style>
-                <child>
-                  <object class="GtkImage">
-                    <property name="visible">True</property>
-                    <property name="icon-name">go-bottom-symbolic</property>
-                  </object>
-                </child>
+                <property name="icon-name">go-bottom-symbolic</property>
               </object>
-              <packing>
-                <property name="pack-type">start</property>
-              </packing>
             </child>
           </object>
         </child>
-        <child>
-          <object class="GtkBox" id="view_toolbar">
-            <property name="visible">True</property>
-          </object>
-          <packing>
-            <property name="pack-type">start</property>
-          </packing>
+        <child type="start">
+          <object class="GtkBox" id="view_toolbar"/>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkMenuButton" id="gear_menu_button">
-            <property name="action-name">win.gear-menu</property>
-            <property name="visible">true</property>
-            <property name="can_focus">False</property>
-            <child>
-              <object class="GtkImage">
-                <property name="icon-name">open-menu-symbolic</property>
-                <property name="visible">true</property>
-              </object>
-            </child>
+            <property name="icon-name">open-menu-symbolic</property>
+            <property name="primary">1</property>
           </object>
-          <packing>
-            <property name="pack-type">end</property>
-          </packing>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkMenuButton" id="vc_filter_button">
-            <property name="visible">True</property>
-            <property name="action-name">view.vc-filter</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Version Filters</property>
-              </object>
-            </child>
+            <property name="label" translatable="yes">Version Filters</property>
           </object>
-          <packing>
-            <property name="pack-type">end</property>
-          </packing>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkMenuButton" id="folder_filter_button">
-            <property name="visible">True</property>
-            <property name="action-name">view.folder-filter</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">File Filters</property>
-              </object>
-            </child>
+            <property name="label" translatable="yes">File Filters</property>
           </object>
-          <packing>
-            <property name="pack-type">end</property>
-          </packing>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkMenuButton" id="text_filter_button">
-            <property name="visible">True</property>
-            <property name="action-name">view.text-filter</property>
-            <child>
-              <object class="GtkLabel">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Text Filters</property>
-              </object>
-            </child>
+            <property name="label" translatable="yes">Text Filters</property>
           </object>
-          <packing>
-            <property name="pack-type">end</property>
-          </packing>
         </child>
-        <child>
+        <child type="end">
           <object class="GtkSpinner" id="spinner">
             <property name="visible">false</property>
-            <property name="can_focus">False</property>
           </object>
-          <packing>
-            <property name="pack-type">end</property>
-          </packing>
         </child>
       </object>
     </child>
-
     <child>
       <object class="GtkBox" id="appvbox">
-        <property name="visible">True</property>
         <property name="orientation">vertical</property>
-        <property name="can_focus">False</property>
         <child>
           <object class="MeldNotebook" id="notebook">
+            <property name="vexpand">1</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="scrollable">True</property>
@@ -258,21 +124,15 @@
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <signal name="switch-page" handler="after_switch_page" after="yes" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
         </child>
       </object>
     </child>
   </template>
   <object class="GtkPopover" id="recent_popover">
-    <property name="can_focus">True</property>
-    <property name="visible">False</property>
+    <property name="focusable">1</property>
     <property name="width-request">400</property>
     <property name="height-request">500</property>
+<!--
     <child>
       <object class="RecentSelector" id="recent_selector">
         <property name="visible">True</property>
@@ -280,5 +140,6 @@
         <signal name="open-recent" handler="on_open_recent" swapped="no"/>
       </object>
     </child>
+ -->
   </object>
 </interface>
