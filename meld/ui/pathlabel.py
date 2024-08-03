@@ -16,10 +16,9 @@
 import logging
 from typing import Optional
 
-from gi.repository import Gdk, Gio, GObject, Gtk, Pango
+from gi.repository import Gio, GObject, Gtk, Pango
 
 from meld.conf import _
-from meld.externalhelpers import open_files_external
 from meld.iohelpers import (
     format_home_relative_path,
     format_parent_relative_path,
@@ -35,6 +34,7 @@ class PathLabel(Gtk.MenuButton):
 
     MISSING_FILE_NAME: str = _('Unnamed file')
 
+    file_launcher: Gtk.FileLauncher = Gtk.Template.Child()
     full_path_label: Gtk.Entry = Gtk.Template.Child()
 
     _gfile: Optional[Gio.File]
@@ -150,6 +150,9 @@ class PathLabel(Gtk.MenuButton):
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             self.get_display_path,
         )
+        self.bind_property("gfile",
+            self.file_launcher, "file", GObject.BindingFlags.DEFAULT
+        )
 
         action_group = Gio.SimpleActionGroup()
 
@@ -233,14 +236,10 @@ class PathLabel(Gtk.MenuButton):
             return
 
         path = self.gfile.get_path() or self.gfile.get_uri()
-        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-        clip.set_text(path, -1)
-        clip.store()
+        self.get_clipboard().set(path)
 
     def action_open_folder(self, *args):
         if not self.gfile:
             return
 
-        parent = self.gfile.get_parent()
-        if parent:
-            open_files_external(gfiles=[parent])
+        self.file_launcher.open_containing_folder()
