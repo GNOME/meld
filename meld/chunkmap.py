@@ -74,13 +74,15 @@ class ChunkMap(Gtk.DrawingArea):
         self._have_grab = False
         self._cached_map = None
 
-        self.click_controller = Gtk.GestureMultiPress(widget=self)
-        self.click_controller.connect("pressed", self.button_press_event)
-        self.click_controller.connect("released", self.button_release_event)
+        click_controller = Gtk.GestureClick()
+        click_controller.connect("pressed", self.button_press_event)
+        click_controller.connect("released", self.button_release_event)
+        self.add_controller(click_controller)
 
-        self.motion_controller = Gtk.EventControllerMotion(widget=self)
-        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
-        self.motion_controller.connect("motion", self.motion_event)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        motion_controller.connect("motion", self.motion_event)
+        self.add_controller(motion_controller)
 
         self.set_draw_func(self.draw)
 
@@ -89,12 +91,6 @@ class ChunkMap(Gtk.DrawingArea):
             log.critical(
                 f'{self.__gtype_name__} initialized without an adjustment')
             return Gtk.DrawingArea.do_realize(self)
-
-        self.set_events(
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK
-        )
 
         self.adjustment.connect('changed', lambda w: self.queue_draw())
         self.adjustment.connect('value-changed', lambda w: self.queue_draw())
@@ -238,23 +234,21 @@ class ChunkMap(Gtk.DrawingArea):
 
     def button_press_event(
         self,
-        controller: Gtk.GestureMultiPress,
+        controller: Gtk.GestureClick,
         npress: int,
         x: float,
         y: float,
     ) -> None:
         self._scroll_fraction(y)
-        self.grab_add()
         self._have_grab = True
 
     def button_release_event(
         self,
-        controller: Gtk.GestureMultiPress,
+        controller: Gtk.GestureClick,
         npress: int,
         x: float,
         y: float,
     ) -> bool:
-        self.grab_remove()
         self._have_grab = False
 
     def motion_event(
