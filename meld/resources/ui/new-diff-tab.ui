@@ -1,82 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.2 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk" version="4.0"/>
   <template class="NewDiffTab" parent="GtkBox">
-    <property name="visible">True</property>
     <property name="halign">center</property>
     <property name="valign">center</property>
     <property name="hexpand">False</property>
     <property name="vexpand">False</property>
     <property name="orientation">vertical</property>
-    <property name="can-focus">False</property>
     <property name="spacing">18</property>
     <child>
       <object class="GtkLabel" id="label2">
-        <property name="visible">True</property>
-        <property name="can-focus">False</property>
         <property name="label" translatable="yes">New comparison</property>
+        <property name="vexpand">1</property>
         <property name="xalign">0</property>
         <style>
           <class name="new-diff-title"/>
         </style>
       </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox" id="vbox7">
-        <property name="visible">True</property>
+        <property name="vexpand">1</property>
         <property name="orientation">vertical</property>
-        <property name="can-focus">False</property>
         <property name="spacing">12</property>
         <child>
           <object class="GtkBox" id="hbox1">
-            <property name="visible">True</property>
-            <property name="orientation">horizontal</property>
-            <property name="can-focus">False</property>
+            <property name="vexpand">1</property>
             <property name="spacing">12</property>
             <property name="homogeneous">True</property>
             <child>
               <object class="GtkToggleButton" id="button_type_file">
-                <property name="use-action-appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="hexpand">1</property>
+                <property name="focusable">1</property>
                 <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                 <child>
                   <object class="GtkBox" id="vbox1">
-                    <property name="visible">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="can-focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkImage" id="image1">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
+                        <property name="vexpand">1</property>
                         <property name="icon-name">document-new-symbolic</property>
-                        <property name="icon_size">6</property>
+                        <property name="icon-size">large</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label5">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">File</property>
+                        <property name="vexpand">1</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
@@ -84,49 +57,29 @@
                   <class name="new-diff-button"/>
                 </style>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkToggleButton" id="button_type_dir">
-                <property name="use-action-appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
-                <property name="receives-default">True</property>
+                <property name="hexpand">1</property>
+                <property name="focusable">1</property>
+                <property name="receives-default">1</property>
                 <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                 <child>
                   <object class="GtkBox" id="vbox2">
-                    <property name="visible">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="can-focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkImage" id="image2">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
+                        <property name="vexpand">1</property>
                         <property name="icon-name">folder-new-symbolic</property>
-                        <property name="icon_size">6</property>
+                        <property name="icon-size">large</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label6">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="label" translatable="yes">Folder</property>
+                        <property name="vexpand">1</property>
+                        <property name="label" translatable="1">Folder</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
@@ -134,49 +87,29 @@
                   <class name="new-diff-button"/>
                 </style>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkToggleButton" id="button_type_vc">
-                <property name="use-action-appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
+                <property name="hexpand">1</property>
+                <property name="focusable">1</property>
                 <signal name="toggled" handler="on_button_type_toggled" swapped="no"/>
                 <child>
                   <object class="GtkBox" id="vbox3">
-                    <property name="visible">True</property>
                     <property name="orientation">vertical</property>
-                    <property name="can-focus">False</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkImage" id="image3">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
+                        <property name="vexpand">1</property>
                         <property name="icon-name">appointment-new-symbolic</property>
-                        <property name="icon_size">6</property>
+                        <property name="icon-size">large</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">0</property>
-                      </packing>
                     </child>
                     <child>
                       <object class="GtkLabel" id="label7">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
                         <property name="label" translatable="yes">Version control</property>
+                        <property name="vexpand">1</property>
                       </object>
-                      <packing>
-                        <property name="expand">True</property>
-                        <property name="fill">True</property>
-                        <property name="position">1</property>
-                      </packing>
                     </child>
                   </object>
                 </child>
@@ -184,25 +117,14 @@
                   <class name="new-diff-button"/>
                 </style>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkNotebook" id="choosers_notebook">
-            <property name="visible">True</property>
-            <property name="can-focus">False</property>
             <property name="show-tabs">False</property>
             <property name="show-border">False</property>
+            <property name="vexpand">1</property>
             <child>
               <object class="GtkBox" id="hbox2">
                 <property name="visible">True</property>
@@ -442,55 +364,35 @@
       </packing>
     </child>
     <child>
-      <object class="GtkHButtonBox" id="hbuttonbox2">
+      <object class="GtkBox" id="hbuttonbox2">
+        <property name="valign">center</property>
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="spacing">6</property>
-        <property name="layout-style">end</property>
         <child>
           <object class="GtkButton" id="button_new_blank">
             <property name="label" translatable="yes">_Blank comparison</property>
-            <property name="use-action-appearance">False</property>
-            <property name="visible">True</property>
             <property name="sensitive">False</property>
-            <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="use-underline">True</property>
+            <property name="focusable">1</property>
             <signal name="clicked" handler="on_button_new_blank_clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-            <property name="secondary">True</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="button_compare">
             <property name="label" translatable="yes">C_ompare</property>
-            <property name="use-action-appearance">False</property>
-            <property name="visible">True</property>
             <property name="sensitive">False</property>
-            <property name="can-focus">True</property>
             <property name="receives-default">True</property>
             <property name="use-underline">True</property>
+            <property name="focusable">1</property>
             <signal name="clicked" handler="on_button_compare_clicked" swapped="no"/>
             <style>
               <class name="suggested-action"/>
             </style>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
-        <property name="position">2</property>
-      </packing>
     </child>
   </template>
 </interface>
