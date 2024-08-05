@@ -196,6 +196,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
         # Manually handle GAction additions
         actions = (
+            ('clear-console', self.clear_consoleview),
             ('compare', self.action_diff),
             ('find', self.action_find),
             ('next-change', self.action_next_change),
@@ -236,11 +237,11 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/vcview-menus.ui')
-        context_menu = builder.get_object('vcview-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
-        self.popup_menu.attach_to_widget(self)
+        # builder = Gtk.Builder.new_from_resource(
+        #     '/org/gnome/meld/ui/vcview-menus.ui')
+        # context_menu = builder.get_object('vcview-context-menu')
+        # self.popup_menu = Gtk.Menu.new_from_model(context_menu)
+        # self.popup_menu.attach_to_widget(self)
 
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
@@ -852,21 +853,17 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 break
         return None
 
-    @Gtk.Template.Callback()
-    def on_consoleview_populate_popup(self, textview, menu):
-        buf = textview.get_buffer()
-        clear_action = Gtk.MenuItem.new_with_label(_("Clear"))
-        clear_action.connect(
-            "activate", lambda *args: buf.delete(*buf.get_bounds()))
-        menu.insert(clear_action, 0)
-        menu.insert(Gtk.SeparatorMenuItem(), 1)
-        menu.show_all()
+    def clear_consoleview(self, *args):
+        buf = self.consoleview.get_buffer()
+        buf.delete(*buf.get_bounds())
 
-    @Gtk.Template.Callback()
+    # TODO: replace with controller
+    # @Gtk.Template.Callback()
     def on_treeview_popup_menu(self, treeview):
         return tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
 
-    @Gtk.Template.Callback()
+    # TODO: replace with controller
+    # @Gtk.Template.Callback()
     def on_treeview_button_press_event(self, treeview, event):
         return tree.TreeviewCommon.on_treeview_button_press_event(
             self, treeview, event)
