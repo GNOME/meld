@@ -31,6 +31,7 @@ from meld.const import (
 )
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
+from meld.fourdiff import FourDiff
 from meld.imagediff import ImageDiff, files_are_images
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
@@ -433,6 +434,13 @@ class MeldWindow(Gtk.ApplicationWindow):
             return self.append_filediff(
                 gfiles, merge_output=merge_output, meta=meta)
 
+    def append_fourdiff(self, gfiles: Sequence[Optional[Gio.File]]):
+        assert len(gfiles) == 4
+        doc = FourDiff()
+        self._append_page(doc)
+        doc.set_files(gfiles)
+        return doc
+
     def append_vcview(self, location, auto_compare=False):
         doc = VcView()
         self._append_page(doc)
@@ -486,6 +494,10 @@ class MeldWindow(Gtk.ApplicationWindow):
         elif len(gfiles) in (2, 3):
             tab = self.append_diff(gfiles, auto_compare=auto_compare,
                                    auto_merge=auto_merge)
+        
+        elif len(gfiles) == 4:
+            tab = self.append_fourdiff(gfiles)
+
         if tab:
             recent_comparisons.add(tab)
             if focus:

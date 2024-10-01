@@ -57,6 +57,7 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.vc-console-visible': 'F9',
     # Swap the two panes
     'view.swap-2-panes': '<Alt>backslash',
+    'view.toggle-fourdiff-view': '<Primary>T',
 }
 
 

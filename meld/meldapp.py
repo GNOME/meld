@@ -300,11 +300,11 @@ class MeldApp(Gtk.Application):
             cleanup()
             return parser.exit_status
 
-        if len(args) > 3:
-            parser.local_error(_("too many arguments (wanted 0-3, got %d)") %
+        if len(args) > 4:
+            parser.local_error(_("too many arguments (wanted 0-4, got %d)") %
                                len(args))
-        elif options.auto_merge and len(args) < 3:
-            parser.local_error(_("can’t auto-merge less than 3 files"))
+        elif options.auto_merge and len(args) != 3:
+            parser.local_error(_("can only auto-merge 3 files"))
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
             parser.local_error(_("can’t auto-merge directories"))
 
