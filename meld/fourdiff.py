@@ -11,6 +11,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# TODO: next/pervious buttons are not enabled. Probably need to forward events
+
 import copy
 import functools
 import logging
@@ -161,11 +163,11 @@ class FourDiff(Gtk.Stack, MeldDoc):
             # ('add-sync-point', self.add_sync_point),
             # ('remove-sync-point', self.remove_sync_point),
             # ('clear-sync-point', self.clear_sync_points),
-            # ('copy', self.action_copy),
-            # ('copy-full-path', self.action_copy_full_path),
-            # ('cut', self.action_cut),
-            # ('file-previous-conflict', self.action_previous_conflict),
-            # ('file-next-conflict', self.action_next_conflict),
+            ('copy', self.diff2.action_copy),
+            ('copy-full-path', self._fwd2active(FileDiff.action_copy_full_path)),
+            ('cut', self._fwd2active(FileDiff.action_cut)),
+            ('file-previous-conflict', self._fwd2active(FileDiff.action_previous_conflict)),
+            ('file-next-conflict', self._fwd2active(FileDiff.action_next_conflict)),
             # ('file-push-left', self.action_push_change_left),
             # ('file-push-right', self.action_push_change_right),
             # ('file-pull-left', self.action_pull_change_left),
@@ -175,7 +177,7 @@ class FourDiff(Gtk.Stack, MeldDoc):
             # ('file-copy-left-down', self.action_copy_change_left_down),
             # ('file-copy-right-down', self.action_copy_change_right_down),
             # ('file-delete', self.action_delete_change),
-            ('find', self.action_find),
+            ('find', self._fwd2active('action_find')),
             # ('find-next', self.action_find_next),
             # ('find-previous', self.action_find_previous),
             # ('find-replace', self.action_find_replace),
@@ -192,7 +194,7 @@ class FourDiff(Gtk.Stack, MeldDoc):
             # ('previous-change', self.action_previous_change),
             # ('previous-pane', self.action_prev_pane),
             # ('redo', self.action_redo),
-            # ('refresh', self.action_refresh),
+            ('refresh', self._fwd2all(FileDiff.action_refresh)),
             # ('revert', self.action_revert),
             # ('save', self.action_save),
             # ('save-all', self.action_save_all),
@@ -216,6 +218,33 @@ class FourDiff(Gtk.Stack, MeldDoc):
 
         self._keep = []
         self.connect_scrolledwindows()
+
+    def get_active_diff(self):
+        name = self.get_visible_child_name()
+        if name == 'grid0':
+            if self.diff0.get_focus_child() is not None:
+                return self.diff0
+            elif self.diff2.get_focus_child() is not None:
+                return self.diff2
+            else:
+                return None
+        elif name == 'grid1':
+            return self.diff1
+        else:
+            return None
+    
+    def _fwd2active(self, method):
+        def f(*args):
+            diff = self.get_active_diff()
+            if diff:
+                method(diff, *args)
+        return f
+    
+    def _fwd2all(self, method):
+        def f(*args):
+            for diff in self.diffs:
+                method(diff, *args)
+        return f
 
     @staticmethod
     def _set_read_only(diff, panes):
@@ -262,25 +291,6 @@ class FourDiff(Gtk.Stack, MeldDoc):
             self.set_visible_child_name('grid1')
         # self.on_active_diff_changed()
     
-    def get_active_diff(self):
-        name = self.get_visible_child_name()
-        if name == 'grid0':
-            if self.diff0.get_focus_child() is not None:
-                return self.diff0
-            elif self.diff2.get_focus_child() is not None:
-                return self.diff2
-            else:
-                return None
-        elif name == 'grid1':
-            return self.diff1
-        else:
-            return None
-
-    def action_find(self, *args):
-        diff = self.get_active_diff()
-        if diff:
-            diff.action_find(*args)
-    
     @staticmethod
     def on_adj_changed(me, other):
         v = me.get_value()
@@ -294,12 +304,12 @@ class FourDiff(Gtk.Stack, MeldDoc):
     def get_comparison(self):
         # TODO
         return RecentType.Merge, []
-        uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
+        # uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
 
-        if self.comparison_mode == FileComparisonMode.AutoMerge:
-            comparison_type = RecentType.Merge
-        else:
-            comparison_type = RecentType.File
+        # if self.comparison_mode == FileComparisonMode.AutoMerge:
+        #     comparison_type = RecentType.Merge
+        # else:
+        #     comparison_type = RecentType.File
 
-        return comparison_type, uris
+        # return comparison_type, uris
 
