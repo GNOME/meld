@@ -65,7 +65,7 @@ from meld.undo import UndoSequence
 log = logging.getLogger(__name__)
 
 
-class FourDiff(Gtk.HBox, MeldDoc):
+class FourDiff(Gtk.Stack, MeldDoc):
     """Four way comparison of text files"""
 
     __gtype_name__ = "FourDiff"
@@ -168,27 +168,36 @@ class FourDiff(Gtk.HBox, MeldDoc):
             action.connect('activate', callback)
             self.view_action_group.add_action(action)
 
+        self.grid0 = Gtk.Grid()
+        self.grid0.set_row_homogeneous(True)
+        self.grid0.set_column_homogeneous(True)
+        self.add_named(self.grid0, "grid0")
+        self.grid1 = Gtk.Grid()
+        self.grid1.set_row_homogeneous(True)
+        self.grid1.set_column_homogeneous(True)
+        self.add_named(self.grid1, "grid1")
+        
         self.diff0 = FileDiff(2)
         self.scheduler.add_scheduler(self.diff0.scheduler)
-        # self.diff0.force_readonly = [True, True]
-        # self.grid0.attach(self.diff0.widget, left=0, top=0, width=2, height=1)
-        self.add(self.diff0)
+        # TODO: self.diff0.force_readonly = [True, True]
+        self.grid0.attach(self.diff0, left=0, top=0, width=2, height=1)
 
         self.diff1 = FileDiff(2)
         self.scheduler.add_scheduler(self.diff1.scheduler)
-        # self.diff1.force_readonly = [True, True]
-        # self.grid1.attach(self.label0, left=0, top=0, width=1, height=1)
-        # self.grid1.attach(self.diff1.widget, left=1, top=0, width=2, height=1)
-        # self.grid1.attach(self.label1, left=3, top=0, width=1, height=1)
-        self.add(self.diff1)
+        # TODO: self.diff1.force_readonly = [True, True]
+        # The labels are used to fill the empty spaces in the grid
+        self.label0 = Gtk.Label()
+        self.label1 = Gtk.Label()
+        self.grid1.attach(self.label0, left=0, top=0, width=1, height=1)
+        self.grid1.attach(self.diff1, left=1, top=0, width=2, height=1)
+        self.grid1.attach(self.label1, left=3, top=0, width=1, height=1)
 
         self.diff2 = FileDiff(2)
         self.scheduler.add_scheduler(self.diff2.scheduler)
-        # self.diff2.force_readonly = [True, False]
+        # TODO: self.diff2.force_readonly = [True, False]
         self.undosequence = self.diff2.undosequence
-        # self.actiongroup = self.diff2.actiongroup
-        # self.grid0.attach(self.diff2.widget, left=2, top=0, width=2, height=1)
-        self.add(self.diff2)
+        # TODO: self.actiongroup = self.diff2.actiongroup
+        self.grid0.attach(self.diff2, left=2, top=0, width=2, height=1)
 
         self.diffs = [self.diff0, self.diff1, self.diff2]
         # self.have_next_diffs = [(False, False) for _ in self.diffs]
@@ -197,8 +206,10 @@ class FourDiff(Gtk.HBox, MeldDoc):
 
         # self.grid0.connect("set-focus-child", self.on_grid0_set_focus_child)
 
-        # self.grid0.show()
-        # self.grid1.show()
+        self.label0.show()
+        self.label1.show()
+        self.grid0.show()
+        self.grid1.show()
         self.show()
 
         self.files = None
@@ -235,7 +246,11 @@ class FourDiff(Gtk.HBox, MeldDoc):
         connect(hadjs[2], hadjs[3])
 
     def action_toggle_view(self, *args):
-        print('toggle view called')
+        if self.get_visible_child_name() == 'grid1':
+            self.set_visible_child_name('grid0')
+        else:
+            self.set_visible_child_name('grid1')
+        # self.on_active_diff_changed()
     
     @staticmethod
     def on_adj_changed(me, other):
