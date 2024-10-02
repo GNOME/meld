@@ -217,6 +217,13 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self._keep = []
         self.connect_scrolledwindows()
 
+    @staticmethod
+    def _set_read_only(diff, panes):
+        for pane in panes:
+            buf = diff.textbuffer[pane]
+            buf.data.force_read_only = True
+            diff.update_buffer_writable(buf)
+    
     def set_files(self, files):
         """Load the given files
 
@@ -225,8 +232,11 @@ class FourDiff(Gtk.Stack, MeldDoc):
         assert len(files) == 4
         self.files = files
         self.diff0.set_files(files[:2])
+        self._set_read_only(self.diff0, [0, 1])
         self.diff1.set_files(files[1:3])
+        self._set_read_only(self.diff1, [0, 1])
         self.diff2.set_files(files[2:])
+        self._set_read_only(self.diff2, [0])
 
     def connect_scrolledwindows(self):
         sws = [self.diff0.scrolledwindow[1], self.diff1.scrolledwindow[0],

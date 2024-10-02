@@ -104,6 +104,7 @@ class MeldBufferData(GObject.GObject):
         self._label = None
         self._monitor = None
         self._sourcefile = None
+        self._force_read_only = False
         self.reset(gfile=None, state=MeldBufferState.EMPTY)
 
     def reset(self, gfile: Optional[Gio.File], state: MeldBufferState):
@@ -206,7 +207,17 @@ class MeldBufferData(GObject.GObject):
             return None
 
     @property
+    def force_read_only(self) -> bool:
+        return self._force_read_only
+    
+    @force_read_only.setter
+    def force_read_only(self, value: bool):
+        self._force_read_only = value
+    
+    @property
     def writable(self):
+        if self._force_read_only:
+            return False
         try:
             info = self.gfiletarget.query_info(
                 Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
