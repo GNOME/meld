@@ -118,56 +118,6 @@ class FourDiff(Gtk.Stack, MeldDoc):
         MeldDoc.__init__(self)
         bind_settings(self)
 
-        # Manually handle GAction additions
-        actions = (
-            # ('add-sync-point', self.add_sync_point),
-            # ('remove-sync-point', self.remove_sync_point),
-            # ('clear-sync-point', self.clear_sync_points),
-            # ('copy', self.action_copy),
-            # ('copy-full-path', self.action_copy_full_path),
-            # ('cut', self.action_cut),
-            # ('file-previous-conflict', self.action_previous_conflict),
-            # ('file-next-conflict', self.action_next_conflict),
-            # ('file-push-left', self.action_push_change_left),
-            # ('file-push-right', self.action_push_change_right),
-            # ('file-pull-left', self.action_pull_change_left),
-            # ('file-pull-right', self.action_pull_change_right),
-            # ('file-copy-left-up', self.action_copy_change_left_up),
-            # ('file-copy-right-up', self.action_copy_change_right_up),
-            # ('file-copy-left-down', self.action_copy_change_left_down),
-            # ('file-copy-right-down', self.action_copy_change_right_down),
-            # ('file-delete', self.action_delete_change),
-            # ('find', self.action_find),
-            # ('find-next', self.action_find_next),
-            # ('find-previous', self.action_find_previous),
-            # ('find-replace', self.action_find_replace),
-            # ('format-as-patch', self.action_format_as_patch),
-            # ('go-to-line', self.action_go_to_line),
-            # ('merge-all-left', self.action_pull_all_changes_left),
-            # ('merge-all-right', self.action_pull_all_changes_right),
-            # ('merge-all', self.action_merge_all_changes),
-            # ('next-change', self.action_next_change),
-            # ('next-pane', self.action_next_pane),
-            # ('open-external', self.action_open_external),
-            # ('open-folder', self.action_open_folder),
-            # ('paste', self.action_paste),
-            # ('previous-change', self.action_previous_change),
-            # ('previous-pane', self.action_prev_pane),
-            # ('redo', self.action_redo),
-            # ('refresh', self.action_refresh),
-            # ('revert', self.action_revert),
-            # ('save', self.action_save),
-            # ('save-all', self.action_save_all),
-            # ('save-as', self.action_save_as),
-            # ('undo', self.action_undo),
-            # ('swap-2-panes', self.action_swap),
-            ('toggle-fourdiff-view', self.action_toggle_view),
-        )
-        for name, callback in actions:
-            action = Gio.SimpleAction.new(name, None)
-            action.connect('activate', callback)
-            self.view_action_group.add_action(action)
-
         self.grid0 = Gtk.Grid()
         self.grid0.set_row_homogeneous(True)
         self.grid0.set_column_homogeneous(True)
@@ -205,6 +155,56 @@ class FourDiff(Gtk.Stack, MeldDoc):
         #     diff.connect("next-diff-changed", self.on_have_next_diff_changed)
 
         # self.grid0.connect("set-focus-child", self.on_grid0_set_focus_child)
+
+        # Manually handle GAction additions
+        actions = (
+            # ('add-sync-point', self.add_sync_point),
+            # ('remove-sync-point', self.remove_sync_point),
+            # ('clear-sync-point', self.clear_sync_points),
+            # ('copy', self.action_copy),
+            # ('copy-full-path', self.action_copy_full_path),
+            # ('cut', self.action_cut),
+            # ('file-previous-conflict', self.action_previous_conflict),
+            # ('file-next-conflict', self.action_next_conflict),
+            # ('file-push-left', self.action_push_change_left),
+            # ('file-push-right', self.action_push_change_right),
+            # ('file-pull-left', self.action_pull_change_left),
+            # ('file-pull-right', self.action_pull_change_right),
+            # ('file-copy-left-up', self.action_copy_change_left_up),
+            # ('file-copy-right-up', self.action_copy_change_right_up),
+            # ('file-copy-left-down', self.action_copy_change_left_down),
+            # ('file-copy-right-down', self.action_copy_change_right_down),
+            # ('file-delete', self.action_delete_change),
+            ('find', self.action_find),
+            # ('find-next', self.action_find_next),
+            # ('find-previous', self.action_find_previous),
+            # ('find-replace', self.action_find_replace),
+            # ('format-as-patch', self.action_format_as_patch),
+            # ('go-to-line', self.action_go_to_line),
+            # ('merge-all-left', self.action_pull_all_changes_left),
+            # ('merge-all-right', self.action_pull_all_changes_right),
+            # ('merge-all', self.action_merge_all_changes),
+            # ('next-change', self.action_next_change),
+            # ('next-pane', self.action_next_pane),
+            # ('open-external', self.action_open_external),
+            # ('open-folder', self.action_open_folder),
+            # ('paste', self.action_paste),
+            # ('previous-change', self.action_previous_change),
+            # ('previous-pane', self.action_prev_pane),
+            # ('redo', self.action_redo),
+            # ('refresh', self.action_refresh),
+            # ('revert', self.action_revert),
+            # ('save', self.action_save),
+            # ('save-all', self.action_save_all),
+            # ('save-as', self.action_save_as),
+            ('undo', self.diff2.action_undo),
+            # ('swap-2-panes', self.action_swap),
+            ('toggle-fourdiff-view', self.action_toggle_view),
+        )
+        for name, callback in actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
 
         self.label0.show()
         self.label1.show()
@@ -261,6 +261,25 @@ class FourDiff(Gtk.Stack, MeldDoc):
         else:
             self.set_visible_child_name('grid1')
         # self.on_active_diff_changed()
+    
+    def get_active_diff(self):
+        name = self.get_visible_child_name()
+        if name == 'grid0':
+            if self.diff0.get_focus_child() is not None:
+                return self.diff0
+            elif self.diff2.get_focus_child() is not None:
+                return self.diff2
+            else:
+                return None
+        elif name == 'grid1':
+            return self.diff1
+        else:
+            return None
+
+    def action_find(self, *args):
+        diff = self.get_active_diff()
+        if diff:
+            diff.action_find(*args)
     
     @staticmethod
     def on_adj_changed(me, other):
