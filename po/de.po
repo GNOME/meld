@@ -20,8 +20,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-07-09 17:29+0000\n"
-"PO-Revision-Date: 2024-04-25 16:38+0200\n"
+"POT-Creation-Date: 2024-08-24 08:55+0000\n"
+"PO-Revision-Date: 2024-09-30 18:46+0200\n"
 "Last-Translator: Jürgen Benvenuti <gastornis@posteo.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
@@ -29,7 +29,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.4.2\n"
+"X-Generator: Poedit 3.4.4\n"
 
 #: data/org.gnome.Meld.desktop.in.in:3 data/org.gnome.Meld.appdata.xml.in.in:10
 #: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
@@ -1858,15 +1858,15 @@ msgstr "Nach _oben kopieren"
 msgid "Copy _down"
 msgstr "Nach _unten kopieren"
 
-#: meld/const.py:30
+#: meld/const.py:34
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: meld/const.py:31
+#: meld/const.py:35
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: meld/const.py:32
+#: meld/const.py:36
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
@@ -1936,12 +1936,12 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten."
 
-#: meld/dirdiff.py:1166 meld/filediff.py:2037
+#: meld/dirdiff.py:1166 meld/filediff.py:2122
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1168 meld/filediff.py:2039 meld/filediff.py:2069
-#: meld/filediff.py:2071 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1168 meld/filediff.py:2124 meld/filediff.py:2154
+#: meld/filediff.py:2156 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
@@ -2046,14 +2046,16 @@ msgid "Unsupported file type"
 msgstr "Nicht unterstützter Dateityp"
 
 #: meld/externalhelpers.py:121
+#, python-brace-format
 msgid "External opening of files of type {file_type} is not supported"
-msgstr "Das externe Öffnen von Dateien des Typs {file_type} wird nicht unterstützt"
+msgstr ""
+"Das externe Öffnen von Dateien des Typs {file_type} wird nicht unterstützt"
 
-#: meld/filediff.py:1192
+#: meld/filediff.py:1198
 msgid "Comparison results will be inaccurate"
 msgstr "Ergebnisse werden ungenau sein"
 
-#: meld/filediff.py:1194
+#: meld/filediff.py:1200
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -2062,99 +2064,108 @@ msgstr ""
 "nicht unterstützt, deshalb wird ein Vergleich keine korrekten Ergebnisse "
 "liefern."
 
-#: meld/filediff.py:1265
+#: meld/filediff.py:1271
 msgid "Mark conflict as resolved?"
 msgstr "Konflikt als _gelöst markieren?"
 
-#: meld/filediff.py:1267
+#: meld/filediff.py:1273
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Wenn der Konflikt erfolgreich gelöst wurde, können Sie ihn jetzt als gelöst "
 "markieren."
 
-#: meld/filediff.py:1270
+#: meld/filediff.py:1276
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: meld/filediff.py:1271
+#: meld/filediff.py:1277
 msgid "Mark _Resolved"
 msgstr "Als _gelöst markieren"
 
-#: meld/filediff.py:1468 meld/filediff.py:1484
+#: meld/filediff.py:1474 meld/filediff.py:1490
 msgid "Add Synchronization Point"
 msgstr "Synchronisationspunkt hinzufügen"
 
-#: meld/filediff.py:1472
+#: meld/filediff.py:1478
 msgid "Remove Synchronization Point"
 msgstr "Synchronisationspunkt entfernen"
 
-#: meld/filediff.py:1476
+#: meld/filediff.py:1482
 msgid "Move Synchronization Point"
 msgstr "Synchronisationspunkt verschieben"
 
-#: meld/filediff.py:1480
+#: meld/filediff.py:1486
 msgid "Match Synchronization Point"
 msgstr "An Synchronisationspunkt anpassen"
 
-#: meld/filediff.py:1504
+#: meld/filediff.py:1510
 msgid "Clear Synchronization Points"
 msgstr "Synchronisationspunkte entfernen"
 
-#: meld/filediff.py:1564 meld/imagediff.py:254
+#: meld/filediff.py:1570 meld/imagediff.py:254
 msgid "File comparison:"
 msgstr "Dateivergleich:"
 
-#: meld/filediff.py:1700
+#: meld/filediff.py:1716
+#, python-brace-format
+msgid ""
+"Line {line_number} exceeded maximum line length ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+msgstr ""
+"Zeile {line_number} hat maximale Zeilenlänge überschritten ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+
+#: meld/filediff.py:1766
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Beim Öffnen der Datei »%s« ist ein Fehler aufgetreten."
 
-#: meld/filediff.py:1709
+#: meld/filediff.py:1788
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Datei %s scheint eine Binärdatei zu sein."
 
-#: meld/filediff.py:1711
+#: meld/filediff.py:1790
 msgid "Do you want to open the file using the default application?"
 msgstr "Gewählte Datei in der vorgegebenen externen Anwendung öffnen?"
 
-#: meld/filediff.py:1713
+#: meld/filediff.py:1792
 msgid "Open"
 msgstr "Öffnen"
 
-#: meld/filediff.py:1735
+#: meld/filediff.py:1814
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Dateien werden zusammengeführt"
 
-#: meld/filediff.py:1749
+#: meld/filediff.py:1828
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Unterschiede werden berechnet"
 
-#: meld/filediff.py:1813
+#: meld/filediff.py:1892
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Die Datei %s wurde auf dem Datenträger geändert"
 
-#: meld/filediff.py:1814
+#: meld/filediff.py:1893
 msgid "Do you want to reload the file?"
 msgstr "Möchten Sie die Datei neu laden?"
 
-#: meld/filediff.py:1816
+#: meld/filediff.py:1895
 msgid "_Reload"
 msgstr "_Neu laden"
 
-#: meld/filediff.py:1994
+#: meld/filediff.py:2080
 msgid "File {} is being compared to itself"
 msgstr "Die Datei »{}« wird mit sich selbst verglichen"
 
-#: meld/filediff.py:2003
+#: meld/filediff.py:2088
 msgid "Files are identical"
 msgstr "Dateien sind identisch"
 
-#: meld/filediff.py:2016
+#: meld/filediff.py:2101
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -2162,11 +2173,11 @@ msgstr ""
 "Textfilter werden verwendet, welche Unterschiede zwischen Dateien maskieren "
 "könnten. Wollen Sie die ungefilterten Dateien vergleichen?"
 
-#: meld/filediff.py:2021
+#: meld/filediff.py:2106
 msgid "Files differ in line endings only"
 msgstr "Dateien unterscheiden sich nur in den Zeilenendungen"
 
-#: meld/filediff.py:2023
+#: meld/filediff.py:2108
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2175,15 +2186,15 @@ msgstr ""
 "Dateien sind identisch, abgesehen von unterschiedlichen Zeilenenden:\n"
 "%s"
 
-#: meld/filediff.py:2042
+#: meld/filediff.py:2127
 msgid "Show without filters"
 msgstr "Ungefiltert anzeigen"
 
-#: meld/filediff.py:2063
+#: meld/filediff.py:2148
 msgid "Change highlighting incomplete"
 msgstr "Änderungsmarkierung unvollständig"
 
-#: meld/filediff.py:2064
+#: meld/filediff.py:2149
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2192,19 +2203,19 @@ msgstr ""
 "Sie können Meld zur Hervorhebung längerer Änderungen zwingen, was jedoch "
 "langsam sein könnte."
 
-#: meld/filediff.py:2073
+#: meld/filediff.py:2158
 msgid "Keep highlighting"
 msgstr "Hervorhebung fortführen"
 
-#: meld/filediff.py:2075
+#: meld/filediff.py:2160
 msgid "_Keep highlighting"
 msgstr "Hervorhebung _fortführen"
 
-#: meld/filediff.py:2088
+#: meld/filediff.py:2173
 msgid "Saving failed"
 msgstr "Speichern ist fehlgeschlagen"
 
-#: meld/filediff.py:2089
+#: meld/filediff.py:2174
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2212,37 +2223,37 @@ msgstr ""
 "Bitte denken Sie darüber nach, kritische Änderungen in ein anderes Programm "
 "oder eine andere Datei zu kopieren, um Datenverlust zu vermeiden."
 
-#: meld/filediff.py:2098
+#: meld/filediff.py:2183
 msgid "Save Left Pane As"
 msgstr "Linken Bereich speichern unter"
 
-#: meld/filediff.py:2100
+#: meld/filediff.py:2185
 msgid "Save Middle Pane As"
 msgstr "Mittleren Bereich speichern unter"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2187
 msgid "Save Right Pane As"
 msgstr "Rechten Bereich speichern unter"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2198
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr ""
 "Die Datei %s wurde auf dem Datenträger geändert, seit sie geöffnet wurde"
 
-#: meld/filediff.py:2115
+#: meld/filediff.py:2200
 msgid "If you save it, any external changes will be lost."
 msgstr "Wenn Sie speichern, gehen externe Änderungen verloren."
 
-#: meld/filediff.py:2119
+#: meld/filediff.py:2204
 msgid "Save Anyway"
 msgstr "Dennoch speichern"
 
-#: meld/filediff.py:2120
+#: meld/filediff.py:2205
 msgid "Don’t Save"
 msgstr "Nicht speichern"
 
-#: meld/filediff.py:2162
+#: meld/filediff.py:2247
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2250,7 +2261,7 @@ msgstr ""
 "Die Datei »{}« enthält Zeichen, die mit der aktuellen Kodierung »{}« nicht "
 "kodierbar sind."
 
-#: meld/filediff.py:2166 meld/patchdialog.py:138
+#: meld/filediff.py:2251 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2259,16 +2270,16 @@ msgstr ""
 "Datei konnte nicht gespeichert werden:\n"
 "%s"
 
-#: meld/filediff.py:2170 meld/patchdialog.py:137
+#: meld/filediff.py:2255 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Datei %s konnte nicht gespeichert werden."
 
-#: meld/filediff.py:2579
+#: meld/filediff.py:2664
 msgid "Live comparison updating disabled"
 msgstr "Direkte Vergleichsaktualisierung deaktiviert"
 
-#: meld/filediff.py:2580
+#: meld/filediff.py:2665
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2279,21 +2290,21 @@ msgstr ""
 "aktualisieren. Die direkten Aktualisierungen werden beim Löschen der "
 "Synchronisierungspunkte wieder fortgeführt."
 
-#: meld/filediff.py:2609
+#: meld/filediff.py:2694
 msgid "Can't swap unsaved files"
 msgstr "Ungespeicherte Dateien können nicht getauscht werden"
 
-#: meld/filediff.py:2611
+#: meld/filediff.py:2696
 msgid "Files must be saved to disk before swapping panes."
 msgstr ""
 "Dateien müssen auf einen Datenträger gespeichert werden vor dem Tauschen der "
 "Bereiche."
 
-#: meld/filediff.py:2618
+#: meld/filediff.py:2703
 msgid "Can't swap version control comparisons"
 msgstr "Versionskontrollvergleiche können nicht getauscht werden"
 
-#: meld/filediff.py:2620
+#: meld/filediff.py:2705
 msgid "Swapping panes is not supported in version control mode."
 msgstr ""
 "Das Tauschen der Bereiche wird nicht unterstützt im Versionskontrollmodus."
@@ -2445,7 +2456,7 @@ msgid "remote folder “{}” not supported"
 msgstr "Entfernter Ordner »{}« wird nicht unterstützt"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: meld/meldbuffer.py:115
+#: meld/meldbuffer.py:125
 msgid "<unnamed>"
 msgstr "<unbenannt>"
 
