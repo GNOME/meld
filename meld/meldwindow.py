@@ -494,7 +494,7 @@ class MeldWindow(Gtk.ApplicationWindow):
         elif len(gfiles) in (2, 3):
             tab = self.append_diff(gfiles, auto_compare=auto_compare,
                                    auto_merge=auto_merge)
-        
+
         elif len(gfiles) == 4:
             tab = self.append_fourdiff(gfiles)
 

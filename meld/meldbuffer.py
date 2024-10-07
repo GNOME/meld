@@ -209,11 +209,11 @@ class MeldBufferData(GObject.GObject):
     @property
     def force_read_only(self) -> bool:
         return self._force_read_only
-    
+
     @force_read_only.setter
     def force_read_only(self, value: bool):
         self._force_read_only = value
-    
+
     @property
     def writable(self):
         if self._force_read_only:
