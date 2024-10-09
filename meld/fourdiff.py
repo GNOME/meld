@@ -20,7 +20,7 @@ from meld.const import TEXT_FILTER_ACTION_FORMAT, ActionMode
 from meld.filediff import FileDiff
 from meld.melddoc import MeldDoc
 from meld.recent import RecentType
-from meld.settings import MeldSettings, bind_settings, get_meld_settings
+from meld.settings import bind_settings, get_meld_settings
 
 log = logging.getLogger(__name__)
 
@@ -89,13 +89,6 @@ STATE_ACTIONS = {
     'text-filter': False,
 }
 
-# In addition to those, there are stateful actions created for each text filter
-def _get_text_filter_action_names(meld_settings: MeldSettings) -> list[str]:
-    # All action names are known, except for those for enabling/disabling text filters.
-    # We generate those names in the same way as FileDiff.create_text_filters()
-    n_text_filters = len(meld_settings.text_filters)
-    return [TEXT_FILTER_ACTION_FORMAT.format(i) for i in range(n_text_filters)]
-
 
 def _get_diff_actions(diff: FileDiff) -> tuple[set[str], set[str]]:
     """Get all actions in a FileDiff, stateless and stateful"""
@@ -118,7 +111,10 @@ def _verify_action_lists(diff: FileDiff):
     stateless_names, stateful_names = _get_diff_actions(diff)
     expected_stateless_names = FWD_TO_ACTIVE_ACTIONS + FWD_TO_ALL_ACTIONS + DISABLED_ACTIONS
     assert set(expected_stateless_names) == stateless_names
-    text_filter_action_names = _get_text_filter_action_names(get_meld_settings())
+    # In addition to the listed actions, the FileDiff creates
+    # stateful actions for each text filter. We expect those as well.
+    n_text_filters = len(get_meld_settings().text_filters)
+    text_filter_action_names = [TEXT_FILTER_ACTION_FORMAT.format(i) for i in range(n_text_filters)]
     expected_stateful_names = list(PROPERTY_ACTIONS) + list(STATE_ACTIONS) + text_filter_action_names
     assert set(expected_stateful_names) == stateful_names
 
@@ -269,8 +265,6 @@ class FourDiff(Gtk.Stack, MeldDoc):
             action.connect('change-state', self.on_action_change_state)
             self.view_action_group.add_action(action)
 
-        # TODO: text filter actions
-
         for diff_i, diff in enumerate(self.diffs):
             diff.view_action_group.connect('action-enabled-changed', self.on_diff_action_enabled_changed, diff_i)
 
@@ -375,6 +369,7 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self._update_active_diff()
 
     def on_delete_event(self):
+        # TODO: check if there are still conflict markers
         self.emit('close', 0)
         return Gtk.ResponseType.OK
 
