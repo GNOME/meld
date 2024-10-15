@@ -126,7 +126,24 @@ def _verify_action_lists(diff: FileDiff):
 
 
 class FourDiff(Gtk.Stack, MeldDoc):
-    """Four way comparison of text files"""
+    """
+    Four way comparison of text files
+
+    There are 4 files: 0: REMOTE, 1: BASE, 2: LOCAL, 3: RESULT
+    Only the RESULT buffer is editable.
+    LOCAL has the local file, before applying the diff.
+    The user aims to apply the diff between BASE and REMOTE onto RESULT.
+    Or: RESULT = LOCAL + (REMOTE - BASE)
+
+    The FourDiff doc contains 3 FileDiffs:
+    0: REMOTE-BASE  1: BASE-LOCAL  2: LOCAL-RESULT
+    At any time either the REMOTE-BASE and LOCAL-RESULT diffs are displayed,
+    showing the source diff and the result diff, or the BASE-LOCAL diff is
+    displayed, showing the source of conflicts.
+
+    The two BASE panes scrolling are kept in sync, and so are the two LOCAL
+    panes. This causes all panes to be in sync.
+    """
 
     __gtype_name__ = "FourDiff"
 
@@ -329,14 +346,11 @@ class FourDiff(Gtk.Stack, MeldDoc):
             diff.update_buffer_writable(buf)
 
     def set_files(self, files):
-        """Load the given files
-
-        If an element is None, the text of a pane is left as is.
-        """
+        """Load the given files"""
         assert len(files) == 4
         self.files = files
         self.diff0.set_files(files[:2])
-        self._set_read_only(self.diff0, [1])
+        self._set_read_only(self.diff0, [0, 1])
         self.diff1.set_files(files[1:3])
         self._set_read_only(self.diff1, [0, 1])
         self.diff2.set_files(files[2:])
@@ -349,9 +363,8 @@ class FourDiff(Gtk.Stack, MeldDoc):
         filenames = [b.data.label for b in buffers]
         shortnames = misc.shorten_names(*filenames)
 
-        for i, buf in enumerate(buffers):
-            if buf.get_modified():
-                shortnames[i] += "*"
+        if buffers[3].get_modified():
+            shortnames[3] += "*"
 
         label_text = " — ".join(shortnames)
         tooltip_names = filenames
@@ -382,7 +395,7 @@ class FourDiff(Gtk.Stack, MeldDoc):
         connect(vadjs[2], vadjs[3])
         connect(hadjs[2], hadjs[3])
 
-    def action_toggle_view(self, *args):
+    def action_toggle_view(self, _action, _value):
         self.is_showing_2_diffs = not self.is_showing_2_diffs
         self.set_visible_child_name('grid0' if self.is_showing_2_diffs else 'grid1')
         self._update_active_diff()
@@ -411,6 +424,31 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self._find_conflict(backwards=False)
 
     def on_delete_event(self):
-        # TODO: check if there are still conflict markers
+        buf = self.diff2.textbuffer[1]
+        text = buf.get_text(buf.get_start_iter(), buf.get_end_iter(),
+                            include_hidden_chars=True)
+        if '<<<<<<<' in text or '>>>>>>>>' in text:
+            response = misc.modal_dialog(
+                primary=_("Close with conflict markers?"),
+                secondary=_("There are conflict markers remaining. Are you sure you want to close?"),
+                buttons=[
+                    (_("_Cancel"), Gtk.ResponseType.CANCEL, None),
+                    (_("Close with conflict markers"), Gtk.ResponseType.OK, Gtk.STYLE_CLASS_WARNING),
+                ],
+                messagetype=Gtk.MessageType.WARNING,
+            )
+            if response != Gtk.ResponseType.OK:
+                return Gtk.ResponseType.CANCEL
+
+        # We start with diff 2, since it contains the editable buffer and
+        # the user may decide to abort closing
+        response = self.diff2.on_delete_event()
+        if response == Gtk.ResponseType.CANCEL:
+            return response
+
+        for diff in self.diffs[:2]:
+            response = diff.on_delete_event()
+            assert response == Gtk.ResponseType.OK
+
         self.emit('close', 0)
         return Gtk.ResponseType.OK
