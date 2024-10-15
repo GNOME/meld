@@ -21,7 +21,6 @@ from meld.conf import _
 from meld.const import TEXT_FILTER_ACTION_FORMAT, ActionMode
 from meld.filediff import FileDiff
 from meld.melddoc import MeldDoc
-from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings
 
 log = logging.getLogger(__name__)
@@ -415,15 +414,3 @@ class FourDiff(Gtk.Stack, MeldDoc):
         # TODO: check if there are still conflict markers
         self.emit('close', 0)
         return Gtk.ResponseType.OK
-
-    def get_comparison(self):
-        # TODO
-        return RecentType.Merge, []
-        # uris = [b.data.gfile for b in self.textbuffer[:self.num_panes]]
-
-        # if self.comparison_mode == FileComparisonMode.AutoMerge:
-        #     comparison_type = RecentType.Merge
-        # else:
-        #     comparison_type = RecentType.File
-
-        # return comparison_type, uris
