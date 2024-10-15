@@ -14,7 +14,7 @@
 
 import logging
 
-from gi.repository import Gio, GLib, GObject, Gtk
+from gi.repository import Gio, GLib, GObject, Gtk, GtkSource
 
 from meld.const import TEXT_FILTER_ACTION_FORMAT, ActionMode
 from meld.filediff import FileDiff
@@ -34,8 +34,6 @@ FWD_TO_ACTIVE_ACTIONS = [
     'copy',
     'copy-full-path',
     'cut',
-    'file-previous-conflict',
-    'file-next-conflict',
     'file-push-left',
     'file-push-right',
     'file-pull-left',
@@ -70,6 +68,13 @@ FWD_TO_ALL_ACTIONS = [
     'revert',
     'save',
     'save-all',
+]
+
+SELF_ACTIONS = [
+    # There are no FileDiff conflicts in 2-pane view. We do want to use those actions
+    # to find the next and previous conflict markers in the text.
+    'file-previous-conflict',
+    'file-next-conflict',
 ]
 
 DISABLED_ACTIONS = [
@@ -109,7 +114,7 @@ def _get_diff_actions(diff: FileDiff) -> tuple[set[str], set[str]]:
 def _verify_action_lists(diff: FileDiff):
     """Assert that the action lists cover all the actions in the FileDiff."""
     stateless_names, stateful_names = _get_diff_actions(diff)
-    expected_stateless_names = FWD_TO_ACTIVE_ACTIONS + FWD_TO_ALL_ACTIONS + DISABLED_ACTIONS
+    expected_stateless_names = FWD_TO_ACTIVE_ACTIONS + FWD_TO_ALL_ACTIONS + SELF_ACTIONS + DISABLED_ACTIONS
     assert set(expected_stateless_names) == stateless_names
     # In addition to the listed actions, the FileDiff creates
     # stateful actions for each text filter. We expect those as well.
@@ -209,16 +214,16 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self.is_showing_2_diffs = True
         self.active_diff_i_when_showing_2_diffs = 2
 
+        # We use a SearchContext to search for conflict markers in the right pane
+        self.search_settings = GtkSource.SearchSettings()
+        self.search_settings.props.search_text = "<<<<<<<"
+        self.search_settings.set_wrap_around(False)
+        self.search_context = GtkSource.SearchContext.new(self.diff2.textbuffer[1], self.search_settings)
+        self.search_context.set_highlight(False)
+
         for diff_i in [0, 2]:
             for tv in self.diffs[diff_i].textview:
                 tv.connect('focus-in-event', self.on_textview_focus_in_event, diff_i)
-
-        # Each FileDiff emits next-conflict-changed(bool, bool), which means, is there a prev and next conflict.
-        # We keep the current status for each of the FileDiffs, and emit the status for the active FileDiff.
-        self.cur_next_conflict = (False, False)
-        self.diff_next_conflicts = [(False, False) for _ in self.diffs]
-        for diff in self.diffs:
-            diff.connect("next-conflict-changed", self.on_diff_next_conflict_changed)
 
         self._init_actions()
 
@@ -240,9 +245,15 @@ class FourDiff(Gtk.Stack, MeldDoc):
         for diff in self.diffs:
             _verify_action_lists(diff)
 
-        action = Gio.SimpleAction.new('toggle-fourdiff-view')
-        action.connect('activate', self.action_toggle_view)
-        self.view_action_group.add_action(action)
+        my_actions = [
+            ('toggle-fourdiff-view', self.action_toggle_view),
+            ('file-previous-conflict', self.action_previous_conflict),
+            ('file-next-conflict', self.action_next_conflict),
+        ]
+        for name, callback in my_actions:
+            action = Gio.SimpleAction.new(name, None)
+            action.connect('activate', callback)
+            self.view_action_group.add_action(action)
 
         for name in FWD_TO_ACTIVE_ACTIONS:
             action = Gio.SimpleAction.new(name, None)
@@ -297,12 +308,6 @@ class FourDiff(Gtk.Stack, MeldDoc):
             self.active_diff_i = active_diff_i
             self.active_diff = self.diffs[active_diff_i]
 
-            next_conflict = self.diff_next_conflicts[active_diff_i]
-            if next_conflict != self.cur_next_conflict:
-                self.cur_next_conflict = next_conflict
-                have_prev, have_next = next_conflict
-                self.emit("next-conflict-changed", have_prev, have_next)
-
             diff_view_action_group = self.active_diff.view_action_group
             for name in FWD_TO_ACTIVE_ACTIONS:
                 self.view_action_group.lookup(name).set_enabled(diff_view_action_group.lookup(name).get_enabled())
@@ -310,15 +315,6 @@ class FourDiff(Gtk.Stack, MeldDoc):
     def on_textview_focus_in_event(self, _textbuffer, _event, diff_i):
         self.active_diff_i_when_showing_2_diffs = diff_i
         self._update_active_diff()
-
-    def on_diff_next_conflict_changed(self, diff, have_prev, have_next):
-        diff_i = self.diffs.index(diff)
-        next_conflict = (have_prev, have_next)
-        self.diff_next_conflicts[diff_i] = next_conflict
-        if diff_i == self.active_diff_i:
-            if self.cur_next_conflict != next_conflict:
-                self.cur_next_conflict = next_conflict
-                self.emit("next-conflict-changed", have_prev, have_next)
 
     @staticmethod
     def _set_read_only(diff, panes):
@@ -367,6 +363,29 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self.is_showing_2_diffs = not self.is_showing_2_diffs
         self.set_visible_child_name('grid0' if self.is_showing_2_diffs else 'grid1')
         self._update_active_diff()
+
+    def get_conflict_visibility(self) -> bool:
+        return True
+
+    def _find_conflict(self, backwards: bool):
+        # Based on FindBar._find_text
+        buf = self.diff2.textbuffer[1]
+        insert = buf.get_iter_at_mark(buf.get_insert())
+        if backwards:
+            match, start, end, wrapped = self.search_context.backward(insert)
+        else:
+            insert.forward_chars(1)
+            match, start, end, wrapped = self.search_context.forward(insert)
+        if match:
+            buf.place_cursor(start)
+            self.diff2.textview[1].scroll_to_mark(
+                buf.get_insert(), 0.25, True, 0.5, 0.5)
+
+    def action_previous_conflict(self, _action, _value):
+        self._find_conflict(backwards=True)
+
+    def action_next_conflict(self, _action, _value):
+        self._find_conflict(backwards=False)
 
     def on_delete_event(self):
         # TODO: check if there are still conflict markers
