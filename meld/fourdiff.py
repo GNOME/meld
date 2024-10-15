@@ -21,6 +21,7 @@ from meld.conf import _
 from meld.const import TEXT_FILTER_ACTION_FORMAT, ActionMode
 from meld.filediff import FileDiff
 from meld.melddoc import MeldDoc
+from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings
 
 log = logging.getLogger(__name__)
@@ -373,6 +374,11 @@ class FourDiff(Gtk.Stack, MeldDoc):
 
     def on_diff_label_changed(self, _diff, _label_text, _tooltip_text):
         self.recompute_label()
+
+    def get_comparison(self):
+        buffers = self.diff0.textbuffer[:2] + self.diff2.textbuffer[:2]
+        uris = [b.data.gfile for b in buffers]
+        return RecentType.FourDiff, uris
 
     @staticmethod
     def _on_adj_changed(me, other):

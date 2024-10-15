@@ -458,6 +458,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             RecentType.File: self.append_filediff,
             RecentType.Folder: self.append_dirdiff,
             RecentType.Merge: self.append_filemerge,
+            RecentType.FourDiff: self.append_fourdiff,
             RecentType.VersionControl: self.append_vcview,
         }
         tab = comparison_method[comparison_type](gfiles)
