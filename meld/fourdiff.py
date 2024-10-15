@@ -16,6 +16,8 @@ import logging
 
 from gi.repository import Gio, GLib, GObject, Gtk, GtkSource
 
+from meld import misc
+from meld.conf import _
 from meld.const import TEXT_FILTER_ACTION_FORMAT, ActionMode
 from meld.filediff import FileDiff
 from meld.melddoc import MeldDoc
@@ -225,6 +227,9 @@ class FourDiff(Gtk.Stack, MeldDoc):
             for tv in self.diffs[diff_i].textview:
                 tv.connect('focus-in-event', self.on_textview_focus_in_event, diff_i)
 
+        for diff in self.diffs:
+            diff.connect('label-changed', self.on_diff_label_changed)
+
         self._init_actions()
 
         self.label0.show()
@@ -337,6 +342,25 @@ class FourDiff(Gtk.Stack, MeldDoc):
         self._set_read_only(self.diff1, [0, 1])
         self.diff2.set_files(files[2:])
         self._set_read_only(self.diff2, [0])
+
+        self.recompute_label()
+
+    def recompute_label(self):
+        buffers = self.diff0.textbuffer[:2] + self.diff2.textbuffer[:2]
+        filenames = [b.data.label for b in buffers]
+        shortnames = misc.shorten_names(*filenames)
+
+        for i, buf in enumerate(buffers):
+            if buf.get_modified():
+                shortnames[i] += "*"
+
+        label_text = " — ".join(shortnames)
+        tooltip_names = filenames
+        tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
+        self.label_changed.emit(label_text, tooltip_text)
+
+    def on_diff_label_changed(self, _diff, _label_text, _tooltip_text):
+        self.recompute_label()
 
     @staticmethod
     def _on_adj_changed(me, other):
