@@ -193,8 +193,8 @@ class MeldApp(Gtk.Application):
             ("", _("Start with an empty window")),
             ("<%s|%s>" % (_("file"), _("folder")),
              _("Start a version control comparison")),
-            ("<%s> <%s> [<%s>]" % ((_("file"),) * 3),
-             _("Start a 2- or 3-way file comparison")),
+            ("<%s> <%s> [<%s>] [<%s>]" % ((_("file"),) * 4),
+             _("Start a 2- or 3- or 4-way file comparison")),
             ("<%s> <%s> [<%s>]" % ((_("folder"),) * 3),
              _("Start a 2- or 3-way folder comparison")),
         ]
