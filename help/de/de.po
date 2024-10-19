@@ -4,20 +4,21 @@
 # Mario Blättermann <mario.blaettermann@gmail.com>, 2009, 2016.
 # Benjamin Steinwender <b@stbe.at>, 2014-2015.
 # Christian Kirbach <Christian.Kirbach@gmail.com>, 2015-2016.
+# Tim Sabsch <tim@sabsch.com>, 2024.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld meld-3-14\n"
-"POT-Creation-Date: 2018-02-25 22:59+0000\n"
-"PO-Revision-Date: 2018-02-27 22:04+0100\n"
-"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
+"POT-Creation-Date: 2024-10-13 20:04+0000\n"
+"PO-Revision-Date: 2024-10-14 10:58+0200\n"
+"Last-Translator: Tim Sabsch <tim@sabsch.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.6\n"
+"X-Generator: Poedit 3.5\n"
 
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
@@ -25,7 +26,8 @@ msgid "translator-credits"
 msgstr ""
 "Mario Blättermann <mario.blaettermann@gmail.com>, 2009, 2016, 2018\n"
 "Benjamin Steinwender <b@stbe.at>, 2014-2015\n"
-"Christian Kirbach <christian.kirbach@gmail.com>, 2014, 2016"
+"Christian Kirbach <christian.kirbach@gmail.com>, 2014, 2016\n"
+"Tim Sabsch <tim@sabsch.com>, 2024"
 
 #. (itstool) path: info/title
 #: C/command-line.page:5 C/file-changes.page:5 C/file-filters.page:5
@@ -88,7 +90,7 @@ msgid ""
 "link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
 "cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
 msgstr ""
-"Für einen Zwei- oder Drei-Wege <link xref=\"file-mode\">Ordner-Vergleich</"
+"Für einen Zwei- oder Drei-Wege <link xref=\"folder-mode\">Ordner-Vergleich</"
 "link>, starten Sie <app>Meld</app> mit <cmd>meld <var>ordner1</var> <var> "
 "ordner2</var></cmd> beziehungsweise mit <cmd>meld <var>ordner1</var> "
 "<var>ordner2</var> <var>ordner3</var></cmd>."
@@ -103,13 +105,12 @@ msgid ""
 "<cmd>meld .</cmd> would start a version control view of the current "
 "directory."
 msgstr ""
-"Sie können einen <link xref=\"vc-mode\">Versionskontroll</link>-Vergleich "
-"mit einem einzelnen Argument starten. Wenn diese Datei oder dieses "
-"Verzeichnis durch ein <link xref=\"vc-supported\">unterstütztes "
-"Versionskontrollsystem</link> verwaltet wird, wird <app>Meld</app> einen "
-"Versionskontroll-Vergleich für das Argument starten. Zum Beispiel können Sie "
-"mit <cmd>meld .</cmd> eine Versionskontrollansicht des aktuellen Ordners "
-"starten."
+"Sie können einen <link xref=\"vc-mode\">Versionsvergleich</link> mit einem "
+"einzelnen Argument starten. Wenn diese Datei oder dieser Ordner durch ein "
+"<link xref=\"vc-supported\">unterstütztes Versionsverwaltungssystem</link> "
+"verwaltet wird, wird <app>Meld</app> einen Versionsvergleich für das "
+"Argument starten. Zum Beispiel können Sie mit <cmd>meld .</cmd> eine "
+"Versionsvergleichsansicht des aktuellen Ordners starten."
 
 #. (itstool) path: note/p
 #: C/command-line.page:40
@@ -130,8 +131,8 @@ msgid ""
 "blocks</em> or more simply <em>changes</em>. Each change is a group of lines "
 "which correspond between files. Since these changes are what you're usually "
 "interested in, <app>Meld</app> gives you specific tools to navigate between "
-"these changes and to edit them. You can find these tools in the <gui style="
-"\"menu\">Changes</gui> menu."
+"these changes and to edit them. You can find these tools in the <gui "
+"style=\"menu\">Changes</gui> menu."
 msgstr ""
 "<app>Meld</app> behandelt Dateiunterschiede als Liste von "
 "<em>Änderungsblöcken</em> oder einfach <em>Änderungen</em>. Jede dieser "
@@ -149,18 +150,19 @@ msgstr "Navigieren zwischen Änderungen"
 #. (itstool) path: section/p
 #: C/file-changes.page:32
 msgid ""
-"You can navigate between changes with the <guiseq><gui style=\"menu"
-"\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> and "
-"<guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
-"change</gui></guiseq> menu items. You can also use your mouse's scroll wheel "
-"to move between changes, by scrolling on the central change bar."
+"You can navigate between changes with the <guiseq><gui "
+"style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></"
+"guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui "
+"style=\"menuitem\">Next change</gui></guiseq> menu items. You can also use "
+"your mouse's scroll wheel to move between changes, by scrolling on the "
+"central change bar."
 msgstr ""
-"Über die Menüeinträge <guiseq><gui style=\"menu\">Änderungen</gui><gui style="
-"\"menuitem\">Vorherige Änderung</gui></guiseq> und <guiseq><gui style=\"menu"
-"\">Änderungen</gui><gui style=\"menuitem\">Nächste Änderung</gui></guiseq> "
-"können Sie zwischen den Änderungen navigieren. Auch mit dem Mausrad können "
-"Sie zwischen den Änderungen wechseln, wenn sich der Zeiger über der "
-"mittleren Leiste befindet."
+"Über die Menüeinträge <guiseq><gui style=\"menu\">Änderungen</gui><gui "
+"style=\"menuitem\">Vorherige Änderung</gui></guiseq> und <guiseq><gui "
+"style=\"menu\">Änderungen</gui><gui style=\"menuitem\">Nächste Änderung</"
+"gui></guiseq> können Sie zwischen den Änderungen navigieren. Auch mit dem "
+"Mausrad können Sie zwischen den Änderungen wechseln, wenn sich der Zeiger "
+"über der mittleren Leiste befindet."
 
 #. (itstool) path: section/title
 #: C/file-changes.page:46
@@ -241,9 +243,10 @@ msgid ""
 "what kind of differences you see. You can filter based on <link xref=\"#file-"
 "state-filter\">differences between a file across folders</link> or <link "
 "xref=\"#file-name-filter\">file and folder names</link>. You can also tell "
-"<app>Meld</app> to treat filenames as being <link xref=\"#file-case-filter"
-"\">case insensitive</link>. Finally, you can use <link xref=\"text-filters"
-"\">text filters</link> to change what both folder and file comparisons see."
+"<app>Meld</app> to treat filenames as being <link xref=\"#file-case-"
+"filter\">case insensitive</link>. Finally, you can use <link xref=\"text-"
+"filters\">text filters</link> to change what both folder and file "
+"comparisons see."
 msgstr ""
 "<app>Meld</app> besitzt verschiedene Einstellungsmöglichkeiten, um "
 "festzulegen, welche Dateien und Unterschiede angezeigt werden sollen. Sie "
@@ -332,9 +335,9 @@ msgid ""
 msgstr ""
 "Mit den Werkzeugleistenknöpfen <gui style=\"button\">Identisch</gui>, <gui "
 "style=\"button\">Neu</gui> und <gui style=\"button\">Geändert</gui> oder "
-"über das Menü <guiseq><gui style=\"menu\">Ansicht</gui><gui style=\"menuitem"
-"\">Dateistatus</gui></guiseq> können Sie ändern, welche Arten von "
-"Unterschieden im aktuellen Vergleich angezeigt werden sollen."
+"über das Menü <guiseq><gui style=\"menu\">Ansicht</gui><gui "
+"style=\"menuitem\">Dateizustand</gui></guiseq> können Sie ändern, welche "
+"Arten von Unterschieden im aktuellen Vergleich angezeigt werden sollen."
 
 #. (itstool) path: note/p
 #: C/file-filters.page:80
@@ -344,8 +347,8 @@ msgid ""
 "all folders that contain only new files. A folder containing only \"New\" "
 "files would show up as empty, but still present."
 msgstr ""
-"Derzeit können Sie nur Dateien anhand des Status filtern, für Ordner ist das "
-"nicht möglich. Beispielsweise können Sie <app>Meld</app> nicht anweisen, "
+"Derzeit können Sie nur Dateien anhand des Zustands filtern, für Ordner ist "
+"das nicht möglich. Beispielsweise können Sie <app>Meld</app> nicht anweisen, "
 "alle Ordner zu ignorieren, die nur neue Dateien enthalten. Ein Ordner, der "
 "nur »neue« Dateien enthält, würde als leerer Ordner angezeigt, ist aber noch "
 "vorhanden."
@@ -367,22 +370,22 @@ msgid ""
 msgstr ""
 "<app>Meld</app> bietet eine Reihe von nützlichen Filtern für Dateinamen, mit "
 "denen Sie uninteressante Dateien und Ordner ausblenden können, zum Beispiel "
-"Sicherungsdateien und die Metadaten-Ordner in Versionskontrollsystemen. "
+"Sicherungsdateien und die Metadaten-Ordner in Versionsverwaltungssystemen. "
 "Jeder Dateinamen-Filter kann über den <gui style=\"button\">Filter</gui>-"
-"Knopf in der Werkzeugleiste oder im Menü <guiseq><gui style=\"menu"
-"\">Ansicht</gui><gui style=\"menuitem\">Dateifilter</gui></guiseq> separat "
-"aktiviert oder deaktiviert werden."
+"Knopf in der Werkzeugleiste oder im Menü <guiseq><gui "
+"style=\"menu\">Ansicht</gui><gui style=\"menuitem\">Dateifilter</gui></"
+"guiseq> separat aktiviert oder deaktiviert werden."
 
 #. (itstool) path: section/p
 #: C/file-filters.page:106
 msgid ""
-"You can add, remove or change filename filters from the <gui style=\"tab"
-"\">File Filters</gui> section of the <gui>Preferences</gui> dialog. Filename "
-"filters specify patterns of filenames that will <em>not</em> be looked at "
-"when performing a folder comparison. Any file that matches an active filter "
-"won't even show up in the tree comparison. Filename filters match both files "
-"and folders; if a folder matches a filter, it and all of its contents are "
-"ignored."
+"You can add, remove or change filename filters from the <gui "
+"style=\"tab\">File Filters</gui> section of the <gui>Preferences</gui> "
+"dialog. Filename filters specify patterns of filenames that will <em>not</"
+"em> be looked at when performing a folder comparison. Any file that matches "
+"an active filter won't even show up in the tree comparison. Filename filters "
+"match both files and folders; if a folder matches a filter, it and all of "
+"its contents are ignored."
 msgstr ""
 "Im Abschnitt <gui style=\"tab\">Dateifilter</gui> des Dialogs "
 "<gui>Einstellungen</gui> können Sie Filter für Dateinamen hinzufügen, "
@@ -513,13 +516,13 @@ msgstr ""
 msgid ""
 "When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish "
 "to make <app>Meld</app> treat filenames as case insensitive. You can do this "
-"by selecting <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem"
-"\">Ignore filename case</gui></guiseq> from the menus."
+"by selecting <guiseq><gui style=\"menu\">View</gui><gui "
+"style=\"menuitem\">Ignore filename case</gui></guiseq> from the menus."
 msgstr ""
 "Bei Ordnervergleichen auf bestimmten Dateisystemen (zum Beispiel HFS+ oder "
 "FAT) kann es sinnvoll sein, wenn <app>Meld</app> bei Dateinamen die Groß- "
-"oder Kleinschreibung nicht beachtet. Wählen Sie hierzu <guiseq><gui style="
-"\"menu\">Ansicht</gui><gui style=\"menuitem\">Groß-/Kleinschreibung in "
+"oder Kleinschreibung nicht beachtet. Wählen Sie hierzu <guiseq><gui "
+"style=\"menu\">Ansicht</gui><gui style=\"menuitem\">Groß-/Kleinschreibung in "
 "Dateinamen ignorieren</gui></guiseq>."
 
 #. (itstool) path: info/title
@@ -538,8 +541,9 @@ msgstr "Erste Schritte beim Vergleichen von Dateien"
 #: C/file-mode.page:19
 msgid ""
 "<app>Meld</app> lets you compare two or three text files side-by-side. You "
-"can start a new file comparison by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
+"can start a new file comparison by selecting the <guiseq><gui "
+"style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu "
+"item."
 msgstr ""
 "Mit <app>Meld</app> können Sie zwei oder drei Textdateien nebeneinander "
 "vergleichen. Einen neuen Dateivergleich starten Sie im Menü mit <guiseq><gui "
@@ -643,13 +647,14 @@ msgstr ""
 #. (itstool) path: section/p
 #: C/file-mode.page:74
 msgid ""
-"You can save the current file by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using "
-"the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
+"You can save the current file by selecting the <guiseq><gui "
+"style=\"menu\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu "
+"item, or using the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard "
+"shortcut."
 msgstr ""
-"Die aktuelle Datei speichern Sie im Menü mit <guiseq><gui style=\"menu"
-"\">Datei</gui><gui style=\"menuitem\">Speichern</gui></guiseq> oder durch "
-"Drücken von <keyseq><key>Strg</key><key>S</key></keyseq>."
+"Die aktuelle Datei speichern Sie im Menü mit <guiseq><gui "
+"style=\"menu\">Datei</gui><gui style=\"menuitem\">Speichern</gui></guiseq> "
+"oder durch Drücken von <keyseq><key>Strg</key><key>S</key></keyseq>."
 
 #. (itstool) path: note/p
 #: C/file-mode.page:81
@@ -694,10 +699,10 @@ msgid ""
 "item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> "
 "button on the toolbar."
 msgstr ""
-"Über das Menü <guiseq><gui style=\"menu\">Ansicht</gui><gui style=\"menuitem"
-"\">Einklappen</gui></guiseq> oder durch Anklicken des entsprechenden <gui "
-"style=\"button\">Einklappen</gui>-Knopfs in der Werkzeugleiste kann die "
-"eingeklappte Ansicht ein- oder ausgeschaltet werden."
+"Über das Menü <guiseq><gui style=\"menu\">Ansicht</gui><gui "
+"style=\"menuitem\">Einklappen</gui></guiseq> oder durch Anklicken des "
+"entsprechenden <gui style=\"button\">Einklappen</gui>-Knopfs in der "
+"Werkzeugleiste kann die eingeklappte Ansicht ein- oder ausgeschaltet werden."
 
 #. (itstool) path: page/title
 #: C/folder-mode.page:16
@@ -708,14 +713,15 @@ msgstr "Erste Schritte beim Vergleichen von Ordnern"
 #: C/folder-mode.page:18
 msgid ""
 "<app>Meld</app> lets you compare two or three folders side-by-side. You can "
-"start a new folder comparison by selecting the <guiseq><gui style=\"menu"
-"\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and "
-"clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
+"start a new folder comparison by selecting the <guiseq><gui "
+"style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu "
+"item, and clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
 msgstr ""
 "Mit <app>Meld</app> können Sie zwei oder drei Ordner nebeneinander "
-"vergleichen. Wählen Sie <guiseq><gui style=\"menu\">Datei</gui><gui style="
-"\"menuitem\">Neu …</gui></guiseq> und klicken auf den Reiter <gui style=\"tab"
-"\">Ordnervergleich</gui>, um einen neuen Ordnervergleich zu starten."
+"vergleichen. Wählen Sie <guiseq><gui style=\"menu\">Datei</gui><gui "
+"style=\"menuitem\">Neu …</gui></guiseq> und klicken auf den Reiter <gui "
+"style=\"tab\">Ordnervergleich</gui>, um einen neuen Ordnervergleich zu "
+"starten."
 
 #. (itstool) path: page/p
 #: C/folder-mode.page:26
@@ -726,8 +732,8 @@ msgid ""
 msgstr ""
 "Ihre gewählten Ordner werden als nebeneinander liegende Baumansichten "
 "dargestellt, wobei die Unterschiede zwischen Dateien in jedem Ordner "
-"hervorgehoben werden. Sie aus jedem Ordner Dateien kopieren oder löschen "
-"oder einzelne Textdateien detaillierter vergleichen."
+"hervorgehoben werden. Sie können aus jedem Ordner Dateien kopieren oder "
+"löschen oder einzelne Textdateien detaillierter vergleichen."
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:36
@@ -784,19 +790,19 @@ msgstr "Navigieren im Ordnervergleich"
 #: C/folder-mode.page:65
 msgid ""
 "You can jump between changed files (that is, any files/folders that are "
-"<em>not</em> classified as being identical) with the <guiseq><gui style="
-"\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> "
-"and <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next "
-"change</gui></guiseq> menu items, or using the corresponding buttons on the "
-"toolbar."
+"<em>not</em> classified as being identical) with the <guiseq><gui "
+"style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></"
+"guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui "
+"style=\"menuitem\">Next change</gui></guiseq> menu items, or using the "
+"corresponding buttons on the toolbar."
 msgstr ""
 "Sie können zwischen geänderten Dateien springen (das heißt, Dateien oder "
 "Ordner, die <em>nicht</em> als identisch angesehen werden), indem Sie "
-"<guiseq><gui style=\"menu\">Änderungen</gui><gui style=\"menuitem"
-"\">Vorherige Änderung</gui></guiseq> und <guiseq><gui style=\"menu"
-"\">Änderungen</gui><gui style=\"menuitem\">Nächste Änderung</gui></guiseq> "
-"im Menü wählen oder die entsprechenden Knöpfe in der Werkzeugleiste "
-"anklicken."
+"<guiseq><gui style=\"menu\">Änderungen</gui><gui "
+"style=\"menuitem\">Vorherige Änderung</gui></guiseq> und <guiseq><gui "
+"style=\"menu\">Änderungen</gui><gui style=\"menuitem\">Nächste Änderung</"
+"gui></guiseq> im Menü wählen oder die entsprechenden Knöpfe in der "
+"Werkzeugleiste anklicken."
 
 #. (itstool) path: section/p
 #: C/folder-mode.page:73
@@ -805,9 +811,9 @@ msgid ""
 "between the folders you're comparing. This is useful so that you can select "
 "an individual file for copying or deletion."
 msgstr ""
-"Mit den Pfeiltasten <key>Links</key> und <key>Rechts</key> können Sie "
-"zwischen den verglichenen Ordnern wechseln. So können Sie eine bestimmte "
-"Datei zum Kopieren oder Löschen auswählen."
+"Mit den Pfeiltasten <key>←</key> und <key>→</key> können Sie zwischen den "
+"verglichenen Ordnern wechseln. So können Sie eine bestimmte Datei zum "
+"Kopieren oder Löschen auswählen."
 
 #. (itstool) path: section/title
 #: C/folder-mode.page:83
@@ -820,9 +826,9 @@ msgid ""
 "Each file or folder in a tree has its own <em>state</em>, telling you how it "
 "differed from its corresponding files/folders. The possible states are:"
 msgstr ""
-"Jede Datei oder Ordner in einem Baum hat einen <em>Status</em>, der darüber "
+"Jede Datei oder Ordner in einem Baum hat einen <em>Zustand</em>, der darüber "
 "Auskunft gibt, wie sie sich von den korrespondierenden Dateien oder Ordnern "
-"unterscheidet. Mögliche Status sind:"
+"unterscheidet. Mögliche Zustände sind:"
 
 #. (itstool) path: table/title
 #: C/folder-mode.page:106
@@ -832,7 +838,7 @@ msgstr "Ordnervergleichszustände"
 #. (itstool) path: td/p
 #: C/folder-mode.page:110 C/vc-mode.page:85
 msgid "State"
-msgstr "Status"
+msgstr "Zustand"
 
 #. (itstool) path: td/p
 #: C/folder-mode.page:111 C/vc-mode.page:86
@@ -867,8 +873,8 @@ msgstr "Kursiv"
 #. (itstool) path: td/p
 #: C/folder-mode.page:140
 msgid ""
-"These files are different across folders, but once <link xref=\"text-filters"
-"\">text filters</link> are applied, these files become identical."
+"These files are different across folders, but once <link xref=\"text-"
+"filters\">text filters</link> are applied, these files become identical."
 msgstr ""
 "Diese Dateien sind auf die Ordner bezogen unterschiedlich, aber sobald <link "
 "xref=\"text-filters\">Textfilter</link> eingesetzt werden, sind sie "
@@ -943,7 +949,7 @@ msgid ""
 "files that have been <em>Modified</em>. You can read more about this in "
 "<link xref=\"file-filters#file-state-filter\"/>."
 msgstr ""
-"Sie können Dateien anhand deren Status filtern, um beispielsweise nur "
+"Sie können Dateien anhand ihres Zustands filtern, um beispielsweise nur "
 "Dateien anzuzeigen, die <em>Geändert</em> wurden. Weitere Informationen dazu "
 "finden Sie in <link xref=\"file-filters#file-state-filter\"/>."
 
@@ -979,7 +985,7 @@ msgstr "Ordner vergleichen"
 #. (itstool) path: section/title
 #: C/index.page:29
 msgid "Using Meld with Version Control"
-msgstr "Meld für Versionskontrolle verwenden"
+msgstr "Meld für Versionsvergleiche verwenden"
 
 #. (itstool) path: section/title
 #: C/index.page:33
@@ -989,7 +995,7 @@ msgstr "Fortgeschrittene Verwendung"
 #. (itstool) path: page/title
 #: C/introduction.page:15
 msgid "What is Meld?"
-msgstr "Was is Meld?"
+msgstr "Was ist Meld?"
 
 #. (itstool) path: page/p
 #: C/introduction.page:16
@@ -998,9 +1004,10 @@ msgid ""
 "resolving differences between them. It is also useful for comparing changes "
 "captured by version control systems."
 msgstr ""
-"<app>Meld</app> ist ein Werkzeug zum Vergleichen von Dateien und Ordnern und "
-"zum Auflösen von Unterschieden zwischen solchen. Es ist nützlich zum "
-"Betrachten von Änderungen, die von Versionskontrollsystemen erfasst werden."
+"<app>Meld</app> ist ein Werkzeug zum Vergleichen von Dateien und Ordnern, "
+"und zum Auflösen von Unterschieden zwischen solchen. Es ist auch nützlich "
+"zum Betrachten von Änderungen, die von Versionsverwaltungssystemen erfasst "
+"werden."
 
 #. (itstool) path: page/p
 #: C/introduction.page:22
@@ -1014,9 +1021,9 @@ msgstr ""
 "<app>Meld</app> zeigt Unterschiede zwischen zwei oder drei Dateien (oder "
 "zwei oder drei Ordnern) an und ermöglicht Ihnen, Inhalte zwischen ihnen zu "
 "verschieben oder auch die Dateien manuell zu bearbeiten. Der Schwerpunkt von "
-"<app>Meld</app> ist Hilfe für Entwickler beim Vergleichen und Zusammenführen "
-"von Quelldateien und eine visuelle Übersicht über die Änderungen in Ihrem "
-"bevorzugten Versionskontrollsystem zu erhalten."
+"<app>Meld</app> ist Hilfe für Entwickelnde beim Vergleichen und "
+"Zusammenführen von Quelldateien, und eine visuelle Übersicht über die "
+"Änderungen in Ihrem bevorzugten Versionsverwaltungssystem."
 
 #. (itstool) path: page/title
 #: C/keyboard-shortcuts.page:15
@@ -1465,7 +1472,7 @@ msgstr ""
 #. (itstool) path: page/title
 #: C/text-filters.page:17
 msgid "Filtering out text"
-msgstr "Filterung von Text"
+msgstr "Texte rausfiltern"
 
 #. (itstool) path: page/p
 #: C/text-filters.page:19
@@ -1508,9 +1515,9 @@ msgid ""
 "filters that you might find useful, but you can add your own as well."
 msgstr ""
 "Textfilter lassen sich im Reiter <gui>Textfilter</gui> im Dialog "
-"<gui>Einstellungen</gui> ein- oder ausschalten. <app>Meld</app> bietet "
-"einige simple Filter, die Sie nützlich finden könnten, aber Sie können auch "
-"eigene Filter hinzufügen."
+"<gui>Einstellungen</gui> ein- oder ausschalten. <app>Meld</app> stellt "
+"einige einfache Filter bereit, die Sie nützlich finden könnten. Sie können "
+"aber auch eigene Filter hinzufügen."
 
 #. (itstool) path: section/p
 #: C/text-filters.page:45
@@ -1634,13 +1641,13 @@ msgid ""
 "change in the text, but it may also arise if your active text filters have "
 "removed all of the other content from a change, leaving only blank lines."
 msgstr ""
-"Die Option <gui>Ignorieren von Änderungen, durch die Leerzeichen hinzugefügt "
-"oder entfernt werden</gui> im Reiter <gui>Textfilter</gui> bedarf weiterer "
-"Erklärung. Wenn dieser spezielle Filter aktiviert ist, dann wird jede "
-"Änderung vollständig ignoriert, die nur aus Leerzeilen besteht. Das kann "
-"vorkommen, wenn im Text tatsächlich Leerzeichen geändert wurden, oder wenn "
-"Ihr aktiver Textfilter alle anderen Änderungen aus Ihrem Text entfernt und "
-"dabei nur Leerzeilen hinterlassen hat."
+"Die Option <gui>Unterschiede in Leerzeilen vor und nach Änderungen "
+"abschneiden</gui> im Reiter <gui>Textfilter</gui> bedarf weiterer Erklärung. "
+"Wenn dieser spezielle Filter aktiviert ist, dann wird jede Änderung "
+"vollständig ignoriert, die nur aus Leerzeilen besteht. Das kann vorkommen, "
+"wenn im Text tatsächlich Leerzeichen geändert wurden, oder wenn Ihr aktiver "
+"Textfilter alle anderen Änderungen aus Ihrem Text entfernt und dabei nur "
+"Leerzeilen hinterlassen hat."
 
 #. (itstool) path: section/p
 #: C/text-filters.page:125
@@ -1649,9 +1656,9 @@ msgid ""
 "problems\">problems and limitations</link> resulting from filters not being "
 "able to remove whole lines, but it can also be useful in and of itself."
 msgstr ""
-"Sie können mit dieser Option einige der <link xref=\"#text-filter-problems"
-"\">Probleme und Einschränkungen</link> von Textfiltern umgehen, bei denen "
-"Filter ganze Zeilen nicht entfernen können."
+"Sie können mit dieser Option einige der <link xref=\"#text-filter-"
+"problems\">Probleme und Einschränkungen</link> von Textfiltern umgehen, bei "
+"denen Filter ganze Zeilen nicht entfernen können."
 
 #. (itstool) path: info/title
 #: C/vc-mode.page:5
@@ -1662,7 +1669,7 @@ msgstr "0"
 #. (itstool) path: page/title
 #: C/vc-mode.page:16
 msgid "Viewing version-controlled files"
-msgstr "Betrachten von Dateien unter Versionskontrolle"
+msgstr "Betrachten von Dateien unter Versionsverwaltung"
 
 #. (itstool) path: page/p
 #: C/vc-mode.page:18
@@ -1670,21 +1677,21 @@ msgid ""
 "<app>Meld</app> integrates with <link xref=\"vc-supported\">many version "
 "control systems</link> to let you review local changes and perform simple "
 "version control tasks. You can start a new version control comparison by "
-"selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem"
-"\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab"
-"\">Version Control</gui> tab."
+"selecting the <guiseq><gui style=\"menu\">File</gui><gui "
+"style=\"menuitem\">New...</gui></guiseq> menu item, and clicking on the <gui "
+"style=\"tab\">Version Control</gui> tab."
 msgstr ""
-"<app>Meld</app> arbeitet mit zahlreichen <link xref=\"vc-supported"
-"\">Versionskontrollsystemen</link> zusammen. Sie können lokale Änderungen "
-"betrachten und einfache Verwaltungsaufgaben ausführen. Einen neuen "
-"Versionskontrollvergleich starten Sie über <guiseq><gui style=\"menu"
-"\">Datei</gui><gui style=\"menuitem\">Neu …</gui></guiseq> und klicken auf "
-"den Reiter <gui style=\"tab\">Versionskontrolle</gui>."
+"<app>Meld</app> arbeitet mit zahlreichen <link xref=\"vc-"
+"supported\">Versionsverwaltungssystemen</link> zusammen. Sie können lokale "
+"Änderungen betrachten und einfache Verwaltungsaufgaben ausführen. Einen "
+"neuen Versionsvergleich starten Sie über <guiseq><gui style=\"menu\">Datei</"
+"gui><gui style=\"menuitem\">Neu …</gui></guiseq> und klicken auf den Reiter "
+"<gui style=\"tab\">Versionsverwaltung</gui>."
 
 #. (itstool) path: section/title
 #: C/vc-mode.page:30
 msgid "Version control comparisons"
-msgstr "Versionskontroll-Vergleiche"
+msgstr "Versionsvergleiche"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:32
@@ -1694,32 +1701,31 @@ msgid ""
 "has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
 "from the repository copy."
 msgstr ""
-"Versionskontroll-Vergleiche zeigen die Unterschiede zwischen den Inhalt "
-"Ihres Ordners und der aktuellen Version im Softwarebestand (Repository). "
-"Jede Datei in Ihrer lokalen Kopie hat einen <link xref=\"#vc-Status\">state</"
-"link>, der besagt, wie sie sich von der Version im Softwarebestand "
-"unterscheidet."
+"Versionsvergleiche zeigen die Unterschiede zwischen dem Inhalt Ihres Ordners "
+"und der aktuellen Version im Softwarebestand (Repository). Jede Datei in "
+"Ihrer lokalen Kopie hat einen <link xref=\"#vc-state\">Zustand</link>, der "
+"besagt, wie sie sich von der Version im Softwarebestand unterscheidet."
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:46
 msgid ""
 "If you want to look at a particular file's differences, you can select it "
-"and press <key>Enter</key>, or double-click the file to start a <link xref="
-"\"file-mode\">file comparison</link>. You can also interact with your "
+"and press <key>Enter</key>, or double-click the file to start a <link "
+"xref=\"file-mode\">file comparison</link>. You can also interact with your "
 "version control system using the <gui style=\"menu\">Changes</gui> menu."
 msgstr ""
 "Wenn Sie die Unterschiede nur für eine bestimmte Datei betrachten wollen, "
-"wählen Sie sie aus und drücken Sie die <key>Eingabtaste</key> oder klicken "
-"Sie doppelt auf eine Datei, um einen <link xref=\"file-mode"
-"\">Dateivergleich</link> zu starten. Über das Menü <gui style=\"menu"
-"\">Änderungen</gui> können Sie auch mit Ihrem Versionskontrollsystem "
-"interagieren."
+"wählen Sie sie aus und drücken Sie die <key>Eingabetaste</key> oder klicken "
+"Sie doppelt auf eine Datei, um einen <link xref=\"file-"
+"mode\">Dateivergleich</link> zu starten. Über das Menü <gui "
+"style=\"menu\">Änderungen</gui> können Sie auch mit Ihrem "
+"Versionsverwaltungssystem interagieren."
 
 #. (itstool) path: section/title
 #. (itstool) path: table/title
 #: C/vc-mode.page:56 C/vc-mode.page:81
 msgid "Version control states"
-msgstr "Status in Versionskontrollsystemen"
+msgstr "Zustände in Versionsverwaltungssystemen"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:58
@@ -1730,12 +1736,12 @@ msgid ""
 "<app>Meld</app> might use slightly different names for states than your "
 "version control system does. The possible states are:"
 msgstr ""
-"Jede Datei und jeder Ordner in einem Versionskontrollvergleich hat einen "
-"<em>Status</em>, der vom Versionskontrollsystem selbst definiert wird. "
+"Jede Datei und jeder Ordner in einem Versionsvergleich hat einen "
+"<em>Zustand</em>, der vom Versionsverwaltungssystem selbst definiert wird. "
 "<app>Meld</app> bildet diese verschiedenen Zustände auf einen Standardsatz "
 "sehr einfacher Konzepte ab. Als solches kann <app>Meld</app> etwas andere "
 "Bezeichnungen für die Zustände verwenden als die eigentliche "
-"Versionskontrolle. Mögliche Status sind:"
+"Versionsverwaltung. Mögliche Zustände sind:"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:101
@@ -1798,7 +1804,7 @@ msgid ""
 msgstr ""
 "Die Unterschiede zwischen der lokalen Datei und dem Softwarebestand konnten "
 "beim Zusammenzuführen nicht gelöst werden. Die Datei ist nun im Konflikt mit "
-"den Inhalten des Softwarebestandes."
+"den Inhalten des Softwarebestandes"
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:169
@@ -1827,8 +1833,8 @@ msgid ""
 "gitignore</file>) and is not being tracked by version control."
 msgstr ""
 "Diese Datei/dieser Ordner wurde ausdrücklich ignoriert (z.B. durch einen "
-"Eintrag in <file>.gitignore</file>) und wird nicht durch die "
-"Versionskontrolle überwacht."
+"Eintrag in <file>.gitignore</file>) und steht nicht unter einer "
+"Versionsverwaltung."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:197
@@ -1840,37 +1846,40 @@ msgstr "Nicht versioniert"
 msgid ""
 "This file is not in the version control system; it is only in the local copy."
 msgstr ""
-"Die Datei steht nicht unter Versionskontrolle. Sie ist nur lokal vorhanden."
+"Die Datei steht nicht unter einer Versionsverwaltung. Sie ist nur lokal "
+"vorhanden."
 
 #. (itstool) path: td/p
 #: C/vc-mode.page:220
 msgid "The version control system has reported a problem with this file."
-msgstr "Das Versionskontrollsystem hat ein Problem zu dieser Datei gemeldet."
+msgstr ""
+"Das Versionsverwaltungssystem hat ein Problem zu dieser Datei gemeldet."
 
 #. (itstool) path: section/title
 #: C/vc-mode.page:230
 msgid "Version control state filtering"
-msgstr "Filterung des Versionskontroll-Status"
+msgstr "Versionszustände filtern"
 
 #. (itstool) path: section/p
 #: C/vc-mode.page:232
 msgid ""
 "Most often, you will only want to see files that are identified as being in "
 "some way different; this is the default setting in <app>Meld</app>. You can "
-"change which file states you see by using the <guiseq><gui style=\"menu"
-"\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or "
-"by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui "
-"style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and "
-"<gui style=\"button\">Ignored</gui> buttons on the toolbar."
+"change which file states you see by using the <guiseq><gui "
+"style=\"menu\">View</gui><gui style=\"menuitem\">Version Status</gui></"
+"guiseq> menu, or by clicking the corresponding <gui "
+"style=\"button\">Modified</gui>, <gui style=\"button\">Normal</gui>, <gui "
+"style=\"button\">Unversioned</gui> and <gui style=\"button\">Ignored</gui> "
+"buttons on the toolbar."
 msgstr ""
 "Meist werden Sie nur die Dateien sehen wollen, die als unterschiedlich "
 "erkannt wurden. Dies ist die Voreinstellung in <app>Meld</app>. Sie können "
-"ändern, welche Dateistatus Sie sehen wollen. Verwenden Sie hierzu das Menü "
-"<guiseq><gui style=\"menu\">Ansicht</gui><gui style=\"menuitem"
-"\">Versionsstatus</gui></guiseq> oder klicken Sie doppelt auf einen der "
-"Knöpfe <gui style=\"button\">Geändert</gui>, <gui style=\"button\">Normal</"
-"gui>, <gui style=\"button\">Nicht versioniert</gui> und <gui style=\"button"
-"\">Ignoriert</gui> in der Werkzeugleiste."
+"ändern, welche Dateizustand Sie sehen wollen. Verwenden Sie hierzu das Menü "
+"<guiseq><gui style=\"menu\">Ansicht</gui><gui "
+"style=\"menuitem\">Versionsstatus</gui></guiseq> oder klicken Sie doppelt "
+"auf einen der Knöpfe <gui style=\"button\">Geändert</gui>, <gui "
+"style=\"button\">Normal</gui>, <gui style=\"button\">Nicht versioniert</gui> "
+"und <gui style=\"button\">Ignoriert</gui> in der Werkzeugleiste."
 
 #. (itstool) path: info/title
 #: C/vc-supported.page:5
@@ -1881,13 +1890,14 @@ msgstr "3"
 #. (itstool) path: page/title
 #: C/vc-supported.page:15
 msgid "Supported version control systems"
-msgstr "Unterstützte Versionskontrollsysteme"
+msgstr "Unterstützte Versionsverwaltungssysteme"
 
 #. (itstool) path: page/p
 #: C/vc-supported.page:17
 msgid "<app>Meld</app> supports a wide range of version control systems:"
 msgstr ""
-"<app>Meld</app> unterstützt eine große Anzahl von Versionskontrollsystemen:"
+"<app>Meld</app> unterstützt eine große Anzahl von "
+"Versionsverwaltungssystemen:"
 
 #. (itstool) path: item/p
 #: C/vc-supported.page:22
@@ -1922,8 +1932,7 @@ msgid ""
 "href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Meld issue tracker</"
 "link>."
 msgstr ""
-"Weniger gebräuchliche Versionskontrollsysteme oder unübliche Einstellungen "
-"sind eventuell nicht ausgiebig getestet. Bitte melden Sie Fehler in der "
-"Unterstützung der Versionskontrollsysteme im <link href=\"https://gitlab."
-"gnome.org/GNOME/meld/issues\"> Bugzilla-Fehlererfassungssystem von Meld</"
-"link>."
+"Weniger gebräuchliche Versionsverwaltungssysteme oder unübliche "
+"Einstellungen sind eventuell nicht ausgiebig getestet. Bitte melden Sie "
+"Fehler in der Unterstützung einer Versionsverwaltung im <link href=\"https://"
+"gitlab.gnome.org/GNOME/meld/issues\">Fehlererfassungssystem von Meld</link>."
