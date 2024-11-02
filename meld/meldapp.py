@@ -121,9 +121,7 @@ class MeldApp(Gtk.Application):
             uri = "https://meld.app/help/"
         else:
             uri = "help:meld"
-        launcher = Gtk.UriLauncher()
-        launcher.set_uri(uri)
-        launcher.launch(None, None)
+        Gtk.UriLauncher(uri=uri).launch(self.get_active_window(), None)
 
     def about_callback(self, action, parameter):
         builder = Gtk.Builder.new_from_resource(
