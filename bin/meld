@@ -173,7 +173,7 @@ def show_error_and_exit(error_text):
     raise_as_last_resort_to_display = False
     try:
         import gi
-        gi.require_version("Gtk", "3.0")
+        gi.require_version("Gtk", "4.0")
         from gi.repository import Gtk
         Gtk.MessageDialog(
             message_type=Gtk.MessageType.ERROR,
@@ -219,7 +219,7 @@ def check_requirements():
                 module = self.module
 
             mod = importlib.import_module(module)
-            if mod.__name__ == 'gi.repository.Gtk':
+            if mod.__name__ in ("gi.repository.Gtk", "gi.repository.Adw"):
                 version = (mod.get_major_version(), mod.get_minor_version())
             elif mod.__name__ == 'gi.repository.GLib':
                 version = (mod.MAJOR_VERSION, mod.MINOR_VERSION)
