@@ -2,6 +2,7 @@
 from unittest import mock
 
 import pytest
+from gi.repository import Gtk
 
 from meld.misc import all_same, calc_syncpoint, merge_intervals
 
@@ -47,9 +48,6 @@ def test_merge_intervals(intervals, expected):
     (1100, 100, 0, 1000, 1.0),
 ])
 def test_calc_syncpoint(value, page_size, lower, upper, expected):
-    import gi
-    gi.require_version("Gtk", "3.0")
-    from gi.repository import Gtk
     adjustment = Gtk.Adjustment()
     adjustment.configure(value, lower, upper, 1, 1, page_size)
     syncpoint = calc_syncpoint(adjustment)
