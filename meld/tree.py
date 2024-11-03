@@ -259,7 +259,7 @@ class TreeviewCommon:
         )
         return True
 
-    def on_treeview_button_press_event(self, controller, n_press, x, y):
+    def on_treeview_button_press_event(self, controller, n_press, wx, wy):
 
         treeview = controller.get_widget()
 
@@ -272,7 +272,7 @@ class TreeviewCommon:
 
         treeview.grab_focus()
 
-        x, y = treeview.convert_widget_to_bin_window_coords(x, y)
+        x, y = treeview.convert_widget_to_bin_window_coords(wx, wy)
         path = treeview.get_path_at_pos(int(x), int(y))
         if path is None:
             return False
@@ -285,7 +285,11 @@ class TreeviewCommon:
             selection.select_path(path[0])
             treeview.set_cursor(path[0])
 
-        self.popup_menu.popup() # TODO set row as parent for correct position
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = wx, wy
+
+        self.popup_menu.set_pointing_to(rect)
+        self.popup_menu.popup()
         return True
 
 

@@ -166,6 +166,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
     location_renderer = Gtk.Template.Child()
     name_column = Gtk.Template.Child()
     name_renderer = Gtk.Template.Child()
+    popup_menu = Gtk.Template.Child()
     status_column = Gtk.Template.Child()
     status_renderer = Gtk.Template.Child()
     treeview = Gtk.Template.Child()
@@ -237,10 +238,8 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/vcview-menus.ui')
-        context_menu = builder.get_object('vcview-context-menu')
-        self.popup_menu = Gtk.PopoverMenu.new_from_model(context_menu)
+        # FIXME: This is unsupported and incorrect, but also GTK doesn't let us
+        # do anything else at this point, so we get to live with it.
         self.popup_menu.set_parent(self.treeview)
 
         self.model = VcTreeStore()
