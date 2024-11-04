@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gdk, Gio, GObject, Gtk
+from gi.repository import Gio, GObject, Gtk
 
 KEYBINDING_FLAGS = GObject.SignalFlags.RUN_LAST | GObject.SignalFlags.ACTION
 
@@ -78,37 +78,32 @@ class MeldNotebook(Gtk.Notebook):
         # shortcuts to reinstate our Alt+0..9 switching support, and
         # look at also adopting its tab movement support.
 
-        self.connect('button-press-event', self.on_button_press_event)
-        self.connect('popup-menu', self.on_popup_menu)
         self.connect('page-added', self.on_page_added)
         self.connect('page-removed', self.on_page_removed)
 
-    def on_popup_menu(self, widget, event=None):
+    def append_page(self, child, tab_label):
+        super().append_page(child, tab_label)
+
+        gesture = Gtk.GestureClick()
+        gesture.set_button(3)
+        gesture.connect("pressed", self.on_button_press_event)
+        tab_label.add_controller(gesture)
+
+    def on_popup_menu(self, widget):
         self.action_group.lookup_action("tabmoveleft").set_enabled(
             self.get_current_page() > 0)
         self.action_group.lookup_action("tabmoveright").set_enabled(
             self.get_current_page() < self.get_n_pages() - 1)
 
-        popup = Gtk.Menu.new_from_model(self.popup_menu)
-        popup.attach_to_widget(widget, None)
-        popup.show_all()
+        popup = Gtk.PopoverMenu.new_from_model(self.popup_menu)
+        popup.set_parent(widget)
+        popup.popup()
 
-        if event:
-            popup.popup_at_pointer(event)
-        else:
-            popup.popup_at_widget(
-                widget,
-                Gdk.Gravity.NORTH_WEST,
-                Gdk.Gravity.NORTH_WEST,
-                event,
-            )
-        return True
-
-    def on_button_press_event(self, widget, event):
-        if (event.triggers_context_menu() and
-                event.type == Gdk.EventType.BUTTON_PRESS):
-            return self.on_popup_menu(widget, event)
-        return False
+    def on_button_press_event(self, gesture, n_press, x, y):
+        widget = gesture.get_widget()
+        index = self.page_num(widget.page)
+        self.set_current_page(index)
+        self.on_popup_menu(widget)
 
     def on_tab_move_left(self, *args):
         page_num = self.get_current_page()
