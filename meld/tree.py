@@ -235,9 +235,16 @@ class TreeviewCommon:
 
     def _add_treeview_gesture_controller(self, treeview, callback=None):
         controller = Gtk.GestureClick()
-        controller.connect("pressed", self.on_treeview_button_press_event if not callback else callback)
+        controller.connect(
+            "pressed", self.on_treeview_button_press_event if not callback else callback)
         controller.set_button(3)
         treeview.add_controller(controller)
+
+    def _add_treeview_key_controller(self, treeview):
+        keycontroller = Gtk.EventControllerKey()
+        keycontroller.connect("key-pressed", self.on_treeview_key_press_event)
+        # keycontroller.connect("key-released", self.on_key_event)
+        treeview.add_controller(keycontroller)
 
     def on_treeview_popup_menu(self, treeview):
         cursor_path, cursor_col = treeview.get_cursor()

@@ -705,9 +705,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
         self.marked = None
 
-        self._add_treeview_gesture_controller(self.treeview0)
-        self._add_treeview_gesture_controller(self.treeview1)
-        self._add_treeview_gesture_controller(self.treeview2)
+        for treeview in [self.treeview0, self.treeview1, self.treeview2]:
+            self._add_treeview_gesture_controller(treeview)
+            self._add_treeview_key_controller(treeview)
 
     def queue_draw(self):
         for treeview in self.treeview:
@@ -1470,8 +1470,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         new_pane = (pane + 1) % self.num_panes
         self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
-    @Gtk.Template.Callback()
-    def on_treeview_key_pressed(self, controller, keyval, keycode, state, *user_data):
+    def on_treeview_key_press_event(self, controller, keyval, keycode, state, *user_data):
         if keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
 
