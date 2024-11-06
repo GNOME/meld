@@ -708,6 +708,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         for treeview in [self.treeview0, self.treeview1, self.treeview2]:
             self._add_treeview_gesture_controller(treeview)
             self._add_treeview_key_controller(treeview)
+            self._add_treeview_focus_controler(treeview)
 
     def queue_draw(self):
         for treeview in self.treeview:

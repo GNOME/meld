@@ -246,6 +246,12 @@ class TreeviewCommon:
         # keycontroller.connect("key-released", self.on_key_event)
         treeview.add_controller(keycontroller)
 
+    def _add_treeview_focus_controler(self, treeview):
+        focuscontroller = Gtk.EventControllerFocus()
+        focuscontroller.connect("enter", self.on_treeview_focus_in_event)
+        # focuscontroller.connect("leave", self.on_textview_focus_out_event)
+        treeview.add_controller(focuscontroller)
+
     def on_treeview_popup_menu(self, treeview):
         cursor_path, cursor_col = treeview.get_cursor()
         if not cursor_path:
