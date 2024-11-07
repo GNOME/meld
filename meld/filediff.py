@@ -1179,11 +1179,10 @@ class FileDiff(Gtk.Box, MeldDoc):
                     self.set_file(pane, gfiles[0])
             return True
 
-    @Gtk.Template.Callback()
-    def on_textview_focus_in_event(self, view, event):
-        self.focus_pane = view
+    def on_textview_focus_in_event(self, controller):
+        self.focus_pane = controller.get_widget()
         self.findbar.set_text_view(self.focus_pane)
-        self.on_cursor_position_changed(view.get_buffer(), None, True)
+        self.on_cursor_position_changed(self.focus_pane.get_buffer(), None, True)
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
@@ -1878,7 +1877,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         # focus-in here to restablish the previous state.
         if self.cursor.pane is not None:
             self.on_textview_focus_in_event(
-                self.textview[self.cursor.pane], None
+                self.textview[self.cursor.pane]
             )
 
         langs = [LanguageManager.get_language_from_file(buf.data.gfile)

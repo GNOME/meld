@@ -886,7 +886,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         for m in self.msgarea_mgr:
             m.clear()
         child = self.model.add_entries(None, locations)
-        self.on_treeview_focus_in_event(self.treeview0, None)
+        self.on_treeview_focus_in_event(None)
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
@@ -1342,10 +1342,16 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             return
         self.update_action_sensitivity()
 
-    def update_action_sensitivity(self):
-        pane = self._get_focused_pane()
-        if pane is not None:
-            selection = self.treeview[pane].get_selection()
+    def update_action_sensitivity(self, focus_tree=None):
+        if focus_tree is not None:
+            pane = self.treeview.index(focus_tree)
+        else:
+            pane = self._get_focused_pane()
+            if pane is not None:
+                focus_tree = self.treeview[pane]
+
+        if focus_tree is not None:
+            selection = focus_tree.get_selection()
             have_selection = bool(selection.count_selected_rows())
         else:
             have_selection = False
@@ -1469,6 +1475,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
 
+        view = controller.get_widget()
         pane = self.treeview.index(view)
         target_pane = pane + 1 if event.keyval == Gdk.KEY_Right else pane - 1
         if 0 <= target_pane < self.num_panes:
@@ -1527,11 +1534,13 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
 
-    @Gtk.Template.Callback()
-    def on_treeview_focus_in_event(self, tree, event):
-        self.focus_pane = tree
-        self.update_action_sensitivity()
-        tree.emit("cursor-changed")
+    def on_treeview_focus_in_event(self, controller):
+        old_pane = self.focus_pane
+        self.focus_pane = controller.get_widget() if controller else self.treeview0
+        self.update_action_sensitivity(self.focus_pane)
+        if old_pane:
+            old_pane.get_selection().unselect_all()
+        self.focus_pane.emit("cursor-changed")
 
     def run_diff_from_iter(self, it):
         rows = self.model.value_paths(it)
