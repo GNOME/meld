@@ -1607,6 +1607,7 @@ class FileDiff(Gtk.VBox, MeldDoc):
         buf.data.reset(gfile)
         self.file_open_button[pane].props.file = gfile
 
+        self.filelabel[pane].props.parent_gfile = None
         # FIXME: this was self.textbuffer[pane].data.label, which could be
         # either a custom label or the fallback
         self.filelabel[pane].props.gfile = gfile
@@ -1703,6 +1704,8 @@ class FileDiff(Gtk.VBox, MeldDoc):
 
         if all(b.data.loaded for b in self.textbuffer[:self.num_panes]):
             self.scheduler.add_task(self._compare_files_internal())
+
+        self.recompute_label()
 
     def _merge_files(self):
         if self.comparison_mode == FileComparisonMode.AutoMerge:
