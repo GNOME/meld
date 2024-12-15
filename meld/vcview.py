@@ -153,6 +153,15 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         'ignored': ('vc-status-ignored', Entry.is_ignored),
     }
 
+    replaced_entries = (
+        # Remove Ctrl+Page Up/Down bindings. These are used to do horizontal
+        # scrolling in GTK by default, but we preference easy tab switching.
+        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+    )
+
     combobox_vcs = Gtk.Template.Child()
     console_vbox = Gtk.Template.Child()
     consoleview = Gtk.Template.Child()
@@ -182,6 +191,12 @@ class VcView(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
+
+        binding_set_names = ("GtkScrolledWindow", "GtkTreeView")
+        for set_name in binding_set_names:
+            binding_set = Gtk.binding_set_find(set_name)
+            for key, modifiers in self.replaced_entries:
+                Gtk.binding_entry_remove(binding_set, key, modifiers)
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
