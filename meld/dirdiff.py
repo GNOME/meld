@@ -484,6 +484,15 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
+    replaced_entries = (
+        # Remove Ctrl+Page Up/Down bindings. These are used to do horizontal
+        # scrolling in GTK by default, but we preference easy tab switching.
+        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+    )
+
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -496,6 +505,12 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
+
+        binding_set_names = ("GtkScrolledWindow", "GtkTreeView")
+        for set_name in binding_set_names:
+            binding_set = Gtk.binding_set_find(set_name)
+            for key, modifiers in self.replaced_entries:
+                Gtk.binding_entry_remove(binding_set, key, modifiers)
 
         self.view_action_group = Gio.SimpleActionGroup()
 
