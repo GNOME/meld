@@ -434,6 +434,12 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         ))
         self.label_changed.emit(self.label_text, self.tooltip_text)
 
+    def set_labels(self, labels):
+        if labels:
+            self.filelabel.custom_label = labels[0]
+
+        self.recompute_label()
+
     def _search_recursively_iter(self, start_path, replace=False):
 
         # Initial yield so when we add this to our tasks, we don't
