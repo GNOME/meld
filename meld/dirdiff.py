@@ -1857,6 +1857,11 @@ class DirDiff(Gtk.VBox, tree.TreeviewCommon, MeldDoc):
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
+
+        for label, flabel in zip(labels, self.folder_label):
+            if label:
+                flabel.props.custom_label = label
+
         extra = self.num_panes - len(labels)
         if extra:
             labels.extend([""] * extra)
