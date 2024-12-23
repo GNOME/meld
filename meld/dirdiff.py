@@ -254,7 +254,6 @@ def _files_same(files, regexes, comparison_args):
 
 EMBLEM_NEW = "emblem-new"
 EMBLEM_SELECTED = "emblem-default-symbolic"
-EMBLEM_SYMLINK = "emblem-symbolic-link"
 
 COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = (
     range(tree.COL_END, tree.COL_END + 5))
