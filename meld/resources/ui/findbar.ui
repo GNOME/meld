@@ -1,248 +1,174 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.22.1 -->
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk" version="4.0"/>
   <template class="FindBar" parent="GtkGrid">
-    <property name="can_focus">False</property>
     <property name="column_spacing">6</property>
     <child>
       <object class="GtkBox">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
         <property name="valign">center</property>
         <property name="homogeneous">True</property>
         <child>
           <object class="GtkButton" id="find_previous_button">
             <property name="tooltip_text" translatable="yes">Previous Result</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="receives_default">False</property>
             <signal name="clicked" handler="on_find_previous_button_clicked" swapped="no"/>
             <child>
               <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="icon_name">go-up-symbolic</property>
-                <property name="icon_size">1</property>
+                <property name="icon_size">normal</property>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkButton" id="find_next_button">
             <property name="tooltip_text" translatable="yes">Next Result</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="receives_default">False</property>
             <signal name="clicked" handler="on_find_next_button_clicked" swapped="no"/>
             <child>
               <object class="GtkImage">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="icon_name">go-down-symbolic</property>
-                <property name="icon_size">1</property>
+                <property name="icon_size">normal</property>
               </object>
             </child>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
         <style>
           <class name="linked"/>
         </style>
+        <layout>
+          <property name="column">1</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkSearchEntry" id="find_entry">
         <property name="placeholder_text" translatable="yes">Find</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">True</property>
         <property name="width_chars">32</property>
-        <property name="primary_icon_activatable">False</property>
-        <property name="secondary_icon_activatable">False</property>
         <signal name="activate" handler="on_find_next_button_clicked" swapped="no"/>
         <signal name="search-changed" handler="on_find_entry_changed" swapped="no"/>
         <signal name="stop-search" handler="on_stop_search" swapped="no"/>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkEntry" id="replace_entry">
         <property name="placeholder_text" translatable="yes">Replace</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">True</property>
         <property name="width_chars">32</property>
         <property name="primary_icon_name">edit-find-replace-symbolic</property>
         <property name="primary_icon_activatable">False</property>
         <property name="secondary_icon_activatable">False</property>
         <signal name="activate" handler="on_replace_button_clicked" swapped="no"/>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">1</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox" id="find_options">
-        <property name="visible">True</property>
-        <property name="orientation">horizontal</property>
-        <property name="can_focus">False</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkCheckButton" id="match_case">
             <property name="label" translatable="yes">_Match case</property>
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="focus_on_click">False</property>
-            <property name="receives_default">False</property>
             <property name="use_underline">True</property>
-            <property name="draw_indicator">True</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="whole_word">
             <property name="label" translatable="yes">Who_le word</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="focusable">True</property>
             <property name="focus_on_click">False</property>
-            <property name="receives_default">False</property>
             <property name="use_underline">True</property>
-            <property name="draw_indicator">True</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
         <child>
           <object class="GtkCheckButton" id="regex">
             <property name="label" translatable="yes">Regular e_xpression</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="focusable">True</property>
             <property name="focus_on_click">False</property>
-            <property name="receives_default">False</property>
             <property name="use_underline">True</property>
-            <property name="draw_indicator">True</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">True</property>
-            <property name="position">2</property>
-          </packing>
         </child>
+        <layout>
+          <property name="column">3</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">3</property>
-        <property name="top_attach">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox" id="wrap_box">
-        <property name="orientation">horizontal</property>
-        <property name="can_focus">False</property>
+        <property name="visible">0</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkImage" id="wrap_image">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="halign">center</property>
             <property name="icon_name">view-wrapped-symbolic</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">0</property>
-          </packing>
         </child>
         <child>
           <object class="GtkLabel" id="wrap_label">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="halign">center</property>
             <property name="label" translatable="yes">Wrapped</property>
             <property name="use_underline">True</property>
             <property name="xalign">0</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="position">1</property>
-          </packing>
         </child>
+        <layout>
+          <property name="column">4</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">4</property>
-        <property name="top_attach">0</property>
-      </packing>
     </child>
     <child>
       <object class="GtkButton" id="replace_all_button">
         <property name="label" translatable="yes">Replace _All</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">True</property>
         <property name="focus_on_click">False</property>
         <property name="receives_default">True</property>
         <property name="use_underline">True</property>
         <signal name="clicked" handler="on_replace_all_button_clicked" swapped="no"/>
+        <layout>
+          <property name="column">2</property>
+          <property name="row">1</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkButton" id="replace_button">
         <property name="label" translatable="yes">_Replace</property>
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">True</property>
         <property name="focus_on_click">False</property>
         <property name="receives_default">True</property>
         <property name="use_underline">True</property>
         <signal name="clicked" handler="on_replace_button_clicked" swapped="no"/>
+        <layout>
+          <property name="column">1</property>
+          <property name="row">1</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">1</property>
-        <property name="top_attach">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkButton">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">True</property>
         <property name="receives_default">True</property>
         <property name="tooltip_text" translatable="yes">Switch between Find and Find-and-Replace</property>
         <signal name="clicked" handler="on_toggle_replace_button_clicked" swapped="no"/>
         <child>
           <object class="GtkImage">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
             <property name="icon_name">edit-find-replace-symbolic</property>
           </object>
         </child>
+        <layout>
+          <property name="column">2</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">2</property>
-        <property name="top_attach">0</property>
-      </packing>
     </child>
     <child>
       <placeholder/>
