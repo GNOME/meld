@@ -343,7 +343,7 @@ class ActionGutter(Gtk.DrawingArea):
             if action is None:
                 continue
 
-            it = buf.get_iter_at_line(start_line)
+            _found, it = buf.get_iter_at_line(start_line)
             button_y, button_height = view.get_line_yrange(it)
             button_y += 1
             button_height -= 2

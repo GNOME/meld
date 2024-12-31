@@ -92,7 +92,7 @@ class SourceViewHelperMixin:
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
-        it = buf.get_iter_at_line(line)
+        _found, it = buf.get_iter_at_line(line)
         y, h = self.get_line_yrange(it)
         if line >= buf.get_line_count():
             return y + h

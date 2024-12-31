@@ -328,12 +328,12 @@ class TextViewChunkMap(ChunkMap):
         y, h = self.textview.get_line_yrange(buf.get_end_iter())
         max_y = float(y + h)
         for chunk in self.chunks:
-            start_iter = buf.get_iter_at_line(chunk.start_a)
+            _found, start_iter = buf.get_iter_at_line(chunk.start_a)
             y0, _ = self.textview.get_line_yrange(start_iter)
             if chunk.start_a == chunk.end_a:
                 y, h = y0, 0
             else:
-                end_iter = buf.get_iter_at_line(chunk.end_a - 1)
+                _found, end_iter = buf.get_iter_at_line(chunk.end_a - 1)
                 y, h = self.textview.get_line_yrange(end_iter)
 
             tagged_diffs[chunk.tag].append((y0 / max_y, (y + h) / max_y))

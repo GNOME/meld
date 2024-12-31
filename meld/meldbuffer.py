@@ -58,7 +58,8 @@ class MeldBuffer(GtkSource.Buffer):
         """
         if line >= self.get_line_count():
             return self.get_end_iter()
-        return self.get_iter_at_line(line)
+        _found, it = self.get_iter_at_line(line)
+        return it
 
     def insert_at_line(self, line, text):
         """Insert text at the given line, or the end of the buffer.

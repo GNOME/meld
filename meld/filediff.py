@@ -809,7 +809,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             if start is None:
                 continue
             buf = self.textbuffer[pane]
-            it = buf.get_iter_at_line(start)
+            _found, it = buf.get_iter_at_line(start)
             self.textview[pane].scroll_to_iter(it, tolerance, True, 0.5, 0.5)
 
     def go_to_chunk(self, target, pane=None, centered=False):
@@ -830,7 +830,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         # Warp the cursor to the first line of the chunk
         buf = self.textbuffer[pane]
         if self.cursor.line != chunk[1]:
-            buf.place_cursor(buf.get_iter_at_line(chunk[1]))
+            _found, it = buf.get_iter_at_line(chunk[1])
+            buf.place_cursor(it)
 
         # Scroll all panes to the given chunk, and then ensure that the newly
         # placed cursor is definitely on-screen.
@@ -859,7 +860,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             return False
 
         chunk = self.linediffer.get_chunk(chunk_id, pane)
-        target_iter = self.textbuffer[pane].get_iter_at_line(chunk.start_a)
+        _found, target_iter = self.textbuffer[pane].get_iter_at_line(chunk.start_a)
         target_y, _height = self.textview[pane].get_line_yrange(target_iter)
         return area.y <= target_y <= area.y + area.height
 
@@ -1132,7 +1133,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         buf, view = self.textbuffer[pane], self.textview[pane]
         if focus:
             view.grab_focus()
-        buf.place_cursor(buf.get_iter_at_line(line))
+        _found, it = buf.get_iter_at_line(line)
+        buf.place_cursor(it)
         view.scroll_to_mark(buf.get_insert(), 0.1, True, 0.5, 0.5)
 
     def move_cursor_pane(self, pane, new_pane):
@@ -2471,7 +2473,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
             # At this point, we've identified the line within the
             # corresponding chunk that we want to sync to.
-            it = self.textbuffer[i].get_iter_at_line(int(other_line))
+            _found, it = self.textbuffer[i].get_iter_at_line(int(other_line))
             val, height = self.textview[i].get_line_yrange(it)
             # Special case line-height adjustment for EOF
             line_factor = 1.0 if it.is_end() else other_line - int(other_line)
@@ -2611,7 +2613,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         b1.begin_user_action()
         b1.delete(dst_start, dst_end)
         new_end = b1.insert_at_line(chunk.start_b, t0)
-        b1.place_cursor(b1.get_iter_at_line(chunk.start_b))
+        _found, it = b1.get_iter_at_line(chunk.start_b)
+        b1.place_cursor(it)
         b1.end_user_action()
         mark1 = b1.create_mark(None, new_end, True)
         if chunk.start_a == chunk.end_a:
