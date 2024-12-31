@@ -547,16 +547,13 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     keymask = property(get_keymask, set_keymask)
 
-    def on_key_event(self, controller, keyval, keycode, state):
-        keymap = Gdk.Keymap.get_default()
-        ok, keyval, group, lvl, consumed = keymap.translate_keyboard_state(
-            event.hardware_keycode, 0, event.group)
+    def on_key_event(self, controller, keyval, keycode, state, user_data):
         mod_key = self.keylookup.get(keyval, 0)
-        if event.type == Gdk.EventType.KEY_PRESS:
+        if user_data["event"] == "pressed":
             self.keymask |= mod_key
-            if event.keyval == Gdk.KEY_Escape:
+            if keyval == Gdk.KEY_Escape:
                 self.findbar.hide()
-        elif event.type == Gdk.EventType.KEY_RELEASE:
+        elif user_data["event"] == "released":
             self.keymask &= ~mod_key
 
     def on_overview_map_style_changed(self, *args):
@@ -612,8 +609,8 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     def create_event_controllers(self, widget):
         keycontroller = Gtk.EventControllerKey()
-        keycontroller.connect("key-pressed", self.on_key_event)
-        keycontroller.connect("key-released", self.on_key_event)
+        keycontroller.connect("key-pressed", self.on_key_event, {"event": "pressed"})
+        keycontroller.connect("key-released", self.on_key_event, {"event": "released"})
         widget.add_controller(keycontroller)
 
         gesture = Gtk.GestureClick()
