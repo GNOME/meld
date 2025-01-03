@@ -433,6 +433,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.update_text_actions_sensitivity()
 
         self.findbar = FindBar(self.grid)
+        self.findbar.set_visible(False)
         self.grid.attach(self.findbar, 0, 2, 10, 1)
 
         self.set_num_panes(num_panes)

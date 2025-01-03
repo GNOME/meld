@@ -15,6 +15,8 @@
 
 from gi.repository import Gdk
 
+GTK_STYLE_CLASS_ERROR = "error"
+
 
 def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RGBA:
     rgba = Gdk.RGBA()
