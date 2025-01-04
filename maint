@@ -276,7 +276,7 @@ def push():
     call_with_output(cmd, echo_stdout=True)
 
 
-def gitlab_release_tag(tag):
+def get_gitlab_token():
     auth_token = keyring.get_password('gitlab-api', GITLAB_PROJECT_ID)
     if not auth_token:
         raise click.ClickException(
@@ -287,6 +287,11 @@ def gitlab_release_tag(tag):
             "and enter your secret token from the Gitlab UI.\n".format(
                 id=GITLAB_PROJECT_ID)
         )
+    return auth_token
+
+
+def gitlab_release_tag(tag):
+    auth_token = get_gitlab_token()
 
     cmd = ['git', 'tag', '-l', "--format=%(contents)", tag]
     description = subprocess.check_output(cmd).decode('utf-8')
@@ -473,6 +478,9 @@ def version_bump():
 @cli.command('release')
 @click.pass_context
 def make_release(ctx):
+    # Check that we have the necessary local auth before proceeding
+    get_gitlab_token()
+
     pull()
     ctx.forward(news)
     ctx.forward(appdata)
