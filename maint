@@ -34,7 +34,6 @@ PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
 VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
-UPLOAD_SERVER = 'master.gnome.org'
 GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
 GITLAB_PROJECT_ID = 'GNOME/meld'
 
@@ -236,7 +235,7 @@ def call_with_output(
 def check_release_branch():
     cmd = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
     branch = subprocess.check_output(cmd).strip().decode('utf-8')
-    if branch != 'master' and not re.match(RELEASE_BRANCH_RE, branch):
+    if branch != "main" and not re.match(RELEASE_BRANCH_RE, branch):
         click.echo(
             '\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
         click.confirm('Are you sure you wish to continue?', abort=True)
