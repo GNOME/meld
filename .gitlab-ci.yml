@@ -42,13 +42,6 @@ nightly:
    - pip3 install -r dev-requirements.txt
    - $PYTHON_CHECK_COMMAND
 
-.pythonflatpak:
-  stage: check
-  tags: # test in the same org.gnome.Sdk environment that is used for creating flatpaks
-    - flatpak
-  script:
-    - flatpak run --share=network --filesystem=`pwd` --env=PATH=$PATH:/var/data/python/bin --command=sh org.gnome.Sdk -c 'pip3 install --user -r dev-requirements.txt; $PYTHON_CHECK_COMMAND'
-
 lint:
   extends: .pythonchecks
   variables:
