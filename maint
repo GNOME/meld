@@ -443,18 +443,6 @@ def gitlab_release():
     gitlab_release_tag(last_release)
 
 
-@cli.command()
-@click.argument('path', type=click.Path(exists=True))
-def upload(path):
-    confirm = click.confirm(
-        '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True,
-        abort=False)
-    if not confirm:
-        return
-    cmd = ['scp', path, UPLOAD_SERVER + ':']
-    call_with_output(cmd, timeout=120)
-
-
 @cli.command('version-bump')
 def version_bump():
     with open(meld.conf.__file__) as f:
@@ -512,19 +500,13 @@ def make_release(ctx, skip_news, skip_news_commit):
     if not skip_news_commit:
         commit(message='Update NEWS + appdata')
         push()
-    archive_path = ctx.invoke(dist)
+    # Run dist as a check; we don't need the actual tarball
+    ctx.invoke(dist)
     ctx.invoke(tag)
     ctx.invoke(gitlab_release)
     ctx.invoke(version_bump)
     commit(message='Post-release version bump')
     push()
-
-    ctx.invoke(upload, path=archive_path)
-
-    # TODO: ssh in and run ftpadmin install
-    click.echo('\nNow run:')
-    click.echo('ssh %s' % UPLOAD_SERVER)
-    click.echo('ftpadmin install %s' % os.path.basename(archive_path))
 
 
 if __name__ == '__main__':
