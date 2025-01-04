@@ -516,6 +516,9 @@ def version_bump():
     with open(meld.conf.__file__, 'w') as f:
         f.write('\n'.join(conf_data) + '\n')
 
+    cmd = ["meson", "rewrite", "kwargs", "set", "project", "/", "version", new_version]
+    call_with_output(cmd, timeout=120)
+
 
 @cli.command('release')
 @click.option(
