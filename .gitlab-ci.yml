@@ -1,7 +1,15 @@
-include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+include:
+  - project: "gnome/citemplates"
+    file: "flatpak/flatpak_ci_initiative.yml"
+  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+    inputs:
+      dist-job-name: "flatpak"
+      tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
 variables:
   GNOME_SDK: 42
+  FLATPAK_MODULE: "meld"
+  TARBALL_ARTIFACT_PATH: ".flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
 
 image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-${GNOME_SDK}
 
@@ -13,14 +21,13 @@ stages:
 
 
 flatpak:
-    extends: .flatpak
-    stage: build
-    variables:
-        MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
-        FLATPAK_MODULE: "meld"
-        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        APP_ID: "org.gnome.MeldDevel"
-        BUNDLE: "meld-dev.flatpak"
+  extends: .flatpak
+  stage: build
+  variables:
+    MANIFEST_PATH: "data/org.gnome.MeldDevel.json"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    APP_ID: "org.gnome.MeldDevel"
+    BUNDLE: "meld-dev.flatpak"
 
 nightly:
   extends: '.publish_nightly'
