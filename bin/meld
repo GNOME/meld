@@ -251,7 +251,9 @@ def check_requirements():
     try:
         for r in requirements:
             r.check()
-    except (AttributeError, ImportError, RuntimeError, ValueError):
+    except Exception:
+        log = logging.getLogger()
+        log.exception("Couldn't find requirement %s", r)
         show_error_and_exit(_('Meld requires %s or higher.') % str(r))
 
 
