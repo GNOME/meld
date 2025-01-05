@@ -31,12 +31,8 @@ def get_non_python_libs():
 
         # required for communicating multiple instances
         inst_lib.append(os.path.join(local_bin, 'gdbus.exe'))
-
         # gspawn-helper is needed for Gtk.show_uri function
-        if platform.architecture()[0] == '32bit':
-            inst_lib.append(os.path.join(local_bin, 'gspawn-win32-helper.exe'))
-        else:
-            inst_lib.append(os.path.join(local_bin, 'gspawn-win64-helper.exe'))
+        inst_lib.append(os.path.join(local_bin, 'gspawn-win64-helper.exe'))
 
     return [
         (f, os.path.basename(f)) for f in inst_root
