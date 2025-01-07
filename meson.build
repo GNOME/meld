@@ -1,4 +1,4 @@
-project('meld', version : '3.22.3', meson_version : '>= 0.49.0')
+project('meld', version : '3.22.4', meson_version : '>= 0.49.0')
 
 python = import('python')
 i18n = import('i18n')
