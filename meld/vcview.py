@@ -218,6 +218,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ('previous-change', self.action_previous_change),
             ('refresh', self.action_refresh),
             ('vc-add', self.action_add),
+            ('vc-unstage', self.action_unstage),
             ('vc-commit', self.action_commit),
             ('vc-delete-locally', self.action_delete),
             ('vc-push', self.action_push),
@@ -637,6 +638,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         action_sensitivity = {
             'compare': 'compare' in valid_actions,
             'vc-add': 'add' in valid_actions,
+            'vc-unstage': 'unstage' in valid_actions,
             'vc-commit': 'commit' in valid_actions,
             'vc-delete-locally': bool(paths) and self.vc.root not in paths,
             'vc-push': 'push' in valid_actions,
@@ -750,6 +752,9 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     def action_add(self, *args):
         self.vc.add(self.runner, self._get_selected_files())
+
+    def action_unstage(self, *args):
+        self.vc.unstage(self.runner, self._get_selected_files())
 
     def action_remove(self, *args):
         selected = self._get_selected_files()
