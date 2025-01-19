@@ -105,6 +105,8 @@ if uninstalled:
     meld.conf.uninstalled()
 elif frozen:
     meld.conf.frozen()
+elif "Contents/MacOS" in sys.executable:
+    meld.conf.setup_macos_application_bundle()
 
 # TODO: Possibly move to elib.intl
 import gettext  # noqa: E402, I100
@@ -410,23 +412,6 @@ def setup_glib_logging():
         pass
 
 
-def setup_macos_application_bundle():
-    # When running from inside an application bundle, adjust paths relative
-    # to the location of the main binary.
-    if "Contents/MacOS" in sys.executable:
-        meld.conf.DATADIR = os.path.abspath(
-            os.path.join(
-                os.path.dirname(os.path.realpath(sys.executable)),
-                "../Resources/share/meld"
-            )
-        )
-        meld.conf.LOCALEDIR = os.path.abspath(
-            os.path.join(
-                os.path.dirname(meld.conf.DATADIR), "locale"
-            )
-        )
-
-
 def environment_hacks():
     # MSYSTEM is set by git, and confuses our
     # msys-packaged version's library search path -
@@ -466,7 +451,6 @@ def run_application():
 
 
 def main():
-    setup_macos_application_bundle()
     environment_hacks()
     setup_logging()
     disable_stdout_buffering()
