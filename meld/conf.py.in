@@ -62,3 +62,15 @@ def uninstalled():
 
     resource_path = melddir / "meld" / "resources"
     os.environ['G_RESOURCE_OVERLAYS'] = f'{RESOURCE_BASE}={resource_path}'
+
+
+def setup_macos_application_bundle():
+    global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
+
+    # When running from inside an application bundle, adjust paths relative
+    # to the location of the main binary.
+    base_dir = Path(sys.executable).resolve().parent.parent
+    share_dir = base_dir / "Resources" / "share"
+    DATADIR = share_dir / "meld"
+    LOCALEDIR = share_dir / "locale"
+    DATADIR_IS_UNINSTALLED = False

@@ -105,6 +105,8 @@ if uninstalled:
     meld.conf.uninstalled()
 elif frozen:
     meld.conf.frozen()
+elif "Contents/MacOS" in sys.executable:
+    meld.conf.setup_macos_application_bundle()
 
 # TODO: Possibly move to elib.intl
 import gettext  # noqa: E402, I100
