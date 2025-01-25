@@ -170,6 +170,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
     extra_column = Gtk.Template.Child()
     extra_renderer = Gtk.Template.Child()
     filelabel = Gtk.Template.Child()
+    file_toolbar = Gtk.Template.Child()
     liststore_vcs = Gtk.Template.Child()
     location_column = Gtk.Template.Child()
     location_renderer = Gtk.Template.Child()
@@ -647,6 +648,9 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         }
         for action, sensitivity in action_sensitivity.items():
             self.set_action_enabled(action, sensitivity)
+
+    def _get_action_bars(self) -> list[Gtk.ActionBar]:
+        return [self.file_toolbar]
 
     def _get_selected_files(self):
         model, rows = self.treeview.get_selection().get_selected_rows()

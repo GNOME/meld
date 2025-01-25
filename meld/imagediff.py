@@ -318,3 +318,6 @@ class ImageDiff(Gtk.Box, MeldDoc):
     @Gtk.Template.Callback()
     def on_imageview_focus_out_event(self, view, event):
         self._set_external_action_sensitivity()
+
+    def _get_action_bars(self) -> list[Gtk.ActionBar]:
+        return []

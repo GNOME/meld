@@ -2320,6 +2320,9 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.set_file(pane, file)
 
+    def _get_action_bars(self) -> list[Gtk.ActionBar]:
+        return self.file_toolbar
+
     def _get_focused_pane(self):
         for i in range(self.num_panes):
             if self.textview[i].is_focus():

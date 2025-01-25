@@ -844,6 +844,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self._do_to_others(
             adjustment, adjs, "set_value", (int(adjustment.get_value()),))
 
+    def _get_action_bars(self) -> list[Gtk.ActionBar]:
+        return self.pane_actionbar
+
     def _get_focused_pane(self):
         for i, treeview in enumerate(self.treeview):
             if treeview.is_focus():
