@@ -1,7 +1,7 @@
 import enum
 import sys
 
-from gi.repository import Gio, GObject, Peas, PeasGtk
+from gi.repository import Gio, GLib, GObject, Gtk, Peas, PeasGtk
 
 from meld.confshim import get_meld_paths
 from meld.menuhelpers import find_menu_section
@@ -13,13 +13,13 @@ class PluginMenu(enum.Enum):
 
 
 class API(GObject.GObject):
-
     plugin_menus: dict[str, Gio.MenuModel]
 
     def __init__(self, app):
         GObject.GObject.__init__(self)
         self.app = app
         self._plugin_menus = {}
+        self._action_buttons = []
 
     def _get_plugin_menu(self, plugin_menu: PluginMenu) -> Gio.MenuModel:
         if plugin_menu not in self._plugin_menus:
@@ -46,6 +46,21 @@ class API(GObject.GObject):
             if item_id == menu_id:
                 menu.remove(item_id)
                 return
+
+    def add_pane_action_button(self, page, button_label: str, action_name: str) -> None:
+        action_bars = page._get_action_bars()
+        for i, action_bar in enumerate(action_bars):
+            button = Gtk.Button.new_with_label(button_label)
+            button.set_action_name(action_name)
+            button.set_action_target_value(GLib.Variant.new_int32(i))
+            button.show()
+            action_bar.pack_end(button)
+            self._action_buttons.append((action_bar, button))
+
+    def remove_action_button(self, page, button_label: str) -> None:
+        for action_bar, button in self._action_buttons:
+            action_bar.remove(button)
+        self._action_buttons = []
 
 
 class PluginManager:
