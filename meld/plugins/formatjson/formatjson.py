@@ -12,6 +12,8 @@ class FormatJSON(GObject.Object, Peas.Activatable):
 
     object = GObject.Property(type=GObject.Object)
 
+    action_name = "format-json"
+
     def do_activate(self):
         self.api = self.object
         self._comparison_created_signal = self.api.app.connect(
@@ -21,36 +23,38 @@ class FormatJSON(GObject.Object, Peas.Activatable):
 
         item = Gio.MenuItem.new(
             label=_("Format JSON"),
-            detailed_action="view.format-json(-1)",
+            detailed_action=f"view.{self.action_name}(-1)",
         )
-        self.api.add_menu_item(PluginMenu.app_comparison, "format-json", item)
+        self.api.add_menu_item(PluginMenu.app_comparison, self.action_name, item)
 
     def do_deactivate(self):
         self.api.app.disconnect(self._comparison_created_signal)
-        self.api.remove_menu_item(PluginMenu.app_comparison, "format-json")
+        self.api.remove_menu_item(PluginMenu.app_comparison, self.action_name)
 
     def on_comparison_created(self, app, window, page):
         if not isinstance(page, FileDiff):
             return
 
-        action = Gio.SimpleAction.new("format-json", GLib.VariantType.new("i"))
+        action = Gio.SimpleAction.new(self.action_name, GLib.VariantType.new("i"))
         action.connect("activate", self.format_json, page)
         page.view_action_group.add_action(action)
 
         for buffer in page.textbuffer:
             self._buffer_handlers.append(
-                buffer.connect("notify::language", self.on_buffer_language_changed, page)
+                buffer.connect(
+                    "notify::language", self.on_buffer_language_changed, page
+                )
             )
 
         if buffer.props.language and buffer.props.language.get_id() == "json":
-            self.api.add_pane_action_buttons(page, "Format as JSON", "view.format-json")
+            self.api.add_pane_action_buttons(page, "Format as JSON", self.action_name)
 
     def on_buffer_language_changed(self, buffer, params, page):
-        if self.api.get_action_buttons("format-json"):
+        if self.api.get_action_buttons(self.action_name):
             return
 
         if buffer.props.language and buffer.props.language.get_id() == "json":
-            self.api.add_pane_action_buttons(page, "Format as JSON", "view.format-json")
+            self.api.add_pane_action_buttons(page, "Format as JSON", self.action_name)
 
     def format_json(self, action, params: GLib.Variant, filediff):
         pane = params.get_int32()

@@ -11,6 +11,8 @@ class TextSortPlugin(GObject.Object, Peas.Activatable):
 
     object = GObject.Property(type=GObject.Object)
 
+    action_name = "sort-text"
+
     def do_activate(self):
         self.api = self.object
         self._comparison_created_signal = self.api.app.connect(
@@ -19,22 +21,22 @@ class TextSortPlugin(GObject.Object, Peas.Activatable):
 
         item = Gio.MenuItem.new(
             label=_("Sort Text"),
-            detailed_action="view.sort-text(-1)",
+            detailed_action=f"view.{self.action_name}(-1)",
         )
-        self.api.add_menu_item(PluginMenu.app_comparison, "sort-text", item)
+        self.api.add_menu_item(PluginMenu.app_comparison, self.action_name, item)
 
     def do_deactivate(self):
         self.api.app.disconnect(self._comparison_created_signal)
-        self.api.remove_menu_item(PluginMenu.app_comparison, "sort-text")
+        self.api.remove_menu_item(PluginMenu.app_comparison, self.action_name)
 
     def on_comparison_created(self, app, window, page):
         if not isinstance(page, FileDiff):
             return
 
-        action = Gio.SimpleAction.new("sort-text", GLib.VariantType.new("i"))
+        action = Gio.SimpleAction.new(self.action_name, GLib.VariantType.new("i"))
         action.connect("activate", self.sort_text, page)
         page.view_action_group.add_action(action)
-        self.api.add_pane_action_buttons(page, "Sort Text", "view.sort-text")
+        self.api.add_pane_action_buttons(page, "Sort Text", self.action_name)
 
     def sort_text(self, action, params: GLib.Variant, filediff):
         pane = params.get_int32()

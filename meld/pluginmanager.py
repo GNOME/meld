@@ -52,7 +52,7 @@ class API(GObject.GObject):
         action_buttons = []
         for i, action_bar in enumerate(action_bars):
             button = Gtk.Button.new_with_label(button_label)
-            button.set_action_name(action_name)
+            button.set_action_name(f"view.{action_name}")
             button.set_action_target_value(GLib.Variant.new_int32(i))
             button.show()
             action_bar.pack_end(button)
