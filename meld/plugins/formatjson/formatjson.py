@@ -17,6 +17,7 @@ class FormatJSON(GObject.Object, Peas.Activatable):
         self._comparison_created_signal = self.api.app.connect(
             "comparison-created", self.on_comparison_created
         )
+        self._buffer_handlers = []
 
         item = Gio.MenuItem.new(
             label=_("Format JSON"),
@@ -36,7 +37,20 @@ class FormatJSON(GObject.Object, Peas.Activatable):
         action.connect("activate", self.format_json, page)
         page.view_action_group.add_action(action)
 
-        self.api.add_pane_action_button(page, "Format as JSON", "view.format-json")
+        for buffer in page.textbuffer:
+            self._buffer_handlers.append(
+                buffer.connect("notify::language", self.on_buffer_language_changed, page)
+            )
+
+        if buffer.props.language and buffer.props.language.get_id() == "json":
+            self.api.add_pane_action_buttons(page, "Format as JSON", "view.format-json")
+
+    def on_buffer_language_changed(self, buffer, params, page):
+        if self.api.get_action_buttons("format-json"):
+            return
+
+        if buffer.props.language and buffer.props.language.get_id() == "json":
+            self.api.add_pane_action_buttons(page, "Format as JSON", "view.format-json")
 
     def format_json(self, action, params: GLib.Variant, filediff):
         pane = params.get_int32()

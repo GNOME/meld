@@ -47,7 +47,7 @@ class API(GObject.GObject):
                 menu.remove(item_id)
                 return
 
-    def add_pane_action_button(self, page, button_label: str, action_name: str) -> None:
+    def add_pane_action_buttons(self, page, button_label: str, action_name: str) -> None:
         action_bars = page._get_action_bars()
         action_buttons = []
         for i, action_bar in enumerate(action_bars):

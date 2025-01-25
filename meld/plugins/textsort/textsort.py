@@ -34,7 +34,7 @@ class TextSortPlugin(GObject.Object, Peas.Activatable):
         action = Gio.SimpleAction.new("sort-text", GLib.VariantType.new("i"))
         action.connect("activate", self.sort_text, page)
         page.view_action_group.add_action(action)
-        self.api.add_pane_action_button(page, "Sort Text", "view.sort-text")
+        self.api.add_pane_action_buttons(page, "Sort Text", "view.sort-text")
 
     def sort_text(self, action, params: GLib.Variant, filediff):
         pane = params.get_int32()
