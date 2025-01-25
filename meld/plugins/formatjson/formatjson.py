@@ -1,6 +1,6 @@
 import json
 
-from gi.repository import Gio, GObject, Gtk, Peas
+from gi.repository import Gio, GLib, GObject, Gtk, Peas
 
 from meld.conf import _
 from meld.filediff import FileDiff
@@ -20,7 +20,7 @@ class FormatJSON(GObject.Object, Peas.Activatable):
 
         item = Gio.MenuItem.new(
             label=_("Format JSON"),
-            detailed_action="view.format-json",
+            detailed_action="view.format-json(-1)",
         )
         self.api.add_menu_item(PluginMenu.app_comparison, "format-json", item)
 
@@ -32,12 +32,16 @@ class FormatJSON(GObject.Object, Peas.Activatable):
         if not isinstance(page, FileDiff):
             return
 
-        action = Gio.SimpleAction.new("format-json", None)
+        action = Gio.SimpleAction.new("format-json", GLib.VariantType.new("i"))
         action.connect("activate", self.format_json, page)
         page.view_action_group.add_action(action)
 
-    def format_json(self, action, param, filediff):
-        pane = filediff._get_focused_pane()
+        self.api.add_pane_action_button(page, "Format as JSON", "view.format-json")
+
+    def format_json(self, action, params: GLib.Variant, filediff):
+        pane = params.get_int32()
+        if pane == -1:
+            pane = filediff._get_focused_pane()
         if pane == -1:
             return
 
