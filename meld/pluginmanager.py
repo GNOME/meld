@@ -19,7 +19,7 @@ class API(GObject.GObject):
         GObject.GObject.__init__(self)
         self.app = app
         self._plugin_menus = {}
-        self._action_buttons = []
+        self._action_buttons = {}
 
     def _get_plugin_menu(self, plugin_menu: PluginMenu) -> Gio.MenuModel:
         if plugin_menu not in self._plugin_menus:
@@ -49,18 +49,23 @@ class API(GObject.GObject):
 
     def add_pane_action_button(self, page, button_label: str, action_name: str) -> None:
         action_bars = page._get_action_bars()
+        action_buttons = []
         for i, action_bar in enumerate(action_bars):
             button = Gtk.Button.new_with_label(button_label)
             button.set_action_name(action_name)
             button.set_action_target_value(GLib.Variant.new_int32(i))
             button.show()
             action_bar.pack_end(button)
-            self._action_buttons.append((action_bar, button))
+            action_buttons.append((action_bar, button))
+        self._action_buttons[action_name] = action_buttons
 
-    def remove_action_button(self, page, button_label: str) -> None:
-        for action_bar, button in self._action_buttons:
+    def remove_action_buttons(self, action_name: str) -> None:
+        for action_bar, button in self._action_buttons[action_name]:
             action_bar.remove(button)
-        self._action_buttons = []
+        self._action_buttons[action_name] = []
+
+    def get_action_buttons(self, action_name: str) -> None:
+        return self._action_buttons.get(action_name, [])
 
 
 class PluginManager:
