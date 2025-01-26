@@ -29,28 +29,8 @@ class MeldNotebook(Gtk.Notebook):
     __gtype_name__ = "MeldNotebook"
 
     __gsignals__ = {
-        'tab-switch': (KEYBINDING_FLAGS, None, (int,)),
         'page-label-changed': (0, None, (GObject.TYPE_STRING,)),
     }
-
-    # Python 3.4; no bytes formatting
-    css = (
-        b"""
-        @binding-set TabSwitchBindings {
-          bind "<Alt>1" { "tab-switch" (0) };
-          bind "<Alt>2" { "tab-switch" (1) };
-          bind "<Alt>3" { "tab-switch" (2) };
-          bind "<Alt>4" { "tab-switch" (3) };
-          bind "<Alt>5" { "tab-switch" (4) };
-          bind "<Alt>6" { "tab-switch" (5) };
-          bind "<Alt>7" { "tab-switch" (6) };
-          bind "<Alt>8" { "tab-switch" (7) };
-          bind "<Alt>9" { "tab-switch" (8) };
-          bind "<Alt>0" { "tab-switch" (9) };
-        }
-        notebook.meld-notebook { -gtk-key-bindings: TabSwitchBindings; }
-        """
-    )
 
     ui = """
       <?xml version="1.0" encoding="UTF-8"?>
@@ -71,14 +51,6 @@ class MeldNotebook(Gtk.Notebook):
         </menu>
       </interface>
     """
-
-    provider = Gtk.CssProvider()
-    provider.load_from_data(css)
-    Gtk.StyleContext.add_provider_for_screen(
-        Gdk.Screen.get_default(),
-        provider,
-        Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
-    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -102,13 +74,14 @@ class MeldNotebook(Gtk.Notebook):
         stylecontext = self.get_style_context()
         stylecontext.add_class('meld-notebook')
 
+        # TODO: GTK4 - Change to using AdwTabView and opt in to its
+        # shortcuts to reinstate our Alt+0..9 switching support, and
+        # look at also adopting its tab movement support.
+
         self.connect('button-press-event', self.on_button_press_event)
         self.connect('popup-menu', self.on_popup_menu)
         self.connect('page-added', self.on_page_added)
         self.connect('page-removed', self.on_page_removed)
-
-    def do_tab_switch(self, page_num):
-        self.set_current_page(page_num)
 
     def on_popup_menu(self, widget, event=None):
         self.action_group.lookup_action("tabmoveleft").set_enabled(
