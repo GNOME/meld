@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 
 CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
 SHIFT_MASK = Gdk.ModifierType.SHIFT_MASK
-ALT_MASK = Gdk.ModifierType.MOD1_MASK
+ALT_MASK = Gdk.ModifierType.ALT_MASK
 
 
 def get_custom_encoding_candidates():
