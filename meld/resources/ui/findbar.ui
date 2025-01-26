@@ -176,5 +176,15 @@
     <child>
       <placeholder/>
     </child>
+    <child>
+      <object class="GtkShortcutController">
+        <child>
+          <object class="GtkShortcut">
+            <property name="trigger">&lt;Shift&gt;Return</property>
+            <property name="action">signal(activate-secondary)</property>
+          </object>
+        </child>
+      </object>
+    </child>
   </template>
 </interface>
