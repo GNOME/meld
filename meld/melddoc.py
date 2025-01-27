@@ -65,13 +65,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
 
-    @GObject.Signal(
-        name='move-diff',
-        flags=GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
-    )
-    def move_diff(self, direction: int) -> None:
-        self.next_diff(direction)
-
     def __init__(self) -> None:
         super().__init__()
         self.scheduler = FifoScheduler()

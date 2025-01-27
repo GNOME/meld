@@ -12,12 +12,16 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.find-previous': ('<Primary><Shift>G', '<Shift>F3'),
     'view.find-replace': '<Primary>H',
     'view.go-to-line': '<Primary>I',
-    # Overridden in CSS
-    'view.next-change': ('<Alt>Down', '<Alt>KP_Down', '<Primary>D'),
+    # We bind the next-change-shortcut action instead of the next-change
+    # action because the latter is used for buttons and so we set its
+    # sensitivity correctly. The -shortcut variant doesn't have
+    # sensitivity set, and so we get alert bells when trying to move
+    # past the last/first change.
+    'view.next-change-shortcut': ('<Alt>Down', '<Alt>KP_Down', '<Primary>D'),
     'view.next-pane': '<Alt>Page_Down',
     'view.open-external': '<Primary><Shift>O',
-    # Overridden in CSS
-    'view.previous-change': ('<Alt>Up', '<Alt>KP_Up', '<Primary>E'),
+    # See view.next-change-shortcut
+    'view.previous-change-shortcut': ('<Alt>Up', '<Alt>KP_Up', '<Primary>E'),
     'view.previous-pane': '<Alt>Page_Up',
     'view.redo': '<Primary><Shift>Z',
     'view.refresh': ('<control>R', 'F5'),

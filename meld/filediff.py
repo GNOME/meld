@@ -123,7 +123,6 @@ class FileDiff(Gtk.Box, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings_view__ = (
@@ -351,11 +350,13 @@ class FileDiff(Gtk.Box, MeldDoc):
             ('merge-all-right', self.action_pull_all_changes_right),
             ('merge-all', self.action_merge_all_changes),
             ('next-change', self.action_next_change),
+            ('next-change-shortcut', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
             ('open-folder', self.action_open_folder),
             ('paste', self.action_paste),
             ('previous-change', self.action_previous_change),
+            ('previous-change-shortcut', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('redo', self.action_redo),
             ('refresh', self.action_refresh),

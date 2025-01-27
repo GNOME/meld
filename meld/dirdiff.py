@@ -385,7 +385,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -518,9 +517,11 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ('folder-delete', self.action_delete),
             ('folder-expand', self.action_folder_expand),
             ('next-change', self.action_next_change),
+            ('next-change-shortcut', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('previous-change-shortcut', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
             ('copy-file-paths', self.action_copy_file_paths),

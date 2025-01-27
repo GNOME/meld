@@ -29,29 +29,6 @@ action-gutter {
     background-color: @theme_bg_color;
 }
 
-@binding-set ChunkMovementBindings {
-    /* Gdk.ScrollDirection.UP */
-    bind "<Alt>Up" { "move-diff" (0) };
-    bind "<Alt>KP_Up" { "move-diff" (0) };
-    bind "<Primary>E" { "move-diff" (0) };
-    /* Gdk.ScrollDirection.DOWN */
-    bind "<Alt>Down" { "move-diff" (1) };
-    bind "<Alt>KP_Down" { "move-diff" (1) };
-    bind "<Primary>D" { "move-diff" (1) };
-}
-
-meld-file-diff {
-    -gtk-key-bindings: ChunkMovementBindings;
-}
-
-meld-folder-diff {
-    -gtk-key-bindings: ChunkMovementBindings;
-}
-
-meld-vc-view {
-    -gtk-key-bindings: ChunkMovementBindings;
-}
-
 meld-find-bar {
     padding: 6px;
     border-width: 1px 0 0 0;

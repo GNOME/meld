@@ -130,7 +130,6 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     label_changed = MeldDoc.label_changed
-    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     status_filters = GObject.Property(
@@ -201,8 +200,10 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ('compare', self.action_diff),
             ('find', self.action_find),
             ('next-change', self.action_next_change),
+            ('next-change-shortcut', self.action_next_change),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('previous-change-shortcut', self.action_previous_change),
             ('refresh', self.action_refresh),
             ('vc-add', self.action_add),
             ('vc-commit', self.action_commit),
