@@ -308,8 +308,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             if page != srcpage:
                 page.on_file_changed(filename)
 
-    # TODO: Reinstate callback
-    # @Gtk.Template.Callback()
+    @Gtk.Template.Callback()
     def on_open_recent(self, recent_selector, uri):
         try:
             self.append_recent(uri)
