@@ -10,10 +10,8 @@
     <child>
       <object class="GtkSearchEntry" id="search_entry">
         <property name="focusable">True</property>
-        <!-- TODO set as default focus widget -->
         <property name="activates_default">True</property>
         <property name="placeholder_text" translatable="yes">Search recent comparisons…</property>
-        <signal name="changed" handler="on_filter_text_changed" swapped="no"/>
         <layout>
           <property name="column">0</property>
           <property name="row">0</property>
@@ -43,7 +41,7 @@
         <property name="label" translatable="yes">_Open</property>
         <property name="focusable">True</property>
         <property name="use_underline">True</property>
-        <signal name="clicked" handler="on_activate" swapped="no"/>
+        <signal name="clicked" handler="on_open_clicked" swapped="no"/>
         <layout>
           <property name="column">0</property>
           <property name="row">2</property>

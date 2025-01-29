@@ -1,4 +1,5 @@
-# Copyright (C) 2019 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2019, 2024 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2023 Philipp Unger <philipp.unger.1988@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,131 +14,93 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 from gi.repository import Gio, GObject, Gtk
 
 from meld.recent import get_recent_comparisons
 
 
 class RecentListModelEntry(GObject.Object):
-    """ an entry in the recent list model, contains a Gtk.RecentInfo """
+    """An entry in the recent list model derived from a Gtk.RecentInfo"""
 
-    def __init__(self, item):
-        GObject.Object.__init__(self)
-        self.item = item
+    display_name = GObject.Property(type=str, default="")
+    uri = GObject.Property(type=str, default="")
 
-class RecentListModel(GObject.Object, Gio.ListModel):
-    """ recent list model, contains a list of recent files """
-
-    items = []
-
-    def __init__(self):
-        GObject.Object.__init__(self)
-
-    def do_get_item(self, position):
-        """ get item in model """
-
-        if position < len(self.items):
-            item = self.items[position]
-            return item
-
-        return None
-
-    def do_get_n_items(self):
-        """ get model item list length """
-        size = len(self.items)
-        return size
-
-    def append(self, item):
-        """ append item to model """
-        if item.exists():
-            try:
-                _, _ = get_recent_comparisons().read(item.get_uri())
-                self.items.append(RecentListModelEntry(item))
-            except (IOError, ValueError):
-                pass
-
-class RecentFilter(Gtk.Filter):
-    """ recent list filter """
-
-    filter_text = ""
-
-    def __init__(self):
-        Gtk.Filter.__init__(self)
-
-    def set_filter_text(self, text):
-        self.filter_text = text.lower()
-        self.emit("changed", Gtk.FilterChange.DIFFERENT)
-
-    def do_match(self, item):
-        match = self.filter_text in item.item.get_display_name().lower()
-        return match
+    @classmethod
+    def from_recent_info(cls, recent_info: Gtk.RecentInfo):
+        return cls(
+            display_name=recent_info.get_display_name(),
+            uri=recent_info.get_uri(),
+        )
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/recent-selector.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/recent-selector.ui")
 class RecentSelector(Gtk.Grid):
-
-    __gtype_name__ = 'RecentSelector'
+    __gtype_name__ = "RecentSelector"
 
     @GObject.Signal(
-        flags=(
-            GObject.SignalFlags.RUN_FIRST |
-            GObject.SignalFlags.ACTION
-        ),
+        flags=(GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION),
         arg_types=(str,),
     )
-    def open_recent(self, uri: str) -> None:
-        ...
+    def open_recent(self, uri: str) -> None: ...
 
     recent_chooser = Gtk.Template.Child()
     search_entry = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
 
-    model = None
-    filter_model = None
-    filter = None
+    model: Gio.ListStore
+    model_filter: Gtk.StringFilter
+    filter_model: Gtk.FilterListModel
 
     def do_realize(self):
-        self.filter_text = ''
+        self.model = Gio.ListStore()
+        self.model_filter = Gtk.StringFilter(
+            expression=Gtk.PropertyExpression.new(
+                RecentListModelEntry, None, "display_name"
+            )
+        )
+        self.search_entry.bind_property("text", self.model_filter, "search")
+        self.filter_model = Gtk.FilterListModel(
+            filter=self.model_filter,
+            model=self.model,
+        )
+
         self.recent_manager = Gtk.RecentManager.get_default()
-        items = self.recent_manager.get_items()
-        self.model = RecentListModel()
-        self.filter = RecentFilter()
-        self.filter_model = Gtk.FilterListModel()
-        self.filter_model.set_filter(self.filter)
-        self.filter_model.set_model(self.model)
+        self.recent_manager.connect("changed", self.update_model)
+        self.update_model()
 
-        for item in items:
-            self.model.append(item)
-        self.recent_chooser.bind_model(self.filter_model, self.create_widget)
+        def make_recent_entry_label(item):
+            return Gtk.Label(halign=Gtk.Align.START, label=item.display_name)
 
-        self.filter.emit("changed", Gtk.FilterChange.DIFFERENT)
+        self.recent_chooser.bind_model(self.filter_model, make_recent_entry_label)
 
         return Gtk.Grid.do_realize(self)
 
-    def create_widget(self, item):
-        label = Gtk.Label()
-        label.set_halign(Gtk.Align.START)
-        label.set_label(item.item.get_display_name())
-        return label
+    def update_model(self, *args):
+        self.model.remove_all()
 
-    @Gtk.Template.Callback()
-    def on_filter_text_changed(self, *args):
-        self.filter.set_filter_text(self.search_entry.get_text())
+        items = [item for item in self.recent_manager.get_items() if item.exists()]
+        for item in items:
+            try:
+                # We're only checking that we can read this item as validation
+                get_recent_comparisons().read(item.get_uri())
+                self.model.append(RecentListModelEntry.from_recent_info(item))
+            except (IOError, ValueError):
+                pass
 
     @Gtk.Template.Callback()
     def on_selection_changed(self, _widget, row):
         self.open_button.set_sensitive(row is not None)
 
-    @Gtk.Template.Callback()
-    def on_row_activate(self, _widget, row):
-        item = self.model.do_get_item(row.get_index())
-        self.open_recent.emit(item.item.get_uri())
+    def activate_row(self, row):
+        item = self.model.get_item(row.get_index())
+        self.open_recent.emit(item.uri)
         self.get_parent().get_parent().popdown()
 
     @Gtk.Template.Callback()
-    def on_activate(self, _button):
+    def on_row_activate(self, _widget, row):
+        self.activate_row(row)
+
+    @Gtk.Template.Callback()
+    def on_open_clicked(self, _button):
         row = self.recent_chooser.get_selected_row()
-        item = self.model.do_get_item(row.get_index())
-        self.open_recent.emit(item.item.get_uri())
-        self.get_parent().get_parent().popdown()
+        self.activate_row(row)
