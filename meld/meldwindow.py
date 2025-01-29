@@ -22,7 +22,6 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
-import meld.ui.util
 from meld.conf import PROFILE, _
 from meld.const import (
     FILE_FILTER_ACTION_FORMAT,
@@ -130,10 +129,6 @@ class MeldWindow(Gtk.ApplicationWindow):
             meld_settings.connect(
                 "file-filters-changed", self.update_filename_filters),
         ]
-
-        app = self.get_application()
-        menu = app.get_menu_by_id("gear-menu")
-        meld.ui.util.extract_accels_from_menu(menu, self.get_application())
 
     def update_filename_filters(self, settings):
         filter_items_model = Gio.Menu()
