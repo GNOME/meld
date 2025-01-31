@@ -52,14 +52,14 @@ class MeldWindow(Gtk.ApplicationWindow):
     __gtype_name__ = 'MeldWindow'
 
     appvbox = Gtk.Template.Child()
-    folder_filter_button = Gtk.Template.Child()
-    text_filter_button = Gtk.Template.Child()
+    folder_filter_button: Gtk.Button = Gtk.Template.Child()
     gear_menu_button = Gtk.Template.Child()
     next_conflict_button = Gtk.Template.Child()
     notebook = Gtk.Template.Child()
     previous_conflict_button = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
-    vc_filter_button = Gtk.Template.Child()
+    text_filter_button: Gtk.Button = Gtk.Template.Child()
+    vc_filter_button: Gtk.Button = Gtk.Template.Child()
     view_toolbar = Gtk.Template.Child()
 
     def __init__(self):
@@ -138,8 +138,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 label=filt.label, detailed_action=f'view.{name}')
         section = Gio.MenuItem.new_section(_("Filename"), filter_items_model)
         section.set_attribute([("id", "s", "custom-filter-section")])
-        app = self.get_application()
-        filter_model = app.get_menu_by_id("folder-status-filter-menu")
+        filter_model = self.folder_filter_button.get_menu_model()
         replace_menu_section(filter_model, section)
 
     def update_text_filters(self, settings):
@@ -150,8 +149,7 @@ class MeldWindow(Gtk.ApplicationWindow):
                 label=filt.label, detailed_action=f'view.{name}')
         section = Gio.MenuItem.new_section(None, filter_items_model)
         section.set_attribute([("id", "s", "custom-filter-section")])
-        app = self.get_application()
-        filter_model = app.get_menu_by_id("text-filter-menu")
+        filter_model = self.text_filter_button.get_menu_model()
         replace_menu_section(filter_model, section)
 
     def on_widget_drag_drop(
