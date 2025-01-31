@@ -120,11 +120,9 @@
         <child>
           <object class="MeldNotebook" id="notebook">
             <property name="vexpand">1</property>
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
             <property name="scrollable">True</property>
-            <property name="enable_popup">False</property>
             <property name="show_border">False</property>
+            <property name="focusable">1</property>
             <signal name="switch-page" handler="on_switch_page" swapped="no"/>
             <signal name="switch-page" handler="after_switch_page" after="yes" swapped="no"/>
           </object>
@@ -136,13 +134,12 @@
     <property name="focusable">1</property>
     <property name="width-request">400</property>
     <property name="height-request">500</property>
-    <child>
+    <property name="child">
       <object class="RecentSelector" id="recent_selector">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
+        <property name="focusable">1</property>
         <signal name="open-recent" handler="on_open_recent" swapped="no"/>
       </object>
-    </child>
+    </property>
   </object>
   <menu id="gear-menu">
     <section>
