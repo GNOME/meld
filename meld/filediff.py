@@ -1303,6 +1303,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
             try:
                 self._cached_match.stop()
+                self._cached_match = None
             except Exception:
                 # Ignore any cross-process exceptions that happen when
                 # shutting down our matcher process.
