@@ -24,6 +24,7 @@
 
 import collections
 import itertools
+import logging
 import os
 import re
 import shutil
@@ -35,6 +36,8 @@ from gi.repository import Gio, GLib
 
 from meld.conf import _
 from meld.misc import get_hide_window_startupinfo
+
+log = logging.getLogger(__name__)
 
 # ignored, new, normal, ignored changes,
 # error, placeholder, vc added
@@ -282,9 +285,20 @@ class Vc:
 
     def get_entries(self, base):
         parent = Gio.File.new_for_path(base)
-        enumerator = parent.enumerate_children(
-            'standard::name,standard::display-name,standard::type',
-            Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+        try:
+            enumerator = parent.enumerate_children(
+                'standard::name,standard::display-name,standard::type',
+                Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
+                None,
+            )
+        except GLib.Error as err:
+            if err.matches(
+                Gio.io_error_quark(),
+                Gio.IOErrorEnum.PERMISSION_DENIED
+            ):
+                log.error(f"Failed to scan folder {base!r}; permission denied")
+                return
+            raise
 
         for file_info in enumerator:
             if file_info.get_name() == self.VC_DIR:
