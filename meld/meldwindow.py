@@ -460,6 +460,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         tab = None
         if len(gfiles) == 1:
             a = gfiles[0]
+            if not a.query_exists():
+                raise ValueError(_("Cannot compare a non-existent file"))
+
             if a.query_file_type(Gio.FileQueryInfoFlags.NONE, None) == \
                     Gio.FileType.DIRECTORY:
                 tab = self.append_vcview(a, auto_compare)
