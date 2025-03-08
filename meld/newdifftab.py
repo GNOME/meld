@@ -185,6 +185,9 @@ class NewDiffTab(Gtk.Alignment, LabeledObjectMixin):
     def on_container_switch_out_event(self, *args):
         pass
 
+    def on_file_changed(self, filename: str):
+        pass
+
     def on_delete_event(self, *args):
         self.close_signal.emit(0)
         return Gtk.ResponseType.OK
