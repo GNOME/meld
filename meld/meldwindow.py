@@ -475,6 +475,9 @@ class MeldWindow(Gtk.ApplicationWindow):
         tab = None
         if len(gfiles) == 1:
             gfile = gfiles[0]
+            if not gfile.query_exists():
+                raise ValueError(_("Cannot compare a non-existent file"))
+
             if not gfile or (
                 gfile.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
                 == Gio.FileType.DIRECTORY
