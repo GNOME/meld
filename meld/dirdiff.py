@@ -1141,7 +1141,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             self._update_item_state(self.model.get_iter(rootpath))
 
         self.force_cursor_recalculate = True
-        self.treeview[0].set_cursor(Gtk.TreePath.new_first())
+        self.treeview[0].set_cursor(rootpath)
 
     def _show_duplicate_directory(self, duplicate_directory):
         for index in range(self.num_panes):
