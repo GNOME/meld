@@ -110,7 +110,7 @@ class Vc(_vc.Vc):
 
     def get_valid_actions(self, path_states):
         valid_actions = super().get_valid_actions(path_states)
-        if all(s == _vc.STATE_MODIFIED for s in path_states.values()):
+        if all(s in (_vc.STATE_MODIFIED, _vc.STATE_NEW) for s in path_states.values()):
             valid_actions.add('unstage')
         return valid_actions
 
