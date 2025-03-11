@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2025-03-08 17:55+0000\n"
-"PO-Revision-Date: 2025-03-08 22:34+0200\n"
+"POT-Creation-Date: 2025-03-09 02:22+0000\n"
+"PO-Revision-Date: 2025-03-11 23:07+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -1073,7 +1073,7 @@ msgid "Column Name"
 msgstr "Назва стовпчика"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:127
-#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:769
+#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:774
 msgid "_Remove"
 msgstr "_Вилучити"
 
@@ -1169,7 +1169,7 @@ msgid "_Copy File Paths"
 msgstr "_Копіювати шляхи до файлів"
 
 #: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:74
-#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:139
+#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:152
 msgid "Select Folder"
 msgstr "Виберіть теку"
 
@@ -1284,12 +1284,12 @@ msgstr "Файл 3"
 msgid "File 2"
 msgstr "Файл 2"
 
-#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:148
+#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:161
 msgid "File 1"
 msgstr "Файл 1"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:217
+#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:230
 #: meld/dirdiff.py:634
 msgid "Name"
 msgstr "Назва"
@@ -1767,15 +1767,19 @@ msgstr "_Порівняти"
 msgid "Co_mmit…"
 msgstr "В_нести…"
 
-#: meld/resources/ui/vcview-menus.ui:26
+#: meld/resources/ui/vcview-menus.ui:22
+msgid "_Unstage"
+msgstr "_Скасувати формування"
+
+#: meld/resources/ui/vcview-menus.ui:30
 msgid "Re_vert"
 msgstr "_Відновити"
 
-#: meld/resources/ui/vcview-menus.ui:30
+#: meld/resources/ui/vcview-menus.ui:34
 msgid "Delete"
 msgstr "Вилучити"
 
-#: meld/resources/ui/vcview-menus.ui:37
+#: meld/resources/ui/vcview-menus.ui:41
 msgid "Resolve Conflict"
 msgstr "Усунути конфлікт"
 
@@ -1800,34 +1804,39 @@ msgid "Add to version control"
 msgstr "Додати до системи керування версіями"
 
 #: meld/resources/ui/vcview.ui:88
+#| msgid "Delete change"
+msgid "Remove staged changes"
+msgstr "Вилучити сформовані зміни"
+
+#: meld/resources/ui/vcview.ui:101
 msgid "Remove from version control"
 msgstr "Вилучити з системи керування версіями"
 
-#: meld/resources/ui/vcview.ui:101
+#: meld/resources/ui/vcview.ui:114
 msgid "Revert working copy to original state"
 msgstr "Повернути робочу копію до початкового стану"
 
-#: meld/resources/ui/vcview.ui:114
+#: meld/resources/ui/vcview.ui:127
 msgid "Mark as resolved in version control"
 msgstr "Позначити як розв'язаний у системі керування версіями"
 
-#: meld/resources/ui/vcview.ui:140
+#: meld/resources/ui/vcview.ui:153
 msgid "Open version controlled folder in this pane"
 msgstr "Відкрити на цій панелі теку у системі із керуванням версіями"
 
-#: meld/resources/ui/vcview.ui:229
+#: meld/resources/ui/vcview.ui:242
 msgid "Location"
 msgstr "Розташування"
 
-#: meld/resources/ui/vcview.ui:238
+#: meld/resources/ui/vcview.ui:251
 msgid "Status"
 msgstr "Стан"
 
-#: meld/resources/ui/vcview.ui:247
+#: meld/resources/ui/vcview.ui:260
 msgid "Extra"
 msgstr "Додатково"
 
-#: meld/resources/ui/vcview.ui:279
+#: meld/resources/ui/vcview.ui:292
 msgid "Console output"
 msgstr "Виведення до консолі"
 
@@ -2001,7 +2010,7 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1338 meld/vcview.py:792
+#: meld/dirdiff.py:1338 meld/vcview.py:797
 msgid "Error deleting {}"
 msgstr "Помилка під час спроби вилучити {}"
 
@@ -2447,7 +2456,6 @@ msgid "Cannot compare a mixture of files and directories"
 msgstr "Неможливо порівняти суміш файлів і тек"
 
 #: meld/meldwindow.py:479
-#| msgid "Cannot compare a mixture of files and directories"
 msgid "Cannot compare a non-existent file"
 msgstr "Неможливо виконати порівняння із файлом, якого не існує"
 
@@ -2538,16 +2546,16 @@ msgstr[1] "%d гілки"
 msgstr[2] "%d гілок"
 msgstr[3] "%d гілка"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:363
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Режим змінено з {old_mode} на {new_mode}"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Partially staged"
 msgstr "Частково сформатовано"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Staged"
 msgstr "Позначено"
 
@@ -2612,96 +2620,96 @@ msgstr "Сканування…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:350
+#: meld/vcview.py:351
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (не знайдено)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:354
+#: meld/vcview.py:355
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s не встановлено)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:358
+#: meld/vcview.py:359
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (некоректне сховище)"
 
-#: meld/vcview.py:372
+#: meld/vcview.py:373
 msgid "No valid version control system found in this folder"
 msgstr ""
 "У цій теці не виявлено слідів жодної відомої системи керування версіями"
 
-#: meld/vcview.py:374
+#: meld/vcview.py:375
 msgid "Choose which version control system to use"
 msgstr "Виберіть систему керування версіями, якою слід скористатися"
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:432
+#: meld/vcview.py:433
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr "Порівняння {vc}:"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:447
+#: meld/vcview.py:448
 msgid "Scanning repository"
 msgstr "Скануємо сховище"
 
-#: meld/vcview.py:476
+#: meld/vcview.py:477
 #, python-format
 msgid "Scanning %s"
 msgstr "Сканування %s"
 
-#: meld/vcview.py:515
+#: meld/vcview.py:516
 msgid "(Empty)"
 msgstr "(Порожньо)"
 
-#: meld/vcview.py:563
+#: meld/vcview.py:564
 #, python-format
 msgid "%s — local"
 msgstr "%s — локальний"
 
-#: meld/vcview.py:564
+#: meld/vcview.py:565
 #, python-format
 msgid "%s — remote"
 msgstr "%s — віддалений"
 
-#: meld/vcview.py:572
+#: meld/vcview.py:573
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (локальний, об'єднання, віддалений)"
 
-#: meld/vcview.py:577
+#: meld/vcview.py:578
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (віддалений, об'єднання, локальний)"
 
-#: meld/vcview.py:588
+#: meld/vcview.py:589
 #, python-format
 msgid "%s — repository"
 msgstr "%s — сховище"
 
-#: meld/vcview.py:594
+#: meld/vcview.py:595
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (робоча копія, сховище)"
 
-#: meld/vcview.py:598
+#: meld/vcview.py:599
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (сховище, робоча копія)"
 
-#: meld/vcview.py:763
+#: meld/vcview.py:768
 msgid "Remove folder and all its files?"
 msgstr "Вилучити теку і усі файли у ній?"
 
-#: meld/vcview.py:765
+#: meld/vcview.py:770
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2709,7 +2717,7 @@ msgstr ""
 "У результаті виконання цієї дії з системи керування версіями буде вилучено "
 "усі позначені файли і теки і усі файли у позначених теках."
 
-#: meld/vcview.py:879
+#: meld/vcview.py:884
 msgid "Clear"
 msgstr "Очистити"
 
