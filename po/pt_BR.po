@@ -12,16 +12,16 @@
 # Enrico Nicoletto <hiko@duck.com>, 2013, 2018-2022.
 # Daniel Coelho <dpcsoftware@gmail.com>, 2024.
 # Rafael Fontenelle <rafaelff@gnome.org>, 2013-2025.
-# Álvaro Burns, 2025.
+# Álvaro Burns <>, 2025.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: meld\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2025-03-08 04:16+0000\n"
-"PO-Revision-Date: 2025-03-08 09:38-0300\n"
-"Last-Translator: Álvaro Burns\n"
-"Language-Team: Brazilian Portuguese <https://br.gnome.org/traducao>\n"
+"POT-Creation-Date: 2025-03-11 21:08+0000\n"
+"PO-Revision-Date: 2025-03-11 19:45-0300\n"
+"Last-Translator: Álvaro Burns <>\n"
+"Language-Team: Brazilian Portuguese\n"
 "Language: pt_BR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1083,7 +1083,7 @@ msgid "Column Name"
 msgstr "Nome da coluna"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:127
-#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:769
+#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:774
 msgid "_Remove"
 msgstr "_Remover"
 
@@ -1179,7 +1179,7 @@ msgid "_Copy File Paths"
 msgstr "_Copiar caminhos de arquivos"
 
 #: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:74
-#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:139
+#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:152
 msgid "Select Folder"
 msgstr "Selecionar pasta"
 
@@ -1294,12 +1294,12 @@ msgstr "Arquivo 3"
 msgid "File 2"
 msgstr "Arquivo 2"
 
-#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:148
+#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:161
 msgid "File 1"
 msgstr "Arquivo 1"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:217
+#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:230
 #: meld/dirdiff.py:634
 msgid "Name"
 msgstr "Nome"
@@ -1777,15 +1777,19 @@ msgstr "_Comparar"
 msgid "Co_mmit…"
 msgstr "Sub_meter…"
 
-#: meld/resources/ui/vcview-menus.ui:26
+#: meld/resources/ui/vcview-menus.ui:22
+msgid "_Unstage"
+msgstr "_Despreparar"
+
+#: meld/resources/ui/vcview-menus.ui:30
 msgid "Re_vert"
 msgstr "Re_verter"
 
-#: meld/resources/ui/vcview-menus.ui:30
+#: meld/resources/ui/vcview-menus.ui:34
 msgid "Delete"
 msgstr "Excluir"
 
-#: meld/resources/ui/vcview-menus.ui:37
+#: meld/resources/ui/vcview-menus.ui:41
 msgid "Resolve Conflict"
 msgstr "Resolver conflitos"
 
@@ -1810,34 +1814,38 @@ msgid "Add to version control"
 msgstr "Adiciona a um controle de versão"
 
 #: meld/resources/ui/vcview.ui:88
+msgid "Remove staged changes"
+msgstr "Remover alteração preparada"
+
+#: meld/resources/ui/vcview.ui:101
 msgid "Remove from version control"
 msgstr "Remove de um controle de versão"
 
-#: meld/resources/ui/vcview.ui:101
+#: meld/resources/ui/vcview.ui:114
 msgid "Revert working copy to original state"
 msgstr "Reverte uma cópia de trabalho para o estado original"
 
-#: meld/resources/ui/vcview.ui:114
+#: meld/resources/ui/vcview.ui:127
 msgid "Mark as resolved in version control"
 msgstr "Marca como resolvido no controle de versão"
 
-#: meld/resources/ui/vcview.ui:140
+#: meld/resources/ui/vcview.ui:153
 msgid "Open version controlled folder in this pane"
 msgstr "Abrir pasta com controle de versão neste painel"
 
-#: meld/resources/ui/vcview.ui:229
+#: meld/resources/ui/vcview.ui:242
 msgid "Location"
 msgstr "Local"
 
-#: meld/resources/ui/vcview.ui:238
+#: meld/resources/ui/vcview.ui:251
 msgid "Status"
 msgstr "Status"
 
-#: meld/resources/ui/vcview.ui:247
+#: meld/resources/ui/vcview.ui:260
 msgid "Extra"
 msgstr "Extra"
 
-#: meld/resources/ui/vcview.ui:279
+#: meld/resources/ui/vcview.ui:292
 msgid "Console output"
 msgstr "Saída de console"
 
@@ -2014,7 +2022,7 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1338 meld/vcview.py:792
+#: meld/dirdiff.py:1338 meld/vcview.py:797
 msgid "Error deleting {}"
 msgstr "Erro ao excluir {}"
 
@@ -2544,16 +2552,16 @@ msgid_plural "%d branches"
 msgstr[0] "%d ramo"
 msgstr[1] "%d ramos"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:363
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modo modificado de {old_mode} para {new_mode}"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Partially staged"
 msgstr "Apresentados (staged) parcialmente"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Staged"
 msgstr "Apresentados (staged)"
 
@@ -2618,95 +2626,95 @@ msgstr "Escaneando…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:350
+#: meld/vcview.py:351
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (não encontrado)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:354
+#: meld/vcview.py:355
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s não instalado)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:358
+#: meld/vcview.py:359
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (repositório inválido)"
 
-#: meld/vcview.py:372
+#: meld/vcview.py:373
 msgid "No valid version control system found in this folder"
 msgstr "Nenhum sistema de controle de versão válido localizado nesta pasta"
 
-#: meld/vcview.py:374
+#: meld/vcview.py:375
 msgid "Choose which version control system to use"
 msgstr "Escolha qual sistema de controle de versão a ser usado"
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:432
+#: meld/vcview.py:433
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr "Comparação {vc}"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:447
+#: meld/vcview.py:448
 msgid "Scanning repository"
 msgstr "Escaneando repositório"
 
-#: meld/vcview.py:476
+#: meld/vcview.py:477
 #, python-format
 msgid "Scanning %s"
 msgstr "Escaneando %s"
 
-#: meld/vcview.py:515
+#: meld/vcview.py:516
 msgid "(Empty)"
 msgstr "(Vazio)"
 
-#: meld/vcview.py:563
+#: meld/vcview.py:564
 #, python-format
 msgid "%s — local"
 msgstr "%s — local"
 
-#: meld/vcview.py:564
+#: meld/vcview.py:565
 #, python-format
 msgid "%s — remote"
 msgstr "%s — remoto"
 
-#: meld/vcview.py:572
+#: meld/vcview.py:573
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (local, mesclagem, remoto)"
 
-#: meld/vcview.py:577
+#: meld/vcview.py:578
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (remoto, mesclagem, local)"
 
-#: meld/vcview.py:588
+#: meld/vcview.py:589
 #, python-format
 msgid "%s — repository"
 msgstr "%s — repositório"
 
-#: meld/vcview.py:594
+#: meld/vcview.py:595
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (em trabalho, repositório)"
 
-#: meld/vcview.py:598
+#: meld/vcview.py:599
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (repositório, em trabalho)"
 
-#: meld/vcview.py:763
+#: meld/vcview.py:768
 msgid "Remove folder and all its files?"
 msgstr "Remover pasta e todos seus arquivos?"
 
-#: meld/vcview.py:765
+#: meld/vcview.py:770
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2714,7 +2722,7 @@ msgstr ""
 "Isso vai remover todos os arquivos e pastas selecionados, e todos arquivos "
 "dentro de quaisquer pastas selecionadas, do controle de versão."
 
-#: meld/vcview.py:879
+#: meld/vcview.py:884
 msgid "Clear"
 msgstr "Limpar"
 
