@@ -528,14 +528,21 @@ def version_bump():
         "want to skip the templating helpers."
     ),
 )
+@click.option(
+    "--skip-news-commit",
+    is_flag=True,
+    default=False,
+    help="Skip the NEWS + appdata commit step",
+)
 @click.pass_context
-def make_release(ctx, skip_news):
+def make_release(ctx, skip_news, skip_news_commit):
     if not skip_news:
         pull()
         ctx.forward(news)
         ctx.forward(appdata)
-    commit(message='Update NEWS + appdata')
-    push()
+    if not skip_news_commit:
+        commit(message='Update NEWS + appdata')
+        push()
     archive_path = ctx.forward(dist)
     ctx.forward(tag)
     ctx.forward(gitlab_release)
