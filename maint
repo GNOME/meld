@@ -230,7 +230,7 @@ def get_tokens():
     return {
         'date': datetime.date.today().isoformat(),
         # Appstream appears to expect release dates in UTC.
-        'utcdate': datetime.datetime.utcnow().date().isoformat(),
+        'utcdate': datetime.datetime.now(datetime.UTC).date().isoformat(),
         'app': meld.conf.__package__,
         'version': version,
         'release_series': release_series,
@@ -377,7 +377,7 @@ def news():
 
 @cli.command()
 def appdata():
-    filename = 'data/org.gnome.meld.appdata.xml.in.in'
+    filename = 'data/org.gnome.Meld.appdata.xml.in.in'
 
     rendered = render_template(APPDATA_TEMPLATE)
     with open(filename, 'r') as f:
@@ -518,11 +518,22 @@ def version_bump():
 
 
 @cli.command('release')
+@click.option(
+    "--skip-news",
+    is_flag=True,
+    default=False,
+    help=(
+        "Skip the NEWS + appdata templating step (but not the commit). Use "
+        "this if you have already written the NEWS and appdata updates and "
+        "want to skip the templating helpers."
+    ),
+)
 @click.pass_context
-def make_release(ctx):
-    pull()
-    ctx.forward(news)
-    ctx.forward(appdata)
+def make_release(ctx, skip_news):
+    if not skip_news:
+        pull()
+        ctx.forward(news)
+        ctx.forward(appdata)
     commit(message='Update NEWS + appdata')
     push()
     archive_path = ctx.forward(dist)
