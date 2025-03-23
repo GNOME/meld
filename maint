@@ -8,11 +8,8 @@ import os
 import re
 import subprocess
 import sys
-import urllib.parse
 
 import click
-import keyring
-import requests
 from jinja2 import Environment
 
 # Import system hackery to import conf.py.in without copying it to
@@ -34,8 +31,6 @@ PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
 VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
-GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
-GITLAB_PROJECT_ID = 'GNOME/meld'
 
 NEWS_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
@@ -279,53 +274,6 @@ def push():
     call_with_output(cmd, echo_stdout=True)
 
 
-def get_gitlab_token():
-    auth_token = keyring.get_password('gitlab-api', GITLAB_PROJECT_ID)
-    if not auth_token:
-        raise click.ClickException(
-            "No password in keychain for {id}\n\n"
-            "Set password using the Python `keyring` package. "
-            "From the command line:\n"
-            "  $ keyring set gitlab-api {id}\n"
-            "and enter your secret token from the Gitlab UI.\n".format(
-                id=GITLAB_PROJECT_ID)
-        )
-    return auth_token
-
-
-def gitlab_release_tag(tag):
-    auth_token = get_gitlab_token()
-
-    cmd = ['git', 'tag', '-l', "--format=%(contents)", tag]
-    description = subprocess.check_output(cmd).decode('utf-8')
-
-    endpoint = '{base}/projects/{id}/releases'
-    release_url = endpoint.format(
-        base=GITLAB_API_BASE,
-        id=urllib.parse.quote_plus(GITLAB_PROJECT_ID),
-    )
-    release_data = {
-        "tag_name": tag,
-        "description": description
-    }
-
-    # TODO: Should probably sanity-check that it's not already a
-    # release tag.
-
-    response = requests.post(
-        release_url,
-        json=release_data,
-        headers={
-            'Private-Token': auth_token,
-        },
-    )
-    try:
-        response.raise_for_status()
-    except Exception as e:
-        click.secho(
-            'Error making release: {}\n{}'.format(e, response.text), fg='red')
-
-
 @click.group()
 def cli():
     pass
@@ -436,17 +384,6 @@ def tag():
     call_with_output(cmd, echo_stdout=True)
 
 
-@cli.command('gitlab-release')
-def gitlab_release():
-    last_release = get_last_release_tag()
-    confirm = click.confirm(
-        'Annotate {} as a Gitlab release?'.format(last_release), default=True)
-    if not confirm:
-        return
-
-    gitlab_release_tag(last_release)
-
-
 @cli.command('version-bump')
 def version_bump():
     with open(meld.conf.__file__) as f:
@@ -497,9 +434,6 @@ def version_bump():
 )
 @click.pass_context
 def make_release(ctx, skip_news, skip_news_commit):
-    # Check that we have the necessary local auth before proceeding
-    get_gitlab_token()
-
     if not skip_news:
         pull()
         ctx.invoke(news)
@@ -510,7 +444,6 @@ def make_release(ctx, skip_news, skip_news_commit):
     # Run dist as a check; we don't need the actual tarball
     ctx.invoke(dist)
     ctx.invoke(tag)
-    ctx.invoke(gitlab_release)
     ctx.invoke(version_bump)
     commit(message='Post-release version bump')
     push()
