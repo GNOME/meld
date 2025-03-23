@@ -1,4 +1,107 @@
 
+2025-03-23 meld 3.23.0
+======================
+
+  Features:
+
+   * Add new side-by-side image file comparison (Martin van Zijl)
+   * Add CI build support for macOS (René de Hesselle)
+   * Add version control support for Git unstaging (Nikita Stelmashenko)
+   * Added option to compare folders based on size only (Alex Martian)
+   * Support starting with blank comparison panes using @blank (Kai Willadsen)
+   * Per-pane path labels now accept drag-n-drop to open files (Kai Willadsen)
+
+  Fixes:
+
+   * Fix file descriptor leak (Alan Suran)
+   * Ignore removed remote Git branches (ks132)
+   * Extend media file format filter with common extensions (Jean-François Fortin Tam)
+   * Improve find bar labeling (Sabri Ünal)
+   * Improve swap-files-in-panes feature (Helly Guo)
+   * Fix search bar not working after switching panes (t-gergely)
+   * Fix window sizing issues caused by message display (Kai Willadsen)
+   * Fix freezes caused by long-line files by cancelling file loads when
+     excessively long lines are detected (Kai Willadsen)
+   * Improved display of differences:
+     * Make file compare-to-itself check more accurate (Kai Willadsen)
+     * Fix inline highlighting for diacritic-only changes (Kai Willadsen)
+     * Add notification for white-space-varying file names in folder
+       comparisons (Kai Willadsen)
+     * Improve new/modified filters in three-way folder comparison (Kai
+       Willadsen)
+     * Change file icons for missing files and symlinks (Kai Willadsen)
+   * Don't reset cursor to top of tree after folder rescan (Kai Willadsen)
+   * Fix command-line handling of missing single file (Kai Willadsen)
+   * Fix custom label handling for folders and version-control (Kai Willadsen)
+   * Fix edge cases in quit workflow when cancelling file save (Kai Willadsen)
+   * Fix Git state being out-of-sync during large index update (Kai Willadsen)
+   * Handle Git repositories at the filesystem root (Kai Willadsen)
+   * Improve responsiveness during X11 forwarding (Kai Willadsen)
+   * Improve notebook display with long path names (Kai Willadsen)
+   * Improve handling of missing icons, emblems, cursors and settings (Kai Willadsen)
+   * Various improvements to UI affordances (Kai Willadsen)
+   * Various fixes for UI being out-of-sync with preference state (Kai Willadsen)
+   * Issues fixed: 260, 281, 507, 709, 713, 715, 716, 722, 724, 726, 729, 733,
+     734, 736, 738, 744, 753, 761, 767, 769, 771, 774, 775, 780, 785, 787, 790,
+     793, 795, 796, 797, 798, 799, 802, 807, 808, 822, 829, 838, 846, 851, 852,
+     856, 867, 879, 881, 885, 887, 895, 896, 899
+
+  UI Changes:
+
+   * Icon updates (Hernan Martinez, Sabri Ünal)
+   * Use development styling when uninstalled (Frank Dana)
+   * Shortcut and mnemonic updates and shortcut documentation fixes (Sabri Ünal, Kai Willadsen)
+   * Help documentation updates (Sabri Ünal, Kai Willadsen)
+   * String updates and translation fixes (Anders Jonsson, Sabri Ünal, luzpaz, Muneeb, Kai Willadsen)
+
+  Internal changes:
+
+   * Improvements to build scripts (Frank Dana, Matt Turner, Kai Willadsen)
+   * Flatpak improvements and fixes (Hari Rana, Kai Willadsen)
+   * Appdata updates and GNOME branding removal (Sabri Ünal)
+   * Remove some deprecated Python module usage (Frank Dana)
+   * Update development documentation (Kai Willadsen)
+   * Update CI lint and tests (Kai Willadsen)
+
+  Translations:
+
+   * Alan Mortensen (da)
+   * Anders Jonsson (sv)
+   * Andi Chandler (en_GB)
+   * Andika Triwidada (id)
+   * Asier Sarasua Garmendia (eu)
+   * Balázs Úr (hu)
+   * Boyuan Yang (zh_CN)
+   * Charles Monzat (fr)
+   * Danial Behzadi (fa)
+   * Daniel Coelho (pt_BR)
+   * Daniel Mustieles (es)
+   * Daniel Rusek (cs)
+   * Daniel Șerbănescu (ro)
+   * Ekaterine Papava (ka)
+   * Emin Tufan Çetin (tr)
+   * Enrico Nicoletto (pt_BR)
+   * Fran Dieguez (gl)
+   * Guillaume Bernard (fr)
+   * Hugo Carvalho (pt)
+   * Jiri Grönroos (fi)
+   * Justin Nogossek (de)
+   * Jürgen Benvenuti (de)
+   * Kukuh Syafaat (id)
+   * Luming Zh (zh_CN)
+   * Martin (sl)
+   * Philipp Kiemle (de)
+   * Piotr Drąg (pl)
+   * Rafael Fontenelle (pt_BR)
+   * Sabri Ünal (tr)
+   * Scrambled 777 (hi)
+   * Sergej A. (ru)
+   * Yuri Chornoivan (uk)
+   * Zurab Kargareteli (ka)
+   * Álvaro Burns (pt_BR)
+   * Мирослав Николић (sr)
+
+
 2022-09-04 meld 3.22.0
 ======================
 
