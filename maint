@@ -538,21 +538,21 @@ def version_bump():
 def make_release(ctx, skip_news, skip_news_commit):
     if not skip_news:
         pull()
-        ctx.forward(news)
-        ctx.forward(appdata)
+        ctx.invoke(news)
+        ctx.invoke(appdata)
     if not skip_news_commit:
         commit(message='Update NEWS + appdata')
         push()
-    archive_path = ctx.forward(dist)
-    ctx.forward(tag)
-    ctx.forward(gitlab_release)
+    archive_path = ctx.invoke(dist)
+    ctx.invoke(tag)
+    ctx.invoke(gitlab_release)
     file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
-    ctx.forward(markdown, filename=file_prefix + '.md')
-    ctx.forward(version_bump)
+    ctx.invoke(markdown, filename=file_prefix + '.md')
+    ctx.invoke(version_bump)
     commit(message='Post-release version bump')
     push()
 
-    ctx.forward(upload, path=archive_path)
+    ctx.invoke(upload, path=archive_path)
 
     # TODO: ssh in and run ftpadmin install
     click.echo('\nNow run:')
