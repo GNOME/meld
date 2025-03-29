@@ -142,9 +142,6 @@
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="tab-fill">False</property>
-              </packing>
             </child>
             <child type="tab">
               <placeholder/>
@@ -160,61 +157,51 @@
                 <child>
                   <object class="GtkCheckButton" id="file_three_way_checkbutton">
                     <property name="label" translatable="yes">_3-way comparison</property>
-                    <property name="use-action-appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
+                    <property name="focusable">1</property>
+                    <property name="use-underline">1</property>
                     <signal name="toggled" handler="on_three_way_checkbutton_toggled" swapped="no"/>
+                    <layout>
+                      <property name="column">2</property>
+                      <property name="row">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">1</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="file_chooser0">
+                  <object class="GtkButton" id="file_chooser0">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="create-folders">False</property>
-                    <property name="local-only">False</property>
-                    <property name="title" translatable="yes">Select First File</property>
-                    <signal name="file-set" handler="on_file_set" swapped="no"/>
+                    <property name="label" translatable="yes">Select First File</property>
+                    <signal name="clicked" handler="on_file_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="file_chooser1">
+                  <object class="GtkButton" id="file_chooser1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="create-folders">False</property>
-                    <property name="local-only">False</property>
-                    <property name="title" translatable="yes">Select Second File</property>
-                    <signal name="file-set" handler="on_file_set" swapped="no"/>
+                    <property name="label" translatable="yes">Select Second File</property>
+                    <signal name="clicked" handler="on_file_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">1</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="file_chooser2">
+                  <object class="GtkButton" id="file_chooser2">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can-focus">False</property>
-                    <property name="create-folders">False</property>
-                    <property name="local-only">False</property>
-                    <property name="title" translatable="yes">Select Third File</property>
-                    <signal name="file-set" handler="on_file_set" swapped="no"/>
+                    <property name="label" translatable="yes">Select Third File</property>
+                    <signal name="clicked" handler="on_file_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">2</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -223,9 +210,6 @@
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child type="tab">
               <placeholder/>
@@ -239,60 +223,53 @@
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">True</property>
                 <child>
-                  <object class="GtkFileChooserButton" id="dir_chooser0">
+                  <object class="GtkButton" id="dir_chooser0">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="action">select-folder</property>
-                    <property name="create-folders">False</property>
-                    <property name="title" translatable="yes">Select First Folder</property>
+                    <property name="label" translatable="yes">Select First Folder</property>
+                    <signal name="clicked" handler="on_dir_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">0</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="dir_chooser1">
+                  <object class="GtkButton" id="dir_chooser1">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="action">select-folder</property>
-                    <property name="create-folders">False</property>
-                    <property name="title" translatable="yes">Select Second Folder</property>
+                    <property name="label" translatable="yes">Select Second Folder</property>
+                    <signal name="clicked" handler="on_dir_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">1</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">1</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkFileChooserButton" id="dir_chooser2">
+                  <object class="GtkButton" id="dir_chooser2">
                     <property name="visible">True</property>
                     <property name="sensitive">False</property>
                     <property name="can-focus">False</property>
-                    <property name="action">select-folder</property>
-                    <property name="create-folders">False</property>
-                    <property name="title" translatable="yes">Select Third Folder</property>
+                    <property name="label" translatable="yes">Select Third Folder</property>
+                    <signal name="clicked" handler="on_dir_chooser_clicked" swapped="no"/>
+                    <layout>
+                      <property name="column">2</property>
+                      <property name="row">0</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkCheckButton" id="dir_three_way_checkbutton">
                     <property name="label" translatable="yes">_3-way comparison</property>
-                    <property name="use-action-appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can-focus">True</property>
-                    <property name="receives-default">False</property>
-                    <property name="use-underline">True</property>
-                    <property name="draw-indicator">True</property>
+                    <property name="focusable">1</property>
+                    <property name="use-underline">1</property>
                     <signal name="toggled" handler="on_three_way_checkbutton_toggled" swapped="no"/>
+                    <layout>
+                      <property name="column">2</property>
+                      <property name="row">1</property>
+                    </layout>
                   </object>
-                  <packing>
-                    <property name="left-attach">2</property>
-                    <property name="top-attach">1</property>
-                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -301,9 +278,6 @@
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="position">2</property>
-              </packing>
             </child>
             <child type="tab">
               <placeholder/>
@@ -317,17 +291,12 @@
                 <property name="column-spacing">12</property>
                 <property name="column-homogeneous">True</property>
                 <child>
-                  <object class="GtkFileChooserButton" id="vc_chooser0">
+                  <object class="GtkButton" id="vc_chooser0">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
-                    <property name="action">select-folder</property>
-                    <property name="create-folders">False</property>
-                    <property name="title" translatable="yes">Select A Version-Controlled Folder</property>
+                    <property name="label" translatable="yes">Select Version-controlled Folder</property>
+                    <signal name="clicked" handler="on_vc_chooser_clicked" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="left-attach">0</property>
-                    <property name="top-attach">0</property>
-                  </packing>
                 </child>
                 <child>
                   <placeholder/>
@@ -345,23 +314,10 @@
                   <placeholder/>
                 </child>
               </object>
-              <packing>
-                <property name="position">3</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkBox" id="hbuttonbox2">
