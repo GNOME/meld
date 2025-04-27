@@ -87,22 +87,23 @@ mingw64-dist:
   allow_failure: true
 
 macos:
-  rules:
-    # Do not run in forks as the runner is not available there.
-    # (except for dehesselle who maintains the runner)
-    - if: $CI_PROJECT_NAMESPACE == "GNOME" || $CI_PROJECT_NAMESPACE == "dehesselle"
   stage: build
   tags:
     - macos
     - arm64
+  cache:
+    - key: ccache
+      paths:
+        - ccache
   variables:
-    CCACHE_DIR: /Users/Shared/work/ccache
+    CCACHE_DIR: $CI_PROJECT_DIR/ccache
+    CCACHE_MAXSIZE: "300Mi"
+    PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic
     MM_REPO_URL: https://gitlab.com/dehesselle/meld_macos.git
     MM_REPO_REF: 40a3e6b090650de6fcf3e684fc7dac527b4e9310
     MELD_BUILD: $CI_PIPELINE_IID
     REP_DIR: $CI_PROJECT_DIR
     SDKROOT: /opt/sdks/MacOSX11.3.sdk
-    WRK_DIR: $CI_PROJECT_DIR
   script:
     # Clone the repo containing all the build scripts.
     - |
@@ -117,16 +118,14 @@ macos:
       echo $CI_PROJECT_DIR > mm/ci_project_dir.txt
       MM_SHA=$(LANG=C find -s mm -type f -not -wholename '*.git/*' -exec cat {} \+ | shasum | awk '{ print $1 }')
       VER_DIR=$(mm/jhb/usr/bin/config get VER_DIR)
-      PACKAGE_URL=${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/dependencies/${MM_SHA}/$(basename $VER_DIR)_$(uname -m).dmg
+      PACKAGE_URL=${PACKAGE_REGISTRY_URL}/dependencies/${MM_SHA}/$(basename $VER_DIR)_$(uname -m).dmg
       if ! curl -H "JOB-TOKEN: $CI_JOB_TOKEN" -fLO $PACKAGE_URL; then
-        export FORCE_BUILD_FROM_SOURCE=true
         mm/build_toolset.sh
         mm/jhb/usr/bin/jhb run rustup self uninstall -y || true
         mm/jhb/usr/bin/archive remove_nonessentials
         mm/jhb/usr/bin/archive create_dmg
         curl --fail-with-body -H "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $(basename $PACKAGE_URL) $PACKAGE_URL
         rm -rf ${VER_DIR:?}
-        unset FORCE_BUILD_FROM_SOURCE
       fi
     - mm/jhb/usr/bin/archive install_dmg
     - mm/build_meld.sh
