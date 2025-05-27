@@ -141,23 +141,13 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
 
     @Gtk.Template.Callback()
     def on_file_chooser_clicked(self, button):
-        if button == self.file_chooser0:
-            title = "Select First File"
-        elif button == self.file_chooser1:
-            title = "Select Second File"
-        else:
-            title = "Select Third File"
+        title = button.get_label()
 
         self.show_file_dialog(title, Gtk.FileChooserAction.OPEN, button, self.file_chooser_dialogs)
 
     @Gtk.Template.Callback()
     def on_dir_chooser_clicked(self, button):
-        if button == self.dir_chooser0:
-            title = "Select First Folder"
-        elif button == self.dir_chooser1:
-            title = "Select Second Folder"
-        else:
-            title = "Select Third Folder"
+        title = button.get_label()
 
         self.show_file_dialog(title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.dir_chooser_dialogs)
 
