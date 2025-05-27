@@ -66,6 +66,7 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
 
     file_chooser_dialogs = {}
     dir_chooser_dialogs = {}
+    vc_chooser_dialogs = {}
 
     def __init__(self, parentapp):
         super().__init__()
@@ -151,6 +152,12 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
 
         self.show_file_dialog(title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.dir_chooser_dialogs)
 
+    @Gtk.Template.Callback()
+    def on_vc_chooser_clicked(self, button):
+        title = button.get_label()
+
+        self.show_file_dialog(title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.vc_chooser_dialogs)
+
     def on_file_set(self, dialog, response):
         if response == Gtk.ResponseType.ACCEPT:
             gfile = dialog.get_file()
@@ -163,7 +170,10 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
             elif dialog in self.dir_chooser_dialogs.values():
                 button = list(self.dir_chooser_dialogs.keys())[list(self.dir_chooser_dialogs.values()).index(dialog)]
                 values = self.dir_chooser_values
-            
+            elif dialog in self.vc_chooser_dialogs.values():
+                button = list(self.vc_chooser_dialogs.keys())[list(self.vc_chooser_dialogs.values()).index(dialog)]
+                values = self.vc_chooser_values
+
             if button is not None:
                 button.set_label(gfile.get_basename())
                 values[button] = gfile
@@ -201,7 +211,7 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
     def on_button_compare_clicked(self, *args):
         type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
         choosers = type_choosers[self.diff_type][:self._get_num_paths()]
-        values = (self.file_chooser_values, self.dir_chooser_values)[self.diff_type]
+        values = (self.file_chooser_values, self.dir_chooser_values, self.vc_chooser_values)[self.diff_type]
         compare_gfiles = []
 
         for button in choosers:
