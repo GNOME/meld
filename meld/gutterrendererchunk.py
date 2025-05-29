@@ -16,7 +16,7 @@
 import math
 from typing import Any
 
-from gi.repository import Gdk, GtkSource, Pango
+from gi.repository import Gdk, GtkSource, Graphene, Pango
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
@@ -64,34 +64,33 @@ class MeldGutterRenderer:
                 for state, colour in self.fill_colors.items()
             }
 
-    def draw_chunks(
-            self, context, background_area, cell_area, start, end, state):
+    def draw_chunks(self, snapshot, lines, line):
 
         chunk = self._chunk
         if not chunk:
             return
 
-        line = start.get_line()
         is_first_line = line == chunk[1]
         is_last_line = line == chunk[2] - 1
-        if not (is_first_line or is_last_line):
-            # Only paint for the first and last lines of a chunk
-            return
 
-        x = background_area.x - 1
-        y = background_area.y
-        width = background_area.width + 2
-        height = 1 if chunk[1] == chunk[2] else background_area.height
-
-        context.set_line_width(1.0)
-        Gdk.cairo_set_source_rgba(context, self.line_colors[chunk[0]])
+        alignment = GtkSource.GutterRendererAlignmentMode.CELL
         if is_first_line:
-            context.move_to(x, y + 0.5)
-            context.rel_line_to(width, 0)
+            alignment = GtkSource.GutterRendererAlignmentMode.FIRST
+            # context.move_to(x, y + 0.5) TODO4
+            # context.rel_line_to(width, 0)
         if is_last_line:
-            context.move_to(x, y - 0.5 + height)
-            context.rel_line_to(width, 0)
-        context.stroke()
+            alignment = GtkSource.GutterRendererAlignmentMode.LAST
+            # context.move_to(x, y - 0.5 + height) TODO4
+            # context.rel_line_to(width, 0)
+
+        y, height = lines.get_line_yrange(line, alignment)
+        x = 0
+        width = self.get_width()
+        height = 1 if chunk[1] == chunk[2] else height
+
+        rect = Graphene.Rect()
+        rect.init(x, y, width, height)
+        snapshot.append_color(self.line_colors[chunk[0]], rect)
 
     def query_chunks(self, start, end, state):
         line = start.get_line()
@@ -200,11 +199,8 @@ class GutterRendererChunkLines(
         width, height = self._measure_markup(markup)
         self.set_size(width)
 
-    def do_draw(self, context, background_area, cell_area, start, end, state):
-        GtkSource.GutterRendererText.do_draw(
-            self, context, background_area, cell_area, start, end, state)
-        self.draw_chunks(
-            context, background_area, cell_area, start, end, state)
+    def do_snapshot_line(self, snapshot, lines, line):
+        self.draw_chunks(snapshot, lines, line)
 
     def do_query_data(self, start, end, state):
         self.query_chunks(start, end, state)
