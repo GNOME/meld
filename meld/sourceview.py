@@ -17,7 +17,7 @@
 import logging
 from enum import Enum
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Graphene, Gsk, Gtk, GtkSource, Pango
 
 from meld.meldbuffer import MeldBuffer
 from meld.settings import bind_settings, get_meld_settings, settings
@@ -323,40 +323,42 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             GLib.source_remove(self.anim_source_id)
         return GtkSource.View.do_unrealize(self)
 
-    def do_draw_layer(self, layer, context):
+    def do_snapshot_layer(self, layer, snapshot):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
-            return GtkSource.View.do_draw_layer(self, layer, context)
+            return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
 
-        context.save()
-        context.set_line_width(1.0)
-
-        _, clip = Gdk.cairo_get_clip_rectangle(context)
-        clip_end = clip.y + clip.height
+        snapshot.save()
         bounds = (
-            self.get_line_num_for_y(clip.y),
-            self.get_line_num_for_y(clip_end),
+            self.get_line_num_for_y(0),
+            self.get_line_num_for_y(self.get_height()),
         )
 
-        x = clip.x - 0.5
-        width = clip.width + 1
+        x = 0
+        width = self.get_width() + 1
+
+        rect = Graphene.Rect()
+        rounded_rect = Gsk.RoundedRect()
 
         # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
             ypos0 = self.get_y_for_line_num(change[1])
             ypos1 = self.get_y_for_line_num(change[2])
-            height = max(0, ypos1 - ypos0 - 1)
+            height = max(1, ypos1 - ypos0 - 1)
 
-            context.rectangle(x, ypos0 + 0.5, width, height)
+            rect.init(x, ypos0 + 0.5, width, height)
             if change[1] != change[2]:
-                context.set_source_rgba(*self.fill_colors[change[0]])
-                context.fill_preserve()
+                color = self.fill_colors[change[0]]
+                snapshot.append_color(color, rect)
                 if self.current_chunk_check(change):
                     highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                    context.fill_preserve()
+                    snapshot.append_color(highlight, rect)
 
-            context.set_source_rgba(*self.line_colors[change[0]])
-            context.stroke()
+            color = self.line_colors[change[0]]
+            rounded_rect.init_from_rect(rect, 0.0)
+            snapshot.append_border(
+                rounded_rect,
+                [1.0, 1.0, 1.0, 1.0],
+                [color, color, color, color])
 
         textbuffer = self.get_buffer()
 
@@ -364,19 +366,19 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # (i.e., the overscroll) and draw a custom background if so.
         end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
         end_y += end_height
-        visible_bottom_margin = clip_end - end_y
+        visible_bottom_margin = self.get_width() - end_y
         if visible_bottom_margin > 0:
-            context.rectangle(x + 1, end_y, width - 1, visible_bottom_margin)
-            context.set_source_rgba(*self.fill_colors['overscroll'])
-            context.fill()
+            rect.init(x + 1, end_y, width - 1, visible_bottom_margin)
+            color = self.fill_colors['overscroll']
+            snapshot.append_color(color, rect)
 
         # Paint current line highlight
-        if self.props.highlight_current_line_local and self.is_focus():
+        if self.props.highlight_current_line_local:
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
-            context.rectangle(x, ypos, width, line_height)
-            context.set_source_rgba(*self.highlight_color)
-            context.fill()
+            rect.init(x, ypos, width, line_height)
+            highlight = self.highlight_color
+            snapshot.append_color(highlight, rect)
 
         # Draw syncpoint indicator lines
         for syncpoint in self.syncpoints:
@@ -384,10 +386,17 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 continue
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
+                it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
                 ypos = self.get_y_for_line_num(syncline)
-                context.rectangle(x, ypos - 0.5, width, 1)
-                context.set_source_rgba(*self.syncpoint_color)
-                context.stroke()
+                ypos, line_height = self.get_line_yrange(it)
+                rect.init(x, ypos - 0.5, width, 1)
+                syncpoint = self.syncpoint_color
+                rounded_rect.init_from_rect(rect, 0.0)
+                snapshot.append_border(
+                    rounded_rect,
+                    [1.0, 1.0, 1.0, 1.0],
+                    [syncpoint, syncpoint, syncpoint, syncpoint],
+                )
 
         # Overdraw all animated chunks, and update animation states
         new_anim_chunks = []
@@ -397,6 +406,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 1.0, (current_time - c.start_time) / float(c.duration))
             rgba_pairs = zip(c.start_rgba, c.end_rgba)
             rgba = [s + (e - s) * percent for s, e in rgba_pairs]
+            rgba = Gdk.RGBA(*rgba)
 
             it = textbuffer.get_iter_at_mark(c.start_mark)
             ystart, _ = self.get_line_yrange(it)
@@ -405,12 +415,16 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             if ystart == yend:
                 ystart -= 1
 
-            context.set_source_rgba(*rgba)
-            context.rectangle(x, ystart, width, yend - ystart)
+            rect.init(x, ystart, width, yend - ystart)
             if c.anim_type == TextviewLineAnimationType.stroke:
-                context.stroke()
+                rounded_rect.init_from_rect(rect, 0.0)
+                snapshot.append_border(
+                    rounded_rect,
+                    [1.0, 1.0, 1.0, 1.0],
+                    [rgba, rgba, rgba, rgba]
+                )
             else:
-                context.fill()
+                snapshot.append_color(rgba, rect)
 
             if current_time <= c.start_time + c.duration:
                 new_anim_chunks.append(c)
@@ -430,9 +444,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             GLib.source_remove(self.anim_source_id)
             self.anim_source_id = None
 
-        context.restore()
+        snapshot.restore()
 
-        return GtkSource.View.do_draw_layer(self, layer, context)
+        return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
 
 
 Gtk.WidgetClass.install_action(
