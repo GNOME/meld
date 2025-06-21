@@ -229,20 +229,17 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # here is to sanitise the clipboard contents so that it doesn't
         # contain GtkTextTags, by requesting and setting plain text.
 
-        def text_received_cb(clipboard, text, *user_data):
+        def text_received_cb(clipboard, result, *user_data):
+            text = clipboard.read_text_finish(result)
             # On clipboard failure, text will be None
             if not text:
                 return
 
-            # Manual encoding is required here, or the length will be
-            # incorrect, and the API requires a UTF-8 bytestring.
-            utf8_text = text.encode('utf-8')
-            clipboard.set_text(text, len(utf8_text))
-            self.get_buffer().paste_clipboard(
-                clipboard, None, self.get_editable())
+            clipboard.set(text)
+            self.get_buffer().paste_clipboard(clipboard, None, self.get_editable())
 
-        clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
-        clipboard.request_text(text_received_cb)
+        clipboard = self.get_clipboard()
+        clipboard.read_text_async(None, text_received_cb)
 
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
