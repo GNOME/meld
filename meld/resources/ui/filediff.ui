@@ -7,8 +7,6 @@
   <object class="GtkAdjustment" id="pane_adjustment2"/>
   <template class="FileDiff" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
     <child>
       <object class="DiffGrid" id="grid">
         <property name="vexpand">True</property>
@@ -205,9 +203,13 @@
                       </object>
                     </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkEventControllerKey">
+                        <signal name="key-pressed" handler="on_key_pressed" />
+                        <signal name="key-released" handler="on_key_released" />
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -240,9 +242,13 @@
                       </object>
                     </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkEventControllerKey">
+                        <signal name="key-pressed" handler="on_key_pressed" />
+                        <signal name="key-released" handler="on_key_released" />
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
@@ -275,9 +281,13 @@
                       </object>
                     </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="key-press-event" handler="on_key_event" swapped="no"/>
-                    <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkEventControllerKey">
+                        <signal name="key-pressed" handler="on_key_pressed" />
+                        <signal name="key-released" handler="on_key_released" />
+                      </object>
+                    </child>
                   </object>
                 </child>
               </object>
