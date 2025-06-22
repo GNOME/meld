@@ -20,7 +20,7 @@ from gi.repository import Gdk, GtkSource, Pango
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
-from meld.ui.gtkutil import make_gdk_rgba
+from meld.ui.gtkutil import alpha_tint
 
 
 def get_background_rgba(renderer):
@@ -60,7 +60,7 @@ class MeldGutterRenderer:
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
             self.chunk_highlights = {
-                state: make_gdk_rgba(*[alpha + c * (1.0 - alpha) for c in colour])
+                state: alpha_tint(colour, alpha)
                 for state, colour in self.fill_colors.items()
             }
 

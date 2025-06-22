@@ -25,3 +25,12 @@ def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RG
     rgba.blue = blue
     rgba.alpha = alpha
     return rgba
+
+
+def alpha_tint(rgba: Gdk.RGBA, alpha: float) -> Gdk.RGBA:
+    return make_gdk_rgba(
+        red=alpha + rgba.red * (1.0 - alpha),
+        green=alpha + rgba.green * (1.0 - alpha),
+        blue=alpha + rgba.blue * (1.0 - alpha),
+        alpha=alpha + rgba.alpha * (1.0 - alpha),
+    )
