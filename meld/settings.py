@@ -80,11 +80,18 @@ class MeldSettings(GObject.GObject):
                 font_string = interface_settings.get_string(
                     'monospace-font-name')
             else:
-                font_string = 'monospace'
+                font_string = 'monospace 11'
         else:
             font_string = settings.get_string('custom-font')
         return Pango.FontDescription(font_string)
 
+    def get_font_css(self) -> tuple[str, str]:
+        """Returns a tuple of font (family, size) in CSS format"""
+
+        return (
+            f"font-family: {self.font.get_family()};",
+            f"font-size: {max(1, self.font.get_size() / Pango.SCALE)}pt;",
+        )
 
 def load_settings_schema(schema_id):
     if meld.conf.DATADIR_IS_UNINSTALLED:

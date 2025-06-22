@@ -203,6 +203,10 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.syncpoints = []
         self._show_line_numbers = None
 
+        self.css_provider = Gtk.CssProvider()
+        style_context = self.get_style_context()
+        style_context.add_provider(self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+
         buf = MeldBuffer()
         inline_tag = GtkSource.Tag.new("inline")
         inline_tag.props.draw_spaces = True
@@ -258,7 +262,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     def on_setting_changed(self, settings, key):
         if key == 'font':
-            self.override_font(settings.font)
+            family, size = settings.get_font_css()
+            style = f"* {{ {family} {size} }}"
+            self.css_provider.load_from_string(style)
             self._approx_line_height = None
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
