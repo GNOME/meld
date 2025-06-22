@@ -28,17 +28,6 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 
     __gtype_name__ = "MeldStatusMenuButton"
 
-    style = b"""
-    * {
-      padding: 1px 8px 2px 4px;
-      border: 0;
-      outline-width: 0;
-    }
-    """
-
-    css_provider = Gtk.CssProvider()
-    css_provider.load_from_data(style)
-
     def get_label(self):
         return self._label.get_text()
 
@@ -57,11 +46,6 @@ class MeldStatusMenuButton(Gtk.MenuButton):
     def __init__(self):
         super().__init__()
 
-        style_context = self.get_style_context()
-        style_context.add_provider(
-            self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
-        style_context.add_class('flat')
-
         # Ideally this would be a template child, but there's still no
         # Python support for this.
         label = Gtk.Label(
@@ -77,20 +61,21 @@ class MeldStatusMenuButton(Gtk.MenuButton):
 
         box = Gtk.Box()
         box.set_spacing(3)
-        box.add(label)
-        box.add(arrow)
-        box.show_all()
-
-        self.remove(self.get_child())
-        self.add(box)
+        box.append(label)
+        box.append(arrow)
+        self.set_child(box)
 
         self._label = label
+        self.props.has_frame = False
 
     def set_label_width(self, width):
         self._label.set_width_chars(width)
 
 
-class MeldStatusBar(Gtk.Statusbar):
+MeldStatusMenuButton.set_css_name('meld-status-menu-button')
+
+
+class MeldStatusBar(Gtk.Box):
     __gtype_name__ = "MeldStatusBar"
 
     __gsignals__ = {
@@ -123,34 +108,20 @@ class MeldStatusBar(Gtk.Statusbar):
     # Abbreviation for line, column so that it will fit in the status bar
     _line_column_text = _("Ln {line}, Col {column}")
 
-    def __init__(self):
-        super().__init__()
-        self.props.margin = 0
-        self.props.spacing = 6
-
-        hbox = self.get_message_area()
-        label = hbox.get_children()[0]
-        hbox.props.spacing = 6
-        label.props.ellipsize = Pango.EllipsizeMode.NONE
-        hbox.remove(label)
-        hbox.pack_end(label, False, True, 0)
-
     def do_realize(self):
-        Gtk.Statusbar.do_realize(self)
+        Gtk.Box.do_realize(self)
 
         self.box_box = Gtk.Box(
-            orientation=Gtk.Orientation.HORIZONTAL, spacing=6
+            orientation=Gtk.Orientation.HORIZONTAL,
+            spacing=6,
+            halign=Gtk.Align.END,
+            hexpand=True,
         )
-        self.pack_end(self.box_box, False, True, 0)
-        self.box_box.pack_end(
-            self.construct_line_display(), False, True, 0)
-        self.box_box.pack_end(
-            self.construct_highlighting_selector(), False, True, 0)
-        self.box_box.pack_end(
-            self.construct_encoding_selector(), False, True, 0)
-        self.box_box.pack_end(
-            self.construct_display_popover(), False, True, 0)
-        self.box_box.show_all()
+        self.box_box.append(self.construct_display_popover())
+        self.box_box.append(self.construct_encoding_selector())
+        self.box_box.append(self.construct_highlighting_selector())
+        self.box_box.append(self.construct_line_display())
+        self.append(self.box_box)
 
     def construct_line_display(self):
 
@@ -194,13 +165,15 @@ class MeldStatusBar(Gtk.Statusbar):
         entry.connect('activate', line_entry_activated)
 
         selector = Gtk.Grid()
-        selector.set_border_width(6)
-        selector.add(entry)
-        selector.show_all()
+        selector.set_margin_start(6)
+        selector.set_margin_top(6)
+        selector.set_margin_end(6)
+        selector.set_margin_bottom(6)
+        selector.attach(entry, 0, 0, 1, 1)
 
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
-        pop.add(selector)
+        pop.set_child(selector)
 
         def format_cursor_position(binding, cursor):
             line, offset = cursor
@@ -216,7 +189,6 @@ class MeldStatusBar(Gtk.Statusbar):
         # Set a label width to avoid other widgets moving on cursor change
         reasonable_width = len(format_cursor_position(None, (1000, 100))) - 2
         button.set_label_width(reasonable_width)
-        button.show()
 
         return button
 
@@ -234,7 +206,7 @@ class MeldStatusBar(Gtk.Statusbar):
 
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
-        pop.add(selector)
+        pop.set_child(selector)
 
         button = MeldStatusMenuButton()
         self.bind_property(
@@ -242,7 +214,6 @@ class MeldStatusBar(Gtk.Statusbar):
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             lambda binding, enc: selector.get_value_label(enc))
         button.set_popover(pop)
-        button.show()
 
         return button
 
@@ -265,7 +236,7 @@ class MeldStatusBar(Gtk.Statusbar):
 
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
-        pop.add(selector)
+        pop.set_child(selector)
 
         button = MeldStatusMenuButton()
         self.bind_property(
@@ -273,7 +244,6 @@ class MeldStatusBar(Gtk.Statusbar):
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             lambda binding, enc: selector.get_value_label(enc))
         button.set_popover(pop)
-        button.show()
 
         return button
 
@@ -291,6 +261,5 @@ class MeldStatusBar(Gtk.Statusbar):
         # such as text wrapping, show line numbers, whitespace, etc.
         button.set_label(_('Display'))
         button.set_popover(pop)
-        button.show()
 
         return button
