@@ -620,11 +620,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         gesture.connect("pressed", self.on_textview_button_press_event)
         widget.add_controller(gesture)
 
-        focuscontroller = Gtk.EventControllerFocus()
-        focuscontroller.connect("enter", self.on_textview_focus_in_event)
-        focuscontroller.connect("leave", self.on_textview_focus_out_event)
-        widget.add_controller(focuscontroller)
-
     def create_gutter_event_controllers(self, gutter):
         controller = Gtk.EventControllerScroll()
         controller.connect("scroll", self.on_linkmap_scroll_event)
@@ -1180,19 +1175,25 @@ class FileDiff(Gtk.Box, MeldDoc):
                     self.set_file(pane, gfiles[0])
             return True
 
-    def on_textview_focus_in_event(self, controller):
-        self.focus_pane = controller.get_widget()
-        self.findbar.set_text_view(self.focus_pane)
-        self.on_cursor_position_changed(self.focus_pane.get_buffer(), None, True)
+    def _set_focused_textview(self, widget):
+        if widget:
+            self.focus_pane = widget
+            self.findbar.set_text_view(widget)
+            self.on_cursor_position_changed(widget.get_buffer(), None, True)
+        else:
+            self.keymask = 0
+
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
 
     @Gtk.Template.Callback()
-    def on_textview_focus_out_event(self, view, event):
-        self.keymask = 0
-        self._set_merge_action_sensitivity()
-        self._set_external_action_sensitivity()
+    def on_textview_focus_in_event(self, controller, *user_data):
+        self._set_focused_textview(controller.get_widget())
+
+    @Gtk.Template.Callback()
+    def on_textview_focus_out_event(self, controller, *user_data):
+        self._set_focused_textview(None)
 
     def _after_text_modified(self, buf, startline, sizechange):
         if self.num_panes > 1:
@@ -1877,9 +1878,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         # our focus-out sensitivity handling. We manually trigger the
         # focus-in here to restablish the previous state.
         if self.cursor.pane is not None:
-            self.on_textview_focus_in_event(
-                self.textview[self.cursor.pane]
-            )
+            self._set_focused_textview(self.textview[self.cursor.pane])
 
         langs = [LanguageManager.get_language_from_file(buf.data.gfile)
                  for buf in self.textbuffer[:self.num_panes]]

@@ -198,9 +198,13 @@
                 <child>
                   <object class="MeldSourceView" id="textview0">
                     <property name="focusable">True</property>
+                    <child>
+                      <object class="GtkEventControllerFocus">
+                        <signal name="enter" handler="on_textview_focus_in_event" />
+                        <signal name="leave" handler="on_textview_focus_out_event" />
+                      </object>
+                    </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
@@ -229,9 +233,13 @@
                 <child>
                   <object class="MeldSourceView" id="textview2">
                     <property name="focusable">True</property>
+                    <child>
+                      <object class="GtkEventControllerFocus">
+                        <signal name="enter" handler="on_textview_focus_in_event" />
+                        <signal name="leave" handler="on_textview_focus_out_event" />
+                      </object>
+                    </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
@@ -260,9 +268,13 @@
                 <child>
                   <object class="MeldSourceView" id="textview1">
                     <property name="focusable">True</property>
+                    <child>
+                      <object class="GtkEventControllerFocus">
+                        <signal name="enter" handler="on_textview_focus_in_event" />
+                        <signal name="leave" handler="on_textview_focus_out_event" />
+                      </object>
+                    </child>
                     <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
-                    <signal name="focus-in-event" handler="on_textview_focus_in_event" swapped="no"/>
-                    <signal name="focus-out-event" handler="on_textview_focus_out_event" swapped="no"/>
                     <signal name="key-press-event" handler="on_key_event" swapped="no"/>
                     <signal name="key-release-event" handler="on_key_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
