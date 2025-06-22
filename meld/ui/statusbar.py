@@ -252,8 +252,8 @@ class MeldStatusBar(Gtk.Box):
             '/org/gnome/meld/ui/statusbar-menu.ui')
         menu = builder.get_object('statusbar-menu')
 
-        pop = Gtk.Popover()
-        pop.bind_model(menu, 'view-local')
+        pop = Gtk.PopoverMenu()
+        pop.set_menu_model(menu)
         pop.set_position(Gtk.PositionType.TOP)
 
         button = MeldStatusMenuButton()
