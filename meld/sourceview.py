@@ -191,8 +191,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.drag_dest_add_uri_targets()
-
         # Most bindings are on SourceView, except the Page Up/Down ones
         # which are on TextView.
         binding_set_names = ('GtkSourceView', 'GtkTextView')

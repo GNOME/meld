@@ -429,14 +429,18 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
-        for t in self.textview:
-            # t.connect( TODO
-            #     "drag_data_received", self.on_textview_drag_data_received)
 
-        for label in self.filelabel:
-            label.connect(
-                "drag_data_received", self.on_textview_drag_data_received
-            )
+        for pane, textview in enumerate(self.textview):
+            drop_target = Gtk.DropTarget.new(GObject.TYPE_NONE, Gdk.DragAction.COPY)
+            drop_target.set_gtypes([Gdk.FileList])
+            drop_target.connect("drop", self.on_textview_drag_data_received, pane)
+            textview.add_controller(drop_target)
+
+        for pane, label in enumerate(self.filelabel):
+            drop_target = Gtk.DropTarget.new(GObject.TYPE_NONE, Gdk.DragAction.COPY)
+            drop_target.set_gtypes([Gdk.FileList, str])
+            drop_target.connect("drop", self.on_textview_drag_data_received, pane)
+            label.add_controller(drop_target)
 
         # Bind all overwrite properties together, so that toggling
         # overwrite mode is per-FileDiff.
@@ -1130,9 +1134,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         have_file = self.focus_pane is not None
         self.set_action_enabled("open-external", have_file)
 
-    def on_textview_drag_data_received(
-            self, widget, context, x, y, selection_data, info, time):
-        uris = selection_data.get_uris()
+    def on_textview_drag_data_received(self, widget, filelist, x, y, pane):
+        uris = [f.get_uri() for f in filelist.get_files()]
         if uris:
             gfiles = [Gio.File.new_for_uri(uri) for uri in uris]
 
@@ -1140,13 +1143,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                 if self.check_unsaved_changes():
                     self.set_files(gfiles)
             elif len(gfiles) == 1:
-                if widget in self.textview:
-                    pane = self.textview.index(widget)
-                elif widget in self.filelabel:
-                    pane = self.filelabel.index(widget)
-                else:
-                    log.error("Unrecognised drag destination")
-                    return True
                 buffer = self.textbuffer[pane]
                 if self.check_unsaved_changes([buffer]):
                     self.set_file(pane, gfiles[0])
