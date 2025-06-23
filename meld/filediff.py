@@ -393,11 +393,6 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.create_text_filters()
 
-        self.create_gutter_event_controllers(self.actiongutter0)
-        self.create_gutter_event_controllers(self.actiongutter1)
-        self.create_gutter_event_controllers(self.actiongutter2)
-        self.create_gutter_event_controllers(self.actiongutter3)
-
         # Handle overview map visibility binding. Because of how we use
         # grid packing, we need three revealers here instead of the
         # more obvious one.
@@ -606,11 +601,6 @@ class FileDiff(Gtk.Box, MeldDoc):
             self._action_text_filter_map[action] = filt
 
         return active_filters_changed
-
-    def create_gutter_event_controllers(self, gutter):
-        controller = Gtk.EventControllerScroll()
-        controller.connect("scroll", self.on_linkmap_scroll_event)
-        gutter.add_controller(controller)
 
     def _disconnect_buffer_handlers(self):
         for textview in self.textview:
@@ -831,8 +821,12 @@ class FileDiff(Gtk.Box, MeldDoc):
             mark0, mark1, 'focus-highlight', 400000, starting_alpha=0.3,
             anim_type=TextviewLineAnimationType.stroke)
 
-    def on_linkmap_scroll_event(self, dx, dy): # TODO controller
-        self.next_diff(event.direction, use_viewport=True)
+    @Gtk.Template.Callback()
+    def on_linkmap_scroll_event(
+        self, controller: Gtk.EventControllerScroll, dx: float, dy: float
+    ):
+        direction = Gdk.ScrollDirection.DOWN if dy > 0 else Gdk.ScrollDirection.UP
+        self.next_diff(direction, use_viewport=True)
 
     def _is_chunk_in_area(
             self, chunk_id: Optional[int], pane: int, area: Gdk.Rectangle):
