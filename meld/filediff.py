@@ -1451,21 +1451,16 @@ class FileDiff(Gtk.Box, MeldDoc):
         buffer = textview.get_buffer()
         cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
         location = textview.get_iter_location(cursor_it)
-
-        rect = Gdk.Rectangle()
-        rect.x, rect.y = textview.buffer_to_window_coords(
-            Gtk.TextWindowType.WIDGET, location.x, location.y)
-
         pane = self.textview.index(textview)
         self.set_syncpoint_menuitem(pane)
 
-        self.popup_menu.popup_at_rect(
-            Gtk.Widget.get_window(textview),
-            rect,
-            Gdk.Gravity.SOUTH_EAST,
-            Gdk.Gravity.NORTH_WEST,
-            None,
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = textview.buffer_to_window_coords(
+            Gtk.TextWindowType.WIDGET, location.x, location.y
         )
+        textview.context_menu.set_pointing_to(rect)
+        textview.context_menu.popup()
+
         return True
 
     @Gtk.Template.Callback()

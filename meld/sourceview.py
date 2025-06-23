@@ -162,6 +162,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         ),
     )
 
+    @GObject.Signal(name="popup-menu")
+    def popup_menu(self) -> None: ...
+
     replaced_entries = (
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, CONTROL_MASK),
@@ -284,6 +287,13 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             tag = buf.get_tag_table().lookup("dimmed")
             tag.props.foreground_rgba = colour_lookup_with_fallback(
                 "meld:dimmed", "foreground")
+
+    def on_popup_menu(self, *args):
+        # TODO4: This layer of indirection is only needed because of syncpoint
+        # menu logic in FileDiff. If we manage to move that around, we could
+        # move the FileDiff popup handling in on_textview_popup_menu and
+        # on_textview_button_press_event to MeldSourceView.
+        self.popup_menu.emit()
 
     def do_realize(self):
         bind_settings(self)
@@ -450,6 +460,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         context.restore()
 
         return GtkSource.View.do_draw_layer(self, layer, context)
+
+
+Gtk.WidgetClass.install_action(
+    MeldSourceView,
+    "menu.popup",
+    None,
+    MeldSourceView.on_popup_menu,
+)
 
 
 class CommitMessageSourceView(GtkSource.View):
