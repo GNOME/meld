@@ -521,8 +521,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             '/org/gnome/meld/ui/filediff-menus.ui')
         filter_menu = builder.get_object('file-copy-actions-menu')
 
-        self.copy_action_button.set_popover(
-            Gtk.Popover.new_from_model(self.copy_action_button, filter_menu))
+        self.copy_action_button.set_popover(Gtk.PopoverMenu.new_from_model(filter_menu))
 
     def get_keymask(self):
         return self._keymask
