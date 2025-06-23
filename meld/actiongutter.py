@@ -16,7 +16,7 @@
 import bisect
 from typing import Dict, Optional
 
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+from gi.repository import GObject, Gtk
 
 from meld.conf import _
 from meld.const import ActionMode, ChunkAction
@@ -32,17 +32,23 @@ class ActionIcons:
     #: would adjust to other textview attributes, but that's both quite
     #: difficult and not necessarily desirable.
     pixbuf_height = 16
-    icon_cache: Dict[str, GdkPixbuf.Pixbuf] = {}
-    icon_name_prefix = 'meld-change'
+    icon_cache: Dict[str, Gtk.IconPaintable] = {}
+    icon_name_prefix = "meld-change"
 
     @classmethod
-    def load(cls, icon_name: str):
+    def load(cls, widget: Gtk.Widget, icon_name: str) -> Gtk.IconPaintable:
         icon = cls.icon_cache.get(icon_name)
 
         if not icon:
-            icon_theme = Gtk.IconTheme.get_default()
-            icon = icon_theme.load_icon(
-                f'{cls.icon_name_prefix}-{icon_name}', cls.pixbuf_height, 0)
+            icon_theme = Gtk.IconTheme.get_for_display(widget.get_display())
+            icon = icon_theme.lookup_icon(
+                f"{cls.icon_name_prefix}-{icon_name}",
+                None,
+                cls.pixbuf_height,
+                1,
+                0,
+                Gtk.TextDirection.NONE,
+            )
             cls.icon_cache[icon_name] = icon
 
         return icon
@@ -93,9 +99,9 @@ class ActionGutter(Gtk.DrawingArea):
             Gtk.TextDirection.RTL: 'apply-left',
         }
         self.action_map = {
-            ActionMode.Replace: ActionIcons.load(replace_icons[direction]),
-            ActionMode.Delete: ActionIcons.load('delete'),
-            ActionMode.Insert: ActionIcons.load('copy'),
+            ActionMode.Replace: ActionIcons.load(self, replace_icons[direction]),
+            ActionMode.Delete: ActionIcons.load(self, "delete"),
+            ActionMode.Insert: ActionIcons.load(self, "copy"),
         }
         self._icon_direction = direction
 
@@ -163,11 +169,12 @@ class ActionGutter(Gtk.DrawingArea):
         self.pointer_chunk = None
         self.pressed_chunk = None
 
-        self.motion_controller = Gtk.EventControllerMotion(widget=self)
-        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
-        self.motion_controller.connect("enter", self.motion_event)
-        self.motion_controller.connect("leave", self.motion_event)
-        self.motion_controller.connect("motion", self.motion_event)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        motion_controller.connect("enter", self.motion_event)
+        motion_controller.connect("leave", self.motion_event)
+        motion_controller.connect("motion", self.motion_event)
+        self.add_controller(motion_controller)
 
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
@@ -179,14 +186,6 @@ class ActionGutter(Gtk.DrawingArea):
             }
 
     def do_realize(self):
-        self.set_events(
-            Gdk.EventMask.ENTER_NOTIFY_MASK |
-            Gdk.EventMask.LEAVE_NOTIFY_MASK |
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK |
-            Gdk.EventMask.SCROLL_MASK
-        )
         self.connect('notify::action-mode', lambda *args: self.queue_draw())
 
         meld_settings = get_meld_settings()
