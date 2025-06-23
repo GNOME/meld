@@ -372,6 +372,8 @@ def setup_glib_logging():
             return True
         if "resource overlay" in message:
             return True
+        if "Vulkan: Loader Message:" in message:
+            return True
         return False
 
     # This logging handler is for "old" glib logging using a simple
