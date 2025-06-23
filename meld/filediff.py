@@ -430,10 +430,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.set_num_panes(num_panes)
         self.cursor = CursorDetails()
         for t in self.textview:
-            controller = Gtk.EventControllerFocus()
-            controller.connect("enter", self.on_current_diff_changed)
-            controller.connect("leave", self.on_current_diff_changed)
-            t.add_controller(controller)
             # t.connect( TODO
             #     "drag_data_received", self.on_textview_drag_data_received)
 
@@ -1164,6 +1160,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         else:
             self.keymask = 0
 
+        self.on_current_diff_changed()
         self._set_save_action_sensitivity()
         self._set_merge_action_sensitivity()
         self._set_external_action_sensitivity()
