@@ -381,11 +381,10 @@ class FileDiff(Gtk.Box, MeldDoc):
                 action.connect("change-state", callback)
             self.view_action_group.add_action(action)
 
+        # TODO4: Remove if we change syncpoint construction
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-menus.ui')
         self.popup_menu_model = builder.get_object('filediff-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
-        self.popup_menu.attach_to_widget(self)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-actions.ui')
@@ -393,10 +392,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.copy_action_button = builder.get_object('copy_action_button')
 
         self.create_text_filters()
-
-        self.create_event_controllers(self.textview0)
-        self.create_event_controllers(self.textview1)
-        self.create_event_controllers(self.textview2)
 
         self.create_gutter_event_controllers(self.actiongutter0)
         self.create_gutter_event_controllers(self.actiongutter1)
@@ -611,12 +606,6 @@ class FileDiff(Gtk.Box, MeldDoc):
             self._action_text_filter_map[action] = filt
 
         return active_filters_changed
-
-    def create_event_controllers(self, widget):
-        gesture = Gtk.GestureClick()
-        gesture.set_button(3)
-        gesture.connect("pressed", self.on_textview_button_press_event)
-        widget.add_controller(gesture)
 
     def create_gutter_event_controllers(self, gutter):
         controller = Gtk.EventControllerScroll()
@@ -1487,11 +1476,19 @@ class FileDiff(Gtk.Box, MeldDoc):
         )
         return True
 
+    @Gtk.Template.Callback()
     def on_textview_button_press_event(self, gesture, n_press, x, y):
         textview = gesture.get_widget()
         textview.grab_focus()
         pane = self.textview.index(textview)
         self.set_syncpoint_menuitem(pane)
+
+        rect = Gdk.Rectangle()
+        rect.x, rect.y, rect.width, rect.height = x, y, 1, 1
+        textview.context_menu.set_pointing_to(rect)
+        textview.context_menu.popup()
+
+        gesture.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def set_syncpoint_menuitem(self, pane):
         # TODO4: This either needs to be change to alter the correct popover

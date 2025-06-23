@@ -202,8 +202,15 @@
                         <signal name="leave" handler="on_textview_focus_out_event" />
                       </object>
                     </child>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkGestureClick">
+                        <property name="button">3</property>
+                        <property name="exclusive">True</property>
+                        <property name="propagation-phase">GTK_PHASE_CAPTURE</property>
+                        <signal name="pressed" handler="on_textview_button_press_event" />
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkEventControllerKey">
                         <signal name="key-pressed" handler="on_key_pressed" />
@@ -241,8 +248,15 @@
                         <signal name="leave" handler="on_textview_focus_out_event" />
                       </object>
                     </child>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkGestureClick">
+                        <property name="button">3</property>
+                        <property name="exclusive">True</property>
+                        <property name="propagation-phase">GTK_PHASE_CAPTURE</property>
+                        <signal name="pressed" handler="on_textview_button_press_event" />
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkEventControllerKey">
                         <signal name="key-pressed" handler="on_key_pressed" />
@@ -280,8 +294,15 @@
                         <signal name="leave" handler="on_textview_focus_out_event" />
                       </object>
                     </child>
-                    <signal name="button-press-event" handler="on_textview_button_press_event" swapped="no"/>
                     <signal name="popup-menu" handler="on_textview_popup_menu" swapped="no"/>
+                    <child>
+                      <object class="GtkGestureClick">
+                        <property name="button">3</property>
+                        <property name="exclusive">True</property>
+                        <property name="propagation-phase">GTK_PHASE_CAPTURE</property>
+                        <signal name="pressed" handler="on_textview_button_press_event" />
+                      </object>
+                    </child>
                     <child>
                       <object class="GtkEventControllerKey">
                         <signal name="key-pressed" handler="on_key_pressed" />

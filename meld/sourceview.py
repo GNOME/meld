@@ -203,6 +203,8 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.syncpoints = []
         self._show_line_numbers = None
 
+        self.context_menu = None
+
         self.css_provider = Gtk.CssProvider()
         style_context = self.get_style_context()
         style_context.add_provider(self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
@@ -320,6 +322,16 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.get_buffer().set_style_scheme(meld_settings.style_scheme)
 
         meld_settings.connect('changed', self.on_setting_changed)
+
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/filediff-menus.ui")
+        popup_menu_model = builder.get_object("filediff-context-menu")
+        popup_menu = Gtk.PopoverMenu.new_from_model(popup_menu_model)
+        popup_menu.set_parent(self)
+        # Mimic the appearance of the standard GtkTextView context menu
+        popup_menu.set_position(Gtk.PositionType.BOTTOM)
+        popup_menu.set_has_arrow(False)
+        popup_menu.set_halign(Gtk.Align.START)
+        self.context_menu = popup_menu
 
         return GtkSource.View.do_realize(self)
 
