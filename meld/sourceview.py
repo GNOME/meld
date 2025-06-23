@@ -169,18 +169,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # We replace the default GtkSourceView undo mechanism
         (Gdk.KEY_z, CONTROL_MASK),
         (Gdk.KEY_z, CONTROL_MASK | SHIFT_MASK),
-        # We replace the default line movement behaviour of Alt+Up/Down
-        (Gdk.KEY_Up, ALT_MASK),
-        (Gdk.KEY_KP_Up, ALT_MASK),
-        (Gdk.KEY_KP_Up, ALT_MASK | SHIFT_MASK),
-        (Gdk.KEY_Down, ALT_MASK),
-        (Gdk.KEY_KP_Down, ALT_MASK),
-        (Gdk.KEY_KP_Down, ALT_MASK | SHIFT_MASK),
-        # ...and Alt+Left/Right
-        (Gdk.KEY_Left, ALT_MASK),
-        (Gdk.KEY_KP_Left, ALT_MASK),
-        (Gdk.KEY_Right, ALT_MASK),
-        (Gdk.KEY_KP_Right, ALT_MASK),
     )
 
     def __init__(self, *args, **kwargs):
