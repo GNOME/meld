@@ -1494,6 +1494,12 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.set_syncpoint_menuitem(pane)
 
     def set_syncpoint_menuitem(self, pane):
+        # TODO4: This either needs to be change to alter the correct popover
+        # menu, or possibly it would be cleaner to always add the necessary
+        # syncpoint actions to filediff-menus.ui, use the hidden-when
+        # attribute, and change this function to correctly set the
+        # sensitivity (and call it from a different place).
+
         menu_actions = {
             SyncpointAction.ADD: [
                 _("Add Synchronization Point"),
