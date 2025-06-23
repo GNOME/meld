@@ -1447,14 +1447,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.statusbar[pane].emit('start-go-to-line')
 
     @Gtk.Template.Callback()
-    def on_scrolledwindow_size_allocate(self, scrolledwindow, allocation):
-        index = self.scrolledwindow.index(scrolledwindow)
-        if index == 0 or index == 1:
-            self.linkmap[0].queue_draw()
-        if index == 1 or index == 2:
-            self.linkmap[1].queue_draw()
-
-    @Gtk.Template.Callback()
     def on_textview_popup_menu(self, textview):
         buffer = textview.get_buffer()
         cursor_it = buffer.get_iter_at_mark(buffer.get_insert())
