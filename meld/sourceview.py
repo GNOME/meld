@@ -181,15 +181,16 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         (Gdk.KEY_KP_Left, ALT_MASK),
         (Gdk.KEY_Right, ALT_MASK),
         (Gdk.KEY_KP_Right, ALT_MASK),
-        # ...and Ctrl+Page Up/Down
-        (Gdk.KEY_Page_Up, CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Up, CONTROL_MASK),
-        (Gdk.KEY_Page_Down, CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Down, CONTROL_MASK),
     )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        # TODO4: We can't remove the Ctrl+PageUp/PageDown bindings on
+        # GtkTextView, and can't override them here because we need them to be
+        # handled by our notebook widget. It appears that this works in Builder
+        # because AdwTabView captures these shortcuts in the propagation phase;
+        # see meld.ui.notebook for why we want to switch to AdwTabView anyway.
 
         # Most bindings are on SourceView, except the Page Up/Down ones
         # which are on TextView.
