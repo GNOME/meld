@@ -165,12 +165,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     @GObject.Signal(name="popup-menu")
     def popup_menu(self) -> None: ...
 
-    replaced_entries = (
-        # We replace the default GtkSourceView undo mechanism
-        (Gdk.KEY_z, CONTROL_MASK),
-        (Gdk.KEY_z, CONTROL_MASK | SHIFT_MASK),
-    )
-
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
@@ -179,14 +173,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # handled by our notebook widget. It appears that this works in Builder
         # because AdwTabView captures these shortcuts in the propagation phase;
         # see meld.ui.notebook for why we want to switch to AdwTabView anyway.
-
-        # Most bindings are on SourceView, except the Page Up/Down ones
-        # which are on TextView.
-        binding_set_names = ('GtkSourceView', 'GtkTextView')
-        for set_name in binding_set_names:
-            binding_set = Gtk.binding_set_find(set_name)
-            for key, modifiers in self.replaced_entries:
-                Gtk.binding_entry_remove(binding_set, key, modifiers)
 
         self.anim_source_id = None
         self.animating_chunks = []

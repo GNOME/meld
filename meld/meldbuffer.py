@@ -40,6 +40,10 @@ class MeldBuffer(GtkSource.Buffer):
         self.data = MeldBufferData()
         self.undo_sequence = None
 
+        # Disable built-in GtkTextBuffer undo, since we replace it. If we don't
+        # disable it fully, the installed shortcuts conflict.
+        self.props.enable_undo = False
+
     def do_begin_user_action(self, *args):
         if self.undo_sequence:
             self.undo_sequence.begin_group()
