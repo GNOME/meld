@@ -35,7 +35,11 @@ def layout_text_and_icon(
 
     if icon_name:
         image = Gtk.Image.new_from_icon_name(icon_name)
-        image.set_icon_size(Gtk.IconSize.LARGE)
+        image.props.halign = Gtk.Align.CENTER
+        image.props.valign = Gtk.Align.CENTER
+        image.props.hexpand = False
+        image.props.vexpand = False
+        image.props.icon_size = Gtk.IconSize.LARGE
         hbox_content.append(image)
 
     vbox = Gtk.Box(
@@ -54,6 +58,9 @@ def layout_text_and_icon(
         selectable=True,
         hexpand=True,
     )
+    if not secondary_text:
+        primary_label.props.vexpand = True
+        primary_label.props.valign = Gtk.Align.CENTER
     vbox.append(primary_label)
 
     if secondary_text:
@@ -105,12 +112,14 @@ class MsgAreaController(Gtk.Box):
         icon_name: Optional[str] = None,
     ):
         self.clear()
-        msgarea = self.__msgarea = Gtk.InfoBar()
-        msgarea.set_hexpand(True)
+        msgarea = self.__msgarea = Gtk.InfoBar(hexpand=True)
 
         content = layout_text_and_icon(primary, secondary, icon_name)
         msgarea.add_child(content)
 
+        # Hack to flip the direction of the action button box. We use this
+        # because we have some long button names that cause unpleasant display
+        # issues when the action buttons are next to each other.
         dummy_button = msgarea.add_button("asd", Gtk.ResponseType.ACCEPT)
         parent_box = dummy_button.get_parent()
         parent_box.set_orientation(Gtk.Orientation.VERTICAL)
