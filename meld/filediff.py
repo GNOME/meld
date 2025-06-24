@@ -1377,19 +1377,22 @@ class FileDiff(Gtk.Box, MeldDoc):
         if not gfile:
             return
 
-        parent = gfile.get_parent()
-        if parent:
-            open_files_external(gfiles=[parent])
+        open_files_external(gfiles=[gfile], toplevel=self.get_root(), open_parent=True)
 
-    @with_focused_pane
-    def action_open_external(self, pane, *args):
-        if not self.textbuffer[pane].data.gfile:
+    def action_open_external(self, *args):
+        textview = self.focus_pane
+        if not textview:
             return
-        pos = self.textbuffer[pane].props.cursor_position
-        cursor_it = self.textbuffer[pane].get_iter_at_offset(pos)
+
+        buffer = textview.get_buffer()
+        if not buffer.data.gfile:
+            return
+
+        pos = buffer.props.cursor_position
+        cursor_it = buffer.get_iter_at_offset(pos)
         line = cursor_it.get_line() + 1
-        gfiles = [self.textbuffer[pane].data.gfile]
-        open_files_external(gfiles=gfiles, line=line)
+        gfiles = [buffer.data.gfile]
+        open_files_external(gfiles=gfiles, toplevel=self.get_root(), line=line)
 
     def update_text_actions_sensitivity(self, *args):
         widget = self.focus_pane
