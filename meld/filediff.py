@@ -2129,7 +2129,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                                        Gtk.ResponseType.OK)
 
                 msgarea.connect("response", self.on_msgarea_identical_response)
-                msgarea.show_all()
         else:
             for m in self.msgarea_mgr:
                 if m.get_msg_id() == FileDiff.MSG_SAME:
@@ -2161,7 +2160,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                 button.props.label = _("_Keep highlighting")
             msgarea.connect("response",
                             on_msgarea_highlighting_response)
-            msgarea.show_all()
 
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
@@ -2211,7 +2209,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                     self.save_file(pane, saveas, force_overwrite=True)
 
             msgarea.connect("response", on_file_changed_response)
-            msgarea.show_all()
             return False
 
         saver = GtkSource.FileSaver.new_with_target(
