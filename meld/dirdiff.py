@@ -1472,13 +1472,13 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
     @Gtk.Template.Callback()
-    def on_treeview_key_press_event(self, view, event):
-        if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
+    def on_treeview_key_pressed(self, controller, keyval, keycode, state, *user_data):
+        if keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
 
         view = controller.get_widget()
         pane = self.treeview.index(view)
-        target_pane = pane + 1 if event.keyval == Gdk.KEY_Right else pane - 1
+        target_pane = pane + 1 if keyval == Gdk.KEY_Right else pane - 1
         if 0 <= target_pane < self.num_panes:
             self.change_focused_tree(view, self.treeview[target_pane])
 

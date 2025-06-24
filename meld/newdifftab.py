@@ -133,7 +133,7 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
             else:
                 default_path = Gio.File.new_for_path(GLib.get_home_dir())
             dialog.set_current_folder(default_path)
-            
+
             dialogs[button] = dialog
         else:
             dialog = dialogs[button]
