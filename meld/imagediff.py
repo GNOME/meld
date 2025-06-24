@@ -19,7 +19,7 @@ import logging
 from collections.abc import Sequence
 from typing import Optional
 
-from gi.repository import Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk, GtkSource
+from gi.repository import GdkPixbuf, Gio, GLib, GObject, Gtk, GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
@@ -299,9 +299,8 @@ class ImageDiff(Gtk.Box, MeldDoc):
             return
 
         path = gfile.get_path() or gfile.get_uri()
-        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-        clip.set_text(path, -1)
-        clip.store()
+        clipboard = self.get_clipboard()
+        clipboard.set(path)
 
     def _set_external_action_sensitivity(self):
         # FIXME: This sensitivity is very confused. Essentially, it's always

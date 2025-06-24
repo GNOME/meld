@@ -1368,9 +1368,8 @@ class FileDiff(Gtk.Box, MeldDoc):
             return
 
         path = gfile.get_path() or gfile.get_uri()
-        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-        clip.set_text(path, -1)
-        clip.store()
+        clipboard = self.get_clipboard()
+        clipboard.set(path)
 
     @with_focused_pane
     def action_open_folder(self, pane, *args):

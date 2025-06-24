@@ -17,7 +17,7 @@
 import difflib
 import os
 
-from gi.repository import Gdk, Gio, GLib, Gtk, GtkSource
+from gi.repository import Gio, GLib, Gtk, GtkSource
 
 from meld.conf import _
 from meld.iohelpers import prompt_save_filename
@@ -151,9 +151,8 @@ class PatchDialog(Gtk.Dialog):
         if result == 1:
             buf = self.textview.get_buffer()
             start, end = buf.get_bounds()
-            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-            clip.set_text(buf.get_text(start, end, False), -1)
-            clip.store()
+            clipboard = self.get_clipboard()
+            clipboard.set(buf.get_text(start, end, False))
         # Save patch as a file
         else:
             gfile = prompt_save_filename(_("Save Patch"))
