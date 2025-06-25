@@ -19,7 +19,7 @@ import functools
 import logging
 import math
 from enum import Enum
-from typing import Optional, Tuple, Type
+from typing import Callable, Optional, Tuple, Type
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -45,6 +45,7 @@ from meld.meldbuffer import (
     BufferDeletionAction,
     BufferInsertionAction,
     BufferLines,
+    MeldBuffer,
     MeldBufferState,
 )
 from meld.melddoc import ComparisonState, MeldDoc
@@ -482,9 +483,10 @@ class FileDiff(Gtk.Box, MeldDoc):
 
             def reload_with_encoding(widget, encoding, pane):
                 buffer = self.textbuffer[pane]
-                if not self.check_unsaved_changes([buffer]):
-                    return
-                self.set_file(pane, buffer.data.gfile, encoding)
+                self.confirm_unsaved_change_action(
+                    on_confirm=lambda: self.set_file(pane, buffer.data.gfile, encoding),
+                    buffers=[buffer],
+                )
 
             def go_to_line(widget, line, pane):
                 if self.cursor.pane == pane and self.cursor.line == line:
@@ -1139,12 +1141,13 @@ class FileDiff(Gtk.Box, MeldDoc):
             gfiles = [Gio.File.new_for_uri(uri) for uri in uris]
 
             if len(gfiles) == self.num_panes:
-                if self.check_unsaved_changes():
-                    self.set_files(gfiles)
+                self.confirm_unsaved_change_action(lambda: self.set_files(gfiles))
             elif len(gfiles) == 1:
-                buffer = self.textbuffer[pane]
-                if self.check_unsaved_changes([buffer]):
-                    self.set_file(pane, gfiles[0])
+                self.confirm_unsaved_change_action(
+                    on_confirm=lambda: self.set_file(pane, gfiles[0]),
+                    buffers=[self.textbuffer[pane]],
+                )
+
             return True
 
     def _set_focused_textview(self, widget):
@@ -2307,13 +2310,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.save_file(idx)
 
     @Gtk.Template.Callback()
-    def on_file_selected(
-            self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
-
-        if not self.check_unsaved_changes():
-            return
-
-        self.set_file(pane, file)
+    def on_file_selected(self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
+        self.confirm_unsaved_change_action(on_confirm=lambda: self.set_file(pane, file))
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
@@ -2321,7 +2319,9 @@ class FileDiff(Gtk.Box, MeldDoc):
                 return i
         return -1
 
-    def check_unsaved_changes(self, buffers=None):
+    def confirm_unsaved_change_action(
+        self, on_confirm: Callable[[], None], buffers: list[MeldBuffer] | None = None
+    ) -> None:
         """Confirm discard of any unsaved changes
 
         Unlike `check_save_modified`, this does *not* prompt the user
@@ -2330,34 +2330,40 @@ class FileDiff(Gtk.Box, MeldDoc):
         then need to deal with the async state/callback issues
         associated with saving a file.
         """
-        buffers = buffers or self.textbuffer
+        buffers = self.textbuffer if buffers is None else buffers
         unsaved = [b.data.label for b in buffers if b.get_modified()]
         if not unsaved:
-            return True
+            on_confirm()
+            return
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/revert-dialog.ui')
         dialog = builder.get_object('revert_dialog')
-        dialog.set_transient_for(self.get_toplevel())
+        dialog.set_transient_for(self.get_root())
 
-        filelist = Gtk.Label("\n".join(["\t• " + f for f in unsaved]))
-        filelist.props.xalign = 0.0
-        filelist.show()
+        filelist = Gtk.Label(
+            label="\n".join(["\t• " + f for f in unsaved]),
+            xalign=0.0,
+        )
         message_area = dialog.get_message_area()
-        message_area.pack_start(filelist, expand=False, fill=True, padding=0)
+        message_area.append(filelist)
 
-        response = dialog.run()
-        dialog.destroy()
-        return response == Gtk.ResponseType.OK
+        def on_unsaved_changes_response(dialog, response):
+            if response == Gtk.ResponseType.OK:
+                on_confirm()
+            dialog.destroy()
+
+        dialog.connect("response", on_unsaved_changes_response)
+        dialog.show()
 
     def action_revert(self, *extra):
-        if not self.check_unsaved_changes():
-            return
+        def on_confirm():
+            buffers = self.textbuffer[:self.num_panes]
+            gfiles = [b.data.gfile for b in buffers]
+            encodings = [b.data.encoding for b in buffers]
+            self.set_files(gfiles, encodings=encodings)
 
-        buffers = self.textbuffer[:self.num_panes]
-        gfiles = [b.data.gfile for b in buffers]
-        encodings = [b.data.encoding for b in buffers]
-        self.set_files(gfiles, encodings=encodings)
+        self.confirm_unsaved_change_action(on_confirm=on_confirm)
 
     def action_refresh(self, *extra):
         self.refresh_comparison()
