@@ -71,10 +71,11 @@ class MeldFileButton(Gtk.Button):
 
     def on_dialog_response(self, dialog: Gtk.FileChooserNative, response: Gtk.ResponseType, *user_data):
         gfile = dialog.get_file()
+        del self.dialog
+        dialog.destroy()
 
         if response != Gtk.ResponseType.ACCEPT or not gfile:
             return
 
         self.file = gfile
         self.file_selected_signal.emit(self.pane, self.file)
-        del self.dialog
