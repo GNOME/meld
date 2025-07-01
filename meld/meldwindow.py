@@ -258,8 +258,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             page.on_delete_event()
 
     def action_fullscreen_change(self, action, state):
-        window_state = self.get_window().get_state()
-        is_full = window_state & Gdk.WindowState.FULLSCREEN
+        is_full = self.is_fullscreen()
         action.set_state(state)
         if state and not is_full:
             self.fullscreen()
