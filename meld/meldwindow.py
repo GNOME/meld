@@ -241,7 +241,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.view_toolbar.remove(child)
 
         if hasattr(newdoc, 'toolbar_actions'):
-            self.view_toolbar.add(newdoc.toolbar_actions)
+            self.view_toolbar.append(newdoc.toolbar_actions)
 
     @Gtk.Template.Callback()
     def after_switch_page(self, notebook, page, which):
