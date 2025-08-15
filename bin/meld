@@ -60,6 +60,8 @@ def disable_stdout_buffering():
 def get_meld_dir():
     global frozen
     if frozen:
+        if hasattr(sys, '_MEIPASS'):
+            return sys._MEIPASS
         return os.path.dirname(sys.executable)
 
     # Support running from an uninstalled version
