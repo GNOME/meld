@@ -11,10 +11,8 @@ APPLICATION_ID = 'org.gnome.Meld'
 SETTINGS_SCHEMA_ID = 'org.gnome.meld'
 RESOURCE_BASE = '/org/gnome/meld'
 
-# START; these paths are clobbered on install by meld.build_helpers
 DATADIR = Path(sys.prefix) / "share" / "meld"
 LOCALEDIR = Path(sys.prefix) / "share" / "locale"
-# END
 
 CONFIGURED = '@configured@'
 # Treat an unconfigured installation as development
@@ -43,11 +41,17 @@ ngettext = no_translation
 def frozen():
     global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
 
-    melddir = os.path.dirname(sys.executable)
+    # FIXME: This is duplicating logic in get_meld_dir in bin/meld
+    # Also, we probably don't actually need the non-_MEIPASS branch
+    if hasattr(sys, '_MEIPASS'):
+        melddir = sys._MEIPASS
+        DATADIR_IS_UNINSTALLED = False
+    else:
+        melddir = os.path.dirname(sys.executable)
+        DATADIR_IS_UNINSTALLED = True
 
     DATADIR = os.path.join(melddir, "share", "meld")
     LOCALEDIR = os.path.join(melddir, "share", "mo")
-    DATADIR_IS_UNINSTALLED = True
     PROFILE = ""
 
 
