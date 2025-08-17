@@ -65,7 +65,7 @@ mingw64-dist:
   artifacts:
     name: "${env:CI_JOB_STAGE}-${env:CI_COMMIT_REF_NAME}"
     paths:
-      - meson-build/pyinstaller-build/dist/meld-*.exe
+      - meld-*.exe
   before_script:
     - $env:Path = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;${env:PATH}"
     - >
@@ -105,6 +105,7 @@ mingw64-dist:
     - cp ../../windows/meld.nsis dist/
     - cd dist
     - makensis ./meld.nsis
+    - mv meld-*.exe ../../..
   # main purpose of this job is creating installers and not checking for breakage by changes in code
   # so allow failures since the status of the build may depend on updates of rolling-release msys2 packages
   allow_failure: true
