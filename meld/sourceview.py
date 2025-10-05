@@ -405,9 +405,19 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             current_time = GLib.get_monotonic_time()
             percent = min(
                 1.0, (current_time - c.start_time) / float(c.duration))
-            rgba_pairs = zip(c.start_rgba, c.end_rgba)
-            rgba = [s + (e - s) * percent for s, e in rgba_pairs]
-            rgba = Gdk.RGBA(*rgba)
+
+            def scale(start, end, percent):
+                return start + (end - start) * percent
+
+            # TODO4: Even though this runs fine, we don't get an actual
+            # animated chunk, possibly because overdraw works differently
+            # in GSK than in Cairo?
+            rgba = Gdk.RGBA(
+                scale(c.start_rgba.red, c.end_rgba.red, percent),
+                scale(c.start_rgba.green, c.end_rgba.green, percent),
+                scale(c.start_rgba.blue, c.end_rgba.blue, percent),
+                scale(c.start_rgba.alpha, c.end_rgba.alpha, percent),
+            )
 
             it = textbuffer.get_iter_at_mark(c.start_mark)
             ystart, _ = self.get_line_yrange(it)
