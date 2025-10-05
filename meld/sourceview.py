@@ -328,9 +328,10 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
 
         snapshot.save()
+        visible_rect = self.get_visible_rect()
         bounds = (
-            self.get_line_num_for_y(0),
-            self.get_line_num_for_y(self.get_height()),
+            self.get_line_num_for_y(visible_rect.y),
+            self.get_line_num_for_y(visible_rect.y + visible_rect.height),
         )
 
         x = 0
