@@ -344,9 +344,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         for change in self.chunk_iter(bounds):
             ypos0 = self.get_y_for_line_num(change[1])
             ypos1 = self.get_y_for_line_num(change[2])
-            height = max(1, ypos1 - ypos0 - 1)
+            height = max(1, ypos1 - ypos0) + 1
 
-            rect.init(x, ypos0 + 0.5, width, height)
+            rect.init(x, ypos0, width, height)
             if change[1] != change[2]:
                 color = self.fill_colors[change[0]]
                 snapshot.append_color(color, rect)
@@ -358,8 +358,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             rounded_rect.init_from_rect(rect, 0.0)
             snapshot.append_border(
                 rounded_rect,
-                [1.0, 1.0, 1.0, 1.0],
-                [color, color, color, color])
+                [1.0, 0.0, 1.0, 0.0],
+                [color, color, color, color],
+            )
 
         textbuffer = self.get_buffer()
 
@@ -426,7 +427,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             if ystart == yend:
                 ystart -= 1
 
-            rect.init(x, ystart, width, yend - ystart)
+            rect.init(x, ystart, width, (yend - ystart) + 1)
             if c.anim_type == TextviewLineAnimationType.stroke:
                 rounded_rect.init_from_rect(rect, 0.0)
                 snapshot.append_border(
