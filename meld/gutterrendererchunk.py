@@ -16,7 +16,7 @@
 import math
 from typing import Any
 
-from gi.repository import Gdk, GtkSource, Graphene, Pango
+from gi.repository import Graphene, Gsk, GtkSource, Pango
 
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
@@ -65,56 +65,51 @@ class MeldGutterRenderer:
             }
 
     def draw_chunks(self, snapshot, lines, line):
-
         chunk = self._chunk
+        x, width = 0, self.get_width()
+        y, height = lines.get_line_yrange(line, GtkSource.GutterRendererAlignmentMode.CELL)
+        # Adjustment because we want to stroke the bottom border. This needs
+        # to match do_snapshot_layer in meld.sourceview or things will not
+        # align correctly.
+        height += 1
+
+        if not chunk or chunk[1] == chunk[2]:
+            # For some reason, the background drawing doesn't work as we
+            # expect in the gutter context; this gives us our desired result
+            background_rgba = get_background_rgba(self)
+        elif self.props.view.current_chunk_check(chunk):
+            background_rgba = self.chunk_highlights[chunk[0]]
+        else:
+            background_rgba = self.fill_colors[chunk[0]]
+
+        rect = Graphene.Rect()
+        rect.init(x, y + 1, width, height)
+        snapshot.append_color(background_rgba, rect)
+
+        # If we don't have a chunk, we don't draw any borders
         if not chunk:
             return
 
+        path_builder = Gsk.PathBuilder()
         is_first_line = line == chunk[1]
         is_last_line = line == chunk[2] - 1
 
-        alignment = GtkSource.GutterRendererAlignmentMode.CELL
         if is_first_line:
-            alignment = GtkSource.GutterRendererAlignmentMode.FIRST
-            # context.move_to(x, y + 0.5) TODO4
-            # context.rel_line_to(width, 0)
+            path_builder.move_to(x, y + 0.5)
+            path_builder.rel_line_to(width, 0)
         if is_last_line:
-            alignment = GtkSource.GutterRendererAlignmentMode.LAST
-            # context.move_to(x, y - 0.5 + height) TODO4
-            # context.rel_line_to(width, 0)
+            path_builder.move_to(x, y - 0.5 + height)
+            path_builder.rel_line_to(width, 0)
 
-        y, height = lines.get_line_yrange(line, alignment)
-        x = 0
-        width = self.get_width()
-        height = 1 if chunk[1] == chunk[2] else height
+        path = path_builder.to_path()
+        snapshot.append_stroke(path, Gsk.Stroke(1.0), self.line_colors[chunk[0]])
 
-        rect = Graphene.Rect()
-        rect.init(x, y, width, height)
-        snapshot.append_color(self.line_colors[chunk[0]], rect)
-
-    def query_chunks(self, start, end, state):
-        line = start.get_line()
-        chunk_index = self.linediffer.locate_chunk(self.from_pane, line)[0]
-        in_chunk = chunk_index is not None
-
-        chunk = None
-        if in_chunk:
-            chunk = self.linediffer.get_chunk(
-                chunk_index, self.from_pane, self.to_pane)
-
-        if chunk is not None:
-            if chunk[1] == chunk[2]:
-                background_rgba = get_background_rgba(self)
-            elif self.props.view.current_chunk_check(chunk):
-                background_rgba = self.chunk_highlights[chunk[0]]
-            else:
-                background_rgba = self.fill_colors[chunk[0]]
+    def query_chunks(self, lines, line):
+        idx = self.linediffer.locate_chunk(self.from_pane, line)[0]
+        if idx is not None:
+            self._chunk = self.linediffer.get_chunk(idx, self.from_pane, self.to_pane)
         else:
-            # TODO: Remove when fixed in upstream GTK+
-            background_rgba = get_background_rgba(self)
-        self._chunk = chunk
-        self.set_background(background_rgba)
-        return in_chunk
+            self._chunk = None
 
 
 # GutterRendererChunkLines is an adaptation of GtkSourceGutterRendererLines
@@ -146,34 +141,22 @@ class GutterRendererChunkLines(
         self.connect("notify::view", self.on_view_changed)
 
     def on_view_changed(self, *args: Any) -> None:
-        if not self.get_view():
+        if not self.get_buffer():
             return
+        buf = self.get_buffer()
+        self.recalculate_size(buf, force=True)
 
-        self.get_view().connect("style-updated", self.on_view_style_updated)
-
-    def on_view_style_updated(self, view: GtkSource.View) -> None:
-        stylecontext = view.get_style_context()
-        # We should be using stylecontext.get_property, but it doesn't work
-        # for reasons that according to the GTK code are "Yuck".
-        font = stylecontext.get_font(stylecontext.get_state())
-        font_string = font.to_string()
-        need_recalculate = font_string != self.font_string
-
-        buf = self.get_view().get_buffer()
-        self.font_string = font_string
-        self.recalculate_size(buf, force=need_recalculate)
+    def do_css_changed(self, change):
+        self.on_view_changed()
+        GtkSource.GutterRendererText.do_css_changed(self, change)
 
     def do_change_buffer(self, old_buffer):
         if old_buffer:
             old_buffer.disconnect(self.changed_handler_id)
 
-        view = self.get_view()
-        if view:
-            buf = view.get_buffer()
-            if buf:
-                self.changed_handler_id = buf.connect(
-                    "changed", self.recalculate_size)
-                self.recalculate_size(buf)
+        if buf := self.get_buffer():
+            self.changed_handler_id = buf.connect("changed", self.recalculate_size)
+            self.recalculate_size(buf)
 
     def _measure_markup(self, markup):
         layout = self.get_view().create_pango_layout()
@@ -195,16 +178,15 @@ class GutterRendererChunkLines(
             return
 
         self.num_line_digits = num_digits
-        markup = "<b>%d</b>" % num_lines
-        width, height = self._measure_markup(markup)
-        self.set_size(width)
+        width, height = self._measure_markup(f"<b>{num_lines}</b>")
+        self.set_size_request(width, height)
 
     def do_snapshot_line(self, snapshot, lines, line):
         self.draw_chunks(snapshot, lines, line)
+        return GtkSource.GutterRendererText.do_snapshot_line(
+            self, snapshot, lines, line
+        )
 
-    def do_query_data(self, start, end, state):
-        self.query_chunks(start, end, state)
-        line = start.get_line() + 1
-        current_line = state & GtkSource.GutterRendererState.CURSOR
-        markup = "<b>%d</b>" % line if current_line else str(line)
-        self.set_markup(markup, -1)
+    def do_query_data(self, lines, line):
+        self.query_chunks(lines, line)
+        self.set_markup(f"<b>{line + 1}</b>", -1)
