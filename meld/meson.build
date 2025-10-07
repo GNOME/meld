@@ -10,7 +10,6 @@ folders = {
     'build_helpers.py',
     'chunkmap.py',
     'const.py',
-    'diffgrid.py',
     'dirdiff.py',
     'externalhelpers.py',
     'filediff.py',

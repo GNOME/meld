@@ -1,6 +1,5 @@
 import meld.actiongutter  # noqa: F401
 import meld.chunkmap  # noqa: F401
-import meld.diffgrid  # noqa: F401
 import meld.linkmap  # noqa: F401
 import meld.preferences  # noqa: F401
 import meld.sourceview  # noqa: F401
