@@ -895,7 +895,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         return chunk
 
     def get_action_panes(self, direction, reverse=False):
-        src = self._get_focused_pane()
+        src = self._get_focused_pane(use_last_focused_pane=True)
         dst = src + direction
         return (dst, src) if reverse else (src, dst)
 
@@ -2313,10 +2313,17 @@ class FileDiff(Gtk.Box, MeldDoc):
     def on_file_selected(self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
         self.confirm_unsaved_change_action(on_confirm=lambda: self.set_file(pane, file))
 
-    def _get_focused_pane(self):
+    def _get_focused_pane(self, use_last_focused_pane: bool = False) -> int:
         for i in range(self.num_panes):
             if self.textview[i].is_focus():
                 return i
+
+        if use_last_focused_pane:
+            try:
+                return self.textview.index(self.focus_pane)
+            except ValueError:
+                pass
+
         return -1
 
     def confirm_unsaved_change_action(
