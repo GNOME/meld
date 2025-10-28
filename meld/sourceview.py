@@ -404,6 +404,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # Overdraw all animated chunks, and update animation states
         new_anim_chunks = []
         for c in self.animating_chunks:
+            # TODO: Migrate to using the widget frame clock
             current_time = GLib.get_monotonic_time()
             percent = min(
                 1.0, (current_time - c.start_time) / float(c.duration))
@@ -444,14 +445,13 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.animating_chunks = new_anim_chunks
 
         if self.animating_chunks and self.anim_source_id is None:
-            def anim_cb():
+            def anim_cb(widget, frame_clock, *user_data):
                 self.queue_draw()
-                return True
-            # Using timeout_add interferes with recalculation of inline
-            # highlighting; this mechanism could be improved.
-            self.anim_source_id = GLib.idle_add(anim_cb)
+                return GLib.SOURCE_CONTINUE
+
+            self.anim_source_id = self.add_tick_callback(anim_cb)
         elif not self.animating_chunks and self.anim_source_id:
-            GLib.source_remove(self.anim_source_id)
+            self.remove_tick_callback(self.anim_source_id)
             self.anim_source_id = None
 
         snapshot.restore()
