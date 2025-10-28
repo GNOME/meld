@@ -22,6 +22,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Graphene, Gsk, Gtk, GtkSource
 from meld.meldbuffer import MeldBuffer
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.style import colour_lookup_with_fallback, get_common_theme
+from meld.ui.gtkutil import make_gdk_rgba
 
 log = logging.getLogger(__name__)
 
@@ -410,10 +411,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             def scale(start, end, percent):
                 return start + (end - start) * percent
 
-            # TODO4: Even though this runs fine, we don't get an actual
-            # animated chunk, possibly because overdraw works differently
-            # in GSK than in Cairo?
-            rgba = Gdk.RGBA(
+            rgba = make_gdk_rgba(
                 scale(c.start_rgba.red, c.end_rgba.red, percent),
                 scale(c.start_rgba.green, c.end_rgba.green, percent),
                 scale(c.start_rgba.blue, c.end_rgba.blue, percent),
