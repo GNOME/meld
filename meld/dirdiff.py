@@ -1955,8 +1955,11 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.force_cursor_recalculate = True
 
     @Gtk.Template.Callback()
-    def on_linkmap_scroll_event(self, linkmap, event):
-        self.next_diff(event.direction)
+    def on_linkmap_scroll_event(
+        self, controller: Gtk.EventControllerScroll, dx: float, dy: float
+    ):
+        direction = Gdk.ScrollDirection.DOWN if dy > 0 else Gdk.ScrollDirection.UP
+        self.next_diff(direction)
 
     def next_diff(self, direction):
         if self.focus_pane:

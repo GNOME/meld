@@ -127,10 +127,12 @@
         <child>
           <object class="ScrollLinkMap" id="linkmap1">
             <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="focusable">False</property>
-            <property name="vexpand">True</property>
-            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
+            <child>
+              <object class="GtkEventControllerScroll">
+                <property name="flags">GTK_EVENT_CONTROLLER_SCROLL_VERTICAL</property>
+                <signal name="scroll" handler="on_linkmap_scroll_event" />
+              </object>
+            </child>
             <layout>
               <property name="column">3</property>
               <property name="row">1</property>
@@ -151,10 +153,12 @@
         <child>
           <object class="ScrollLinkMap" id="linkmap0">
             <property name="width_request">50</property>
-            <property name="visible">True</property>
-            <property name="focusable">False</property>
-            <property name="vexpand">True</property>
-            <signal name="scroll-event" handler="on_linkmap_scroll_event" swapped="no"/>
+            <child>
+              <object class="GtkEventControllerScroll">
+                <property name="flags">GTK_EVENT_CONTROLLER_SCROLL_VERTICAL</property>
+                <signal name="scroll" handler="on_linkmap_scroll_event" />
+              </object>
+            </child>
             <layout>
               <property name="column">1</property>
               <property name="row">1</property>
