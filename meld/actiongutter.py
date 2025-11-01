@@ -299,11 +299,11 @@ class ActionGutter(Gtk.Widget):
             change_type, start_line, end_line, *_unused = chunk
 
             rect_y = view.get_y_for_line_num(start_line)
-            rect_height = max(0, view.get_y_for_line_num(end_line) - rect_y + 1)
+            rect_height = max(2, view.get_y_for_line_num(end_line) - rect_y + 1)
 
             # Fill first, then over-fill to highlight if in the focused chunk
-            rect.init(-0.5, rect_y, width + 1, rect_height)
             if start_line != end_line:
+                rect.init(-0.5, rect_y, width + 1, rect_height)
                 snapshot.append_color(self.fill_colors[change_type], rect)
                 if view.current_chunk_check(chunk):
                     snapshot.append_color(highlight, rect)

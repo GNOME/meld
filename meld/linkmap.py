@@ -98,27 +98,28 @@ class LinkMap(Gtk.DrawingArea):
             if (t0 < 0 and t1 < 0) or (t0 > height and t1 > height):
                 if f0 == f1:
                     continue
-                context.arc(
-                    x_steps[0], f0 - 0.5 + RADIUS, RADIUS, q_rad * 3, 0)
-                context.arc(x_steps[0], f1 - 0.5 - RADIUS, RADIUS, 0, q_rad)
+                context.arc(x_steps[0], f0 - 0.5 + RADIUS, RADIUS, q_rad * 3, 0)
+                context.arc(x_steps[0], f1 + 0.5 - RADIUS, RADIUS, 0, q_rad)
                 context.close_path()
             elif (f0 < 0 and f1 < 0) or (f0 > height and f1 > height):
                 if t0 == t1:
                     continue
-                context.arc_negative(x_steps[2], t0 - 0.5 + RADIUS, RADIUS,
-                                     q_rad * 3, q_rad * 2)
-                context.arc_negative(x_steps[2], t1 - 0.5 - RADIUS, RADIUS,
-                                     q_rad * 2, q_rad)
+                context.arc_negative(
+                    x_steps[2], t0 - 0.5 + RADIUS, RADIUS, q_rad * 3, q_rad * 2
+                )
+                context.arc_negative(
+                    x_steps[2], t1 + 0.5 - RADIUS, RADIUS, q_rad * 2, q_rad
+                )
                 context.close_path()
             else:
                 context.move_to(x_steps[0], f0 - 0.5)
-                context.curve_to(x_steps[1], f0 - 0.5,
-                                 x_steps[1], t0 - 0.5,
-                                 x_steps[2], t0 - 0.5)
-                context.line_to(x_steps[2], t1 - 0.5)
-                context.curve_to(x_steps[1], t1 - 0.5,
-                                 x_steps[1], f1 - 0.5,
-                                 x_steps[0], f1 - 0.5)
+                context.curve_to(
+                    x_steps[1], f0 - 0.5, x_steps[1], t0 - 0.5, x_steps[2], t0 - 0.5
+                )
+                context.line_to(x_steps[2], t1 + 0.5)
+                context.curve_to(
+                    x_steps[1], t1 + 0.5, x_steps[1], f1 + 0.5, x_steps[0], f1 + 0.5
+                )
                 context.close_path()
 
             Gdk.cairo_set_source_rgba(context, self.fill_colors[c[0]])
