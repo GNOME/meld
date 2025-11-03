@@ -258,6 +258,11 @@ class ActionGutter(Gtk.Widget):
         start_line = self.source_view.get_line_num_for_y(start_y)
         end_line = self.source_view.get_line_num_for_y(end_y)
 
+        _start_iter, end_iter = self.source_view.get_buffer().get_bounds()
+        bounds_y, bounds_height = self.source_view.get_line_yrange(end_iter)
+        if end_y > bounds_y + bounds_height:
+            end_line += 1
+
         start_idx = bisect.bisect(self.chunk_starts, start_line)
         end_idx = bisect.bisect(self.chunk_starts, end_line)
 

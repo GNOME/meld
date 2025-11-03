@@ -328,12 +328,19 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
             return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
 
+        textbuffer = self.get_buffer()
+
         snapshot.save()
         visible_rect = self.get_visible_rect()
-        bounds = (
-            self.get_line_num_for_y(visible_rect.y),
-            self.get_line_num_for_y(visible_rect.y + visible_rect.height),
-        )
+        start_line = self.get_line_num_for_y(visible_rect.y)
+        end_line = self.get_line_num_for_y(visible_rect.y + visible_rect.height)
+
+        _start_iter, end_iter = textbuffer.get_bounds()
+        end_y, end_height = self.get_line_yrange(end_iter)
+        if visible_rect.y + visible_rect.height > end_y + end_height:
+            end_line += 1
+
+        bounds = (start_line, end_line)
 
         x = 0
         width = self.get_width() + 1
@@ -363,12 +370,12 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 [color, color, color, color],
             )
 
-        textbuffer = self.get_buffer()
-
         # Check whether we're drawing past the last line in the buffer
         # (i.e., the overscroll) and draw a custom background if so.
         end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
-        end_y += end_height
+        # We're adding 2 here so that we don't overlap with the chunk line
+        # drawing if the last chunk is an insert.
+        end_y += end_height + 2
         visible_bottom_margin = visible_rect.y + visible_rect.height - end_y
         if visible_bottom_margin > 0:
             rect.init(x, end_y, width, visible_bottom_margin)
