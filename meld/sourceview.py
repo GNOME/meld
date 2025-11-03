@@ -369,9 +369,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # (i.e., the overscroll) and draw a custom background if so.
         end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
         end_y += end_height
-        visible_bottom_margin = self.get_width() - end_y
+        visible_bottom_margin = visible_rect.y + visible_rect.height - end_y
         if visible_bottom_margin > 0:
-            rect.init(x + 1, end_y, width - 1, visible_bottom_margin)
+            rect.init(x, end_y, width, visible_bottom_margin)
             color = self.fill_colors['overscroll']
             snapshot.append_color(color, rect)
 
