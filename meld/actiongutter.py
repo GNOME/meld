@@ -15,10 +15,10 @@
 
 import bisect
 
-from gi.repository import GObject, Graphene, Gsk, Gtk
+from gi.repository import Gdk, Gio, GObject, Graphene, Gsk, Gtk
 
-from meld.conf import _
 from meld.const import ActionMode, ChunkAction
+from meld.matchers.myers import DiffChunk
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.ui.gtkutil import alpha_tint
@@ -172,6 +172,36 @@ class ActionGutter(Gtk.Widget):
         button.set_parent(self)
         self.button = button
 
+        self.copy_up_action = Gio.SimpleAction.new("chunk-copy-up", None)
+        self.copy_down_action = Gio.SimpleAction.new("chunk-copy-down", None)
+        copy_action_group = Gio.SimpleActionGroup()
+        copy_action_group.add_action(self.copy_up_action)
+        copy_action_group.add_action(self.copy_down_action)
+        self.insert_action_group("gutter", copy_action_group)
+        self.copy_up_action.connect("activate", self.action_copy_up)
+        self.copy_down_action.connect("activate", self.action_copy_down)
+
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/filediff-menus.ui")
+        copy_action_model = builder.get_object("gutter-copy-action-menu")
+        popover = Gtk.PopoverMenu.new_from_model(copy_action_model)
+        popover.set_parent(self)
+        popup_position = (
+            Gtk.PositionType.RIGHT
+            if self.icon_direction == Gtk.TextDirection.LTR
+            else Gtk.PositionType.LEFT
+        )
+        popover.set_position(popup_position)
+        popover.set_has_arrow(True)
+        popover.set_halign(Gtk.Align.START)
+        self.popover_menu = popover
+
+    def get_coords_for_button(self, chunk):
+        for button in self.buttons:
+            x1, y1, x2, y2, button_chunk = button
+            if button_chunk == chunk:
+                return x1, y1, x2, y2
+        return None
+
     def update_pointer_chunk(self, x, y):
         # This is the simplest button/intersection implementation in
         # the world, but it basically works for our purposes.
@@ -215,7 +245,7 @@ class ActionGutter(Gtk.Widget):
         self, controller: Gtk.GestureClick, npress: int, x: float, y: float
     ) -> None:
         if self.pointer_chunk and self.pointer_chunk == self.pressed_chunk:
-            self.activate(self.pressed_chunk)
+            self.activate(self.pressed_chunk, x, y)
         self.pressed_chunk = None
         self.queue_draw()
 
@@ -223,8 +253,7 @@ class ActionGutter(Gtk.Widget):
         self.chunk_action_activated.emit(
             action.value, self.source_view, self.target_view, chunk)
 
-    def activate(self, chunk):
-
+    def activate(self, chunk: DiffChunk, x: float, y: float):
         action = self._classify_change_actions(chunk)
 
         # FIXME: When fully transitioned to GAction, we should see
@@ -236,23 +265,29 @@ class ActionGutter(Gtk.Widget):
         elif action == ActionMode.Delete:
             self._action_on_chunk(ChunkAction.delete, chunk)
         elif action == ActionMode.Insert:
-            copy_menu = self._make_copy_menu(chunk)
-            copy_menu.popup_at_pointer(None)
+            self.copy_up_action.disconnect_by_func(self.action_copy_up)
+            self.copy_down_action.disconnect_by_func(self.action_copy_down)
+            self.copy_up_action.connect("activate", self.action_copy_up, chunk)
+            self.copy_down_action.connect("activate", self.action_copy_down, chunk)
 
-    def _make_copy_menu(self, chunk):
-        copy_menu = Gtk.Menu()
-        copy_up = Gtk.MenuItem.new_with_mnemonic(_('Copy _up'))
-        copy_down = Gtk.MenuItem.new_with_mnemonic(_('Copy _down'))
-        copy_menu.append(copy_up)
-        copy_menu.append(copy_down)
-        copy_menu.show_all()
+            # Try and get the button coordinates and base the popover
+            # positioning on them
+            coords = self.get_coords_for_button(chunk)
+            if coords:
+                x1, y1, x2, y2 = coords
+                x = x2 if self.icon_direction == Gtk.TextDirection.LTR else x1
+                y = (y1 + y2) / 2
 
-        def copy_chunk(widget, action):
-            self._action_on_chunk(action, chunk)
+            rect = Gdk.Rectangle()
+            rect.x, rect.y, rect.width, rect.height = x, y, 1, 1
+            self.popover_menu.set_pointing_to(rect)
+            self.popover_menu.popup()
 
-        copy_up.connect('activate', copy_chunk, ChunkAction.copy_up)
-        copy_down.connect('activate', copy_chunk, ChunkAction.copy_down)
-        return copy_menu
+    def action_copy_up(self, action, param, chunk):
+        self._action_on_chunk(ChunkAction.copy_up, chunk)
+
+    def action_copy_down(self, action, param, chunk):
+        self._action_on_chunk(ChunkAction.copy_down, chunk)
 
     def get_chunk_range(self, start_y, end_y):
         start_line = self.source_view.get_line_num_for_y(start_y)
