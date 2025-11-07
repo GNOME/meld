@@ -738,7 +738,7 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         if any(os.path.isdir(p) for p in selected):
             # TODO: Improve and reuse this dialog for the non-VC delete action
             dialog = Gtk.MessageDialog(
-                parent=self.get_toplevel(),
+                parent=self.get_root(),
                 flags=(Gtk.DialogFlags.MODAL |
                        Gtk.DialogFlags.DESTROY_WITH_PARENT),
                 type=Gtk.MessageType.WARNING,

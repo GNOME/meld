@@ -38,7 +38,7 @@ class CommitDialog(Gtk.Dialog):
     def __init__(self, parent):
         super().__init__()
 
-        self.set_transient_for(parent.get_toplevel())
+        self.set_transient_for(parent.get_root())
         selected = parent._get_selected_files()
 
         try:
@@ -115,7 +115,7 @@ class PushDialog(Gtk.MessageDialog):
     def __init__(self, parent):
         super().__init__()
 
-        self.set_transient_for(parent.get_toplevel())
+        self.set_transient_for(parent.get_root())
         self.show_all()
 
     def run(self):

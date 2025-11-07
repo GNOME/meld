@@ -1231,7 +1231,7 @@ class FileDiff(Gtk.Box, MeldDoc):
             builder = Gtk.Builder.new_from_resource(
                 '/org/gnome/meld/ui/save-confirm-dialog.ui')
             dialog = builder.get_object('save-confirm-dialog')
-            dialog.set_transient_for(self.get_toplevel())
+            dialog.set_transient_for(self.get_root())
             message_area = dialog.get_message_area()
 
             buttons = []
