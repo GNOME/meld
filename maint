@@ -300,25 +300,25 @@ def news():
 
 
 @cli.command()
-def appdata():
-    filename = 'data/org.gnome.Meld.appdata.xml.in.in'
+def metainfo():
+    filename = 'data/org.gnome.Meld.metainfo.xml.in.in'
 
     rendered = render_template(APPDATA_TEMPLATE)
     with open(filename, 'r') as f:
-        appdata = f.read()
+        metainfo = f.read()
 
     insert_tag = '<releases>'
-    insert_idx = appdata.find(insert_tag)
+    insert_idx = metainfo.find(insert_tag)
     if insert_idx == -1:
-        click.echo('Failed to find <releases> tag in appdata')
+        click.echo('Failed to find <releases> tag in metainfo')
         raise click.Abort()
 
     insert_idx += len(insert_tag)
 
-    new_appdata = appdata[:insert_idx] + rendered + appdata[insert_idx:]
+    new_metainfo = metainfo[:insert_idx] + rendered + metainfo[insert_idx:]
 
     with open(filename, 'w') as f:
-        f.write(new_appdata)
+        f.write(new_metainfo)
 
     message = click.edit(filename=filename)
     return message
@@ -421,8 +421,8 @@ def version_bump():
     is_flag=True,
     default=False,
     help=(
-        "Skip the NEWS + appdata templating step (but not the commit). Use "
-        "this if you have already written the NEWS and appdata updates and "
+        "Skip the NEWS + metainfo templating step (but not the commit). Use "
+        "this if you have already written the NEWS and metainfo updates and "
         "want to skip the templating helpers."
     ),
 )
@@ -430,16 +430,16 @@ def version_bump():
     "--skip-news-commit",
     is_flag=True,
     default=False,
-    help="Skip the NEWS + appdata commit step",
+    help="Skip the NEWS + metainfo commit step",
 )
 @click.pass_context
 def make_release(ctx, skip_news, skip_news_commit):
     if not skip_news:
         pull()
         ctx.invoke(news)
-        ctx.invoke(appdata)
+        ctx.invoke(metainfo)
     if not skip_news_commit:
-        commit(message='Update NEWS + appdata')
+        commit(message='Update NEWS + metainfo')
         push()
     # Run dist as a check; we don't need the actual tarball
     ctx.invoke(dist)
