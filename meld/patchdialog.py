@@ -59,14 +59,23 @@ class PatchDialog(Gtk.Dialog):
             self.side_selection_label.hide()
             self.side_selection_box.hide()
 
+        self.css_provider = Gtk.CssProvider()
+        style_context = self.textview.get_style_context()
+        style_context.add_provider(
+            self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+        )
+
         meld_settings = get_meld_settings()
-        self.textview.modify_font(meld_settings.font)
-        self.textview.set_editable(False)
         meld_settings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meld_settings, "font")
+
+        self.textview.set_editable(False)
 
     def on_setting_changed(self, settings, key):
         if key == "font":
-            self.textview.modify_font(settings.font)
+            family, size = settings.get_font_css()
+            style = f"* {{ {family} {size} }}"
+            self.css_provider.load_from_string(style)
 
     @Gtk.Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):
@@ -141,22 +150,20 @@ class PatchDialog(Gtk.Dialog):
 
     def run(self):
         self.update_patch()
+        self.connect("response", self.on_response)
+        self.show()
 
-        result = super().run()
-        if result < 0:
-            self.hide()
-            return
+    def on_response(self, dialog, response):
+        self.hide()
 
+        # Save patch as a file
+        if response == Gtk.ResponseType.OK:
+            prompt_save_filename(_("Save Patch"), self.save_patch)
         # Copy patch to clipboard
-        if result == 1:
+        elif response == 1:
             buf = self.textview.get_buffer()
             start, end = buf.get_bounds()
             clipboard = self.get_clipboard()
             clipboard.set(buf.get_text(start, end, False))
-        # Save patch as a file
-        else:
-            gfile = prompt_save_filename(_("Save Patch"))
-            if gfile:
-                self.save_patch(gfile)
 
-        self.hide()
+        self.destroy()

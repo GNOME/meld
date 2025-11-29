@@ -1,202 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.18.1 -->
 <interface>
-  <requires lib="gtk+" version="3.6"/>
+  <requires lib="gtk" version="4.0"/>
   <template class="PatchDialog" parent="GtkDialog">
-    <property name="visible">False</property>
-    <property name="can_focus">False</property>
-    <property name="border_width">12</property>
     <property name="title" translatable="yes">Format as Patch</property>
-    <property name="type_hint">dialog</property>
-    <property name="skip_taskbar_hint">True</property>
-    <property name="skip_pager_hint">True</property>
-    <child internal-child="vbox">
-      <object class="GtkBox" id="dialog-vbox3">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
+    <style>
+      <class name="meld-patch-dialog"/>
+    </style>
+    <child internal-child="content_area">
+      <object class="GtkBox" id="dialog-vbox">
         <property name="orientation">vertical</property>
         <property name="spacing">6</property>
-        <child internal-child="action_area">
-          <object class="GtkButtonBox" id="dialog-action_area">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
-            <property name="layout_style">end</property>
-            <child>
-              <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">Copy to Clipboard</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">False</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button9">
-                <property name="label" translatable="yes">_Cancel</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">False</property>
-                <property name="use_underline">True</property>
-                <accelerator key="Escape" signal="activate"/>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">1</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkButton" id="button7">
-                <property name="label" translatable="yes">Save Patch</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="can_default">True</property>
-                <property name="receives_default">True</property>
-              </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">False</property>
-                <property name="position">2</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
-            <property name="pack_type">end</property>
-            <property name="position">0</property>
-          </packing>
-        </child>
         <child>
           <object class="GtkBox" id="vbox1">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+            <property name="vexpand">1</property>
             <property name="orientation">vertical</property>
             <property name="spacing">6</property>
             <child>
               <object class="GtkLabel" id="side_selection_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
                 <property name="label" translatable="yes">Use differences between:</property>
-                <property name="xalign">0</property>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">0</property>
-              </packing>
             </child>
             <child>
               <object class="GtkBox" id="side_selection_box">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
+                <property name="vexpand">1</property>
                 <property name="margin-start">18</property>
                 <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkRadioButton" id="left_radiobutton">
+                  <object class="GtkCheckButton" id="left_radiobutton">
                     <property name="label" translatable="yes">Left and middle panes</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="xalign">0</property>
+                    <property name="focusable">1</property>
                     <property name="active">True</property>
-                    <property name="draw_indicator">True</property>
                     <signal name="toggled" handler="on_buffer_selection_changed" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">0</property>
-                  </packing>
                 </child>
                 <child>
-                  <object class="GtkRadioButton" id="right_radiobutton">
+                  <object class="GtkCheckButton" id="right_radiobutton">
                     <property name="label" translatable="yes">Middle and right panes</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="xalign">0</property>
-                    <property name="active">False</property>
-                    <property name="draw_indicator">True</property>
+                    <property name="focusable">1</property>
                     <property name="group">left_radiobutton</property>
                     <signal name="toggled" handler="on_buffer_selection_changed" swapped="no"/>
                   </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">True</property>
-                    <property name="position">1</property>
-                  </packing>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="position">1</property>
-              </packing>
             </child>
             <child>
               <object class="GtkCheckButton" id="reverse_checkbutton">
                 <property name="label" translatable="yes">_Reverse patch direction</property>
-                <property name="use_action_appearance">False</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="receives_default">False</property>
                 <property name="use_underline">True</property>
-                <property name="xalign">0</property>
-                <property name="draw_indicator">True</property>
+                <property name="focusable">1</property>
                 <signal name="toggled" handler="on_reverse_checkbutton_toggled" swapped="no"/>
               </object>
-              <packing>
-                <property name="expand">False</property>
-                <property name="fill">True</property>
-                <property name="position">2</property>
-              </packing>
             </child>
             <child>
               <object class="GtkScrolledWindow" id="scrolledwindow">
+                <property name="vexpand">1</property>
                 <property name="width_request">600</property>
                 <property name="height_request">400</property>
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="shadow_type">in</property>
+                <property name="focusable">1</property>
                 <child>
                   <object class="GtkSourceView" id="textview">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="accepts_tab">False</property>
+                    <property name="focusable">1</property>
                   </object>
                 </child>
               </object>
-              <packing>
-                <property name="expand">True</property>
-                <property name="fill">True</property>
-                <property name="padding">6</property>
-                <property name="position">3</property>
-              </packing>
             </child>
           </object>
-          <packing>
-            <property name="expand">True</property>
-            <property name="fill">True</property>
-            <property name="position">1</property>
-          </packing>
         </child>
       </object>
     </child>
+    <child type="action">
+      <object class="GtkButton" id="button_copy_to_clipboard">
+        <property name="label" translatable="1">Copy to Clipboard</property>
+        <property name="focusable">1</property>
+        <property name="margin-end">3</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="button_cancel">
+        <property name="label" translatable="1">_Cancel</property>
+        <property name="focusable">1</property>
+        <property name="use_underline">1</property>
+        <property name="margin-start">3</property>
+        <property name="margin-end">3</property>
+      </object>
+    </child>
+    <child type="action">
+      <object class="GtkButton" id="button_save">
+        <property name="label" translatable="1">Save Patch</property>
+        <property name="focusable">1</property>
+        <property name="receives_default">1</property>
+        <property name="margin-start">3</property>
+      </object>
+    </child>
     <action-widgets>
-      <action-widget response="1">button1</action-widget>
-      <action-widget response="-6">button9</action-widget>
-      <action-widget response="0">button7</action-widget>
+      <action-widget response="cancel">button_cancel</action-widget>
+      <action-widget response="1">button_copy_to_clipboard</action-widget>
+      <action-widget response="ok" default="true">button_save</action-widget>
     </action-widgets>
   </template>
 </interface>
