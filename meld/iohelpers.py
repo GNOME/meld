@@ -76,52 +76,25 @@ def trash_or_confirm(gfile: Gio.File) -> bool:
 
 
 def prompt_save_filename(
-        title: str, parent: Optional[Gtk.Widget] = None) -> Optional[Gio.File]:
+        title: str,
+        callback,
+        *,
+        parent: Optional[Gtk.Widget] = None
+    ) -> None:
+
+    def on_response(dialog: Gtk.FileChooserNative, response: int, callback):
+        gfile = dialog.get_file()
+        dialog.destroy()
+        if response == Gtk.ResponseType.ACCEPT and gfile:
+            callback(gfile)
 
     dialog = Gtk.FileChooserNative(
         title=title,
         transient_for=get_modal_parent(parent),
         action=Gtk.FileChooserAction.SAVE,
     )
-    response = dialog.run()
-    gfile = dialog.get_file()
-    dialog.destroy()
-
-    if response != Gtk.ResponseType.ACCEPT or not gfile:
-        return None
-
-    try:
-        file_info = gfile.query_info(
-            'standard::name,standard::display-name',
-            Gio.FileQueryInfoFlags.NONE,
-            None,
-        )
-    except GLib.Error as err:
-        if err.code == Gio.IOErrorEnum.NOT_FOUND:
-            return gfile
-        raise
-
-    # The selected file exists, so we need to prompt for overwrite.
-    parent_folder = gfile.get_parent()
-    parent_name = parent_folder.get_parse_name() if parent_folder else ''
-    file_name = file_info.get_display_name()
-
-    replace = modal_dialog(
-        primary=_("Replace file “%s”?") % file_name,
-        secondary=_(
-            "A file with this name already exists in “%s”.\n"
-            "If you replace the existing file, its contents "
-            "will be lost.") % parent_name,
-        buttons=[
-            (_("_Cancel"), Gtk.ResponseType.CANCEL, None),
-            (_("_Replace"), Gtk.ResponseType.OK, None),
-        ],
-        messagetype=Gtk.MessageType.WARNING,
-    )
-    if replace != Gtk.ResponseType.OK:
-        return None
-
-    return gfile
+    dialog.connect("response", on_response, callback)
+    dialog.show()
 
 
 def find_shared_parent_path(
