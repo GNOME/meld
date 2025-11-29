@@ -86,9 +86,8 @@ def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
 
     Primary must be plain text. Secondary must be valid markup.
     """
-    return modal_dialog(
-        primary, secondary, Gtk.ButtonsType.CLOSE, parent=None,
-        messagetype=Gtk.MessageType.ERROR)
+    dialog = Gtk.AlertDialog(primary, detail=secondary, modal=True)
+    dialog.show()
 
 
 def modal_dialog(
