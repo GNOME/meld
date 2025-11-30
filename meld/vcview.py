@@ -764,21 +764,22 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     def action_delete(self, *args):
         files = self._get_selected_files()
-        for name in files:
-            gfile = Gio.File.new_for_path(name)
+        workdir = os.path.dirname(os.path.commonprefix(files))
+
+        def _delete_file(success, files=files):
+            if not success or not files:
+                self.refresh_partial(workdir)
+                return
+
+            gfile = Gio.File.new_for_path(files.pop())
+            filename = GLib.markup_escape_text(gfile.get_parse_name())
 
             try:
-                trash_or_confirm(gfile)
+                trash_or_confirm(gfile, _delete_file, parent=self)
             except Exception as e:
-                error_dialog(
-                    _("Error deleting {}").format(
-                        GLib.markup_escape_text(gfile.get_parse_name()),
-                    ),
-                    str(e),
-                )
+                error_dialog(_(f"Error deleting {filename}"), str(e))
 
-        workdir = os.path.dirname(os.path.commonprefix(files))
-        self.refresh_partial(workdir)
+        _delete_file(True, files)
 
     def action_diff(self, *args):
         # TODO: Review the compare/diff action. It doesn't really add much

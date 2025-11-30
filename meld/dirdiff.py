@@ -1317,23 +1317,31 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         # Reversing paths means that we remove tree rows bottom-up, so
         # tree paths don't change during the iteration.
         paths.reverse()
-        for path in paths:
-            it = self.model.get_iter(path)
-            name = self.model.value_path(it, pane)
-            gfile = Gio.File.new_for_path(name)
+        files = [
+            (path, self.model.value_path(self.model.get_iter(path), pane))
+            for path in paths
+        ]
+
+        def _deleted_file(success, files=files):
+            if success:
+                path, file = files.pop()
+                self.file_deleted(path, pane)
+
+            if not success or not files:
+                return
+
+            _delete_file(files=files)
+
+        def _delete_file(files=files):
+            gfile = Gio.File.new_for_path(files[0][1])
+            filename = GLib.markup_escape_text(gfile.get_parse_name())
 
             try:
-                deleted = trash_or_confirm(gfile)
+                trash_or_confirm(gfile, _deleted_file, parent=self)
             except Exception as e:
-                misc.error_dialog(
-                    _("Error deleting {}").format(
-                        GLib.markup_escape_text(gfile.get_parse_name()),
-                    ),
-                    str(e),
-                )
-            else:
-                if deleted:
-                    self.file_deleted(path, pane)
+                misc.error_dialog(_(f"Error deleting {filename}"), str(e))
+
+        _delete_file(files)
 
     def on_treemodel_row_deleted(self, model, path):
         if self.current_path == path:
