@@ -21,7 +21,7 @@ import math
 from enum import Enum
 from typing import Callable, Optional, Tuple, Type
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource
+from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
 # TODO: Don't from-import whole modules
 from meld import misc
@@ -50,7 +50,7 @@ from meld.meldbuffer import (
 )
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
-from meld.misc import user_critical, with_focused_pane
+from meld.misc import get_modal_parent, user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
@@ -1275,26 +1275,28 @@ class FileDiff(Gtk.Box, MeldDoc):
         saved = self.meta.get('middle_saved', False)
         prompt_resolve = self.meta.get('prompt_resolve', False)
         if prompt_resolve and saved and parent.has_command('resolve'):
-            primary = _("Mark conflict as resolved?")
-            secondary = _(
-                "If the conflict was resolved successfully, you may mark "
-                "it as resolved now.")
-            buttons = (
-                (_("Cancel"), Gtk.ResponseType.CANCEL, None),
-                (_("Mark _Resolved"), Gtk.ResponseType.OK, None),
-            )
-            resolve_response = misc.modal_dialog(
-                primary, secondary, buttons, parent=self,
-                messagetype=Gtk.MessageType.QUESTION)
+            def on_response(dialog, result):
+                response = dialog.choose_finish(result)
+                if response == "resolve":
+                    bufdata = self.textbuffer[1].data
+                    conflict_gfile = bufdata.savefile or bufdata.gfile
+                    # It's possible that here we're in a quit callback,
+                    # so we can't schedule the resolve action to an
+                    # idle loop; it might never happen.
+                    parent.command("resolve", [conflict_gfile.get_path()], sync=True)
 
-            if resolve_response == Gtk.ResponseType.OK:
-                bufdata = self.textbuffer[1].data
-                conflict_gfile = bufdata.savefile or bufdata.gfile
-                # It's possible that here we're in a quit callback,
-                # so we can't schedule the resolve action to an
-                # idle loop; it might never happen.
-                parent.command(
-                    'resolve', [conflict_gfile.get_path()], sync=True)
+            dialog = Adw.AlertDialog(
+                heading=_("Mark conflict as resolved?"),
+                body=_(
+                    "If the conflict was resolved successfully, you may mark "
+                    "it as resolved now."
+                )
+            )
+            dialog.add_response("cancel", _("Cancel"))
+            dialog.add_response("resolve", _("Mark _Resolved"))
+            dialog.set_default_response("resolve")
+            dialog.set_close_response("cancel")
+            dialog.choose(get_modal_parent(self), None, on_response)
 
     def on_delete_event(self):
         self.state = ComparisonState.Closing
