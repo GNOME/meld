@@ -89,46 +89,6 @@ def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
     Gtk.AlertDialog(message=primary, detail=secondary, modal=True).show()
 
 
-def modal_dialog(
-    primary: str,
-    secondary: str,
-    buttons: Union[Gtk.ButtonsType, Sequence[Tuple[str, int, Optional[str]]]],
-    *,
-    parent: Optional[Gtk.Window] = None,
-    messagetype: Gtk.MessageType = Gtk.MessageType.WARNING,
-) -> Gtk.ResponseType:
-    """A common message dialog handler for Meld
-
-    This should only ever be used for interactions that must be resolved
-    before the application flow can continue.
-
-    Primary must be plain text. Secondary must be valid markup.
-    """
-
-    custom_buttons: Sequence[Tuple[str, int, Optional[str]]] = []
-    if not isinstance(buttons, Gtk.ButtonsType):
-        custom_buttons, buttons = buttons, Gtk.ButtonsType.NONE
-
-    dialog = Gtk.MessageDialog(
-        transient_for=get_modal_parent(parent),
-        modal=True,
-        destroy_with_parent=True,
-        message_type=messagetype,
-        buttons=buttons,
-        text=primary,
-    )
-    dialog.format_secondary_markup(secondary)
-
-    for label, response_id, style_class in custom_buttons:
-        button = dialog.add_button(label, response_id)
-        if style_class:
-            button.get_style_context().add_class(style_class)
-
-    response = dialog.run()
-    dialog.destroy()
-    return response
-
-
 def user_critical(
         primary: str, message: str) -> Callable[[Callable], Callable]:
     """Decorator for when the user must be told about failures

@@ -1284,6 +1284,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                                 Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION,
                             ),
                         ]
+                        # FIXME: This entire copy loop needs to be ported to support
+                        # the new async dialog flow. delete_selected below may provide
+                        # some level of inspiration, though this is more complicated.
                         replace = misc.modal_dialog(
                             primary=_("Replace folder “%s”?") % folder_name,
                             secondary=_(
