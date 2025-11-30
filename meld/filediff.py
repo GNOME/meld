@@ -2187,13 +2187,23 @@ class FileDiff(Gtk.Box, MeldDoc):
                 prompt = _("Save Middle Pane As")
             else:
                 prompt = _("Save Right Pane As")
-            gfile = prompt_save_filename(prompt, self)
-            if not gfile:
-                return False
-            bufdata.label = gfile.get_path()
-            bufdata.gfile = gfile
-            bufdata.savefile = None
-            self.filelabel[pane].props.gfile = gfile
+
+            def on_file_selected(gfile):
+                bufdata.label = gfile.get_path()
+                bufdata.gfile = gfile
+                bufdata.savefile = None
+                self.filelabel[pane].props.gfile = gfile
+                self._do_save_file(pane, force_overwrite)
+
+            prompt_save_filename(prompt, callback=on_file_selected, parent=self)
+            return False
+
+        self._do_save_file(pane, force_overwrite)
+        return True
+
+    def _do_save_file(self, pane, force_overwrite=False):
+        buf = self.textbuffer[pane]
+        bufdata = buf.data
 
         if not force_overwrite and not bufdata.current_on_disk():
             primary = (
@@ -2209,10 +2219,10 @@ class FileDiff(Gtk.Box, MeldDoc):
             def on_file_changed_response(msgarea, response_id, *args):
                 self.msgarea_mgr[pane].clear()
                 if response_id == Gtk.ResponseType.ACCEPT:
-                    self.save_file(pane, saveas, force_overwrite=True)
+                    self._do_save_file(pane, force_overwrite=True)
 
             msgarea.connect("response", on_file_changed_response)
-            return False
+            return
 
         saver = GtkSource.FileSaver.new_with_target(
             self.textbuffer[pane], bufdata.sourcefile, bufdata.gfiletarget)
@@ -2226,7 +2236,6 @@ class FileDiff(Gtk.Box, MeldDoc):
             callback=self.file_saved_cb,
             user_data=(pane,)
         )
-        return True
 
     def file_saved_cb(self, saver, result, user_data):
         gfile = saver.get_location()
