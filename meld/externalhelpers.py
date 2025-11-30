@@ -25,7 +25,7 @@ from typing import List, Mapping, Sequence
 from gi.repository import Gio, GLib, Gtk
 
 from meld.conf import _
-from meld.misc import modal_dialog
+from meld.misc import error_dialog
 from meld.settings import get_settings
 
 log = logging.getLogger(__name__)
@@ -52,6 +52,7 @@ def make_custom_editor_command(path: str, line: int = 0) -> Sequence[str]:
     else:
         cmd = custom_command.format(file=shlex.quote(path), line=line)
     return shlex.split(cmd)
+
 
 def launched_cb(launcher: Gtk.FileLauncher, result: Gio.AsyncResult, *data):
     try:
@@ -121,11 +122,7 @@ def open_cb(
                     try:
                         subprocess.Popen(editor)
                     except OSError as e:
-                        modal_dialog(
-                            _("Failed to launch custom editor"),
-                            str(e),
-                            Gtk.ButtonsType.CLOSE,
-                        )
+                        error_dialog(_("Failed to launch custom editor"), str(e))
                 else:
                     launch_with_default_handler(gfile, toplevel)
         else:
@@ -134,12 +131,9 @@ def open_cb(
         # Being guarded about value_nick here, since it's probably not
         # exactly guaranteed API.
         file_type = getattr(file_type, "value_nick", "unknown")
-        modal_dialog(
+        error_dialog(
             _("Unsupported file type"),
-            _("External opening of files of type {file_type} is not supported").format(
-                file_type=file_type
-            ),
-            Gtk.ButtonsType.CLOSE,
+            _(f"External opening of files of type '{file_type}' is not supported"),
         )
 
 
