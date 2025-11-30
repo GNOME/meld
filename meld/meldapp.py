@@ -19,7 +19,7 @@ import logging
 import optparse
 import os
 
-from gi.repository import Gdk, Gio, GLib, Gtk
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk
 
 import meld.accelerators
 import meld.conf
@@ -37,7 +37,7 @@ log = logging.getLogger(__name__)
 optparse._ = _
 
 
-class MeldApp(Gtk.Application):
+class MeldApp(Adw.Application):
 
     def __init__(self):
         super().__init__(
@@ -59,7 +59,7 @@ class MeldApp(Gtk.Application):
         return f'{self.props.resource_base_path}/{resource_path}'
 
     def do_startup(self):
-        Gtk.Application.do_startup(self)
+        Adw.Application.do_startup(self)
         meld.accelerators.register_accels(self)
 
         actions = (
@@ -101,7 +101,7 @@ class MeldApp(Gtk.Application):
         return 0
 
     def do_window_removed(self, widget):
-        Gtk.Application.do_window_removed(self, widget)
+        Adw.Application.do_window_removed(self, widget)
         if not len(self.get_windows()):
             self.quit()
 
