@@ -238,6 +238,7 @@ class TreeviewCommon:
         controller.connect(
             "pressed", self.on_treeview_button_press_event if not callback else callback)
         controller.set_button(3)
+        controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
         treeview.add_controller(controller)
 
     def _add_treeview_key_controller(self, treeview):
@@ -273,7 +274,6 @@ class TreeviewCommon:
         return True
 
     def on_treeview_button_press_event(self, controller, n_press, wx, wy):
-
         treeview = controller.get_widget()
 
         # If we have multiple treeviews, unselect clear other tree selections
@@ -290,6 +290,7 @@ class TreeviewCommon:
         if path is None:
             return False
 
+        controller.set_state(Gtk.EventSequenceState.CLAIMED)
         selection = treeview.get_selection()
         model, rows = selection.get_selected_rows()
 
