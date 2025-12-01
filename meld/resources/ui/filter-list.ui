@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <requires lib="gtk+" version="3.20"/>
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkListStore" id="filter_list_store">
     <columns>
       <!-- column-name Name -->
@@ -15,19 +15,13 @@
   </object>
   <template class="FilterList" parent="GtkBox">
     <property name="orientation">vertical</property>
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
     <child>
       <object class="GtkScrolledWindow" id="scrolledwindow1">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="hscrollbar_policy">automatic</property>
-        <property name="vscrollbar_policy">automatic</property>
-        <property name="shadow_type">in</property>
-        <child>
+        <property name="vexpand">1</property>
+        <property name="focusable">True</property>
+        <property name="child">
           <object class="GtkTreeView" id="treeview">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
+            <property name="focusable">True</property>
             <property name="model">filter_list_store</property>
             <property name="headers_clickable">False</property>
             <property name="reorderable">True</property>
@@ -83,105 +77,58 @@
               </object>
             </child>
           </object>
-        </child>
+        </property>
       </object>
-      <packing>
-        <property name="expand">True</property>
-        <property name="fill">True</property>
-        <property name="position">0</property>
-      </packing>
     </child>
     <child>
-      <object class="GtkToolbar" id="list_toolbar">
-        <property name="visible">True</property>
-        <property name="can_focus">False</property>
-        <property name="toolbar_style">icons</property>
-        <property name="show_arrow">False</property>
-        <property name="icon_size">1</property>
-        <property name="icon_size_set">True</property>
+      <object class="GtkBox" id="list_toolbar">
+        <property name="css-classes">toolbar</property>
+        <property name="valign">center</property>
         <style>
           <class name="prefs-list-widget-toolbar"/>
         </style>
         <child>
-          <object class="GtkToolButton" id="add">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkButton" id="add">
             <property name="tooltip_text" translatable="yes">Add new filter</property>
-            <property name="use_action_appearance">False</property>
             <property name="label" translatable="yes">_Add</property>
             <property name="use_underline">True</property>
             <property name="icon_name">list-add-symbolic</property>
             <signal name="clicked" handler="on_add_clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkToolButton" id="remove">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkButton" id="remove">
             <property name="tooltip_text" translatable="yes">Remove selected filter</property>
-            <property name="use_action_appearance">False</property>
             <property name="label" translatable="yes">_Remove</property>
             <property name="use_underline">True</property>
             <property name="icon_name">list-remove-symbolic</property>
             <signal name="clicked" handler="on_remove_clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkSeparatorToolItem" id="up_down_sep">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkSeparator" id="up_down_sep">
+            <property name="orientation">vertical</property>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkToolButton" id="move_up">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkButton" id="move_up">
             <property name="tooltip_text" translatable="yes">Move item up</property>
-            <property name="use_action_appearance">False</property>
             <property name="label" translatable="yes">Move _Up</property>
             <property name="use_underline">True</property>
             <property name="icon_name">go-up-symbolic</property>
             <signal name="clicked" handler="on_move_up_clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
         </child>
         <child>
-          <object class="GtkToolButton" id="move_down">
-            <property name="visible">True</property>
-            <property name="can_focus">False</property>
+          <object class="GtkButton" id="move_down">
             <property name="tooltip_text" translatable="yes">Move item down</property>
-            <property name="use_action_appearance">False</property>
             <property name="label" translatable="yes">Move _Down</property>
             <property name="use_underline">True</property>
             <property name="icon_name">go-down-symbolic</property>
             <signal name="clicked" handler="on_move_down_clicked" swapped="no"/>
           </object>
-          <packing>
-            <property name="expand">False</property>
-            <property name="homogeneous">True</property>
-          </packing>
         </child>
       </object>
-      <packing>
-        <property name="expand">False</property>
-        <property name="fill">False</property>
-        <property name="position">1</property>
-      </packing>
     </child>
   </template>
 </interface>
