@@ -340,16 +340,19 @@ class PreferencesDialog(Gtk.Dialog):
             filter_type=FilterEntry.SHELL,
             settings_key="filename-filters",
         )
-        self.file_filters_vbox.pack_start(filefilter, True, True, 0)
+        filefilter.set_vexpand(True)
+        self.file_filters_vbox.append(filefilter)
 
         textfilter = FilterList(
             filter_type=FilterEntry.REGEX,
             settings_key="text-filters",
         )
-        self.text_filters_vbox.pack_start(textfilter, True, True, 0)
+        textfilter.set_vexpand(True)
+        self.text_filters_vbox.append(textfilter)
 
         columnlist = ColumnList(settings_key="folder-columns")
-        self.column_list_vbox.pack_start(columnlist, True, True, 0)
+        columnlist.set_vexpand(True)
+        self.column_list_vbox.append(columnlist)
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
