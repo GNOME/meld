@@ -14,7 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gio, GLib, GObject, Gtk, GtkSource
+import enum
+from typing import Self
+
+from gi.repository import Adw, Gio, GLib, GObject, Gtk, GtkSource
 
 from meld.conf import _
 from meld.filters import FilterEntry
@@ -251,13 +254,32 @@ class GSettingsStringComboBox(GSettingsComboBox):
     gsettings_value = GObject.Property(type=str, default="")
 
 
+class WrapMode(str, enum.Enum):
+    def __new__(cls, value, label, unit):
+        obj = str.__new__(cls, [value])
+        obj._value_ = value
+        obj.label = label
+        obj.settings_value = unit
+        return obj
+
+    @classmethod
+    def from_enum(cls, genum: Gtk.WrapMode) -> Self:
+        for member in cls:
+            if member.settings_value == genum:
+                return member
+        raise ValueError(f"Unsupported {cls} setting value {genum}")
+
+    none = ("none", _("Never"), Gtk.WrapMode.NONE)
+    word = ("word", _("At Spaces"), Gtk.WrapMode.WORD)
+    char = ("char", _("Anywhere"), Gtk.WrapMode.CHAR)
+
+
 @Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
-class PreferencesDialog(Gtk.Dialog):
+class PreferencesDialog(Adw.PreferencesDialog):
 
     __gtype_name__ = "PreferencesDialog"
 
     checkbutton_break_commit_lines = Gtk.Template.Child()
-    checkbutton_default_font = Gtk.Template.Child()
     checkbutton_folder_filter_text = Gtk.Template.Child()
     checkbutton_highlight_current_line = Gtk.Template.Child()
     checkbutton_ignore_blank_lines = Gtk.Template.Child()
@@ -268,39 +290,36 @@ class PreferencesDialog(Gtk.Dialog):
     checkbutton_show_line_numbers = Gtk.Template.Child()
     checkbutton_show_overview_map = Gtk.Template.Child()
     checkbutton_show_whitespace = Gtk.Template.Child()
-    checkbutton_spaces_instead_of_tabs = Gtk.Template.Child()
     checkbutton_use_syntax_highlighting = Gtk.Template.Child()
-    checkbutton_wrap_text = Gtk.Template.Child()
-    checkbutton_wrap_word = Gtk.Template.Child()
     column_list_vbox = Gtk.Template.Child()
     combo_file_order = Gtk.Template.Child()
     combo_merge_order = Gtk.Template.Child()
-    combo_overview_map = Gtk.Template.Child()
     combo_timestamp = Gtk.Template.Child()
     combobox_style_scheme = Gtk.Template.Child()
     custom_edit_command_entry = Gtk.Template.Child()
+    custom_font_switch_row = Gtk.Template.Child()
     file_filters_vbox = Gtk.Template.Child()
+    font_action_row = Gtk.Template.Child()
     fontpicker = Gtk.Template.Child()
     spinbutton_commit_margin = Gtk.Template.Child()
     spinbutton_tabsize = Gtk.Template.Child()
     syntaxschemestore = Gtk.Template.Child()
     system_editor_checkbutton = Gtk.Template.Child()
+    tab_character_combo_row = Gtk.Template.Child()
+    text_wrapping_combo_row = Gtk.Template.Child()
     text_filters_vbox = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         bindings = [
-            ('use-system-font', self.checkbutton_default_font, 'active'),
             ('custom-font', self.fontpicker, 'font'),
             ('indent-width', self.spinbutton_tabsize, 'value'),
-            ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),  # noqa: E501
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
             ('prefer-dark-theme', self.checkbutton_prefer_dark_theme, 'active'),  # noqa: E501
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
-            ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
@@ -319,22 +338,14 @@ class PreferencesDialog(Gtk.Dialog):
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
 
         invert_bindings = [
-            ('use-system-editor', self.custom_edit_command_entry, 'sensitive'),
-            ('use-system-font', self.fontpicker, 'sensitive'),
+            ("use-system-editor", self.system_editor_checkbutton, "enable-expansion"),
+            ("use-system-font", self.custom_font_switch_row, "enable-expansion"),
             ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),  # noqa: E501
         ]
         for key, obj, attribute in invert_bindings:
             settings.bind(
                 key, obj, attribute, Gio.SettingsBindFlags.DEFAULT |
                 Gio.SettingsBindFlags.INVERT_BOOLEAN)
-
-        self.checkbutton_wrap_text.bind_property(
-            'active', self.checkbutton_wrap_word, 'sensitive',
-            GObject.BindingFlags.DEFAULT)
-
-        wrap_mode = settings.get_enum('wrap-mode')
-        self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
-        self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
 
         filefilter = FilterList(
             filter_type=FilterEntry.SHELL,
@@ -356,7 +367,6 @@ class PreferencesDialog(Gtk.Dialog):
 
         self.combo_timestamp.bind_to('folder-time-resolution')
         self.combo_file_order.bind_to('vc-left-is-local')
-        self.combo_overview_map.bind_to('overview-map-style')
         self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes
@@ -366,18 +376,30 @@ class PreferencesDialog(Gtk.Dialog):
             self.syntaxschemestore.append([scheme_id, scheme.get_name()])
         self.combobox_style_scheme.bind_to('style-scheme')
 
+        settings.bind_with_mapping(
+            "insert-spaces-instead-of-tabs",
+            self.tab_character_combo_row,
+            "selected",
+            Gio.SettingsBindFlags.DEFAULT,
+            get_mapping=lambda idx, value: 0 if value else 1,
+            set_mapping=lambda idx, value: GLib.Variant.new_boolean(bool(idx)),
+        )
+
+        def wrap_mode_row_changed(row, paramspec):
+            wrap_mode = WrapMode(row.props.selected_item.get_string())
+            settings.set_enum("wrap-mode", wrap_mode.settings_value)
+
+        def wrap_mode_setting_changed(settings, key):
+            wrap_mode = WrapMode.from_enum(settings.get_enum("wrap-mode"))
+            idx = self.text_wrapping_combo_row.get_model().find(wrap_mode._value_)
+            self.text_wrapping_combo_row.props.selected = idx
+
+        self.text_wrapping_combo_row.connect("notify::selected-item", wrap_mode_row_changed)
+        settings.connect("changed::wrap-mode", wrap_mode_setting_changed)
+        wrap_mode_setting_changed(settings, None)
+
         self.show()
 
     @Gtk.Template.Callback()
-    def on_checkbutton_wrap_text_toggled(self, button):
-        if not self.checkbutton_wrap_text.get_active():
-            wrap_mode = Gtk.WrapMode.NONE
-        elif self.checkbutton_wrap_word.get_active():
-            wrap_mode = Gtk.WrapMode.WORD
-        else:
-            wrap_mode = Gtk.WrapMode.CHAR
-        settings.set_enum('wrap-mode', wrap_mode)
-
-    @Gtk.Template.Callback()
-    def on_response(self, dialog, response_id):
-        self.destroy()
+    def get_text_wrap_label(self, string_object):
+        return WrapMode(string_object.get_string()).label

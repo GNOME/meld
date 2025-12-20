@@ -112,9 +112,7 @@ class MeldApp(Adw.Application):
     #     return False
 
     def preferences_callback(self, action, parameter):
-        parent = self.get_active_window()
-        dialog = PreferencesDialog(transient_for=parent)
-        dialog.present()
+        PreferencesDialog().present(self.get_active_window())
 
     def help_callback(self, action, parameter):
         if meld.conf.DATADIR_IS_UNINSTALLED:
