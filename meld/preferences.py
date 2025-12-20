@@ -299,6 +299,8 @@ class PreferenceComboRow(Adw.ComboRow):
         wrap_mode = self.enum_cls(row.props.selected_item.get_string())
         if self.enum_cls.setting_type is bool:
             settings.set_boolean(self.props.settings_key, wrap_mode.settings_value)
+        elif self.enum_cls.setting_type is int:
+            settings.set_int(self.props.settings_key, wrap_mode.settings_value)
         elif self.enum_cls.setting_type is str:
             settings.set_enum(self.props.settings_key, wrap_mode.settings_value)
         else:
@@ -307,10 +309,14 @@ class PreferenceComboRow(Adw.ComboRow):
     def setting_changed(self, settings, key):
         if self.enum_cls.setting_type is bool:
             setting_value = settings.get_boolean(self.props.settings_key)
+        elif self.enum_cls.setting_type is int:
+            setting_value = settings.get_int(self.props.settings_key)
         elif self.enum_cls.setting_type is str:
             setting_value = settings.get_enum(self.props.settings_key)
         else:
-            raise NotImplementedError()
+            raise NotImplementedError(
+                f"Unsupported Setting type {self.enum_cls.setting_type}"
+            )
 
         wrap_mode = self.enum_cls.from_enum(setting_value)
         self.props.selected = self.get_model().find(wrap_mode._value_)
@@ -332,6 +338,16 @@ class TabCharacter(PreferenceEnum):
 
     tab = ("tab", _("Tab"), False)
     spaces = ("spaces", _("Spaces"), True)
+
+
+class TimestampResolution(PreferenceEnum):
+    setting_type = enum.nonmember(int)
+
+    one_ns = ("one_ns", _("1ns (ext4)"), 1)
+    onehundred_ns = ("onehundred_ns", _("100ns (NTFS)"), 100)
+    one_s = ("one_s", _("1s (ext2/ext3)"), 1000000000)
+    two_s = ("two_s", _("2s (VFAT)"), 2000000000)
+    ignore = ("ignore", _("Ignore timestamp"), -1)
 
 
 class VersionPaneOrder(PreferenceEnum):
@@ -366,7 +382,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
     checkbutton_show_whitespace = Gtk.Template.Child()
     checkbutton_use_syntax_highlighting = Gtk.Template.Child()
     column_list_vbox = Gtk.Template.Child()
-    combo_timestamp = Gtk.Template.Child()
     combobox_style_scheme = Gtk.Template.Child()
     custom_edit_command_entry = Gtk.Template.Child()
     custom_font_switch_row = Gtk.Template.Child()
@@ -391,7 +406,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
-            ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
+            ("folder-shallow-comparison", self.checkbutton_shallow_compare, "enable-expansion"),  # noqa: E501
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
@@ -434,8 +449,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
         columnlist = ColumnList(settings_key="folder-columns")
         columnlist.set_vexpand(True)
         self.column_list_vbox.append(columnlist)
-
-        self.combo_timestamp.bind_to('folder-time-resolution')
 
         # Fill color schemes
         manager = GtkSource.StyleSchemeManager.get_default()

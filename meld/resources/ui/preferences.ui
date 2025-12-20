@@ -216,82 +216,34 @@
     <child>
       <object class="AdwPreferencesPage">
         <property name="title" translatable="1">Folder Comparison</property>
-        <!-- <property name="icon_name">folder-symbolic</property> -->
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Shallow Comparison</property>
+            <property name="title" translatable="yes">Comparison Options</property>
             <child>
-              <object class="GtkBox" id="hbox2">
+              <object class="AdwExpanderRow" id="checkbutton_shallow_compare">
+                <property name="show-enable-switch">True</property>
+                <property name="title" translatable="yes">Compare files based only on size and timestamp</property>
+                <property name="expanded"
+                  bind-source="checkbutton_shallow_compare"
+                  bind-property="enable-expansion"
+                  bind-flags="sync-create|bidirectional"
+                />
                 <child>
-                  <object class="GtkLabel" id="label6">
-                    <property name="halign">center</property>
-                    <property name="width-request">12</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="vbox4">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkCheckButton" id="checkbutton_shallow_compare">
-                        <property name="valign">center</property>
-                        <property name="label" translatable="1">C_ompare files based only on size and timestamp</property>
-                        <property name="focusable">1</property>
-                        <property name="use_underline">1</property>
+                  <object class="PreferenceComboRow" id="timestamp_resolution_combo_row">
+                    <property name="title" translatable="yes">Timestamp resolution</property>
+                    <property name="enum-cls-name">TimestampResolution</property>
+                    <property name="settings-key">folder-time-resolution</property>
+                    <property name="model">
+                      <object class="GtkStringList">
+                        <items>
+                          <item>one_ns</item>
+                          <item>onehundred_ns</item>
+                          <item>one_s</item>
+                          <item>two_s</item>
+                          <item>ignore</item>
+                        </items>
                       </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="timestamp_hbox">
-                        <property name="valign">center</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="label7">
-                            <property name="halign">center</property>
-                            <property name="label" translatable="1">_Timestamp resolution:</property>
-                            <property name="use_underline">1</property>
-                            <property name="mnemonic_widget">combo_timestamp</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GSettingsIntComboBox" id="combo_timestamp">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="model">timestampstore</property>
-                            <property name="active">0</property>
-                            <property name="gsettings-column">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="combo_timestamp_renderer"/>
-                              <attributes>
-                                <attribute name="text">1</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox">
-                        <property name="vexpand">1</property>
-                        <property name="orientation">vertical</property>
-                        <child>
-                          <object class="GtkCheckButton" id="checkbutton_folder_filter_text">
-                            <property name="valign">center</property>
-                            <property name="label" translatable="1">Apply text filters during folder comparisons</property>
-                            <property name="focusable">1</property>
-                            <property name="use_underline">1</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GtkLabel">
-                            <property name="margin-start">24</property>
-                            <property name="label" translatable="1">Note: enabling text filters may make comparing large files much slower</property>
-                            <style>
-                              <class name="dim-label"/>
-                            </style>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                    </property>
                   </object>
                 </child>
               </object>
@@ -300,24 +252,19 @@
         </child>
         <child>
           <object class="AdwPreferencesGroup">
-            <property name="title" translatable="yes">Symbolic Links</property>
             <child>
-              <object class="GtkBox" id="symlink_hbox">
-                <property name="valign">center</property>
-                <child>
-                  <object class="GtkLabel" id="label41">
-                    <property name="halign">center</property>
-                    <property name="width-request">12</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkCheckButton" id="checkbutton_ignore_symlinks">
-                    <property name="halign">center</property>
-                    <property name="label" translatable="1">Ignore symbolic links</property>
-                    <property name="focusable">1</property>
-                    <property name="use_underline">1</property>
-                  </object>
-                </child>
+              <object class="AdwSwitchRow" id="checkbutton_ignore_symlinks">
+                <property name="title" translatable="yes">Ignore symbolic links</property>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="AdwPreferencesGroup">
+            <child>
+              <object class="AdwSwitchRow" id="checkbutton_folder_filter_text">
+                <property name="title" translatable="yes">Apply text filters during folder comparisons</property>
+                <property name="subtitle" translatable="yes">Enabling text filters will make comparing large files much slower</property>
               </object>
             </child>
           </object>
@@ -326,22 +273,11 @@
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Visible Columns</property>
             <child>
-              <object class="GtkBox" id="hbox1">
-                <property name="vexpand">1</property>
+              <object class="GtkBox" id="column_list_vbox">
+                <property name="hexpand">1</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <object class="GtkLabel" id="label4">
-                    <property name="halign">center</property>
-                    <property name="width-request">12</property>
-                  </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="column_list_vbox">
-                    <property name="hexpand">1</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <placeholder/>
-                    </child>
-                  </object>
+                  <placeholder/>
                 </child>
               </object>
             </child>
@@ -372,7 +308,6 @@
                 </property>
               </object>
             </child>
-
             <child>
               <object class="PreferenceComboRow" id="merge_order_combo_row">
                 <property name="title" translatable="yes">Order when Merging Files</property>
@@ -464,24 +399,6 @@
       </object>
     </child>
   </template>
-  <object class="GtkListStore" id="fileorderstore">
-    <columns>
-      <!-- column-name id -->
-      <column type="gboolean"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">False</col>
-        <col id="1" translatable="yes">Left is remote, right is local</col>
-      </row>
-      <row>
-        <col id="0">True</col>
-        <col id="1" translatable="yes">Left is local, right is remote</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkListStore" id="overviewstylestore">
     <columns>
       <!-- column-name id -->
@@ -504,24 +421,6 @@
       </row>
     </data>
   </object>
-  <object class="GtkListStore" id="mergeorderstore">
-    <columns>
-      <!-- column-name id -->
-      <column type="gchararray"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">remote-merge-local</col>
-        <col id="1" translatable="yes">Remote, merge, local</col>
-      </row>
-      <row>
-        <col id="0">local-merge-remote</col>
-        <col id="1" translatable="yes">Local, merge, remote</col>
-      </row>
-    </data>
-  </object>
   <object class="GtkListStore" id="syntaxschemestore">
     <columns>
       <!-- column-name id -->
@@ -529,35 +428,5 @@
       <!-- column-name name -->
       <column type="gchararray"/>
     </columns>
-  </object>
-  <object class="GtkListStore" id="timestampstore">
-    <columns>
-      <!-- column-name value -->
-      <column type="gint"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">1</col>
-        <col id="1" translatable="yes">1ns (ext4)</col>
-      </row>
-      <row>
-        <col id="0">100</col>
-        <col id="1" translatable="yes">100ns (NTFS)</col>
-      </row>
-      <row>
-        <col id="0">1000000000</col>
-        <col id="1" translatable="yes">1s (ext2/ext3)</col>
-      </row>
-      <row>
-        <col id="0">2000000000</col>
-        <col id="1" translatable="yes">2s (VFAT)</col>
-      </row>
-      <row>
-        <col id="0">-1</col>
-        <col id="1" translatable="yes">Ignore timestamp</col>
-      </row>
-    </data>
   </object>
 </interface>
