@@ -334,6 +334,20 @@ class TabCharacter(PreferenceEnum):
     spaces = ("spaces", _("Spaces"), True)
 
 
+class VersionPaneOrder(PreferenceEnum):
+    setting_type = enum.nonmember(bool)
+
+    lrrl = ("lrrl", _("Left is remote, right is local"), False)
+    llrr = ("llrr", _("Left is local, right is remote"), True)
+
+
+class MergePaneOrder(PreferenceEnum):
+    setting_type = enum.nonmember(str)
+
+    remote_merge_local = ("remote-merge-local", _("Remote, merge, local"), 1)
+    local_merge_remote = ("local-merge-remote", _("Local, merge, remote"), 0)
+
+
 @Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
 class PreferencesDialog(Adw.PreferencesDialog):
 
@@ -352,8 +366,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
     checkbutton_show_whitespace = Gtk.Template.Child()
     checkbutton_use_syntax_highlighting = Gtk.Template.Child()
     column_list_vbox = Gtk.Template.Child()
-    combo_file_order = Gtk.Template.Child()
-    combo_merge_order = Gtk.Template.Child()
     combo_timestamp = Gtk.Template.Child()
     combobox_style_scheme = Gtk.Template.Child()
     custom_edit_command_entry = Gtk.Template.Child()
@@ -424,8 +436,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
         self.column_list_vbox.append(columnlist)
 
         self.combo_timestamp.bind_to('folder-time-resolution')
-        self.combo_file_order.bind_to('vc-left-is-local')
-        self.combo_merge_order.bind_to('vc-merge-file-order')
 
         # Fill color schemes
         manager = GtkSource.StyleSchemeManager.get_default()

@@ -356,78 +356,36 @@
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Version Comparisons</property>
+
             <child>
-              <object class="GtkBox" id="hbox4">
-                <child>
-                  <object class="GtkLabel" id="label9">
-                    <property name="halign">center</property>
-                    <property name="width-request">12</property>
+              <object class="PreferenceComboRow" id="version_order_combo_row">
+                <property name="title" translatable="yes">Order when Comparing File Revisions</property>
+                <property name="enum-cls-name">VersionPaneOrder</property>
+                <property name="settings-key">vc-left-is-local</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item translatable="yes">lrrl</item>
+                      <item translatable="yes">llrr</item>
+                    </items>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkBox" id="vbox6">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkBox" id="file_order_hbox1">
-                        <property name="valign">center</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="file_order_label">
-                            <property name="halign">center</property>
-                            <property name="label" translatable="1">_Order when comparing file revisions:</property>
-                            <property name="use_underline">1</property>
-                            <property name="mnemonic_widget">combo_file_order</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GSettingsBoolComboBox" id="combo_file_order">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="model">fileorderstore</property>
-                            <property name="active">0</property>
-                            <property name="gsettings-column">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="file_order_renderer"/>
-                              <attributes>
-                                <attribute name="text">1</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="merge_order_hbox1">
-                        <property name="valign">center</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="merge_order_label">
-                            <property name="halign">center</property>
-                            <property name="label" translatable="1">Order when _merging files:</property>
-                            <property name="use_underline">1</property>
-                            <property name="mnemonic_widget">combo_merge_order</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GSettingsStringComboBox" id="combo_merge_order">
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="model">mergeorderstore</property>
-                            <property name="active">0</property>
-                            <property name="gsettings-column">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="merge_order_renderer"/>
-                              <attributes>
-                                <attribute name="text">1</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
+                </property>
+              </object>
+            </child>
+
+            <child>
+              <object class="PreferenceComboRow" id="merge_order_combo_row">
+                <property name="title" translatable="yes">Order when Merging Files</property>
+                <property name="enum-cls-name">MergePaneOrder</property>
+                <property name="settings-key">vc-merge-file-order</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item translatable="yes">remote-merge-local</item>
+                      <item translatable="yes">local-merge-remote</item>
+                    </items>
                   </object>
-                </child>
+                </property>
               </object>
             </child>
           </object>
@@ -506,18 +464,6 @@
       </object>
     </child>
   </template>
-  <object class="GtkSizeGroup" id="sizegroup_file_order_combos">
-    <widgets>
-      <widget name="combo_file_order"/>
-      <widget name="combo_merge_order"/>
-    </widgets>
-  </object>
-  <object class="GtkSizeGroup" id="sizegroup_file_order_labels">
-    <widgets>
-      <widget name="file_order_label"/>
-      <widget name="merge_order_label"/>
-    </widgets>
-  </object>
   <object class="GtkListStore" id="fileorderstore">
     <columns>
       <!-- column-name id -->
