@@ -18,7 +18,7 @@
 import enum
 from typing import Mapping, Optional, Tuple
 
-from gi.repository import Gdk, Gtk, GtkSource
+from gi.repository import Gdk, GtkSource
 
 from meld.conf import _
 
@@ -34,15 +34,10 @@ base_style_scheme: Optional[GtkSource.StyleScheme] = None
 
 def set_base_style_scheme(
     new_style_scheme: GtkSource.StyleScheme,
-    prefer_dark: bool,
 ) -> GtkSource.StyleScheme:
 
     global base_style_scheme
     global style_scheme
-
-    gtk_settings = Gtk.Settings.get_default()
-    if gtk_settings:
-        gtk_settings.props.gtk_application_prefer_dark_theme = prefer_dark
 
     style_scheme = new_style_scheme
 
@@ -68,10 +63,8 @@ def set_base_style_scheme(
     # literally no basis to this.
     use_dark = (rgba.red + rgba.green + rgba.blue) < 1.0
 
-    base_scheme_name = (
-        MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
-
     manager = GtkSource.StyleSchemeManager.get_default()
+    base_scheme_name = MeldStyleScheme.dark if use_dark else MeldStyleScheme.base
     base_style_scheme = manager.get_scheme(base_scheme_name.value)
     base_schemes = (MeldStyleScheme.dark.value, MeldStyleScheme.base.value)
     if style_scheme and style_scheme.props.id in base_schemes:

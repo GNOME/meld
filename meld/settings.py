@@ -16,10 +16,11 @@
 import sys
 from typing import Optional
 
-from gi.repository import Gio, GObject, GtkSource, Pango
+from gi.repository import Adw, Gio, GObject, GtkSource, Pango
 
 import meld.conf
 import meld.filters
+from meld.style import set_base_style_scheme
 
 
 class MeldSettings(GObject.GObject):
@@ -36,9 +37,12 @@ class MeldSettings(GObject.GObject):
         self.on_setting_changed(settings, 'filename-filters')
         self.on_setting_changed(settings, 'text-filters')
         self.on_setting_changed(settings, 'use-system-font')
-        self.on_setting_changed(settings, 'prefer-dark-theme')
+        self.on_setting_changed(settings, "style-scheme")
         self.style_scheme = self._style_scheme_from_gsettings()
         settings.connect('changed', self.on_setting_changed)
+
+        style_manager = Adw.StyleManager.get_default()
+        style_manager.connect("notify", self.on_style_manager_setting_notify)
 
     def on_setting_changed(self, settings, key):
         if key == 'filename-filters':
@@ -52,16 +56,21 @@ class MeldSettings(GObject.GObject):
         elif key in ('use-system-font', 'custom-font'):
             self.font = self._current_font_from_gsetting()
             self.emit('changed', 'font')
-        elif key in ('style-scheme', 'prefer-dark-theme'):
+        elif key == "style-scheme":
             self.style_scheme = self._style_scheme_from_gsettings()
             self.emit('changed', 'style-scheme')
 
+    def on_style_manager_setting_notify(self, manager, pspec):
+        property_name = pspec.get_name()
+        if property_name == "dark":
+            self.on_setting_changed(settings, "style-scheme")
+        elif property_name == "monospace-font-name":
+            self.on_setting_changed(settings, "use-system-font")
+
     def _style_scheme_from_gsettings(self):
-        from meld.style import set_base_style_scheme
         manager = GtkSource.StyleSchemeManager.get_default()
         scheme = manager.get_scheme(settings.get_string('style-scheme'))
-        prefer_dark = settings.get_boolean("prefer-dark-theme")
-        set_base_style_scheme(scheme, prefer_dark)
+        set_base_style_scheme(scheme)
         return scheme
 
     def _filters_from_gsetting(self, key, filt_type):
@@ -73,16 +82,18 @@ class MeldSettings(GObject.GObject):
         return filters
 
     def _current_font_from_gsetting(self, *args):
+        style_manager = Adw.StyleManager.get_default()
         if settings.get_boolean('use-system-font'):
             if sys.platform == 'win32':
                 font_string = 'Consolas 11'
             elif interface_settings:
-                font_string = interface_settings.get_string(
-                    'monospace-font-name')
+                font_string = style_manager.get_monospace_font_name()
             else:
                 font_string = 'monospace 11'
         else:
             font_string = settings.get_string('custom-font')
+        if not font_string:
+            font_string = "monospace 11"
         return Pango.FontDescription(font_string)
 
     def get_font_css(self) -> tuple[str, str]:
