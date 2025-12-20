@@ -254,7 +254,7 @@ class GSettingsStringComboBox(GSettingsComboBox):
     gsettings_value = GObject.Property(type=str, default="")
 
 
-class WrapMode(str, enum.Enum):
+class PreferenceEnum(str, enum.Enum):
     def __new__(cls, value, label, unit):
         obj = str.__new__(cls, [value])
         obj._value_ = value
@@ -263,15 +263,75 @@ class WrapMode(str, enum.Enum):
         return obj
 
     @classmethod
-    def from_enum(cls, genum: Gtk.WrapMode) -> Self:
+    def from_enum(cls, genum) -> Self:
         for member in cls:
             if member.settings_value == genum:
                 return member
         raise ValueError(f"Unsupported {cls} setting value {genum}")
 
+
+class PreferenceComboRow(Adw.ComboRow):
+    __gtype_name__ = "PreferenceComboRow"
+
+    enum_cls_name = GObject.Property(
+        type=str,
+        flags=GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+    )
+    settings_key = GObject.Property(
+        type=str,
+        flags=GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+    )
+
+    def do_realize(self):
+        Adw.ComboRow.do_realize(self)
+
+        self.enum_cls = globals()[self.props.enum_cls_name]
+        self.connect("notify::selected-item", self.selected_item_changed)
+        settings.connect(f"changed::{self.props.settings_key}", self.setting_changed)
+        self.setting_changed(settings, None)
+
+        # Need to keep a reference to the closure expression here;
+        # self.props.expresion does not appear to do so.
+        self._expression = Gtk.ClosureExpression.new(str, self.get_text_wrap_label)
+        self.props.expression = self._expression
+
+    def selected_item_changed(self, row, paramspec):
+        wrap_mode = self.enum_cls(row.props.selected_item.get_string())
+        if self.enum_cls.setting_type is bool:
+            settings.set_boolean(self.props.settings_key, wrap_mode.settings_value)
+        elif self.enum_cls.setting_type is str:
+            settings.set_enum(self.props.settings_key, wrap_mode.settings_value)
+        else:
+            raise NotImplementedError()
+
+    def setting_changed(self, settings, key):
+        if self.enum_cls.setting_type is bool:
+            setting_value = settings.get_boolean(self.props.settings_key)
+        elif self.enum_cls.setting_type is str:
+            setting_value = settings.get_enum(self.props.settings_key)
+        else:
+            raise NotImplementedError()
+
+        wrap_mode = self.enum_cls.from_enum(setting_value)
+        self.props.selected = self.get_model().find(wrap_mode._value_)
+
+    def get_text_wrap_label(self, string_object):
+        return self.enum_cls(string_object.get_string()).label
+
+
+class WrapMode(PreferenceEnum):
+    setting_type = enum.nonmember(str)
+
     none = ("none", _("Never"), Gtk.WrapMode.NONE)
     word = ("word", _("At Spaces"), Gtk.WrapMode.WORD)
     char = ("char", _("Anywhere"), Gtk.WrapMode.CHAR)
+
+
+class TabCharacter(PreferenceEnum):
+    setting_type = enum.nonmember(bool)
+
+    tab = ("tab", _("Tab"), False)
+    spaces = ("spaces", _("Spaces"), True)
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
@@ -299,13 +359,11 @@ class PreferencesDialog(Adw.PreferencesDialog):
     custom_edit_command_entry = Gtk.Template.Child()
     custom_font_switch_row = Gtk.Template.Child()
     file_filters_vbox = Gtk.Template.Child()
-    font_action_row = Gtk.Template.Child()
     fontpicker = Gtk.Template.Child()
     spinbutton_commit_margin = Gtk.Template.Child()
     spinbutton_tabsize = Gtk.Template.Child()
     syntaxschemestore = Gtk.Template.Child()
     system_editor_checkbutton = Gtk.Template.Child()
-    tab_character_combo_row = Gtk.Template.Child()
     text_wrapping_combo_row = Gtk.Template.Child()
     text_filters_vbox = Gtk.Template.Child()
 
@@ -375,31 +433,3 @@ class PreferencesDialog(Adw.PreferencesDialog):
             scheme = manager.get_scheme(scheme_id)
             self.syntaxschemestore.append([scheme_id, scheme.get_name()])
         self.combobox_style_scheme.bind_to('style-scheme')
-
-        settings.bind_with_mapping(
-            "insert-spaces-instead-of-tabs",
-            self.tab_character_combo_row,
-            "selected",
-            Gio.SettingsBindFlags.DEFAULT,
-            get_mapping=lambda idx, value: 0 if value else 1,
-            set_mapping=lambda idx, value: GLib.Variant.new_boolean(bool(idx)),
-        )
-
-        def wrap_mode_row_changed(row, paramspec):
-            wrap_mode = WrapMode(row.props.selected_item.get_string())
-            settings.set_enum("wrap-mode", wrap_mode.settings_value)
-
-        def wrap_mode_setting_changed(settings, key):
-            wrap_mode = WrapMode.from_enum(settings.get_enum("wrap-mode"))
-            idx = self.text_wrapping_combo_row.get_model().find(wrap_mode._value_)
-            self.text_wrapping_combo_row.props.selected = idx
-
-        self.text_wrapping_combo_row.connect("notify::selected-item", wrap_mode_row_changed)
-        settings.connect("changed::wrap-mode", wrap_mode_setting_changed)
-        wrap_mode_setting_changed(settings, None)
-
-        self.show()
-
-    @Gtk.Template.Callback()
-    def get_text_wrap_label(self, string_object):
-        return WrapMode(string_object.get_string()).label

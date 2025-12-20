@@ -42,9 +42,11 @@
         <child>
           <object class="AdwPreferencesGroup">
             <child>
-              <object class="AdwComboRow" id="text_wrapping_combo_row">
+              <object class="PreferenceComboRow" id="text_wrapping_combo_row">
                 <property name="title" translatable="yes">Wrap Text</property>
                 <property name="subtitle" translatable="yes">How text should be wrapped when wider than the pane</property>
+                <property name="enum-cls-name">WrapMode</property>
+                <property name="settings-key">wrap-mode</property>
                 <property name="model">
                   <object class="GtkStringList">
                     <items>
@@ -53,9 +55,6 @@
                       <item>char</item>
                     </items>
                   </object>
-                </property>
-                <property name="expression">
-                  <closure type="gchararray" function="get_text_wrap_label"/>
                 </property>
               </object>
             </child>
@@ -90,14 +89,16 @@
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Indentation</property>
             <child>
-              <object class="AdwComboRow" id="tab_character_combo_row">
+              <object class="PreferenceComboRow" id="tab_character_combo_row">
                 <property name="title" translatable="yes">Tab character</property>
                 <property name="subtitle" translatable="yes">The character to be inserted for Tab</property>
+                <property name="enum-cls-name">TabCharacter</property>
+                <property name="settings-key">insert-spaces-instead-of-tabs</property>
                 <property name="model">
                   <object class="GtkStringList">
                     <items>
-                      <item translatable="yes">Tab</item>
-                      <item translatable="yes">Spaces</item>
+                      <item translatable="yes">tab</item>
+                      <item translatable="yes">spaces</item>
                     </items>
                   </object>
                 </property>
