@@ -196,64 +196,6 @@ class ColumnList(Gtk.Box, EditableListWidget):
         settings.set_value(self.settings_key, GLib.Variant('a(sb)', value))
 
 
-class GSettingsComboBox(Gtk.ComboBox):
-
-    def __init__(self):
-        super().__init__()
-        self.connect('notify::gsettings-value', self._setting_changed)
-        self.connect('notify::active', self._active_changed)
-
-    def bind_to(self, key):
-        settings.bind(
-            key, self, 'gsettings-value', Gio.SettingsBindFlags.DEFAULT)
-
-    def _setting_changed(self, obj, val):
-        column = self.get_property('gsettings-column')
-        value = self.get_property('gsettings-value')
-
-        for row in self.get_model():
-            if value == row[column]:
-                idx = row.path[0]
-                break
-        else:
-            idx = 0
-
-        if self.get_property('active') != idx:
-            self.set_property('active', idx)
-
-    def _active_changed(self, obj, val):
-        active_iter = self.get_active_iter()
-        if active_iter is None:
-            return
-        column = self.get_property('gsettings-column')
-        value = self.get_model()[active_iter][column]
-        self.set_property('gsettings-value', value)
-
-
-class GSettingsIntComboBox(GSettingsComboBox):
-
-    __gtype_name__ = "GSettingsIntComboBox"
-
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=int)
-
-
-class GSettingsBoolComboBox(GSettingsComboBox):
-
-    __gtype_name__ = "GSettingsBoolComboBox"
-
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=bool, default=False)
-
-
-class GSettingsStringComboBox(GSettingsComboBox):
-
-    __gtype_name__ = "GSettingsStringComboBox"
-
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=str, default="")
-
-
 class PreferenceEnum(str, enum.Enum):
     def __new__(cls, value, label, unit):
         obj = str.__new__(cls, [value])
