@@ -296,13 +296,13 @@ class PreferenceComboRow(Adw.ComboRow):
         self.props.expression = self._expression
 
     def selected_item_changed(self, row, paramspec):
-        wrap_mode = self.enum_cls(row.props.selected_item.get_string())
+        enum_value = self.enum_cls(row.props.selected_item.get_string())
         if self.enum_cls.setting_type is bool:
-            settings.set_boolean(self.props.settings_key, wrap_mode.settings_value)
+            settings.set_boolean(self.props.settings_key, enum_value.settings_value)
         elif self.enum_cls.setting_type is int:
-            settings.set_int(self.props.settings_key, wrap_mode.settings_value)
+            settings.set_int(self.props.settings_key, enum_value.settings_value)
         elif self.enum_cls.setting_type is str:
-            settings.set_enum(self.props.settings_key, wrap_mode.settings_value)
+            settings.set_enum(self.props.settings_key, enum_value.settings_value)
         else:
             raise NotImplementedError()
 
@@ -318,8 +318,8 @@ class PreferenceComboRow(Adw.ComboRow):
                 f"Unsupported Setting type {self.enum_cls.setting_type}"
             )
 
-        wrap_mode = self.enum_cls.from_enum(setting_value)
-        self.props.selected = self.get_model().find(wrap_mode._value_)
+        enum_value = self.enum_cls.from_enum(setting_value)
+        self.props.selected = self.get_model().find(enum_value._value_)
 
     def get_text_wrap_label(self, string_object):
         return self.enum_cls(string_object.get_string()).label
@@ -331,6 +331,14 @@ class WrapMode(PreferenceEnum):
     none = ("none", _("Never"), Gtk.WrapMode.NONE)
     word = ("word", _("At Spaces"), Gtk.WrapMode.WORD)
     char = ("char", _("Anywhere"), Gtk.WrapMode.CHAR)
+
+
+class StyleVariant(PreferenceEnum):
+    setting_type = enum.nonmember(str)
+
+    default = ("default", _("Follow System"), Adw.ColorScheme.DEFAULT)
+    force_light = ("force-light", _("Light"), Adw.ColorScheme.FORCE_LIGHT)
+    force_ark = ("force-dark", _("Dark"), Adw.ColorScheme.FORCE_DARK)
 
 
 class TabCharacter(PreferenceEnum):
@@ -374,7 +382,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
     checkbutton_highlight_current_line = Gtk.Template.Child()
     checkbutton_ignore_blank_lines = Gtk.Template.Child()
     checkbutton_ignore_symlinks = Gtk.Template.Child()
-    checkbutton_prefer_dark_theme = Gtk.Template.Child()
     checkbutton_shallow_compare = Gtk.Template.Child()
     checkbutton_show_commit_margin = Gtk.Template.Child()
     checkbutton_show_line_numbers = Gtk.Template.Child()
@@ -402,7 +409,6 @@ class PreferencesDialog(Adw.PreferencesDialog):
             ('indent-width', self.spinbutton_tabsize, 'value'),
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
-            ('prefer-dark-theme', self.checkbutton_prefer_dark_theme, 'active'),  # noqa: E501
             ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),

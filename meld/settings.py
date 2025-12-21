@@ -38,6 +38,7 @@ class MeldSettings(GObject.GObject):
         self.on_setting_changed(settings, 'text-filters')
         self.on_setting_changed(settings, 'use-system-font')
         self.on_setting_changed(settings, "style-scheme")
+        self.on_setting_changed(settings, "style-variant")
         self.style_scheme = self._style_scheme_from_gsettings()
         settings.connect('changed', self.on_setting_changed)
 
@@ -59,6 +60,11 @@ class MeldSettings(GObject.GObject):
         elif key == "style-scheme":
             self.style_scheme = self._style_scheme_from_gsettings()
             self.emit('changed', 'style-scheme')
+        elif key == "style-variant":
+            manager = Adw.StyleManager.get_default()
+            setting_value = settings.get_enum("style-variant")
+            manager.set_color_scheme(Adw.ColorScheme(setting_value))
+            self.emit("changed", "style-variant")
 
     def on_style_manager_setting_notify(self, manager, pspec):
         property_name = pspec.get_name()

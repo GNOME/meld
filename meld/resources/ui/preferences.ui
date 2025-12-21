@@ -13,6 +13,22 @@
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Appearance</property>
             <child>
+              <object class="PreferenceComboRow" id="style_variant_combo_row">
+                <property name="title" translatable="yes">Interface Style</property>
+                <property name="enum-cls-name">StyleVariant</property>
+                <property name="settings-key">style-variant</property>
+                <property name="model">
+                  <object class="GtkStringList">
+                    <items>
+                      <item>default</item>
+                      <item>force-light</item>
+                      <item>force-dark</item>
+                    </items>
+                  </object>
+                </property>
+              </object>
+            </child>
+            <child>
               <object class="AdwExpanderRow" id="custom_font_switch_row">
                 <property name="show-enable-switch">True</property>
                 <property name="title" translatable="yes">Use custom font</property>
@@ -130,14 +146,6 @@
                   <object class="GtkBox" id="vbox23">
                     <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkCheckButton" id="checkbutton_prefer_dark_theme">
-                        <property name="valign">center</property>
-                        <property name="label" translatable="1">Prefer dark theme</property>
-                        <property name="focusable">1</property>
-                        <property name="use_underline">1</property>
-                      </object>
-                    </child>
                     <child>
                       <object class="GtkCheckButton" id="checkbutton_use_syntax_highlighting">
                         <property name="valign">center</property>
