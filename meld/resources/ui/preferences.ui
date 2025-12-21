@@ -7,7 +7,7 @@
     <property name="width-request">800</property>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="title" translatable="1">Editor</property>
+        <property name="title" translatable="yes">Editor</property>
         <property name="icon_name">editor-symbolic</property>
         <child>
           <object class="AdwPreferencesGroup">
@@ -198,7 +198,7 @@
     </child>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="title" translatable="1">Folder Comparison</property>
+        <property name="title" translatable="yes">Folder Comparison</property>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Comparison Options</property>
@@ -270,7 +270,7 @@
     </child>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="title" translatable="1">Version Control</property>
+        <property name="title" translatable="yes">Version Control</property>
         <property name="icon_name">folder-symbolic</property>
         <child>
           <object class="AdwPreferencesGroup">
@@ -342,12 +342,12 @@
     </child>
     <child>
       <object class="AdwPreferencesPage">
-        <property name="title" translatable="1">Filters</property>
+        <property name="title" translatable="yes">Filters</property>
         <property name="icon_name">folder-symbolic</property>
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Filename filters</property>
-            <property name="description" translatable="1" comments="Translators: &apos;filter out&apos; refers to removing matched files and folders from the display">When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces.</property>
+            <property name="description" translatable="yes" comments="Translators: &apos;filter out&apos; refers to removing matched files and folders from the display">When performing directory comparisons, you may filter out files and directories by name. Each pattern is a list of shell style wildcards separated by spaces.</property>
             <child>
               <object class="GtkBox" id="file_filters_vbox">
                 <property name="hexpand">1</property>
@@ -370,7 +370,7 @@
         <child>
           <object class="AdwPreferencesGroup">
             <property name="title" translatable="yes">Text filters</property>
-            <property name="description" translatable="1">When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details.</property>
+            <property name="description" translatable="yes">When performing file comparisons, you may ignore certain types of changes. Each pattern here is a python regular expression which replaces matching text with the empty string before comparison is performed. If the expression contains groups, only the groups are replaced. See the user manual for more details.</property>
             <child>
               <object class="GtkBox" id="text_filters_vbox">
                 <property name="hexpand">1</property>
@@ -382,26 +382,4 @@
       </object>
     </child>
   </template>
-  <object class="GtkListStore" id="overviewstylestore">
-    <columns>
-      <!-- column-name id -->
-      <column type="gchararray"/>
-      <!-- column-name label -->
-      <column type="gchararray"/>
-    </columns>
-    <data>
-      <row>
-        <col id="0">chunkmap</col>
-        <col id="1" translatable="yes">Simple change map</col>
-      </row>
-      <row>
-        <col id="0">compact-sourcemap</col>
-        <col id="1" translatable="yes">Compact source map</col>
-      </row>
-      <row>
-        <col id="0">full-sourcemap</col>
-        <col id="1" translatable="yes">Full source map</col>
-      </row>
-    </data>
-  </object>
 </interface>
