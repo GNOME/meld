@@ -31,7 +31,7 @@
             <child>
               <object class="AdwExpanderRow" id="custom_font_switch_row">
                 <property name="show-enable-switch">True</property>
-                <property name="title" translatable="yes">Use custom font</property>
+                <property name="title" translatable="yes">Use Custom Font</property>
                 <property name="subtitle" translatable="yes">Choose a font different to the system default monospace font</property>
                 <property name="expanded"
                   bind-source="custom_font_switch_row"
@@ -47,6 +47,30 @@
                         <property name="font">Monospace 12</property>
                         <property name="use_font">1</property>
                         <property name="valign">center</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="AdwExpanderRow" id="syntax_highlighting_switch_row">
+                <property name="show-enable-switch">True</property>
+                <property name="title" translatable="yes">Use Syntax Highlighting</property>
+                <property name="expanded"
+                  bind-source="syntax_highlighting_switch_row"
+                  bind-property="enable-expansion"
+                  bind-flags="sync-create|bidirectional"
+                />
+                <child>
+                  <object class="AdwActionRow">
+                    <property name="title" translatable="yes">Color Scheme</property>
+                    <child type="suffix">
+                      <object class="GtkSourceStyleSchemeChooserButton" id="style_scheme_chooser_button">
+                        <property name="valign">center</property>
+                        <style>
+                          <class name="flat"/>
+                        </style>
                       </object>
                     </child>
                   </object>
@@ -134,55 +158,6 @@
                     <property name="page_increment">10</property>
                   </object>
                 </property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="AdwPreferencesGroup">
-            <child>
-              <object class="GtkBox" id="hbox17">
-                <child>
-                  <object class="GtkBox" id="vbox23">
-                    <property name="orientation">vertical</property>
-                    <property name="spacing">6</property>
-                    <child>
-                      <object class="GtkCheckButton" id="checkbutton_use_syntax_highlighting">
-                        <property name="valign">center</property>
-                        <property name="label" translatable="1">Use s_yntax highlighting</property>
-                        <property name="focusable">1</property>
-                        <property name="use_underline">1</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkBox" id="hbox11">
-                        <property name="valign">center</property>
-                        <property name="spacing">6</property>
-                        <child>
-                          <object class="GtkLabel" id="label16">
-                            <property name="hexpand">1</property>
-                            <property name="label" translatable="1">Syntax highlighting color scheme:</property>
-                          </object>
-                        </child>
-                        <child>
-                          <object class="GSettingsStringComboBox" id="combobox_style_scheme">
-                            <property name="hexpand">1</property>
-                            <property name="visible">True</property>
-                            <property name="can_focus">False</property>
-                            <property name="model">syntaxschemestore</property>
-                            <property name="gsettings-column">0</property>
-                            <child>
-                              <object class="GtkCellRendererText" id="syntax_scheme_renderer"/>
-                              <attributes>
-                                <attribute name="text">1</attribute>
-                              </attributes>
-                            </child>
-                          </object>
-                        </child>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
             </child>
           </object>
@@ -428,13 +403,5 @@
         <col id="1" translatable="yes">Full source map</col>
       </row>
     </data>
-  </object>
-  <object class="GtkListStore" id="syntaxschemestore">
-    <columns>
-      <!-- column-name id -->
-      <column type="gchararray"/>
-      <!-- column-name name -->
-      <column type="gchararray"/>
-    </columns>
   </object>
 </interface>

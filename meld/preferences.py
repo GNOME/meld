@@ -387,16 +387,15 @@ class PreferencesDialog(Adw.PreferencesDialog):
     checkbutton_show_line_numbers = Gtk.Template.Child()
     checkbutton_show_overview_map = Gtk.Template.Child()
     checkbutton_show_whitespace = Gtk.Template.Child()
-    checkbutton_use_syntax_highlighting = Gtk.Template.Child()
     column_list_vbox = Gtk.Template.Child()
-    combobox_style_scheme = Gtk.Template.Child()
     custom_edit_command_entry = Gtk.Template.Child()
     custom_font_switch_row = Gtk.Template.Child()
     file_filters_vbox = Gtk.Template.Child()
     fontpicker = Gtk.Template.Child()
     spinbutton_commit_margin = Gtk.Template.Child()
     spinbutton_tabsize = Gtk.Template.Child()
-    syntaxschemestore = Gtk.Template.Child()
+    style_scheme_chooser_button = Gtk.Template.Child()
+    syntax_highlighting_switch_row = Gtk.Template.Child()
     system_editor_checkbutton = Gtk.Template.Child()
     text_wrapping_combo_row = Gtk.Template.Child()
     text_filters_vbox = Gtk.Template.Child()
@@ -409,7 +408,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
             ('indent-width', self.spinbutton_tabsize, 'value'),
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
-            ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
+            ("highlight-syntax", self.syntax_highlighting_switch_row, "enable-expansion"),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
             ("folder-shallow-comparison", self.checkbutton_shallow_compare, "enable-expansion"),  # noqa: E501
@@ -456,9 +455,18 @@ class PreferencesDialog(Adw.PreferencesDialog):
         columnlist.set_vexpand(True)
         self.column_list_vbox.append(columnlist)
 
-        # Fill color schemes
-        manager = GtkSource.StyleSchemeManager.get_default()
-        for scheme_id in manager.get_scheme_ids():
+        def setting_from_scheme(*args):
+            scheme_id = self.style_scheme_chooser_button.props.style_scheme.get_id()
+            settings.set_string("style-scheme", scheme_id)
+
+        def scheme_from_setting(*args):
+            manager = GtkSource.StyleSchemeManager.get_default()
+            scheme_id = settings.get_string("style-scheme")
             scheme = manager.get_scheme(scheme_id)
-            self.syntaxschemestore.append([scheme_id, scheme.get_name()])
-        self.combobox_style_scheme.bind_to('style-scheme')
+            self.style_scheme_chooser_button.set_style_scheme(scheme)
+
+        self.style_scheme_chooser_button.connect(
+            "notify::style-scheme", setting_from_scheme
+        )
+        settings.connect("changed::style-scheme", scheme_from_setting)
+        scheme_from_setting()
