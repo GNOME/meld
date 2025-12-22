@@ -1285,11 +1285,6 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     def request_close(self, external_callback=None):
         self.state = ComparisonState.Closing
-        response = self.check_save_modified()
-        if response == Gtk.ResponseType.OK:
-            meld_settings = get_meld_settings()
-            for h in self.settings_handlers:
-                meld_settings.disconnect(h)
 
         def callback(dialog, response):
             closed = False
