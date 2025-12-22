@@ -296,9 +296,10 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
-        for page in self.notebook.get_children():
-            if page != srcpage:
-                page.on_file_changed(filename)
+        for page in self.notebook.get_pages():
+            child = page.get_child()
+            if child != srcpage:
+                child.on_file_changed(filename)
 
     @Gtk.Template.Callback()
     def on_open_recent(self, recent_selector, uri):
