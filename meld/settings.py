@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from typing import Optional
 
 from gi.repository import Adw, Gio, GObject, GtkSource, Pango
 
@@ -88,14 +87,12 @@ class MeldSettings(GObject.GObject):
         return filters
 
     def _current_font_from_gsetting(self, *args):
-        style_manager = Adw.StyleManager.get_default()
         if settings.get_boolean('use-system-font'):
             if sys.platform == 'win32':
                 font_string = 'Consolas 11'
-            elif interface_settings:
-                font_string = style_manager.get_monospace_font_name()
             else:
-                font_string = 'monospace 11'
+                style_manager = Adw.StyleManager.get_default()
+                font_string = style_manager.get_monospace_font_name()
         else:
             font_string = settings.get_string('custom-font')
         if not font_string:
@@ -125,28 +122,14 @@ def load_settings_schema(schema_id):
     return settings
 
 
-def load_interface_settings() -> Optional[Gio.Settings]:
-
-    # We conditionally load these since they're only used for default
-    # fonts and can sometimes be missing (e.g., in some Windows setups)
-    default_source = Gio.SettingsSchemaSource.get_default()
-    schema = default_source.lookup("org.gnome.desktop.interface", False)
-    if not schema:
-        return None
-
-    return Gio.Settings.new_full(schema=schema, backend=None, path=None)
-
-
 def create_settings():
-    global settings, interface_settings, _meldsettings
+    global settings, _meldsettings
 
     settings = load_settings_schema(meld.conf.SETTINGS_SCHEMA_ID)
-    interface_settings = load_interface_settings()
     _meldsettings = MeldSettings()
 
 
 def bind_settings(obj):
-    global settings
     bind_flags = (
         Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.NO_SENSITIVITY)
     for binding in getattr(obj, '__gsettings_bindings__', ()):
@@ -169,5 +152,4 @@ def get_meld_settings() -> MeldSettings:
 
 
 settings = None
-interface_settings = None
 _meldsettings = None
