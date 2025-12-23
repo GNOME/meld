@@ -274,7 +274,8 @@ class TreeviewCommon:
         selection = treeview.get_selection()
         model, rows = selection.get_selected_rows()
 
-        if path[0] not in rows:
+        row_paths = [str(r) for r in rows]
+        if str(path[0]) not in row_paths:
             selection.unselect_all()
             selection.select_path(path[0])
             treeview.set_cursor(path[0])
