@@ -253,26 +253,6 @@ class TreeviewCommon:
         # focuscontroller.connect("leave", self.on_textview_focus_out_event)
         treeview.add_controller(focuscontroller)
 
-    def on_treeview_popup_menu(self, treeview):
-        cursor_path, cursor_col = treeview.get_cursor()
-        if not cursor_path:
-            self.popup_menu.popup_at_pointer(None)
-            return True
-
-        # We always want to pop up to the right of the first column,
-        # ignoring the actual cursor column location.
-        rect = treeview.get_background_area(
-            cursor_path, treeview.get_column(0))
-
-        self.popup_menu.popup_at_rect(
-            treeview.get_bin_window(),
-            rect,
-            Gdk.Gravity.SOUTH_EAST,
-            Gdk.Gravity.NORTH_WEST,
-            None,
-        )
-        return True
-
     def on_treeview_button_press_event(self, controller, n_press, wx, wy):
         treeview = controller.get_widget()
 

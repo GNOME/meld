@@ -1468,10 +1468,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
         self.current_path = cursor_path
 
-    @Gtk.Template.Callback()
-    def on_treeview_popup_menu(self, treeview):
-        return tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
-
     @with_focused_pane
     def action_prev_pane(self, pane, *args):
         new_pane = (pane - 1) % self.num_panes
