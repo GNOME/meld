@@ -70,6 +70,8 @@ def file_is_image(gfile):
     except GLib.Error as err:
         if err.code == Gio.IOErrorEnum.NOT_FOUND:
             return False
+        elif err.code == Gio.IOErrorEnum.NOT_MOUNTED:
+            return False
         raise
 
 
