@@ -377,7 +377,7 @@ class ComparisonMarker(NamedTuple):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
-class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
+class DirDiff(Gtk.Box, MeldDoc):
 
     __gtype_name__ = "DirDiff"
 
@@ -551,12 +551,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             self.view_action_group.add_action(action)
 
         builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/dirdiff-menus.ui')
-        context_menu = builder.get_object('dirdiff-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
-        self.popup_menu.attach_to_widget(self)
-
-        builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/dirdiff-actions.ui')
         self.toolbar_actions = builder.get_object('view-toolbar')
 
@@ -599,14 +593,10 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ],
         )
 
-        self.ensure_style()
-
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
         self.do_to_others_lock = False
-        for treeview in self.treeview:
-            treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.force_cursor_recalculate = False
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.focus_pane = None
@@ -704,11 +694,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self._scan_in_progress = 0
 
         self.marked = None
-
-        for treeview in [self.treeview0, self.treeview1, self.treeview2]:
-            self._add_treeview_gesture_controller(treeview)
-            self._add_treeview_key_controller(treeview)
-            self._add_treeview_focus_controler(treeview)
 
     def queue_draw(self):
         for treeview in self.treeview:
@@ -1478,6 +1463,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         new_pane = (pane + 1) % self.num_panes
         self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
+    @Gtk.Template.Callback()
     def on_treeview_key_press_event(self, controller, keyval, keycode, state, *user_data):
         if keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
@@ -1541,6 +1527,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.row_expansions.discard(str(path))
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
 
+    @Gtk.Template.Callback()
     def on_treeview_focus_in_event(self, controller):
         old_pane = self.focus_pane
         self.focus_pane = controller.get_widget() if controller else self.treeview0

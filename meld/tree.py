@@ -17,7 +17,7 @@
 import os
 
 from gi.module import get_introspection_module
-from gi.repository import Gdk, GLib, GObject, Gtk, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 
 from meld.style import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
@@ -231,38 +231,47 @@ class DiffTreeStore(SearchableTreeStore):
             self.set(treeiter, safe_keys_values)
 
 
-class TreeviewCommon:
+class MeldTreeView(Gtk.TreeView):
 
-    def _add_treeview_gesture_controller(self, treeview, callback=None):
-        controller = Gtk.GestureClick()
-        controller.connect(
-            "pressed", self.on_treeview_button_press_event if not callback else callback)
-        controller.set_button(3)
-        controller.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
-        treeview.add_controller(controller)
+    __gtype_name__ = "MeldTreeView"
 
-    def _add_treeview_key_controller(self, treeview):
-        keycontroller = Gtk.EventControllerKey()
-        keycontroller.connect("key-pressed", self.on_treeview_key_press_event)
-        # keycontroller.connect("key-released", self.on_key_event)
-        treeview.add_controller(keycontroller)
+    context_menu_model = GObject.Property(
+        type=Gio.MenuModel,
+        flags=GObject.ParamFlags.READWRITE,
+    )
 
-    def _add_treeview_focus_controler(self, treeview):
-        focuscontroller = Gtk.EventControllerFocus()
-        focuscontroller.connect("enter", self.on_treeview_focus_in_event)
-        # focuscontroller.connect("leave", self.on_textview_focus_out_event)
-        treeview.add_controller(focuscontroller)
+    def __init__(self, *args, **kwargs):
+        Gtk.TreeView.__init__(self, *args, **kwargs)
+
+        controller = Gtk.GestureClick(
+            button=3,
+            propagation_phase=Gtk.PropagationPhase.CAPTURE,
+        )
+        controller.connect("pressed", self.on_treeview_button_press_event)
+        self.add_controller(controller)
+        self.set_search_equal_func(self.treeview_search_cb, None)
+
+        # This is the only way I could get the context menu construction to behave
+        # correctly. If the PopoverMenu wasn't constructed *and parented* during
+        # __init__ then even though it appeared and functioned, the focus handling
+        # was all wrong.
+        self.context_menu = Gtk.PopoverMenu(
+            position=Gtk.PositionType.BOTTOM,
+            has_arrow=False,
+            halign=Gtk.Align.START,
+        )
+        self.context_menu.set_parent(self)
+
+    def do_realize(self):
+        Gtk.TreeView.do_realize(self)
+        self.context_menu.set_menu_model(self.context_menu_model)
+
+    def do_size_allocate(self, *args):
+        Gtk.TreeView.do_size_allocate(self, *args)
+        self.context_menu.present()
 
     def on_treeview_button_press_event(self, controller, n_press, wx, wy):
         treeview = controller.get_widget()
-
-        # If we have multiple treeviews, unselect clear other tree selections
-        num_panes = getattr(self, 'num_panes', 1)
-        if num_panes > 1:
-            for t in self.treeview[:self.num_panes]:
-                if t != treeview:
-                    t.get_selection().unselect_all()
-
         treeview.grab_focus()
 
         x, y = treeview.convert_widget_to_bin_window_coords(wx, wy)
@@ -283,23 +292,22 @@ class TreeviewCommon:
         rect = Gdk.Rectangle()
         rect.x, rect.y = wx, wy
 
-        self.popup_menu.set_pointing_to(rect)
-        self.popup_menu.popup()
+        treeview.context_menu.set_pointing_to(rect)
+        treeview.context_menu.popup()
         return True
 
+    def treeview_search_cb(self, model, column, key, it, data):
+        # If the key contains a path separator, search the whole path,
+        # otherwise just use the filename. If the key is all lower-case, do a
+        # case-insensitive match.
+        abs_search = "/" in key
+        lower_key = key.islower()
 
-def treeview_search_cb(model, column, key, it, data):
-    # If the key contains a path separator, search the whole path,
-    # otherwise just use the filename. If the key is all lower-case, do a
-    # case-insensitive match.
-    abs_search = '/' in key
-    lower_key = key.islower()
-
-    for path in model.value_paths(it):
-        if not path:
-            continue
-        text = path if abs_search else os.path.basename(path)
-        text = text.lower() if lower_key else text
-        if key in text:
-            return False
-    return True
+        for path in model.value_paths(it):
+            if not path:
+                continue
+            text = path if abs_search else os.path.basename(path)
+            text = text.lower() if lower_key else text
+            if key in text:
+                return False
+        return True

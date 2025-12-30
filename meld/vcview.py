@@ -116,7 +116,7 @@ class VcTreeStore(tree.DiffTreeStore):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/vcview.ui')
-class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
+class VcView(Gtk.Box, MeldDoc):
 
     __gtype_name__ = "VcView"
 
@@ -165,7 +165,6 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
     location_renderer = Gtk.Template.Child()
     name_column = Gtk.Template.Child()
     name_renderer = Gtk.Template.Child()
-    popup_menu = Gtk.Template.Child()
     status_column = Gtk.Template.Child()
     status_renderer = Gtk.Template.Child()
     treeview = Gtk.Template.Child()
@@ -239,15 +238,10 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 action.connect('change-state', callback)
             self.view_action_group.add_action(action)
 
-        # FIXME: This is unsupported and incorrect, but also GTK doesn't let us
-        # do anything else at this point, so we get to live with it.
-        self.popup_menu.set_parent(self.treeview)
-
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
         self.treeview.get_selection().connect(
             "changed", self.on_treeview_selection_changed)
-        self.treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.current_path, self.prev_path, self.next_path = None, None, None
 
         self.name_column.set_attributes(
@@ -276,8 +270,6 @@ class VcView(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                       Gio.SettingsBindFlags.DEFAULT)
         settings.bind('vc-console-pane-position', self.vc_console_vpaned,
                       'position', Gio.SettingsBindFlags.DEFAULT)
-
-        self._add_treeview_gesture_controller(self.treeview)
 
     def on_container_switch_in_event(self, window):
         super().on_container_switch_in_event(window)

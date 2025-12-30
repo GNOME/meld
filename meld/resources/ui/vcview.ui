@@ -164,8 +164,9 @@
           <object class="GtkScrolledWindow" id="scrolledwindow">
             <property name="focusable">1</property>
             <property name="child">
-              <object class="GtkTreeView" id="treeview">
+              <object class="MeldTreeView" id="treeview">
                 <property name="focusable">1</property>
+                <property name="context-menu-model">vcview-context-menu</property>
                 <signal name="cursor-changed" handler="on_treeview_cursor_changed" swapped="no"/>
                 <signal name="row-activated" handler="on_row_activated" swapped="no"/>
                 <child>
@@ -250,11 +251,6 @@
       </object>
     </child>
   </template>
-  <object class="GtkPopoverMenu" id="popup_menu">
-    <property name="menu-model">vcview-context-menu</property>
-    <property name="has-arrow">False</property>
-    <property name="halign">GTK_ALIGN_START</property>
-  </object>
   <menu id="consoleview-context-menu">
     <section>
       <item>
