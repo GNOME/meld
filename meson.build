@@ -1,6 +1,6 @@
 project(
   'meld',
-  version : '3.23.1',
+  version : '3.23.2',
   meson_version : '>= 1.2.0',
   license : 'GPL-2.0-or-later',
   license_files : ['COPYING'],
