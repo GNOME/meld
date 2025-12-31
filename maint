@@ -345,7 +345,7 @@ def dist():
 
     click.echo('Creating distribution...')
     cmd = ['meson', 'dist', '-C', build_dir]
-    call_with_output(cmd, echo_stdout=False)
+    call_with_output(cmd, echo_stdout=True)
 
     if not os.path.exists(dist_archive_path):
         click.echo('Failed to create archive file %s' % dist_archive_path)
