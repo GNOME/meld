@@ -1228,32 +1228,25 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     def check_save_modified(self, callback):
         buffers = self.textbuffer[:self.num_panes]
-        if any(b.get_modified() for b in buffers):
-            dialog = Adw.MessageDialog(transient_for=self.get_root())
-            dialog.set_heading(_("Save changes to documents before closing?"))
-            dialog.set_body(_("If you don't save, changes will be permanently lost."))
-            box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        if not any(b.get_modified() for b in buffers):
+            callback(None, "discard", [])
+            return
 
-            self.buttons = []
-            for buf in buffers:
-                button = Gtk.CheckButton.new_with_label(buf.data.label)
-                needs_save = buf.get_modified()
-                button.set_sensitive(needs_save)
-                button.set_active(needs_save)
-                box.prepend(button)
-                self.buttons.append(button)
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/save-confirm-dialog.ui")
+        dialog = builder.get_object("save-confirm-dialog")
 
-            dialog.set_extra_child(box)
+        buttons = []
+        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
+        for buf in buffers:
+            button = Gtk.CheckButton.new_with_label(buf.data.label)
+            needs_save = buf.get_modified()
+            button.set_sensitive(needs_save)
+            button.set_active(needs_save)
+            box.prepend(button)
+            buttons.append(button)
 
-            dialog.add_response("close", _("Close _without Saving"))
-            dialog.add_response("cancel", _("_Cancel"))
-            dialog.add_response("save", _("_Save"))
-
-            dialog.connect("response", callback)
-
-            dialog.present()
-        else:
-            callback(None, "close")
+        dialog.set_extra_child(box)
+        dialog.choose(self.get_root(), None, callback, buttons)
 
     def prompt_resolve_conflict(self):
         parent = self.meta.get('parent', None)
@@ -1286,9 +1279,12 @@ class FileDiff(Gtk.Box, MeldDoc):
     def request_close(self, external_callback=None):
         self.state = ComparisonState.Closing
 
-        def callback(dialog, response):
+        def callback(dialog, response, buttons):
+            if not isinstance(response, str):
+                response = dialog.choose_finish(response)
+
             closed = False
-            try_save = [b.get_active() for b in self.buttons]
+            try_save = [b.get_active() for b in buttons]
 
             if response == "save":
                 buffers = self.textbuffer[:self.num_panes]
@@ -1301,7 +1297,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                 # doesn't run. Instead, the file-saved callback from
                 # save_file() handles closing files and setting state.
                 return # TODO maybe close directly
-            elif response == "close":
+            elif response == "discard":
                 response = "save"
 
             if response == "save" and self.meta:
