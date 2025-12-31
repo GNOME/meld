@@ -280,12 +280,6 @@ def cli():
 
 
 @cli.command()
-def test():
-    cmd = ['py.test-3', 'test/']
-    call_with_output(cmd, echo_stdout=True)
-
-
-@cli.command()
 def news():
     rendered = render_template(NEWS_TEMPLATE)
     with open('NEWS', 'r') as f:
