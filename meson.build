@@ -1,7 +1,9 @@
 project(
   'meld',
-  version: '3.22.0',
-  meson_version: '>= 1.2.0',
+  version : '3.23.2',
+  meson_version : '>= 1.2.0',
+  license : 'GPL-2.0-or-later',
+  license_files : ['COPYING'],
 )
 
 python = import('python')
@@ -47,6 +49,8 @@ gio_schemasdir = dependency('gio-2.0').get_variable(
   pkgconfig_define: ['datadir', datadir],
   default_value: datadir / 'glib-2.0/schemas',
 )
+
+install_data('COPYING', install_dir: pkgdatadir)
 
 subdir('bin')
 subdir('meld')

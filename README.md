@@ -16,30 +16,30 @@ Meld is licensed under the GPL v2 or later.
 Requirements
 ------------
 
-* Python 3.6
+* Python 3.10
 * pycairo (Python3 bindings for cairo without GObject layer)
-* PyGObject 3.36 (Python3 bindings for GObject introspection)
+* PyGObject 3.38 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
 
 And following packages with GObject introspection:
 
-* GLib 2.36
+* GLib 2.66
 * Pango
 * PangoCairo
-* GTK+ 3.22
+* GTK+ 3.24
 * GtkSourceView 4.0
 
 
 Build requirements
 ------------------
 
-* Python 3.6
-* Meson 0.48
+* Python 3.10
+* Meson 1.2
 * Ninja
 * gettext
-* GLib 2.36 and its development utilities such as `glib-compile-schemas`
+* GLib 2.66 and its development utilities such as `glib-compile-schemas`
 
-For Windows build requirements, see `mingw-common` section `.gitlab-ci.yml`
+For Windows build requirements, see `mingw64-dist` section of `.gitlab-ci.yml`
 
 
 Running
@@ -81,13 +81,8 @@ You can then install Meld system-wide by running:
 $ ninja install
 ```
 
-A Windows installer can be built with command
-
-```powershell
-C:\Python34\python.exe setup_win32.py bdist_msi
-```
-
-which will create the file `dist/Meld-VERSION-ARCH.msi`.
+For building a Windows version, the `.gitlab-ci.yml` script is the most
+reliable reference.
 
 
 Developing

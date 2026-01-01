@@ -65,6 +65,17 @@
             </child>
             <child>
               <object class="GtkButton">
+                <property name="action_name">view.vc-unstage</property>
+                <property name="tooltip_text" translatable="yes">Remove staged changes</property>
+                <child>
+                  <object class="GtkImage">
+                    <property name="icon-name">edit-undo-symbolic</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkButton">
                 <property name="action_name">view.vc-remove</property>
                 <property name="tooltip_text" translatable="yes">Remove from version control</property>
                 <child>
@@ -276,6 +287,10 @@
       <item>
         <attribute name="label" translatable="yes">_Add</attribute>
         <attribute name="action">view.vc-add</attribute>
+      </item>
+      <item>
+        <attribute name="label" translatable="yes">_Unstage</attribute>
+        <attribute name="action">view.vc-unstage</attribute>
       </item>
       <item>
         <attribute name="label" translatable="yes">_Remove</attribute>

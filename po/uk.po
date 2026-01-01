@@ -3,15 +3,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024.
+# Yuri Chornoivan <yurchor@ukr.net>, 2020, 2021, 2022, 2023, 2024, 2025.
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2024-07-09 17:29+0000\n"
-"PO-Revision-Date: 2024-07-10 06:39+0300\n"
+"POT-Creation-Date: 2025-03-09 02:22+0000\n"
+"PO-Revision-Date: 2025-03-11 23:07+0200\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
-"Language-Team: Ukrainian\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -988,7 +988,7 @@ msgid "New"
 msgstr "Новий"
 
 #: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
-#: meld/vc/_vc.py:77
+#: meld/vc/_vc.py:80
 msgid "Modified"
 msgstr "Змінено"
 
@@ -1004,11 +1004,11 @@ msgstr "Нормалізувати шляхи у Unicode"
 msgid "Normal"
 msgstr "Звичайний"
 
-#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:71
+#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:74
 msgid "Unversioned"
 msgstr "Поза керуванням версіями"
 
-#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:70
+#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:73
 msgid "Ignored"
 msgstr "Проігноровано"
 
@@ -1073,7 +1073,7 @@ msgid "Column Name"
 msgstr "Назва стовпчика"
 
 #: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:127
-#: meld/resources/ui/vcview-menus.ui:22 meld/vcview.py:748
+#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:774
 msgid "_Remove"
 msgstr "_Вилучити"
 
@@ -1111,7 +1111,7 @@ msgstr "Попередні журнали:"
 
 #: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
 #: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1276
+#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1290
 #: meld/iohelpers.py:56 meld/iohelpers.py:116
 msgid "_Cancel"
 msgstr "_Скасувати"
@@ -1169,7 +1169,7 @@ msgid "_Copy File Paths"
 msgstr "_Копіювати шляхи до файлів"
 
 #: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:74
-#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:139
+#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:152
 msgid "Select Folder"
 msgstr "Виберіть теку"
 
@@ -1284,13 +1284,13 @@ msgstr "Файл 3"
 msgid "File 2"
 msgstr "Файл 2"
 
-#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:148
+#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:161
 msgid "File 1"
 msgstr "Файл 1"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:217
-#: meld/dirdiff.py:620
+#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:230
+#: meld/dirdiff.py:634
 msgid "Name"
 msgstr "Назва"
 
@@ -1346,7 +1346,7 @@ msgstr "Циклічний пошук"
 msgid "Replace _All"
 msgstr "Замінити _все"
 
-#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1278 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1292 meld/iohelpers.py:117
 msgid "_Replace"
 msgstr "За_мінити"
 
@@ -1409,7 +1409,7 @@ msgstr "Виберіть теку, яка перебуває у системі �
 
 #: meld/resources/ui/new-diff-tab.ui:455
 msgid "_Blank comparison"
-msgstr "Порівняння п_робілів"
+msgstr "По_рожнє порівняння"
 
 #: meld/resources/ui/new-diff-tab.ui:473
 msgid "C_ompare"
@@ -1767,15 +1767,19 @@ msgstr "_Порівняти"
 msgid "Co_mmit…"
 msgstr "В_нести…"
 
-#: meld/resources/ui/vcview-menus.ui:26
+#: meld/resources/ui/vcview-menus.ui:22
+msgid "_Unstage"
+msgstr "_Скасувати формування"
+
+#: meld/resources/ui/vcview-menus.ui:30
 msgid "Re_vert"
 msgstr "_Відновити"
 
-#: meld/resources/ui/vcview-menus.ui:30
+#: meld/resources/ui/vcview-menus.ui:34
 msgid "Delete"
 msgstr "Вилучити"
 
-#: meld/resources/ui/vcview-menus.ui:37
+#: meld/resources/ui/vcview-menus.ui:41
 msgid "Resolve Conflict"
 msgstr "Усунути конфлікт"
 
@@ -1800,34 +1804,39 @@ msgid "Add to version control"
 msgstr "Додати до системи керування версіями"
 
 #: meld/resources/ui/vcview.ui:88
+#| msgid "Delete change"
+msgid "Remove staged changes"
+msgstr "Вилучити сформовані зміни"
+
+#: meld/resources/ui/vcview.ui:101
 msgid "Remove from version control"
 msgstr "Вилучити з системи керування версіями"
 
-#: meld/resources/ui/vcview.ui:101
+#: meld/resources/ui/vcview.ui:114
 msgid "Revert working copy to original state"
 msgstr "Повернути робочу копію до початкового стану"
 
-#: meld/resources/ui/vcview.ui:114
+#: meld/resources/ui/vcview.ui:127
 msgid "Mark as resolved in version control"
 msgstr "Позначити як розв'язаний у системі керування версіями"
 
-#: meld/resources/ui/vcview.ui:140
+#: meld/resources/ui/vcview.ui:153
 msgid "Open version controlled folder in this pane"
 msgstr "Відкрити на цій панелі теку у системі із керуванням версіями"
 
-#: meld/resources/ui/vcview.ui:229
+#: meld/resources/ui/vcview.ui:242
 msgid "Location"
 msgstr "Розташування"
 
-#: meld/resources/ui/vcview.ui:238
+#: meld/resources/ui/vcview.ui:251
 msgid "Status"
 msgstr "Стан"
 
-#: meld/resources/ui/vcview.ui:247
+#: meld/resources/ui/vcview.ui:260
 msgid "Extra"
 msgstr "Додатково"
 
-#: meld/resources/ui/vcview.ui:279
+#: meld/resources/ui/vcview.ui:292
 msgid "Console output"
 msgstr "Виведення до консолі"
 
@@ -1839,66 +1848,66 @@ msgstr "Копіювати _вище"
 msgid "Copy _down"
 msgstr "Копіювати _нижче"
 
-#: meld/const.py:30
+#: meld/const.py:34
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: meld/const.py:31
+#: meld/const.py:35
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: meld/const.py:32
+#: meld/const.py:36
 msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:640 meld/preferences.py:132
+#: meld/dirdiff.py:654 meld/preferences.py:132
 msgid "Size"
 msgstr "Розмір"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:648 meld/preferences.py:133
+#: meld/dirdiff.py:662 meld/preferences.py:133
 msgid "Modification time"
 msgstr "Час внесення змін"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:656 meld/preferences.py:134
+#: meld/dirdiff.py:670 meld/preferences.py:134
 msgid "Modification time (ISO)"
 msgstr "Час внесення змін (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:664 meld/preferences.py:135
+#: meld/dirdiff.py:678 meld/preferences.py:135
 msgid "Permissions"
 msgstr "Права доступу"
 
-#: meld/dirdiff.py:917
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{filename} (scanning…)"
 msgstr "{filename} (сканування…)"
 
-#: meld/dirdiff.py:948 meld/dirdiff.py:981
+#: meld/dirdiff.py:962 meld/dirdiff.py:995
 #, python-brace-format
 msgid "[{label}] Scanning {folder}"
 msgstr "[{label}] Скануємо {folder}"
 
-#: meld/dirdiff.py:1122
+#: meld/dirdiff.py:1136
 #, python-brace-format
 msgid "[{label}] Done"
 msgstr "[{label}] Виконано"
 
-#: meld/dirdiff.py:1135
+#: meld/dirdiff.py:1149
 msgid "Folder {} is being compared to itself"
 msgstr "Виконуємо порівняння теки {} із самою собою"
 
-#: meld/dirdiff.py:1141
+#: meld/dirdiff.py:1155
 msgid "Folders have no differences"
 msgstr "Між теками немає відмінностей"
 
-#: meld/dirdiff.py:1143
+#: meld/dirdiff.py:1157
 msgid "Contents of scanned files in folders are identical."
 msgstr "Вміст сканованих файлів у теках є тотожним."
 
-#: meld/dirdiff.py:1145
+#: meld/dirdiff.py:1159
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1906,46 +1915,46 @@ msgstr ""
 "Здається, скановані файли у теках є тотожними, але програма не перевіряла "
 "їхній вміст."
 
-#: meld/dirdiff.py:1148
+#: meld/dirdiff.py:1162
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Використано фільтри файлів, тому сканування виконувалося не для усіх файлів."
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1164
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Використано текстові фільтри, що могли замаскувати відмінності у вмісті "
 "файлів."
 
-#: meld/dirdiff.py:1166 meld/filediff.py:2037
+#: meld/dirdiff.py:1180 meld/filediff.py:2126
 msgid "Hide"
 msgstr "Приховати"
 
-#: meld/dirdiff.py:1168 meld/filediff.py:2039 meld/filediff.py:2069
-#: meld/filediff.py:2071 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1182 meld/filediff.py:2128 meld/filediff.py:2158
+#: meld/filediff.py:2160 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
 msgid "Hi_de"
 msgstr "_Сховати"
 
-#: meld/dirdiff.py:1179
+#: meld/dirdiff.py:1193
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Під час сканування цієї теки було виявлено декілька помилок"
 
-#: meld/dirdiff.py:1180
+#: meld/dirdiff.py:1194
 msgid "Files with invalid encodings found"
 msgstr "Знайдено файли із некоректним кодуванням"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1182
+#: meld/dirdiff.py:1196
 msgid ""
 "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Кодування деяких файлів є помилковим. Назви десь такі:"
 
-#: meld/dirdiff.py:1184
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "Файли приховано нечутливим до регістру порівнянням"
 
 #. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1186
+#: meld/dirdiff.py:1200
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1953,11 +1962,11 @@ msgstr ""
 "Ви виконуєте нечутливе до регістру порівняння в чутливій до регістру "
 "файловій системі. Вказані нижче рядки у цій теці приховано:"
 
-#: meld/dirdiff.py:1189
+#: meld/dirdiff.py:1203
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Файли відрізняються початковими або кінцевими пробілами"
 
-#: meld/dirdiff.py:1192
+#: meld/dirdiff.py:1206
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
@@ -1965,17 +1974,17 @@ msgstr ""
 "Під час цього порівняння виявлено деякі файли, які відрізняються лише "
 "початковими або кінцевими пробілами. Ось їхні назви:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1217
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "«{first_file}» приховано «{second_file}»"
 
-#: meld/dirdiff.py:1283
+#: meld/dirdiff.py:1297
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Замінити теку «%s»?"
 
-#: meld/dirdiff.py:1285
+#: meld/dirdiff.py:1299
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1984,11 +1993,11 @@ msgstr ""
 "У «%s» вже існує інша тека з такою ж назвою.\n"
 "Якщо ви замістите наявну теку, усі файли у ній буде втрачено."
 
-#: meld/dirdiff.py:1298
+#: meld/dirdiff.py:1312
 msgid "Error copying file"
 msgstr "Помилка під час копіювання файла"
 
-#: meld/dirdiff.py:1299
+#: meld/dirdiff.py:1313
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -2001,15 +2010,15 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1324 meld/vcview.py:771
+#: meld/dirdiff.py:1338 meld/vcview.py:797
 msgid "Error deleting {}"
 msgstr "Помилка під час спроби вилучити {}"
 
-#: meld/dirdiff.py:1883
+#: meld/dirdiff.py:1897
 msgid "No folder"
 msgstr "Немає теки"
 
-#: meld/dirdiff.py:1896
+#: meld/dirdiff.py:1910
 msgid "Folder comparison:"
 msgstr "Порівняння тек:"
 
@@ -2023,17 +2032,16 @@ msgstr "Непідтримуваний тип файлів"
 
 #: meld/externalhelpers.py:121
 #, python-brace-format
-#| msgid "Deleting remote folders is not supported"
 msgid "External opening of files of type {file_type} is not supported"
 msgstr ""
-"Підтримки відкриття файлів типу {file_type} у зовнішній програмі не"
-" передбачено"
+"Підтримки відкриття файлів типу {file_type} у зовнішній програмі не "
+"передбачено"
 
-#: meld/filediff.py:1192
+#: meld/filediff.py:1198
 msgid "Comparison results will be inaccurate"
 msgstr "Результати порівняння не будуть точними"
 
-#: meld/filediff.py:1194
+#: meld/filediff.py:1200
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -2041,98 +2049,107 @@ msgstr ""
 "Фільтром змінено кількість рядків у файлі. Підтримку обробки таких змін не "
 "реалізовано. Порівняння може бути неточним."
 
-#: meld/filediff.py:1265
+#: meld/filediff.py:1271
 msgid "Mark conflict as resolved?"
 msgstr "Позначити конфлікт як розв'язаний?"
 
-#: meld/filediff.py:1267
+#: meld/filediff.py:1273
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Якщо конфлікт успішно розв'язано, ви можете позначити його як розв'язаний."
 
-#: meld/filediff.py:1270
+#: meld/filediff.py:1276
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: meld/filediff.py:1271
+#: meld/filediff.py:1277
 msgid "Mark _Resolved"
 msgstr "Позначити як _розв'язаний"
 
-#: meld/filediff.py:1468 meld/filediff.py:1484
+#: meld/filediff.py:1475 meld/filediff.py:1491
 msgid "Add Synchronization Point"
 msgstr "Додати точку синхронізації"
 
-#: meld/filediff.py:1472
+#: meld/filediff.py:1479
 msgid "Remove Synchronization Point"
 msgstr "Вилучити точку синхронізації"
 
-#: meld/filediff.py:1476
+#: meld/filediff.py:1483
 msgid "Move Synchronization Point"
 msgstr "Пересунути точку синхронізації"
 
-#: meld/filediff.py:1480
+#: meld/filediff.py:1487
 msgid "Match Synchronization Point"
 msgstr "Встановити відповідність точки синхронізації"
 
-#: meld/filediff.py:1504
+#: meld/filediff.py:1511
 msgid "Clear Synchronization Points"
 msgstr "Вилучити точки синхронізації"
 
-#: meld/filediff.py:1564 meld/imagediff.py:254
+#: meld/filediff.py:1571 meld/imagediff.py:254
 msgid "File comparison:"
 msgstr "Порівняння файлів:"
 
-#: meld/filediff.py:1700
+#: meld/filediff.py:1718
+#, python-brace-format
+msgid ""
+"Line {line_number} exceeded maximum line length ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+msgstr ""
+"У рядку {line_number} перевищено максимальну довжину рядка, ({line_length} > "
+"{LINE_LENGTH_LIMIT})"
+
+#: meld/filediff.py:1768
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Помилка відкриття файла «%s»."
 
-#: meld/filediff.py:1709
+#: meld/filediff.py:1790
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Здається, файл %s є файлом двійкових даних."
 
-#: meld/filediff.py:1711
+#: meld/filediff.py:1792
 msgid "Do you want to open the file using the default application?"
 msgstr "Хочете відкрити файл за допомогою типової програми?"
 
-#: meld/filediff.py:1713
+#: meld/filediff.py:1794
 msgid "Open"
 msgstr "Відкрити"
 
-#: meld/filediff.py:1735
+#: meld/filediff.py:1818
 #, python-format
 msgid "[%s] Merging files"
 msgstr "[%s] Об'єднання файлів"
 
-#: meld/filediff.py:1749
+#: meld/filediff.py:1832
 #, python-format
 msgid "[%s] Computing differences"
 msgstr "[%s] Обчислення відмінностей"
 
-#: meld/filediff.py:1813
+#: meld/filediff.py:1896
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "До файла %s було внесено зміни на диску"
 
-#: meld/filediff.py:1814
+#: meld/filediff.py:1897
 msgid "Do you want to reload the file?"
 msgstr "Хочете перезавантажити файл?"
 
-#: meld/filediff.py:1816
+#: meld/filediff.py:1899
 msgid "_Reload"
 msgstr "Перезаванта_жити"
 
-#: meld/filediff.py:1994
+#: meld/filediff.py:2084
 msgid "File {} is being compared to itself"
 msgstr "Виконуємо порівняння файла {} із самим собою"
 
-#: meld/filediff.py:2003
+#: meld/filediff.py:2092
 msgid "Files are identical"
 msgstr "Файли є однаковими"
 
-#: meld/filediff.py:2016
+#: meld/filediff.py:2105
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -2140,11 +2157,11 @@ msgstr ""
 "Використано текстові фільтри, які могли замаскувати відмінності між файлами. "
 "Хочете виконати порівняння файлів без фільтрування?"
 
-#: meld/filediff.py:2021
+#: meld/filediff.py:2110
 msgid "Files differ in line endings only"
 msgstr "Файли відрізняються лише символами завершення рядків"
 
-#: meld/filediff.py:2023
+#: meld/filediff.py:2112
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2153,15 +2170,15 @@ msgstr ""
 "Файли є однаковими, окрім різних символів завершення рядків:\n"
 "%s"
 
-#: meld/filediff.py:2042
+#: meld/filediff.py:2131
 msgid "Show without filters"
 msgstr "Показати без фільтрів"
 
-#: meld/filediff.py:2063
+#: meld/filediff.py:2152
 msgid "Change highlighting incomplete"
 msgstr "Неповна зміна підсвічування"
 
-#: meld/filediff.py:2064
+#: meld/filediff.py:2153
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2170,19 +2187,19 @@ msgstr ""
 "наказати Meld підсвітити більші зміни, але вам доведеться почекати, доки "
 "програма виконає ваш наказ."
 
-#: meld/filediff.py:2073
+#: meld/filediff.py:2162
 msgid "Keep highlighting"
 msgstr "Зберігати підсвічування"
 
-#: meld/filediff.py:2075
+#: meld/filediff.py:2164
 msgid "_Keep highlighting"
 msgstr "З_берігати підсвічування"
 
-#: meld/filediff.py:2088
+#: meld/filediff.py:2177
 msgid "Saving failed"
 msgstr "Не вдалося зберегти"
 
-#: meld/filediff.py:2089
+#: meld/filediff.py:2178
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2190,37 +2207,37 @@ msgstr ""
 "Вам варто скопіювати критичні зміни до вікна іншої програми або файла, щоб "
 "уникнути втрати даних."
 
-#: meld/filediff.py:2098
+#: meld/filediff.py:2187
 msgid "Save Left Pane As"
 msgstr "Зберегти ліву панель як"
 
-#: meld/filediff.py:2100
+#: meld/filediff.py:2189
 msgid "Save Middle Pane As"
 msgstr "Зберегти середню панель як"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2191
 msgid "Save Right Pane As"
 msgstr "Зберегти праву панель як"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2202
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "З часу відкриття до файла %s було внесено зміни на диску"
 
-#: meld/filediff.py:2115
+#: meld/filediff.py:2204
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 "Якщо ви збережете файл, внесені сторонніми програмами зміни буде втрачено."
 
-#: meld/filediff.py:2119
+#: meld/filediff.py:2208
 msgid "Save Anyway"
 msgstr "Зберегти попри це"
 
-#: meld/filediff.py:2120
+#: meld/filediff.py:2209
 msgid "Don’t Save"
 msgstr "Не зберігати"
 
-#: meld/filediff.py:2162
+#: meld/filediff.py:2251
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2228,7 +2245,7 @@ msgstr ""
 "У файлі «{}» містяться символи, які не входять до його поточного кодування "
 "«{}»."
 
-#: meld/filediff.py:2166 meld/patchdialog.py:138
+#: meld/filediff.py:2255 meld/patchdialog.py:138
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2237,16 +2254,16 @@ msgstr ""
 "Не вдалося зберегти файл. Причина:\n"
 "%s"
 
-#: meld/filediff.py:2170 meld/patchdialog.py:137
+#: meld/filediff.py:2259 meld/patchdialog.py:137
 #, python-format
 msgid "Could not save file %s."
 msgstr "Не вдалося зберегти файл %s."
 
-#: meld/filediff.py:2579
+#: meld/filediff.py:2668
 msgid "Live comparison updating disabled"
 msgstr "Інтерактивне оновлення порівняння вимкнено"
 
-#: meld/filediff.py:2580
+#: meld/filediff.py:2669
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2256,19 +2273,19 @@ msgstr ""
 "вимкнено. Ви можете оновити вміст об'єктів порівняння вручну. Інтерактивне "
 "оновлення буде увімкнено після вилучення усіх точок синхронізації."
 
-#: meld/filediff.py:2609
+#: meld/filediff.py:2698
 msgid "Can't swap unsaved files"
 msgstr "Не можна міняти місцями незбережені файли"
 
-#: meld/filediff.py:2611
+#: meld/filediff.py:2700
 msgid "Files must be saved to disk before swapping panes."
 msgstr "До обміну місцями панелями файли має бути збережено на диск."
 
-#: meld/filediff.py:2618
+#: meld/filediff.py:2707
 msgid "Can't swap version control comparisons"
 msgstr "Не можна міняти місцями порівняння керування версіями"
 
-#: meld/filediff.py:2620
+#: meld/filediff.py:2709
 msgid "Swapping panes is not supported in version control mode."
 msgstr ""
 "У режимі керування версіями не передбачено можливості обміну місцями для "
@@ -2417,7 +2434,7 @@ msgid "remote folder “{}” not supported"
 msgstr "підтримки віддалених тек «{}» не передбачено"
 
 #. TRANSLATORS: This is the label of a new, currently-unnamed file.
-#: meld/meldbuffer.py:115
+#: meld/meldbuffer.py:125
 msgid "<unnamed>"
 msgstr "<без_назви>"
 
@@ -2437,6 +2454,10 @@ msgstr "Для автоматичного об'єднання потрібно 3
 #: meld/meldwindow.py:427
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Неможливо порівняти суміш файлів і тек"
+
+#: meld/meldwindow.py:479
+msgid "Cannot compare a non-existent file"
+msgstr "Неможливо виконати порівняння із файлом, якого не існує"
 
 #: meld/misc.py:154
 msgid ""
@@ -2525,16 +2546,16 @@ msgstr[1] "%d гілки"
 msgstr[2] "%d гілок"
 msgstr[3] "%d гілка"
 
-#: meld/vc/git.py:353
+#: meld/vc/git.py:363
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Режим змінено з {old_mode} на {new_mode}"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Partially staged"
 msgstr "Частково сформатовано"
 
-#: meld/vc/git.py:361
+#: meld/vc/git.py:371
 msgid "Staged"
 msgstr "Позначено"
 
@@ -2549,146 +2570,146 @@ msgstr "Немає"
 msgid "Rev %s"
 msgstr "Мод. %s"
 
-#: meld/vc/_vc.py:55
+#: meld/vc/_vc.py:58
 msgid "Merged"
 msgstr "Об’єднано"
 
-#: meld/vc/_vc.py:55
+#: meld/vc/_vc.py:58
 msgid "Base"
 msgstr "Основа"
 
-#: meld/vc/_vc.py:55
+#: meld/vc/_vc.py:58
 msgid "Local"
 msgstr "Локальний"
 
-#: meld/vc/_vc.py:55
+#: meld/vc/_vc.py:58
 msgid "Remote"
 msgstr "Віддалений"
 
-#: meld/vc/_vc.py:74
+#: meld/vc/_vc.py:77
 msgid "Error"
 msgstr "Помилка"
 
-#: meld/vc/_vc.py:76
+#: meld/vc/_vc.py:79
 msgid "Newly added"
 msgstr "Щойно додано"
 
-#: meld/vc/_vc.py:78
+#: meld/vc/_vc.py:81
 msgid "Renamed"
 msgstr "Перейменовано"
 
-#: meld/vc/_vc.py:79
+#: meld/vc/_vc.py:82
 msgid "Conflict"
 msgstr "Конфлікт"
 
-#: meld/vc/_vc.py:80
+#: meld/vc/_vc.py:83
 msgid "Removed"
 msgstr "Вилучено"
 
-#: meld/vc/_vc.py:81
+#: meld/vc/_vc.py:84
 msgid "Missing"
 msgstr "Не вистачає"
 
-#: meld/vc/_vc.py:82
+#: meld/vc/_vc.py:85
 msgid "Not present"
 msgstr "Немає"
 
-#: meld/vc/_vc.py:83
+#: meld/vc/_vc.py:86
 msgid "Scanning…"
 msgstr "Сканування…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:335
+#: meld/vcview.py:351
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (не знайдено)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:339
+#: meld/vcview.py:355
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s не встановлено)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:343
+#: meld/vcview.py:359
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (некоректне сховище)"
 
-#: meld/vcview.py:357
+#: meld/vcview.py:373
 msgid "No valid version control system found in this folder"
 msgstr ""
 "У цій теці не виявлено слідів жодної відомої системи керування версіями"
 
-#: meld/vcview.py:359
+#: meld/vcview.py:375
 msgid "Choose which version control system to use"
 msgstr "Виберіть систему керування версіями, якою слід скористатися"
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:417
+#: meld/vcview.py:433
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr "Порівняння {vc}:"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:426
+#: meld/vcview.py:448
 msgid "Scanning repository"
 msgstr "Скануємо сховище"
 
-#: meld/vcview.py:455
+#: meld/vcview.py:477
 #, python-format
 msgid "Scanning %s"
 msgstr "Сканування %s"
 
-#: meld/vcview.py:494
+#: meld/vcview.py:516
 msgid "(Empty)"
 msgstr "(Порожньо)"
 
-#: meld/vcview.py:542
+#: meld/vcview.py:564
 #, python-format
 msgid "%s — local"
 msgstr "%s — локальний"
 
-#: meld/vcview.py:543
+#: meld/vcview.py:565
 #, python-format
 msgid "%s — remote"
 msgstr "%s — віддалений"
 
-#: meld/vcview.py:551
+#: meld/vcview.py:573
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (локальний, об'єднання, віддалений)"
 
-#: meld/vcview.py:556
+#: meld/vcview.py:578
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (віддалений, об'єднання, локальний)"
 
-#: meld/vcview.py:567
+#: meld/vcview.py:589
 #, python-format
 msgid "%s — repository"
 msgstr "%s — сховище"
 
-#: meld/vcview.py:573
+#: meld/vcview.py:595
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (робоча копія, сховище)"
 
-#: meld/vcview.py:577
+#: meld/vcview.py:599
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (сховище, робоча копія)"
 
-#: meld/vcview.py:742
+#: meld/vcview.py:768
 msgid "Remove folder and all its files?"
 msgstr "Вилучити теку і усі файли у ній?"
 
-#: meld/vcview.py:744
+#: meld/vcview.py:770
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2696,7 +2717,7 @@ msgstr ""
 "У результаті виконання цієї дії з системи керування версіями буде вилучено "
 "усі позначені файли і теки і усі файли у позначених теках."
 
-#: meld/vcview.py:858
+#: meld/vcview.py:884
 msgid "Clear"
 msgstr "Очистити"
 

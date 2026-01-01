@@ -253,7 +253,6 @@ def _files_same(files, regexes, comparison_args):
 
 EMBLEM_NEW = "emblem-new"
 EMBLEM_SELECTED = "emblem-default-symbolic"
-EMBLEM_SYMLINK = "emblem-symbolic-link"
 
 COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = (
     range(tree.COL_END, tree.COL_END + 5))
@@ -482,6 +481,15 @@ class DirDiff(Gtk.Box, MeldDoc):
         tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
+    replaced_entries = (
+        # Remove Ctrl+Page Up/Down bindings. These are used to do horizontal
+        # scrolling in GTK by default, but we preference easy tab switching.
+        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
+    )
+
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -494,6 +502,12 @@ class DirDiff(Gtk.Box, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
+
+        binding_set_names = ("GtkScrolledWindow", "GtkTreeView")
+        for set_name in binding_set_names:
+            binding_set = Gtk.binding_set_find(set_name)
+            for key, modifiers in self.replaced_entries:
+                Gtk.binding_entry_remove(binding_set, key, modifiers)
 
         self.view_action_group = Gio.SimpleActionGroup()
 
@@ -1117,7 +1131,7 @@ class DirDiff(Gtk.Box, MeldDoc):
             self._update_item_state(self.model.get_iter(rootpath))
 
         self.force_cursor_recalculate = True
-        self.treeview[0].set_cursor(Gtk.TreePath.new_first())
+        self.treeview[0].set_cursor(rootpath)
 
     def _show_duplicate_directory(self, duplicate_directory):
         for index in range(self.num_panes):
@@ -1538,10 +1552,20 @@ class DirDiff(Gtk.Box, MeldDoc):
 
     def run_diff_from_iter(self, it):
         rows = self.model.value_paths(it)
-        gfiles = [
-            Gio.File.new_for_path(r) if os.path.isfile(r) else None
-            for r in rows
-        ]
+        is_file = os.path.isfile(rows[0])
+        is_dir = os.path.isdir(rows[0])
+        if is_file:
+            gfiles = [
+                Gio.File.new_for_path(r) if os.path.isfile(r) else None
+                for r in rows
+            ]
+        elif is_dir:
+            gfiles = [
+                Gio.File.new_for_path(r) if os.path.isdir(r) else None
+                for r in rows
+            ]
+        else:
+            return
         self.create_diff_signal.emit(gfiles, {})
 
     def action_diff(self, *args):
@@ -1902,6 +1926,11 @@ class DirDiff(Gtk.Box, MeldDoc):
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
+
+        for label, flabel in zip(labels, self.folder_label):
+            if label:
+                flabel.props.custom_label = label
+
         extra = self.num_panes - len(labels)
         if extra:
             labels.extend([""] * extra)

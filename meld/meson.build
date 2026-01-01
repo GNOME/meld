@@ -7,7 +7,6 @@ folders = {
     '__init__.py',
     'accelerators.py',
     'actiongutter.py',
-    'build_helpers.py',
     'chunkmap.py',
     'const.py',
     'dirdiff.py',

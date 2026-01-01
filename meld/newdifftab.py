@@ -251,5 +251,8 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
     def on_container_switch_out_event(self, *args):
         pass
 
+    def on_file_changed(self, filename: str):
+        pass
+
     def request_close(self):
         self.close_signal.emit(0)

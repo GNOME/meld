@@ -108,12 +108,12 @@ class EmblemCellRenderer(Gtk.CellRenderer):
 
             if self.emblem_name:
                 pixbuf = self._get_pixbuf(self.emblem_name, self._emblem_size)
-                x_offset = self._icon_size - self._emblem_size
-                context.set_operator(cairo.OPERATOR_OVER)
-                Gdk.cairo_set_source_pixbuf(context, pixbuf, x_offset, 0)
-                context.rectangle(x_offset, 0,
-                                  cell_area.width, self._emblem_size)
-                context.fill()
+                if pixbuf:
+                    x_offset = self._icon_size - self._emblem_size
+                    context.set_operator(cairo.OPERATOR_OVER)
+                    Gdk.cairo_set_source_pixbuf(context, pixbuf, x_offset, 0)
+                    context.rectangle(x_offset, 0, cell_area.width, self._emblem_size)
+                    context.fill()
 
         context.pop_group_to_source()
         context.set_operator(cairo.OPERATOR_OVER)

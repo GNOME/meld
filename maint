@@ -8,11 +8,8 @@ import os
 import re
 import subprocess
 import sys
-import urllib.parse
 
 import click
-import keyring
-import requests
 from jinja2 import Environment
 
 # Import system hackery to import conf.py.in without copying it to
@@ -34,9 +31,6 @@ PO_DIR = "po"
 HELP_DIR = "help"
 RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
 VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
-UPLOAD_SERVER = 'master.gnome.org'
-GITLAB_API_BASE = 'https://gitlab.gnome.org/api/v4'
-GITLAB_PROJECT_ID = 'GNOME/meld'
 
 NEWS_TEMPLATE = """
 {{ [date, app, version]|join(' ') }}
@@ -75,34 +69,6 @@ APPDATA_TEMPLATE = """
         </ul>
       </description>
     </release>
-"""
-
-MARKDOWN_TEMPLATE = """
-<!--
-{{ [date, app, version]|join(' ') }}
-{{ '=' * [date, app, version]|join(' ')|length }}
--->
-{%- if features %}
-
-Features
---------
-{% for feature in features %}
-{{ feature }}
-{%- endfor %}
-{%- endif %}
-
-Fixes
------
-{% for fix in fixes %}
-{{ fix }}
-{%- endfor %}
-
-Translations
-------------
-{% for translator in translators %}
-{{ translator }}
-{%- endfor %}
-
 """
 
 
@@ -230,7 +196,7 @@ def get_tokens():
     return {
         'date': datetime.date.today().isoformat(),
         # Appstream appears to expect release dates in UTC.
-        'utcdate': datetime.datetime.utcnow().date().isoformat(),
+        'utcdate': datetime.datetime.now(datetime.UTC).date().isoformat(),
         'app': meld.conf.__package__,
         'version': version,
         'release_series': release_series,
@@ -308,57 +274,9 @@ def push():
     call_with_output(cmd, echo_stdout=True)
 
 
-def gitlab_release_tag(tag):
-    auth_token = keyring.get_password('gitlab-api', GITLAB_PROJECT_ID)
-    if not auth_token:
-        raise click.ClickException(
-            "No password in keychain for {id}\n\n"
-            "Set password using the Python `keyring` package. "
-            "From the command line:\n"
-            "  $ keyring set gitlab-api {id}\n"
-            "and enter your secret token from the Gitlab UI.\n".format(
-                id=GITLAB_PROJECT_ID)
-        )
-
-    cmd = ['git', 'tag', '-l', "--format=%(contents)", tag]
-    description = subprocess.check_output(cmd).decode('utf-8')
-
-    endpoint = '{base}/projects/{id}/releases'
-    release_url = endpoint.format(
-        base=GITLAB_API_BASE,
-        id=urllib.parse.quote_plus(GITLAB_PROJECT_ID),
-    )
-    release_data = {
-        "tag_name": tag,
-        "description": description
-    }
-
-    # TODO: Should probably sanity-check that it's not already a
-    # release tag.
-
-    response = requests.post(
-        release_url,
-        json=release_data,
-        headers={
-            'Private-Token': auth_token,
-        },
-    )
-    try:
-        response.raise_for_status()
-    except Exception as e:
-        click.secho(
-            'Error making release: {}\n{}'.format(e, response.text), fg='red')
-
-
 @click.group()
 def cli():
     pass
-
-
-@cli.command()
-def test():
-    cmd = ['py.test-3', 'test/']
-    call_with_output(cmd, echo_stdout=True)
 
 
 @cli.command()
@@ -376,25 +294,25 @@ def news():
 
 
 @cli.command()
-def appdata():
-    filename = 'data/org.gnome.meld.appdata.xml.in.in'
+def metainfo():
+    filename = 'data/org.gnome.Meld.metainfo.xml.in.in'
 
     rendered = render_template(APPDATA_TEMPLATE)
     with open(filename, 'r') as f:
-        appdata = f.read()
+        metainfo = f.read()
 
     insert_tag = '<releases>'
-    insert_idx = appdata.find(insert_tag)
+    insert_idx = metainfo.find(insert_tag)
     if insert_idx == -1:
-        click.echo('Failed to find <releases> tag in appdata')
+        click.echo('Failed to find <releases> tag in metainfo')
         raise click.Abort()
 
     insert_idx += len(insert_tag)
 
-    new_appdata = appdata[:insert_idx] + rendered + appdata[insert_idx:]
+    new_metainfo = metainfo[:insert_idx] + rendered + metainfo[insert_idx:]
 
     with open(filename, 'w') as f:
-        f.write(new_appdata)
+        f.write(new_metainfo)
 
     message = click.edit(filename=filename)
     return message
@@ -415,12 +333,6 @@ def write_somewhere(filename, output):
 
 
 @cli.command()
-@click.argument('filename', type=click.Path(), default=None, required=False)
-def markdown(filename):
-    write_somewhere(filename, render_template(MARKDOWN_TEMPLATE))
-
-
-@cli.command()
 def dist():
     build_dir = '_build'
     archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
@@ -432,8 +344,8 @@ def dist():
     call_with_output(cmd, echo_stdout=False)
 
     click.echo('Creating distribution...')
-    cmd = ['ninja', '-C', build_dir, 'dist']
-    call_with_output(cmd, echo_stdout=False)
+    cmd = ['meson', 'dist', '-C', build_dir]
+    call_with_output(cmd, echo_stdout=True)
 
     if not os.path.exists(dist_archive_path):
         click.echo('Failed to create archive file %s' % dist_archive_path)
@@ -466,29 +378,6 @@ def tag():
     call_with_output(cmd, echo_stdout=True)
 
 
-@cli.command('gitlab-release')
-def gitlab_release():
-    last_release = get_last_release_tag()
-    confirm = click.confirm(
-        'Annotate {} as a Gitlab release?'.format(last_release), default=True)
-    if not confirm:
-        return
-
-    gitlab_release_tag(last_release)
-
-
-@cli.command()
-@click.argument('path', type=click.Path(exists=True))
-def upload(path):
-    confirm = click.confirm(
-        '\nUpload %s to %s?' % (path, UPLOAD_SERVER), default=True,
-        abort=False)
-    if not confirm:
-        return
-    cmd = ['scp', path, UPLOAD_SERVER + ':']
-    call_with_output(cmd, timeout=120)
-
-
 @cli.command('version-bump')
 def version_bump():
     with open(meld.conf.__file__) as f:
@@ -516,30 +405,42 @@ def version_bump():
     with open(meld.conf.__file__, 'w') as f:
         f.write('\n'.join(conf_data) + '\n')
 
+    cmd = ["meson", "rewrite", "kwargs", "set", "project", "/", "version", new_version]
+    call_with_output(cmd, timeout=120)
+
 
 @cli.command('release')
+@click.option(
+    "--skip-news",
+    is_flag=True,
+    default=False,
+    help=(
+        "Skip the NEWS + metainfo templating step (but not the commit). Use "
+        "this if you have already written the NEWS and metainfo updates and "
+        "want to skip the templating helpers."
+    ),
+)
+@click.option(
+    "--skip-news-commit",
+    is_flag=True,
+    default=False,
+    help="Skip the NEWS + metainfo commit step",
+)
 @click.pass_context
-def make_release(ctx):
-    pull()
-    ctx.forward(news)
-    ctx.forward(appdata)
-    commit(message='Update NEWS + appdata')
-    push()
-    archive_path = ctx.forward(dist)
-    ctx.forward(tag)
-    ctx.forward(gitlab_release)
-    file_prefix = '%s-%s' % (meld.conf.__package__, meld.conf.__version__)
-    ctx.forward(markdown, filename=file_prefix + '.md')
-    ctx.forward(version_bump)
+def make_release(ctx, skip_news, skip_news_commit):
+    if not skip_news:
+        pull()
+        ctx.invoke(news)
+        ctx.invoke(metainfo)
+    if not skip_news_commit:
+        commit(message='Update NEWS + metainfo')
+        push()
+    # Run dist as a check; we don't need the actual tarball
+    ctx.invoke(dist)
+    ctx.invoke(tag)
+    ctx.invoke(version_bump)
     commit(message='Post-release version bump')
     push()
-
-    ctx.forward(upload, path=archive_path)
-
-    # TODO: ssh in and run ftpadmin install
-    click.echo('\nNow run:')
-    click.echo('ssh %s' % UPLOAD_SERVER)
-    click.echo('ftpadmin install %s' % os.path.basename(archive_path))
 
 
 if __name__ == '__main__':

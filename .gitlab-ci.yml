@@ -1,7 +1,15 @@
-include: 'https://gitlab.gnome.org/GNOME/citemplates/raw/master/flatpak/flatpak_ci_initiative.yml'
+include:
+  - project: "gnome/citemplates"
+    file: "flatpak/flatpak_ci_initiative.yml"
+  - component: gitlab.gnome.org/GNOME/citemplates/release-service@master
+    inputs:
+      dist-job-name: "flatpak"
+      tarball-artifact-path: "${TARBALL_ARTIFACT_PATH}"
 
 variables:
   GNOME_SDK: 42
+  FLATPAK_MODULE: "meld"
+  TARBALL_ARTIFACT_PATH: ".flatpak-builder/build/${FLATPAK_MODULE}/_flatpak_build/meson-dist/${CI_PROJECT_NAME}-${CI_COMMIT_TAG}.tar.xz"
 
 image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-${GNOME_SDK}
 
@@ -13,14 +21,14 @@ stages:
 
 
 flatpak:
-    extends: .flatpak
-    stage: build
-    variables:
-        MANIFEST_PATH: "build-aux/org.gnome.Meld.Devel.json"
-        FLATPAK_MODULE: "meld"
-        RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
-        APP_ID: "org.gnome.Meld.Devel"
-        BUNDLE: "meld-dev.flatpak"
+  extends: .flatpak
+  stage: build
+  variables:
+    MANIFEST_PATH: "build-aux/org.gnome.Meld.Devel.json"
+    FLATPAK_MODULE: "meld"
+    RUNTIME_REPO: "https://nightly.gnome.org/gnome-nightly.flatpakrepo"
+    APP_ID: "org.gnome.Meld.Devel"
+    BUNDLE: "meld-dev.flatpak"
 
 nightly:
   extends: '.publish_nightly'
@@ -35,13 +43,6 @@ nightly:
    - pip3 install -r dev-requirements.txt
    - $PYTHON_CHECK_COMMAND
 
-.pythonflatpak:
-  stage: check
-  tags: # test in the same org.gnome.Sdk environment that is used for creating flatpaks
-    - flatpak
-  script:
-    - flatpak run --share=network --filesystem=`pwd` --env=PATH=$PATH:/var/data/python/bin --command=sh org.gnome.Sdk -c 'pip3 install --user -r dev-requirements.txt; $PYTHON_CHECK_COMMAND'
-
 lint:
   extends: .pythonchecks
   variables:
@@ -55,6 +56,7 @@ pytest:
 mingw64-dist:
   stage: build
   variables:
+    DESTDIR: install-tree
     MSYS2_ARCH: "x86_64"
     MSYSTEM: "MINGW64"
     CHERE_INVOKING: "yes"
@@ -63,25 +65,97 @@ mingw64-dist:
   artifacts:
     name: "${env:CI_JOB_STAGE}-${env:CI_COMMIT_REF_NAME}"
     paths:
-      - dist/
+      - meld-*.exe
   before_script:
     - $env:Path = "C:\msys64\${env:MSYSTEM}\bin;C:\msys64\usr\bin;${env:PATH}"
     - >
       C:\msys64\usr\bin\pacman --noconfirm -S --refresh --sysupgrade --needed
       mingw-w64-${env:MSYS2_ARCH}-adwaita-icon-theme
+      mingw-w64-${env:MSYS2_ARCH}-appstream
+      mingw-w64-${env:MSYS2_ARCH}-desktop-file-utils
+      mingw-w64-${env:MSYS2_ARCH}-gettext
       mingw-w64-${env:MSYS2_ARCH}-gsettings-desktop-schemas
       mingw-w64-${env:MSYS2_ARCH}-gtk-update-icon-cache
       mingw-w64-${env:MSYS2_ARCH}-gtk4
       mingw-w64-${env:MSYS2_ARCH}-gtksourceview5
+      mingw-w64-${env:MSYS2_ARCH}-itstool
+      mingw-w64-${env:MSYS2_ARCH}-meson
+      mingw-w64-${env:MSYS2_ARCH}-nsis
+      mingw-w64-${env:MSYS2_ARCH}-pyinstaller
       mingw-w64-${env:MSYS2_ARCH}-python-cx-freeze
       mingw-w64-${env:MSYS2_ARCH}-python-gobject
+      mingw-w64-${env:MSYS2_ARCH}-python-lxml
+      mingw-w64-${env:MSYS2_ARCH}-python-markupsafe
+      mingw-w64-${env:MSYS2_ARCH}-python-pip
       mingw-w64-${env:MSYS2_ARCH}-python-pytest
+      mingw-w64-${env:MSYS2_ARCH}-python-pyaml
       mingw-w64-${env:MSYS2_ARCH}-python-setuptools
       glib2-devel
       intltool
+    - pip install pyinstaller-versionfile
   script:
-    - glib-compile-schemas data
-    - python3 setup_win32.py bdist_dumb --bdist-dir build\bdist.mingw\msi --keep-temp bdist_msi --keep-temp
+    - meson setup --prefix=/ . meson-build/
+    - meson compile -v -C meson-build/
+    - meson install -C meson-build/ --destdir=pyinstaller-build/
+    # In a local environment, there is an extra msys64/ path element on the
+    # end here that is missing in gitlab CI.
+    - cp windows/meld.spec meson-build/pyinstaller-build
+    - cd meson-build/pyinstaller-build
+    - pyinstaller ./meld.spec
+    - cp version.nsh dist/
+    - cp ../../windows/meld.nsis dist/
+    - cd dist
+    - makensis ./meld.nsis
+    - mv meld-*.exe ../../..
   # main purpose of this job is creating installers and not checking for breakage by changes in code
   # so allow failures since the status of the build may depend on updates of rolling-release msys2 packages
   allow_failure: true
+
+macos:
+  stage: build
+  tags:
+    - macos
+    - arm64
+  cache:
+    - key: ccache
+      paths:
+        - ccache
+  variables:
+    CCACHE_DIR: $CI_PROJECT_DIR/ccache
+    CCACHE_MAXSIZE: "300Mi"
+    PACKAGE_REGISTRY_URL: ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic
+    MM_REPO_URL: https://gitlab.com/dehesselle/meld_macos.git
+    MM_REPO_REF: cf0d881d2bfdc1607f0e2bd11bcd9bd215e74f1b
+    MELD_BUILD: $CI_PIPELINE_IID
+    REP_DIR: $CI_PROJECT_DIR
+    SDKROOT: /opt/sdks/MacOSX11.3.sdk
+  script:
+    # Clone the repo containing all the build scripts.
+    - |
+      git clone $MM_REPO_URL mm
+      git -C mm checkout $MM_REPO_REF
+      git -C mm submodule update --recursive --init
+    # Build the dependencies and then Meld. Dependencies are uploaded to the
+    # package registry so they don't have to be rebuilt every time if there
+    # haven't been any changes. Changes to dependencies are detected by
+    # checksumming all the files and using that checksum as a version number.
+    - |
+      echo $CI_PROJECT_DIR > mm/ci_project_dir.txt
+      MM_SHA=$(LANG=C find -s mm -type f -not -wholename '*.git/*' -exec cat {} \+ | shasum | awk '{ print $1 }')
+      VER_DIR=$(mm/jhb/usr/bin/config get VER_DIR)
+      PACKAGE_URL=${PACKAGE_REGISTRY_URL}/dependencies/${MM_SHA}/$(basename $VER_DIR)_$(uname -m).dmg
+      if ! curl -H "JOB-TOKEN: $CI_JOB_TOKEN" -fLO $PACKAGE_URL; then
+        mm/build_toolset.sh
+        mm/jhb/usr/bin/jhb run rustup self uninstall -y || true
+        mm/jhb/usr/bin/archive remove_nonessentials
+        mm/jhb/usr/bin/archive create_dmg
+        curl --fail-with-body -H "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file $(basename $PACKAGE_URL) $PACKAGE_URL
+        rm -rf ${VER_DIR:?}
+      fi
+    - mm/jhb/usr/bin/archive install_dmg
+    - mm/build_meld.sh
+  after_script:
+    - mm/jhb/usr/bin/archive uninstall_dmg
+  artifacts:
+    paths:
+      - Meld*.dmg

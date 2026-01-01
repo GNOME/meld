@@ -1322,6 +1322,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         try:
             self._cached_match.stop()
+            self._cached_match = None
         except Exception:
             # Ignore any cross-process exceptions that happen when
             # shutting down our matcher process.
@@ -1651,6 +1652,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         buf.data.reset(gfile, MeldBufferState.LOADING)
         self.file_open_button[pane].props.file = gfile
 
+        self.filelabel[pane].props.parent_gfile = None
         # FIXME: this was self.textbuffer[pane].data.label, which could be
         # either a custom label or the fallback
         self.filelabel[pane].props.gfile = gfile
@@ -1820,6 +1822,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         buffer_states = [b.data.state for b in self.textbuffer[:self.num_panes]]
         if all(state == MeldBufferState.LOAD_FINISHED for state in buffer_states):
             self.scheduler.add_task(self._compare_files_internal())
+
+        self.recompute_label()
 
     def _merge_files(self):
         if self.comparison_mode == FileComparisonMode.AutoMerge:

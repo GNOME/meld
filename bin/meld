@@ -60,6 +60,8 @@ def disable_stdout_buffering():
 def get_meld_dir():
     global frozen
     if frozen:
+        if hasattr(sys, '_MEIPASS'):
+            return sys._MEIPASS
         return os.path.dirname(sys.executable)
 
     # Support running from an uninstalled version
@@ -105,6 +107,8 @@ if uninstalled:
     meld.conf.uninstalled()
 elif frozen:
     meld.conf.frozen()
+elif "Contents/MacOS" in sys.executable:
+    meld.conf.setup_macos_application_bundle()
 
 # TODO: Possibly move to elib.intl
 import gettext  # noqa: E402, I100

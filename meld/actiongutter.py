@@ -45,6 +45,7 @@ class ActionGutter(Gtk.Widget):
     def chunks_set(self, chunks):
         self._chunks = chunks
         self.chunk_starts = [c.start_a for c in chunks]
+        self.pointer_chunk = None
 
     @GObject.Property(
         type=Gtk.TextDirection,

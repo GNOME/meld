@@ -31,25 +31,25 @@ if desktop_file_validate.found()
   )
 endif
 
-appdata_file = i18n.merge_file(
+metainfo_file = i18n.merge_file(
   input: configure_file(
-    input: files('org.gnome.Meld.appdata.xml.in.in'),
-    output: 'org.gnome.Meld.appdata.xml.in',
+    input: files('org.gnome.Meld.metainfo.xml.in.in'),
+    output: 'org.gnome.Meld.metainfo.xml.in',
     configuration: {'appid': application_id},
   ),
-  output: '@0@.appdata.xml'.format(application_id),
+  output: '@0@.metainfo.xml'.format(application_id),
   po_dir: podir,
   install: true,
   install_dir: datadir / 'metainfo',
 )
 
-# Validate AppData file
-appstreamcli = find_program('appstream-util', required: false)
+# Validate metainfo file
+appstreamcli = find_program('appstreamcli', required: false)
 if appstreamcli.found()
   test(
-    'Validate appdata file',
+    'Validate metainfo file',
     appstreamcli,
-    args: ['validate-relax', '--nonet', appdata_file.full_path()],
+    args: ['validate', '--no-net', '--explain', metainfo_file.full_path()],
   )
 endif
 
