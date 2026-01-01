@@ -196,27 +196,27 @@ class MeldWindow(Gtk.ApplicationWindow):
     @Gtk.Template.Callback()
     def on_close_request(self, window):
         if self.notebook.get_n_pages() > 0:
-            GLib.idle_add(self.close_window_async, True)
+            self.should_close = True
+            GLib.idle_add(self.close_window_async)
 
             # prevent close, will be done by thread if all pages are closed
             return True
 
         return False
 
-    def close_window_async(self, last_closed):
-        if last_closed:
-            # Delete pages from right-to-left.  This ensures that if a version
-            # control page is open in the far left page, it will be closed last.
-            n_pages = self.notebook.get_n_pages()
+    def close_window_async(self):
+        # Delete pages from right-to-left.  This ensures that if a version
+        # control page is open in the far left page, it will be closed last.
+        n_pages = self.notebook.get_n_pages()
 
-            if n_pages > 0:
-                page = self.notebook.get_nth_page(n_pages - 1)
-                page_num = self.notebook.page_num(page)
-                self.notebook.set_current_page(page_num)
-                page.request_close(self.close_window_async)
-            else:
-                # all pages have been closed, close window
-                self.close()
+        if n_pages > 0:
+            page = self.notebook.get_nth_page(n_pages - 1)
+            page_num = self.notebook.page_num(page)
+            self.notebook.set_current_page(page_num)
+            page.request_close()
+        else:
+            # all pages have been closed, close window
+            self.close()
 
     def has_pages(self):
         return self.notebook.get_n_pages() > 0
@@ -282,15 +282,20 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.handle_current_doc_switch(page)
 
         self.notebook.remove_page(page_num)
+        removed_last_page = not self.has_pages()
+
         # Normal switch-page handlers don't get run for removing the
         # last page from a notebook.
-        if not self.has_pages():
-            self.on_switch_page(self.notebook, page, -1)
-            if self.should_close:
-                cancelled = self.emit(
-                    'delete-event', Gdk.Event.new(Gdk.EventType.DELETE))
+        if removed_last_page:
+            self.on_switch_page(self.notebook, None, -1)
+
+        if self.should_close:
+            if removed_last_page:
+                cancelled = self.emit("close-request")
                 if not cancelled:
                     self.destroy()
+            else:
+                GLib.idle_add(self.close_window_async)
 
     def on_page_state_changed(self, page, old_state, new_state):
         if self.should_close and old_state == ComparisonState.Closing:

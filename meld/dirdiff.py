@@ -1979,14 +1979,11 @@ class DirDiff(Gtk.Box, MeldDoc):
     def action_refresh(self, *args):
         self.refresh()
 
-    def request_close(self, external_callback=None):
+    def request_close(self):
         meld_settings = get_meld_settings()
         for h in self.settings_handlers:
             meld_settings.disconnect(h)
         self.close_signal.emit(0)
-
-        if external_callback is not None and callable(external_callback):
-                external_callback(True)
 
     def action_find(self, *args):
         self.focus_pane.emit("start-interactive-search")

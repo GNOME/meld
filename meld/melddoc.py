@@ -150,10 +150,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
         window.insert_action_group('view', None)
 
-    def request_close(self, external_callback=None):
-        """Called when the docs container is about to close.
-
-        A doc calls the external_callback with True if the doc was closed.
-        """
-        if external_callback is not None and callable(external_callback):
-            external_callback(True)
+    def request_close(self):
+        """Called when the docs container is about to close"""
+        ...

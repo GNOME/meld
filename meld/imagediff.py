@@ -235,12 +235,9 @@ class ImageDiff(Gtk.Box, MeldDoc):
 
         self.num_panes = n
 
-    def request_close(self, external_callback=None):
+    def request_close(self):
         self.state = ComparisonState.Closing
         self.close_signal.emit(0)
-
-        if external_callback is not None and callable(external_callback):
-            external_callback(True)
 
     def recompute_label(self):
         filenames = [f.get_path() for f in self.files if f]

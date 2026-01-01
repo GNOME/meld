@@ -251,8 +251,5 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
     def on_container_switch_out_event(self, *args):
         pass
 
-    def request_close(self, external_callback=None):
+    def request_close(self):
         self.close_signal.emit(0)
-
-        if external_callback is not None and callable(external_callback):
-            external_callback(True)

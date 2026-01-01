@@ -1276,14 +1276,13 @@ class FileDiff(Gtk.Box, MeldDoc):
             dialog.set_close_response("cancel")
             dialog.choose(get_modal_parent(self), None, on_response)
 
-    def request_close(self, external_callback=None):
+    def request_close(self):
         self.state = ComparisonState.Closing
 
         def callback(dialog, response, buttons):
             if not isinstance(response, str):
                 response = dialog.choose_finish(response)
 
-            closed = False
             try_save = [b.get_active() for b in buttons]
 
             if response == "save":
@@ -1322,10 +1321,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                     log.exception('Failed to shut down matcher process')
                 # TODO: Base the return code on something meaningful for VC tools
                 self.close_signal.emit(0)
-                closed = True
-
-            if external_callback is not None and callable(external_callback):
-                external_callback(closed)
 
         self.check_save_modified(callback)
 
