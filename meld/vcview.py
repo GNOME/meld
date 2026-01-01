@@ -277,13 +277,8 @@ class VcView(Gtk.Box, MeldDoc):
 
     def on_container_switch_in_event(self, window):
         super().on_container_switch_in_event(window)
-        # FIXME: open-external should be tied to having a treeview selection
-        self.set_action_enabled("open-external", True)
+        self.on_treeview_selection_changed()
         self.scheduler.add_task(self.on_treeview_cursor_changed)
-
-    def on_container_switch_out_event(self, window):
-        self.set_action_enabled("open-external", False)
-        super().on_container_switch_out_event(window)
 
     def get_default_vc(self, vcs):
         target_name = self.vc.NAME if self.vc else None
@@ -612,9 +607,13 @@ class VcView(Gtk.Box, MeldDoc):
         states = [self.model.get_state(model.get_iter(r), 0) for r in rows]
         path_states = dict(zip(paths, states))
 
-        valid_actions = self.vc.get_valid_actions(path_states)
+        if self.vc:
+            valid_actions = self.vc.get_valid_actions(path_states)
+        else:
+            valid_actions = []
         action_sensitivity = {
             'compare': 'compare' in valid_actions,
+            "open-external": bool(paths),
             'vc-add': 'add' in valid_actions,
             'vc-unstage': 'unstage' in valid_actions,
             'vc-commit': 'commit' in valid_actions,
