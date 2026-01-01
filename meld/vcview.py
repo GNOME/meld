@@ -129,8 +129,10 @@ class VcView(Gtk.Box, MeldDoc):
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     status_filters = GObject.Property(
         type=GObject.TYPE_STRV,
@@ -182,9 +184,6 @@ class VcView(Gtk.Box, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
-
-        # TODO4: See comment in MeldSourceView.__init__ about why we can't
-        # support binding set changes here
 
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
@@ -404,14 +403,13 @@ class VcView(Gtk.Box, MeldDoc):
         return RecentType.VersionControl, uris
 
     def recompute_label(self):
-        self.label_text = os.path.basename(self.location)
-        self.tooltip_text = "\n".join((
+        self.tab_title = os.path.basename(self.location)
+        self.tab_tooltip = "\n".join((
             # TRANSLATORS: This is the name of the version control
             # system being used, e.g., "Git" or "Subversion"
             _("{vc} comparison:").format(vc=self.vc.NAME),
             self.location,
         ))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
 
     def set_labels(self, labels):
         if labels:

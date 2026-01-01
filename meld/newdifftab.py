@@ -18,7 +18,7 @@ import enum
 from gi.repository import Gio, GLib, GObject, Gtk
 
 from meld.conf import _
-from meld.melddoc import LabeledObjectMixin, MeldDoc
+from meld.melddoc import MeldDoc
 from meld.recent import get_recent_comparisons
 from meld.ui.util import map_widgets_into_lists, map_widgets_to_dict
 
@@ -35,7 +35,7 @@ class DiffType(enum.IntEnum):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/new-diff-tab.ui')
-class NewDiffTab(Gtk.Box, LabeledObjectMixin):
+class NewDiffTab(Gtk.Box):
 
     __gtype_name__ = "NewDiffTab"
 
@@ -44,9 +44,11 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
     }
 
     close_signal = MeldDoc.close_signal
-    label_changed_signal = LabeledObjectMixin.label_changed
 
-    label_text = _("New comparison")
+    tab_title = GObject.Property(
+        type=str, nick="Title used for tab labels", default=_("New comparison")
+    )
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     button_compare = Gtk.Template.Child()
     button_new_blank = Gtk.Template.Child()
@@ -240,16 +242,11 @@ class NewDiffTab(Gtk.Box, LabeledObjectMixin):
         self.emit('diff-created', tab)
 
     def on_container_switch_in_event(self, window):
-        self.label_changed.emit(self.label_text, self.tooltip_text)
-
         window.text_filter_button.set_visible(False)
         window.folder_filter_button.set_visible(False)
         window.vc_filter_button.set_visible(False)
         window.next_conflict_button.set_visible(False)
         window.previous_conflict_button.set_visible(False)
-
-    def on_container_switch_out_event(self, *args):
-        pass
 
     def on_file_changed(self, filename: str):
         pass

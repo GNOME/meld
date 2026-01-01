@@ -13,10 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gdk
+from gi.repository import Gdk, GObject
 
 GTK_STYLE_CLASS_ERROR = "error"
 
+BIND_DEFAULT_CREATE = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
 def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RGBA:
     rgba = Gdk.RGBA()

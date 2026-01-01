@@ -118,13 +118,39 @@
       <object class="GtkBox" id="appvbox">
         <property name="orientation">vertical</property>
         <child>
-          <object class="MeldNotebook" id="notebook">
-            <property name="vexpand">1</property>
-            <property name="scrollable">True</property>
-            <property name="show_border">False</property>
-            <property name="focusable">1</property>
-            <signal name="switch-page" handler="on_switch_page" swapped="no"/>
-            <signal name="switch-page" handler="after_switch_page" after="yes" swapped="no"/>
+          <object class="AdwTabOverview">
+            <property name="view">tabview</property>
+            <property name="enable-new-tab">True</property>
+            <property name="child">
+              <object class="AdwToolbarView">
+                <property name="top-bar-style">raised</property>
+                <child type="top">
+                  <object class="AdwHeaderBar">
+                  </object>
+                </child>
+                <child type="top">
+                  <object class="AdwTabBar" id="tab_bar">
+                    <property name="view">tabview</property>
+                    <child type="start">
+                      <object class="GtkButton" id="new_tab_btn">
+                        <property name="icon-name">tab-new-symbolic</property>
+                      </object>
+                    </child>
+                    <child type="end">
+                      <object class="AdwTabButton" id="overview_btn">
+                        <property name="view">tabview</property>
+                        <property name="action-name">overview.open</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <property name="content">
+                  <object class="AdwTabView" id="tabview">
+                    <signal name="notify::selected-page" handler="on_notify_selected_page" swapped="no"/>
+                  </object>
+                </property>
+              </object>
+            </property>
           </object>
         </child>
       </object>

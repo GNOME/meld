@@ -123,7 +123,6 @@ class FileDiff(Gtk.Box, MeldDoc):
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
 
     buttons = []
@@ -218,6 +217,9 @@ class FileDiff(Gtk.Box, MeldDoc):
         'next-conflict-changed': (
             GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
     }
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     action_mode = GObject.Property(
         type=int,
@@ -1575,13 +1577,12 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         label = self.meta.get("tablabel", "")
         if label:
-            self.label_text = label
+            self.tab_title = label
             tooltip_names = [label]
         else:
-            self.label_text = " — ".join(shortnames)
+            self.tab_title = " — ".join(shortnames)
             tooltip_names = filenames
-        self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
+        self.tab_tooltip = "\n".join((_("File comparison:"), *tooltip_names))
 
     def pre_comparison_init(self):
         self._disconnect_buffer_handlers()
@@ -1827,7 +1828,6 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     def _merge_files(self):
         if self.comparison_mode == FileComparisonMode.AutoMerge:
-            yield _("[%s] Merging files") % self.label_text
             merger = Merger()
             step = merger.initialize(self.buffer_filtered, self.buffer_texts)
             while next(step) is None:
@@ -1841,7 +1841,6 @@ class FileDiff(Gtk.Box, MeldDoc):
             yield 1
 
     def _diff_files(self, refresh=False):
-        yield _("[%s] Computing differences") % self.label_text
         texts = self.buffer_filtered[:self.num_panes]
         self.linediffer.ignore_blanks = self.props.ignore_blank_lines
         step = self.linediffer.set_sequences_iter(texts)

@@ -95,8 +95,10 @@ class ImageDiff(Gtk.Box, MeldDoc):
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     scroll_window0 = Gtk.Template.Child()
     viewport0 = Gtk.Template.Child()
@@ -243,13 +245,12 @@ class ImageDiff(Gtk.Box, MeldDoc):
 
         label = self.meta.get("tablabel", "")
         if label:
-            self.label_text = label
+            self.tab_title = label
             tooltip_names = [label]
         else:
-            self.label_text = " — ".join(shortnames)
+            self.tab_title = " — ".join(shortnames)
             tooltip_names = filenames
-        self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
+        self.tab_tooltip = "\n".join((_("File comparison:"), *tooltip_names))
 
     @with_focused_pane
     def action_open_folder(self, pane, *args):

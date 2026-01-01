@@ -18,7 +18,7 @@ import logging
 import os
 from typing import Any, Dict, Optional, Sequence
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk
+from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
@@ -39,7 +39,7 @@ from meld.newdifftab import NewDiffTab
 from meld.recent import get_recent_comparisons
 from meld.settings import get_meld_settings
 from meld.task import LifoScheduler
-from meld.ui.notebooklabel import NotebookLabel
+from meld.ui.gtkutil import BIND_DEFAULT_CREATE
 from meld.vcview import VcView
 from meld.windowstate import SavedWindowState
 
@@ -55,7 +55,7 @@ class MeldWindow(Gtk.ApplicationWindow):
     folder_filter_button: Gtk.Button = Gtk.Template.Child()
     gear_menu_button = Gtk.Template.Child()
     next_conflict_button = Gtk.Template.Child()
-    notebook = Gtk.Template.Child()
+    tabview = Gtk.Template.Child()
     previous_conflict_button = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     text_filter_button: Gtk.Button = Gtk.Template.Child()
@@ -195,7 +195,7 @@ class MeldWindow(Gtk.ApplicationWindow):
 
     @Gtk.Template.Callback()
     def on_close_request(self, window):
-        if self.notebook.get_n_pages() > 0:
+        if self.has_pages():
             self.should_close = True
             GLib.idle_add(self.close_window_async)
 
@@ -207,56 +207,43 @@ class MeldWindow(Gtk.ApplicationWindow):
     def close_window_async(self):
         # Delete pages from right-to-left.  This ensures that if a version
         # control page is open in the far left page, it will be closed last.
-        n_pages = self.notebook.get_n_pages()
-
-        if n_pages > 0:
-            page = self.notebook.get_nth_page(n_pages - 1)
-            page_num = self.notebook.page_num(page)
-            self.notebook.set_current_page(page_num)
-            page.request_close()
+        if self.has_pages():
+            page = self.tabview.get_nth_page(self.tabview.get_n_pages() - 1)
+            self.tabview.set_selected_page(page)
+            page.get_child().request_close()
         else:
             # all pages have been closed, close window
             self.close()
 
     def has_pages(self):
-        return self.notebook.get_n_pages() > 0
-
-    def handle_current_doc_switch(self, page):
-        page.on_container_switch_out_event(self)
+        return self.tabview.get_n_pages() > 0
 
     @Gtk.Template.Callback()
-    def on_switch_page(self, notebook, page, which):
-        oldidx = notebook.get_current_page()
-        if oldidx >= 0:
-            olddoc = notebook.get_nth_page(oldidx)
-            self.handle_current_doc_switch(olddoc)
+    def on_notify_selected_page(self, tabview: Adw.TabView, pspec):
+        self.insert_action_group("view", None)
+        for child in self.view_toolbar:
+            self.view_toolbar.remove(child)
 
-        newdoc = notebook.get_nth_page(which) if which >= 0 else None
+        newtab = tabview.get_selected_page()
+        if not newtab:
+            return
+
+        newdoc = newtab.get_child()
+        newdoc.on_container_switch_in_event(self)
 
         self.lookup_action('close').set_enabled(bool(newdoc))
 
         if hasattr(newdoc, 'scheduler'):
             self.scheduler.add_task(newdoc.scheduler)
 
-        toolbar_widgets = [child for child in self.view_toolbar]
-        for child in toolbar_widgets:
-            self.view_toolbar.remove(child)
-
         if hasattr(newdoc, 'toolbar_actions'):
             self.view_toolbar.append(newdoc.toolbar_actions)
-
-    @Gtk.Template.Callback()
-    def after_switch_page(self, notebook, page, which):
-        newdoc = notebook.get_nth_page(which)
-        newdoc.on_container_switch_in_event(self)
 
     def action_new_tab(self, action, parameter):
         self.append_new_comparison()
 
     def action_close(self, *extra):
-        i = self.notebook.get_current_page()
-        if i >= 0:
-            page = self.notebook.get_nth_page(i)
+        if page := self.tabview.get_selected_page():
             page.request_close()
 
     def action_fullscreen_change(self, action, state):
@@ -272,22 +259,21 @@ class MeldWindow(Gtk.ApplicationWindow):
         # works on the "current" document like this.
         self.current_doc().action_stop()
 
-    def page_removed(self, page, status):
-        if hasattr(page, 'scheduler'):
-            self.scheduler.remove_scheduler(page.scheduler)
+    def page_removed(self, doc, status):
+        if hasattr(doc, "scheduler"):
+            self.scheduler.remove_scheduler(doc.scheduler)
 
-        page_num = self.notebook.page_num(page)
+        tabpage = self.tabview.get_page(doc)
+        if tabpage.props.selected:
+            self.insert_action_group("view", None)
 
-        if self.notebook.get_current_page() == page_num:
-            self.handle_current_doc_switch(page)
-
-        self.notebook.remove_page(page_num)
+        self.tabview.close_page(tabpage)
         removed_last_page = not self.has_pages()
 
         # Normal switch-page handlers don't get run for removing the
         # last page from a notebook.
         if removed_last_page:
-            self.on_switch_page(self.notebook, None, -1)
+            self.on_notify_selected_page(self.tabview, None)
 
         if self.should_close:
             if removed_last_page:
@@ -303,7 +289,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             self.should_close = False
 
     def on_file_changed(self, srcpage, filename):
-        for page in self.notebook.get_pages():
+        for page in self.tabview.get_pages():
             child = page.get_child()
             if child != srcpage:
                 child.on_file_changed(filename)
@@ -316,40 +302,35 @@ class MeldWindow(Gtk.ApplicationWindow):
             # FIXME: Need error handling, but no sensible display location
             log.exception(f'Error opening recent file {uri}')
 
-    def _append_page(self, page):
-        nbl = NotebookLabel(page=page)
-        self.notebook.append_page(page, nbl)
-        notebook_page = self.notebook.get_page(page)
-        notebook_page.props.tab_expand = True
+    def _append_page(self, doc):
+        page = self.tabview.append(doc)
+        doc.bind_property("tab-title", page, "title", BIND_DEFAULT_CREATE)
+        doc.bind_property("tab-tooltip", page, "tooltip", BIND_DEFAULT_CREATE)
 
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
         # cycling through X pages when X diffs are initiated.
         if isinstance(self.current_doc(), DirDiff) or \
            isinstance(self.current_doc(), VcView) or \
-           isinstance(page, NewDiffTab):
-            self.notebook.set_current_page(self.notebook.page_num(page))
+           isinstance(doc, NewDiffTab):
+            self.tabview.set_selected_page(self.tabview.get_page(doc))
 
-        if hasattr(page, 'scheduler'):
-            self.scheduler.add_scheduler(page.scheduler)
-        if isinstance(page, MeldDoc):
-            page.file_changed_signal.connect(self.on_file_changed)
-            page.create_diff_signal.connect(
+        if hasattr(doc, "scheduler"):
+            self.scheduler.add_scheduler(doc.scheduler)
+        if isinstance(doc, MeldDoc):
+            doc.file_changed_signal.connect(self.on_file_changed)
+            doc.create_diff_signal.connect(
                 lambda obj, arg, kwargs: self.append_diff(arg, **kwargs))
-            page.tab_state_changed.connect(self.on_page_state_changed)
-        page.close_signal.connect(self.page_removed)
-
-        self.notebook.set_tab_reorderable(page, True)
+            doc.tab_state_changed.connect(self.on_page_state_changed)
+        doc.close_signal.connect(self.page_removed)
 
     def append_new_comparison(self):
         doc = NewDiffTab(self)
         self._append_page(doc)
-        self.notebook.on_label_changed(doc, _("New comparison"), None)
 
         def diff_created_cb(doc, newdoc):
             doc.request_close()
-            idx = self.notebook.page_num(newdoc)
-            self.notebook.set_current_page(idx)
+            self.tabview.set_selected_page(self.tabview.get_page(newdoc))
 
         doc.connect("diff-created", diff_created_cb)
         return doc
@@ -449,7 +430,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             RecentType.VersionControl: self.append_vcview,
         }
         tab = comparison_method[comparison_type](gfiles)
-        self.notebook.set_current_page(self.notebook.page_num(tab))
+        self.tabview.set_selected_page(self.tabview.get_page(tab))
         recent_comparisons.add(tab)
         return tab
 
@@ -488,17 +469,17 @@ class MeldWindow(Gtk.ApplicationWindow):
         if tab:
             get_recent_comparisons().add(tab)
             if focus:
-                self.notebook.set_current_page(self.notebook.page_num(tab))
+                self.tabview.set_selected_page(self.tabview.get_page(tab))
 
         return tab
 
     def current_doc(self):
-        "Get the current doc or a dummy object if there is no current"
-        index = self.notebook.get_current_page()
-        if index >= 0:
-            page = self.notebook.get_nth_page(index)
-            if isinstance(page, MeldDoc):
-                return page
+        """Get the current doc or a dummy object if there is no current"""
+
+        if page := self.tabview.get_selected_page():
+            child = page.get_child()
+            if isinstance(child, MeldDoc):
+                return child
 
         class DummyDoc:
             def __getattr__(self, a):

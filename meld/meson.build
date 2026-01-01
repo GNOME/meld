@@ -57,8 +57,6 @@ folders = {
     'ui/historyentry.py',
     'ui/listwidget.py',
     'ui/msgarea.py',
-    'ui/notebook.py',
-    'ui/notebooklabel.py',
     'ui/pathlabel.py',
     'ui/recentselector.py',
     'ui/statusbar.py',

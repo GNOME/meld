@@ -20,7 +20,6 @@ from typing import Sequence
 
 from gi.repository import Gio, GObject
 
-from meld.conf import _
 from meld.const import RecentType
 from meld.settings import get_meld_settings
 from meld.task import FifoScheduler
@@ -35,17 +34,7 @@ class ComparisonState(enum.IntEnum):
     SavingError = 2
 
 
-class LabeledObjectMixin(GObject.GObject):
-
-    label_text = _("untitled")
-    tooltip_text = None
-
-    @GObject.Signal
-    def label_changed(self, label_text: str, tooltip_text: str) -> None:
-        ...
-
-
-class MeldDoc(LabeledObjectMixin, GObject.GObject):
+class MeldDoc(GObject.GObject):
     """Base class for documents in the meld application.
     """
 
@@ -146,11 +135,6 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
         if hasattr(self, "focus_pane") and self.focus_pane:
             self.scheduler.add_task(self.focus_pane.grab_focus)
-
-    def on_container_switch_out_event(self, window):
-        """Called when the container app switches away from this tab"""
-
-        window.insert_action_group('view', None)
 
     def request_close(self):
         """Called when the docs container is about to close"""

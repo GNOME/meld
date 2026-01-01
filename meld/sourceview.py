@@ -169,12 +169,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # TODO4: We can't remove the Ctrl+PageUp/PageDown bindings on
-        # GtkTextView, and can't override them here because we need them to be
-        # handled by our notebook widget. It appears that this works in Builder
-        # because AdwTabView captures these shortcuts in the propagation phase;
-        # see meld.ui.notebook for why we want to switch to AdwTabView anyway.
-
         self.anim_source_id = None
         self.animating_chunks = []
         self.syncpoints = []

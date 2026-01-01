@@ -383,7 +383,6 @@ class DirDiff(Gtk.Box, MeldDoc):
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -394,6 +393,9 @@ class DirDiff(Gtk.Box, MeldDoc):
         ('folder-filter-text', 'apply-text-filters'),
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     apply_text_filters = GObject.Property(
         type=bool,
@@ -493,9 +495,6 @@ class DirDiff(Gtk.Box, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
-
-        # TODO4: See comment in MeldSourceView.__init__ about why we can't
-        # support binding set changes here
 
         self.view_action_group = Gio.SimpleActionGroup()
 
@@ -937,8 +936,7 @@ class DirDiff(Gtk.Box, MeldDoc):
             sel = t.get_selection()
             sel.unselect_all()
 
-        yield _('[{label}] Scanning {folder}').format(
-            label=self.label_text, folder='')
+        yield _("Scanning {folder}").format(folder='')
         prefixlen = 1 + len(
             self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
@@ -970,8 +968,7 @@ class DirDiff(Gtk.Box, MeldDoc):
             if not any(os.path.isdir(root) for root in roots):
                 continue
 
-            yield _('[{label}] Scanning {folder}').format(
-                label=self.label_text, folder=roots[0][prefixlen:])
+            yield _("Scanning {folder}").format(folder=roots[0][prefixlen:])
             differences = False
             encoding_errors = []
 
@@ -1111,7 +1108,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(Gtk.TreePath(path))
-        yield _('[{label}] Done').format(label=self.label_text)
+        yield _("Done")
 
         self._scan_in_progress -= 1
         if self._scan_in_progress == 0:
@@ -1905,12 +1902,8 @@ class DirDiff(Gtk.Box, MeldDoc):
             shortnames = misc.shorten_names(*filenames)
             tooltip_names = filenames
 
-        self.label_text = " : ".join(shortnames)
-        self.tooltip_text = "\n".join((
-            _("Folder comparison:"),
-            *tooltip_names,
-        ))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
+        self.tab_title = " : ".join(shortnames)
+        self.tab_tooltip = "\n".join((_("Folder comparison:"), *tooltip_names))
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
