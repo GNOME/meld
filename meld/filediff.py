@@ -1226,28 +1226,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self._after_text_modified(buf, starting_at, -self.lines_removed)
         self.lines_removed = 0
 
-    def check_save_modified(self, callback):
-        buffers = self.textbuffer[:self.num_panes]
-        if not any(b.get_modified() for b in buffers):
-            callback(None, "discard", [])
-            return
-
-        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/save-confirm-dialog.ui")
-        dialog = builder.get_object("save-confirm-dialog")
-
-        buttons = []
-        box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
-        for buf in buffers:
-            button = Gtk.CheckButton.new_with_label(buf.data.label)
-            needs_save = buf.get_modified()
-            button.set_sensitive(needs_save)
-            button.set_active(needs_save)
-            box.prepend(button)
-            buttons.append(button)
-
-        dialog.set_extra_child(box)
-        dialog.choose(self.get_root(), None, callback, buttons)
-
     def prompt_resolve_conflict(self):
         parent = self.meta.get('parent', None)
         saved = self.meta.get('middle_saved', False)
@@ -1263,6 +1241,10 @@ class FileDiff(Gtk.Box, MeldDoc):
                     # idle loop; it might never happen.
                     parent.command("resolve", [conflict_gfile.get_path()], sync=True)
 
+                # We can only get here from the close callback once we've
+                # already saved files, etc.
+                self.request_close_cb(None, "discard", [])
+
             dialog = Adw.AlertDialog(
                 heading=_("Mark conflict as resolved?"),
                 body=_(
@@ -1275,54 +1257,78 @@ class FileDiff(Gtk.Box, MeldDoc):
             dialog.set_default_response("resolve")
             dialog.set_close_response("cancel")
             dialog.choose(get_modal_parent(self), None, on_response)
+            return False
+
+        return True
 
     def request_close(self):
         self.state = ComparisonState.Closing
 
-        def callback(dialog, response, buttons):
-            if not isinstance(response, str):
-                response = dialog.choose_finish(response)
+        buffers = self.textbuffer[:self.num_panes]
+        if not any(b.get_modified() for b in buffers):
+            self.request_close_cb(None, "discard", [])
+            return
 
+        builder = Gtk.Builder.new_from_resource(
+            "/org/gnome/meld/ui/save-confirm-dialog.ui"
+        )
+        dialog = builder.get_object("save-confirm-dialog")
+
+        group = dialog.get_extra_child()
+        buttons = []
+        for buf in buffers:
+            button = Gtk.CheckButton(
+                sensitive=buf.get_modified(),
+                active=buf.get_modified(),
+                valign=Gtk.Align.CENTER,
+            )
+            buttons.append(button)
+            row = Adw.ActionRow(use_markup=False, title=buf.data.label)
+            row.add_prefix(button)
+            row.set_activatable_widget(button)
+            group.add(row)
+
+        dialog.choose(self.get_root(), None, self.request_close_cb, buttons)
+
+    def request_close_cb(self, dialog, response, buttons):
+        if not isinstance(response, str):
+            response = dialog.choose_finish(response)
+
+        if response == "cancel":
+            self.state = ComparisonState.Normal
+            return
+
+        if response == "save":
             try_save = [b.get_active() for b in buttons]
+            buffers = self.textbuffer[:self.num_panes]
+            for i, buf in enumerate(buffers):
+                if try_save[i]:
+                    self.save_file(self.textbuffer.index(buf))
 
-            if response == "save":
-                buffers = self.textbuffer[:self.num_panes]
-                for i, buf in enumerate(buffers):
-                    if try_save[i]:
-                        self.save_file(self.textbuffer.index(buf))
+            # Regardless of whether these saves are successful or not,
+            # we return a cancel here, so that other closing logic
+            # doesn't run. Instead, the file-saved callback from
+            # save_file() handles closing files and setting state.
+            return
 
-                # Regardless of whether these saves are successful or not,
-                # we return a cancel here, so that other closing logic
-                # doesn't run. Instead, the file-saved callback from
-                # save_file() handles closing files and setting state.
-                return # TODO maybe close directly
-            elif response == "discard":
-                response = "save"
+        # As with file saving above, the resolve-conflict prompt will take
+        # care of re-requesting the close.
+        if self.meta and not self.prompt_resolve_conflict():
+            return
 
-            if response == "save" and self.meta:
-                self.prompt_resolve_conflict()
-            elif response == "cancel":
-                self.state = ComparisonState.Normal
+        # This is a workaround for cleaning up file monitors.
+        for buf in self.textbuffer:
+            buf.data.disconnect_monitor()
 
-            if response == "save":
-                meld_settings = get_meld_settings()
-                for h in self.settings_handlers:
-                    meld_settings.disconnect(h)
+        try:
+            self._cached_match.stop()
+        except Exception:
+            # Ignore any cross-process exceptions that happen when
+            # shutting down our matcher process.
+            log.exception("Failed to shut down matcher process")
 
-                # This is a workaround for cleaning up file monitors.
-                for buf in self.textbuffer:
-                    buf.data.disconnect_monitor()
-
-                try:
-                    self._cached_match.stop()
-                except Exception:
-                    # Ignore any cross-process exceptions that happen when
-                    # shutting down our matcher process.
-                    log.exception('Failed to shut down matcher process')
-                # TODO: Base the return code on something meaningful for VC tools
-                self.close_signal.emit(0)
-
-        self.check_save_modified(callback)
+        # TODO: Base the return code on something meaningful for VC tools
+        super().request_close()
 
     def _scroll_to_actions(self, actions):
         """Scroll all views affected by *actions* to the current cursor"""
