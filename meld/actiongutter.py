@@ -369,9 +369,8 @@ class ActionGutter(Gtk.Widget):
 
             button_transform = Gsk.Transform().translate(Graphene.Point().init(button_x, button_y))
             self.button.set_size_request(button_width, button_height)
-            self.button.allocate(button_width, button_height, -1, button_transform)
-
             self.button.props.icon_name = self.action_icon_name_map.get(action)
+            self.button.allocate(button_width, button_height, -1, button_transform)
 
             match chunk:
                 case self.pressed_chunk:
