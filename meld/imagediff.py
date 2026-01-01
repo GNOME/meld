@@ -26,7 +26,7 @@ from meld import misc
 from meld.conf import _
 from meld.const import FileComparisonMode
 from meld.externalhelpers import open_files_external
-from meld.melddoc import ComparisonState, MeldDoc
+from meld.melddoc import MeldDoc
 from meld.misc import with_focused_pane
 from meld.settings import bind_settings
 from meld.ui.util import map_widgets_into_lists
@@ -234,10 +234,6 @@ class ImageDiff(Gtk.Box, MeldDoc):
             widget.hide()
 
         self.num_panes = n
-
-    def request_close(self):
-        self.state = ComparisonState.Closing
-        self.close_signal.emit(0)
 
     def recompute_label(self):
         filenames = [f.get_path() for f in self.files if f]

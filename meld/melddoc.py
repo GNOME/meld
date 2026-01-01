@@ -22,6 +22,7 @@ from gi.repository import Gio, GObject
 
 from meld.conf import _
 from meld.const import RecentType
+from meld.settings import get_meld_settings
 from meld.task import FifoScheduler
 
 log = logging.getLogger(__name__)
@@ -70,6 +71,7 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         self.scheduler = FifoScheduler()
         self.num_panes = 0
         self.view_action_group = Gio.SimpleActionGroup()
+        self.settings_handlers = []
         self._state = ComparisonState.Normal
 
     @property
@@ -152,4 +154,9 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
 
     def request_close(self):
         """Called when the docs container is about to close"""
-        ...
+        meld_settings = get_meld_settings()
+        for h in self.settings_handlers:
+            meld_settings.disconnect(h)
+        self.state = ComparisonState.Closing
+        self.scheduler.remove_all_tasks()
+        self.close_signal.emit(0)

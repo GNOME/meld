@@ -501,10 +501,6 @@ class VcView(Gtk.Box, MeldDoc):
         path = file.get_path()
         self.set_location(path)
 
-    def request_close(self):
-        self.scheduler.remove_all_tasks()
-        self.close_signal.emit(0)
-
     @Gtk.Template.Callback()
     def on_row_activated(self, treeview, path, tvc):
         it = self.model.get_iter(path)
