@@ -25,7 +25,13 @@ class MatcherWorker(multiprocessing.Process):
 
     def run(self):
         while True:
-            task_id, (text1, textn) = self.tasks.get()
+            try:
+                task_id, (text1, textn) = self.tasks.get(timeout=1.0)
+            except queue.Empty:
+                if not multiprocessing.parent_process().is_alive():
+                    break
+                continue
+
             if task_id == self.END_TASK:
                 break
 
