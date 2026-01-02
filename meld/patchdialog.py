@@ -22,7 +22,6 @@ from gi.repository import Gio, GLib, Gtk, GtkSource
 from meld.conf import _
 from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
-from meld.settings import get_meld_settings
 from meld.sourceview import LanguageManager
 
 
@@ -59,23 +58,7 @@ class PatchDialog(Gtk.Dialog):
             self.side_selection_label.hide()
             self.side_selection_box.hide()
 
-        self.css_provider = Gtk.CssProvider()
-        style_context = self.textview.get_style_context()
-        style_context.add_provider(
-            self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
-
-        meld_settings = get_meld_settings()
-        meld_settings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meld_settings, "font")
-
         self.textview.set_editable(False)
-
-    def on_setting_changed(self, settings, key):
-        if key == "font":
-            family, size = settings.get_font_css()
-            style = f"* {{ {family} {size} }}"
-            self.css_provider.load_from_string(style)
 
     @Gtk.Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):

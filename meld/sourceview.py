@@ -176,9 +176,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         self.context_menu = None
 
-        self.css_provider = Gtk.CssProvider()
-        style_context = self.get_style_context()
-        style_context.add_provider(self.css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        self.add_css_class("meld-monospace-font")
 
         buf = MeldBuffer()
         inline_tag = GtkSource.Tag.new("inline")
@@ -235,9 +233,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     def on_setting_changed(self, settings, key):
         if key == 'font':
-            family, size = settings.get_font_css()
-            style = f"* {{ {family} {size} }}"
-            self.css_provider.load_from_string(style)
             self._approx_line_height = None
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
@@ -295,7 +290,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         meld_settings = get_meld_settings()
 
-        self.on_setting_changed(meld_settings, 'font')
         self.on_setting_changed(meld_settings, 'style-scheme')
         self.get_buffer().set_style_scheme(meld_settings.style_scheme)
 

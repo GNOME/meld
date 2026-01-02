@@ -18,9 +18,10 @@
 import enum
 from typing import Mapping, Optional, Tuple
 
-from gi.repository import Gdk, GtkSource
+from gi.repository import Gdk, Gtk, GtkSource, Pango
 
 from meld.conf import _
+from meld.settings import get_meld_settings
 
 
 class MeldStyleScheme(enum.Enum):
@@ -71,6 +72,28 @@ def set_base_style_scheme(
         style_scheme = base_style_scheme
 
     return base_style_scheme
+
+
+def init_sourceview_style_context():
+    def on_setting_changed(meld_settings, key):
+        if key != "font":
+            return
+
+        css_provider.load_from_string(
+            f".meld-monospace-font {{"
+            f"  font-family: {meld_settings.font.get_family()};"
+            f"  font-size: {max(1, meld_settings.font.get_size() / Pango.SCALE)}pt;"
+            f"}}"
+        )
+
+    css_provider = Gtk.CssProvider()
+    Gtk.StyleContext.add_provider_for_display(
+        Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
+
+    meld_settings = get_meld_settings()
+    meld_settings.connect("changed", on_setting_changed)
+    on_setting_changed(meld_settings, "font")
 
 
 def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:

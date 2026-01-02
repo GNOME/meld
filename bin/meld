@@ -322,6 +322,12 @@ def setup_settings():
     meld.settings.create_settings()
 
 
+def setup_style():
+    import meld.style
+
+    meld.style.init_sourceview_style_context()
+
+
 def setup_logging():
     log = logging.getLogger()
 
@@ -463,6 +469,7 @@ def main():
     setup_glib_logging()
     setup_resources()
     setup_settings()
+    setup_style()
     return run_application()
 
 

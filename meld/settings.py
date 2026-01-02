@@ -19,7 +19,6 @@ from gi.repository import Adw, Gio, GObject, GtkSource, Pango
 
 import meld.conf
 import meld.filters
-from meld.style import set_base_style_scheme
 
 
 class MeldSettings(GObject.GObject):
@@ -73,6 +72,8 @@ class MeldSettings(GObject.GObject):
             self.on_setting_changed(settings, "use-system-font")
 
     def _style_scheme_from_gsettings(self):
+        from meld.style import set_base_style_scheme
+
         manager = GtkSource.StyleSchemeManager.get_default()
         scheme = manager.get_scheme(settings.get_string('style-scheme'))
         set_base_style_scheme(scheme)
@@ -99,13 +100,6 @@ class MeldSettings(GObject.GObject):
             font_string = "monospace 11"
         return Pango.FontDescription(font_string)
 
-    def get_font_css(self) -> tuple[str, str]:
-        """Returns a tuple of font (family, size) in CSS format"""
-
-        return (
-            f"font-family: {self.font.get_family()};",
-            f"font-size: {max(1, self.font.get_size() / Pango.SCALE)}pt;",
-        )
 
 def load_settings_schema(schema_id):
     if meld.conf.DATADIR_IS_UNINSTALLED:
