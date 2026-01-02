@@ -134,7 +134,14 @@ class MeldDoc(GObject.GObject):
         window.previous_conflict_button.set_visible(show_conflict_actions)
 
         if hasattr(self, "focus_pane") and self.focus_pane:
-            self.scheduler.add_task(self.focus_pane.grab_focus)
+
+            def grab_focus():
+                # This function exists only to discard the return value. Otherwise, our
+                # scheduler class will interpret the True return value from grab_focus
+                # (GTK 4 API change) as needing the task to be repeated.
+                self.focus_pane.grab_focus()
+
+            self.scheduler.add_task(grab_focus)
 
     def request_close(self):
         """Called when the docs container is about to close"""
