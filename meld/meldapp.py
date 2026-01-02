@@ -19,7 +19,7 @@ import logging
 import optparse
 import os
 
-from gi.repository import Adw, Gdk, Gio, GLib, Gtk
+from gi.repository import Adw, Gio, GLib, Gtk
 
 import meld.accelerators
 import meld.conf
@@ -43,17 +43,11 @@ class MeldApp(Adw.Application):
         super().__init__(
             application_id=meld.conf.APPLICATION_ID,
             flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+            resource_base_path=meld.conf.RESOURCE_BASE,
         )
         GLib.set_application_name(meld.conf.APPLICATION_NAME)
         GLib.set_prgname(meld.conf.APPLICATION_ID)
         Gtk.Window.set_default_icon_name(meld.conf.APPLICATION_ID)
-        self.set_resource_base_path(meld.conf.RESOURCE_BASE)
-
-        provider = Gtk.CssProvider()
-        provider.load_from_resource(self.make_resource_path('meld.css'))
-        Gtk.StyleContext.add_provider_for_display(
-            Gdk.Display.get_default(), provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
-        )
 
     def make_resource_path(self, resource_path: str) -> str:
         return f'{self.props.resource_base_path}/{resource_path}'
