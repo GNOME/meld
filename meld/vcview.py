@@ -34,7 +34,7 @@ from meld.iohelpers import trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import error_dialog, read_pipe_iter
 from meld.settings import bind_settings, settings
-from meld.ui.vcdialogs import CommitDialog, PushDialog
+from meld.ui.vcdialogs import CommitDialog
 from meld.vc import _null, get_vcs
 from meld.vc._vc import Entry
 
@@ -715,9 +715,14 @@ class VcView(Gtk.Box, MeldDoc):
         self.vc.update(self.runner)
 
     def action_push(self, *args):
-        response = PushDialog(self).run()
-        if response == Gtk.ResponseType.OK:
-            self.vc.push(self.runner)
+        def action_push_cb(dialog, response):
+            response = dialog.choose_finish(response)
+            if response == "push":
+                self.vc.push(self.runner)
+
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/push-dialog.ui")
+        dialog = builder.get_object("push-dialog")
+        dialog.choose(self.get_root(), None, action_push_cb)
 
     def action_commit(self, *args):
         response, commit_msg = CommitDialog(self).run()

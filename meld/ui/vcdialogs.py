@@ -105,23 +105,3 @@ class CommitDialog(Gtk.Dialog):
             model = gentry.get_model()
             buf = self.textview.get_buffer()
             buf.set_text(model[idx][1])
-
-
-@Gtk.Template(resource_path='/org/gnome/meld/ui/push-dialog.ui')
-class PushDialog(Gtk.MessageDialog):
-
-    __gtype_name__ = "PushDialog"
-
-    def __init__(self, parent):
-        super().__init__()
-
-        self.set_transient_for(parent.get_root())
-        self.show_all()
-
-    def run(self):
-        # TODO: Ask the VC for a more informative label for what will happen.
-        # In git, this is probably the parsed output of push --dry-run.
-
-        response = super().run()
-        self.destroy()
-        return response
