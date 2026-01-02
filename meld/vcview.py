@@ -725,10 +725,12 @@ class VcView(Gtk.Box, MeldDoc):
         dialog.choose(self.get_root(), None, action_push_cb)
 
     def action_commit(self, *args):
-        response, commit_msg = CommitDialog(self).run()
-        if response == Gtk.ResponseType.OK:
-            self.vc.commit(
-                self.runner, self._get_selected_files(), commit_msg)
+        def on_response(response, commit_message):
+            if response == "commit":
+                self.vc.commit(self.runner, self._get_selected_files(), commit_message)
+
+        commit_dialog = CommitDialog()
+        commit_dialog.run(self, on_response)
 
     def action_add(self, *args):
         self.vc.add(self.runner, self._get_selected_files())
