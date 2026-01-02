@@ -47,11 +47,10 @@ log = logging.getLogger(__name__)
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/appwindow.ui')
-class MeldWindow(Gtk.ApplicationWindow):
+class MeldWindow(Adw.ApplicationWindow):
 
     __gtype_name__ = 'MeldWindow'
 
-    appvbox = Gtk.Template.Child()
     folder_filter_button: Gtk.Button = Gtk.Template.Child()
     gear_menu_button = Gtk.Template.Child()
     next_conflict_button = Gtk.Template.Child()
@@ -118,7 +117,7 @@ class MeldWindow(Gtk.ApplicationWindow):
             style_context.add_class("devel")
 
     def do_realize(self):
-        Gtk.ApplicationWindow.do_realize(self)
+        Adw.ApplicationWindow.do_realize(self)
 
         meld_settings = get_meld_settings()
         self.update_text_filters(meld_settings)

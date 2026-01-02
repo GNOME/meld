@@ -1,160 +1,157 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
-  <template class="MeldWindow" parent="GtkApplicationWindow">
+  <template class="MeldWindow" parent="AdwApplicationWindow">
     <property name="name">meldapp</property>
     <property name="height_request">400</property>
     <property name="title" translatable="yes">Meld</property>
     <signal name="close-request" handler="on_close_request" swapped="no"/>
-    <child type="titlebar">
-      <object class="GtkHeaderBar" id="header_bar">
-        <child>
-          <object class="GtkBox">
-            <property name="homogeneous">True</property>
-            <style>
-              <class name="linked"/>
-            </style>
-            <child>
-              <object class="GtkButton">
-                <property name="action-name">win.new-tab</property>
-                <property name="tooltip-text" translatable="yes">Start a new comparison</property>
-                <property name="focus_on_click">False</property>
-                <property name="icon-name">tab-new-symbolic</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuButton" id="recent_menu_button">
-                <property name="tooltip-text" translatable="yes">Open a recent comparison</property>
-                <property name="popover">recent_popover</property>
-                <property name="icon-name">document-open-recent-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child type="start">
-          <object class="GtkBox">
-            <property name="homogeneous">True</property>
-            <style>
-              <class name="linked"/>
-            </style>
-            <child>
-              <object class="GtkButton">
-                <property name="action-name">view.previous-change</property>
-                <property name="tooltip-text" translatable="yes">Go to the previous change</property>
-                <property name="focus_on_click">False</property>
-                <property name="icon-name">go-up-symbolic</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton">
-                <property name="action-name">view.next-change</property>
-                <property name="tooltip-text" translatable="yes">Go to the next change</property>
-                <property name="focus_on_click">False</property>
-                <property name="icon-name">go-down-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child>
-          <object class="GtkBox">
-            <property name="homogeneous">True</property>
-            <style>
-              <class name="linked"/>
-            </style>
-            <child>
-              <object class="GtkButton" id="previous_conflict_button">
-                <property name="action-name">view.file-previous-conflict</property>
-                <property name="tooltip-text" translatable="yes">Go to the previous conflict</property>
-                <property name="focus_on_click">False</property>
-                <property name="icon-name">go-top-symbolic</property>
-              </object>
-            </child>
-            <child>
-              <object class="GtkButton" id="next_conflict_button">
-                <property name="action-name">view.file-next-conflict</property>
-                <property name="tooltip-text" translatable="yes">Go to the next conflict</property>
-                <property name="focus_on_click">False</property>
-                <property name="icon-name">go-bottom-symbolic</property>
-              </object>
-            </child>
-          </object>
-        </child>
-        <child type="start">
-          <object class="GtkBox" id="view_toolbar"/>
-        </child>
-        <child type="end">
-          <object class="GtkMenuButton" id="gear_menu_button">
-            <property name="icon-name">open-menu-symbolic</property>
-            <property name="primary">1</property>
-            <property name="menu-model">gear-menu</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkMenuButton" id="vc_filter_button">
-            <property name="label" translatable="yes">Version Filters</property>
-            <property name="menu-model">vc-status-filter-menu</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkMenuButton" id="folder_filter_button">
-            <property name="label" translatable="yes">File Filters</property>
-            <property name="menu-model">folder-status-filter-menu</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkMenuButton" id="text_filter_button">
-            <property name="label" translatable="yes">Text Filters</property>
-            <property name="menu-model">text-filter-menu</property>
-          </object>
-        </child>
-        <child type="end">
-          <object class="GtkSpinner" id="spinner">
-            <property name="visible">false</property>
-          </object>
-        </child>
-      </object>
-    </child>
-    <child>
-      <object class="GtkBox" id="appvbox">
-        <property name="orientation">vertical</property>
-        <child>
-          <object class="AdwTabOverview">
-            <property name="view">tabview</property>
-            <property name="enable-new-tab">True</property>
-            <property name="child">
-              <object class="AdwToolbarView">
-                <property name="top-bar-style">raised</property>
-                <child type="top">
-                  <object class="AdwHeaderBar">
-                  </object>
-                </child>
-                <child type="top">
-                  <object class="AdwTabBar" id="tab_bar">
-                    <property name="view">tabview</property>
-                    <child type="start">
-                      <object class="GtkButton" id="new_tab_btn">
+    <property name="content">
+<!--
+      <object class="AdwTabOverview">
+        <property name="view">tabview</property>
+        <property name="enable-new-tab">True</property>
+        <property name="child">
+ -->
+          <object class="AdwToolbarView">
+            <property name="top-bar-style">raised</property>
+            <child type="top">
+              <object class="AdwHeaderBar" id="header_bar">
+                <child>
+                  <object class="GtkBox">
+                    <property name="homogeneous">True</property>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="action-name">win.new-tab</property>
+                        <property name="tooltip-text" translatable="yes">Start a new comparison</property>
+                        <property name="focus_on_click">False</property>
                         <property name="icon-name">tab-new-symbolic</property>
                       </object>
                     </child>
-                    <child type="end">
-                      <object class="AdwTabButton" id="overview_btn">
-                        <property name="view">tabview</property>
-                        <property name="action-name">overview.open</property>
+                    <child>
+                      <object class="GtkMenuButton" id="recent_menu_button">
+                        <property name="tooltip-text" translatable="yes">Open a recent comparison</property>
+                        <property name="popover">recent_popover</property>
+                        <property name="icon-name">document-open-recent-symbolic</property>
                       </object>
                     </child>
                   </object>
                 </child>
-                <property name="content">
-                  <object class="AdwTabView" id="tabview">
-                    <signal name="notify::selected-page" handler="on_notify_selected_page" swapped="no"/>
+                <child type="start">
+                  <object class="GtkBox">
+                    <property name="homogeneous">True</property>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="action-name">view.previous-change</property>
+                        <property name="tooltip-text" translatable="yes">Go to the previous change</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="icon-name">go-up-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton">
+                        <property name="action-name">view.next-change</property>
+                        <property name="tooltip-text" translatable="yes">Go to the next change</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="icon-name">go-down-symbolic</property>
+                      </object>
+                    </child>
                   </object>
-                </property>
+                </child>
+                <child>
+                  <object class="GtkBox">
+                    <property name="homogeneous">True</property>
+                    <style>
+                      <class name="linked"/>
+                    </style>
+                    <child>
+                      <object class="GtkButton" id="previous_conflict_button">
+                        <property name="action-name">view.file-previous-conflict</property>
+                        <property name="tooltip-text" translatable="yes">Go to the previous conflict</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="icon-name">go-top-symbolic</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="next_conflict_button">
+                        <property name="action-name">view.file-next-conflict</property>
+                        <property name="tooltip-text" translatable="yes">Go to the next conflict</property>
+                        <property name="focus_on_click">False</property>
+                        <property name="icon-name">go-bottom-symbolic</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="start">
+                  <object class="GtkBox" id="view_toolbar"/>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="gear_menu_button">
+                    <property name="icon-name">open-menu-symbolic</property>
+                    <property name="primary">1</property>
+                    <property name="menu-model">gear-menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="vc_filter_button">
+                    <property name="label" translatable="yes">Version Filters</property>
+                    <property name="menu-model">vc-status-filter-menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="folder_filter_button">
+                    <property name="label" translatable="yes">File Filters</property>
+                    <property name="menu-model">folder-status-filter-menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkMenuButton" id="text_filter_button">
+                    <property name="label" translatable="yes">Text Filters</property>
+                    <property name="menu-model">text-filter-menu</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="GtkSpinner" id="spinner">
+                    <property name="visible">false</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="top">
+              <object class="AdwTabBar" id="tab_bar">
+                <property name="view">tabview</property>
+<!--
+                <child type="start">
+                  <object class="GtkButton" id="new_tab_btn">
+                    <property name="icon-name">tab-new-symbolic</property>
+                  </object>
+                </child>
+                <child type="end">
+                  <object class="AdwTabButton" id="overview_btn">
+                    <property name="view">tabview</property>
+                    <property name="action-name">overview.open</property>
+                  </object>
+                </child>
+ -->
+              </object>
+            </child>
+            <property name="content">
+              <object class="AdwTabView" id="tabview">
+                <signal name="notify::selected-page" handler="on_notify_selected_page" swapped="no"/>
               </object>
             </property>
           </object>
-        </child>
+        </property>
+<!--
       </object>
-    </child>
+    </property>
+ -->
   </template>
   <object class="GtkPopover" id="recent_popover">
     <property name="focusable">1</property>
