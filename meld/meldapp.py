@@ -116,12 +116,20 @@ class MeldApp(Adw.Application):
         Gtk.UriLauncher(uri=uri).launch(self.get_active_window(), None)
 
     def about_callback(self, action, parameter):
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/about-dialog.ui')
-        dialog = builder.get_object('about-dialog')
-        dialog.set_version(meld.conf.__version__)
-        dialog.set_logo_icon_name(meld.conf.APPLICATION_ID)
-        dialog.set_transient_for(self.get_active_window())
+        if meld.conf.DATADIR_IS_UNINSTALLED:
+            version = None
+        else:
+            version = meld.conf.__version__
+        dialog = Adw.AboutDialog.new_from_appdata(
+            "/org/gnome/meld/org.gnome.Meld.metainfo.xml", version
+        )
+        dialog.set_copyright(
+            "Copyright © 2002-2009 Stephen Kennedy\n"
+            "Copyright © 2009-2025 Kai Willadsen"
+        )
+        dialog.set_developers(["Kai Willadsen", "Stephen Kennedy", "Vincent Legoll"])
+        dialog.set_artists(["GNOME Project", "Josef Vybíral"])
+        dialog.set_translator_credits(_("translator-credits"))
         dialog.present()
 
     def quit_callback(self, action, parameter):
