@@ -31,28 +31,6 @@ if desktop_file_validate.found()
   )
 endif
 
-metainfo_file = i18n.merge_file(
-  input: configure_file(
-    input: files('org.gnome.Meld.metainfo.xml.in.in'),
-    output: 'org.gnome.Meld.metainfo.xml.in',
-    configuration: {'appid': application_id},
-  ),
-  output: '@0@.metainfo.xml'.format(application_id),
-  po_dir: podir,
-  install: true,
-  install_dir: datadir / 'metainfo',
-)
-
-# Validate metainfo file
-appstreamcli = find_program('appstreamcli', required: false)
-if appstreamcli.found()
-  test(
-    'Validate metainfo file',
-    appstreamcli,
-    args: ['validate', '--no-net', '--explain', metainfo_file.full_path()],
-  )
-endif
-
 # Install mimetypes
 mimetype_file = i18n.merge_file(
   input: 'mime' / '@0@.xml.in'.format(resource_base_id),
