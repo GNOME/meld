@@ -24,7 +24,7 @@ import sys
 import tempfile
 from typing import Tuple
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
+from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango
 
 from meld import tree
 from meld.conf import _
@@ -740,26 +740,31 @@ class VcView(Gtk.Box, MeldDoc):
 
     def action_remove(self, *args):
         selected = self._get_selected_files()
-        if any(os.path.isdir(p) for p in selected):
-            # TODO: Improve and reuse this dialog for the non-VC delete action
-            dialog = Gtk.MessageDialog(
-                parent=self.get_root(),
-                flags=(Gtk.DialogFlags.MODAL |
-                       Gtk.DialogFlags.DESTROY_WITH_PARENT),
-                type=Gtk.MessageType.WARNING,
-                message_format=_("Remove folder and all its files?"))
-            dialog.format_secondary_text(
-                _("This will remove all selected files and folders, and all "
-                  "files within any selected folders, from version control."))
 
-            dialog.add_button(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL)
-            dialog.add_button(_("_Remove"), Gtk.ResponseType.OK)
-            response = dialog.run()
-            dialog.destroy()
-            if response != Gtk.ResponseType.OK:
-                return
+        # Don't prompt for confirmation if we're only removing files
+        # from version control
+        if not any(os.path.isdir(p) for p in selected):
+            self.vc.remove(self.runner, selected)
+            return
 
-        self.vc.remove(self.runner, selected)
+        def action_remove_cb(dialog, response):
+            response = dialog.choose_finish(response)
+            if response == "remove":
+                self.vc.remove(self.runner, selected)
+
+        dialog = Adw.AlertDialog(
+            heading=_("Remove folder and all its files?"),
+            body=_(
+                "This will remove all selected files and folders, and all "
+                "files within any selected folders, from version control."
+            ),
+        )
+        dialog.add_response("cancel", _("_Cancel"))
+        dialog.add_response("remove", _("_Remove"))
+        dialog.set_response_appearance("remove", Adw.ResponseAppearance.DESTRUCTIVE)
+        dialog.set_default_response("cancel")
+        dialog.set_close_response("cancel")
+        dialog.choose(self.get_root(), None, action_remove_cb)
 
     def action_resolved(self, *args):
         self.vc.resolve(self.runner, self._get_selected_files())

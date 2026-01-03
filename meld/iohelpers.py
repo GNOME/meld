@@ -65,7 +65,6 @@ def trash_or_confirm(
             f"“{filename}” can't be put in the trash. "
             "Do you want to delete it permanently?"
         ),
-        prefer_wide_layout=True,
     )
     dialog.add_response("cancel", _("_Cancel"))
     dialog.add_response("delete", _("_Delete Permanently"))
