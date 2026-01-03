@@ -17,11 +17,12 @@ endif
 
 # These requirements are kept in both `bin/meld` and `meson.build`. If you
 # update one, update the other.
-dependency('python3', version : '>= 3.6')
-dependency('gtk+-3.0', version: '>= 3.22')
-dependency('glib-2.0', version: '>= 2.48')
-dependency('gtksourceview-4', version: '>= 4.0.0')
-dependency('pygobject-3.0', version: '>= 3.30')
+dependency('python3', version : '>= 3.10')
+dependency('gtk4', version: '>= 4.12')
+dependency('glib-2.0', version: '>= 2.80')
+dependency('gtksourceview-5', version: '>= 5.0.0')
+dependency('libadwaita-1', version : '>= 1.6')
+dependency('pygobject-3.0', version: '>= 3.46')
 dependency('py3cairo', version: '>= 1.15.0')
 
 profile = get_option('profile')
