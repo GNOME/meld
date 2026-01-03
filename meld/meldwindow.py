@@ -243,7 +243,7 @@ class MeldWindow(Adw.ApplicationWindow):
 
     def action_close(self, *extra):
         if page := self.tabview.get_selected_page():
-            page.request_close()
+            page.get_child().request_close()
 
     def action_fullscreen_change(self, action, state):
         is_full = self.is_fullscreen()
