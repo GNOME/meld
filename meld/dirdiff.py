@@ -1550,8 +1550,11 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     def run_diff_from_iter(self, it):
         rows = self.model.value_paths(it)
-        is_file = os.path.isfile(rows[0])
-        is_dir = os.path.isdir(rows[0])
+        existing_paths = [r for r in rows if os.path.exists(r)]
+        if not existing_paths:
+            return
+        is_file = os.path.isfile(existing_paths[0])
+        is_dir = os.path.isdir(existing_paths[0])
         if is_file:
             gfiles = [
                 Gio.File.new_for_path(r) if os.path.isfile(r) else None
