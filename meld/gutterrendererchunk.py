@@ -178,7 +178,8 @@ class GutterRendererChunkLines(
             return
 
         self.num_line_digits = num_digits
-        width, height = self._measure_markup(f"<b>{num_lines}</b>")
+        line_num_width, height = self._measure_markup(f"<b>{num_lines}</b>")
+        width = line_num_width + self.props.xpad * 2
         self.set_size_request(width, height)
 
     def do_snapshot_line(self, snapshot, lines, line):
