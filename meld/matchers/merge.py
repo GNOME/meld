@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from meld.matchers import diffutil
-from meld.matchers.myers import MyersSequenceMatcher
+from meld.matchers.myers import DiffChunk, MyersSequenceMatcher
 
 LO, HI = 1, 2
 
@@ -55,12 +55,12 @@ class AutoMergeDiffer(diffutil.Differ):
                         out0_bounds = (s1, e1, l0 + chunk[1], l0 + chunk[2])
                         out1_bounds = (s1, e1, l2 + chunk[3], l2 + chunk[4])
                         if chunk[0] == 'equal':
-                            out0 = ('replace',) + out0_bounds
-                            out1 = ('replace',) + out1_bounds
+                            out0 = DiffChunk._make(('replace',) + out0_bounds)
+                            out1 = DiffChunk._make(('replace',) + out1_bounds)
                             yield out0, out1
                         else:
-                            out0 = ('conflict',) + out0_bounds
-                            out1 = ('conflict',) + out1_bounds
+                            out0 = DiffChunk._make(('conflict',) + out0_bounds)
+                            out1 = DiffChunk._make(('conflict',) + out1_bounds)
                             yield out0, out1
                     return
                 # elif len0 > 0 and len2 > 0:
@@ -125,25 +125,25 @@ class AutoMergeDiffer(diffutil.Differ):
                                     break
                             highstart = max(i0, i1)
                             if i0 != i1:
-                                out0 = (
+                                out0 = DiffChunk._make((
                                     'conflict', i0 - highstart + i1, highstart,
                                     seq0[3] - highstart + i1, seq0[3]
-                                )
-                                out1 = (
+                                ))
+                                out1 = DiffChunk._make((
                                     'conflict', i1 - highstart + i0, highstart,
                                     seq1[3] - highstart + i0, seq1[3]
-                                )
+                                ))
                                 yield out0, out1
                             lowend = min(seq0[2], seq1[2])
                             if highstart != lowend:
-                                out0 = (
+                                out0 = DiffChunk._make((
                                     'delete', highstart, lowend,
                                     seq0[3], seq0[4]
-                                )
-                                out1 = (
+                                ))
+                                out1 = DiffChunk._make((
                                     'delete', highstart, lowend,
                                     seq1[3], seq1[4]
-                                )
+                                ))
                                 yield out0, out1
                             i0 = i1 = lowend
                             if lowend == seq0[2]:
@@ -152,24 +152,24 @@ class AutoMergeDiffer(diffutil.Differ):
                                 seq1 = None
 
                         if seq0:
-                            out0 = (
+                            out0 = DiffChunk._make((
                                 'conflict', i0, seq0[2],
                                 seq0[3], seq0[4]
-                            )
-                            out1 = (
+                            ))
+                            out1 = DiffChunk._make((
                                 'conflict', i0, seq0[2],
                                 end1, end1 + seq0[2] - i0
-                            )
+                            ))
                             yield out0, out1
                         elif seq1:
-                            out0 = (
+                            out0 = DiffChunk._make((
                                 'conflict', i1, seq1[2],
                                 end0, end0 + seq1[2] - i1
-                            )
-                            out1 = (
+                            ))
+                            out1 = DiffChunk._make((
                                 'conflict', i1,
                                 seq1[2], seq1[3], seq1[4]
-                            )
+                            ))
                             yield out0, out1
                         return
             yield out0, out1
