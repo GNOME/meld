@@ -1,0 +1,1233 @@
+# Serbian translation for meld.
+# Copyright (C) 2026 meld's COPYRIGHT HOLDER
+# This file is distributed under the same license as the meld package.
+# Марко Костић <marko.m.kostic@gmail.com>,  2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meld meld-3-22\n"
+"POT-Creation-Date: 2026-03-23 19:09+0000\n"
+"PO-Revision-Date: 2026-04-04 06:44+0200\n"
+"Last-Translator: Марко Костић <marko.m.kostic@gmail.com>\n"
+"Language-Team: Serbian <Serbian>\n"
+"Language: sr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
+"X-Generator: Poedit 3.9\n"
+
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr ""
+"Марко Костић <marko.m.kostic@gmail.com>\n"
+"Превод на српски језик https://гном.срб"
+
+#. (itstool) path: info/title
+#: C/command-line.page:5 C/file-changes.page:5 C/file-filters.page:5 C/flattened-view.page:5 C/keyboard-shortcuts.page:5 C/resolving-conflicts.page:5 C/text-filters.page:5
+msgctxt "sort"
+msgid "2"
+msgstr "2"
+
+#. (itstool) path: credit/name
+#: C/command-line.page:10 C/file-changes.page:10 C/file-filters.page:10 C/file-mode.page:11 C/flattened-view.page:10 C/folder-mode.page:10 C/index.page:8 C/introduction.page:10 C/keyboard-shortcuts.page:10 C/missing-functionality.page:10 C/preferences.page:10 C/resolving-conflicts.page:10 C/text-filters.page:11 C/vc-mode.page:10 C/vc-supported.page:10
+msgid "Kai Willadsen"
+msgstr "Каи Виладсен"
+
+#. (itstool) path: credit/years
+#: C/command-line.page:12 C/file-changes.page:12 C/file-filters.page:12 C/file-mode.page:13 C/flattened-view.page:12 C/folder-mode.page:12 C/index.page:10 C/introduction.page:12 C/keyboard-shortcuts.page:12 C/missing-functionality.page:12 C/resolving-conflicts.page:12 C/text-filters.page:13 C/vc-mode.page:12 C/vc-supported.page:12
+msgid "2012"
+msgstr "2012"
+
+#. (itstool) path: page/title
+#: C/command-line.page:15
+msgid "Command line usage"
+msgstr "Употреба линије наредби"
+
+#. (itstool) path: page/p
+#: C/command-line.page:17
+msgid "If you start <app>Meld</app> from the command line, you can tell it what to do when it starts."
+msgstr "Ако покренете <app>Мелд</app> из линије наредби, можете му рећи шта да уради приликом покретања."
+
+#. (itstool) path: page/p
+#: C/command-line.page:20
+msgid "For a two- or three-way <link xref=\"file-mode\">file comparison</link>, start <app>Meld</app> with <cmd>meld <var>file1</var> <var>file2</var></cmd> or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> respectively."
+msgstr "За двосмерно или тросмерно <link xref=\"file-mode\">поређење датотека</link>, покрените <app>Мелд</app> са <cmd>meld <var>датотека1</var> <var>датотека2</var></cmd> или <cmd>meld <var>датотека1</var> <var>датотека2</var> <var>датотека3</var></cmd>."
+
+#. (itstool) path: page/p
+#: C/command-line.page:26
+msgid "For a two- or three-way <link xref=\"folder-mode\">directory comparison</link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
+msgstr "За двосмерно или тросмерно <link xref=\"folder-mode\">поређење директоријума</link>, покрените <app>Мелд</app> са <cmd>meld <var>дир1</var> <var>дир2</var></cmd> или <cmd>meld <var>дир1</var> <var>дир2</var> <var>дир3</var></cmd>."
+
+#. (itstool) path: page/p
+#: C/command-line.page:31
+msgid "You can start a <link xref=\"vc-mode\">version control</link> comparison by just giving a single argument; if that file or directory is managed by a <link xref=\"vc-supported\">recognized version control system</link>, it will start a version control comparison on that argument. For example, <cmd>meld .</cmd> would start a version control view of the current directory."
+msgstr "Можете покренути поређење <link xref=\"vc-mode\">управљања верзијама</link> навођењем само једног аргумента; ако том датотеком или директоријумом управља <link xref=\"vc-supported\">препознати систем за управљање верзијама</link>, покренуће се преглед управљања верзијама за тај аргумент. На пример, <cmd>meld .</cmd> ће покренути преглед управљања верзијама за тренутни директоријум."
+
+#. (itstool) path: note/p
+#: C/command-line.page:40
+msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
+msgstr "Покрените <cmd>meld --help</cmd> за списак свих опција линије наредби."
+
+#. (itstool) path: page/title
+#: C/file-changes.page:16
+msgid "Dealing with changes"
+msgstr "Рад са изменама"
+
+#. (itstool) path: page/p
+#: C/file-changes.page:18
+msgid "<app>Meld</app> deals with differences between files as a list of <em>change blocks</em> or more simply <em>changes</em>. Each change is a group of lines which correspond between files. Since these changes are what you're usually interested in, <app>Meld</app> gives you specific tools to navigate between these changes and to edit them. You can find these tools in the <gui style=\"menu\">Changes</gui> menu."
+msgstr "<app>Мелд</app> посматра разлике између датотека као списак <em>блокова измена</em> или једноставније <em>измена</em>. Свака измена је група редова који се подударају између датотека. Пошто су ове измене оно што вас обично занима, <app>Мелд</app> вам пружа посебне алате за кретање између ових измена и њихово уређивање. Ове алате можете пронаћи у изборнику <gui style=\"menu\">Измене</gui>."
+
+#. (itstool) path: section/title
+#: C/file-changes.page:30
+msgid "Navigating between changes"
+msgstr "Кретање између измена"
+
+#. (itstool) path: section/p
+#: C/file-changes.page:32
+msgid "You can navigate between changes with the <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next change</gui></guiseq> menu items. You can also use your mouse's scroll wheel to move between changes, by scrolling on the central change bar."
+msgstr "Можете се кретати између измена помоћу ставки изборника <guiseq><gui style=\"menu\">Измене</gui><gui style=\"menuitem\">Претходна измена</gui></guiseq> и <guiseq><gui style=\"menu\">Измене</gui><gui style=\"menuitem\">Следећа измена</gui></guiseq>. Такође можете користити точкић миша за кретање између измена, померањем на средишњој траци измена."
+
+#. (itstool) path: section/title
+#: C/file-changes.page:46
+msgid "Changing changes"
+msgstr "Мењање измена"
+
+#. (itstool) path: section/p
+#: C/file-changes.page:48
+msgid "In addition to directly editing text files, <app>Meld</app> gives you tools to move, copy or delete individual differences between files. The bar between two files not only shows you what parts of the two files correspond, but also lets you selectively merge or delete differing changes by clicking the arrow or cross icons next to the start of each change."
+msgstr "Поред директног уређивања текстуалних датотека, <app>Мелд</app> вам даје алате за премештање, копирање или брисање појединачних разлика између датотека. Трака између две датотеке не само да показује који делови две датотеке се подударају, већ вам омомогућава и да селективно спојите или обришете различите измене кликом на иконице стрелице или крстића поред почетка сваке измене."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:52
+msgid "The default action is <em>replace</em>. This action replaces the contents of the corresponding change with the current change."
+msgstr "Подразумевана радња је <em>замени</em>. Ова радња замењује садржај одговарајуће измене тренутном изменом."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:59
+msgid "Hold down the <key>Shift</key> key to change the current action to <em>delete</em>. This action deletes the current change."
+msgstr "Држите тастер <key>Shift</key> да промените тренутну радњу у <em>обриши</em>. Ова радња брише тренутну измену."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:62
+msgid "Hold down the <key>Ctrl</key> key to change the current action to <em>insert</em>. This action inserts the current change above or below (as selected) the corresponding change."
+msgstr "Држите тастер <key>Ctrl</key> да промените тренутну радњу у <em>уметни</em>. Ова радња умеће тренутну измену изнад или испод (као што је изабрано) одговарајуће измене."
+
+#. (itstool) path: page/title
+#: C/file-filters.page:15
+msgid "Filtering out files"
+msgstr "Филтрирање датотека"
+
+#. (itstool) path: page/p
+#: C/file-filters.page:17
+msgid "When you compare folders, you may want to be able to ignore some files. For example, you may wish to only see files that are present and different in both folders, ignoring those that are the same or only exist in one folder. Alternatively, you might want to ignore all the files in your <file>.git</file> directory, or ignore all images."
+msgstr "Када поредите фасцикле, можда ћете желети да занемарите неке датотеке. На пример, можда желите да видите само датотеке које су присутне и различите у обе фасцикле, занемарујући оне које су исте или постоје само у једној фасцикли. Алтернативно, можда желите да занемарите све датотеке у вашем <file>.git</file> директоријуму, или да занемарите све слике."
+
+#. (itstool) path: page/p
+#: C/file-filters.page:25
+msgid "<app>Meld</app> has several different ways of controlling which files and what kind of differences you see. You can filter based on <link xref=\"#file-state-filter\">differences between a file across folders</link> or <link xref=\"#file-name-filter\">file and folder names</link>. You can also tell <app>Meld</app> to treat filenames as being <link xref=\"#file-case-filter\">case insensitive</link>. Finally, you can use <link xref=\"text-filters\">text filters</link> to change what both folder and file comparisons see."
+msgstr "<app>Мелд</app> има неколико различитих начина за контролу тога које датотеке и коју врсту разлика видите. Можете филтрирати на основу <link xref=\"#file-state-filter\">разлика између датотеке кроз фасцикле</link> или <link xref=\"#file-name-filter\">назива датотека и фасцикли</link>. Такође можете рећи <app>Мелд-у</app> да третира називе датотека као <link xref=\"#file-case-filter\">неосетљиве на велика и мала слова</link>. Коначно, можете користити <link xref=\"text-filters\">филтере текста</link> да промените шта виде и поређења фасцикли и поређења датотека."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:37
+msgid "Any <link xref=\"text-filters\">text filters</link> you've defined <em>automatically apply</em> when comparing folders. Files that are identical after all of the text filters are applied are not highlighted as being different, but are shown in italics."
+msgstr "Сви <link xref=\"text-filters\">филтери текста</link> које сте дефинисали се <em>аутоматски примењују</em> приликом поређења фасцикли. Датотеке које су идентичне након што се примене сви филтери текста нису истакнуте као различите, већ су приказане искошено."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:48
+msgid "File differences filtering"
+msgstr "Филтрирање разлика у датотекама"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:50
+msgid "In a folder comparison, each line contains a single file or folder that is present in at least one of the folders being compared. Each of these lines is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</em>:"
+msgstr "Приликом поређења фасцикли, сваки ред садржи једну датотеку или фасциклу која је присутна у барем једној од фасцикли које се пореде. Сваки од ових редова је класификован као <em>Измењен</em>, <em>Нов</em> или <em>Исти</em>:"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:58 C/folder-mode.page:148 C/vc-mode.page:107
+msgid "Modified"
+msgstr "Измењено"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:59
+msgid "The file exists in multiple folders, but the files are different"
+msgstr "Датотека постоји у више фасцикли, али су датотеке различите"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:62 C/folder-mode.page:162 C/vc-mode.page:121
+msgid "New"
+msgstr "Ново"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:63
+msgid "The file exists in one folder but not in the others"
+msgstr "Датотека постоји у једној фасцикли, али не и у осталим"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:66 C/folder-mode.page:118 C/vc-mode.page:93
+msgid "Same"
+msgstr "Исто"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:67
+msgid "The file exists in all folders, and is the same everywhere"
+msgstr "Датотека постоји у свим фасциклама и свуда је иста"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:70
+msgid "You can change which types of differences you see in your current comparison by using the <gui style=\"button\">Same</gui>, <gui style=\"button\">New</gui> and <gui style=\"button\">Modified</gui> buttons on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Status</gui></guiseq> menu."
+msgstr "Можете променити које врсте разлика видите у вашем тренутном поређењу коришћењем дугмића <gui style=\"button\">Иста</gui>, <gui style=\"button\">Нова</gui> и <gui style=\"button\">Измењена</gui> на траци алата или кроз мени <guiseq><gui style=\"menu\">Преглед</gui><gui style=\"menuitem\">Стање датотеке</gui></guiseq>."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:80
+msgid "Currently, you can only filter files based on their state; folders can't be filtered in this way. For example, you can't tell <app>Meld</app> to ignore all folders that contain only new files. A folder containing only \"New\" files would show up as empty, but still present."
+msgstr "Тренутно можете само филтрирати датотеке на основу њиховог стања; фасцикле не могу бити филтриране на овај начин. На пример, не можете рећи <app>Мелду</app> да занемари све фасцикле које садрже само нове датотеке. Фасцикла која садржи само „Нове“ датотеке биће приказана као празна, али ће и даље бити присутна."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:94
+msgid "Filename filtering"
+msgstr "Филтрирање назива датотека"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:96
+msgid "<app>Meld</app> comes with a useful set of filename filters that let you ignore uninteresting files and folders like common backup files and the metadata folders of version control systems. Each filename filter can be separately activated or deactivated from the <gui style=\"button\">Filters</gui> button on the toolbar or the <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">File Filters</gui></guiseq> menu."
+msgstr "<app>Мелд</app> долази са корисним скупом филтера назива датотека који вам омогућавају да занемарите неинтересантне датотеке и фасцикле, као што су уобичајене резервне датотеке и метаподаци фасцикли система за управљање верзијама. Сваки филтер назива датотека се може засебно активирати или деактивирати помоћу дугмета <gui style=\"button\">Филтери</gui> на траци алата или кроз мени <guiseq><gui style=\"menu\">Преглед</gui><gui style=\"menuitem\">Филтери датотека</gui></guiseq>."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:106
+msgid "You can add, remove or change filename filters from the <gui style=\"tab\">File Filters</gui> section of the <gui>Preferences</gui> dialog. Filename filters specify patterns of filenames that will <em>not</em> be looked at when performing a folder comparison. Any file that matches an active filter won't even show up in the tree comparison. Filename filters match both files and folders; if a folder matches a filter, it and all of its contents are ignored."
+msgstr "Можете додати, уклонити или изменити филтере назива датотека у одељку <gui style=\"tab\">Филтери датотека</gui> у прозорчету <gui>Поставке</gui>. Филтери назива датотека одређују шаблоне назива датотека који <em>неће</em> бити разматрани приликом поређења фасцикли. Свака датотека која се поклапа са активним филтером неће се чак ни појавити у поређењу стабла. Филтери назива датотека се поклапају и са датотекама и са фасциклама; ако се фасцикла поклапа са филтером, она и сав њен садржај биће занемарени."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:116
+msgid "Filename filters match according to shell glob patterns. For example, <code>*.jpg</code> will match all filenames ending in <code>.jpg</code>. The following table lists all of the shell glob characters that <app>Meld</app> recognises."
+msgstr "Филтери назива датотека се поклапају према шаблонима „shell glob“. На пример, <code>*.jpg</code> ће се поклопити са свим називима датотека који се завршавају на <code>.jpg</code>. Следећа табела наводи све знакове „shell glob“ које <app>Мелд</app> препознаје."
+
+#. (itstool) path: table/title
+#: C/file-filters.page:124
+msgid "Shell glob patterns"
+msgstr "Шаблони „shell glob“"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:128
+msgid "Wildcard"
+msgstr "Заменски знак"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:128
+msgid "Matches"
+msgstr "Поклапања"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:134
+msgid "<code>*</code>"
+msgstr "<code>*</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:135
+msgid "anything (i.e., zero or more characters)"
+msgstr "било шта (тј. нула или више знакова)"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:138
+msgid "<code>?</code>"
+msgstr "<code>?</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:139
+msgid "exactly one character"
+msgstr "тачно један знак"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:142
+msgid "<code>[abc]</code>"
+msgstr "<code>[abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:143
+msgid "any one of the listed characters"
+msgstr "било који од наведених знакова"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:146
+msgid "<code>[!abc]</code>"
+msgstr "<code>[!abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:147
+msgid "anything <em>except</em> one of the listed characters"
+msgstr "било шта <em>изузев</em> једног од наведених знакова"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:150
+msgid "<code>{cat,dog}</code>"
+msgstr "<code>{cat,dog}</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:151
+msgid "either \"cat\" or \"dog\""
+msgstr "или „cat“ или „dog“"
+
+#. (itstool) path: note/p
+#: C/file-filters.page:157
+msgid "Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> dialog changes whether that filter is active <em>by default</em>."
+msgstr "Промена поставке <gui>Активан</gui> за филтер у прозорчету <gui>Поставке</gui> мења да ли је тај филтер активан <em>подразумевано</em>."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:163
+msgid "Activating a filter from the menu or the toolbar turns the filter on or off for <em>this comparison only</em>."
+msgstr "Активирање филтера из менија или са траке алата укључује или искључује филтер <em>само за ово поређење</em>."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:174
+msgid "Case insensitive filenames"
+msgstr "Називи датотека неосетљиви на величину слова"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:176
+msgid "Files are compared across directories according to their name. This comparison is case sensitive by default; that is, the files <file>README</file>, <file>readme</file> and <file>ReadMe</file> would all be seen as different files."
+msgstr "Датотеке се пореде кроз директоријуме према њиховом називу. Ово поређење разликује велика и мала слова по подразумеваним подешавањима; то јест, датотеке <file>README</file>, <file>readme</file> и <file>ReadMe</file> би се све сматрале различитим датотекама."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:183
+msgid "When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish to make <app>Meld</app> treat filenames as case insensitive. You can do this by selecting <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">Ignore filename case</gui></guiseq> from the menus."
+msgstr "Када поредите фасцикле на неким системима датотека (нпр. HFS+ или FAT), можда ћете желети да <app>Мелд</app> третира називе датотека као неосетљиве на велика и мала слова. То можете учинити тако што ћете изабрати <guiseq><gui style=\"menu\">Преглед</gui><gui style=\"menuitem\">Занемари величину слова назива датотеке</gui></guiseq> из изборника."
+
+#. (itstool) path: info/title
+#: C/file-mode.page:5 C/folder-mode.page:5 C/introduction.page:5 C/missing-functionality.page:5 C/preferences.page:5
+msgctxt "sort"
+msgid "1"
+msgstr "1"
+
+#. (itstool) path: page/title
+#: C/file-mode.page:17
+msgid "Getting started comparing files"
+msgstr "Први кораци у поређењу датотека"
+
+#. (itstool) path: page/p
+#: C/file-mode.page:19
+msgid "<app>Meld</app> lets you compare two or three text files side-by-side. You can start a new file comparison by selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item."
+msgstr "<app>Мелд</app> вам омогућава да упоредите две или три текстуалне датотеке једну поред друге. Можете започети ново поређење датотека избором ставке изборника <guiseq><gui style=\"menu\">Датотека</gui><gui style=\"menuitem\">Ново...</gui></guiseq>."
+
+#. (itstool) path: page/p
+#: C/file-mode.page:26
+msgid "Once you've selected your files, <app>Meld</app> will show them side-by-side. Differences between the files will be highlighted to make individual changes easier to see. Editing the files will cause the comparison to update on-the-fly. For details on navigating between individual changes, and on how to use change-based editing, see <link xref=\"file-changes\"/>."
+msgstr "Након што изаберете своје датотеке, <app>Мелд</app> ће их приказати једну поред друге. Разлике између датотека ће бити истакнуте како би се појединачне измене лакше уочиле. Уређивање датотека ће довести до ажурирања поређења у ходу. За детаље о кретању између појединачних измена и о томе како да користите уређивање засновано на изменама, погледајте <link xref=\"file-changes\"/>."
+
+#. (itstool) path: section/title
+#: C/file-mode.page:35
+msgid "<app>Meld</app>'s file comparisons"
+msgstr "<app>Мелдова</app> поређења датотека"
+
+#. (itstool) path: section/p
+#: C/file-mode.page:37
+msgid "There are several different parts to a file comparison. The most important parts are the editors where your files appear. In addition to these editors, the areas around and between your files give you a visual overview and actions to help you handle changes between the files."
+msgstr "Постоји неколико различитих делова поређења датотека. Најважнији делови су уређивачи у којима се појављују ваше датотеке. Поред ових уређивача, области око и између ваших датотека дају вам визуелни преглед и радње које вам помажу да рукујете изменама између датотека."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:43
+msgid "On the left and right-hand sides of the window, there are two small vertical bars showing various coloured blocks. These bars are designed to give you an overview of all of the differences between your two files. Each coloured block represents a section that is inserted, deleted, changed or in conflict between your files, depending on the block's colour used."
+msgstr "На левој и десној страни прозора налазе се две мале усправне траке које приказују различите обојене блокове. Ове траке су дизајниране да вам дају преглед свих разлика између ваше две датотеке. Сваки обојени блок представља одељак који је уметнут, обрисан, измењен или је у сукобу између ваших датотека, у зависности од боје блока која се користи."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:50
+msgid "In between each pair of files is a segment that shows how the changed sections between your files correspond to each other. You can click on the arrows in a segment to replace sections in one file with sections from the other. You can also delete, copy or merge changes. For details on what you can do with individual change segments, see <link xref=\"file-changes#change-actions\"/>."
+msgstr "Између сваког пара датотека налази се сегмент који показује како измењени одељци између ваших датотека одговарају једни другима. Можете кликнути на стрелице у сегменту да замените одељке у једној датотеци одељцима из друге. Такође можете обрисати, умножити или стопити измене. За детаље о томе шта можете да урадите са појединачним сегментима измена, погледајте <link xref=\"file-changes#change-actions\"/>."
+
+#. (itstool) path: section/title
+#: C/file-mode.page:62
+msgid "Saving your changes"
+msgstr "Чување ваших измена"
+
+#. (itstool) path: section/p
+#: C/file-mode.page:64
+msgid "Once you've finished editing your files, you need to save each file you've changed."
+msgstr "Када завршите са уређивањем датотека, потребно је да сачувате сваку датотеку коју сте изменили."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:68
+msgid "You can tell whether your files have been saved since they last changed by the save icon that appears next to the file name above each file. Also, the notebook label will show an asterisk (<code>*</code>) after any file that hasn't been saved."
+msgstr "Можете рећи да ли су ваше датотеке сачуване од њихове последње измене по иконици за чување која се појављује поред назива датотеке изнад сваке датотеке. Такође, натпис бележнице ће приказати звездицу (<code>*</code>) након сваке датотеке која није сачувана."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:74
+msgid "You can save the current file by selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem\">Save</gui></guiseq> menu item, or using the <keyseq><key>Ctrl</key><key>S</key></keyseq> keyboard shortcut."
+msgstr "Текућу датотеку можете сачувати избором ставке изборника <guiseq><gui style=\"menu\">Датотека</gui><gui style=\"menuitem\">Сачувај</gui></guiseq>, или коришћењем пречице на тастатури <keyseq><key>Ctrl</key><key>S</key></keyseq>."
+
+#. (itstool) path: note/p
+#: C/file-mode.page:81
+msgid "Saving only saves the <em>currently focused</em> file, which is the file containing the cursor. If you can't tell which file is focused, you can click on the file to focus it before saving."
+msgstr "Чување чува само <em>тренутно усредсређену</em> датотеку, а то је датотека која садржи курсор. Ако не можете да кажете која је датотека усредсређена, можете кликнути на датотеку да је усредсредите пре чувања."
+
+#. (itstool) path: page/title
+#: C/flattened-view.page:15
+msgid "Flattened view"
+msgstr "Поравнати преглед"
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:17
+msgid "When viewing large folders, you may be interested in only a few files among the thousands in the folder itself. For this reason, <app>Meld</app> includes a <em>flattened view</em> of a folder; only files that have not been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are shown, and the folder hierarchy is stripped away, with file paths shown in the <em>Location</em> column."
+msgstr "Када прегледате велике фасцикле, можда ћете бити заинтересовани за само неколико датотека међу хиљадама у самој фасцикли. Из тог разлога, <app>Мелд</app> укључује <em>поравнати преглед</em> фасцикле; приказују се само датотеке које нису издвојене филтрирањем (нпр. путем <link xref=\"vc-mode#vc-state-filtering\"/>), а хијерархија фасцикли је уклоњена, са путањама датотека приказаним у колони <em>Место</em>."
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:27
+msgid "You can turn this flattened view on or off by unchecking the <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">Flatten</gui></guiseq> menu item, or by clicking the corresponding <gui style=\"button\">Flatten</gui> button on the toolbar."
+msgstr "Овај поравнати преглед можете укључити или искључити искључивањем ставке изборника <guiseq><gui style=\"menu\">Преглед</gui><gui style=\"menuitem\">Поравнај</gui></guiseq>, или кликом на одговарајуће дугме <gui style=\"button\">Поравнај</gui> на палети алата."
+
+#. (itstool) path: page/title
+#: C/folder-mode.page:16
+msgid "Getting started comparing folders"
+msgstr "Први кораци у поређењу фасцикли"
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:18
+msgid "<app>Meld</app> lets you compare two or three folders side-by-side. You can start a new folder comparison by selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab\">Directory Comparison</gui> tab."
+msgstr "<app>Мелд</app> вам омогућава да упоредите две или три фасцикле једну поред друге. Можете започети ново поређење фасцикли избором ставке изборника <guiseq><gui style=\"menu\">Датотека</gui><gui style=\"menuitem\">Ново...</gui></guiseq> и кликом на језичак <gui style=\"tab\">Поређење директоријума</gui>."
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:26
+msgid "Your selected folders will be shown as side-by-side trees, with differences between files in each folder highlighted. You can copy or delete files from either folder, or compare individual text files in more detail."
+msgstr "Ваше изабране фасцикле ће бити приказане као стабла једна поред друге, са истакнутим разликама између датотека у свакој фасцикли. Можете умножити или обрисати датотеке из било које фасцикле, или детаљније упоредити појединачне текстуалне датотеке."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:36
+msgid "The folder comparison view"
+msgstr "Преглед поређења фасцикли"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:38
+msgid ""
+"The main parts of a folder comparison are the trees showing the folders you're comparing. You can easily <link xref=\"#folder-navigation\">move around</link> these comparisons to find changes that you're interested in. When you select a file or folder, more detailed information is given in the status bar at the bottom of the window. Pressing <key>Enter</key> on a selected file, or double-clicking any file in the tree will open a side-by-side <link xref=\"file-mode\">file comparison</link> of the files in a new tab, but this will only work properly if they're text files!"
+msgstr "Главни делови поређења фасцикли су стабла која приказују фасцикле које поредите. Можете се лако <link xref=\"#folder-navigation\">кретати кроз</link> ова поређења како бисте пронашли измене које вас занимају. Када изаберете датотеку или фасциклу, детаљнији подаци се приказују у траци стања на дну прозора. Притисак на тастер <key>Enter</key> на изабраној датотеци, или двоструки клик на било коју датотеку у стаблу, отвориће упоредно <link xref=\"file-mode\">поређење датотека</link> у новом језичку, али ово ће радити исправно само ако су у питању текстуалне датотеке!"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:50
+msgid "There are bars on the left and right-hand sides of the window that show you a simple coloured summary of the comparison results. Each file or folder in the comparison corresponds to a small section of these bars, though <app>Meld</app> doesn't show <em>Same</em> files so that it's easier to see any actually important differences. You can click anywhere on this bar to jump straight to that place in the comparison."
+msgstr "Постоје траке на левој и десној страни прозора које вам приказују једноставан обојени сажетак резултата поређења. Свака датотека или фасцикла у поређењу одговара малом одељку ових трака, иако <app>Мелд</app> не приказује <em>Исте</em> датотеке како би се лакше виделе заправо важне разлике. Можете кликнути било где на овој траци како бисте скочили право на то место у поређењу."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:63
+msgid "Navigating folder comparisons"
+msgstr "Кретање кроз поређења фасцикли"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:65
+msgid "You can jump between changed files (that is, any files/folders that are <em>not</em> classified as being identical) with the <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Previous change</gui></guiseq> and <guiseq><gui style=\"menu\">Changes</gui><gui style=\"menuitem\">Next change</gui></guiseq> menu items, or using the corresponding buttons on the toolbar."
+msgstr "Можете скакати између измењених датотека (то јест, било којих датотека/фасцикли које <em>нису</em> класификоване као истоветне) помоћу ставки изборника <guiseq><gui style=\"menu\">Измене</gui><gui style=\"menuitem\">Претходна измена</gui></guiseq> и <guiseq><gui style=\"menu\">Измене</gui><gui style=\"menuitem\">Следећа измена</gui></guiseq>, или коришћењем одговарајућих дугмића на палети алата."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:73
+msgid "You can use the <key>Left</key> and <key>Right</key> arrow keys to move between the folders you're comparing. This is useful so that you can select an individual file for copying or deletion."
+msgstr "Можете користити тастере стрелица <key>Лево</key> и <key>Десно</key> за кретање између фасцикли које поредите. Ово је корисно како бисте могли да изаберете појединачну датотеку за умножавање или брисање."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:83
+msgid "States in folder comparisons"
+msgstr "Стања у поређењима фасцикли"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:85
+msgid "Each file or folder in a tree has its own <em>state</em>, telling you how it differed from its corresponding files/folders. The possible states are:"
+msgstr "Свака датотека или фасцикла у стаблу има своје <em>стање</em>, које вам говори како се разликује од својих одговарајућих датотека/фасцикли. Могућа стања су:"
+
+#. (itstool) path: table/title
+#: C/folder-mode.page:106
+msgid "Folder comparison states"
+msgstr "Стања поређења фасцикли"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:110 C/vc-mode.page:85
+msgid "State"
+msgstr "Држава"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:111 C/vc-mode.page:86
+msgid "Appearance"
+msgstr "Изглед"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:112 C/vc-mode.page:87
+msgid "Meaning"
+msgstr "Значење"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:120 C/vc-mode.page:95
+msgid "Normal font"
+msgstr "Нормалан фонт"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:126
+msgid "The file/folder is the same across all compared folders."
+msgstr "Датотека/фасцикла је иста у свим поређеним фасциклама."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:132
+msgid "Same when filtered"
+msgstr "Исто када је издвојено"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:134
+msgid "Italics"
+msgstr "Искошена"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:140
+msgid "These files are different across folders, but once <link xref=\"text-filters\">text filters</link> are applied, these files become identical."
+msgstr "Ове датотеке су различите у фасциклама, али када се примене <link xref=\"text-filters\">филтери текста</link>, ове датотеке постају истоветне."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:150
+msgid "Blue and bold"
+msgstr "Плаво и подебљано"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:156
+msgid "These files differ between the folders being compared."
+msgstr "Ове датотеке се разликују између фасцикли које се пореде."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:164 C/vc-mode.page:123
+msgid "Green and bold"
+msgstr "Зелено и подебљано"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:170
+msgid "This file/folder exists in this folder, but not in the others."
+msgstr "Ова датотека/фасцикла постоји у овој фасцикли, али не и у осталима."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:176 C/vc-mode.page:167
+msgid "Missing"
+msgstr "Недостаје"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:178
+msgid "Greyed out text with a line through the middle"
+msgstr "Осенчени текст са линијом кроз средину"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:184
+msgid "This file/folder doesn't exist in this folder, but does in one of the others."
+msgstr "Ова датотека/фасцикла не постоји у овој фасцикли, али постоји у некој од осталих."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:191 C/vc-mode.page:212
+msgid "Error"
+msgstr "Грешка"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:193 C/vc-mode.page:214
+msgid "Bright red with a yellow background and bold"
+msgstr "Јарко црвено са жутом позадином и подебљано"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:199
+msgid "When comparing this file, an error occurred. The most common error causes are file permissions (i.e., <app>Meld</app> was not allowed to open the file) and filename encoding errors."
+msgstr "Приликом поређења ове датотеке дошло је до грешке. Најчешћи узроци грешака су овлашћења над датотекама (нпр. <app>Мелду</app> није било дозвољено да отвори датотеку) и грешке у кодирању назива датотеке."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:217
+msgid "You can filter out files based on these states, for example, to show only files that have been <em>Modified</em>. You can read more about this in <link xref=\"file-filters#file-state-filter\"/>."
+msgstr "Можете издвојити датотеке на основу ових стања, на пример, да прикажете само датотеке које су <em>измењене</em>. Више о овоме можете прочитати у <link xref=\"file-filters#file-state-filter\"/>."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:223
+msgid "Finally, the most recently modified file/folder has a small star emblem attached to it."
+msgstr "На крају, последња измењена датотека/фасцикла има приложено мало обележје у виду звездице."
+
+#. (itstool) path: page/title
+#: C/index.page:14
+msgid "Meld Help"
+msgstr "Помоћ за Мелд"
+
+#. (itstool) path: section/title
+#: C/index.page:17
+msgid "Introduction"
+msgstr "Увод"
+
+#. (itstool) path: section/title
+#: C/index.page:21
+msgid "Comparing Files"
+msgstr "Поређење датотека"
+
+#. (itstool) path: section/title
+#: C/index.page:25
+msgid "Comparing Folders"
+msgstr "Поређење фасцикли"
+
+#. (itstool) path: section/title
+#: C/index.page:29
+msgid "Using Meld with Version Control"
+msgstr "Коришћење Мелда уз управљање верзијама"
+
+#. (itstool) path: section/title
+#: C/index.page:33
+msgid "Advanced Usage"
+msgstr "Напредно коришћење"
+
+#. (itstool) path: page/title
+#: C/introduction.page:15
+msgid "What is Meld?"
+msgstr "Шта је Мелд?"
+
+#. (itstool) path: page/p
+#: C/introduction.page:16
+msgid "<app>Meld</app> is a tool for comparing files and directories, and for resolving differences between them. It is also useful for comparing changes captured by version control systems."
+msgstr "<app>Мелд</app> је алат за поређење датотека и директоријума, као и за решавање разлика између њих. Такође је користан за поређење измена ухваћених системима за управљање верзијама."
+
+#. (itstool) path: page/p
+#: C/introduction.page:22
+msgid "<app>Meld</app> shows differences between two or three files (or two or three directories) and allows you to move content between them, or edit the files manually. <app>Meld</app>'s focus is on helping developers compare and merge source files, and get a visual overview of changes in their favourite version control system."
+msgstr "<app>Мелд</app> приказује разлике између две или три датотеке (или два или три директоријума) и омогућава вам да премештате садржај између њих, или да ручно уређујете датотеке. Фокус <app>Мелда</app> је на помагању програмерима да упореде и споје изворне датотеке, и да добију визуелни преглед измена у свом омиљеном систему за управљање верзијама."
+
+#. (itstool) path: page/title
+#: C/keyboard-shortcuts.page:15
+msgid "Keyboard shortcuts"
+msgstr "Пречице тастатуре"
+
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:18
+msgid "Shortcuts for working with files and comparisons"
+msgstr "Пречице за рад са датотекама и поређењима"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56 C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131 C/keyboard-shortcuts.page:153
+msgid "Shortcut"
+msgstr "Пречица"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:22 C/keyboard-shortcuts.page:56 C/keyboard-shortcuts.page:109 C/keyboard-shortcuts.page:131 C/keyboard-shortcuts.page:153
+msgid "Description"
+msgstr "Опис"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:29
+msgid "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
+msgstr "<keyseq><key>Ctrl</key><key>N</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:30
+msgid "Start a new comparison."
+msgstr "Започните ново поређење."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:33
+msgid "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
+msgstr "<keyseq><key>Ctrl</key><key>S</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:34
+msgid "Save the current document to disk."
+msgstr "Сачувајте тренутни документ на диск."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:37
+msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
+msgstr "<keyseq><key>Ctrl</key><key>Shift</key><key>S</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:38
+msgid "Save the current document with a new filename."
+msgstr "Сачувајте тренутни документ под новим називом датотеке."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:41
+msgid "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
+msgstr "<keyseq><key>Ctrl</key><key>W</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:42
+msgid "Close the current comparison."
+msgstr "Затворите тренутно поређење."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:45
+msgid "<keyseq><key>Ctrl</key><key>Q</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>Q</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:46
+msgid "Quit <app>Meld</app>."
+msgstr "Напустите <app>Мелд</app>."
+
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:52
+msgid "Shortcuts for editing documents"
+msgstr "Пречице за уређивање докумената"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:62
+msgid "<keyseq><key>Ctrl</key><key>Z</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>Z</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:63
+msgid "Undo the last action."
+msgstr "Опозовите последњу радњу."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:66
+msgid "<keyseq><key>Ctrl</key><key>Shift</key><key>Z</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>Шифт</key><key>Z</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:67
+msgid "Redo the last undone action."
+msgstr "Поновите последњу опозвану радњу."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:70
+msgid "<keyseq><key>Ctrl</key><key>X</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>X</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:71
+msgid "Cut the selected text or region and place it on the clipboard."
+msgstr "Исеците изабрани текст или област и поставите га у оставу."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:74
+msgid "<keyseq><key>Ctrl</key><key>C</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>C</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:75
+msgid "Copy the selected text or region onto the clipboard."
+msgstr "Умножите изабрани текст или област у оставу."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:78
+msgid "<keyseq><key>Ctrl</key><key>V</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>V</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:79
+msgid "Paste the contents of the clipboard."
+msgstr "Убаците садржај оставе."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:82
+msgid "<keyseq><key>Ctrl</key><key>F</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>F</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:83
+msgid "Find a string."
+msgstr "Пронађите ниску."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:86
+msgid "<keyseq><key>Ctrl</key><key>G</key></keyseq>"
+msgstr "<keyseq><key>Ктрл</key><key>G</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:87
+msgid "Find the next instance of the string."
+msgstr "Пронађите следећу појаву ниске."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:90
+msgid "<keyseq><key>Alt</key><key>Down</key></keyseq>"
+msgstr "<keyseq><key>Алт</key><key>Доле</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:91
+msgid "Go to the next difference. (Also <keyseq><key>Ctrl</key><key>D</key></keyseq>)"
+msgstr "Идите на следећу разлику. (Такође <keyseq><key>Ктрл</key><key>D</key></keyseq>)"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:96
+msgid "<keyseq><key>Alt</key><key>Up</key></keyseq>"
+msgstr "<keyseq><key>Алт</key><key>Горе</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:97
+msgid "Go to the previous difference. (Also <keyseq><key>Ctrl</key><key>E</key></keyseq>)"
+msgstr "Идите на претходну разлику. (Такође <keyseq><key>Ctrl</key><key>E</key></keyseq>)"
+
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:105
+msgid "Shortcuts for folder comparison"
+msgstr "Пречице за поређење фасцикли"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:115
+msgid "<keyseq><key>+</key></keyseq>"
+msgstr "<keyseq><key>+</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:116
+msgid "Expand the current folder."
+msgstr "Проширите тренутну фасциклу."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:119
+msgid "<keyseq><key>-</key></keyseq>"
+msgstr "<keyseq><key>-</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:120
+msgid "Collapse the current folder."
+msgstr "Скупите тренутну фасциклу."
+
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:127
+msgid "Shortcuts for view settings"
+msgstr "Пречице за подешавања прегледа"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:137
+msgid "<keyseq><key>Escape</key></keyseq>"
+msgstr "<keyseq><key>Escape</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:138
+msgid "Stop the current comparison."
+msgstr "Зауставите тренутно поређење."
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:141
+msgid "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
+msgstr "<keyseq><key>Ctrl</key><key>R</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:142
+msgid "Refresh the current comparison."
+msgstr "Освежите тренутно поређење."
+
+#. (itstool) path: table/title
+#: C/keyboard-shortcuts.page:149
+msgid "Shortcuts for help"
+msgstr "Пречице за помоћ"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:159
+msgid "<keyseq><key>F1</key></keyseq>"
+msgstr "<keyseq><key>F1</key></keyseq>"
+
+#. (itstool) path: td/p
+#: C/keyboard-shortcuts.page:160
+msgid "Open <app>Meld</app>'s user manual."
+msgstr "Отворите корисничко упутство за <app>Мелд</app>."
+
+#. (itstool) path: p/link
+#: C/legal.xml:4
+msgid "Creative Commons Attribution-Share Alike 3.0 Unported License"
+msgstr "Creative Commons Attribution-Share Alike 3.0 Unported License"
+
+#. (itstool) path: license/p
+#: C/legal.xml:3
+msgid "This work is licensed under a <_:link-1/>."
+msgstr "Овај рад је лиценциран под <_:link-1/>."
+
+#. (itstool) path: license/p
+#: C/legal.xml:6
+msgid "As a special exception, the copyright holders give you permission to copy, modify, and distribute the example code contained in this document under the terms of your choosing, without restriction."
+msgstr "Као посебан изузетак, носиоци ауторских права вам дају дозволу да умножавате, мењате и расподељујете пример кода садржан у овом документу под условима по вашем избору, без ограничења."
+
+#. (itstool) path: page/title
+#: C/missing-functionality.page:15
+msgid "Things that <app>Meld</app> doesn't do"
+msgstr "Ствари које <app>Мелд</app> не ради"
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:17
+msgid "Have you ever spent half an hour poking around an application trying to find out how to do something, thinking that <em>surely</em> there must be an option for this?"
+msgstr "Да ли сте икада провели пола сата претражујући програм покушавајући да сазнате како да нешто урадите, мислећи да <em>сигурно</em> мора постојати опција за то?"
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:23
+msgid "This section lists a few of the common things that <app>Meld</app> <em>doesn't</em> do, either as a deliberate choice, or because we just haven't had time."
+msgstr "Овај одељак набраја неколико уобичајених ствари које <app>Мелд</app> <em>не</em> ради, било као намерни избор, или зато што једноставно нисмо имали времена."
+
+#. (itstool) path: section/title
+#: C/missing-functionality.page:30
+msgid "Aligning changes by adding lines"
+msgstr "Поравнавање измена додавањем редова"
+
+#. (itstool) path: section/p
+#: C/missing-functionality.page:31
+msgid "When <app>Meld</app> shows differences between files, it shows both files as they would appear in a normal text editor. It does <em>not</em> insert additional lines so that the left and right sides of a particular change are the same size. There is no option to do this."
+msgstr "Када <app>Мелд</app> приказује разлике између датотека, он приказује обе датотеке онако како би се појавиле у обичном уређивачу текста. Он <em>не</em> умеће додатне редове како би лева и десна страна одређене измене биле исте величине. Не постоји опција за ово."
+
+#. (itstool) path: credit/years
+#: C/preferences.page:12
+msgid "2013"
+msgstr "2013"
+
+#. (itstool) path: page/title
+#: C/preferences.page:15
+msgid "Meld's preferences"
+msgstr "Поставке Мелда"
+
+#. (itstool) path: terms/title
+#: C/preferences.page:18
+msgid "Editor preferences"
+msgstr "Поставке уређивача"
+
+#. (itstool) path: item/title
+#: C/preferences.page:20
+msgid "Editor command"
+msgstr "Наредба уређивача"
+
+#. (itstool) path: item/p
+#: C/preferences.page:21
+msgid "The name of the command to run to open text files in an external editor. This may be just the command (e.g., <cmd>gedit</cmd>) in which case the file to be opened will be passed as the last argument. Alternatively, you can add <code>{file}</code> and <code>{line}</code> elements to the command, in which case <app>Meld</app> will substitute the file path and current line number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
+msgstr "Назив наредбе која се покреће за отварање текстуалних датотека у спољном уређивачу. Ово може бити само наредба (нпр. <cmd>gedit</cmd>), у ком случају ће датотека која се отвара бити прослеђена као последњи аргумент. Алтернативно, можете додати елементе <code>{file}</code> и <code>{line}</code> у наредбу, у ком случају ће <app>Мелд</app> заменити путању датотеке и тренутни број реда (нпр. <cmd>gedit {file}:{line}</cmd>)."
+
+#. (itstool) path: terms/title
+#: C/preferences.page:31
+msgid "Folder Comparison preferences"
+msgstr "Поставке поређења фасцикли"
+
+#. (itstool) path: item/title
+#: C/preferences.page:33
+msgid "Apply text filters during folder comparisons"
+msgstr "Примени издвајаче текста за време поређење фасцикли"
+
+#. (itstool) path: item/p
+#: C/preferences.page:34
+msgid "When comparing files in folder comparison mode, text filters and other text manipulation options can be applied to the contents of files. If this option is enabled, all currently enabled text filters will be applied, the blank line trimming option will be applied as appropriate, and differences in line endings will be ignored."
+msgstr "Приликом поређења датотека у режиму поређења фасцикли, филтери текста и друге опције за манипулацију текстом могу се применити на садржај датотека. Ако је ова опција омогућена, сви тренутно омогућени филтери текста ће бити примењени, опција за скраћивање празних редова ће бити примењена по потреби, а разлике у завршецима редова ће бити занемарене."
+
+#. (itstool) path: item/p
+#: C/preferences.page:40
+msgid "Enabling this option means that <app>Meld</app> must fully read all non-binary files into memory during the folder comparison. With large text files, this can be slow and may cause memory issues."
+msgstr "Омогућавање ове опције значи да <app>Мелд</app> мора у потпуности да учита све небинарне датотеке у меморију током поређења фасцикли. Са великим текстуалним датотекама, ово може бити споро и може изазвати проблеме са меморијом."
+
+#. (itstool) path: item/p
+#: C/preferences.page:44
+msgid "This option only has an effect if \"Compare files based only on size and timestamp\" is not enabled."
+msgstr "Ова опција има ефекта само ако „Упореди датотеке само на основу величине и временске ознаке“ није омогућено."
+
+#. (itstool) path: page/title
+#: C/resolving-conflicts.page:15
+msgid "Resolving merge conflicts"
+msgstr "Решавање сукоба при спајању"
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:17
+msgid "One of the best uses of <app>Meld</app> is to resolve conflicts that occur while merging different branches."
+msgstr "Једна од најбоље употребе <app>Мелда</app> је решавање сукоба који се јављају приликом спајања различитих грана."
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:22
+msgid "For example, when using <app>Git</app>, <cmd>git mergetool</cmd> will start a 'merge helper'; <app>Meld</app> is one such helper. If you want to make <app>git mergetool</app> use <app>Meld</app> by default, you can add"
+msgstr "На пример, када користите <app>Гит</app>, <cmd>git mergetool</cmd> ће покренути „помоћника за спајање“; <app>Мелд</app> је један такав помоћник. Ако желите да <app>git mergetool</app> подразумевано користи <app>Мелд</app>, можете додати"
+
+#. (itstool) path: page/code
+#: C/resolving-conflicts.page:27
+#, no-wrap
+msgid ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+msgstr ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:31
+msgid "to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for details."
+msgstr "у <file>.git/gitconfig</file>. Погледајте приручник за <app>git mergetool</app> за детаље."
+
+#. (itstool) path: page/title
+#: C/text-filters.page:17
+msgid "Filtering out text"
+msgstr "Филтрирање текста"
+
+#. (itstool) path: page/p
+#: C/text-filters.page:19
+msgid "When comparing several files, you may have sections of text where differences aren't really important. For example, you may want to focus on changed sections of code, and ignore any changes in comment lines. With text filters you can tell <app>Meld</app> to ignore text that matches a pattern (i.e., a regular expression) when showing differences between files."
+msgstr "Када поредите неколико датотека, можда имате делове текста где разлике нису заиста важне. На пример, можда желите да се фокусирате на измењене делове кода и занемарите све измене у редовима са коментарима. Помоћу филтера текста можете рећи <app>Мелду</app> да занемари текст који одговара шаблону (тј. регуларном изразу) када приказује разлике између датотека."
+
+#. (itstool) path: note/p
+#: C/text-filters.page:28
+msgid "Text filters don't just affect file comparisons, but also folder comparisons. Check the <link xref=\"file-filters\">file filtering notes</link> for more details."
+msgstr "Филтери текста не утичу само на поређење датотека, већ и на поређење фасцикли. Погледајте <link xref=\"file-filters\">белешке о филтрирању датотека</link> за више детаља."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:37
+msgid "Adding and using text filters"
+msgstr "Додавање и коришћење филтера текста"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:39
+msgid "You can turn text filters on or off from the the <gui>Text Filters</gui> tab in <gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple filters that you might find useful, but you can add your own as well."
+msgstr "Можете укључити или искључити филтере текста на картици <gui>Филтери текста</gui> у прозорчету <gui>Поставке</gui>. <app>Мелд</app> долази са неколико једноставних филтера који вам могу бити корисни, али можете додати и своје."
+
+#. (itstool) path: section/p
+#: C/text-filters.page:45
+msgid "In <app>Meld</app>, text filters are regular expressions that are matched against the text of files you're comparing. Any text that is matched is ignored during the comparison; you'll still see this text in the comparison view, but it won't be taken into account when finding differences. Text filters are applied in order, so it's possible for the first filter to remove text that now makes the second filter match, and so on."
+msgstr "У <app>Мелду</app>, филтери текста су регуларни изрази који се упоређују са текстом датотека које поредите. Сваки текст који се поклопи се занемарује током поређења; и даље ћете видети овај текст у прегледу поређења, али он неће бити узет у обзир приликом проналажења разлика. Филтери текста се примењују по реду, тако да је могуће да први филтер уклони текст који сада чини да се други филтер поклопи, и тако даље."
+
+#. (itstool) path: note/p
+#: C/text-filters.page:55
+msgid "If you're not familiar with regular expressions, you might want to check out the Python <link href=\"http://docs.python.org/howto/regex.html\">Regular Expression HOWTO</link>."
+msgstr "Ако нисте упознати са регуларним изразима, можда ћете желети да погледате Пајтонов <link href=\"http://docs.python.org/howto/regex.html\">приручник за регуларне изразе</link>."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:67
+msgid "Getting text filters right"
+msgstr "Правилно постављање филтера текста"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:69
+msgid "It's easy to get text filtering wrong, and Meld's support for filtering isn't complete. In particular, a text filter can't change the number of lines in a file. For example, if we had the built-in <gui>Script comment</gui> filter enabled, and compared the following files:"
+msgstr "Лако је погрешити у филтрирању текста, а Мелдова подршка за филтрирање није потпуна. Нарочито, филтер текста не може да промени број редова у датотеци. На пример, ако бисмо имали укључен уграђени филтер <gui>Коментар скрипте</gui>, и поредили следеће датотеке:"
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:80
+msgid "<file>comment1.txt</file>"
+msgstr "<file>comment1.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:81
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b#comment\n"
+"c\n"
+"d"
+msgstr ""
+"\n"
+"a\n"
+"b#comment\n"
+"c\n"
+"d"
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:90
+msgid "<file>comment2.txt</file>"
+msgstr "<file>comment2.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:91
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#comment"
+msgstr ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#comment"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:101
+msgid "then the lines starting with <code>b</code> would be shown as identical (the comment is stripped out) but the <code>d</code> line would be shown as different to the comment line on the right. This happens because the <code>#comment</code> is removed from the right-hand side, but the line itself can not be removed; <app>Meld</app> will show the <code>d</code> line as being different to what it sees as a blank line on the other side."
+msgstr "тада би редови који почињу са <code>b</code> били приказани као истоветни (коментар је извучен), али би ред <code>d</code> био приказан као различит у односу на ред са коментаром на десној страни. Ово се дешава зато што је <code>#comment</code> уклоњен са десне стране, али сам ред не може бити уклоњен; <app>Мелд</app> ће приказати ред <code>d</code> као различит у односу на оно што види као празан ред на другој страни."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:114
+msgid "Blank lines and filters"
+msgstr "Празни редови и филтери"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:116
+msgid "The <gui>Ignore changes which insert or delete blank lines</gui> preference in the <gui>Text Filters</gui> tab requires special explanation. If this special filter is enabled, then any change consisting only of blank lines is completely ignored. This may occur because there was an actual whitespace change in the text, but it may also arise if your active text filters have removed all of the other content from a change, leaving only blank lines."
+msgstr "Поставка <gui>Занемари измене које умећу или бришу празне редове</gui> у картици <gui>Филтери текста</gui> захтева посебно објашњење. Ако је овај посебни филтер омогућен, тада се свака измена која се састоји само од празних редова потпуно занемарује. Ово се може догодити јер је дошло до стварне промене празног простора у тексту, али се може појавити и ако су ваши активни филтери текста уклонили сав остали садржај из измене, остављајући само празне редове."
+
+#. (itstool) path: section/p
+#: C/text-filters.page:125
+msgid "You can use this option to get around some of the <link xref=\"#text-filter-problems\">problems and limitations</link> resulting from filters not being able to remove whole lines, but it can also be useful in and of itself."
+msgstr "Можете користити ову опцију да заобиђете неке од <link xref=\"#text-filter-problems\">проблема и ограничења</link> који произилазе из тога што филтери не могу да уклоне целе редове, али она такође може бити корисна сама по себи."
+
+#. (itstool) path: info/title
+#: C/vc-mode.page:5
+msgctxt "sort"
+msgid "0"
+msgstr "0"
+
+#. (itstool) path: page/title
+#: C/vc-mode.page:16
+msgid "Viewing version-controlled files"
+msgstr "Преглед датотека под управљањем верзијама"
+
+#. (itstool) path: page/p
+#: C/vc-mode.page:18
+msgid "<app>Meld</app> integrates with <link xref=\"vc-supported\">many version control systems</link> to let you review local changes and perform simple version control tasks. You can start a new version control comparison by selecting the <guiseq><gui style=\"menu\">File</gui><gui style=\"menuitem\">New...</gui></guiseq> menu item, and clicking on the <gui style=\"tab\">Version Control</gui> tab."
+msgstr "<app>Мелд</app> се интегрише са <link xref=\"vc-supported\">многим системима за управљање верзијама</link> како би вам омогућио да прегледате локалне измене и обављате једноставне задатке управљања верзијама. Можете започети ново поређење управљања верзијама избором ставке изборника <guiseq><gui style=\"menu\">Датотека</gui><gui style=\"menuitem\">Ново...</gui></guiseq> и кликом на картицу <gui style=\"tab\">Управљање верзијама</gui>."
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:30
+msgid "Version control comparisons"
+msgstr "Поређења под управљањем верзијама"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:32
+msgid "Version control comparisons show the differences between the contents of your folder and the current repository version. Each file in your local copy has a <link xref=\"#vc-state\">state</link> that indicates how it differs from the repository copy."
+msgstr "Поређења под управљањем верзијама приказују разлике између садржаја ваше фасцикле и тренутног издања у ризници. Свака датотека у вашој локалној копији има <link xref=\"#vc-state\">стање</link> које указује на то како се разликује од копије у ризници."
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:46
+msgid "If you want to look at a particular file's differences, you can select it and press <key>Enter</key>, or double-click the file to start a <link xref=\"file-mode\">file comparison</link>. You can also interact with your version control system using the <gui style=\"menu\">Changes</gui> menu."
+msgstr "Ако желите да погледате разлике одређене датотеке, можете је изабрати и притиснути <key>Enter</key>, или двапут кликнути на датотеку да започнете <link xref=\"file-mode\">поређење датотека</link>. Такође можете комуницирати са вашим системом за управљање верзијама користећи изборник <gui style=\"menu\">Измене</gui>."
+
+#. (itstool) path: section/title
+#. (itstool) path: table/title
+#: C/vc-mode.page:56 C/vc-mode.page:81
+msgid "Version control states"
+msgstr "Стања управљања верзијама"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:58
+msgid "Each file or folder in a version control comparison has a <em>state</em>, obtained from the version control system itself. <app>Meld</app> maps these different states into a standard set of very similar concepts. As such, <app>Meld</app> might use slightly different names for states than your version control system does. The possible states are:"
+msgstr "Свака датотека или фасцикла у поређењу под управљањем верзијама има <em>стање</em>, добијено од самог система за управљање верзијама. <app>Мелд</app> пресликава ова различита стања у стандардни скуп веома сличних концепата. Као такво, <app>Мелд</app> може користити нешто другачије називе за стања него што то чини ваш систем за управљање верзијама. Могућа стања су:"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:101
+msgid "The file/folder is the same as the repository version."
+msgstr "Датотека/фасцикла је иста као издање у ризници."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:109
+msgid "Red and bold"
+msgstr "Црвено и подебљано"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:115
+msgid "This file is different to the repository version."
+msgstr "Ова датотека се разликује од верзије у ризници."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:129
+msgid "This file/folder is new, and is scheduled to be added to the repository."
+msgstr "Ова датотека/фасцикла је нова и заказана је за додавање у ризницу."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:136
+msgid "Removed"
+msgstr "Уклоњено"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:138
+msgid "Red bold text with a line through the middle"
+msgstr "Црвени подебљани текст прецртан линијом по средини"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:144
+msgid "This file/folder existed, but is scheduled to be removed from the repository."
+msgstr "Ова датотека/фасцикла је постојала, али је заказана за уклањање из ризнице."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:151
+msgid "Conflict"
+msgstr "Сукоб"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:153
+msgid "Bright red bold text"
+msgstr "Јарко црвени подебљани текст"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:159
+msgid "When trying to merge with the repository, the differences between the local file and the repository could not be resolved, and the file is now in conflict with the repository contents"
+msgstr "Приликом покушаја спајања са ризницом, разлике између локалне датотеке и ризнице нису могле бити разрешене, те је датотека сада у сукобу са садржајем ризнице"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:169
+msgid "Blue bold text with a line through the middle"
+msgstr "Плави подебљани текст прецртан линијом по средини"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:175
+msgid "This file/folder should be present, but isn't."
+msgstr "Ова датотека/фасцикла би требало да буде присутна, али није."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:181
+msgid "Ignored"
+msgstr "Занемарен"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:183 C/vc-mode.page:199
+msgid "Greyed out text"
+msgstr "Засивљени текст"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:189
+msgid "This file/folder has been explicitly ignored (e.g., by an entry in <file>.gitignore</file>) and is not being tracked by version control."
+msgstr "Ова датотека/фасцикла је изричито занемарена (нпр. уносом у <file>.gitignore</file>) и систем управљања верзијама је не прати."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:197
+msgid "Unversioned"
+msgstr "Необрађено"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:205
+msgid "This file is not in the version control system; it is only in the local copy."
+msgstr "Ова датотека није у систему управљања верзијама; налази се само у локалном примерку."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:220
+msgid "The version control system has reported a problem with this file."
+msgstr "Систем управљања верзијама је пријавио проблем са овом датотеком."
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:230
+msgid "Version control state filtering"
+msgstr "Филтрирање стања управљања верзијама"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:232
+msgid "Most often, you will only want to see files that are identified as being in some way different; this is the default setting in <app>Meld</app>. You can change which file states you see by using the <guiseq><gui style=\"menu\">View</gui><gui style=\"menuitem\">Version Status</gui></guiseq> menu, or by clicking the corresponding <gui style=\"button\">Modified</gui>, <gui style=\"button\">Normal</gui>, <gui style=\"button\">Unversioned</gui> and <gui style=\"button\">Ignored</gui> buttons on the toolbar."
+msgstr "Најчешће ћете желети да видите само датотеке које су препознате као на неки начин другачије; ово је подразумевано подешавање у <app>Мелду</app>. Можете променити која стања датотека видите коришћењем изборника <guiseq><gui style=\"menu\">Преглед</gui><gui style=\"menuitem\">Стање верзије</gui></guiseq>, или кликом на одговарајућу дугмад <gui style=\"button\">Измењено</gui>, <gui style=\"button\">Нормално</gui>, <gui style=\"button\">Непраћено</gui> и <gui style=\"button\">Занемарено</gui> на траци алата."
+
+#. (itstool) path: info/title
+#: C/vc-supported.page:5
+msgctxt "sort"
+msgid "3"
+msgstr "3"
+
+#. (itstool) path: page/title
+#: C/vc-supported.page:15
+msgid "Supported version control systems"
+msgstr "Подржани системи управљања верзијама"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:17
+msgid "<app>Meld</app> supports a wide range of version control systems:"
+msgstr "<app>Мелд</app> подржава широк спектар система управљања верзијама:"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:22
+msgid "Bazaar"
+msgstr "Bazaar"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:23
+msgid "Darcs"
+msgstr "Darcs"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:24
+msgid "Git"
+msgstr "Гит"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:25
+msgid "Mercurial"
+msgstr "Mercurial"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:26
+msgid "SVN"
+msgstr "СВН"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:29
+msgid "Less common version control systems or unusual configurations may not be properly tested; please report any version control support bugs to the <link href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Meld issue tracker</link>."
+msgstr "Мање уобичајени системи за управљање верзијама или необичне конфигурације можда нису исправно тестирани; пријавите све грешке у подршци за управљање верзијама у <link href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Мелдовом пратиоцу проблема</link>."
