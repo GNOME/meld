@@ -1947,6 +1947,9 @@ class FileDiff(Gtk.Box, MeldDoc):
             gutter.chunks = list(linediffer.paired_all_single_changes(
                 from_pane, to_pane))
 
+        for textview in self.textview:
+            textview.line_renderer.queue_draw()
+
         removed_chunks, added_chunks, modified_chunks = chunk_changes
 
         # We need to clear removed and modified chunks, and need to
