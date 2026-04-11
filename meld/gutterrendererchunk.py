@@ -52,7 +52,7 @@ class MeldGutterRenderer:
         self.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
         self.props.xpad = 3
         self.props.ypad = 0
-        self.props.xalign = 0.5
+        self.props.xalign = 1.0
         self.props.yalign = 0.5
 
     def on_setting_changed(self, settings, key):
