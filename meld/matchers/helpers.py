@@ -1,4 +1,4 @@
-
+import gc
 import logging
 import multiprocessing
 import queue
@@ -82,6 +82,20 @@ class CachedSequenceMatcher:
                 self.thread.terminate()
         self.cache = {}
         self.queued_matches = {}
+
+        # The following clean-up (down to gc.collect) should be unnecessary,
+        # but improves some file descriptor leakage possibly due to other
+        # reference leakage issues in FileDiff.
+        for q in (self.tasks, self.results):
+            if q is not None:
+                q.close()
+                q.join_thread()
+        self.thread.tasks = None
+        self.thread.results = None
+        self.tasks = None
+        self.results = None
+        self.thread = None
+        gc.collect()
 
     def match(self, text1, textn, cb):
         texts = (text1, textn)
