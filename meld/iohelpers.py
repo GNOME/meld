@@ -29,6 +29,7 @@ ARCHIVE_CONTENT_TYPES = {
     "application/x-lzma-compressed-tar",
     "application/x-rar",
     "application/x-rar-compressed",
+    "application/x-rpm",
     "application/x-stuffit",
     "application/x-tar",
     "application/x-tarz",
