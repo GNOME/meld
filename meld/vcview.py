@@ -404,12 +404,13 @@ class VcView(Gtk.Box, MeldDoc):
 
     def recompute_label(self):
         self.tab_title = os.path.basename(self.location)
-        self.tab_tooltip = "\n".join((
+        self.tab_tooltip = GLib.markup_escape_text(
+            "\n".join((
             # TRANSLATORS: This is the name of the version control
             # system being used, e.g., "Git" or "Subversion"
             _("{vc} comparison:").format(vc=self.vc.NAME),
             self.location,
-        ))
+        )))
 
     def set_labels(self, labels):
         if labels:

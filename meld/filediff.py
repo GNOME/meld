@@ -1582,7 +1582,9 @@ class FileDiff(Gtk.Box, MeldDoc):
         else:
             self.tab_title = " — ".join(shortnames)
             tooltip_names = filenames
-        self.tab_tooltip = "\n".join((_("File comparison:"), *tooltip_names))
+        self.tab_tooltip = GLib.markup_escape_text(
+            "\n".join((_("File comparison:"), *tooltip_names))
+        )
 
     def pre_comparison_init(self):
         self._disconnect_buffer_handlers()

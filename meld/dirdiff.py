@@ -1906,7 +1906,9 @@ class DirDiff(Gtk.Box, MeldDoc):
             tooltip_names = filenames
 
         self.tab_title = " : ".join(shortnames)
-        self.tab_tooltip = "\n".join((_("Folder comparison:"), *tooltip_names))
+        self.tab_tooltip = GLib.markup_escape_text(
+            "\n".join((_("Folder comparison:"), *tooltip_names))
+        )
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
