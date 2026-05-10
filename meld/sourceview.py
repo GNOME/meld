@@ -123,13 +123,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         return self._show_line_numbers
 
     def set_show_line_numbers(self, show):
+        show = bool(show)
         if show == self._show_line_numbers:
             return
 
         if getattr(self, 'line_renderer', None):
             self.line_renderer.set_visible(show)
 
-        self._show_line_numbers = bool(show)
+        self._show_line_numbers = show
         self.notify("show-line-numbers")
 
     show_line_numbers = GObject.Property(
