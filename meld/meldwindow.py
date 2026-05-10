@@ -32,9 +32,10 @@ from meld.const import (
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.imagediff import ImageDiff, files_are_images
+from meld.iohelpers import is_archive, mount_archive_async
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
-from meld.misc import guess_if_remote_x11
+from meld.misc import error_dialog, guess_if_remote_x11
 from meld.newdifftab import NewDiffTab
 from meld.recent import get_recent_comparisons
 from meld.settings import get_meld_settings
@@ -430,6 +431,41 @@ class MeldWindow(Adw.ApplicationWindow):
         recent_comparisons.add(tab)
         return tab
 
+    def _mount_archives_and_open(self, pending, extracted, **kwargs):
+        """Mount any archive gfiles in pending and open_paths on the result
+
+        Mounts are kicked off one at a time to keep error handling simple;
+        once all archives have been mounted, the original ``gfiles`` list
+        is patched with the archive roots and ``open_paths`` is re-entered.
+        """
+
+        def on_mounted(mounted_root, error):
+            if mounted_root is None:
+                error_dialog(
+                    _("Failed to mount archive"),
+                    _(f"Error mounting archive {gfile.get_uri()}: {error}"),
+                )
+                return
+            extracted.append(mounted_root)
+            self._mount_archives_and_open(pending, extracted, **kwargs)
+
+        if not pending:
+            try:
+                self.open_paths(extracted, **kwargs)
+            except ValueError as err:
+                paths = ", ".join([f.get_path() for f in extracted])
+                error_dialog(
+                    _("Couldn't compare paths"),
+                    _(f"Failed to compare paths {paths}: {err}"),
+                )
+            return
+
+        gfile = pending.pop()
+        if is_archive(gfile):
+            mount_archive_async(gfile, on_mounted)
+        else:
+            on_mounted(gfile, None)
+
     def _single_file_open(self, gfile):
         doc = VcView()
 
@@ -448,6 +484,17 @@ class MeldWindow(Adw.ApplicationWindow):
         doc.run_diff(path)
 
     def open_paths(self, gfiles, auto_compare=False, auto_merge=False, focus=False):
+
+        if any(is_archive(gfile) for gfile in gfiles):
+            self._mount_archives_and_open(
+                list(gfiles),
+                [],
+                auto_compare=auto_compare,
+                auto_merge=auto_merge,
+                focus=focus,
+            )
+            return None
+
         tab = None
         if len(gfiles) == 1:
             gfile = gfiles[0]
