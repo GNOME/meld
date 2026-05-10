@@ -324,7 +324,7 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.tab_state_changed.connect(self.on_page_state_changed)
         doc.close_signal.connect(self.page_removed)
 
-    def append_new_comparison(self):
+    def append_new_comparison(self) -> NewDiffTab:
         doc = NewDiffTab(self)
         self._append_page(doc)
 
@@ -340,7 +340,6 @@ class MeldWindow(Adw.ApplicationWindow):
         gfiles: Sequence[Optional[Gio.File]],
         auto_compare: bool = False,
     ) -> DirDiff:
-        assert len(gfiles) in (1, 2, 3)
         doc = DirDiff(len(gfiles))
         self._append_page(doc)
         gfiles = [f or Gio.File.new_for_path("") for f in gfiles]
@@ -350,9 +349,9 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.scheduler.add_task(doc.auto_compare)
         return doc
 
-    def append_filediff(self, gfiles, *, encodings=None, merge_output=None, meta=None):
-        assert len(gfiles) in (1, 2, 3)
-
+    def append_filediff(
+        self, gfiles, *, encodings=None, merge_output=None, meta=None
+    ) -> FileDiff | ImageDiff:
         # Check whether to show image window or not.
         if files_are_images(gfiles):
             doc = ImageDiff(len(gfiles))
@@ -366,7 +365,7 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.set_meta(meta)
         return doc
 
-    def append_filemerge(self, gfiles, merge_output=None):
+    def append_filemerge(self, gfiles, merge_output=None) -> FileDiff:
         if len(gfiles) != 3:
             raise ValueError(
                 _("Need three files to auto-merge, got: %r")
@@ -386,7 +385,7 @@ class MeldWindow(Adw.ApplicationWindow):
         auto_merge: bool = False,
         merge_output: Optional[Gio.File] = None,
         meta: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> DirDiff | FileDiff | ImageDiff:
         have_directories = False
         have_files = False
         for f in gfiles:
@@ -406,7 +405,7 @@ class MeldWindow(Adw.ApplicationWindow):
         else:
             return self.append_filediff(gfiles, merge_output=merge_output, meta=meta)
 
-    def append_vcview(self, location, auto_compare=False):
+    def append_vcview(self, location, auto_compare=False) -> VcView:
         doc = VcView()
         self._append_page(doc)
         if isinstance(location, (list, tuple)):
