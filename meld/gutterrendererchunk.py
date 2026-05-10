@@ -160,12 +160,16 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
             path_builder = Gsk.PathBuilder()
             is_first_line = line == chunk[1]
             is_last_line = line == chunk[2] - 1
+            is_single_line_insert = chunk[1] == chunk[2]
 
             if is_first_line:
                 path_builder.move_to(x, y + 0.5)
                 path_builder.rel_line_to(width, 0)
             if is_last_line:
                 path_builder.move_to(x, y - 0.5 + height)
+                path_builder.rel_line_to(width, 0)
+            if is_single_line_insert:
+                path_builder.move_to(x, y + 1.5)
                 path_builder.rel_line_to(width, 0)
 
             path = path_builder.to_path()
