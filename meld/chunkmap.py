@@ -354,9 +354,9 @@ class TextViewChunkMap(ChunkMap):
         if animate:
             self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
         else:
-            # TODO: Add handling for centreing adjustment like we do
-            # for animated scroll above.
-            self.adjustment.set_value(location)
+            cursor = self.textview.get_iter_location(it)
+            offset = int(cursor.height / 2 - self.adjustment.get_page_size() / 2)
+            self.adjustment.set_value(cursor.y + offset)
 
 
 class TreeViewChunkMap(ChunkMap):
