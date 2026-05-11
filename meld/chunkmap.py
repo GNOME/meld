@@ -71,7 +71,7 @@ class ChunkMap(Gtk.DrawingArea):
     def __init__(self):
         super().__init__()
         self.chunks = []
-        self._have_grab = False
+        self._grab_coordinates = None
         self._cached_map = None
 
         click_controller = Gtk.GestureClick()
@@ -240,7 +240,7 @@ class ChunkMap(Gtk.DrawingArea):
         y: float,
     ) -> None:
         self._scroll_fraction(y)
-        self._have_grab = True
+        self._grab_coordinates = (x, y)
 
     def button_release_event(
         self,
@@ -249,7 +249,7 @@ class ChunkMap(Gtk.DrawingArea):
         x: float,
         y: float,
     ) -> bool:
-        self._have_grab = False
+        self._grab_coordinates = None
 
     def motion_event(
         self,
@@ -257,7 +257,7 @@ class ChunkMap(Gtk.DrawingArea):
         x: float | None = None,
         y: float | None = None,
     ):
-        if self._have_grab:
+        if self._grab_coordinates and self._grab_coordinates[1] != y:
             self._scroll_fraction(y, animate=False)
 
         return True
