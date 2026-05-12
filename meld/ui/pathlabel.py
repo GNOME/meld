@@ -16,7 +16,7 @@
 import logging
 from typing import Optional
 
-from gi.repository import Gio, GObject, Gtk, Pango
+from gi.repository import Gio, GObject, Gtk
 
 from meld.conf import _
 from meld.iohelpers import (
@@ -35,6 +35,7 @@ class PathLabel(Gtk.MenuButton):
 
     file_launcher: Gtk.FileLauncher = Gtk.Template.Child()
     full_path_label: Gtk.Entry = Gtk.Template.Child()
+    label_widget: Gtk.Label = Gtk.Template.Child()
 
     _gfile: Optional[Gio.File]
     _parent_gfile: Optional[Gio.File]
@@ -95,6 +96,7 @@ class PathLabel(Gtk.MenuButton):
         type=str,
         nick="Custom label override",
     )
+    empty_label = GObject.Property(type=str, nick="Empty label placeholder")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -106,14 +108,14 @@ class PathLabel(Gtk.MenuButton):
 
         self.bind_property(
             "path_label",
-            self,
+            self.label_widget,
             "label",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             self.get_display_label,
         )
         self.bind_property(
             "custom_label",
-            self,
+            self.label_widget,
             "label",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
             self.get_display_label,
@@ -142,23 +144,13 @@ class PathLabel(Gtk.MenuButton):
 
         self.insert_action_group("widget", action_group)
 
-        # GtkButton recreates its GtkLabel child whenever the label
-        # prop changes, so we need this notify callback.
-        self.connect("notify::label", self.label_changed_cb)
-
-    def label_changed_cb(self, *args):
-        # Our label needs ellipsization to avoid forcing minimum window
-        # sizes for long filenames. This child iteration hack is
-        # required as GtkButton has no label access.
-        for child in self:
-            if isinstance(child, Gtk.Label):
-                child.set_ellipsize(Pango.EllipsizeMode.MIDDLE)
-
     def get_display_label(self, binding, from_value) -> str:
         if self.custom_label:
             return self.custom_label
         elif self.path_label:
             return self.path_label
+        elif self.props.empty_label:
+            return self.props.empty_label
         else:
             return self.MISSING_FILE_NAME
 

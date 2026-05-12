@@ -67,8 +67,21 @@
   <object class="GtkFileLauncher" id="file_launcher" />
   <template class="PathLabel" parent="GtkMenuButton">
     <property name="popover">path_popover</property>
-    <child>
-      <placeholder/>
-    </child>
+    <property name="child">
+      <object class="GtkBox">
+        <property name="hexpand">1</property>
+        <property name="spacing">6</property>
+        <child>
+          <object class="GtkLabel" id="label_widget">
+            <property name="ellipsize">middle</property>
+          </object>
+        </child>
+        <child>
+          <object class="GtkImage">
+            <property name="icon-name">pan-down-symbolic</property>
+          </object>
+        </child>
+      </object>
+    </property>
   </template>
 </interface>
