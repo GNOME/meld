@@ -313,12 +313,12 @@ def mount_archive_async(
                 Gio.io_error_quark(), Gio.IOErrorEnum.ALREADY_MOUNTED
             )
             if already_mounted:
-                callback(archive_gfile, None)
+                callback(archive_gfile, None, allow_none=False)
                 return
             log.warning(f"Failed to mount archive {gfile.get_uri()}: {err.message}")
-            callback(None, err)
+            callback(None, err, allow_none=False)
             return
-        callback(archive_gfile, None)
+        callback(archive_gfile, None, allow_none=False)
 
     mount_operation = Gio.MountOperation()
     archive_gfile = _make_archive_gfile(gfile)

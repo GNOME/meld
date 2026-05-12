@@ -439,8 +439,8 @@ class MeldWindow(Adw.ApplicationWindow):
         is patched with the archive roots and ``open_paths`` is re-entered.
         """
 
-        def on_mounted(mounted_root, error):
-            if mounted_root is None:
+        def on_mounted(mounted_root, error, *, allow_none: bool):
+            if mounted_root is None and not allow_none:
                 error_dialog(
                     _("Failed to mount archive"),
                     _(f"Error mounting archive {gfile.get_uri()}: {error}"),
@@ -464,7 +464,7 @@ class MeldWindow(Adw.ApplicationWindow):
         if is_archive(gfile):
             mount_archive_async(gfile, on_mounted)
         else:
-            on_mounted(gfile, None)
+            on_mounted(gfile, None, allow_none=True)
 
     def _single_file_open(self, gfile):
         doc = VcView()
