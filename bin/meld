@@ -457,7 +457,7 @@ def ci_screenshot():
     # For CI, support screenshot-and-exit by setting envvars
 
     import cairo
-    from gi.repository import Gio, GLib
+    from gi.repository import Gio, GLib, Gtk
 
     screenshot_filename = os.environ.get("MELD_SCREENSHOT_AND_EXIT")
     if not screenshot_filename:
@@ -469,7 +469,10 @@ def ci_screenshot():
         alloc = window.get_allocation()
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, alloc.width, alloc.height)
         cr = cairo.Context(surface)
-        window.draw(cr)
+        snapshot = Gtk.Snapshot.new()
+        paintable = Gtk.WidgetPaintable.new(window)
+        paintable.snapshot(snapshot, alloc.width, alloc.height)
+        snapshot.to_node().draw(cr)
         surface.write_to_png(screenshot_filename)
         print(f"Screenshot saved to {screenshot_filename}. Exiting.", file=sys.stderr)
         sys.exit(0)
