@@ -140,11 +140,11 @@ class MsgAreaController(Gtk.Box):
         msgarea.connect("response", clear_all)
         return msgarea
 
-    def add_action_msg(self, icon, primary, secondary, action_label, callback):
+    def add_action_msg(self, icon, primary, secondary, action_label, callback, *extra):
         def on_response(msgarea, response_id, *args):
             self.clear()
             if response_id == Gtk.ResponseType.ACCEPT:
-                callback()
+                callback(*extra)
 
         msgarea = self.new_from_text_and_icon(primary, secondary, icon)
         msgarea.add_button(action_label, Gtk.ResponseType.ACCEPT)

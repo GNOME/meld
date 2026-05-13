@@ -22,7 +22,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
-from meld.conf import PROFILE, _
+from meld.conf import IS_DEVEL, _
 from meld.const import (
     FILE_FILTER_ACTION_FORMAT,
     TEXT_FILTER_ACTION_FORMAT,
@@ -112,7 +112,7 @@ class MeldWindow(Adw.ApplicationWindow):
         self.scheduler = LifoScheduler()
         self.scheduler.connect("runnable", self.on_scheduler_runnable)
 
-        if PROFILE != '':
+        if IS_DEVEL:
             style_context = self.get_style_context()
             style_context.add_class("devel")
 

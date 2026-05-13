@@ -4,3 +4,9 @@ option(
   choices: ['', 'Devel'],
   description: 'Build with specified application ID',
 )
+option(
+  'is_wheel',
+  type: 'boolean',
+  value: false,
+  description: 'Is the build intended to produce a Python wheel',
+)

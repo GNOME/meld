@@ -1,11 +1,7 @@
 # Install man page
-install_man('meld.1')
-
-# Install schema file
-install_data(
-  '@0@.gschema.xml'.format(resource_base_id),
-  install_dir: gio_schemasdir,
-)
+if not is_wheel
+  install_man('meld.1')
+endif
 
 # Install desktop file
 desktop_file = i18n.merge_file(
@@ -48,6 +44,21 @@ if compile_schemas.found()
     'Validate schema file',
     compile_schemas,
     args: ['--strict', '--dry-run', meson.current_source_dir()],
+  )
+endif
+
+# Install xml schema file (for non-wheel) or compiled schema (for wheel)
+if not is_wheel
+  install_data(
+    '@0@.gschema.xml'.format(resource_base_id),
+    install_dir: gio_schemasdir,
+  )
+else
+  configure_file(
+    input: '@0@.gschema.xml'.format(resource_base_id),
+    output: 'gschemas.compiled',
+    command: [compile_schemas, meson.current_source_dir(), '--targetdir', meson.current_build_dir()],
+    install_dir: datadir / 'meld',
   )
 endif
 

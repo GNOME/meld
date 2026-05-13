@@ -83,15 +83,23 @@ foreach folder_name, sources: folders
   python3.install_sources(sources, pure: true, subdir: pkgdir)
 endforeach
 
-# Install the executable file
-app_config = {
-  'profile': profile,
-  'application_id': application_id,
-  'resource_base_id': resource_base_id,
-  'localedir': prefix / localedir,
-  'pkgdatadir': prefix / pkgdatadir,
-  'configured': 'True',
-}
+if not is_wheel
+  app_config = {
+    'application_id': application_id,
+    'localedir': prefix / localedir,
+    'pkgdatadir': prefix / pkgdatadir,
+    'configured': 'True',
+    'is_wheel': 'False',
+    'is_devel': (is_devel ? 'True' : 'False'),
+  }
+else
+  app_config = {
+    'application_id': application_id,
+    'configured': 'False',
+    'is_wheel': 'True',
+    'is_devel': (is_devel ? 'True' : 'False'),
+  }
+endif
 
 configure_file(
   input: 'conf.py.in',

@@ -13,8 +13,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2025-10-26 16:40+0000\n"
-"PO-Revision-Date: 2025-11-05 01:46+0800\n"
+"POT-Creation-Date: 2026-01-03 15:41+0000\n"
+"PO-Revision-Date: 2026-01-22 21:25+0800\n"
 "Last-Translator: Cheng-Chia Tseng <zerngjia@gmail.com>\n"
 "Language-Team: Babycaseny Gavèrnmènt\n"
 "Language: zh_TW\n"
@@ -26,8 +26,9 @@ msgstr ""
 "X-Project-Style: gnome\n"
 "X-Source-Language: C\n"
 
-#: data/org.gnome.Meld.desktop.in.in:2 data/org.gnome.Meld.appdata.xml.in.in:10
-#: meld/resources/ui/appwindow.ui:9 meld/resources/ui/appwindow.ui:17
+#: data/org.gnome.Meld.desktop.in.in:2
+#: data/org.gnome.Meld.metainfo.xml.in.in:10 meld/resources/ui/appwindow.ui:9
+#: meld/resources/ui/appwindow.ui:17
 msgid "Meld"
 msgstr "Meld"
 
@@ -35,7 +36,8 @@ msgstr "Meld"
 msgid "Diff Viewer"
 msgstr "差異檢視程式"
 
-#: data/org.gnome.Meld.desktop.in.in:4 data/org.gnome.Meld.appdata.xml.in.in:11
+#: data/org.gnome.Meld.desktop.in.in:4
+#: data/org.gnome.Meld.metainfo.xml.in.in:11
 msgid "Compare and merge your files"
 msgstr "比對及合併您的檔案"
 
@@ -44,7 +46,7 @@ msgstr "比對及合併您的檔案"
 msgid "diff;merge;"
 msgstr "差異;合併;diff;merge;"
 
-#: data/org.gnome.Meld.appdata.xml.in.in:13
+#: data/org.gnome.Meld.metainfo.xml.in.in:13
 msgid ""
 "Meld is a visual diff and merge tool targeted at developers. Meld helps you "
 "compare files, directories, and version controlled projects. It provides "
@@ -55,14 +57,14 @@ msgstr ""
 "版本控制的專案。它提供檔案和資料夾的雙向和三向比對，並支援許多版本控制系統，"
 "包括 Git、Mercurial、Bazaar 和 Subversion。"
 
-#: data/org.gnome.Meld.appdata.xml.in.in:20
+#: data/org.gnome.Meld.metainfo.xml.in.in:20
 msgid ""
 "Meld helps you review code changes, understand patches, and makes enormous "
 "merge conflicts slightly less painful."
 msgstr ""
 "Meld 可以幫助您查看代碼變更、理解修正檔，並可以減輕您在大型合併衝突中的痛苦。"
 
-#: data/org.gnome.Meld.appdata.xml.in.in:59
+#: data/org.gnome.Meld.metainfo.xml.in.in:51
 msgid "Kai Willadsen"
 msgstr "Kai Willadsen"
 
@@ -84,7 +86,7 @@ msgstr "預設視窗最大化狀態"
 
 #: data/org.gnome.Meld.gschema.xml:54
 msgid "Prefer application-wide dark theme"
-msgstr ""
+msgstr "偏好應用程式下的暗色主題"
 
 #: data/org.gnome.Meld.gschema.xml:55
 msgid ""
@@ -931,10 +933,8 @@ msgid "Ignored"
 msgstr "已忽略"
 
 #: meld/resources/gtk/menus.ui:181
-#, fuzzy
-#| msgid "Flatten folders"
 msgid "Flatten Folders"
-msgstr "將檔案合併顯示（不顯示資料夾）"
+msgstr "整平資料夾"
 
 #: meld/resources/ui/about-dialog.ui:8
 msgid ""
@@ -1759,11 +1759,11 @@ msgstr "額外"
 msgid "Console output"
 msgstr "主控台輸出"
 
-#: meld/actiongutter.py:265
+#: meld/actiongutter.py:266
 msgid "Copy _up"
 msgstr "複製到上邊(_U)"
 
-#: meld/actiongutter.py:266
+#: meld/actiongutter.py:267
 msgid "Copy _down"
 msgstr "複製到下邊(_D)"
 
@@ -1882,7 +1882,6 @@ msgstr ""
 
 #: meld/dirdiff.py:1217
 #, python-brace-format
-#| msgid "“%s” hidden by “%s”"
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "「{first_file}」被「{second_file}」隱藏"
 
@@ -1906,11 +1905,6 @@ msgstr "複製檔案時發生錯誤"
 
 #: meld/dirdiff.py:1313
 #, python-brace-format
-#| msgid ""
-#| "Couldn’t copy %s\n"
-#| "to %s.\n"
-#| "\n"
-#| "%s"
 msgid ""
 "Couldn’t copy {source}\n"
 "to {dest}.\n"
@@ -1926,11 +1920,11 @@ msgstr ""
 msgid "Error deleting {}"
 msgstr "刪除 {} 出錯"
 
-#: meld/dirdiff.py:1897
+#: meld/dirdiff.py:1907
 msgid "No folder"
 msgstr "無資料夾"
 
-#: meld/dirdiff.py:1910
+#: meld/dirdiff.py:1920
 msgid "Folder comparison:"
 msgstr "資料夾比對："
 
@@ -1995,7 +1989,7 @@ msgstr "配對同步點"
 msgid "Clear Synchronization Points"
 msgstr "清除同步點"
 
-#: meld/filediff.py:1571 meld/imagediff.py:254
+#: meld/filediff.py:1571 meld/imagediff.py:256
 msgid "File comparison:"
 msgstr "檔案比對："
 
@@ -2049,7 +2043,7 @@ msgstr "重新載入(_R)"
 
 #: meld/filediff.py:2084
 msgid "File {} is being compared to itself"
-msgstr ""
+msgstr "檔案 {} 正在與其自身作比較"
 
 #: meld/filediff.py:2092
 msgid "Files are identical"
@@ -2172,17 +2166,15 @@ msgstr ""
 
 #: meld/filediff.py:2698
 msgid "Can't swap unsaved files"
-msgstr ""
+msgstr "無法交換未儲存的檔案"
 
 #: meld/filediff.py:2700
 msgid "Files must be saved to disk before swapping panes."
-msgstr ""
+msgstr "檔案必須在交換窗格之前先儲存至磁碟。"
 
 #: meld/filediff.py:2707
-#, fuzzy
-#| msgid "Start a version control comparison"
 msgid "Can't swap version control comparisons"
-msgstr "開始版本控制比對"
+msgstr "無法交換版本控制比對"
 
 #: meld/filediff.py:2709
 #, fuzzy
@@ -2350,10 +2342,8 @@ msgid "Cannot compare a mixture of files and directories"
 msgstr "無法對檔案和資料夾混合比對"
 
 #: meld/meldwindow.py:479
-#, fuzzy
-#| msgid "Cannot compare a mixture of files and directories"
 msgid "Cannot compare a non-existent file"
-msgstr "無法對檔案和資料夾混合比對"
+msgstr "無法對不存在的檔案作比對"
 
 #: meld/misc.py:154
 msgid ""
@@ -2384,10 +2374,8 @@ msgid "Version control:"
 msgstr "版本控制："
 
 #: meld/style.py:97
-#, fuzzy
-#| msgid "Couldn’t find colour scheme details for %s-%s; this is a bad install"
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
-msgstr "找不到 %s-%s 的配色方案詳細資料。這個安裝有問題"
+msgstr "找不到 {} 的配色方案詳細資料；這個安裝有問題"
 
 #: meld/ui/bufferselectors.py:110
 #, python-brace-format
@@ -2406,7 +2394,7 @@ msgstr "未命名的檔案"
 #: meld/ui/statusbar.py:125
 #, python-brace-format
 msgid "Ln {line}, Col {column}"
-msgstr "列 Ln {line}，欄 Col {column}"
+msgstr "列 {line}，欄 {column}"
 
 #: meld/ui/statusbar.py:187
 msgid "Line you want to move the cursor to"
@@ -2437,10 +2425,9 @@ msgid_plural "%d branches"
 msgstr[0] "%d 個分支"
 
 #: meld/vc/git.py:363
-#, fuzzy, python-brace-format
-#| msgid "Mode changed from %s to %s"
+#, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
-msgstr "模式已從 %s 變更為 %s"
+msgstr "模式已從 {old_mode} 變更為 {new_mode}"
 
 #: meld/vc/git.py:371
 msgid "Partially staged"
@@ -2542,7 +2529,6 @@ msgstr "選擇要使用的版本控制系統"
 #. system being used, e.g., "Git" or "Subversion"
 #: meld/vcview.py:433
 #, python-brace-format
-#| msgid "New comparison"
 msgid "{vc} comparison:"
 msgstr "{vc} 比對："
 

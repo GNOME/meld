@@ -25,19 +25,26 @@ dependency('libadwaita-1', version : '>= 1.6')
 dependency('pygobject-3.0', version: '>= 3.46')
 dependency('py3cairo', version: '>= 1.15.0')
 
-profile = get_option('profile')
-name_suffix = (profile == 'Devel' ? ' (Development Snapshot)' : '')
+is_devel = get_option('profile') == 'Devel'
+name_suffix = (is_devel ? ' (Development Snapshot)' : '')
 
 resource_base_id = 'org.gnome.Meld'
 application_id_no_profile = 'org.gnome.Meld'
-application_id = (profile == 'Devel' ? application_id_no_profile + '.' + profile : application_id_no_profile)
+application_id = (is_devel ? application_id_no_profile + '.Devel' : application_id_no_profile)
+
+is_wheel = get_option('is_wheel')
 
 prefix = get_option('prefix')
 
 bindir = get_option('bindir')
-datadir = get_option('datadir')
-localedir = get_option('localedir')
-mandir = get_option('mandir')
+
+if not is_wheel
+  datadir = get_option('datadir')
+  localedir = get_option('localedir')
+else
+  datadir = python3.get_install_dir(pure: true, subdir: meson.project_name()) / 'share'
+  localedir = datadir / 'locale'
+endif
 
 icondir = datadir / 'icons'
 pkgdatadir = datadir / meson.project_name()
@@ -56,7 +63,11 @@ install_data('COPYING', install_dir: pkgdatadir)
 subdir('bin')
 subdir('meld')
 subdir('data')
-subdir('help')
+if not is_wheel
+  # gnome.yelp() doesn't have an option to set the install dir,
+  # so it can't be used to install in the wheel.
+  subdir('help')
+endif
 subdir('po')
 
 gnome.post_install(

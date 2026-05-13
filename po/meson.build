@@ -1,1 +1,1 @@
-i18n.gettext(meson.project_name(), preset: 'glib', data_dirs: itsdir)
+i18n.gettext(meson.project_name(), preset: 'glib', data_dirs: itsdir, install_dir: localedir)

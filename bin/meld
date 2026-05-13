@@ -109,6 +109,8 @@ elif frozen:
     meld.conf.frozen()
 elif "Contents/MacOS" in sys.executable:
     meld.conf.setup_macos_application_bundle()
+elif meld.conf.IS_WHEEL:
+    meld.conf.setup_wheel()
 
 # TODO: Possibly move to elib.intl
 import gettext  # noqa: E402, I100
@@ -451,6 +453,31 @@ def environment_hacks():
         os.environ['PANGOCAIRO_BACKEND'] = 'fontconfig'
 
 
+def ci_screenshot():
+    # For CI, support screenshot-and-exit by setting envvars
+
+    import cairo
+    from gi.repository import Gio, GLib
+
+    screenshot_filename = os.environ.get("MELD_SCREENSHOT_AND_EXIT")
+    if not screenshot_filename:
+        return
+
+    def take_screenshot():
+        app = Gio.Application.get_default()
+        window = app.get_windows()[0]
+        alloc = window.get_allocation()
+        surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, alloc.width, alloc.height)
+        cr = cairo.Context(surface)
+        window.draw(cr)
+        surface.write_to_png(screenshot_filename)
+        print(f"Screenshot saved to {screenshot_filename}. Exiting.", file=sys.stderr)
+        sys.exit(0)
+
+    timeout_ms = int(os.environ.get("MELD_SCREENSHOT_TIMEOUT_MS", "3000"))
+    GLib.timeout_add(timeout_ms, take_screenshot)
+
+
 def run_application():
     from meld.meldapp import MeldApp
 
@@ -473,6 +500,7 @@ def main():
     setup_resources()
     setup_settings()
     setup_style()
+    ci_screenshot()
     return run_application()
 
 

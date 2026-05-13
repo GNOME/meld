@@ -34,7 +34,7 @@ Build requirements
 ------------------
 
 * Python 3.10
-* Meson 1.2
+* Meson 1.11
 * Ninja
 * gettext
 * GLib 2.66 and its development utilities such as `glib-compile-schemas`
@@ -70,7 +70,7 @@ Meld uses [meson](https://mesonbuild.com/) build system. Use the following
 commands to build Meld from the source directory:
 
 ```sh
-$ meson _build
+$ meson setup _build
 $ cd _build
 $ ninja
 ```

@@ -14,16 +14,18 @@ RESOURCE_BASE = '/org/gnome/meld'
 DATADIR = Path(sys.prefix) / "share" / "meld"
 LOCALEDIR = Path(sys.prefix) / "share" / "locale"
 
-CONFIGURED = '@configured@'
+# This strange form is used in order to allow this file to be used both as a Python
+# source file and as a template.
+CONFIGURED = '@configured@' == 'True'
+IS_WHEEL = '@is_wheel@' == 'True'
 # Treat an unconfigured installation as development
-PROFILE = "Devel"
+IS_DEVEL = True
 
-if CONFIGURED == 'True':
+if CONFIGURED:
     APPLICATION_ID = '@application_id@'
-    DATADIR = '@pkgdatadir@'
+    DATADIR = Path('@pkgdatadir@')
     LOCALEDIR = '@localedir@'
-    PROFILE = '@profile@'
-
+    IS_DEVEL = '@is_devel@' != 'False'
 # Flag enabling some workarounds if data dir isn't installed in standard prefix
 DATADIR_IS_UNINSTALLED = False
 
@@ -38,7 +40,7 @@ ngettext = no_translation
 
 
 def frozen():
-    global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED
+    global DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED, IS_DEVEL
 
     # FIXME: This is duplicating logic in get_meld_dir in bin/meld
     # Also, we probably don't actually need the non-_MEIPASS branch
@@ -51,6 +53,7 @@ def frozen():
 
     DATADIR = os.path.join(melddir, "share", "meld")
     LOCALEDIR = os.path.join(melddir, "share", "mo")
+    IS_DEVEL = False
 
 
 def uninstalled():
@@ -76,3 +79,15 @@ def setup_macos_application_bundle():
     DATADIR = share_dir / "meld"
     LOCALEDIR = share_dir / "locale"
     DATADIR_IS_UNINSTALLED = False
+
+
+def setup_wheel():
+    global APPLICATION_ID, DATADIR, LOCALEDIR, DATADIR_IS_UNINSTALLED, IS_DEVEL
+
+    melddir = Path(__file__).resolve().parent
+
+    APPLICATION_ID = '@application_id@'
+    DATADIR = melddir / "share" / "meld"
+    LOCALEDIR = melddir / "share" / "locale"
+    DATADIR_IS_UNINSTALLED = True
+    IS_DEVEL = False
