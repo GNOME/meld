@@ -78,7 +78,10 @@ class RecentSelector(Gtk.Grid):
     def update_model(self, *args):
         self.model.remove_all()
 
-        items = [item for item in self.recent_manager.get_items() if item.exists()]
+        items = sorted(
+            (item for item in self.recent_manager.get_items() if item.exists()),
+            key=lambda item: item.get_age(),
+        )
         for item in items:
             try:
                 # We're only checking that we can read this item as validation
