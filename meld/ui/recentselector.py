@@ -22,6 +22,8 @@ from meld.recent import get_recent_comparisons
 class RecentListModelEntry(GObject.Object):
     """An entry in the recent list model derived from a Gtk.RecentInfo"""
 
+    __gtype_name__ = "RecentListModelEntry"
+
     display_name = GObject.Property(type=str, default="")
     uri = GObject.Property(type=str, default="")
 
@@ -46,24 +48,10 @@ class RecentSelector(Gtk.Grid):
     recent_chooser = Gtk.Template.Child()
     search_entry = Gtk.Template.Child()
     open_button = Gtk.Template.Child()
-
-    model: Gio.ListStore
-    model_filter: Gtk.StringFilter
-    filter_model: Gtk.FilterListModel
+    model: Gio.ListStore = Gtk.Template.Child()
+    filter_model: Gtk.FilterListModel = Gtk.Template.Child()
 
     def do_realize(self):
-        self.model = Gio.ListStore()
-        self.model_filter = Gtk.StringFilter(
-            expression=Gtk.PropertyExpression.new(
-                RecentListModelEntry, None, "display_name"
-            )
-        )
-        self.search_entry.bind_property("text", self.model_filter, "search")
-        self.filter_model = Gtk.FilterListModel(
-            filter=self.model_filter,
-            model=self.model,
-        )
-
         self.recent_manager = Gtk.RecentManager.get_default()
         self.recent_manager.connect("changed", self.update_model)
         self.update_model()

@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk" version="4.0"/>
+  <object class="GListStore" id="model">
+    <property name="item-type">RecentListModelEntry</property>
+  </object>
+  <object class="GtkStringFilter" id="model_filter">
+    <property name="expression">
+      <lookup name="display_name" type="RecentListModelEntry"/>
+    </property>
+    <binding name="search">
+      <lookup name="text">search_entry</lookup>
+    </binding>
+  </object>
+  <object class="GtkFilterListModel" id="filter_model">
+    <property name="model">model</property>
+    <property name="filter">model_filter</property>
+  </object>
   <template class="RecentSelector" parent="GtkGrid">
     <property name="margin_start">6</property>
     <property name="margin_top">6</property>
