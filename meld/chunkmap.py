@@ -185,7 +185,7 @@ class ChunkMap(Gtk.DrawingArea):
                 Gdk.cairo_set_source_rgba(cache_ctx, self.line_colors[tag])
                 cache_ctx.stroke()
 
-            cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
+            cache_ctx.rectangle(x0, 0.5, x1, height_scale - 1)
             Gdk.cairo_set_source_rgba(cache_ctx, base_outline)
             cache_ctx.stroke()
 

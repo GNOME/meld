@@ -388,7 +388,6 @@
         </child>
         <child>
           <object class="GtkLabel" id="dummy_statusbar0">
-            <property name="visible">1</property>
             <style>
               <class name="meld-status-bar"/>
             </style>
@@ -412,7 +411,6 @@
         </child>
         <child>
           <object class="GtkLabel" id="dummy_statusbar1">
-            <property name="visible">1</property>
             <style>
               <class name="meld-status-bar"/>
             </style>
@@ -532,15 +530,10 @@
         </child>
         <child>
           <object class="GtkRevealer" id="toolbar_sourcemap_revealer">
-            <property name="visible">0</property>
             <property name="reveal-child">True</property>
             <property name="transition-type">slide-right</property>
             <property name="child">
-              <object class="GtkActionBar" id="dummy_toolbar_sourcemap">
-                <style>
-                  <class name="meld-actionbar"/>
-                </style>
-              </object>
+              <object class="GtkActionBar" id="dummy_toolbar_sourcemap" />
             </property>
             <layout>
               <property name="column">9</property>
@@ -623,16 +616,10 @@
         </child>
         <child>
           <object class="GtkRevealer" id="statusbar_sourcemap_revealer">
-            <property name="visible">0</property>
             <property name="reveal-child">True</property>
             <property name="transition-type">slide-right</property>
             <property name="child">
-              <object class="GtkLabel" id="dummy_statusbar_sourcemap">
-                <property name="visible">1</property>
-                <style>
-                  <class name="meld-status-bar"/>
-                </style>
-              </object>
+              <object class="GtkLabel" id="dummy_statusbar_sourcemap" />
             </property>
             <layout>
               <property name="column">9</property>
