@@ -385,16 +385,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 continue
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
-                it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
                 ypos = self.get_y_for_line_num(syncline)
-                ypos, line_height = self.get_line_yrange(it)
                 rect.init(x, ypos - 0.5, width, 1)
-                syncpoint = self.syncpoint_color
+                color = self.syncpoint_color
                 rounded_rect.init_from_rect(rect, 0.0)
                 snapshot.append_border(
                     rounded_rect,
                     [1.0, 1.0, 1.0, 1.0],
-                    [syncpoint, syncpoint, syncpoint, syncpoint],
+                    [color, color, color, color],
                 )
 
         # Overdraw all animated chunks, and update animation states
