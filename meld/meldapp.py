@@ -117,15 +117,20 @@ class MeldApp(Adw.Application):
 
     def about_callback(self, action, parameter):
         if meld.conf.DATADIR_IS_UNINSTALLED:
-            version = None
+            dialog = Adw.AboutDialog(
+                application_icon="org.gnome.Meld",
+                application_name="Meld",
+                website="https://meld.app/",
+                issue_url="https://gitlab.gnome.org/GNOME/meld/issues",
+                license_type=Gtk.License.GPL_2_0,
+            )
         else:
-            version = meld.conf.__version__
-        dialog = Adw.AboutDialog.new_from_appdata(
-            "/org/gnome/meld/org.gnome.Meld.metainfo.xml", version
-        )
+            dialog = Adw.AboutDialog.new_from_appdata(
+                "/org/gnome/meld/org.gnome.Meld.metainfo.xml", meld.conf.__version__
+            )
         dialog.set_copyright(
             "Copyright © 2002-2009 Stephen Kennedy\n"
-            "Copyright © 2009-2025 Kai Willadsen"
+            "Copyright © 2009-2026 Kai Willadsen"
         )
         dialog.set_developers(["Kai Willadsen", "Stephen Kennedy", "Vincent Legoll"])
         dialog.set_artists(["GNOME Project", "Josef Vybíral"])
