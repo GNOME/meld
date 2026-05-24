@@ -2606,16 +2606,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.textview[src].add_fading_highlight(
             mark0, mark1, 'conflict', 500000)
 
-    @with_focused_pane
-    def add_sync_point(self, pane, *args):
-        self.syncpoints.add(pane, self.textbuffer[pane])
-        self.refresh_sync_points()
-
-    @with_focused_pane
-    def remove_sync_point(self, pane, *args):
-        self.syncpoints.remove(pane, self.textbuffer[pane])
-        self.refresh_sync_points()
-
     def refresh_sync_points(self):
         def make_line_retriever(pane, marks):
             buf = self.textbuffer[pane]
@@ -2656,10 +2646,19 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.refresh_comparison()
 
+    @with_focused_pane
+    def add_sync_point(self, pane, *args):
+        self.syncpoints.add(pane, self.textbuffer[pane])
+        self.refresh_sync_points()
+
+    @with_focused_pane
+    def remove_sync_point(self, pane, *args):
+        self.syncpoints.remove(pane, self.textbuffer[pane])
+        self.refresh_sync_points()
+
     def clear_sync_points(self, *args):
         self.syncpoints.clear()
-        self.linediffer.syncpoints = []
-        self.refresh_comparison()
+        self.refresh_sync_points()
 
     def action_swap(self, *args):
         buffers = self.textbuffer[:self.num_panes]
