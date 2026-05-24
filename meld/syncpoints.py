@@ -91,13 +91,17 @@ class Syncpoints:
         assert pane_state != PaneState.SHORT
 
         if pane_state == PaneState.MATCHED:
+            for mark in target_sp:
+                mark.get_buffer().delete_mark(mark)
             self._points.remove(target_sp)
         elif pane_state == PaneState.DANGLING:
             self._clear_dangling_slot(pane_idx)
 
-        # TODO: This should also delete the marks
-
     def clear(self):
+        for sp in self._points:
+            for mark in sp:
+                if mark is not None:
+                    mark.get_buffer().delete_mark(mark)
         self._points = []
 
     def valid_points(self):
@@ -120,7 +124,9 @@ class Syncpoints:
 
     def _clear_dangling_slot(self, pane_idx: int):
         for sp in self._points:
-            if sp[pane_idx] is not None and None in sp:
+            mark = sp[pane_idx]
+            if mark is not None and None in sp:
+                mark.get_buffer().delete_mark(mark)
                 sp[pane_idx] = None
                 if all(m is None for m in sp):
                     self._points.remove(sp)
