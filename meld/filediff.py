@@ -2645,8 +2645,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         elif not valid_points:
             self.linediffer.syncpoints = []
 
-        if valid_points:
-            for mgr in self.msgarea_mgr:
+        for mgr in self.msgarea_mgr:
+            if valid_points:
                 mgr.new_from_text_and_icon(
                     _("Live comparison updating disabled"),
                     _("Live updating of comparisons is disabled when "
@@ -2655,15 +2655,14 @@ class FileDiff(Gtk.Box, MeldDoc):
                       "resume when synchronization points are cleared."),
                 )
                 mgr.set_msg_id(FileDiff.MSG_SYNCPOINTS)
+            elif mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
+                mgr.clear()
 
         self.refresh_comparison()
 
     def clear_sync_points(self, *args):
         self.syncpoints.clear()
         self.linediffer.syncpoints = []
-        for mgr in self.msgarea_mgr:
-            if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
-                mgr.clear()
         self.refresh_comparison()
 
     def action_swap(self, *args):
