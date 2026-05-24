@@ -49,7 +49,6 @@ from meld.meldbuffer import (
     MeldBufferState,
 )
 from meld.melddoc import ComparisonState, MeldDoc
-from meld.menuhelpers import replace_menu_section
 from meld.misc import get_modal_parent, user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.settings import bind_settings, get_meld_settings
@@ -329,6 +328,9 @@ class FileDiff(Gtk.Box, MeldDoc):
         # Manually handle GAction additions
         actions = (
             ('add-sync-point', self.add_sync_point),
+            # Move and match duplicate add-sync-point for labeling reasons
+            ('move-sync-point', self.add_sync_point),
+            ('match-sync-point', self.add_sync_point),
             ('remove-sync-point', self.remove_sync_point),
             ('clear-sync-point', self.clear_sync_points),
             ('copy', self.action_copy),
@@ -385,11 +387,6 @@ class FileDiff(Gtk.Box, MeldDoc):
             if callback:
                 action.connect("change-state", callback)
             self.view_action_group.add_action(action)
-
-        # TODO4: Remove if we change syncpoint construction
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/filediff-menus.ui')
-        self.popup_menu_model = builder.get_object('filediff-context-menu')
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/filediff-actions.ui')
@@ -1478,59 +1475,15 @@ class FileDiff(Gtk.Box, MeldDoc):
         gesture.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def set_syncpoint_menuitem(self, pane):
-        # TODO4: This either needs to be change to alter the correct popover
-        # menu, or possibly it would be cleaner to always add the necessary
-        # syncpoint actions to filediff-menus.ui, use the hidden-when
-        # attribute, and change this function to correctly set the
-        # sensitivity (and call it from a different place).
-
-        menu_actions = {
-            SyncpointAction.ADD: [
-                _("Add Synchronization Point"),
-                "view.add-sync-point"
-            ],
-            SyncpointAction.DELETE: [
-                _("Remove Synchronization Point"),
-                "view.remove-sync-point"
-            ],
-            SyncpointAction.MOVE: [
-                _("Move Synchronization Point"),
-                "view.add-sync-point"
-            ],
-            SyncpointAction.MATCH: [
-                _("Match Synchronization Point"),
-                "view.add-sync-point"
-            ],
-            SyncpointAction.DISABLED: [
-                _("Add Synchronization Point"),
-                "view.add-sync-point"
-            ],
-        }
 
         def get_mark():
             return self.textbuffer[pane].get_insert()
 
-        action = self.syncpoints.action(pane, get_mark)
-
-        self.set_action_enabled(
-            "add-sync-point",
-            action != SyncpointAction.DISABLED
-        )
-
-        label, action_id = menu_actions[action]
-
-        syncpoint_menu = Gio.Menu()
-        syncpoint_menu.append(label=label, detailed_action=action_id)
-        syncpoint_menu.append(
-            label=_("Clear Synchronization Points"),
-            detailed_action='view.clear-sync-point',
-        )
-        section = Gio.MenuItem.new_section(None, syncpoint_menu)
-        section.set_attribute([("id", "s", "syncpoint-section")])
-        replace_menu_section(self.popup_menu_model, section)
-
-        self.popup_menu = Gtk.PopoverMenu.new_from_model(self.popup_menu_model)
-        self.popup_menu.set_parent(self)
+        current_action = self.syncpoints.action(pane, get_mark)
+        for action in SyncpointAction:
+            if action == SyncpointAction.DISABLED:
+                continue
+            self.set_action_enabled(action.value, action == current_action)
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -2760,16 +2713,16 @@ FileDiff.set_css_name('meld-file-diff')
 
 class SyncpointAction(Enum):
     # A dangling syncpoint can be moved to the line
-    MOVE = "move"
+    MOVE = "move-sync-point"
     # A dangling syncpoint sits can be remove from this line
-    DELETE = "delete"
+    DELETE = "remove-sync-point"
     # A syncpoint can be added to this line to match existing ones
     # in other panes
-    MATCH = "match"
+    MATCH = "match-sync-point"
     # A new, dangling syncpoint can be added to this line
-    ADD = "add"
+    ADD = "add-sync-point"
     # No syncpoint-related action can be taken on this line
-    DISABLED = "disabled"
+    DISABLED = "disabled-sync-point"
 
 
 class Syncpoints:
