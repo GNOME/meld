@@ -2656,7 +2656,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         if valid_points:
             for mgr in self.msgarea_mgr:
-                msgarea = mgr.new_from_text_and_icon(
+                mgr.new_from_text_and_icon(
                     _("Live comparison updating disabled"),
                     _("Live updating of comparisons is disabled when "
                       "synchronization points are active. You can still "
@@ -2664,7 +2664,6 @@ class FileDiff(Gtk.Box, MeldDoc):
                       "resume when synchronization points are cleared."),
                 )
                 mgr.set_msg_id(FileDiff.MSG_SYNCPOINTS)
-                msgarea.show_all()
 
         self.refresh_comparison()
 

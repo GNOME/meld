@@ -1160,7 +1160,6 @@ class DirDiff(Gtk.Box, MeldDoc):
                 for p in range(self.num_panes):
                     self.msgarea_mgr[p].clear()
             msgarea.connect("response", clear_all)
-            msgarea.show_all()
 
     def _show_tree_wide_errors(
         self, invalid_filenames, shadowed_entries, whitespace_filenames
