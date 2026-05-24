@@ -53,6 +53,7 @@ from meld.misc import get_modal_parent, user_critical, with_focused_pane
 from meld.patchdialog import PatchDialog
 from meld.settings import bind_settings, get_meld_settings
 from meld.sourceview import (
+    SYNCPOINT_MARK_CATEGORY,
     LanguageManager,
     TextviewLineAnimationType,
     get_custom_encoding_candidates,
@@ -2611,14 +2612,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     @with_focused_pane
     def add_sync_point(self, pane, *args):
-        cursor_it = self.textbuffer[pane].get_iter_at_mark(
-            self.textbuffer[pane].get_insert())
-
-        self.syncpoints.add(
-            pane,
-            self.textbuffer[pane].create_mark(None, cursor_it)
-        )
-
+        self.syncpoints.add(pane, self.textbuffer[pane])
         self.refresh_sync_points()
 
     @with_focused_pane
@@ -2627,9 +2621,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.refresh_sync_points()
 
     def refresh_sync_points(self):
-        for i, t in enumerate(self.textview[:self.num_panes]):
-            t.syncpoints = self.syncpoints.points(i)
-
         def make_line_retriever(pane, marks):
             buf = self.textbuffer[pane]
             mark = marks[pane]
@@ -2670,8 +2661,6 @@ class FileDiff(Gtk.Box, MeldDoc):
     def clear_sync_points(self, *args):
         self.syncpoints.clear()
         self.linediffer.syncpoints = []
-        for t in self.textview:
-            t.syncpoints = []
         for mgr in self.msgarea_mgr:
             if mgr.get_msg_id() == FileDiff.MSG_SYNCPOINTS:
                 mgr.clear()
@@ -2730,13 +2719,18 @@ class Syncpoints:
         self._points = [[] for _i in range(0, num_panes)]
         self._comparator = comparator
 
-    def add(self, pane_idx: int, point):
+    def add(self, pane_idx: int, buf: GtkSource.Buffer):
         pane_state = self._pane_state(pane_idx)
 
+        cursor_it = buf.get_iter_at_mark(buf.get_insert())
+        mark = buf.create_source_mark(None, SYNCPOINT_MARK_CATEGORY, cursor_it)
+
         if pane_state == self.PaneState.DANGLING:
+            # TODO: This is a move action; we should make it a real move action
+            # by moving the mark instead of leaving orphan marks around
             self._points[pane_idx].pop()
 
-        self._points[pane_idx].append(point)
+        self._points[pane_idx].append(mark)
 
         lengths = set(len(p) for p in self._points)
 
@@ -2766,11 +2760,10 @@ class Syncpoints:
         elif pane_state == self.PaneState.DANGLING:
             self._points[pane_idx].pop()
 
+        # TODO: This should also delete the marks
+
     def clear(self):
         self._points = [[] for _i in range(0, self._num_panes)]
-
-    def points(self, pane_idx: int):
-        return self._points[pane_idx].copy()
 
     def valid_points(self):
         num_matched = min(len(p) for p in self._points)

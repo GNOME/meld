@@ -30,6 +30,7 @@ CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
 SHIFT_MASK = Gdk.ModifierType.SHIFT_MASK
 ALT_MASK = Gdk.ModifierType.ALT_MASK
 
+SYNCPOINT_MARK_CATEGORY = "syncpoint"
 
 def get_custom_encoding_candidates():
     custom_candidates = []
@@ -172,7 +173,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         self.anim_source_id = None
         self.animating_chunks = []
-        self.syncpoints = []
         self._show_line_numbers = None
 
         self.context_menu = None
@@ -184,6 +184,11 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         inline_tag.props.draw_spaces = True
         buf.get_tag_table().add(inline_tag)
         buf.create_tag("dimmed")
+        # Create a syncpoint mark to enable iteration workaround for pygobject
+        # marshalling issue with GtkSourceBuffer
+        self.syncpoint_mark = buf.create_source_mark(
+            None, SYNCPOINT_MARK_CATEGORY, buf.get_start_iter()
+        )
         self.set_buffer(buf)
         self.connect('notify::overscroll-num-lines', self.notify_overscroll)
 
@@ -380,9 +385,8 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             snapshot.append_color(highlight, rect)
 
         # Draw syncpoint indicator lines
-        for syncpoint in self.syncpoints:
-            if syncpoint is None:
-                continue
+        syncpoint = self.syncpoint_mark.next()
+        while syncpoint:
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
                 ypos = self.get_y_for_line_num(syncline)
@@ -394,6 +398,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                     [1.0, 1.0, 1.0, 1.0],
                     [color, color, color, color],
                 )
+            syncpoint = syncpoint.next()
 
         # Overdraw all animated chunks, and update animation states
         new_anim_chunks = []
