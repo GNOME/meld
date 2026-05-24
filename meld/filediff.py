@@ -2798,38 +2798,24 @@ class Syncpoints:
 
     def action(self, pane_idx: int, get_mark):
         state = self._pane_state(pane_idx)
-
-        if state == self.PaneState.SHORT:
-            return SyncpointAction.MATCH
-
         target = self._comparator(pane_idx, get_mark())
-
         points = self._points[pane_idx]
-
-        if state == self.PaneState.MATCHED:
-            is_syncpoint = any(
-                self._comparator(pane_idx, point) == target
-                for point in points
-            )
-
-            if is_syncpoint:
-                return SyncpointAction.DELETE
-            else:
-                return SyncpointAction.ADD
-
-        # state == DANGLING
-        if target == self._comparator(pane_idx, points[-1]):
-            return SyncpointAction.DELETE
-
         is_syncpoint = any(
             self._comparator(pane_idx, point) == target
             for point in points
         )
 
-        if is_syncpoint:
-            return SyncpointAction.DISABLED
-        else:
-            return SyncpointAction.MOVE
+        match state:
+            case self.PaneState.SHORT:
+                return SyncpointAction.MATCH
+            case self.PaneState.MATCHED:
+                return SyncpointAction.DELETE if is_syncpoint else SyncpointAction.ADD
+            case self.PaneState.DANGLING:
+                if target == self._comparator(pane_idx, points[-1]):
+                    return SyncpointAction.DELETE
+                return (
+                    SyncpointAction.DISABLED if is_syncpoint else SyncpointAction.MOVE
+                )
 
     class PaneState(Enum):
         # The state of a pane with all its syncpoints matched
