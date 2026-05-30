@@ -293,7 +293,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.linediffer = self.differ()
         self.force_highlight = False
 
-        self.syncpoints = Syncpoints(num_panes)
+        self.syncpoints = Syncpoints(self.textbuffer[:num_panes])
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher(self.scheduler)
 
@@ -325,8 +325,8 @@ class FileDiff(Gtk.Box, MeldDoc):
         # Manually handle GAction additions
         actions = (
             ('add-sync-point', self.add_sync_point),
-            # Move and match duplicate add-sync-point for labeling reasons
-            ('move-sync-point', self.add_sync_point),
+            ('move-sync-point', self.move_sync_point),
+            # Match duplicates add-sync-point for labeling reasons
             ('match-sync-point', self.add_sync_point),
             ('remove-sync-point', self.remove_sync_point),
             ('clear-sync-point', self.clear_sync_points),
@@ -1472,11 +1472,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         gesture.set_state(Gtk.EventSequenceState.CLAIMED)
 
     def set_syncpoint_menuitem(self, pane):
-
-        def get_mark():
-            return self.textbuffer[pane].get_insert()
-
-        current_action = self.syncpoints.action(pane, get_mark)
+        current_action = self.syncpoints.action(self.textbuffer[pane])
         for action in SyncpointAction:
             if action == SyncpointAction.DISABLED:
                 continue
@@ -2648,12 +2644,17 @@ class FileDiff(Gtk.Box, MeldDoc):
 
     @with_focused_pane
     def add_sync_point(self, pane, *args):
-        self.syncpoints.add(pane, self.textbuffer[pane])
+        self.syncpoints.add(self.textbuffer[pane])
+        self.refresh_sync_points()
+
+    @with_focused_pane
+    def move_sync_point(self, pane, *args):
+        self.syncpoints.move(self.textbuffer[pane])
         self.refresh_sync_points()
 
     @with_focused_pane
     def remove_sync_point(self, pane, *args):
-        self.syncpoints.remove(pane, self.textbuffer[pane])
+        self.syncpoints.remove(self.textbuffer[pane])
         self.refresh_sync_points()
 
     def clear_sync_points(self, *args):

@@ -31,6 +31,7 @@ SHIFT_MASK = Gdk.ModifierType.SHIFT_MASK
 ALT_MASK = Gdk.ModifierType.ALT_MASK
 
 SYNCPOINT_MARK_CATEGORY = "syncpoint"
+SYNCPOINT_SENTINEL = "meld-syncpoint-sentinel"
 
 def get_custom_encoding_candidates():
     custom_candidates = []
@@ -187,7 +188,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # Create a syncpoint mark to enable iteration workaround for pygobject
         # marshalling issue with GtkSourceBuffer
         self.syncpoint_mark = buf.create_source_mark(
-            None, SYNCPOINT_MARK_CATEGORY, buf.get_start_iter()
+            SYNCPOINT_SENTINEL, SYNCPOINT_MARK_CATEGORY, buf.get_start_iter()
         )
         self.set_buffer(buf)
         self.connect('notify::overscroll-num-lines', self.notify_overscroll)

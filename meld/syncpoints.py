@@ -1,9 +1,9 @@
 import logging
 from enum import Enum
 
-from gi.repository import GtkSource
+from gi.repository import Gtk, GtkSource
 
-from meld.sourceview import SYNCPOINT_MARK_CATEGORY
+from meld.sourceview import SYNCPOINT_MARK_CATEGORY, SYNCPOINT_SENTINEL
 
 log = logging.getLogger(__name__)
 
@@ -34,135 +34,110 @@ class PaneState(Enum):
 
 
 class Syncpoints:
-    # Each syncpoint is a list of length num_panes, holding one mark per
-    # pane (or None for a pane that hasn't contributed a matching mark yet).
-    SyncPoint = list[GtkSource.Mark | None]
+    def __init__(self, buffers: list[GtkSource.Buffer]):
+        self._buffers = list(buffers)
+        # Most recent calculated set of pairings (a tuple of marks being a
+        # syncpoint). These are recalculated only when all panes have the
+        # same number of syncpoints.
+        self._cached_points: list[tuple[GtkSource.Mark, ...]] = []
+        self._pane_states: list[PaneState] = [PaneState.MATCHED] * len(self._buffers)
 
-    def __init__(self, num_panes: int):
-        self._num_panes = num_panes
-        self._points: list[Syncpoints.SyncPoint] = []
+        for buf in self._buffers:
+            buf.connect("source-mark-updated", self._on_source_mark_updated)
+        self._update_syncpoint_state()
 
-    def get_mark_line(self, mark):
-        return mark.get_buffer().get_iter_at_mark(mark).get_line()
+    def _pane_marks(self, buf: GtkSource.Buffer) -> list[GtkSource.Mark]:
+        marks: list[GtkSource.Mark] = []
+        mark = buf.get_mark(SYNCPOINT_SENTINEL).next(SYNCPOINT_MARK_CATEGORY)
+        while mark is not None:
+            marks.append(mark)
+            mark = mark.next(SYNCPOINT_MARK_CATEGORY)
+        return marks
 
-    def add(self, pane_idx: int, buf: GtkSource.Buffer):
-        pane_state = self._pane_state(pane_idx)
-
-        # Create a new source mark at the start of the cursor line
-        current_line = buf.get_iter_at_mark(buf.get_insert())
-        current_line.set_line_offset(0)
-        mark = buf.create_source_mark(None, SYNCPOINT_MARK_CATEGORY, current_line)
-
-        if pane_state == PaneState.DANGLING:
-            # TODO: This is a move action; we should make it a real move action
-            # by moving the mark instead of leaving orphan marks around
-            self._clear_dangling_slot(pane_idx)
-
-        for sp in self._points:
-            if sp[pane_idx] is None:
-                sp[pane_idx] = mark
+    def _update_syncpoint_state(self):
+        # Walk syncpoint marks in all panes in lockstep, stopping whenever any
+        # pane runs out of syncpoint marks
+        syncpoint = [b.get_mark(SYNCPOINT_SENTINEL) for b in self._buffers]
+        paired = []
+        while True:
+            next_syncpoint = [m.next(SYNCPOINT_MARK_CATEGORY) for m in syncpoint]
+            if not all(next_syncpoint):
                 break
+            paired.append(tuple(next_syncpoint))
+            syncpoint = next_syncpoint
+
+        if all(m is None for m in next_syncpoint):
+            # Every pane ran out on the same step, so we have a matched state
+            # and will use the list of syncpoints we've built
+            self._pane_states = [PaneState.MATCHED] * len(next_syncpoint)
+            self._cached_points = paired
         else:
-            new_sp: Syncpoints.SyncPoint = [None] * self._num_panes
-            new_sp[pane_idx] = mark
-            self._points.append(new_sp)
+            # Exhausted panes are SHORT, the rest are DANGLING
+            self._pane_states = [
+                PaneState.SHORT if m is None else PaneState.DANGLING
+                for m in next_syncpoint
+            ]
 
-        if all(None not in sp for sp in self._points):
-            self._resort()
+    def _on_source_mark_updated(self, buf, mark):
+        if mark.get_category() != SYNCPOINT_MARK_CATEGORY:
+            return
+        self._update_syncpoint_state()
 
-    def remove(self, pane_idx: int, buf: GtkSource.Buffer):
-        current_line = buf.get_iter_at_mark(buf.get_insert())
-        current_line.set_line_offset(0)
-        sync_marks = buf.get_source_marks_at_iter(current_line, SYNCPOINT_MARK_CATEGORY)
-        if not sync_marks:
+    def _get_sync_cursor(self, buf: GtkSource.Buffer) -> Gtk.TextIter:
+        cursor_it = buf.get_iter_at_mark(buf.get_insert())
+        cursor_it.set_line_offset(0)
+        return cursor_it
+
+    def _mark_at_cursor(self, buf: GtkSource.Buffer) -> GtkSource.Mark | None:
+        cursor = self._get_sync_cursor(buf)
+        sentinel = buf.get_mark(SYNCPOINT_SENTINEL)
+        for m in buf.get_source_marks_at_iter(cursor, SYNCPOINT_MARK_CATEGORY):
+            if m is not sentinel:
+                return m
+        return None
+
+    def add(self, buf: GtkSource.Buffer):
+        cursor = self._get_sync_cursor(buf)
+        buf.create_source_mark(None, SYNCPOINT_MARK_CATEGORY, cursor)
+
+    def move(self, buf: GtkSource.Buffer):
+        # Move an unmatched mark (i.e., mark not part of a valid pairing) to the cursor
+        pane = self._buffers.index(buf)
+        matched = {syncpoint[pane] for syncpoint in self._cached_points}
+        unmatched = [mark for mark in self._pane_marks(buf) if mark not in matched]
+        if not unmatched:
+            log.warning("No unmatched syncpoint found to move")
+            return
+        buf.move_mark(unmatched[0], self._get_sync_cursor(buf))
+
+    def remove(self, buf: GtkSource.Buffer):
+        mark = self._mark_at_cursor(buf)
+        if mark is None:
             log.warning("No syncpoint mark found when removing syncpoint")
             return
-
-        target_sp = None
-        for sp in self._points:
-            if sp[pane_idx] == sync_marks[0]:
-                target_sp = sp
-                break
-
-        assert target_sp is not None
-
-        pane_state = self._pane_state(pane_idx)
-
-        assert pane_state != PaneState.SHORT
-
-        if pane_state == PaneState.MATCHED:
-            for mark in target_sp:
-                mark.get_buffer().delete_mark(mark)
-            self._points.remove(target_sp)
-        elif pane_state == PaneState.DANGLING:
-            self._clear_dangling_slot(pane_idx)
+        buf.delete_mark(mark)
 
     def clear(self):
-        for sp in self._points:
-            for mark in sp:
-                if mark is not None:
-                    mark.get_buffer().delete_mark(mark)
-        self._points = []
+        for buf in self._buffers:
+            for mark in self._pane_marks(buf):
+                buf.delete_mark(mark)
 
     def valid_points(self):
-        return [tuple(sp) for sp in self._points if None not in sp]
+        return list(self._cached_points)
 
-    def _pane_count(self, pane_idx: int) -> int:
-        return sum(1 for sp in self._points if sp[pane_idx] is not None)
-
-    def _pane_state(self, pane_idx: int):
-        counts = [self._pane_count(i) for i in range(self._num_panes)]
-        lengths = set(counts)
-
-        if len(lengths) == 1:
-            return PaneState.MATCHED
-
-        if counts[pane_idx] == min(lengths):
-            return PaneState.SHORT
-        else:
-            return PaneState.DANGLING
-
-    def _clear_dangling_slot(self, pane_idx: int):
-        for sp in self._points:
-            mark = sp[pane_idx]
-            if mark is not None and None in sp:
-                mark.get_buffer().delete_mark(mark)
-                sp[pane_idx] = None
-                if all(m is None for m in sp):
-                    self._points.remove(sp)
-                return
-
-    def _resort(self):
-        per_pane = [
-            sorted(
-                (sp[i] for sp in self._points if sp[i] is not None),
-                key=self.get_mark_line,
-            )
-            for i in range(self._num_panes)
-        ]
-        n = len(per_pane[0]) if per_pane else 0
-        self._points = [
-            [per_pane[i][j] for i in range(self._num_panes)]
-            for j in range(n)
-        ]
-
-    def action(self, pane_idx: int, get_mark):
-        state = self._pane_state(pane_idx)
-        target = self.get_mark_line(get_mark())
-
-        marks = [sp[pane_idx] for sp in self._points if sp[pane_idx] is not None]
-        is_syncpoint = any(
-            self.get_mark_line(mark) == target for mark in marks
-        )
+    def action(self, buf: GtkSource.Buffer) -> SyncpointAction:
+        pane = self._buffers.index(buf)
+        state = self._pane_states[pane]
+        mark = self._mark_at_cursor(buf)
 
         match state:
             case PaneState.SHORT:
-                return SyncpointAction.MATCH
+                return SyncpointAction.DISABLED if mark else SyncpointAction.MATCH
             case PaneState.MATCHED:
-                return SyncpointAction.DELETE if is_syncpoint else SyncpointAction.ADD
+                return SyncpointAction.DELETE if mark else SyncpointAction.ADD
             case PaneState.DANGLING:
-                if target == self.get_mark_line(marks[-1]):
-                    return SyncpointAction.DELETE
-                return (
-                    SyncpointAction.DISABLED if is_syncpoint else SyncpointAction.MOVE
-                )
+                if mark is None:
+                    return SyncpointAction.MOVE
+                if mark in {sp[pane] for sp in self._cached_points}:
+                    return SyncpointAction.DISABLED
+                return SyncpointAction.DELETE
