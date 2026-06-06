@@ -16,12 +16,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-from typing import Mapping, Optional, Tuple
+from typing import Mapping, Tuple
 
-from gi.repository import Gdk, Gtk, GtkSource, Pango
+from gi.repository import Adw, Gdk, Gtk, GtkSource, Pango
 
 from meld.conf import _
 from meld.settings import get_meld_settings
+
+style_scheme: GtkSource.StyleScheme | None = None
+base_style_scheme: GtkSource.StyleScheme | None = None
 
 
 class MeldStyleScheme(enum.Enum):
@@ -29,18 +32,26 @@ class MeldStyleScheme(enum.Enum):
     dark = "meld-dark"
 
 
-style_scheme: Optional[GtkSource.StyleScheme] = None
-base_style_scheme: Optional[GtkSource.StyleScheme] = None
+def adapt_style_scheme(style_scheme: GtkSource.StyleScheme) -> GtkSource.StyleScheme:
+    adw_manager = Adw.StyleManager.get_default()
+
+    desired_variant = "dark" if adw_manager.get_dark() else "light"
+    variant = style_scheme.get_metadata("variant")
+    other_variant = style_scheme.get_metadata(f"{desired_variant}-variant")
+    # If we have no variant data, or the variant matches, use the scheme
+    if not variant or variant == desired_variant or not other_variant:
+        return style_scheme
+
+    source_manager = GtkSource.StyleSchemeManager.get_default()
+    variant_scheme = source_manager.get_scheme(other_variant)
+    return variant_scheme or style_scheme
 
 
-def set_base_style_scheme(
-    new_style_scheme: GtkSource.StyleScheme,
-) -> GtkSource.StyleScheme:
-
-    global base_style_scheme
-    global style_scheme
-
-    style_scheme = new_style_scheme
+def should_use_dark(style_scheme: GtkSource.StyleScheme) -> bool:
+    # If the style scheme has variant metadata, we will trust that
+    variant = style_scheme.get_metadata("variant")
+    if variant:
+        return variant == "dark"
 
     # Get our text background colour by checking the 'text' style of
     # the user's selected style scheme, falling back to the GTK+ theme
@@ -62,7 +73,17 @@ def set_base_style_scheme(
 
     # This heuristic is absolutely dire. I made it up. There's
     # literally no basis to this.
-    use_dark = (rgba.red + rgba.green + rgba.blue) < 1.0
+    return (rgba.red + rgba.green + rgba.blue) < 1.0
+
+
+def set_base_style_scheme(
+    new_style_scheme: GtkSource.StyleScheme
+) -> GtkSource.StyleScheme:
+    global base_style_scheme
+    global style_scheme
+
+    style_scheme = new_style_scheme
+    use_dark = should_use_dark(style_scheme)
 
     manager = GtkSource.StyleSchemeManager.get_default()
     base_scheme_name = MeldStyleScheme.dark if use_dark else MeldStyleScheme.base

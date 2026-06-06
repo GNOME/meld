@@ -72,10 +72,11 @@ class MeldSettings(GObject.GObject):
             self.on_setting_changed(settings, "use-system-font")
 
     def _style_scheme_from_gsettings(self):
-        from meld.style import set_base_style_scheme
+        from meld.style import adapt_style_scheme, set_base_style_scheme
 
         manager = GtkSource.StyleSchemeManager.get_default()
         scheme = manager.get_scheme(settings.get_string('style-scheme'))
+        scheme = adapt_style_scheme(scheme)
         set_base_style_scheme(scheme)
         return scheme
 
