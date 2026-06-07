@@ -22,6 +22,7 @@ from gi.repository import Adw, Gio, GLib, GObject, Gtk, GtkSource
 from meld.conf import _
 from meld.filters import FilterEntry
 from meld.settings import settings
+from meld.ui.columnlist import ColumnList
 from meld.ui.listwidget import EditableListWidget
 
 
@@ -117,83 +118,6 @@ class FilterList(Gtk.Box, EditableListWidget):
     def _update_filter_string(self, *args):
         value = [(row[0], row[1], row[2]) for row in self.model]
         settings.set_value(self.settings_key, GLib.Variant('a(sbs)', value))
-
-
-@Gtk.Template(resource_path='/org/gnome/meld/ui/column-list.ui')
-class ColumnList(Gtk.Box, EditableListWidget):
-
-    __gtype_name__ = "ColumnList"
-
-    treeview = Gtk.Template.Child()
-    remove = Gtk.Template.Child()
-    move_up = Gtk.Template.Child()
-    move_down = Gtk.Template.Child()
-
-    default_entry = [_("label"), False, _("pattern"), True]
-
-    available_columns = {
-        "size": _("Size"),
-        "modification time": _("Modification time"),
-        "iso-time": _("Modification time (ISO)"),
-        "permissions": _("Permissions"),
-    }
-
-    settings_key = GObject.Property(
-        type=str,
-        flags=(
-            GObject.ParamFlags.READABLE |
-            GObject.ParamFlags.WRITABLE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
-    )
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model = self.treeview.get_model()
-
-        # Unwrap the variant
-        prefs_columns = [
-            (k, v) for k, v in settings.get_value(self.settings_key)
-        ]
-        column_vis = {}
-        column_order = {}
-        for sort_key, (column_name, visibility) in enumerate(prefs_columns):
-            column_vis[column_name] = bool(int(visibility))
-            column_order[column_name] = sort_key
-
-        columns = [
-            (column_vis.get(name, False), name, label)
-            for name, label in self.available_columns.items()
-        ]
-        columns = sorted(
-            columns,
-            key=lambda c: column_order.get(c[1], len(self.available_columns)),
-        )
-
-        for visibility, name, label in columns:
-            self.model.append([visibility, name, label])
-
-        for signal in ('row-changed', 'row-deleted', 'row-inserted',
-                       'rows-reordered'):
-            self.model.connect(signal, self._update_columns)
-
-        self.setup_sensitivity_handling()
-
-    @Gtk.Template.Callback()
-    def on_move_up_clicked(self, button):
-        self.move_up_selected_entry()
-
-    @Gtk.Template.Callback()
-    def on_move_down_clicked(self, button):
-        self.move_down_selected_entry()
-
-    @Gtk.Template.Callback()
-    def on_cellrenderertoggle_toggled(self, ren, path):
-        self.model[path][0] = not ren.get_active()
-
-    def _update_columns(self, *args):
-        value = [(c[1].lower(), c[0]) for c in self.model]
-        settings.set_value(self.settings_key, GLib.Variant('a(sb)', value))
 
 
 class PreferenceEnum(str, enum.Enum):
