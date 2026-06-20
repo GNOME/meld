@@ -23,14 +23,12 @@ def try_compile(regex, flags=0):
     try:
         compiled = re.compile(regex, flags)
     except re.error:
-        log.warning(
-            'Error compiling regex {!r} with flags {!r}'.format(regex, flags))
+        log.warning("Error compiling regex {!r} with flags {!r}".format(regex, flags))
         compiled = None
     return compiled
 
 
 class FilterEntry:
-
     __slots__ = ("label", "active", "filter", "byte_filter", "filter_string")
 
     REGEX, SHELL = 0, 1
@@ -47,7 +45,7 @@ class FilterEntry:
         if byte_regex and not isinstance(regex, bytes):
             # TODO: Register a custom error handling function to replace
             # encoding errors with '.'?
-            regex = regex.encode('utf8', 'replace')
+            regex = regex.encode("utf8", "replace")
         return try_compile(regex, re.M)
 
     @classmethod
@@ -87,13 +85,13 @@ class FilterEntry:
         return compiled is not None
 
     def __copy__(self):
-        new = type(self)(
-            self.label, self.active, None, None, self.filter_string)
+        new = type(self)(self.label, self.active, None, None, self.filter_string)
         if self.filter is not None:
             new.filter = re.compile(self.filter.pattern, self.filter.flags)
         if self.byte_filter is not None:
             new.byte_filter = re.compile(
-                self.byte_filter.pattern, self.byte_filter.flags)
+                self.byte_filter.pattern, self.byte_filter.flags
+            )
         return new
 
 
@@ -105,11 +103,11 @@ def shell_to_regex(pat):
     """
 
     i, n = 0, len(pat)
-    res = ''
+    res = ""
     while i < n:
         c = pat[i]
         i += 1
-        if c == '\\':
+        if c == "\\":
             try:
                 c = pat[i]
             except IndexError:
@@ -117,32 +115,32 @@ def shell_to_regex(pat):
             else:
                 i += 1
                 res += re.escape(c)
-        elif c == '*':
-            res += '.*'
-        elif c == '?':
-            res += '.'
-        elif c == '[':
+        elif c == "*":
+            res += ".*"
+        elif c == "?":
+            res += "."
+        elif c == "[":
             try:
-                j = pat.index(']', i)
+                j = pat.index("]", i)
             except ValueError:
-                res += r'\['
+                res += r"\["
             else:
                 stuff = pat[i:j]
                 i = j + 1
-                if stuff[0] == '!':
-                    stuff = '^%s' % stuff[1:]
-                elif stuff[0] == '^':
-                    stuff = r'\^%s' % stuff[1:]
-                res += '[%s]' % stuff
-        elif c == '{':
+                if stuff[0] == "!":
+                    stuff = "^%s" % stuff[1:]
+                elif stuff[0] == "^":
+                    stuff = r"\^%s" % stuff[1:]
+                res += "[%s]" % stuff
+        elif c == "{":
             try:
-                j = pat.index('}', i)
+                j = pat.index("}", i)
             except ValueError:
-                res += '\\{'
+                res += "\\{"
             else:
                 stuff = pat[i:j]
                 i = j + 1
-                res += '(%s)' % "|".join(
+                res += "(%s)" % "|".join(
                     [shell_to_regex(p)[:-1] for p in stuff.split(",")]
                 )
         else:

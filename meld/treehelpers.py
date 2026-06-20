@@ -70,7 +70,6 @@ def refocus_deleted_path(model, path):
 
 
 class SearchableTreeStore(Gtk.TreeStore):
-
     def inorder_search_down(self, it):
         while it:
             child = self.iter_children(it)

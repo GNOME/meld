@@ -32,13 +32,13 @@ VC_PLUGINS = (git, mercurial, bzr, svn, darcs, cvs)
 def get_vcs(location):
     """Pick only the Vcs with the longest repo root
 
-       Some VC plugins search their repository root
-       by walking the filesystem upwards its root
-       and now that we display multiple VCs in the
-       same directory, we must filter those other
-       repositories that are located in the search
-       path towards "/" as they are not relevant
-       to the user.
+    Some VC plugins search their repository root
+    by walking the filesystem upwards its root
+    and now that we display multiple VCs in the
+    same directory, we must filter those other
+    repositories that are located in the search
+    path towards "/" as they are not relevant
+    to the user.
     """
 
     vcs = []

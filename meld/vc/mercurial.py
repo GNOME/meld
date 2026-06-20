@@ -29,7 +29,6 @@ from . import _vc
 
 
 class Vc(_vc.Vc):
-
     CMD = "hg"
     NAME = "Mercurial"
     VC_DIR = ".hg"
@@ -45,23 +44,23 @@ class Vc(_vc.Vc):
     }
 
     def commit(self, runner, files, message):
-        command = [self.CMD, 'commit', '-m', message]
+        command = [self.CMD, "commit", "-m", message]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def update(self, runner):
-        command = [self.CMD, 'pull', '-u']
+        command = [self.CMD, "pull", "-u"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def add(self, runner, files):
-        command = [self.CMD, 'add']
+        command = [self.CMD, "add"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
-        command = [self.CMD, 'rm']
+        command = [self.CMD, "rm"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
-        command = [self.CMD, 'revert']
+        command = [self.CMD, "revert"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     @classmethod
@@ -74,19 +73,18 @@ class Vc(_vc.Vc):
 
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        path = path[len(self.root) + 1:]
+        path = path[len(self.root) + 1 :]
 
         suffix = os.path.splitext(path)[1]
         args = [self.CMD, "cat", path]
         return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def _update_tree_state_cache(self, path):
-        """ Update the state of the file(s) at self._tree_cache['path'] """
+        """Update the state of the file(s) at self._tree_cache['path']"""
         while 1:
             try:
                 # Get the status of modified files
-                proc = _vc.popen([self.CMD, "status", '-A', path],
-                                 cwd=self.location)
+                proc = _vc.popen([self.CMD, "status", "-A", path], cwd=self.location)
                 entries = proc.read().split("\n")[:-1]
 
                 # The following command removes duplicate file entries.

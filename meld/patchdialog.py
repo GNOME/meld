@@ -25,9 +25,8 @@ from meld.misc import error_dialog
 from meld.sourceview import LanguageManager
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/patch-dialog.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/patch-dialog.ui")
 class PatchDialog(Gtk.Dialog):
-
     __gtype_name__ = "PatchDialog"
 
     left_radiobutton = Gtk.Template.Child("left_radiobutton")
@@ -49,8 +48,7 @@ class PatchDialog(Gtk.Dialog):
         buf.set_language(lang)
         buf.set_highlight_syntax(True)
 
-        self.index_map = {self.left_radiobutton: (0, 1),
-                          self.right_radiobutton: (1, 2)}
+        self.index_map = {self.left_radiobutton: (0, 1), self.right_radiobutton: (1, 2)}
         self.left_patch = True
         self.reverse_patch = self.reverse_checkbutton.get_active()
 
@@ -90,7 +88,7 @@ class PatchDialog(Gtk.Dialog):
             if barelines and lines and barelines[-1] == lines[-1]:
                 # Final line lacks a line-break; add in a best guess
                 if len(lines) > 1:
-                    previous_linebreak = lines[-2][len(barelines[-2]):]
+                    previous_linebreak = lines[-2][len(barelines[-2]) :]
                 else:
                     previous_linebreak = "\n"
                 lines[-1] += previous_linebreak
@@ -99,7 +97,7 @@ class PatchDialog(Gtk.Dialog):
 
         names = [self.filediff.textbuffer[i].data.label for i in range(3)]
         prefix = os.path.commonprefix(names)
-        names = [n[prefix.rfind("/") + 1:] for n in names]
+        names = [n[prefix.rfind("/") + 1 :] for n in names]
 
         buf = self.textview.get_buffer()
         text0, text1 = texts[indices[0]], texts[indices[1]]
@@ -112,8 +110,7 @@ class PatchDialog(Gtk.Dialog):
     def save_patch(self, targetfile: Gio.File):
         buf = self.textview.get_buffer()
         sourcefile = GtkSource.File.new()
-        saver = GtkSource.FileSaver.new_with_target(
-            buf, sourcefile, targetfile)
+        saver = GtkSource.FileSaver.new_with_target(buf, sourcefile, targetfile)
         saver.save_async(
             GLib.PRIORITY_HIGH,
             callback=self.file_saved_cb,
@@ -127,8 +124,8 @@ class PatchDialog(Gtk.Dialog):
             filename = GLib.markup_escape_text(gfile.get_parse_name())
             error_dialog(
                 primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn’t save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))),
+                secondary=_("Couldn’t save file due to:\n%s")
+                % (GLib.markup_escape_text(str(err))),
             )
 
     def run(self):

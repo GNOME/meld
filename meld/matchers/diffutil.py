@@ -29,7 +29,7 @@ opcode_reverse = {
     "insert": "delete",
     "delete": "insert",
     "conflict": "conflict",
-    "equal": "equal"
+    "equal": "equal",
 }
 
 
@@ -73,8 +73,7 @@ class Differ(GObject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
 
     __gsignals__ = {
-        'diffs-changed': (GObject.SignalFlags.RUN_FIRST, None,
-                          (object,)),
+        "diffs-changed": (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
     _matcher = MyersSequenceMatcher
@@ -98,9 +97,9 @@ class Differ(GObject.GObject):
 
     def _update_merge_cache(self, texts):
         if self.num_sequences == 3:
-            self._merge_cache = [c for c in self._merge_diffs(self.diffs[0],
-                                                              self.diffs[1],
-                                                              texts)]
+            self._merge_cache = [
+                c for c in self._merge_diffs(self.diffs[0], self.diffs[1], texts)
+            ]
         else:
             self._merge_cache = [(c, None) for c in self.diffs[0]]
 
@@ -108,8 +107,10 @@ class Differ(GObject.GObject):
             # We don't handle altering the chunk-type of conflicts in three-way
             # comparisons where e.g., pane 1 and 3 differ in blank lines
             for i, c in enumerate(self._merge_cache):
-                self._merge_cache[i] = (consume_blank_lines(c[0], texts, 1, 0),
-                                        consume_blank_lines(c[1], texts, 1, 2))
+                self._merge_cache[i] = (
+                    consume_blank_lines(c[0], texts, 1, 0),
+                    consume_blank_lines(c[1], texts, 1, 2),
+                )
             self._merge_cache = [x for x in self._merge_cache if any(x)]
 
         # Calculate chunks that were added (in the new but not the old merge
@@ -125,9 +126,9 @@ class Differ(GObject.GObject):
         chunk_changes = (removed_chunks, added_chunks, modified_chunks)
 
         mergeable0, mergeable1 = False, False
-        for (c0, c1) in self._merge_cache:
-            mergeable0 = mergeable0 or (c0 is not None and c0[0] != 'conflict')
-            mergeable1 = mergeable1 or (c1 is not None and c1[0] != 'conflict')
+        for c0, c1 in self._merge_cache:
+            mergeable0 = mergeable0 or (c0 is not None and c0[0] != "conflict")
+            mergeable1 = mergeable1 or (c1 is not None and c1[0] != "conflict")
             if mergeable0 and mergeable1:
                 break
         self._has_mergeable_changes = (False, mergeable0, mergeable1, False)
@@ -136,8 +137,9 @@ class Differ(GObject.GObject):
         # involve the middle pane.
         self.conflicts = []
         for i, (c1, c2) in enumerate(self._merge_cache):
-            if (c1 is not None and c1[0] == 'conflict') or \
-               (c2 is not None and c2[0] == 'conflict'):
+            if (c1 is not None and c1[0] == "conflict") or (
+                c2 is not None and c2[0] == "conflict"
+            ):
                 self.conflicts.append(i)
 
         self._update_line_cache()
@@ -173,7 +175,7 @@ class Differ(GObject.GObject):
 
         for i, c in enumerate(self._merge_cache):
             seq_params = ((0, 0, 3, 4), (0, 1, 1, 2), (1, 2, 3, 4))
-            for (diff, seq, lo, hi) in seq_params:
+            for diff, seq, lo, hi in seq_params:
                 if c[diff] is None:
                     if seq == 1:
                         diff = 1
@@ -181,7 +183,7 @@ class Differ(GObject.GObject):
                         continue
 
                 start, end, last = c[diff][lo], c[diff][hi], old_end[seq]
-                if (start > last):
+                if start > last:
                     chunk_ids = [(None, prev[seq], next[seq])] * (start - last)
                     self._line_cache[seq][last:start] = chunk_ids
 
@@ -196,7 +198,7 @@ class Differ(GObject.GObject):
 
         for seq in range(3):
             last, end = old_end[seq], len(self._line_cache[seq])
-            if (last < end):
+            if last < end:
                 chunk_ids = [(None, prev[seq], next[seq])] * (end - last)
                 self._line_cache[seq][last:end] = chunk_ids
 
@@ -223,7 +225,7 @@ class Differ(GObject.GObject):
         self._old_merge_cache = set()
         self._changed_chunks = tuple()
         chunk_changed = False
-        for (c1, c2) in self._merge_cache:
+        for c1, c2 in self._merge_cache:
             if sequence == 0:
                 if c1 and c1.start_b <= startidx < c1.end_b:
                     chunk_changed = True
@@ -308,7 +310,7 @@ class Differ(GObject.GObject):
         return len(self._merge_cache)
 
     def has_mergeable_changes(self, which):
-        return self._has_mergeable_changes[which:which + 2]
+        return self._has_mergeable_changes[which : which + 2]
 
     def _change_sequence(self, which, sequence, startidx, sizechange, texts):
         diffs = self.diffs[which]
@@ -333,19 +335,20 @@ class Differ(GObject.GObject):
         rangex = lorange[0], hirange[0] + lines_added[x]
         range1 = lorange[1], hirange[1] + lines_added[1]
         assert rangex[0] <= rangex[1] and range1[0] <= range1[1]
-        linesx = texts[x][rangex[0]:rangex[1]]
-        lines1 = texts[1][range1[0]:range1[1]]
+        linesx = texts[x][rangex[0] : rangex[1]]
+        lines1 = texts[1][range1[0] : range1[1]]
 
         def offset(c, o1, o2):
-            return DiffChunk._make((c[0], c[1] + o1, c[2] + o1,
-                                    c[3] + o2, c[4] + o2))
+            return DiffChunk._make((c[0], c[1] + o1, c[2] + o1, c[3] + o2, c[4] + o2))
 
         newdiffs = self._matcher(None, lines1, linesx).get_difference_opcodes()
         newdiffs = [offset(c, range1[0], rangex[0]) for c in newdiffs]
 
         if hiidx < len(self.diffs[which]):
-            offset_diffs = [offset(c, lines_added[1], lines_added[x])
-                            for c in self.diffs[which][hiidx:]]
+            offset_diffs = [
+                offset(c, lines_added[1], lines_added[x])
+                for c in self.diffs[which][hiidx:]
+            ]
             self.diffs[which][hiidx:] = offset_diffs
         self.diffs[which][loidx:hiidx] = newdiffs
 
@@ -365,17 +368,15 @@ class Differ(GObject.GObject):
         return iter(self._merge_cache)
 
     def pair_changes(self, fromindex, toindex, lines=(None, None, None, None)):
-        """Give all changes between file1 and either file0 or file2.
-        """
+        """Give all changes between file1 and either file0 or file2."""
         if None not in lines:
             start1, end1 = self._range_from_lines(fromindex, lines[0:2])
             start2, end2 = self._range_from_lines(toindex, lines[2:4])
-            if (start1 is None or end1 is None) and \
-               (start2 is None or end2 is None):
+            if (start1 is None or end1 is None) and (start2 is None or end2 is None):
                 return
             start = min([x for x in (start1, start2) if x is not None])
             end = max([x for x in (end1, end2) if x is not None])
-            merge_cache = self._merge_cache[start:end + 1]
+            merge_cache = self._merge_cache[start : end + 1]
         else:
             merge_cache = self._merge_cache
 
@@ -404,13 +405,12 @@ class Differ(GObject.GObject):
                     yield reverse_chunk(c[seq])
 
     def single_changes(self, textindex, lines=(None, None)):
-        """Give changes for single file only. do not return 'equal' hunks.
-        """
+        """Give changes for single file only. do not return 'equal' hunks."""
         if None not in lines:
             start, end = self._range_from_lines(textindex, lines)
             if start is None or end is None:
                 return
-            merge_cache = self._merge_cache[start:end + 1]
+            merge_cache = self._merge_cache[start : end + 1]
         else:
             merge_cache = self._merge_cache
         if textindex in (0, 2):
@@ -481,8 +481,9 @@ class Differ(GObject.GObject):
                 other_diff = seq[other_seq][0]
                 if high_mark < other_diff.start_a:
                     break
-                if high_mark == other_diff.start_a and \
-                   not (high_diff.tag == other_diff.tag == "insert"):
+                if high_mark == other_diff.start_a and not (
+                    high_diff.tag == other_diff.tag == "insert"
+                ):
                     break
 
                 using[other_seq].append(other_diff)
@@ -511,9 +512,9 @@ class Differ(GObject.GObject):
         for i in range(self.num_sequences - 1):
             if self.syncpoints:
                 syncpoints = [(s[i][0](), s[i][1]()) for s in self.syncpoints]
-                matcher = self._sync_matcher(None,
-                                             sequences[1], sequences[i * 2],
-                                             syncpoints=syncpoints)
+                matcher = self._sync_matcher(
+                    None, sequences[1], sequences[i * 2], syncpoints=syncpoints
+                )
             else:
                 matcher = self._matcher(None, sequences[1], sequences[i * 2])
             work = matcher.initialise()

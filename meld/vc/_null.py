@@ -31,7 +31,6 @@ from meld.vc import _vc
 
 
 class Vc(_vc.Vc):
-
     CMD = None
     # Translators: This is the displayed name of a version control system
     # when no version control system is actually found.
@@ -44,7 +43,8 @@ class Vc(_vc.Vc):
     def get_path_for_repo_file(self, path, commit=None):
         suffix = os.path.splitext(path)[1]
         with tempfile.NamedTemporaryFile(
-                prefix='meld-tmp', suffix=suffix, delete=False) as f:
-            with open(path, 'rb') as vc_file:
+            prefix="meld-tmp", suffix=suffix, delete=False
+        ) as f:
+            with open(path, "rb") as vc_file:
                 shutil.copyfileobj(vc_file, f)
         return f.name

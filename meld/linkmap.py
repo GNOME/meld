@@ -27,7 +27,6 @@ RADIUS = 3
 
 
 class LinkMap(Gtk.DrawingArea):
-
     __gtype_name__ = "LinkMap"
 
     def __init__(self):
@@ -44,11 +43,11 @@ class LinkMap(Gtk.DrawingArea):
         self.view_indices = [filediff.textview.index(t) for t in self.views]
 
         meld_settings = get_meld_settings()
-        self.on_setting_changed(meld_settings, 'style-scheme')
-        meld_settings.connect('changed', self.on_setting_changed)
+        self.on_setting_changed(meld_settings, "style-scheme")
+        meld_settings.connect("changed", self.on_setting_changed)
 
     def on_setting_changed(self, settings, key):
-        if key == 'style-scheme':
+        if key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
 
     def draw(self, _linkmap, context, width, height):
@@ -56,8 +55,7 @@ class LinkMap(Gtk.DrawingArea):
             return
 
         pix_start = [t.get_visible_rect().y for t in self.views]
-        y_offset = [
-            t.translate_coordinates(self, 0, 0)[1] + 1 for t in self.views]
+        y_offset = [t.translate_coordinates(self, 0, 0)[1] + 1 for t in self.views]
 
         clip_y = min(y_offset) - 1
         clip_height = max(t.get_visible_rect().height for t in self.views) + 2
@@ -65,7 +63,8 @@ class LinkMap(Gtk.DrawingArea):
 
         stylecontext = self.get_style_context()
         Gtk.render_background(
-            stylecontext, context, 0, clip_y, allocation.width, clip_height)
+            stylecontext, context, 0, clip_y, allocation.width, clip_height
+        )
         context.set_line_width(1.0)
 
         height = allocation.height
@@ -127,7 +126,7 @@ class LinkMap(Gtk.DrawingArea):
 
             chunk_idx = self.filediff.linediffer.locate_chunk(left, c[1])[0]
             if chunk_idx == self.filediff.cursor.chunk:
-                highlight = self.fill_colors['current-chunk-highlight']
+                highlight = self.fill_colors["current-chunk-highlight"]
                 Gdk.cairo_set_source_rgba(context, highlight)
                 context.fill_preserve()
 
@@ -139,5 +138,4 @@ LinkMap.set_css_name("link-map")
 
 
 class ScrollLinkMap(Gtk.DrawingArea):
-
     __gtype_name__ = "ScrollLinkMap"

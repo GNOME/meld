@@ -25,39 +25,41 @@ class MeldSettings(GObject.GObject):
     """Handler for settings that can't easily be bound to object properties"""
 
     __gsignals__ = {
-        'file-filters-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
-        'text-filters-changed': (GObject.SignalFlags.RUN_FIRST, None, ()),
-        'changed': (GObject.SignalFlags.RUN_FIRST, None, (str,)),
+        "file-filters-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "text-filters-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
+        "changed": (GObject.SignalFlags.RUN_FIRST, None, (str,)),
     }
 
     def __init__(self):
         super().__init__()
-        self.on_setting_changed(settings, 'filename-filters')
-        self.on_setting_changed(settings, 'text-filters')
-        self.on_setting_changed(settings, 'use-system-font')
+        self.on_setting_changed(settings, "filename-filters")
+        self.on_setting_changed(settings, "text-filters")
+        self.on_setting_changed(settings, "use-system-font")
         self.on_setting_changed(settings, "style-scheme")
         self.on_setting_changed(settings, "style-variant")
         self.style_scheme = self._style_scheme_from_gsettings()
-        settings.connect('changed', self.on_setting_changed)
+        settings.connect("changed", self.on_setting_changed)
 
         style_manager = Adw.StyleManager.get_default()
         style_manager.connect("notify", self.on_style_manager_setting_notify)
 
     def on_setting_changed(self, settings, key):
-        if key == 'filename-filters':
+        if key == "filename-filters":
             self.file_filters = self._filters_from_gsetting(
-                'filename-filters', meld.filters.FilterEntry.SHELL)
-            self.emit('file-filters-changed')
-        elif key == 'text-filters':
+                "filename-filters", meld.filters.FilterEntry.SHELL
+            )
+            self.emit("file-filters-changed")
+        elif key == "text-filters":
             self.text_filters = self._filters_from_gsetting(
-                'text-filters', meld.filters.FilterEntry.REGEX)
-            self.emit('text-filters-changed')
-        elif key in ('use-system-font', 'custom-font'):
+                "text-filters", meld.filters.FilterEntry.REGEX
+            )
+            self.emit("text-filters-changed")
+        elif key in ("use-system-font", "custom-font"):
             self.font = self._current_font_from_gsetting()
-            self.emit('changed', 'font')
+            self.emit("changed", "font")
         elif key == "style-scheme":
             self.style_scheme = self._style_scheme_from_gsettings()
-            self.emit('changed', 'style-scheme')
+            self.emit("changed", "style-scheme")
         elif key == "style-variant":
             manager = Adw.StyleManager.get_default()
             setting_value = settings.get_enum("style-variant")
@@ -75,7 +77,7 @@ class MeldSettings(GObject.GObject):
         from meld.style import adapt_style_scheme, set_base_style_scheme
 
         manager = GtkSource.StyleSchemeManager.get_default()
-        scheme = manager.get_scheme(settings.get_string('style-scheme'))
+        scheme = manager.get_scheme(settings.get_string("style-scheme"))
         scheme = adapt_style_scheme(scheme)
         set_base_style_scheme(scheme)
         return scheme
@@ -89,14 +91,14 @@ class MeldSettings(GObject.GObject):
         return filters
 
     def _current_font_from_gsetting(self, *args):
-        if settings.get_boolean('use-system-font'):
-            if sys.platform == 'win32':
-                font_string = 'Consolas 11'
+        if settings.get_boolean("use-system-font"):
+            if sys.platform == "win32":
+                font_string = "Consolas 11"
             else:
                 style_manager = Adw.StyleManager.get_default()
                 font_string = style_manager.get_monospace_font_name()
         else:
-            font_string = settings.get_string('custom-font')
+            font_string = settings.get_string("custom-font")
         if not font_string:
             font_string = "monospace 11"
         return Pango.FontDescription(font_string)
@@ -110,8 +112,7 @@ def load_settings_schema(schema_id):
             False,
         )
         schema = schema_source.lookup(schema_id, False)
-        settings = Gio.Settings.new_full(
-            schema=schema, backend=None, path=None)
+        settings = Gio.Settings.new_full(schema=schema, backend=None, path=None)
     else:
         settings = Gio.Settings.new(schema_id)
     return settings
@@ -125,15 +126,13 @@ def create_settings():
 
 
 def bind_settings(obj):
-    bind_flags = (
-        Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.NO_SENSITIVITY)
-    for binding in getattr(obj, '__gsettings_bindings__', ()):
+    bind_flags = Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.NO_SENSITIVITY
+    for binding in getattr(obj, "__gsettings_bindings__", ()):
         settings_id, property_id = binding
         settings.bind(settings_id, obj, property_id, bind_flags)
 
-    bind_flags = (
-        Gio.SettingsBindFlags.GET | Gio.SettingsBindFlags.NO_SENSITIVITY)
-    for binding in getattr(obj, '__gsettings_bindings_view__', ()):
+    bind_flags = Gio.SettingsBindFlags.GET | Gio.SettingsBindFlags.NO_SENSITIVITY
+    for binding in getattr(obj, "__gsettings_bindings_view__", ()):
         settings_id, property_id = binding
         settings.bind(settings_id, obj, property_id, bind_flags)
 

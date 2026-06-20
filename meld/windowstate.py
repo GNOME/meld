@@ -18,22 +18,22 @@ from gi.repository import Gio, GObject
 
 from meld.settings import load_settings_schema
 
-WINDOW_STATE_SCHEMA = 'org.gnome.meld.WindowState'
+WINDOW_STATE_SCHEMA = "org.gnome.meld.WindowState"
 
 
 class SavedWindowState(GObject.GObject):
-    '''Utility class for saving and restoring GtkWindow state'''
+    """Utility class for saving and restoring GtkWindow state"""
 
-    __gtype_name__ = 'SavedWindowState'
+    __gtype_name__ = "SavedWindowState"
 
-    width = GObject.Property(
-        type=int, nick='Current window width', default=-1)
-    height = GObject.Property(
-        type=int, nick='Current window height', default=-1)
+    width = GObject.Property(type=int, nick="Current window width", default=-1)
+    height = GObject.Property(type=int, nick="Current window height", default=-1)
     is_maximized = GObject.Property(
-        type=bool, nick='Is window maximized', default=False)
+        type=bool, nick="Is window maximized", default=False
+    )
     is_fullscreen = GObject.Property(
-        type=bool, nick='Is window fullscreen', default=False)
+        type=bool, nick="Is window fullscreen", default=False
+    )
 
     def bind(self, window):
         window.connect("notify::default-width", self.on_size_allocate)
@@ -44,13 +44,12 @@ class SavedWindowState(GObject.GObject):
         # Don't re-read from gsettings after initialisation; we've seen
         # what looked like issues with buggy debounce here.
         bind_flags = (
-            Gio.SettingsBindFlags.DEFAULT |
-            Gio.SettingsBindFlags.GET_NO_CHANGES
+            Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.GET_NO_CHANGES
         )
         self.settings = load_settings_schema(WINDOW_STATE_SCHEMA)
-        self.settings.bind('width', self, 'width', bind_flags)
-        self.settings.bind('height', self, 'height', bind_flags)
-        self.settings.bind('is-maximized', self, 'is-maximized', bind_flags)
+        self.settings.bind("width", self, "width", bind_flags)
+        self.settings.bind("height", self, "height", bind_flags)
+        self.settings.bind("is-maximized", self, "is-maximized", bind_flags)
 
         window.set_default_size(self.props.width, self.props.height)
         if self.props.is_maximized:

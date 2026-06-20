@@ -16,20 +16,21 @@ from jinja2 import Environment
 # have a .py suffix. This is entirely so that we can run from a git
 # checkout without any user intervention.
 
-loader = importlib.machinery.SourceFileLoader('meld.conf', 'meld/conf.py.in')
+loader = importlib.machinery.SourceFileLoader("meld.conf", "meld/conf.py.in")
 spec = importlib.util.spec_from_loader(loader.name, loader)
 mod = importlib.util.module_from_spec(spec)
 loader.exec_module(mod)
 
 import meld  # noqa: E402 isort:skip
+
 meld.conf = mod
-sys.modules['meld.conf'] = mod
+sys.modules["meld.conf"] = mod
 import meld.conf  # noqa: E402 isort:skip
 
 
 PO_DIR = "po"
 HELP_DIR = "help"
-RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
+RELEASE_BRANCH_RE = r"%s-\d+-\d+" % meld.conf.__package__
 VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
 
 NEWS_TEMPLATE = """
@@ -73,10 +74,10 @@ APPDATA_TEMPLATE = """
 
 
 def get_last_release_tag():
-    cmd = ['git', 'describe', '--abbrev=0', '--tags']
-    tag_name = subprocess.check_output(cmd).strip().decode('utf-8')
+    cmd = ["git", "describe", "--abbrev=0", "--tags"]
+    tag_name = subprocess.check_output(cmd).strip().decode("utf-8")
     try:
-        version = [int(v) for v in tag_name.split('.')]
+        version = [int(v) for v in tag_name.split(".")]
         if len(version) != 3:
             raise ValueError()
     except ValueError:
@@ -87,13 +88,12 @@ def get_last_release_tag():
 def get_translation_commits(folder):
     last_release = get_last_release_tag()
     revspec = "%s..HEAD" % last_release
-    cmd = ['git', 'log', '--pretty=format:%an', '--name-only', revspec,
-           '--', folder]
-    name_files = subprocess.check_output(cmd).strip().decode('utf-8')
+    cmd = ["git", "log", "--pretty=format:%an", "--name-only", revspec, "--", folder]
+    name_files = subprocess.check_output(cmd).strip().decode("utf-8")
     if not name_files:
         return []
-    commits = name_files.split('\n\n')
-    commits = [(c.split('\n')[0], c.split('\n')[1:]) for c in commits]
+    commits = name_files.split("\n\n")
+    commits = [(c.split("\n")[0], c.split("\n")[1:]) for c in commits]
     return commits
 
 
@@ -101,7 +101,7 @@ def get_translator_langs(folders=[PO_DIR, HELP_DIR]):
 
     def get_lang(path):
         filename = os.path.basename(path)
-        if not filename.endswith('.po'):
+        if not filename.endswith(".po"):
             return None
         return filename[:-3]
 
@@ -121,44 +121,50 @@ def get_non_translation_commits():
     last_release = get_last_release_tag()
     revspec = "%s..HEAD" % last_release
     cmd = [
-        'git', 'log', '--pretty=format:%s (%an)', revspec,
+        "git",
+        "log",
+        "--pretty=format:%s (%an)",
+        revspec,
         # Exclude commits that only cover the po/ or help/ folders,
         # except commits in help/C. Basically, we want to separate
         # translation-only commits from everything else.
-        '--', '.', ":!po/", ':(glob,exclude)help/[!C]*/**',
+        "--",
+        ".",
+        ":!po/",
+        ":(glob,exclude)help/[!C]*/**",
     ]
     commits = subprocess.check_output(cmd).strip().splitlines()
-    return [c.decode('utf-8') for c in commits]
+    return [c.decode("utf-8") for c in commits]
 
 
 def get_last_news_entry():
-    cmd = ['git', 'log', '--pretty=format:', '-p', '-1', 'NEWS']
-    lines = subprocess.check_output(cmd).strip().decode('utf-8').splitlines()
+    cmd = ["git", "log", "--pretty=format:", "-p", "-1", "NEWS"]
+    lines = subprocess.check_output(cmd).strip().decode("utf-8").splitlines()
     lines = [
         line[1:]
         for line in lines
-        if (line and line[0] in ('+', '-'))
-        and (len(line) < 2 or line[1] not in ('+', '-'))
+        if (line and line[0] in ("+", "-"))
+        and (len(line) < 2 or line[1] not in ("+", "-"))
     ]
     return "\n".join(lines)
 
 
 def get_tokens():
     version = meld.conf.__version__
-    major, minor, *release = version.split('.')
+    major, minor, *release = version.split(".")
     stable_release = int(minor) % 2 == 0
-    release_series = '{}.{}'.format(major, minor)
+    release_series = "{}.{}".format(major, minor)
 
     return {
-        'date': datetime.date.today().isoformat(),
+        "date": datetime.date.today().isoformat(),
         # Appstream appears to expect release dates in UTC.
-        'utcdate': datetime.datetime.now(datetime.UTC).date().isoformat(),
-        'app': meld.conf.__package__,
-        'version': version,
-        'release_series': release_series,
-        'stable_release': stable_release,
-        'translator_langs': get_translator_langs(),
-        'commits': get_non_translation_commits(),
+        "utcdate": datetime.datetime.now(datetime.UTC).date().isoformat(),
+        "app": meld.conf.__package__,
+        "version": version,
+        "release_series": release_series,
+        "stable_release": stable_release,
+        "translator_langs": get_translator_langs(),
+        "commits": get_non_translation_commits(),
     }
 
 
@@ -170,60 +176,59 @@ def render_template(template):
 
 
 def call_with_output(
-        cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True,
-        timeout=30):
+    cmd, stdin_text=None, echo_stdout=True, abort_on_fail=True, timeout=30
+):
     pipe = subprocess.PIPE
     with subprocess.Popen(cmd, stdin=pipe, stdout=pipe, stderr=pipe) as proc:
         stdout, stderr = proc.communicate(stdin_text, timeout=timeout)
     if stdout and echo_stdout:
-        click.echo('\n' + stdout.decode('utf-8'))
+        click.echo("\n" + stdout.decode("utf-8"))
     if stderr or proc.returncode:
-        click.secho('\n' + stderr.decode('utf-8'), fg='red')
+        click.secho("\n" + stderr.decode("utf-8"), fg="red")
     if abort_on_fail and proc.returncode:
         raise click.Abort()
     return proc.returncode
 
 
 def check_release_branch():
-    cmd = ['git', 'rev-parse', '--abbrev-ref', 'HEAD']
-    branch = subprocess.check_output(cmd).strip().decode('utf-8')
-    if branch != 'main' and not re.match(RELEASE_BRANCH_RE, branch):
-        click.echo(
-            '\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
-        click.confirm('Are you sure you wish to continue?', abort=True)
+    cmd = ["git", "rev-parse", "--abbrev-ref", "HEAD"]
+    branch = subprocess.check_output(cmd).strip().decode("utf-8")
+    if branch != "main" and not re.match(RELEASE_BRANCH_RE, branch):
+        click.echo('\nBranch "%s" doesn\'t appear to be a release branch.\n' % branch)
+        click.confirm("Are you sure you wish to continue?", abort=True)
     return branch
 
 
 def pull():
     check_release_branch()
-    cmd = ['git', 'pull', '--rebase']
+    cmd = ["git", "pull", "--rebase"]
     call_with_output(cmd, timeout=None)
 
 
 def commit(message=None):
-    cmd = ['git', 'diff', 'HEAD']
+    cmd = ["git", "diff", "HEAD"]
     call_with_output(cmd, echo_stdout=True)
-    confirm = click.confirm('\nCommit this change?', default=True)
+    confirm = click.confirm("\nCommit this change?", default=True)
     if not confirm:
         return
 
-    cmd = ['git', 'commit', '-a']
+    cmd = ["git", "commit", "-a"]
     if message:
-        cmd.append('-m')
+        cmd.append("-m")
         cmd.append(message)
     call_with_output(cmd, timeout=None)
 
 
 def push():
     branch = check_release_branch()
-    cmd = ['git', 'log', 'origin/%s..%s' % (branch, branch)]
+    cmd = ["git", "log", "origin/%s..%s" % (branch, branch)]
     call_with_output(cmd, echo_stdout=True)
 
-    confirm = click.confirm('\nPush these commits?', default=True)
+    confirm = click.confirm("\nPush these commits?", default=True)
     if not confirm:
         return
 
-    cmd = ['git', 'push']
+    cmd = ["git", "push"]
     call_with_output(cmd, echo_stdout=True)
 
 
@@ -235,36 +240,36 @@ def cli():
 @cli.command()
 def news():
     rendered = render_template(NEWS_TEMPLATE)
-    with open('NEWS', 'r') as f:
+    with open("NEWS", "r") as f:
         current_news = f.read()
 
     new_news = rendered + current_news
-    with open('NEWS', 'w') as f:
+    with open("NEWS", "w") as f:
         f.write(new_news)
 
-    message = click.edit(filename='NEWS')
+    message = click.edit(filename="NEWS")
     return message
 
 
 @cli.command()
 def metainfo():
-    filename = 'data/org.gnome.Meld.metainfo.xml.in.in'
+    filename = "data/org.gnome.Meld.metainfo.xml.in.in"
 
     rendered = render_template(APPDATA_TEMPLATE)
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         metainfo = f.read()
 
-    insert_tag = '<releases>'
+    insert_tag = "<releases>"
     insert_idx = metainfo.find(insert_tag)
     if insert_idx == -1:
-        click.echo('Failed to find <releases> tag in metainfo')
+        click.echo("Failed to find <releases> tag in metainfo")
         raise click.Abort()
 
     insert_idx += len(insert_tag)
 
     new_metainfo = metainfo[:insert_idx] + rendered + metainfo[insert_idx:]
 
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         f.write(new_metainfo)
 
     message = click.edit(filename=filename)
@@ -273,21 +278,20 @@ def metainfo():
 
 @cli.command()
 def dist():
-    build_dir = '_build'
-    archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
-    dist_archive_path = os.path.abspath(
-        os.path.join(build_dir, 'meson-dist', archive))
+    build_dir = "_build"
+    archive = "%s-%s.tar.xz" % (meld.conf.__package__, meld.conf.__version__)
+    dist_archive_path = os.path.abspath(os.path.join(build_dir, "meson-dist", archive))
 
-    click.echo('Running meson...')
-    cmd = ['meson', build_dir]
+    click.echo("Running meson...")
+    cmd = ["meson", build_dir]
     call_with_output(cmd, echo_stdout=False)
 
-    click.echo('Creating distribution...')
-    cmd = ['meson', 'dist', '-C', build_dir]
+    click.echo("Creating distribution...")
+    cmd = ["meson", "dist", "-C", build_dir]
     call_with_output(cmd, echo_stdout=True)
 
     if not os.path.exists(dist_archive_path):
-        click.echo('Failed to create archive file %s' % dist_archive_path)
+        click.echo("Failed to create archive file %s" % dist_archive_path)
         raise click.Abort()
     return dist_archive_path
 
@@ -295,60 +299,60 @@ def dist():
 @cli.command()
 def tag():
     last_release = get_last_release_tag()
-    click.echo('\nLast release tag was: ', nl=False)
-    click.secho(last_release, fg='green', bold=True)
-    click.echo('New release tag will be: ', nl=False)
-    click.secho(meld.conf.__version__, fg='green', bold=True)
-    click.confirm('\nTag this release?', default=True, abort=True)
+    click.echo("\nLast release tag was: ", nl=False)
+    click.secho(last_release, fg="green", bold=True)
+    click.echo("New release tag will be: ", nl=False)
+    click.secho(meld.conf.__version__, fg="green", bold=True)
+    click.confirm("\nTag this release?", default=True, abort=True)
 
-    news_text = get_last_news_entry().encode('utf-8')
+    news_text = get_last_news_entry().encode("utf-8")
     # FIXME: Should be signing tags
-    cmd = ['git', 'tag', '-a', '--file=-', meld.conf.__version__]
+    cmd = ["git", "tag", "-a", "--file=-", meld.conf.__version__]
     call_with_output(cmd, news_text)
-    click.echo('Tagged %s' % meld.conf.__version__)
+    click.echo("Tagged %s" % meld.conf.__version__)
 
-    cmd = ['git', 'show', '-s', meld.conf.__version__]
+    cmd = ["git", "show", "-s", meld.conf.__version__]
     call_with_output(cmd, echo_stdout=True)
-    confirm = click.confirm('\nPush this tag?', default=True)
+    confirm = click.confirm("\nPush this tag?", default=True)
     if not confirm:
         return
 
-    cmd = ['git', 'push', 'origin', meld.conf.__version__]
+    cmd = ["git", "push", "origin", meld.conf.__version__]
     call_with_output(cmd, echo_stdout=True)
 
 
-@cli.command('version-bump')
+@cli.command("version-bump")
 def version_bump():
     with open(meld.conf.__file__) as f:
         conf_data = f.read().splitlines()
 
     for i, line in enumerate(conf_data):
-        if line.startswith('__version__'):
+        if line.startswith("__version__"):
             match = re.match(VERSION_RE, line)
-            version = match.group('version')
+            version = match.group("version")
             if version != meld.conf.__version__:
                 continue
             version_line = i
             break
     else:
-        click.echo('Couldn\'t determine version from %s' % meld.conf.__file__)
+        click.echo("Couldn't determine version from %s" % meld.conf.__file__)
         raise click.Abort()
 
-    click.echo('Current version is: %s' % meld.conf.__version__)
-    default_version = meld.conf.__version__.split('.')
+    click.echo("Current version is: %s" % meld.conf.__version__)
+    default_version = meld.conf.__version__.split(".")
     default_version[-1] = str(int(default_version[-1]) + 1)
-    default_version = '.'.join(default_version)
-    new_version = click.prompt('Enter new version', default=default_version)
+    default_version = ".".join(default_version)
+    new_version = click.prompt("Enter new version", default=default_version)
 
     conf_data[version_line] = '__version__ = "%s"' % new_version
-    with open(meld.conf.__file__, 'w') as f:
-        f.write('\n'.join(conf_data) + '\n')
+    with open(meld.conf.__file__, "w") as f:
+        f.write("\n".join(conf_data) + "\n")
 
     cmd = ["meson", "rewrite", "kwargs", "set", "project", "/", "version", new_version]
     call_with_output(cmd, timeout=120)
 
 
-@cli.command('release')
+@cli.command("release")
 @click.option(
     "--skip-news",
     is_flag=True,
@@ -372,17 +376,17 @@ def make_release(ctx, skip_news, skip_news_commit):
         ctx.invoke(news)
         ctx.invoke(metainfo)
     if not skip_news_commit:
-        commit(message='Update NEWS + metainfo')
+        commit(message="Update NEWS + metainfo")
         push()
     # Run dist as a check; we don't need the actual tarball
     ctx.invoke(dist)
     ctx.invoke(tag)
     ctx.invoke(version_bump)
-    commit(message='Post-release version bump')
+    commit(message="Post-release version bump")
     push()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # FIXME: Should include sanity check that we're at the top level of the
     # project
     cli()

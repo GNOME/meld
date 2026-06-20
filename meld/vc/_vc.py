@@ -43,14 +43,28 @@ log = logging.getLogger(__name__)
 # error, placeholder, vc added
 # vc modified, vc renamed, vc conflict, vc removed
 # locally removed, end
-(STATE_IGNORED, STATE_NONE, STATE_NORMAL, STATE_NOCHANGE,
-    STATE_ERROR, STATE_EMPTY, STATE_NEW,
-    STATE_MODIFIED, STATE_RENAMED, STATE_CONFLICT, STATE_REMOVED,
-    STATE_MISSING, STATE_NONEXIST, STATE_SPINNER, STATE_MAX) = list(range(15))
+(
+    STATE_IGNORED,
+    STATE_NONE,
+    STATE_NORMAL,
+    STATE_NOCHANGE,
+    STATE_ERROR,
+    STATE_EMPTY,
+    STATE_NEW,
+    STATE_MODIFIED,
+    STATE_RENAMED,
+    STATE_CONFLICT,
+    STATE_REMOVED,
+    STATE_MISSING,
+    STATE_NONEXIST,
+    STATE_SPINNER,
+    STATE_MAX,
+) = list(range(15))
 
 # VC conflict types
-(CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL,
-    CONFLICT_REMOTE, CONFLICT_MAX) = list(range(5))
+(CONFLICT_MERGED, CONFLICT_BASE, CONFLICT_LOCAL, CONFLICT_REMOTE, CONFLICT_MAX) = list(
+    range(5)
+)
 # These names are used by BZR, and are logically identical.
 CONFLICT_OTHER = CONFLICT_REMOTE
 CONFLICT_THIS = CONFLICT_LOCAL
@@ -62,8 +76,7 @@ assert len(conflicts) == CONFLICT_MAX
 # Lifted from the itertools recipes section
 def partition(pred, iterable):
     t1, t2 = itertools.tee(iterable)
-    return (list(itertools.ifilterfalse(pred, t1)),
-            list(itertools.ifilter(pred, t2)))
+    return (list(itertools.ifilterfalse(pred, t1)), list(itertools.ifilter(pred, t2)))
 
 
 class Entry:
@@ -92,16 +105,23 @@ class Entry:
         self.state = state
         self.isdir = isdir
         if isinstance(options, list):
-            options = ','.join(options)
+            options = ",".join(options)
         self.options = options
 
     def __str__(self):
-        return "<%s:%s %s>" % (self.__class__.__name__, self.path,
-                               self.get_status() or "Normal")
+        return "<%s:%s %s>" % (
+            self.__class__.__name__,
+            self.path,
+            self.get_status() or "Normal",
+        )
 
     def __repr__(self):
-        return "%s(%r, %r, %r)" % (self.__class__.__name__, self.name,
-                                   self.path, self.state)
+        return "%s(%r, %r, %r)" % (
+            self.__class__.__name__,
+            self.name,
+            self.path,
+            self.state,
+        )
 
     def get_status(self):
         return self.state_names[self.state]
@@ -112,8 +132,7 @@ class Entry:
 
     @staticmethod
     def is_modified(entry):
-        return entry.state >= STATE_NEW or (
-            entry.isdir and (entry.state > STATE_NONE))
+        return entry.state >= STATE_NEW or (entry.isdir and (entry.state > STATE_NONE))
 
     @staticmethod
     def is_normal(entry):
@@ -122,7 +141,8 @@ class Entry:
     @staticmethod
     def is_nonvc(entry):
         return entry.state == STATE_NONE or (
-            entry.isdir and (entry.state > STATE_IGNORED))
+            entry.isdir and (entry.state > STATE_IGNORED)
+        )
 
     @staticmethod
     def is_ignored(entry):
@@ -130,7 +150,6 @@ class Entry:
 
 
 class Vc:
-
     VC_DIR: ClassVar[str]
 
     #: Whether to walk the current location's parents to find a
@@ -166,7 +185,9 @@ class Vc:
         """
         cmd = (self.CMD,) + args
         return subprocess.Popen(
-            cmd, cwd=self.location, stdout=subprocess.PIPE,
+            cmd,
+            cwd=self.location,
+            stdout=subprocess.PIPE,
             universal_newlines=use_locale_encoding,
             startupinfo=get_hide_window_startupinfo(),
         )
@@ -220,11 +241,11 @@ class Vc:
         states = path_states.values()
 
         if bool(path_states):
-            valid_actions.add('compare')
-        valid_actions.add('update')
+            valid_actions.add("compare")
+        valid_actions.add("update")
         # TODO: We can't do this; this shells out for each selection change...
         # if bool(self.get_commits_to_push()):
-        valid_actions.add('push')
+        valid_actions.add("push")
 
         non_removeable_states = (STATE_NONE, STATE_IGNORED, STATE_REMOVED)
         non_revertable_states = (STATE_NONE, STATE_NORMAL, STATE_IGNORED)
@@ -233,16 +254,18 @@ class Vc:
         # inherit any state from their children, but committing a folder with
         # modified children is expected behaviour.
         if all(s not in (STATE_NONE, STATE_IGNORED) for s in states):
-            valid_actions.add('commit')
+            valid_actions.add("commit")
         if all(s not in (STATE_NORMAL, STATE_REMOVED) for s in states):
-            valid_actions.add('add')
+            valid_actions.add("add")
         if all(s == STATE_CONFLICT for s in states):
-            valid_actions.add('resolve')
-        if (all(s not in non_removeable_states for s in states) and
-                self.root not in path_states.keys()):
-            valid_actions.add('remove')
+            valid_actions.add("resolve")
+        if (
+            all(s not in non_removeable_states for s in states)
+            and self.root not in path_states.keys()
+        ):
+            valid_actions.add("remove")
         if all(s not in non_revertable_states for s in states):
-            valid_actions.add('revert')
+            valid_actions.add("revert")
         return valid_actions
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -280,22 +303,19 @@ class Vc:
         if path is None:
             self._tree_cache = {}
             self._tree_missing_cache = collections.defaultdict(set)
-            path = './'
+            path = "./"
         self._update_tree_state_cache(path)
 
     def get_entries(self, base):
         parent = Gio.File.new_for_path(base)
         try:
             enumerator = parent.enumerate_children(
-                'standard::name,standard::display-name,standard::type',
+                "standard::name,standard::display-name,standard::type",
                 Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS,
                 None,
             )
         except GLib.Error as err:
-            if err.matches(
-                Gio.io_error_quark(),
-                Gio.IOErrorEnum.PERMISSION_DENIED
-            ):
+            if err.matches(Gio.io_error_quark(), Gio.IOErrorEnum.PERMISSION_DENIED):
                 log.error(f"Failed to scan folder {base!r}; permission denied")
                 return
             raise
@@ -337,11 +357,12 @@ class Vc:
         gfile = Gio.File.new_for_path(path)
         try:
             file_info = gfile.query_info(
-                'standard::*', Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None)
+                "standard::*", Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS, None
+            )
             name = file_info.get_display_name()
             isdir = file_info.get_file_type() == Gio.FileType.DIRECTORY
         except GLib.Error as e:
-            if e.domain != 'g-io-error-quark':
+            if e.domain != "g-io-error-quark":
                 raise
             # Handling for non-existent files (or other IO errors)
             name = path
@@ -401,8 +422,11 @@ class InvalidVCPath(ValueError):
         self.error = err
 
     def __str__(self):
-        return "%s: Path %s is invalid or not present\nError: %s\n" % \
-            (self.vc.NAME, self.path, self.error)
+        return "%s: Path %s is invalid or not present\nError: %s\n" % (
+            self.vc.NAME,
+            self.path,
+            self.error,
+        )
 
 
 class InvalidVCRevision(ValueError):
@@ -414,8 +438,11 @@ class InvalidVCRevision(ValueError):
         self.error = err
 
     def __str__(self):
-        return "%s: Doesn't understand or have revision %s\nError: %s\n" % \
-            (self.vc.NAME, self.revision, self.error)
+        return "%s: Doesn't understand or have revision %s\nError: %s\n" % (
+            self.vc.NAME,
+            self.revision,
+            self.error,
+        )
 
 
 def popen(cmd, cwd=None, use_locale_encoding=True):
@@ -427,14 +454,16 @@ def popen(cmd, cwd=None, use_locale_encoding=True):
     """
 
     process = subprocess.Popen(
-        cmd, cwd=cwd, stdout=subprocess.PIPE,
+        cmd,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
         universal_newlines=use_locale_encoding,
         startupinfo=get_hide_window_startupinfo(),
     )
     return process.stdout
 
 
-def call_temp_output(cmd, cwd, file_id='', suffix=None):
+def call_temp_output(cmd, cwd, file_id="", suffix=None):
     """Call `cmd` in `cwd` and write the output to a temporary file
 
     This returns the name of the temporary file used. It is the
@@ -447,7 +476,10 @@ def call_temp_output(cmd, cwd, file_id='', suffix=None):
     of the temporary file's name.
     """
     process = subprocess.Popen(
-        cmd, cwd=cwd, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+        cmd,
+        cwd=cwd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
         startupinfo=get_hide_window_startupinfo(),
     )
     vc_file = process.stdout
@@ -455,9 +487,8 @@ def call_temp_output(cmd, cwd, file_id='', suffix=None):
     # Error handling here involves doing nothing; in most cases, the only
     # sane response is to return an empty temp file.
 
-    prefix = 'meld-tmp' + ('-' + file_id if file_id else '')
-    with tempfile.NamedTemporaryFile(prefix=prefix,
-                                     suffix=suffix, delete=False) as f:
+    prefix = "meld-tmp" + ("-" + file_id if file_id else "")
+    with tempfile.NamedTemporaryFile(prefix=prefix, suffix=suffix, delete=False) as f:
         shutil.copyfileobj(vc_file, f)
     return f.name
 
@@ -466,17 +497,22 @@ def call_temp_output(cmd, cwd, file_id='', suffix=None):
 def call(cmd, cwd=None):
     devnull = open(os.devnull, "wb")
     return subprocess.call(
-        cmd, cwd=cwd, stdout=devnull, stderr=devnull,
+        cmd,
+        cwd=cwd,
+        stdout=devnull,
+        stderr=devnull,
         startupinfo=get_hide_window_startupinfo(),
     )
 
 
 base_re = re.compile(
-    br"^<{7}.*?$\r?\n(?P<local>.*?)"
-    br"^\|{7}.*?$\r?\n(?P<base>.*?)"
-    br"^={7}.*?$\r?\n(?P<remote>.*?)"
-    br"^>{7}.*?$\r?\n", flags=re.DOTALL | re.MULTILINE)
+    rb"^<{7}.*?$\r?\n(?P<local>.*?)"
+    rb"^\|{7}.*?$\r?\n(?P<base>.*?)"
+    rb"^={7}.*?$\r?\n(?P<remote>.*?)"
+    rb"^>{7}.*?$\r?\n",
+    flags=re.DOTALL | re.MULTILINE,
+)
 
 
 def base_from_diff3(merged):
-    return base_re.sub(br"==== BASE ====\n\g<base>==== BASE ====\n", merged)
+    return base_re.sub(rb"==== BASE ====\n\g<base>==== BASE ====\n", merged)

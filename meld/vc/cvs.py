@@ -30,7 +30,6 @@ from . import _vc
 
 
 class Vc(_vc.Vc):
-
     # CVSNT is a drop-in replacement for CVS; if found, it is used instead
     CMD = "cvsnt" if shutil.which("cvsnt") else "cvs"
     NAME = "CVS"
@@ -39,31 +38,28 @@ class Vc(_vc.Vc):
 
     # According to the output of the 'status' command
     state_map = {
-        "Unknown":          _vc.STATE_NONE,
-        "Locally Added":    _vc.STATE_NEW,
-        "Up-to-date":       _vc.STATE_NORMAL,
-        "!":                _vc.STATE_MISSING,
-        "I":                _vc.STATE_IGNORED,
+        "Unknown": _vc.STATE_NONE,
+        "Locally Added": _vc.STATE_NEW,
+        "Up-to-date": _vc.STATE_NORMAL,
+        "!": _vc.STATE_MISSING,
+        "I": _vc.STATE_IGNORED,
         "Locally Modified": _vc.STATE_MODIFIED,
-        "Locally Removed":  _vc.STATE_REMOVED,
+        "Locally Removed": _vc.STATE_REMOVED,
     }
 
     def commit(self, runner, files, message):
-        command = [self.CMD, 'commit', '-m', message]
+        command = [self.CMD, "commit", "-m", message]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def update(self, runner):
-        command = [self.CMD, 'update']
+        command = [self.CMD, "update"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def add(self, runner, afiles):
         # CVS needs to add files together with all the parents
         # (if those are Unversioned yet)
-        relfiles = [
-            os.path.relpath(s, self.root)
-            for s in afiles if os.path.isfile(s)
-        ]
-        command = [self.CMD, 'add']
+        relfiles = [os.path.relpath(s, self.root) for s in afiles if os.path.isfile(s)]
+        command = [self.CMD, "add"]
 
         relargs = []
         for f1 in relfiles:
@@ -75,16 +71,16 @@ class Vc(_vc.Vc):
         runner(command, absargs, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
-        command = [self.CMD, 'remove', '-f']
+        command = [self.CMD, "remove", "-f"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
-        command = [self.CMD, 'update', '-C']
+        command = [self.CMD, "update", "-C"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     @classmethod
     def valid_repo(cls, path):
-        return not _vc.call([cls.CMD, 'ls'], cwd=path)
+        return not _vc.call([cls.CMD, "ls"], cwd=path)
 
     def get_path_for_repo_file(self, path, commit=None):
         if commit is not None:
@@ -92,7 +88,7 @@ class Vc(_vc.Vc):
 
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        path = path[len(self.root) + 1:]
+        path = path[len(self.root) + 1 :]
 
         suffix = os.path.splitext(path)[1]
         args = [self.CMD, "-q", "update", "-p", path]
@@ -108,7 +104,7 @@ class Vc(_vc.Vc):
         return relfiles
 
     def _update_tree_state_cache(self, path):
-        """ Update the state of the file(s) at self._tree_cache['path'] """
+        """Update the state of the file(s) at self._tree_cache['path']"""
         while 1:
             try:
                 # Get the status of files
@@ -122,8 +118,7 @@ class Vc(_vc.Vc):
                     cwd=self.location,
                 )
                 entries = [
-                    li for li in proc.read().splitlines()
-                    if li.startswith('File:')
+                    li for li in proc.read().splitlines() if li.startswith("File:")
                 ]
                 break
             except OSError as e:
@@ -141,7 +136,7 @@ class Vc(_vc.Vc):
         else:
             # There are 1 or more [modified] files, parse their state
             for entry in zip(files, entries):
-                statekey = entry[1].split(':')[-1].strip()
+                statekey = entry[1].split(":")[-1].strip()
                 name = entry[0].strip()
 
                 if os.path.basename(name) not in entry[1]:

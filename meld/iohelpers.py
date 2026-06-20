@@ -29,8 +29,7 @@ def trash_or_confirm(
         # problem. We also have to handle the generic FAILED code
         # because that's what we get with NFS mounts.
         expected_error = (
-            e.code == Gio.IOErrorEnum.NOT_SUPPORTED or
-            e.code == Gio.IOErrorEnum.FAILED
+            e.code == Gio.IOErrorEnum.NOT_SUPPORTED or e.code == Gio.IOErrorEnum.FAILED
         )
         if not expected_error:
             raise RuntimeError(str(e))
@@ -75,11 +74,8 @@ def trash_or_confirm(
 
 
 def prompt_save_filename(
-        title: str,
-        callback,
-        *,
-        parent: Optional[Gtk.Widget] = None
-    ) -> None:
+    title: str, callback, *, parent: Optional[Gtk.Widget] = None
+) -> None:
 
     def on_response(dialog: Gtk.FileChooserNative, response: int, callback):
         gfile = dialog.get_file()
@@ -108,10 +104,7 @@ def find_shared_parent_path(
         return current_parent
 
     while current_parent:
-        is_valid_parent = all(
-            current_parent.get_relative_path(path)
-            for path in paths
-        )
+        is_valid_parent = all(current_parent.get_relative_path(path) for path in paths)
         if is_valid_parent:
             break
 
@@ -127,7 +120,7 @@ def format_home_relative_path(gfile: Gio.File) -> str:
     home_file = Gio.File.new_for_path(GLib.get_home_dir())
     home_relative = home_file.get_relative_path(gfile)
     if home_relative:
-        return GLib.build_filenamev(['~', home_relative])
+        return GLib.build_filenamev(["~", home_relative])
     else:
         return gfile.get_parse_name()
 
@@ -179,7 +172,7 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
 
     descendant_parent = descendant.get_parent()
     if descendant_parent is None:
-        raise ValueError(f'Path {descendant.get_path()} has no parent')
+        raise ValueError(f"Path {descendant.get_path()} has no parent")
 
     relative_path_str = parent.get_relative_path(descendant_parent)
 
@@ -213,9 +206,9 @@ def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
         base_path_str = parent.get_basename()
 
     label_segments = [
-        '…' if not show_parent else None,
+        "…" if not show_parent else None,
         base_path_str,
-        '…' if has_elided_path else None,
+        "…" if has_elided_path else None,
         *immediate_parent_strs,
         descendant.get_basename(),
     ]

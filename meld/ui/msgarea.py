@@ -135,6 +135,7 @@ class MsgAreaController(Gtk.Box):
                     pane.clear()
             else:
                 self.clear()
+
         msgarea = self.new_from_text_and_icon(primary, secondary, icon)
         msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
         msgarea.connect("response", clear_all)

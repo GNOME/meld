@@ -86,13 +86,13 @@ def munge_css(filename):
     new_css = sassify(contents)
 
     print("Rewriting " + filename)
-    with open(filename, 'w') as f:
+    with open(filename, "w") as f:
         f.write(new_css)
 
 
 def sassify(scss_string):
     scss = subprocess.Popen(
-        ['scss', '-s'],
+        ["scss", "-s"],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         universal_newlines=True,
@@ -102,24 +102,24 @@ def sassify(scss_string):
 
 
 if __name__ == "__main__":
-
-    if os.path.exists('html'):
+    if os.path.exists("html"):
         print("Refusing to overwrite existing html/ folder", file=sys.stderr)
         sys.exit(1)
 
     print("Generating CSS with gnome-doc-tool...", file=sys.stderr)
-    subprocess.check_call(['gnome-doc-tool', 'css'])
+    subprocess.check_call(["gnome-doc-tool", "css"])
 
     print("Generating HTML with gnome-doc-tool...", file=sys.stderr)
-    subprocess.check_call(['gnome-doc-tool', 'html', '-c', 'index.css',
-                           '--copy-graphics', '*.page'])
+    subprocess.check_call(
+        ["gnome-doc-tool", "html", "-c", "index.css", "--copy-graphics", "*.page"]
+    )
 
-    os.mkdir('html')
-    for filename in glob.glob('*.html'):
+    os.mkdir("html")
+    for filename in glob.glob("*.html"):
         munge_html(filename)
-        os.rename(filename, os.path.join('html', filename))
+        os.rename(filename, os.path.join("html", filename))
 
-    munge_css('index.css')
-    os.rename('index.css', os.path.join('html', 'index.css'))
+    munge_css("index.css")
+    os.rename("index.css", os.path.join("html", "index.css"))
 
     print("Embeddable documentation written to html/", file=sys.stderr)

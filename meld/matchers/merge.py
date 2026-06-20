@@ -20,7 +20,6 @@ LO, HI = 1, 2
 
 
 class AutoMergeDiffer(diffutil.Differ):
-
     _matcher = MyersSequenceMatcher
     # _matcher = PatienceSequenceMatcher
 
@@ -31,18 +30,24 @@ class AutoMergeDiffer(diffutil.Differ):
 
     def _auto_merge(self, using, texts):
         for out0, out1 in super()._auto_merge(using, texts):
-            if self.auto_merge and out0[0] == 'conflict':
+            if self.auto_merge and out0[0] == "conflict":
                 # we will try to resolve more complex conflicts automatically
                 # here... if possible
                 l0, h0, l1, h1, l2, h2 = (
-                    out0[3], out0[4], out0[1], out0[2], out1[3], out1[4])
+                    out0[3],
+                    out0[4],
+                    out0[1],
+                    out0[2],
+                    out1[3],
+                    out1[4],
+                )
                 len0 = h0 - l0
                 len1 = h1 - l1
                 len2 = h2 - l2
                 if (len0 > 0 and len2 > 0) and (
-                        len0 == len1 or len2 == len1 or len1 == 0):
-                    matcher = self._matcher(
-                        None, texts[0][l0:h0], texts[2][l2:h2])
+                    len0 == len1 or len2 == len1 or len1 == 0
+                ):
+                    matcher = self._matcher(None, texts[0][l0:h0], texts[2][l2:h2])
                     for chunk in matcher.get_opcodes():
                         s1 = l1
                         e1 = l1
@@ -54,13 +59,13 @@ class AutoMergeDiffer(diffutil.Differ):
                             e1 += chunk[4]
                         out0_bounds = (s1, e1, l0 + chunk[1], l0 + chunk[2])
                         out1_bounds = (s1, e1, l2 + chunk[3], l2 + chunk[4])
-                        if chunk[0] == 'equal':
-                            out0 = DiffChunk._make(('replace',) + out0_bounds)
-                            out1 = DiffChunk._make(('replace',) + out1_bounds)
+                        if chunk[0] == "equal":
+                            out0 = DiffChunk._make(("replace",) + out0_bounds)
+                            out1 = DiffChunk._make(("replace",) + out1_bounds)
                             yield out0, out1
                         else:
-                            out0 = DiffChunk._make(('conflict',) + out0_bounds)
-                            out1 = DiffChunk._make(('conflict',) + out1_bounds)
+                            out0 = DiffChunk._make(("conflict",) + out0_bounds)
+                            out1 = DiffChunk._make(("conflict",) + out1_bounds)
                             yield out0, out1
                     return
                 # elif len0 > 0 and len2 > 0:
@@ -105,7 +110,7 @@ class AutoMergeDiffer(diffutil.Differ):
                                 break
                         if not chunktype:
                             break
-                    if chunktype == 'delete':
+                    if chunktype == "delete":
                         # delete + delete -> split into delete/conflict
                         seq0 = seq1 = None
                         while 1:
@@ -125,25 +130,33 @@ class AutoMergeDiffer(diffutil.Differ):
                                     break
                             highstart = max(i0, i1)
                             if i0 != i1:
-                                out0 = DiffChunk._make((
-                                    'conflict', i0 - highstart + i1, highstart,
-                                    seq0[3] - highstart + i1, seq0[3]
-                                ))
-                                out1 = DiffChunk._make((
-                                    'conflict', i1 - highstart + i0, highstart,
-                                    seq1[3] - highstart + i0, seq1[3]
-                                ))
+                                out0 = DiffChunk._make(
+                                    (
+                                        "conflict",
+                                        i0 - highstart + i1,
+                                        highstart,
+                                        seq0[3] - highstart + i1,
+                                        seq0[3],
+                                    )
+                                )
+                                out1 = DiffChunk._make(
+                                    (
+                                        "conflict",
+                                        i1 - highstart + i0,
+                                        highstart,
+                                        seq1[3] - highstart + i0,
+                                        seq1[3],
+                                    )
+                                )
                                 yield out0, out1
                             lowend = min(seq0[2], seq1[2])
                             if highstart != lowend:
-                                out0 = DiffChunk._make((
-                                    'delete', highstart, lowend,
-                                    seq0[3], seq0[4]
-                                ))
-                                out1 = DiffChunk._make((
-                                    'delete', highstart, lowend,
-                                    seq1[3], seq1[4]
-                                ))
+                                out0 = DiffChunk._make(
+                                    ("delete", highstart, lowend, seq0[3], seq0[4])
+                                )
+                                out1 = DiffChunk._make(
+                                    ("delete", highstart, lowend, seq1[3], seq1[4])
+                                )
                                 yield out0, out1
                             i0 = i1 = lowend
                             if lowend == seq0[2]:
@@ -152,24 +165,20 @@ class AutoMergeDiffer(diffutil.Differ):
                                 seq1 = None
 
                         if seq0:
-                            out0 = DiffChunk._make((
-                                'conflict', i0, seq0[2],
-                                seq0[3], seq0[4]
-                            ))
-                            out1 = DiffChunk._make((
-                                'conflict', i0, seq0[2],
-                                end1, end1 + seq0[2] - i0
-                            ))
+                            out0 = DiffChunk._make(
+                                ("conflict", i0, seq0[2], seq0[3], seq0[4])
+                            )
+                            out1 = DiffChunk._make(
+                                ("conflict", i0, seq0[2], end1, end1 + seq0[2] - i0)
+                            )
                             yield out0, out1
                         elif seq1:
-                            out0 = DiffChunk._make((
-                                'conflict', i1, seq1[2],
-                                end0, end0 + seq1[2] - i1
-                            ))
-                            out1 = DiffChunk._make((
-                                'conflict', i1,
-                                seq1[2], seq1[3], seq1[4]
-                            ))
+                            out0 = DiffChunk._make(
+                                ("conflict", i1, seq1[2], end0, end0 + seq1[2] - i1)
+                            )
+                            out1 = DiffChunk._make(
+                                ("conflict", i1, seq1[2], seq1[3], seq1[4])
+                            )
                             yield out0, out1
                         return
             yield out0, out1
@@ -204,8 +213,9 @@ class AutoMergeDiffer(diffutil.Differ):
 
 
 class Merger(diffutil.Differ):
-
-    def __init__(self, ):
+    def __init__(
+        self,
+    ):
         self.differ = AutoMergeDiffer()
         self.differ.auto_merge = True
         self.differ.unresolved = []
@@ -219,11 +229,11 @@ class Merger(diffutil.Differ):
         yield 1
 
     def _apply_change(self, text, change, mergedtext):
-        if change[0] == 'insert':
+        if change[0] == "insert":
             for i in range(change[LO + 2], change[HI + 2]):
                 mergedtext.append(text[i])
             return 0
-        elif change[0] == 'replace':
+        elif change[0] == "replace":
             for i in range(change[LO + 2], change[HI + 2]):
                 mergedtext.append(text[i])
             return change[HI] - change[LO]
@@ -247,8 +257,11 @@ class Merger(diffutil.Differ):
                 mergedtext.append(self.texts[1][i])
             mergedline += low_mark - lastline
             lastline = low_mark
-            if (change[0] is not None and change[1] is not None and
-                    change[0][0] == 'conflict'):
+            if (
+                change[0] is not None
+                and change[1] is not None
+                and change[0][0] == "conflict"
+            ):
                 high_mark = max(change[0][HI], change[1][HI])
                 if mark_conflicts:
                     if low_mark < high_mark:
@@ -262,12 +275,10 @@ class Merger(diffutil.Differ):
                         mergedline += 1
                     lastline = high_mark
             elif change[0] is not None:
-                lastline += self._apply_change(
-                    self.texts[0], change[0], mergedtext)
+                lastline += self._apply_change(self.texts[0], change[0], mergedtext)
                 mergedline += change[0][HI + 2] - change[0][LO + 2]
             else:
-                lastline += self._apply_change(
-                    self.texts[2], change[1], mergedtext)
+                lastline += self._apply_change(self.texts[2], change[1], mergedtext)
                 mergedline += change[1][HI + 2] - change[1][LO + 2]
         baselen = len(self.texts[1])
         for i in range(lastline, baselen, 1):
@@ -283,16 +294,17 @@ class Merger(diffutil.Differ):
         mergedtext = []
         for change in self.differ.pair_changes(toindex, fromindex):
             yield None
-            if change[0] == 'conflict':
+            if change[0] == "conflict":
                 low_mark = change[HI]
             else:
                 low_mark = change[LO]
             for i in range(lastline, low_mark):
                 mergedtext.append(self.texts[toindex][i])
             lastline = low_mark
-            if change[0] != 'conflict':
+            if change[0] != "conflict":
                 lastline += self._apply_change(
-                    self.texts[fromindex], change, mergedtext)
+                    self.texts[fromindex], change, mergedtext
+                )
         baselen = len(self.texts[toindex])
         for i in range(lastline, baselen):
             mergedtext.append(self.texts[toindex][i])

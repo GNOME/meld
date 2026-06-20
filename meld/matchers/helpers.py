@@ -12,7 +12,6 @@ log = logging.getLogger(__name__)
 
 
 class MatcherWorker(multiprocessing.Process):
-
     END_TASK = -1
 
     matcher_class = myers.InlineMyersSequenceMatcher
@@ -75,7 +74,7 @@ class CachedSequenceMatcher:
         GLib.idle_add(self.thread.start)
 
     def stop(self) -> None:
-        self.tasks.put((MatcherWorker.END_TASK, ('', '')))
+        self.tasks.put((MatcherWorker.END_TASK, ("", "")))
         if self.thread.is_alive():
             self.thread.join(self.TASK_GRACE_PERIOD)
             if self.thread.exitcode is None:
@@ -133,5 +132,5 @@ class CachedSequenceMatcher:
             return
         items = list(self.cache.items())
         items.sort(key=lambda it: it[1][1])
-        for item in items[:-size_hint * 2]:
+        for item in items[: -size_hint * 2]:
             del self.cache[item[0]]

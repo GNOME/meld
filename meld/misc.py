@@ -15,8 +15,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-"""Module of commonly used helper classes and functions
-"""
+"""Module of commonly used helper classes and functions"""
 
 import collections
 import errno
@@ -63,6 +62,7 @@ def with_focused_pane(function):
         if pane == -1:
             return
         return function(args[0], pane, *args[1:], **kwargs)
+
     return wrap_function
 
 
@@ -89,8 +89,7 @@ def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
     Gtk.AlertDialog(message=primary, detail=secondary, modal=True).show()
 
 
-def user_critical(
-        primary: str, message: str) -> Callable[[Callable], Callable]:
+def user_critical(primary: str, message: str) -> Callable[[Callable], Callable]:
     """Decorator for when the user must be told about failures
 
     The use case here is for e.g., saving a file, where even if we
@@ -111,12 +110,13 @@ def user_critical(
                     secondary=_(
                         "{}\n\n"
                         "Meld encountered a critical error while running:\n"
-                        "<tt>{}</tt>").format(
-                            message, GLib.markup_escape_text(str(function))
-                    ),
+                        "<tt>{}</tt>"
+                    ).format(message, GLib.markup_escape_text(str(function))),
                 )
                 raise
+
         return wrap_function
+
     return wrap
 
 
@@ -153,11 +153,13 @@ def shorten_names(*names: str) -> List[str]:
     basenames = [p.name for p in paths]
 
     if all_same(basenames):
+
         def firstpart(path: PurePath) -> str:
             if len(path.parts) > 1 and path.parts[0]:
                 return "[%s] " % path.parts[0]
             else:
                 return ""
+
         return [firstpart(p) + p.name for p in paths]
 
     return [name or _("[None]") for name in basenames]
@@ -186,7 +188,7 @@ SubprocessGenerator = Generator[Union[Tuple[int, str], None], None, None]
 def read_pipe_iter(
     command: List[str],
     workdir: str,
-    errorstream: 'ConsoleStream',
+    errorstream: "ConsoleStream",
     yield_interval: float = 0.1,
 ) -> SubprocessGenerator:
     """Read the output of a shell command iteratively.
@@ -195,8 +197,8 @@ def read_pipe_iter(
     this function yields None.
     When all the data is read, the entire string is yielded.
     """
-    class Sentinel:
 
+    class Sentinel:
         proc: Optional[subprocess.Popen]
 
         def __init__(self) -> None:
@@ -206,13 +208,15 @@ def read_pipe_iter(
             if self.proc:
                 errorstream.error("killing '%s'\n" % command[0])
                 self.proc.terminate()
-                errorstream.error("killed (status was '%i')\n" %
-                                  self.proc.wait())
+                errorstream.error("killed (status was '%i')\n" % self.proc.wait())
 
         def __call__(self) -> SubprocessGenerator:
             self.proc = subprocess.Popen(
-                command, cwd=workdir, stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                command,
+                cwd=workdir,
+                stdin=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
                 universal_newlines=True,
                 startupinfo=get_hide_window_startupinfo(),
             )
@@ -220,8 +224,9 @@ def read_pipe_iter(
             childout, childerr = self.proc.stdout, self.proc.stderr
             bits: List[str] = []
             while len(bits) == 0 or bits[-1] != "":
-                state = select([childout, childerr], [], [childout, childerr],
-                               yield_interval)
+                state = select(
+                    [childout, childerr], [], [childout, childerr], yield_interval
+                )
                 if len(state[0]) == 0:
                     if len(state[2]) == 0:
                         yield None
@@ -306,8 +311,7 @@ def copytree(src: str, dst: str) -> None:
             raise
 
 
-def merge_intervals(
-        interval_list: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
+def merge_intervals(interval_list: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     """Merge a list of intervals
 
     Returns a list of itervals as 2-tuples with all overlapping
@@ -345,7 +349,7 @@ def merge_intervals(
 def apply_text_filters(
     txt: AnyStr,
     regexes: Sequence[Pattern],
-    apply_fn: Optional[Callable[[int, int], None]] = None
+    apply_fn: Optional[Callable[[int, int], None]] = None,
 ) -> AnyStr:
     """Apply text filters
 
@@ -364,7 +368,6 @@ def apply_text_filters(
             continue
 
         for match in r.finditer(txt):
-
             # If there are no groups in the match, use the whole match
             if not r.groups:
                 span = match.span()
@@ -382,12 +385,12 @@ def apply_text_filters(
     filter_ranges = merge_intervals(filter_ranges)
 
     if apply_fn:
-        for (start, end) in reversed(filter_ranges):
+        for start, end in reversed(filter_ranges):
             apply_fn(start, end)
 
     offset = 0
     result_txts = []
-    for (start, end) in filter_ranges:
+    for start, end in filter_ranges:
         assert txt[start:end].count(newline) == 0
         result_txts.append(txt[offset:start])
         offset = end

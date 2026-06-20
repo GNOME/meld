@@ -1,4 +1,3 @@
-
 from typing import Optional
 
 from gi.repository import Gio, GObject, Gtk
@@ -15,35 +14,24 @@ class MeldFileButton(Gtk.Button):
     pane: int = GObject.Property(
         type=int,
         nick="Index of pane associated with this file selector",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     action: Gtk.FileChooserAction = GObject.Property(
         type=Gtk.FileChooserAction,
         nick="File selector action",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
         default=Gtk.FileChooserAction.OPEN,
     )
-
 
     dialog_label: str = GObject.Property(
         type=str,
         nick="Label for the file selector dialog",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
-    @GObject.Signal('file-selected')
-    def file_selected_signal(self, pane: int, file: Gio.File) -> None:
-        ...
+    @GObject.Signal("file-selected")
+    def file_selected_signal(self, pane: int, file: Gio.File) -> None: ...
 
     icon_action_map = {
         Gtk.FileChooserAction.OPEN: "document-open-symbolic",
@@ -69,7 +57,9 @@ class MeldFileButton(Gtk.Button):
         # Maintain a reference to the dialog until we get a response
         self.dialog = dialog
 
-    def on_dialog_response(self, dialog: Gtk.FileChooserNative, response: Gtk.ResponseType, *user_data):
+    def on_dialog_response(
+        self, dialog: Gtk.FileChooserNative, response: Gtk.ResponseType, *user_data
+    ):
         gfile = dialog.get_file()
         del self.dialog
         dialog.destroy()

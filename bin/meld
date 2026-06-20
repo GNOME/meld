@@ -43,7 +43,6 @@ freeze_support()
 def disable_stdout_buffering():
 
     class Unbuffered:
-
         def __init__(self, file):
             self.file = file
 
@@ -60,7 +59,7 @@ def disable_stdout_buffering():
 def get_meld_dir():
     global frozen
     if frozen:
-        if hasattr(sys, '_MEIPASS'):
+        if hasattr(sys, "_MEIPASS"):
             return sys._MEIPASS
         return os.path.dirname(sys.executable)
 
@@ -69,7 +68,7 @@ def get_meld_dir():
     return os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
 
 
-frozen = getattr(sys, 'frozen', False)
+frozen = getattr(sys, "frozen", False)
 melddir = get_meld_dir()
 
 uninstalled = False
@@ -86,21 +85,24 @@ if uninstalled:
     import importlib.util
 
     loader = importlib.machinery.SourceFileLoader(
-        'meld.conf', os.path.join(melddir, 'meld/conf.py.in'))
+        "meld.conf", os.path.join(melddir, "meld/conf.py.in")
+    )
     spec = importlib.util.spec_from_loader(loader.name, loader)
     mod = importlib.util.module_from_spec(spec)
     loader.exec_module(mod)
 
     import meld
+
     meld.conf = mod
-    sys.modules['meld.conf'] = mod
+    sys.modules["meld.conf"] = mod
 
 import meld.conf  # noqa: E402
 
 # Silence warnings on non-devel releases (minor version is divisible by 2)
-is_stable = not bool(int(meld.conf.__version__.split('.')[1]) % 2)
+is_stable = not bool(int(meld.conf.__version__.split(".")[1]) % 2)
 if is_stable:
     import warnings
+
     warnings.simplefilter("ignore")
 
 if uninstalled:
@@ -120,53 +122,56 @@ locale_dir = meld.conf.LOCALEDIR
 
 gettext.bindtextdomain(locale_domain, locale_dir)
 try:
-    locale.setlocale(locale.LC_ALL, '')
+    locale.setlocale(locale.LC_ALL, "")
 except locale.Error as e:
     print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
-    locale.setlocale(locale.LC_ALL, 'C')
+    locale.setlocale(locale.LC_ALL, "C")
 gettext.textdomain(locale_domain)
-trans = gettext.translation(
-    locale_domain, localedir=str(locale_dir), fallback=True)
+trans = gettext.translation(locale_domain, localedir=str(locale_dir), fallback=True)
 _ = meld.conf._ = trans.gettext
 meld.conf.ngettext = trans.ngettext
 
 try:
-    if os.name == 'nt':
+    if os.name == "nt":
         from ctypes import cdll
+
         if frozen:
-            libintl = cdll['libintl-8']
+            libintl = cdll["libintl-8"]
         else:
             try:
-                libintl = cdll['intl']
+                libintl = cdll["intl"]
             except FileNotFoundError:
                 try:
-                    libintl = cdll['libintl-8']
+                    libintl = cdll["libintl-8"]
                 except FileNotFoundError:
-                    libintl = cdll['intl-8']
+                    libintl = cdll["intl-8"]
         libintl.bindtextdomain(locale_domain, str(locale_dir))
-        libintl.bind_textdomain_codeset(locale_domain, 'UTF-8')
+        libintl.bind_textdomain_codeset(locale_domain, "UTF-8")
         libintl.textdomain(locale_domain)
         del libintl
     else:
         locale.bindtextdomain(locale_domain, str(locale_dir))
-        locale.bind_textdomain_codeset(locale_domain, 'UTF-8')
+        locale.bind_textdomain_codeset(locale_domain, "UTF-8")
         locale.textdomain(locale_domain)
 except AttributeError as e:
     # Python builds linked without libintl (i.e., OSX) don't have
     # bindtextdomain(), which causes Gtk.Builder translations to fail.
     print(
         "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e))
+        "work.\n{}".format(e)
+    )
 except locale.Error as e:
     print(
         "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e))
+        "work.\n{}".format(e)
+    )
 except WindowsError as e:
     # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
     # Let's just continue, as translations are non-essential.
     print(
         "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e))
+        "work.\n{}".format(e)
+    )
 
 
 def show_error_and_exit(error_text):
@@ -182,8 +187,10 @@ def show_error_and_exit(error_text):
     raise_as_last_resort_to_display = False
     try:
         import gi
+
         gi.require_version("Gtk", "4.0")
         from gi.repository import Gtk
+
         Gtk.MessageDialog(
             message_type=Gtk.MessageType.ERROR,
             buttons=Gtk.ButtonsType.CLOSE,
@@ -195,6 +202,7 @@ def show_error_and_exit(error_text):
         try:
             from tkinter import Tk
             from tkinter.messagebox import showerror
+
             toplevel = Tk(className="Meld")
             toplevel.wait_visibility()
             showerror("Meld", error_text, parent=toplevel)
@@ -222,30 +230,30 @@ def check_requirements():
         def check(self):
             if self.gi_version:
                 import gi
+
                 gi.require_version(self.module, self.gi_version)
-                module = 'gi.repository.{}'.format(self.module)
+                module = "gi.repository.{}".format(self.module)
             else:
                 module = self.module
 
             mod = importlib.import_module(module)
             if mod.__name__ in ("gi.repository.Gtk", "gi.repository.Adw"):
                 version = (mod.get_major_version(), mod.get_minor_version())
-            elif mod.__name__ == 'gi.repository.GLib':
+            elif mod.__name__ == "gi.repository.GLib":
                 version = (mod.MAJOR_VERSION, mod.MINOR_VERSION)
-            elif mod.__name__ == 'gi.repository.GtkSource':
+            elif mod.__name__ == "gi.repository.GtkSource":
                 # There's no accessors for GtkSource, so we try a 4.0 API
                 # call and just set the version so it will pass
                 mod.init()
                 version = (self.major_version, self.minor_version)
-            elif mod.__name__ in ('cairo', 'gi', 'sys'):
+            elif mod.__name__ in ("cairo", "gi", "sys"):
                 version = mod.version_info
 
             if version < (self.major_version, self.minor_version):
-                raise RuntimeError('Unsupported version')
+                raise RuntimeError("Unsupported version")
 
         def __str__(self):
-            return '{} {}.{}'.format(
-                self.name, self.major_version, self.minor_version)
+            return "{} {}.{}".format(self.name, self.major_version, self.minor_version)
 
     # These requirements are kept in both `bin/meld` and `meson.build`. If you
     # update one, update the other.
@@ -263,7 +271,7 @@ def check_requirements():
         for r in requirements:
             r.check()
     except (AttributeError, ImportError, RuntimeError, ValueError):
-        show_error_and_exit(_('Meld requires %s.') % str(r))
+        show_error_and_exit(_("Meld requires %s.") % str(r))
 
 
 def setup_resources():
@@ -281,7 +289,7 @@ def setup_resources():
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
             ],
-            cwd=melddir
+            cwd=melddir,
         )
 
     try:
@@ -298,12 +306,12 @@ def setup_resources():
     # Just copy style schemes to the file ending expected by
     # GtkSourceView if we're uninstalled and they're missing
     if uninstalled:
-        for style in {'meld-base', 'meld-dark'}:
-            path = os.path.join(
-                style_path, '{}.style-scheme.xml'.format(style))
+        for style in {"meld-base", "meld-dark"}:
+            path = os.path.join(style_path, "{}.style-scheme.xml".format(style))
             if not os.path.exists(path):
                 import shutil
-                shutil.copyfile(path + '.in', path)
+
+                shutil.copyfile(path + ".in", path)
 
 
 def setup_settings():
@@ -320,10 +328,10 @@ def setup_settings():
         have_schema = False
 
     if uninstalled and not have_schema:
-        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR],
-                        cwd=melddir)
+        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR], cwd=melddir)
 
     import meld.settings
+
     meld.settings.create_settings()
 
 
@@ -342,7 +350,7 @@ def setup_logging():
     else:
         log.setLevel(logging.CRITICAL)
 
-    if sys.platform == 'win32':
+    if sys.platform == "win32":
         from gi.repository import GLib
 
         log_path = os.path.join(GLib.get_user_data_dir(), "meld.log")
@@ -351,21 +359,20 @@ def setup_logging():
 
         # Set excepthook so that we get exceptions on Windows
         def logging_except_hook(exc_type, exc_instance, tb):
-            log.error(
-                'Unhandled exception', exc_info=(exc_type, exc_instance, tb))
+            log.error("Unhandled exception", exc_info=(exc_type, exc_instance, tb))
 
         sys.excepthook = logging_except_hook
     else:
         handler = logging.StreamHandler()
 
-    formatter = logging.Formatter("%(asctime)s %(levelname)s "
-                                  "%(name)s: %(message)s")
+    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
     handler.setFormatter(formatter)
     log.addHandler(handler)
 
 
 def setup_glib_logging():
     from gi.repository import GLib
+
     levels = {
         GLib.LogLevelFlags.LEVEL_DEBUG: logging.DEBUG,
         GLib.LogLevelFlags.LEVEL_INFO: logging.INFO,
@@ -375,9 +382,9 @@ def setup_glib_logging():
         GLib.LogLevelFlags.LEVEL_CRITICAL: logging.CRITICAL,
     }
     level_flag = (
-        GLib.LogLevelFlags.LEVEL_WARNING |
-        GLib.LogLevelFlags.LEVEL_ERROR |
-        GLib.LogLevelFlags.LEVEL_CRITICAL
+        GLib.LogLevelFlags.LEVEL_WARNING
+        | GLib.LogLevelFlags.LEVEL_ERROR
+        | GLib.LogLevelFlags.LEVEL_CRITICAL
     )
 
     log_domain = "Gtk"
@@ -442,15 +449,15 @@ def environment_hacks():
         os.environ["PATH"] = lib_dir + os.pathsep + os.environ["PATH"]
     # We manage cwd ourselves for git operations, and GIT_DIR in particular
     # can mess with this when set.
-    for var in ('GIT_DIR', 'GIT_WORK_TREE'):
+    for var in ("GIT_DIR", "GIT_WORK_TREE"):
         try:
             del os.environ[var]
         except KeyError:
             pass
 
     # Force the fontconfig backend for font fallback and metric handling
-    if sys.platform == 'win32' and 'PANGOCAIRO_BACKEND' not in os.environ:
-        os.environ['PANGOCAIRO_BACKEND'] = 'fontconfig'
+    if sys.platform == "win32" and "PANGOCAIRO_BACKEND" not in os.environ:
+        os.environ["PANGOCAIRO_BACKEND"] = "fontconfig"
 
 
 def ci_screenshot():
@@ -486,10 +493,12 @@ def run_application():
 
     app = MeldApp()
 
-    if sys.platform != 'win32':
+    if sys.platform != "win32":
         from gi.repository import GLib
+
         GLib.unix_signal_add(
-            GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
+            GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit()
+        )
 
     return app.run(sys.argv)
 
@@ -507,5 +516,5 @@ def main():
     return run_application()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sys.exit(main())

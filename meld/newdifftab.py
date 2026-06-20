@@ -34,13 +34,12 @@ class DiffType(enum.IntEnum):
         return self in (self.File, self.Folder)
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/new-diff-tab.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/new-diff-tab.ui")
 class NewDiffTab(Gtk.Box):
-
     __gtype_name__ = "NewDiffTab"
 
     __gsignals__ = {
-        'diff-created': (GObject.SignalFlags.RUN_FIRST, None, (object,)),
+        "diff-created": (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
     close_signal = MeldDoc.close_signal
@@ -72,14 +71,8 @@ class NewDiffTab(Gtk.Box):
 
     def __init__(self, parentapp):
         super().__init__()
-        map_widgets_into_lists(
-            self,
-            ["file_chooser", "dir_chooser", "vc_chooser"]
-        )
-        map_widgets_to_dict(
-            self,
-            ["file_chooser", "dir_chooser", "vc_chooser"]
-        )
+        map_widgets_into_lists(self, ["file_chooser", "dir_chooser", "vc_chooser"])
+        map_widgets_to_dict(self, ["file_chooser", "dir_chooser", "vc_chooser"])
         self.button_types = [
             self.button_type_file,
             self.button_type_dir,
@@ -108,8 +101,7 @@ class NewDiffTab(Gtk.Box):
         self.diff_type = DiffType(self.button_types.index(button))
         self.choosers_notebook.set_current_page(self.diff_type + 1)
         # FIXME: Add support for new blank for VcView
-        self.button_new_blank.set_sensitive(
-            self.diff_type.supports_blank())
+        self.button_new_blank.set_sensitive(self.diff_type.supports_blank())
         self.button_compare.set_sensitive(True)
 
     @Gtk.Template.Callback()
@@ -123,9 +115,8 @@ class NewDiffTab(Gtk.Box):
         if button not in dialogs:
             parent = self.get_root()
             dialog = Gtk.FileChooserNative.new(
-                title=title,
-                parent=parent,
-                action=action)
+                title=title, parent=parent, action=action
+            )
             dialog.connect("response", self.on_file_set)
 
             # set default path
@@ -146,19 +137,25 @@ class NewDiffTab(Gtk.Box):
     def on_file_chooser_clicked(self, button):
         title = button.get_label()
 
-        self.show_file_dialog(title, Gtk.FileChooserAction.OPEN, button, self.file_chooser_dialogs)
+        self.show_file_dialog(
+            title, Gtk.FileChooserAction.OPEN, button, self.file_chooser_dialogs
+        )
 
     @Gtk.Template.Callback()
     def on_dir_chooser_clicked(self, button):
         title = button.get_label()
 
-        self.show_file_dialog(title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.dir_chooser_dialogs)
+        self.show_file_dialog(
+            title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.dir_chooser_dialogs
+        )
 
     @Gtk.Template.Callback()
     def on_vc_chooser_clicked(self, button):
         title = button.get_label()
 
-        self.show_file_dialog(title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.vc_chooser_dialogs)
+        self.show_file_dialog(
+            title, Gtk.FileChooserAction.SELECT_FOLDER, button, self.vc_chooser_dialogs
+        )
 
     def on_file_set(self, dialog, response):
         if response == Gtk.ResponseType.ACCEPT:
@@ -167,13 +164,19 @@ class NewDiffTab(Gtk.Box):
                 return
 
             if dialog in self.file_chooser_dialogs.values():
-                button = list(self.file_chooser_dialogs.keys())[list(self.file_chooser_dialogs.values()).index(dialog)]
+                button = list(self.file_chooser_dialogs.keys())[
+                    list(self.file_chooser_dialogs.values()).index(dialog)
+                ]
                 values = self.file_chooser_values
             elif dialog in self.dir_chooser_dialogs.values():
-                button = list(self.dir_chooser_dialogs.keys())[list(self.dir_chooser_dialogs.values()).index(dialog)]
+                button = list(self.dir_chooser_dialogs.keys())[
+                    list(self.dir_chooser_dialogs.values()).index(dialog)
+                ]
                 values = self.dir_chooser_values
             elif dialog in self.vc_chooser_dialogs.values():
-                button = list(self.vc_chooser_dialogs.keys())[list(self.vc_chooser_dialogs.values()).index(dialog)]
+                button = list(self.vc_chooser_dialogs.keys())[
+                    list(self.vc_chooser_dialogs.values()).index(dialog)
+                ]
                 values = self.vc_chooser_values
 
             if button is not None:
@@ -184,8 +187,10 @@ class NewDiffTab(Gtk.Box):
             if not parent:
                 return
 
-            if parent.query_file_type(
-                    Gio.FileQueryInfoFlags.NONE, None) == Gio.FileType.DIRECTORY:
+            if (
+                parent.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
+                == Gio.FileType.DIRECTORY
+            ):
                 dialog.set_current_folder(parent)
 
             # TODO: We could do checks here to prevent errors: check to see if
@@ -212,8 +217,12 @@ class NewDiffTab(Gtk.Box):
     @Gtk.Template.Callback()
     def on_button_compare_clicked(self, *args):
         type_choosers = (self.file_chooser, self.dir_chooser, self.vc_chooser)
-        choosers = type_choosers[self.diff_type][:self._get_num_paths()]
-        values = (self.file_chooser_values, self.dir_chooser_values, self.vc_chooser_values)[self.diff_type]
+        choosers = type_choosers[self.diff_type][: self._get_num_paths()]
+        values = (
+            self.file_chooser_values,
+            self.dir_chooser_values,
+            self.vc_chooser_values,
+        )[self.diff_type]
         compare_gfiles = []
 
         for button in choosers:
@@ -221,10 +230,9 @@ class NewDiffTab(Gtk.Box):
 
         compare_kwargs = {}
 
-        tab = self.diff_methods[self.diff_type](
-            compare_gfiles, **compare_kwargs)
+        tab = self.diff_methods[self.diff_type](compare_gfiles, **compare_kwargs)
         get_recent_comparisons().add(tab)
-        self.emit('diff-created', tab)
+        self.emit("diff-created", tab)
 
     @Gtk.Template.Callback()
     def on_button_new_blank_clicked(self, *args):
@@ -239,7 +247,7 @@ class NewDiffTab(Gtk.Box):
         else:
             gfiles = [Gio.File.new_for_path("")] * self._get_num_paths()
         tab = self.diff_methods[self.diff_type](gfiles)
-        self.emit('diff-created', tab)
+        self.emit("diff-created", tab)
 
     def on_container_switch_in_event(self, window):
         window.text_filter_button.set_visible(False)

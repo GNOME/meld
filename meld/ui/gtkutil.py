@@ -19,6 +19,7 @@ GTK_STYLE_CLASS_ERROR = "error"
 
 BIND_DEFAULT_CREATE = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
+
 def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RGBA:
     rgba = Gdk.RGBA()
     rgba.red = red

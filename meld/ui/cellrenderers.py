@@ -19,7 +19,6 @@ from gi.repository import GObject, Gtk
 
 
 class CellRendererDate(Gtk.CellRendererText):
-
     __gtype_name__ = "CellRendererDate"
 
     #: We use negative 32-bit Unix timestamp to threshold our valid values
@@ -30,19 +29,19 @@ class CellRendererDate(Gtk.CellRendererText):
         return dt.strftime(self.DATETIME_FORMAT)
 
     def get_timestamp(self):
-        return getattr(self, '_datetime', self.MIN_TIMESTAMP)
+        return getattr(self, "_datetime", self.MIN_TIMESTAMP)
 
     def set_timestamp(self, value):
         if value == self.get_timestamp():
             return
         if value <= self.MIN_TIMESTAMP:
-            time_str = ''
+            time_str = ""
         else:
             try:
                 mod_datetime = datetime.datetime.fromtimestamp(value)
                 time_str = self._format_datetime(mod_datetime)
             except Exception:
-                time_str = ''
+                time_str = ""
         self.props.markup = time_str
         self._datetime = value
 
@@ -55,7 +54,6 @@ class CellRendererDate(Gtk.CellRendererText):
 
 
 class CellRendererISODate(CellRendererDate):
-
     __gtype_name__ = "CellRendererISODate"
 
     def _format_datetime(self, dt: datetime.datetime) -> str:
@@ -65,21 +63,18 @@ class CellRendererISODate(CellRendererDate):
 
 
 class CellRendererByteSize(Gtk.CellRendererText):
-
     __gtype_name__ = "CellRendererByteSize"
 
     def get_bytesize(self):
-        return getattr(self, '_bytesize', -1)
+        return getattr(self, "_bytesize", -1)
 
     def set_bytesize(self, value):
         if value == self.get_bytesize():
             return
         if value == -1:
-            byte_str = ''
+            byte_str = ""
         else:
-            suffixes = (
-                'B', 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'
-            )
+            suffixes = ("B", "kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
             size = float(value)
             unit = 0
             while size > 1000 and unit < len(suffixes) - 1:
@@ -99,23 +94,22 @@ class CellRendererByteSize(Gtk.CellRendererText):
 
 
 class CellRendererFileMode(Gtk.CellRendererText):
-
     __gtype_name__ = "CellRendererFileMode"
 
     def get_file_mode(self):
-        return getattr(self, '_file_mode', -1)
+        return getattr(self, "_file_mode", -1)
 
     def set_file_mode(self, value):
         if value == self.get_file_mode():
             return
         if value == -1.0:
-            mode_str = ''
+            mode_str = ""
         else:
             perms = []
-            rwx = ((4, 'r'), (2, 'w'), (1, 'x'))
+            rwx = ((4, "r"), (2, "w"), (1, "x"))
             for group_index in (6, 3, 0):
                 group = value >> group_index & 7
-                perms.extend([p if group & i else '-' for i, p in rwx])
+                perms.extend([p if group & i else "-" for i, p in rwx])
             mode_str = "".join(perms)
         self.props.markup = mode_str
         self._file_mode = value

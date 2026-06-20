@@ -35,25 +35,19 @@ class ComparisonState(enum.IntEnum):
 
 
 class MeldDoc(GObject.GObject):
-    """Base class for documents in the meld application.
-    """
+    """Base class for documents in the meld application."""
 
-    @GObject.Signal(name='close')
-    def close_signal(self, exit_code: int) -> None:
-        ...
+    @GObject.Signal(name="close")
+    def close_signal(self, exit_code: int) -> None: ...
 
-    @GObject.Signal(name='create-diff')
-    def create_diff_signal(
-            self, gfiles: object, options: object) -> None:
-        ...
+    @GObject.Signal(name="create-diff")
+    def create_diff_signal(self, gfiles: object, options: object) -> None: ...
 
-    @GObject.Signal('file-changed')
-    def file_changed_signal(self, path: str) -> None:
-        ...
+    @GObject.Signal("file-changed")
+    def file_changed_signal(self, path: str) -> None: ...
 
     @GObject.Signal
-    def tab_state_changed(self, old_state: int, new_state: int) -> None:
-        ...
+    def tab_state_changed(self, old_state: int, new_state: int) -> None: ...
 
     def __init__(self) -> None:
         super().__init__()
@@ -91,7 +85,7 @@ class MeldDoc(GObject.GObject):
     def get_action_state(self, action_name: str):
         action = self.view_action_group.lookup_action(action_name)
         if not action:
-            log.error(f'No action {action_name!r} found')
+            log.error(f"No action {action_name!r} found")
             return
         return action.get_state().unpack()
 
@@ -99,22 +93,21 @@ class MeldDoc(GObject.GObject):
         # TODO: Try to do GLib.Variant things here instead of in callers
         action = self.view_action_group.lookup_action(action_name)
         if not action:
-            log.error(f'No action {action_name!r} found')
+            log.error(f"No action {action_name!r} found")
             return
         action.set_state(state)
 
     def set_action_enabled(self, action_name: str, enabled: bool) -> None:
         action = self.view_action_group.lookup_action(action_name)
         if not action:
-            log.error(f'No action {action_name!r} found')
+            log.error(f"No action {action_name!r} found")
             return
         action.set_enabled(enabled)
 
     def on_container_switch_in_event(self, window):
         """Called when the container app switches to this tab"""
 
-        window.insert_action_group(
-            'view', getattr(self, 'view_action_group', None))
+        window.insert_action_group("view", getattr(self, "view_action_group", None))
 
         if hasattr(self, "get_filter_visibility"):
             text, folder, vc = self.get_filter_visibility()

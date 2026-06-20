@@ -38,7 +38,6 @@ optparse._ = _
 
 
 class MeldApp(Adw.Application):
-
     def __init__(self):
         super().__init__(
             application_id=meld.conf.APPLICATION_ID,
@@ -50,7 +49,7 @@ class MeldApp(Adw.Application):
         Gtk.Window.set_default_icon_name(meld.conf.APPLICATION_ID)
 
     def make_resource_path(self, resource_path: str) -> str:
-        return f'{self.props.resource_base_path}/{resource_path}'
+        return f"{self.props.resource_base_path}/{resource_path}"
 
     def do_startup(self):
         Adw.Application.do_startup(self)
@@ -62,9 +61,9 @@ class MeldApp(Adw.Application):
             ("about", self.about_callback),
             ("quit", self.quit_callback),
         )
-        for (name, callback) in actions:
+        for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
-            action.connect('activate', callback)
+            action.connect("activate", callback)
             self.add_action(action)
 
         self.new_window()
@@ -129,8 +128,7 @@ class MeldApp(Adw.Application):
                 "/org/gnome/meld/org.gnome.Meld.metainfo.xml", meld.conf.__version__
             )
         dialog.set_copyright(
-            "Copyright © 2002-2009 Stephen Kennedy\n"
-            "Copyright © 2009-2026 Kai Willadsen"
+            "Copyright © 2002-2009 Stephen Kennedy\nCopyright © 2009-2026 Kai Willadsen"
         )
         dialog.set_developers(["Kai Willadsen", "Stephen Kennedy", "Vincent Legoll"])
         dialog.set_artists(["GNOME Project", "Josef Vybíral"])
@@ -139,7 +137,7 @@ class MeldApp(Adw.Application):
 
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
-            cancelled = window.emit('close-request')
+            cancelled = window.emit("close-request")
             if cancelled:
                 return
             window.destroy()
@@ -150,8 +148,7 @@ class MeldApp(Adw.Application):
         self.add_window(window)
         return window
 
-    def open_files(
-            self, gfiles, *, window=None, close_on_error=False, **kwargs):
+    def open_files(self, gfiles, *, window=None, close_on_error=False, **kwargs):
         """Open a comparison between files in a Meld window
 
         :param gfiles: list of Gio.File to be compared
@@ -183,18 +180,25 @@ class MeldApp(Adw.Application):
 
         if len(diff_files_args) not in (1, 2, 3):
             raise optparse.OptionValueError(
-                _("wrong number of arguments supplied to --diff"))
+                _("wrong number of arguments supplied to --diff")
+            )
         parser.values.diff.append(diff_files_args)
 
     def parse_args(self, command_line):
         usages = [
             ("", _("Start with an empty window")),
-            ("<%s|%s>" % (_("file"), _("folder")),
-             _("Start a version control comparison")),
-            ("<%s> <%s> [<%s>]" % ((_("file"),) * 3),
-             _("Start a 2- or 3-way file comparison")),
-            ("<%s> <%s> [<%s>]" % ((_("folder"),) * 3),
-             _("Start a 2- or 3-way folder comparison")),
+            (
+                "<%s|%s>" % (_("file"), _("folder")),
+                _("Start a version control comparison"),
+            ),
+            (
+                "<%s> <%s> [<%s>]" % ((_("file"),) * 3),
+                _("Start a 2- or 3-way file comparison"),
+            ),
+            (
+                "<%s> <%s> [<%s>]" % ((_("folder"),) * 3),
+                _("Start a 2- or 3-way folder comparison"),
+            ),
         ]
         pad_args_fmt = "%-" + str(max([len(s[0]) for s in usages])) + "s %s"
         usage_lines = ["  %prog " + pad_args_fmt % u for u in usages]
@@ -208,7 +212,6 @@ class MeldApp(Adw.Application):
         )
 
         class GLibFriendlyOptionParser(optparse.OptionParser):
-
             def __init__(self, command_line, *args, **kwargs):
                 self.command_line = command_line
                 self.should_exit = False
@@ -222,7 +225,8 @@ class MeldApp(Adw.Application):
                 # be circumspect about the likelihood of this working.
                 try:
                     self.command_line.do_print_literal(
-                        self.command_line, self.output.getvalue())
+                        self.command_line, self.output.getvalue()
+                    )
                 except Exception:
                     print(self.output.getvalue())
                 self.exit_status = status
@@ -252,34 +256,66 @@ class MeldApp(Adw.Application):
             command_line=command_line,
             usage=usage,
             description=_("Meld is a file and directory comparison tool."),
-            version="%prog " + meld.conf.__version__)
+            version="%prog " + meld.conf.__version__,
+        )
         parser.add_option(
-            "-L", "--label", action="append", default=[],
-            help=_("Set label to use instead of file name"))
+            "-L",
+            "--label",
+            action="append",
+            default=[],
+            help=_("Set label to use instead of file name"),
+        )
         parser.add_option(
-            "-n", "--newtab", action="store_true", default=False,
-            help=_("Open a new tab in an already running instance"))
+            "-n",
+            "--newtab",
+            action="store_true",
+            default=False,
+            help=_("Open a new tab in an already running instance"),
+        )
         parser.add_option(
-            "-a", "--auto-compare", action="store_true", default=False,
-            help=_("Automatically compare all differing files on startup"))
+            "-a",
+            "--auto-compare",
+            action="store_true",
+            default=False,
+            help=_("Automatically compare all differing files on startup"),
+        )
         parser.add_option(
-            "-u", "--unified", action="store_true",
-            help=_("Ignored for compatibility"))
+            "-u", "--unified", action="store_true", help=_("Ignored for compatibility")
+        )
         parser.add_option(
-            "-o", "--output", action="store", type="string",
-            dest="outfile", default=None,
-            help=_("Set the target file for saving a merge result"))
+            "-o",
+            "--output",
+            action="store",
+            type="string",
+            dest="outfile",
+            default=None,
+            help=_("Set the target file for saving a merge result"),
+        )
         parser.add_option(
-            "--auto-merge", None, action="store_true", default=False,
-            help=_("Automatically merge files"))
+            "--auto-merge",
+            None,
+            action="store_true",
+            default=False,
+            help=_("Automatically merge files"),
+        )
         parser.add_option(
-            "", "--comparison-file", action="store", type="string",
-            dest="comparison_file", default=None,
-            help=_("Load a saved comparison from a Meld comparison file"))
+            "",
+            "--comparison-file",
+            action="store",
+            type="string",
+            dest="comparison_file",
+            default=None,
+            help=_("Load a saved comparison from a Meld comparison file"),
+        )
         parser.add_option(
-            "", "--diff", action="callback", callback=self.diff_files_callback,
-            dest="diff", default=[],
-            help=_("Create a diff tab for the supplied files or folders"))
+            "",
+            "--diff",
+            action="callback",
+            callback=self.diff_files_callback,
+            dest="diff",
+            default=[],
+            help=_("Create a diff tab for the supplied files or folders"),
+        )
 
         def cleanup():
             if not command_line.get_is_remote():
@@ -299,8 +335,7 @@ class MeldApp(Adw.Application):
             return parser.exit_status
 
         if len(args) > 3:
-            parser.local_error(_("too many arguments (wanted 0-3, got %d)") %
-                               len(args))
+            parser.local_error(_("too many arguments (wanted 0-3, got %d)") % len(args))
         elif options.auto_merge and len(args) < 3:
             parser.local_error(_("can’t auto-merge less than 3 files"))
         elif options.auto_merge and any([os.path.isdir(f) for f in args]):
@@ -310,14 +345,12 @@ class MeldApp(Adw.Application):
             cleanup()
             return parser.exit_status
 
-        if options.comparison_file or (len(args) == 1 and
-                                       args[0].endswith(".meldcmp")):
+        if options.comparison_file or (len(args) == 1 and args[0].endswith(".meldcmp")):
             path = options.comparison_file or args[0]
             comparison_file_path = os.path.expanduser(path)
             gio_file = Gio.File.new_for_path(comparison_file_path)
             try:
-                tab = self.get_active_window().append_recent(
-                    gio_file.get_uri())
+                tab = self.get_active_window().append_recent(gio_file.get_uri())
             except (IOError, ValueError):
                 parser.local_error(_("Error reading saved comparison file"))
             if parser.should_exit:
@@ -353,8 +386,7 @@ class MeldApp(Adw.Application):
             file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
             if not f.is_native() and file_type == Gio.FileType.DIRECTORY:
                 if f.get_path() is None:
-                    raise ValueError(
-                        _("remote folder “{}” not supported").format(arg))
+                    raise ValueError(_("remote folder “{}” not supported").format(arg))
 
             return f
 

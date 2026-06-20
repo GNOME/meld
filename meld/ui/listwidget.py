@@ -16,7 +16,6 @@
 
 
 class EditableListWidget:
-
     """Helper class with behaviour for simple editable lists
 
     The entire point of this is to handle simple list item addition,
@@ -33,8 +32,7 @@ class EditableListWidget:
         model = self.treeview.get_model()
         model.connect("row-inserted", self._update_sensitivity)
         model.connect("rows-reordered", self._update_sensitivity)
-        self.treeview.get_selection().connect(
-            "changed", self._update_sensitivity)
+        self.treeview.get_selection().connect("changed", self._update_sensitivity)
         self._update_sensitivity()
 
     def _update_sensitivity(self, *args):

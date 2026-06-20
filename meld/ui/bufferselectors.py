@@ -1,4 +1,3 @@
-
 from gi.repository import GObject, Gtk, GtkSource
 
 from meld.conf import _
@@ -10,14 +9,13 @@ from meld.conf import _
 
 
 class FilteredListSelector:
-
     # FilteredListSelector was initially based on gedit's
     # GeditHighlightModeSelector
     # Copyright (C) 2013 - Ignacio Casal Quinteiro
     # Python translation and adaptations
     # Copyright (C) 2015, 2017 Kai Willadsen <kai.willadsen@gmail.com>
 
-    __gtype_name__ = 'FilteredListSelector'
+    __gtype_name__ = "FilteredListSelector"
 
     NAME_COLUMN, VALUE_COLUMN = 0, 1
 
@@ -30,12 +28,12 @@ class FilteredListSelector:
         self.liststore = self.listfilter.get_model()
 
         self.populate_model()
-        self.filter_string = ''
-        self.entry.connect('changed', self.on_entry_changed)
+        self.filter_string = ""
+        self.entry.connect("changed", self.on_entry_changed)
         self.listfilter.set_visible_func(self.name_filter)
 
-        self.entry.connect('activate', self.on_activate)
-        self.treeview.connect('row-activated', self.on_activate)
+        self.entry.connect("activate", self.on_activate)
+        self.treeview.connect("row-activated", self.on_activate)
 
     def populate_model(self):
         raise NotImplementedError
@@ -82,33 +80,36 @@ class FilteredListSelector:
 # they're registered by the templating engine.
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/encoding-selector.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/encoding-selector.ui")
 class EncodingSelector(FilteredListSelector, Gtk.Grid):
     # The subclassing here is weird; the Selector must directly
     # subclass Gtk.Grid, or the template building explodes.
 
-    __gtype_name__ = 'EncodingSelector'
+    __gtype_name__ = "EncodingSelector"
 
     __gsignals__ = {
-        'encoding-selected': (
+        "encoding-selected": (
             GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
-            None, (GtkSource.Encoding,)),
+            None,
+            (GtkSource.Encoding,),
+        ),
     }
 
     # These exist solely to make subclassing easier.
-    value_accessor = 'get_charset'
-    change_signal_name = 'encoding-selected'
+    value_accessor = "get_charset"
+    change_signal_name = "encoding-selected"
 
-    entry = Gtk.Template.Child('entry')
-    treeview = Gtk.Template.Child('treeview')
+    entry = Gtk.Template.Child("entry")
+    treeview = Gtk.Template.Child("treeview")
 
     def populate_model(self):
         for enc in GtkSource.Encoding.get_all():
             self.liststore.append((self.get_value_label(enc), enc))
 
     def get_value_label(self, enc):
-        return _('{name} ({charset})').format(
-            name=enc.get_name(), charset=enc.get_charset())
+        return _("{name} ({charset})").format(
+            name=enc.get_name(), charset=enc.get_charset()
+        )
 
 
 # SourceLangSelector was initially based on gedit's
@@ -118,23 +119,24 @@ class EncodingSelector(FilteredListSelector, Gtk.Grid):
 # Copyright (C) 2015, 2017 Kai Willadsen <kai.willadsen@gmail.com>
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/language-selector.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/language-selector.ui")
 class SourceLangSelector(FilteredListSelector, Gtk.Grid):
-
     __gtype_name__ = "SourceLangSelector"
 
     __gsignals__ = {
-        'language-selected': (
+        "language-selected": (
             GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
-            None, (GtkSource.Language,)),
+            None,
+            (GtkSource.Language,),
+        ),
     }
 
     # These exist solely to make subclassing easier.
-    value_accessor = 'get_id'
-    change_signal_name = 'language-selected'
+    value_accessor = "get_id"
+    change_signal_name = "language-selected"
 
-    entry = Gtk.Template.Child('entry')
-    treeview = Gtk.Template.Child('treeview')
+    entry = Gtk.Template.Child("entry")
+    treeview = Gtk.Template.Child("treeview")
 
     def populate_model(self):
         self.liststore.append((_("Plain Text"), None))

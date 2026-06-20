@@ -23,7 +23,12 @@ repos:
     -   id: trailing-whitespace
 
 - repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.14.3
+  rev: v0.15.18
+  hooks:
+    - id: ruff-format
+
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.15.18
   hooks:
     - id: ruff-check
 

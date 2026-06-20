@@ -32,7 +32,6 @@ from . import _vc
 
 
 class Vc(_vc.Vc):
-
     CMD = "bzr"
     CMDARGS = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar"
@@ -42,33 +41,36 @@ class Vc(_vc.Vc):
     RENAMED_RE = "^(.*) => (.*)$"
 
     commit_statuses = (
-        _vc.STATE_MODIFIED, _vc.STATE_RENAMED, _vc.STATE_NEW, _vc.STATE_REMOVED
+        _vc.STATE_MODIFIED,
+        _vc.STATE_RENAMED,
+        _vc.STATE_NEW,
+        _vc.STATE_REMOVED,
     )
 
     conflict_map = {
-        _vc.CONFLICT_BASE: '.BASE',
-        _vc.CONFLICT_OTHER: '.OTHER',
-        _vc.CONFLICT_THIS: '.THIS',
-        _vc.CONFLICT_MERGED: '',
+        _vc.CONFLICT_BASE: ".BASE",
+        _vc.CONFLICT_OTHER: ".OTHER",
+        _vc.CONFLICT_THIS: ".THIS",
+        _vc.CONFLICT_MERGED: "",
     }
 
     # We use None here to indicate flags that we don't deal with or care about
     state_1_map = {
-        " ": None,                # First status column empty
-        "+": None,                # File versioned
-        "-": None,                # File unversioned
-        "R": _vc.STATE_RENAMED,   # File renamed
-        "?": _vc.STATE_NONE,      # File unknown
-        "X": None,                # File nonexistent (and unknown to bzr)
+        " ": None,  # First status column empty
+        "+": None,  # File versioned
+        "-": None,  # File unversioned
+        "R": _vc.STATE_RENAMED,  # File renamed
+        "?": _vc.STATE_NONE,  # File unknown
+        "X": None,  # File nonexistent (and unknown to bzr)
         "C": _vc.STATE_CONFLICT,  # File has conflicts
-        "P": None,                # Entry for a pending merge (not a file)
+        "P": None,  # Entry for a pending merge (not a file)
     }
 
     state_2_map = {
-        " ": _vc.STATE_NORMAL,    # Second status column empty
-        "N": _vc.STATE_NEW,       # File created
-        "D": _vc.STATE_REMOVED,   # File deleted
-        "K": None,                # File kind changed
+        " ": _vc.STATE_NORMAL,  # Second status column empty
+        "N": _vc.STATE_NEW,  # File created
+        "D": _vc.STATE_REMOVED,  # File deleted
+        "K": None,  # File kind changed
         "M": _vc.STATE_MODIFIED,  # File modified
     }
 
@@ -79,47 +81,64 @@ class Vc(_vc.Vc):
         "@": _vc.STATE_MODIFIED,
     }
 
-    valid_status_re = r'[%s][%s][%s]\s*' % (''.join(state_1_map.keys()),
-                                            ''.join(state_2_map.keys()),
-                                            ''.join(state_3_map.keys()),)
+    valid_status_re = r"[%s][%s][%s]\s*" % (
+        "".join(state_1_map.keys()),
+        "".join(state_2_map.keys()),
+        "".join(state_3_map.keys()),
+    )
 
     def add(self, runner, files):
         fullcmd = [self.CMD] + self.CMDARGS
-        command = [fullcmd, 'add']
+        command = [fullcmd, "add"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def commit(self, runner, files, message):
         fullcmd = [self.CMD] + self.CMDARGS
-        command = [fullcmd, 'commit', '-m', message]
+        command = [fullcmd, "commit", "-m", message]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["revert"] + files, [], refresh=True,
-            working_dir=self.root)
+            [self.CMD] + self.CMDARGS + ["revert"] + files,
+            [],
+            refresh=True,
+            working_dir=self.root,
+        )
 
     def push(self, runner):
         runner(
-            [self.CMD] + self.CMDARGS + ["push"], [], refresh=True,
-            working_dir=self.root)
+            [self.CMD] + self.CMDARGS + ["push"],
+            [],
+            refresh=True,
+            working_dir=self.root,
+        )
 
     def update(self, runner):
         # TODO: Handle checkouts/bound branches by calling
         # update instead of pull. For now we've replicated existing
         # functionality, as update will not work for unbound branches.
         runner(
-            [self.CMD] + self.CMDARGS + ["pull"], [], refresh=True,
-            working_dir=self.root)
+            [self.CMD] + self.CMDARGS + ["pull"],
+            [],
+            refresh=True,
+            working_dir=self.root,
+        )
 
     def resolve(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["resolve"] + files, [], refresh=True,
-            working_dir=self.root)
+            [self.CMD] + self.CMDARGS + ["resolve"] + files,
+            [],
+            refresh=True,
+            working_dir=self.root,
+        )
 
     def remove(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["rm"] + files, [], refresh=True,
-            working_dir=self.root)
+            [self.CMD] + self.CMDARGS + ["rm"] + files,
+            [],
+            refresh=True,
+            working_dir=self.root,
+        )
 
     @classmethod
     def valid_repo(cls, path):
@@ -139,14 +158,19 @@ class Vc(_vc.Vc):
     def _update_tree_state_cache(self, path):
         # FIXME: This actually clears out state information, because the
         # current API doesn't have any state outside of _tree_cache.
-        branch_root = _vc.popen(
-            [self.CMD] + self.CMDARGS + ["root", path],
-            cwd=self.location).read().rstrip('\n')
+        branch_root = (
+            _vc.popen([self.CMD] + self.CMDARGS + ["root", path], cwd=self.location)
+            .read()
+            .rstrip("\n")
+        )
         entries = []
         while 1:
             try:
-                proc = _vc.popen([self.CMD] + self.CMDARGS +
-                                 ["status", "-S", "--no-pending", branch_root])
+                proc = _vc.popen(
+                    [self.CMD]
+                    + self.CMDARGS
+                    + ["status", "-S", "--no-pending", branch_root]
+                )
                 entries = proc.read().split("\n")[:-1]
                 break
             except OSError as e:
@@ -191,12 +215,12 @@ class Vc(_vc.Vc):
 
             if state3 and state3 is _vc.STATE_MODIFIED:
                 # line = _vc.popen(self.diff_command() + [path]).readline()
-                line = _vc.popen(['bzr', 'diff', path]).readline()
+                line = _vc.popen(["bzr", "diff", path]).readline()
                 executable_match = re.search(self.PATCH_INDEX_RE, line)
                 if executable_match:
                     meta.append(executable_match.group(2))
 
-            path = path[:-1] if path.endswith('/') else path
+            path = path[:-1] if path.endswith("/") else path
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
             # Bazaar entries will only be REMOVED in the second state column
@@ -211,15 +235,14 @@ class Vc(_vc.Vc):
                 del tree_meta_cache[old]
             self._reverse_rename_cache[new] = old
 
-        self._tree_cache.update(
-            dict((x, max(y)) for x, y in tree_cache.items()))
+        self._tree_cache.update(dict((x, max(y)) for x, y in tree_cache.items()))
         self._tree_meta_cache = dict(tree_meta_cache)
 
     def get_path_for_repo_file(self, path, commit=None):
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
-        path = path[len(self.root) + 1:]
+        path = path[len(self.root) + 1 :]
         suffix = os.path.splitext(path)[1]
 
         args = [self.CMD, "cat", path]
@@ -229,8 +252,7 @@ class Vc(_vc.Vc):
         return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def get_path_for_conflict(self, path, conflict):
-        if path in self._reverse_rename_cache and not \
-                conflict == _vc.CONFLICT_MERGED:
+        if path in self._reverse_rename_cache and not conflict == _vc.CONFLICT_MERGED:
             path = self._reverse_rename_cache[path]
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")

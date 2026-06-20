@@ -86,7 +86,7 @@ def files_are_images(gfiles):
     return True
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/imagediff.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/imagediff.ui")
 class ImageDiff(Gtk.Box, MeldDoc):
     """Two or three way comparison of image files"""
 
@@ -116,7 +116,7 @@ class ImageDiff(Gtk.Box, MeldDoc):
 
     lock_scrolling = GObject.Property(
         type=bool,
-        nick='Lock scrolling of all panes',
+        nick="Lock scrolling of all panes",
         default=False,
     )
 
@@ -163,13 +163,13 @@ class ImageDiff(Gtk.Box, MeldDoc):
         # Manually handle GAction additions
         # TODO: Highlight the selected image.
         actions = (
-            ('copy-full-path', self.action_copy_full_path),
-            ('open-external', self.action_open_external),
-            ('open-folder', self.action_open_folder),
+            ("copy-full-path", self.action_copy_full_path),
+            ("open-external", self.action_open_external),
+            ("open-folder", self.action_open_folder),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
-            action.connect('activate', callback)
+            action.connect("activate", callback)
             self.view_action_group.add_action(action)
 
         self.set_num_panes(num_panes)
@@ -198,10 +198,8 @@ class ImageDiff(Gtk.Box, MeldDoc):
         self.recompute_label()
 
     def load_file_in_pane(
-            self,
-            pane: int,
-            gfile: Gio.File,
-            encoding: GtkSource.Encoding = None):
+        self, pane: int, gfile: Gio.File, encoding: GtkSource.Encoding = None
+    ):
         """Load a file into the given pane
 
         Don't call this directly; use `set_file()` or `set_files()`,
@@ -217,14 +215,10 @@ class ImageDiff(Gtk.Box, MeldDoc):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
-        for widget in (
-                self.image_main[:n] +
-                self.scroll_window[:n] + self.viewport[:n]):
+        for widget in self.image_main[:n] + self.scroll_window[:n] + self.viewport[:n]:
             widget.show()
 
-        for widget in (
-                self.image_main[n:] +
-                self.scroll_window[n:] + self.viewport[n:]):
+        for widget in self.image_main[n:] + self.scroll_window[n:] + self.viewport[n:]:
             widget.hide()
 
         self.num_panes = n

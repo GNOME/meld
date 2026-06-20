@@ -46,8 +46,8 @@ def find_common_suffix(a, b):
         pointermid = pointermax
         pointermin = 0
         while pointermin < pointermid:
-            a_tail = a[-pointermid:len(a) - pointermin]
-            b_tail = b[-pointermid:len(b) - pointermin]
+            a_tail = a[-pointermid : len(a) - pointermin]
+            b_tail = b[-pointermid : len(b) - pointermin]
             if a_tail == b_tail:
                 pointermin = pointermid
             else:
@@ -84,10 +84,9 @@ class DiffChunk(typing.NamedTuple):
 
 
 class MyersSequenceMatcher(difflib.SequenceMatcher):
-
     def __init__(self, isjunk=None, a="", b=""):
         if isjunk is not None:
-            raise NotImplementedError('isjunk is not supported yet')
+            raise NotImplementedError("isjunk is not supported yet")
         # The sequences we're comparing must be considered immutable;
         # calling e.g., GtkTextBuffer methods to retrieve these line-by-line
         # isn't really a thing we can or should do.
@@ -117,14 +116,14 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
         self.common_prefix = self.common_suffix = 0
         self.common_prefix = find_common_prefix(a, b)
         if self.common_prefix > 0:
-            a = a[self.common_prefix:]
-            b = b[self.common_prefix:]
+            a = a[self.common_prefix :]
+            b = b[self.common_prefix :]
 
         if len(a) > 0 and len(b) > 0:
             self.common_suffix = find_common_suffix(a, b)
             if self.common_suffix > 0:
-                a = a[:len(a) - self.common_suffix]
-                b = b[:len(b) - self.common_suffix]
+                a = a[: len(a) - self.common_suffix]
+                b = b[: len(b) - self.common_suffix]
         return (a, b)
 
     def preprocess_discard_nonmatching_lines(self, a, b):
@@ -148,8 +147,9 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
 
         # We only use the optimised result if it's worthwhile. The constant
         # represents a heuristic of how many lines constitute 'worthwhile'.
-        self.lines_discarded = (len(b) - len(indexed_b) > 10 or
-                                len(a) - len(indexed_a) > 10)
+        self.lines_discarded = (
+            len(b) - len(indexed_b) > 10 or len(a) - len(indexed_a) > 10
+        )
         if self.lines_discarded:
             a = indexed_a
             b = indexed_b
@@ -179,8 +179,8 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
             while i >= 0:
                 prev_a, prev_b, prev_len = self.matching_blocks[i]
                 if prev_b + prev_len == cur_b or prev_a + prev_len == cur_a:
-                    prev_slice_a = self.a[cur_a - prev_len:cur_a]
-                    prev_slice_b = self.b[cur_b - prev_len:cur_b]
+                    prev_slice_a = self.a[cur_a - prev_len : cur_a]
+                    prev_slice_b = self.b[cur_b - prev_len : cur_b]
                     if prev_slice_a == prev_slice_b:
                         cur_b -= prev_len
                         cur_a -= prev_len
@@ -232,14 +232,17 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
                 else:
                     matching_blocks.insert(0, (xprev, yprev, snake))
             else:
-                matching_blocks.insert(0, (x + common_prefix,
-                                           y + common_prefix, snake))
+                matching_blocks.insert(0, (x + common_prefix, y + common_prefix, snake))
         if common_prefix:
             matching_blocks.insert(0, (0, 0, common_prefix))
         if common_suffix:
-            matching_blocks.append((len(self.a) - common_suffix,
-                                    len(self.b) - common_suffix,
-                                    common_suffix))
+            matching_blocks.append(
+                (
+                    len(self.a) - common_suffix,
+                    len(self.b) - common_suffix,
+                    common_suffix,
+                )
+            )
         matching_blocks.append((len(self.a), len(self.b), 0))
         # clean-up to free memory
         self.aindex = self.bindex = None
@@ -333,7 +336,6 @@ class MyersSequenceMatcher(difflib.SequenceMatcher):
 
 
 class InlineMyersSequenceMatcher(MyersSequenceMatcher):
-
     def preprocess_discard_nonmatching_lines(self, a, b):
 
         if len(a) <= 2 and len(b) <= 2:
@@ -342,12 +344,12 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
             return (a, b)
 
         def index_matching_kmers(a, b):
-            aset = set([a[i:i + 3] for i in range(len(a) - 2)])
+            aset = set([a[i : i + 3] for i in range(len(a) - 2)])
             matches, index = [], []
             next_poss_match = 0
             # Start from where we can get a valid triple
             for i in range(2, len(b)):
-                if b[i - 2:i + 1] not in aset:
+                if b[i - 2 : i + 1] not in aset:
                     continue
                 # Make sure we don't re-record matches from overlapping kmers
                 for j in range(max(next_poss_match, i - 2), i + 1):
@@ -361,8 +363,9 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
 
         # We only use the optimised result if it's worthwhile. The constant
         # represents a heuristic of how many lines constitute 'worthwhile'.
-        self.lines_discarded = (len(b) - len(indexed_b) > 10 or
-                                len(a) - len(indexed_a) > 10)
+        self.lines_discarded = (
+            len(b) - len(indexed_b) > 10 or len(a) - len(indexed_a) > 10
+        )
         if self.lines_discarded:
             a = indexed_a
             b = indexed_b
@@ -370,7 +373,6 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
 
 
 class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
-
     def __init__(self, isjunk=None, a="", b="", syncpoints=None):
         super().__init__(isjunk, a, b)
         self.isjunk = isjunk
@@ -404,8 +406,12 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                     aj = matching_blocks[mb_len][0]
                     bj = matching_blocks[mb_len][1]
                     bl = matching_blocks[mb_len][2]
-                    if (aj + bl == ai and bj + bl == bi and
-                            blocks[0][0] == 0 and blocks[0][1] == 0):
+                    if (
+                        aj + bl == ai
+                        and bj + bl == bi
+                        and blocks[0][0] == 0
+                        and blocks[0][1] == 0
+                    ):
                         block = blocks.pop(0)
                         matching_blocks[mb_len] = (aj, bj, bl + block[2])
                 for x, y, length in blocks[:-1]:
@@ -414,7 +420,8 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                 # Split matching blocks each need to be terminated to get our
                 # split chunks correctly created
                 self.split_matching_blocks.append(
-                    matching_blocks + [(ai + len(a), bi + len(b), 0)])
+                    matching_blocks + [(ai + len(a), bi + len(b), 0)]
+                )
             self.matching_blocks.append((len(self.a), len(self.b), 0))
             yield 1
 
@@ -428,18 +435,18 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
         self.get_matching_blocks()
         for matching_blocks in self.split_matching_blocks:
             for ai, bj, size in matching_blocks:
-                tag = ''
+                tag = ""
                 if i < ai and j < bj:
-                    tag = 'replace'
+                    tag = "replace"
                 elif i < ai:
-                    tag = 'delete'
+                    tag = "delete"
                 elif j < bj:
-                    tag = 'insert'
+                    tag = "insert"
                 if tag:
                     opcodes.append((tag, i, ai, j, bj))
                 i, j = ai + size, bj + size
                 # the list of matching blocks is terminated by a
                 # sentinel with size 0
                 if size:
-                    opcodes.append(('equal', ai, i, bj, j))
+                    opcodes.append(("equal", ai, i, bj, j))
         return [DiffChunk._make(chunk) for chunk in opcodes]

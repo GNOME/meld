@@ -24,28 +24,27 @@ log = logging.getLogger(__name__)
 
 
 class EmblemCellRenderer(Gtk.CellRenderer):
-
     __gtype_name__ = "EmblemCellRenderer"
 
     icon_cache: Dict[Tuple[str, int], GdkPixbuf.Pixbuf] = {}
 
     icon_name = GObject.Property(
         type=str,
-        nick='Named icon',
-        blurb='Name for base icon',
-        default='text-x-generic',
+        nick="Named icon",
+        blurb="Name for base icon",
+        default="text-x-generic",
     )
 
     emblem_name = GObject.Property(
         type=str,
-        nick='Named emblem icon',
-        blurb='Name for emblem icon to overlay',
+        nick="Named emblem icon",
+        blurb="Name for emblem icon to overlay",
     )
 
     icon_tint = GObject.Property(
         type=Gdk.RGBA,
-        nick='Icon tint',
-        blurb='GDK-parseable color to be used to tint icon',
+        nick="Icon tint",
+        blurb="GDK-parseable color to be used to tint icon",
     )
 
     def __init__(self):
@@ -64,9 +63,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             try:
                 pixbuf = icon_theme.load_icon(name, size, 0).copy()
             except GLib.GError as err:
-                if err.domain != GLib.quark_to_string(
-                    Gtk.IconThemeError.quark()
-                ):
+                if err.domain != GLib.quark_to_string(Gtk.IconThemeError.quark()):
                     raise
                 log.error(f"Icon {name!r} not found; an icon theme is missing")
                 pixbuf = None
@@ -89,8 +86,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
             # size
             height_offset = int((cell_area.height - pixbuf.get_height()) / 2)
             Gdk.cairo_set_source_pixbuf(context, pixbuf, 0, height_offset)
-            context.rectangle(0, height_offset,
-                              pixbuf.get_width(), pixbuf.get_height())
+            context.rectangle(0, height_offset, pixbuf.get_width(), pixbuf.get_height())
             context.fill()
 
             if self.icon_tint:
@@ -99,9 +95,9 @@ class EmblemCellRenderer(Gtk.CellRenderer):
                 # Figure out the difference between our tint colour and an
                 # empirically determined (i.e., guessed) satisfying luma and
                 # adjust the base colours accordingly
-                luma = (r + r + b + g + g + g) / 6.
-                extra_luma = (1.2 - luma) / 3.
-                r, g, b = [min(x + extra_luma, 1.) for x in (r, g, b)]
+                luma = (r + r + b + g + g + g) / 6.0
+                extra_luma = (1.2 - luma) / 3.0
+                r, g, b = [min(x + extra_luma, 1.0) for x in (r, g, b)]
                 context.set_source_rgba(r, g, b, 0.4)
                 context.set_operator(cairo.OPERATOR_ATOP)
                 context.paint()

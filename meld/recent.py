@@ -42,7 +42,6 @@ log = logging.getLogger(__name__)
 
 
 class RecentFiles:
-
     mime_type = "application/x-meld-comparison"
     recent_path = os.path.join(GLib.get_user_data_dir(), "meld")
     recent_suffix = ".meldcmp"
@@ -52,7 +51,7 @@ class RecentFiles:
 
     def __init__(self):
         self.recent_manager = Gtk.RecentManager.get_default()
-        self.recent_filter = None # TODO
+        self.recent_filter = None  # TODO
         # self.recent_filter = Gtk.RecentFilter()
         # self.recent_filter.add_mime_type(self.mime_type)
         self._stored_comparisons = {}
@@ -73,7 +72,7 @@ class RecentFiles:
         try:
             recent_type, gfiles = tab.get_comparison()
         except Exception:
-            log.warning(f'Failed to get recent comparison data for {tab}')
+            log.warning(f"Failed to get recent comparison data for {tab}")
             return
 
         # While Meld handles comparisons including None, recording these as
@@ -95,8 +94,7 @@ class RecentFiles:
         # the corresponding comparison file
         comparison_key = (recent_type, tuple(uris))
         if comparison_key in self._stored_comparisons:
-            gfile = Gio.File.new_for_uri(
-                self._stored_comparisons[comparison_key])
+            gfile = Gio.File.new_for_uri(self._stored_comparisons[comparison_key])
         else:
             recent_path = self._write_recent_file(recent_type, uris)
             gfile = Gio.File.new_for_path(recent_path)
@@ -108,11 +106,10 @@ class RecentFiles:
             userhome = os.path.expanduser("~")
             if display_path.startswith(userhome):
                 # FIXME: What should we show on Windows?
-                display_path = "~" + display_path[len(userhome):]
+                display_path = "~" + display_path[len(userhome) :]
             display_name = _("Version control:") + " " + display_path
         # FIXME: Should this be translatable? It's not actually used anywhere.
-        description = "{} comparison\n{}".format(
-            recent_type.value, ", ".join(uris))
+        description = "{} comparison\n{}".format(recent_type.value, ", ".join(uris))
 
         recent_metadata = Gtk.RecentData()
         recent_metadata.mime_type = self.mime_type
@@ -133,9 +130,11 @@ class RecentFiles:
         try:
             config = configparser.RawConfigParser()
             config.read(comp_path)
-            assert (config.has_section("Comparison") and
-                    config.has_option("Comparison", "type") and
-                    config.has_option("Comparison", "uris"))
+            assert (
+                config.has_section("Comparison")
+                and config.has_option("Comparison", "type")
+                and config.has_option("Comparison", "uris")
+            )
         except (configparser.Error, AssertionError):
             raise ValueError("Invalid recent comparison file")
 
@@ -153,8 +152,12 @@ class RecentFiles:
         # TODO: Use GKeyFile instead, and return a Gio.File. This is why we're
         # using ';' to join comparison paths.
         with tempfile.NamedTemporaryFile(
-                mode='w+t', prefix='recent-', suffix=self.recent_suffix,
-                dir=self.recent_path, delete=False) as f:
+            mode="w+t",
+            prefix="recent-",
+            suffix=self.recent_suffix,
+            dir=self.recent_path,
+            delete=False,
+        ) as f:
             config = configparser.RawConfigParser()
             config.add_section("Comparison")
             config.set("Comparison", "type", recent_type.value)
@@ -176,7 +179,6 @@ class RecentFiles:
             if not can_open:
                 self.recent_manager.remove_item(item.get_uri())
 
-
     def _update_recent_files(self, *args):
         items = self.recent_manager.get_items()
         self._stored_comparisons = {}
@@ -190,7 +192,7 @@ class RecentFiles:
             gfile_uris = tuple(gfile.get_uri() for gfile in gfiles)
             self._stored_comparisons[recent_type, gfile_uris] = item_uri
 
-    def _filter_items(self, recent_filter, items): # TODO
+    def _filter_items(self, recent_filter, items):  # TODO
         filtered_items = items
         return filtered_items
 
@@ -198,8 +200,9 @@ class RecentFiles:
         items = self.recent_manager.get_items()
         descriptions = []
         for i in self._filter_items(self.recent_filter, items):
-            descriptions.append("%s\n%s\n" % (i.get_display_name(),
-                                              i.get_uri_display()))
+            descriptions.append(
+                "%s\n%s\n" % (i.get_display_name(), i.get_uri_display())
+            )
         return "\n".join(descriptions)
 
 

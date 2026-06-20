@@ -61,7 +61,10 @@ def launched_cb(launcher: Gtk.FileLauncher, result: Gio.AsyncResult, *data):
         # TODO: Replace with an alert AdwDialog or similar
         log.error(f"Failed to open {launcher.get_file().get_path()}: {err!s}")
 
-def open_containing_folder_cb(launcher: Gtk.FileLauncher, result: Gio.AsyncResult, *data):
+
+def open_containing_folder_cb(
+    launcher: Gtk.FileLauncher, result: Gio.AsyncResult, *data
+):
     try:
         launcher.open_containing_folder_finish(result)
     except GLib.Error as err:
@@ -86,7 +89,9 @@ def launch_with_default_handler(
     else:
         launcher = Gtk.FileLauncher(file=gfile)
         if open_parent:
-            launcher.open_containing_folder(toplevel, None, open_containing_folder_cb, None)
+            launcher.open_containing_folder(
+                toplevel, None, open_containing_folder_cb, None
+            )
         else:
             launcher.launch(toplevel, None, launched_cb, None)
 

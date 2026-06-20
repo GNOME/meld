@@ -25,18 +25,17 @@ from meld.ui.gtkutil import alpha_tint
 
 
 class ActionGutter(Gtk.Widget):
-
-    __gtype_name__ = 'ActionGutter'
+    __gtype_name__ = "ActionGutter"
 
     action_mode = GObject.Property(
         type=int,
-        nick='Action mode for chunk change actions',
+        nick="Action mode for chunk change actions",
         default=ActionMode.Replace,
     )
 
     @GObject.Property(
         type=object,
-        nick='List of diff chunks for display',
+        nick="List of diff chunks for display",
     )
     def chunks(self):
         return self._chunks
@@ -49,11 +48,11 @@ class ActionGutter(Gtk.Widget):
 
     @GObject.Property(
         type=Gtk.TextDirection,
-        nick='Which direction should directional changes appear to go',
+        nick="Which direction should directional changes appear to go",
         flags=(
-            GObject.ParamFlags.READABLE |
-            GObject.ParamFlags.WRITABLE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
+            GObject.ParamFlags.READABLE
+            | GObject.ParamFlags.WRITABLE
+            | GObject.ParamFlags.CONSTRUCT_ONLY
         ),
         default=Gtk.TextDirection.LTR,
     )
@@ -81,7 +80,7 @@ class ActionGutter(Gtk.Widget):
 
     @GObject.Property(
         type=Gtk.TextView,
-        nick='Text view for which action are displayed',
+        nick="Text view for which action are displayed",
         default=None,
     )
     def source_view(self):
@@ -93,7 +92,8 @@ class ActionGutter(Gtk.Widget):
             self._source_view.disconnect(self._source_editable_connect_id)
 
         self._source_editable_connect_id = view.connect(
-            'notify::editable', lambda *args: self.queue_draw())
+            "notify::editable", lambda *args: self.queue_draw()
+        )
         self._source_view = view
         self.queue_draw()
 
@@ -102,7 +102,7 @@ class ActionGutter(Gtk.Widget):
 
     @GObject.Property(
         type=Gtk.TextView,
-        nick='Text view to which actions are directed',
+        nick="Text view to which actions are directed",
         default=None,
     )
     def target_view(self):
@@ -114,7 +114,8 @@ class ActionGutter(Gtk.Widget):
             self._target_view.disconnect(self._target_editable_connect_id)
 
         self._target_editable_connect_id = view.connect(
-            'notify::editable', lambda *args: self.queue_draw())
+            "notify::editable", lambda *args: self.queue_draw()
+        )
         self._target_view = view
         self.queue_draw()
 
@@ -125,8 +126,7 @@ class ActionGutter(Gtk.Widget):
         from_view: Gtk.TextView,
         to_view: Gtk.TextView,
         chunk: object,
-    ) -> None:
-        ...
+    ) -> None: ...
 
     def __init__(self):
         super().__init__()
@@ -154,20 +154,20 @@ class ActionGutter(Gtk.Widget):
         self.connect("realize", self.on_realize)
 
     def on_setting_changed(self, settings, key):
-        if key == 'style-scheme':
+        if key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
-            alpha = self.fill_colors['current-chunk-highlight'].alpha
+            alpha = self.fill_colors["current-chunk-highlight"].alpha
             self.chunk_highlights = {
                 state: alpha_tint(colour, alpha)
                 for state, colour in self.fill_colors.items()
             }
 
     def on_realize(self, *args):
-        self.connect('notify::action-mode', lambda *args: self.queue_draw())
+        self.connect("notify::action-mode", lambda *args: self.queue_draw())
 
         meld_settings = get_meld_settings()
-        meld_settings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meld_settings, 'style-scheme')
+        meld_settings.connect("changed", self.on_setting_changed)
+        self.on_setting_changed(meld_settings, "style-scheme")
 
         button = Gtk.Button()
         button.set_parent(self)
@@ -252,7 +252,8 @@ class ActionGutter(Gtk.Widget):
 
     def _action_on_chunk(self, action: ChunkAction, chunk):
         self.chunk_action_activated.emit(
-            action.value, self.source_view, self.target_view, chunk)
+            action.value, self.source_view, self.target_view, chunk
+        )
 
     def activate(self, chunk: DiffChunk, x: float, y: float):
         action = self._classify_change_actions(chunk)
@@ -367,7 +368,9 @@ class ActionGutter(Gtk.Widget):
             button_y += 1
             button_height -= 2
 
-            button_transform = Gsk.Transform().translate(Graphene.Point().init(button_x, button_y))
+            button_transform = Gsk.Transform().translate(
+                Graphene.Point().init(button_x, button_y)
+            )
             self.button.set_size_request(button_width, button_height)
             self.button.props.icon_name = self.action_icon_name_map.get(action)
             self.button.allocate(button_width, button_height, -1, button_transform)
@@ -421,25 +424,25 @@ class ActionGutter(Gtk.Widget):
         # Reclassify conflict changes, since we treat them the same as a
         # normal two-way change as far as actions are concerned
         change_type = change[0]
-        if change_type == 'conflict':
+        if change_type == "conflict":
             if change[1] == change[2]:
-                change_type = 'insert'
+                change_type = "insert"
             elif change[3] == change[4]:
-                change_type = 'delete'
+                change_type = "delete"
             else:
-                change_type = 'replace'
+                change_type = "replace"
 
-        if change_type == 'insert':
+        if change_type == "insert":
             return None
 
         action = self.action_mode
         if action == ActionMode.Delete and not source_editable:
             action = None
-        elif action == ActionMode.Insert and change_type == 'delete':
+        elif action == ActionMode.Insert and change_type == "delete":
             action = ActionMode.Replace
         if not target_editable:
             action = ActionMode.Delete
         return action
 
 
-ActionGutter.set_css_name('action-gutter')
+ActionGutter.set_css_name("action-gutter")

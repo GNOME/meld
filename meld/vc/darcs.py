@@ -32,7 +32,6 @@ from . import _vc
 
 
 class Vc(_vc.Vc):
-
     # Requires Darcs version >= 2.10.3
     # TODO implement get_commits_to_push_summary using `darcs push --dry-run`
     # Currently `darcs whatsnew` (as of v2.10.3) does not report conflicts
@@ -49,13 +48,13 @@ class Vc(_vc.Vc):
         "M!": _vc.STATE_CONFLICT,
         "R": _vc.STATE_REMOVED,
         "F": _vc.STATE_NONEXIST,  # previous name of file
-        "T": _vc.STATE_RENAMED,   # new name of file
+        "T": _vc.STATE_RENAMED,  # new name of file
     }
 
     @classmethod
     def is_installed(cls):
         try:
-            proc = _vc.popen([cls.CMD, '--version'])
+            proc = _vc.popen([cls.CMD, "--version"])
             # check that version >= 2.10.3
             (x, y, z) = proc.read().split(" ", 1)[0].split(".", 2)[:3]
             assert (x, y, z) >= (2, 10, 3)
@@ -64,27 +63,27 @@ class Vc(_vc.Vc):
             return False
 
     def commit(self, runner, files, message):
-        command = [self.CMD, 'record', '-a', '-m', message]
+        command = [self.CMD, "record", "-a", "-m", message]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def update(self, runner):
-        command = [self.CMD, 'pull', '-a']
+        command = [self.CMD, "pull", "-a"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def push(self, runner):
-        command = [self.CMD, 'push', '-a']
+        command = [self.CMD, "push", "-a"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def add(self, runner, files):
-        command = [self.CMD, 'add', '-r']
+        command = [self.CMD, "add", "-r"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
-        command = [self.CMD, 'remove', '-r']
+        command = [self.CMD, "remove", "-r"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
-        command = [self.CMD, 'revert', '-a']
+        command = [self.CMD, "revert", "-a"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -98,14 +97,18 @@ class Vc(_vc.Vc):
         if path in self._reverse_rename_cache:
             path = self._reverse_rename_cache[path]
 
-        path = path[len(self.root) + 1:]
+        path = path[len(self.root) + 1 :]
         suffix = os.path.splitext(path)[1]
         process = subprocess.Popen(
-            [self.CMD, "show", "contents", path], cwd=self.root,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            [self.CMD, "show", "contents", path],
+            cwd=self.root,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
 
-        with tempfile.NamedTemporaryFile(prefix='meld-tmp',
-                                         suffix=suffix, delete=False) as f:
+        with tempfile.NamedTemporaryFile(
+            prefix="meld-tmp", suffix=suffix, delete=False
+        ) as f:
             shutil.copyfileobj(process.stdout, f)
         return f.name
 
@@ -116,12 +119,13 @@ class Vc(_vc.Vc):
     def _update_tree_state_cache(self, path):
         # FIXME: currently ignoring 'path' due to darcs's bad
         #        behaviour (= fails) when given "" argument
-        """ Update the state of the file(s) at self._tree_cache['path'] """
+        """Update the state of the file(s) at self._tree_cache['path']"""
         while 1:
             try:
                 proc = _vc.popen(
                     [self.CMD, "whatsnew", "-sl", "--machine-readable"],
-                    cwd=self.location)
+                    cwd=self.location,
+                )
                 lines = proc.read().split("\n")[:-1]
                 break
             except OSError as e:
@@ -165,10 +169,9 @@ class Vc(_vc.Vc):
 
             for old, new in rename_cache.items():
                 self._reverse_rename_cache[new] = old
-                old_name = old[len(self.root) + 1:]
-                new_name = new[len(self.root) + 1:]
-                tree_meta_cache[new] = ("%s ➡ %s" % (old_name, new_name))
+                old_name = old[len(self.root) + 1 :]
+                new_name = new[len(self.root) + 1 :]
+                tree_meta_cache[new] = "%s ➡ %s" % (old_name, new_name)
 
-            self._tree_cache.update(
-                dict((x, y) for x, y in tree_cache.items()))
+            self._tree_cache.update(dict((x, y) for x, y in tree_cache.items()))
             self._tree_meta_cache = dict(tree_meta_cache)

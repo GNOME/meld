@@ -40,8 +40,8 @@ log = logging.getLogger(__name__)
 
 
 class GroupAction:
-    """A group action combines several actions into one logical action.
-    """
+    """A group action combines several actions into one logical action."""
+
     def __init__(self, seq):
         self.seq = seq
         # TODO: If a GroupAction affects more than one sequence, our logic
@@ -62,21 +62,15 @@ class GroupAction:
 
 
 class UndoSequence(GObject.GObject):
-    """A manager class for operations which can be undone/redone.
-    """
+    """A manager class for operations which can be undone/redone."""
 
     __gsignals__ = {
-        'can-undo': (
+        "can-undo": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
+        "can-redo": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
+        "checkpointed": (
             GObject.SignalFlags.RUN_FIRST,
-            None, (GObject.TYPE_BOOLEAN,)
-        ),
-        'can-redo': (
-            GObject.SignalFlags.RUN_FIRST,
-            None, (GObject.TYPE_BOOLEAN,)
-        ),
-        'checkpointed': (
-            GObject.SignalFlags.RUN_FIRST,
-            None, (GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN,)
+            None,
+            (GObject.TYPE_OBJECT, GObject.TYPE_BOOLEAN),
         ),
     }
 
@@ -98,26 +92,27 @@ class UndoSequence(GObject.GObject):
         'can-undo' and 'can-redo' signals are emitted.
         """
         if self.can_undo():
-            self.emit('can-undo', 0)
+            self.emit("can-undo", 0)
         if self.can_redo():
-            self.emit('can-redo', 0)
+            self.emit("can-redo", 0)
         self.actions = []
         self.next_redo = 0
         self.checkpoints = {
             # Each buffer's checkpoint starts at zero and has no end
-            ref(): [0, None] for ref in self.buffer_refs
+            ref(): [0, None]
+            for ref in self.buffer_refs
         }
         self.group = None
         self.busy = False
 
     def can_undo(self):
         """Return whether an undo is possible."""
-        return getattr(self, 'next_redo', 0) > 0
+        return getattr(self, "next_redo", 0) > 0
 
     def can_redo(self):
         """Return whether a redo is possible."""
-        next_redo = getattr(self, 'next_redo', 0)
-        return next_redo < len(getattr(self, 'actions', []))
+        next_redo = getattr(self, "next_redo", 0)
+        return next_redo < len(getattr(self, "actions", []))
 
     def add_action(self, action):
         """Add an action to the undo list.
@@ -133,7 +128,7 @@ class UndoSequence(GObject.GObject):
         if self.group is None:
             if self.checkpointed(action.buffer):
                 self.checkpoints[action.buffer][1] = self.next_redo
-                self.emit('checkpointed', action.buffer, False)
+                self.emit("checkpointed", action.buffer, False)
             else:
                 # If we go back in the undo stack before the checkpoint starts,
                 # and then modify the buffer, we lose the checkpoint altogether
@@ -142,13 +137,13 @@ class UndoSequence(GObject.GObject):
                     self.checkpoints[action.buffer] = (None, None)
             could_undo = self.can_undo()
             could_redo = self.can_redo()
-            self.actions[self.next_redo:] = []
+            self.actions[self.next_redo :] = []
             self.actions.append(action)
             self.next_redo += 1
             if not could_undo:
-                self.emit('can-undo', 1)
+                self.emit("can-undo", 1)
             if could_redo:
-                self.emit('can-redo', 0)
+                self.emit("can-redo", 0)
         else:
             self.group.add_action(action)
 
@@ -161,17 +156,17 @@ class UndoSequence(GObject.GObject):
         self.busy = True
         buf = self.actions[self.next_redo - 1].buffer
         if self.checkpointed(buf):
-            self.emit('checkpointed', buf, False)
+            self.emit("checkpointed", buf, False)
         could_redo = self.can_redo()
         self.next_redo -= 1
         actions = self.actions[self.next_redo].undo()
         self.busy = False
         if not self.can_undo():
-            self.emit('can-undo', 0)
+            self.emit("can-undo", 0)
         if not could_redo:
-            self.emit('can-redo', 1)
+            self.emit("can-redo", 1)
         if self.checkpointed(buf):
-            self.emit('checkpointed', buf, True)
+            self.emit("checkpointed", buf, True)
         return actions
 
     def redo(self):
@@ -183,18 +178,18 @@ class UndoSequence(GObject.GObject):
         self.busy = True
         buf = self.actions[self.next_redo].buffer
         if self.checkpointed(buf):
-            self.emit('checkpointed', buf, False)
+            self.emit("checkpointed", buf, False)
         could_undo = self.can_undo()
         a = self.actions[self.next_redo]
         self.next_redo += 1
         actions = a.redo()
         self.busy = False
         if not could_undo:
-            self.emit('can-undo', 1)
+            self.emit("can-undo", 1)
         if not self.can_redo():
-            self.emit('can-redo', 0)
+            self.emit("can-redo", 0)
         if self.checkpointed(buf):
-            self.emit('checkpointed', buf, True)
+            self.emit("checkpointed", buf, True)
         return actions
 
     def checkpoint(self, buf):
@@ -202,13 +197,12 @@ class UndoSequence(GObject.GObject):
         while start > 0 and self.actions[start - 1].buffer != buf:
             start -= 1
         end = self.next_redo
-        while (end < len(self.actions) - 1 and
-               self.actions[end + 1].buffer != buf):
+        while end < len(self.actions) - 1 and self.actions[end + 1].buffer != buf:
             end += 1
         if end == len(self.actions):
             end = None
         self.checkpoints[buf] = [start, end]
-        self.emit('checkpointed', buf, True)
+        self.emit("checkpointed", buf, True)
 
     def checkpointed(self, buf):
         # While the main undo sequence should always have checkpoints
@@ -252,7 +246,7 @@ class UndoSequence(GObject.GObject):
             return
 
         if self.group is None:
-            log.warning('Tried to end a non-existent group')
+            log.warning("Tried to end a non-existent group")
             return
 
         if self.group.group is not None:
@@ -277,7 +271,7 @@ class UndoSequence(GObject.GObject):
             return
 
         if self.group is None:
-            log.warning('Tried to abort a non-existent group')
+            log.warning("Tried to abort a non-existent group")
             return
 
         if self.group.group is not None:

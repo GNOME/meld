@@ -42,7 +42,6 @@ NULL_SHA = "0000000000000000000000000000000000000000"
 
 
 class Vc(_vc.Vc):
-
     CMD = "git"
     NAME = "Git"
     VC_DIR = ".git"
@@ -59,9 +58,9 @@ class Vc(_vc.Vc):
     }
 
     state_map = {
-        "X": _vc.STATE_NONE,      # Unknown
-        "A": _vc.STATE_NEW,       # New
-        "D": _vc.STATE_REMOVED,   # Deleted
+        "X": _vc.STATE_NONE,  # Unknown
+        "A": _vc.STATE_NEW,  # New
+        "D": _vc.STATE_REMOVED,  # Deleted
         "M": _vc.STATE_MODIFIED,  # Modified
         "T": _vc.STATE_MODIFIED,  # Type-changed
         "U": _vc.STATE_CONFLICT,  # Unmerged
@@ -70,8 +69,8 @@ class Vc(_vc.Vc):
     @classmethod
     def is_installed(cls):
         try:
-            proc = _vc.popen([cls.CMD, '--version'])
-            assert proc.read().startswith('git version')
+            proc = _vc.popen([cls.CMD, "--version"])
+            assert proc.read().startswith("git version")
             return True
         except Exception:
             return False
@@ -92,18 +91,20 @@ class Vc(_vc.Vc):
                 # "%d branches"
                 label = _("{unpushed_commits} in {unpushed_branches}").format(
                     unpushed_commits=ngettext(
-                        "%d unpushed commit", "%d unpushed commits",
-                        unpushed_commits) % unpushed_commits,
+                        "%d unpushed commit", "%d unpushed commits", unpushed_commits
+                    )
+                    % unpushed_commits,
                     unpushed_branches=ngettext(
-                        "%d branch", "%d branches",
-                        unpushed_branches) % unpushed_branches,
+                        "%d branch", "%d branches", unpushed_branches
+                    )
+                    % unpushed_branches,
                 )
             else:
                 # Translators: These messages cover the case where there is
                 # only one branch, and are not part of another message.
                 label = ngettext(
-                    "%d unpushed commit", "%d unpushed commits",
-                    unpushed_commits) % (unpushed_commits)
+                    "%d unpushed commit", "%d unpushed commits", unpushed_commits
+                ) % (unpushed_commits)
         else:
             label = ""
         return label
@@ -111,13 +112,15 @@ class Vc(_vc.Vc):
     def get_valid_actions(self, path_states):
         valid_actions = super().get_valid_actions(path_states)
         if all(s in (_vc.STATE_MODIFIED, _vc.STATE_NEW) for s in path_states.values()):
-            valid_actions.add('unstage')
+            valid_actions.add("unstage")
         return valid_actions
 
     def get_commits_to_push(self):
         proc = self.run(
-            "for-each-ref", "--format=%(refname:short) %(upstream:short) %(upstream:trackshort)",
-            "refs/heads")
+            "for-each-ref",
+            "--format=%(refname:short) %(upstream:short) %(upstream:trackshort)",
+            "refs/heads",
+        )
         branch_remotes = proc.stdout.read().split("\n")[:-1]
 
         branch_revisions = {}
@@ -138,9 +141,7 @@ class Vc(_vc.Vc):
             if os.path.isdir(p):
                 cached_entries, entries = self._get_modified_files(p)
                 all_entries = set(entries + cached_entries)
-                names = [
-                    self.DIFF_RE.search(e).groups()[5] for e in all_entries
-                ]
+                names = [self.DIFF_RE.search(e).groups()[5] for e in all_entries]
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
@@ -151,7 +152,7 @@ class Vc(_vc.Vc):
         if os.path.exists(commit_path):
             # If I have to deal with non-ascii, non-UTF8 pregenerated commit
             # messages, I'm taking up pig farming.
-            with open(commit_path, encoding='utf-8') as f:
+            with open(commit_path, encoding="utf-8") as f:
                 message = f.read()
             return "\n".join(
                 line for line in message.splitlines() if not line.startswith("#")
@@ -159,44 +160,44 @@ class Vc(_vc.Vc):
         return None
 
     def commit(self, runner, files, message):
-        command = [self.CMD, 'commit', '-m', message]
+        command = [self.CMD, "commit", "-m", message]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def update(self, runner):
-        command = [self.CMD, 'pull']
+        command = [self.CMD, "pull"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def push(self, runner):
-        command = [self.CMD, 'push']
+        command = [self.CMD, "push"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def add(self, runner, files):
-        command = [self.CMD, 'add']
+        command = [self.CMD, "add"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
-        command = [self.CMD, 'rm', '-r']
+        command = [self.CMD, "rm", "-r"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
         exists = [f for f in files if os.path.exists(f)]
         missing = [f for f in files if not os.path.exists(f)]
         if exists:
-            command = [self.CMD, 'checkout']
+            command = [self.CMD, "checkout"]
             runner(command, exists, refresh=True, working_dir=self.root)
         if missing:
-            command = [self.CMD, 'checkout', 'HEAD']
+            command = [self.CMD, "checkout", "HEAD"]
             runner(command, missing, refresh=True, working_dir=self.root)
 
     def resolve(self, runner, files):
-        command = [self.CMD, 'add']
+        command = [self.CMD, "add"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def unstage(self, runner, files):
-        command = [self.CMD, 'restore', '--staged']
+        command = [self.CMD, "restore", "--staged"]
         runner(command, files, refresh=True, working_dir=self.root)
 
-    def remerge_with_ancestor(self, local, base, remote, suffix=''):
+    def remerge_with_ancestor(self, local, base, remote, suffix=""):
         """Reconstruct a mixed merge-plus-base file
 
         This method re-merges a given file to get diff3-style conflicts
@@ -205,14 +206,20 @@ class Vc(_vc.Vc):
         common ancestor anywhere there *is* a conflict.
         """
         proc = self.run(
-            "merge-file", "-p", "--diff3", local, base, remote,
-            use_locale_encoding=False)
-        vc_file = io.BytesIO(
-            _vc.base_from_diff3(proc.stdout.read()))
+            "merge-file",
+            "-p",
+            "--diff3",
+            local,
+            base,
+            remote,
+            use_locale_encoding=False,
+        )
+        vc_file = io.BytesIO(_vc.base_from_diff3(proc.stdout.read()))
 
-        prefix = 'meld-tmp-%s-' % _vc.CONFLICT_MERGED
+        prefix = "meld-tmp-%s-" % _vc.CONFLICT_MERGED
         with tempfile.NamedTemporaryFile(
-                prefix=prefix, suffix=suffix, delete=False) as f:
+            prefix=prefix, suffix=suffix, delete=False
+        ) as f:
             shutil.copyfileobj(vc_file, f)
 
         return f.name, True
@@ -222,7 +229,7 @@ class Vc(_vc.Vc):
         if not path.startswith(root_prefix):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
 
-        path = path[len(root_prefix):]
+        path = path[len(root_prefix) :]
         if os.name == "nt":
             path = path.replace("\\", "/")
 
@@ -236,12 +243,12 @@ class Vc(_vc.Vc):
             remote, _ = self.get_path_for_conflict(path, _vc.CONFLICT_REMOTE)
 
             if not (local and base and remote):
-                raise _vc.InvalidVCPath(self, path,
-                                        "Couldn't access conflict parents")
+                raise _vc.InvalidVCPath(self, path, "Couldn't access conflict parents")
 
             suffix = os.path.splitext(path)[1]
             filename, is_temp = self.remerge_with_ancestor(
-                local, base, remote, suffix=suffix)
+                local, base, remote, suffix=suffix
+            )
 
             for temp_file in (local, base, remote):
                 if os.name == "nt":
@@ -254,8 +261,8 @@ class Vc(_vc.Vc):
         suffix = os.path.splitext(repo_path)[1]
         args = ["git", "show", ":%s:%s" % (self.conflict_map[conflict], repo_path)]
         filename = _vc.call_temp_output(
-            args, cwd=self.location,
-            file_id=_vc.conflicts[conflict], suffix=suffix)
+            args, cwd=self.location, file_id=_vc.conflicts[conflict], suffix=suffix
+        )
         return filename, True
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -300,20 +307,24 @@ class Vc(_vc.Vc):
         return cached_entries, entries
 
     def _update_tree_state_cache(self, path):
-        """ Update the state of the file(s) at self._tree_cache['path'] """
+        """Update the state of the file(s) at self._tree_cache['path']"""
         while 1:
             try:
                 cached_entries, entries = self._get_modified_files(path)
 
                 # Identify ignored files and folders
                 proc = self.run(
-                    "ls-files", "--others", "--ignored", "--exclude-standard",
-                    "--directory", path)
+                    "ls-files",
+                    "--others",
+                    "--ignored",
+                    "--exclude-standard",
+                    "--directory",
+                    path,
+                )
                 ignored_entries = proc.stdout.read().split("\n")[:-1]
 
                 # Identify unversioned files
-                proc = self.run(
-                    "ls-files", "--others", "--exclude-standard", path)
+                proc = self.run("ls-files", "--others", "--exclude-standard", path)
                 unversioned_entries = proc.stdout.read().split("\n")[:-1]
 
                 break
@@ -323,17 +334,16 @@ class Vc(_vc.Vc):
 
         def get_real_path(name):
             name = name.strip()
-            if os.name == 'nt':
+            if os.name == "nt":
                 # Git returns unix-style paths on Windows
                 name = os.path.normpath(name)
 
             # Unicode file names and file names containing quotes are
             # returned by git as quoted strings
             if name[0] == '"':
-                name = name.encode('latin1')
-                name = codecs.escape_decode(name[1:-1])[0].decode('utf-8')
-            return os.path.abspath(
-                os.path.join(self.location, name))
+                name = name.encode("latin1")
+                name = codecs.escape_decode(name[1:-1])[0].decode("utf-8")
+            return os.path.abspath(os.path.join(self.location, name))
 
         if not cached_entries and not entries and os.path.isfile(path):
             # If we're just updating a single file there's a chance that it
@@ -361,14 +371,17 @@ class Vc(_vc.Vc):
                 if old_mode != new_mode:
                     msg = _(
                         "Mode changed from {old_mode} to {new_mode}".format(
-                            old_mode=old_mode, new_mode=new_mode))
+                            old_mode=old_mode, new_mode=new_mode
+                        )
+                    )
                     tree_meta_cache[path].append(msg)
                 collection = unstaged if new_sha == NULL_SHA else staged
                 collection.add(path)
 
             for path in staged:
                 tree_meta_cache[path].append(
-                    _("Partially staged") if path in unstaged else _("Staged"))
+                    _("Partially staged") if path in unstaged else _("Staged")
+                )
 
             for path, msgs in tree_meta_cache.items():
                 self._tree_meta_cache[path] = "; ".join(msgs)

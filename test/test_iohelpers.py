@@ -11,26 +11,26 @@ from meld.iohelpers import (
 
 
 @pytest.mark.parametrize(
-    'paths, expected_parent',
+    "paths, expected_parent",
     [
         # No paths, None return
         ([], None),
         # One path always returns its own parent
-        (['/foo/a/b/c'], '/foo/a/b'),
+        (["/foo/a/b/c"], "/foo/a/b"),
         # Two paths
-        (['/foo/a', '/foo/b'], '/foo'),
+        (["/foo/a", "/foo/b"], "/foo"),
         # Three paths
-        (['/foo/a', '/foo/b', '/foo/c'], '/foo'),
+        (["/foo/a", "/foo/b", "/foo/c"], "/foo"),
         # First path is deeper
-        (['/foo/a/asd/asd', '/foo/b'], '/foo'),
+        (["/foo/a/asd/asd", "/foo/b"], "/foo"),
         # Second path is deeper
-        (['/foo/a/', '/foo/b/asd/asd'], '/foo'),
+        (["/foo/a/", "/foo/b/asd/asd"], "/foo"),
         # Common parent is the root
-        (['/foo/a/', '/bar/b/'], '/'),
+        (["/foo/a/", "/bar/b/"], "/"),
         # One path, one missing path
-        (['/foo/a', None], None),
+        (["/foo/a", None], None),
         # Two paths, one missing path
-        (['/foo/a', None, '/foo/c'], None),
+        (["/foo/a", None, "/foo/c"], None),
     ],
 )
 def test_find_shared_parent_path(paths, expected_parent):
@@ -41,7 +41,7 @@ def test_find_shared_parent_path(paths, expected_parent):
     if parent is None:
         assert expected_parent is None
     else:
-        print(f'Parent: {parent.get_path()}; expected {expected_parent}')
+        print(f"Parent: {parent.get_path()}; expected {expected_parent}")
         if expected_parent is None:
             assert parent is None
         else:
@@ -53,7 +53,7 @@ def test_find_shared_parent_path(paths, expected_parent):
     [
         ("/home/hey/foo", "~/foo"),
         ("/home/hmph/foo", "/home/hmph/foo"),
-    ]
+    ],
 )
 def test_format_home_relative_path(path, expected_format):
 
@@ -66,45 +66,45 @@ def test_format_home_relative_path(path, expected_format):
 
 
 @pytest.mark.parametrize(
-    'parent, child, expected_label',
+    "parent, child, expected_label",
     [
         # Child is a direct child of parent
         (
-            '/home/hey/',
-            '/home/hey/foo.txt',
-            '…/hey/foo.txt',
+            "/home/hey/",
+            "/home/hey/foo.txt",
+            "…/hey/foo.txt",
         ),
         # Child is a direct child of parent and parent is the root
         (
-            '/',
-            '/foo.txt',
-            '/foo.txt',
+            "/",
+            "/foo.txt",
+            "/foo.txt",
         ),
         # Child is a 2-depth child of parent
         (
-            '/home/hey/',
-            '/home/hey/project/foo.txt',
-            '…/project/foo.txt',
+            "/home/hey/",
+            "/home/hey/project/foo.txt",
+            "…/project/foo.txt",
         ),
         # Child is a 3-depth child of parent
         (
-            '/home/hey/',
-            '/home/hey/project/package/foo.txt',
-            '…/project/package/foo.txt',
+            "/home/hey/",
+            "/home/hey/project/package/foo.txt",
+            "…/project/package/foo.txt",
         ),
         # Child is a more-than-3-depth child of parent, with long
         # immediate parent
         (
-            '/home/hey/',
-            '/home/hey/project/package/subpackage/foo.txt',
-            '…/project/…/subpackage/foo.txt',
+            "/home/hey/",
+            "/home/hey/project/package/subpackage/foo.txt",
+            "…/project/…/subpackage/foo.txt",
         ),
         # Child is a more-than-3-depth child of parent, with short
         # immediate parent
         (
-            '/home/hey/',
-            '/home/hey/project/package/src/foo.txt',
-            '…/project/package/src/foo.txt',
+            "/home/hey/",
+            "/home/hey/project/package/src/foo.txt",
+            "…/project/package/src/foo.txt",
         ),
     ],
 )
@@ -122,8 +122,8 @@ def test_format_parent_relative_path(
 
 
 def test_format_parent_relative_path_no_parent():
-    parent_gfile = Gio.File.new_for_path('/')
-    child_gfile = Gio.File.new_for_path('/')
+    parent_gfile = Gio.File.new_for_path("/")
+    child_gfile = Gio.File.new_for_path("/")
 
-    with pytest.raises(ValueError, match='has no parent'):
+    with pytest.raises(ValueError, match="has no parent"):
         format_parent_relative_path(parent_gfile, child_gfile)

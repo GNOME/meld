@@ -34,7 +34,5 @@ def test_accelerator_duplication():
             accel = Gtk.accelerator_parse(accel_string)
 
             if accel not in allowed_duplicates:
-                assert (
-                    accel not in accels
-                ), f"Duplicate accelerator {accel_string}"
+                assert accel not in accels, f"Duplicate accelerator {accel_string}"
             accels.add(accel)

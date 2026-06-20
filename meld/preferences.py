@@ -26,9 +26,8 @@ from meld.ui.columnlist import ColumnList
 from meld.ui.listwidget import EditableListWidget
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/filter-list.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/filter-list.ui")
 class FilterList(Gtk.Box, EditableListWidget):
-
     __gtype_name__ = "FilterList"
 
     treeview = Gtk.Template.Child()
@@ -43,18 +42,18 @@ class FilterList(Gtk.Box, EditableListWidget):
     filter_type = GObject.Property(
         type=int,
         flags=(
-            GObject.ParamFlags.READABLE |
-            GObject.ParamFlags.WRITABLE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
+            GObject.ParamFlags.READABLE
+            | GObject.ParamFlags.WRITABLE
+            | GObject.ParamFlags.CONSTRUCT_ONLY
         ),
     )
 
     settings_key = GObject.Property(
         type=str,
         flags=(
-            GObject.ParamFlags.READABLE |
-            GObject.ParamFlags.WRITABLE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
+            GObject.ParamFlags.READABLE
+            | GObject.ParamFlags.WRITABLE
+            | GObject.ParamFlags.CONSTRUCT_ONLY
         ),
     )
 
@@ -63,19 +62,17 @@ class FilterList(Gtk.Box, EditableListWidget):
         self.model = self.treeview.get_model()
 
         self.pattern_column.set_cell_data_func(
-            self.validity_renderer, self.valid_icon_celldata)
+            self.validity_renderer, self.valid_icon_celldata
+        )
 
         for filter_params in settings.get_value(self.settings_key):
-            filt = FilterEntry.new_from_gsetting(
-                filter_params, self.filter_type)
+            filt = FilterEntry.new_from_gsetting(filter_params, self.filter_type)
             if filt is None:
                 continue
             valid = filt.filter is not None
-            self.model.append(
-                [filt.label, filt.active, filt.filter_string, valid])
+            self.model.append([filt.label, filt.active, filt.filter_string, valid])
 
-        for signal in ('row-changed', 'row-deleted', 'row-inserted',
-                       'rows-reordered'):
+        for signal in ("row-changed", "row-deleted", "row-inserted", "rows-reordered"):
             self.model.connect(signal, self._update_filter_string)
 
         self.setup_sensitivity_handling()
@@ -117,7 +114,7 @@ class FilterList(Gtk.Box, EditableListWidget):
 
     def _update_filter_string(self, *args):
         value = [(row[0], row[1], row[2]) for row in self.model]
-        settings.set_value(self.settings_key, GLib.Variant('a(sbs)', value))
+        settings.set_value(self.settings_key, GLib.Variant("a(sbs)", value))
 
 
 class PreferenceEnum(str, enum.Enum):
@@ -238,9 +235,8 @@ class MergePaneOrder(PreferenceEnum):
     local_merge_remote = ("local-merge-remote", _("Local, merge, remote"), 0)
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/preferences.ui")
 class PreferencesDialog(Adw.PreferencesDialog):
-
     __gtype_name__ = "PreferencesDialog"
 
     checkbutton_break_commit_lines = Gtk.Template.Child()
@@ -270,25 +266,37 @@ class PreferencesDialog(Adw.PreferencesDialog):
         super().__init__(**kwargs)
 
         bindings = [
-            ('custom-font', self.fontpicker, 'font'),
-            ('indent-width', self.spinbutton_tabsize, 'value'),
-            ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
-            ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
-            ("highlight-syntax", self.syntax_highlighting_switch_row, "enable-expansion"),  # noqa: E501
-            ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
-            ('custom-editor-command', self.custom_edit_command_entry, 'text'),
-            ("folder-shallow-comparison", self.checkbutton_shallow_compare, "enable-expansion"),  # noqa: E501
-            ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
-            ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
-            ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
-            ('show-overview-map', self.checkbutton_show_overview_map, 'active'),  # noqa: E501
-            ('vc-commit-margin', self.spinbutton_commit_margin, 'value'),
-            ('vc-break-commit-message', self.checkbutton_break_commit_lines, 'active'),  # noqa: E501
-            ('ignore-blank-lines', self.checkbutton_ignore_blank_lines, 'active'),  # noqa: E501
+            ("custom-font", self.fontpicker, "font"),
+            ("indent-width", self.spinbutton_tabsize, "value"),
+            (
+                "highlight-current-line",
+                self.checkbutton_highlight_current_line,
+                "active",
+            ),  # noqa: E501
+            ("show-line-numbers", self.checkbutton_show_line_numbers, "active"),  # noqa: E501
+            (
+                "highlight-syntax",
+                self.syntax_highlighting_switch_row,
+                "enable-expansion",
+            ),  # noqa: E501
+            ("enable-space-drawer", self.checkbutton_show_whitespace, "active"),  # noqa: E501
+            ("custom-editor-command", self.custom_edit_command_entry, "text"),
+            (
+                "folder-shallow-comparison",
+                self.checkbutton_shallow_compare,
+                "enable-expansion",
+            ),  # noqa: E501
+            ("folder-filter-text", self.checkbutton_folder_filter_text, "active"),  # noqa: E501
+            ("folder-ignore-symlinks", self.checkbutton_ignore_symlinks, "active"),  # noqa: E501
+            ("vc-show-commit-margin", self.checkbutton_show_commit_margin, "active"),  # noqa: E501
+            ("show-overview-map", self.checkbutton_show_overview_map, "active"),  # noqa: E501
+            ("vc-commit-margin", self.spinbutton_commit_margin, "value"),
+            ("vc-break-commit-message", self.checkbutton_break_commit_lines, "active"),  # noqa: E501
+            ("ignore-blank-lines", self.checkbutton_ignore_blank_lines, "active"),  # noqa: E501
             # Sensitivity bindings must come after value bindings, or the key
             # writability in gsettings overrides manual sensitivity setting.
-            ('vc-show-commit-margin', self.spinbutton_commit_margin, 'sensitive'),  # noqa: E501
-            ('vc-show-commit-margin', self.checkbutton_break_commit_lines, 'sensitive'),  # noqa: E501
+            ("vc-show-commit-margin", self.spinbutton_commit_margin, "sensitive"),  # noqa: E501
+            ("vc-show-commit-margin", self.checkbutton_break_commit_lines, "sensitive"),  # noqa: E501
         ]
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
@@ -296,12 +304,19 @@ class PreferencesDialog(Adw.PreferencesDialog):
         invert_bindings = [
             ("use-system-editor", self.system_editor_checkbutton, "enable-expansion"),
             ("use-system-font", self.custom_font_switch_row, "enable-expansion"),
-            ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),  # noqa: E501
+            (
+                "folder-shallow-comparison",
+                self.checkbutton_folder_filter_text,
+                "sensitive",
+            ),  # noqa: E501
         ]
         for key, obj, attribute in invert_bindings:
             settings.bind(
-                key, obj, attribute, Gio.SettingsBindFlags.DEFAULT |
-                Gio.SettingsBindFlags.INVERT_BOOLEAN)
+                key,
+                obj,
+                attribute,
+                Gio.SettingsBindFlags.DEFAULT | Gio.SettingsBindFlags.INVERT_BOOLEAN,
+            )
 
         filefilter = FilterList(
             filter_type=FilterEntry.SHELL,

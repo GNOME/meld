@@ -35,7 +35,6 @@ CONFLICT_TYPE_MERGE, CONFLICT_TYPE_UPDATE = 1, 2
 
 
 class Vc(_vc.Vc):
-
     CMD = "svn"
     NAME = "Subversion"
     VC_DIR = ".svn"
@@ -52,23 +51,23 @@ class Vc(_vc.Vc):
     }
 
     def commit(self, runner, files, message):
-        command = [self.CMD, 'commit', '-m', message]
+        command = [self.CMD, "commit", "-m", message]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def update(self, runner):
-        command = [self.CMD, 'update']
+        command = [self.CMD, "update"]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def remove(self, runner, files):
-        command = [self.CMD, 'rm', '--force']
+        command = [self.CMD, "rm", "--force"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
-        command = [self.CMD, 'revert']
+        command = [self.CMD, "revert"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def resolve(self, runner, files):
-        command = [self.CMD, 'resolve', '--accept=working']
+        command = [self.CMD, "resolve", "--accept=working"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -79,7 +78,7 @@ class Vc(_vc.Vc):
 
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
-        path = path[len(self.root) + 1:]
+        path = path[len(self.root) + 1 :]
 
         suffix = os.path.splitext(path)[1]
         args = [self.CMD, "cat", "-r", commit, path]
@@ -107,12 +106,12 @@ class Vc(_vc.Vc):
         # First fine what type of conflict this is by looking at the base
         # we can possibly return straight away!
         conflict_type = None
-        base = glob.glob('%s.working' % path)
+        base = glob.glob("%s.working" % path)
         if len(base) == 1:
             # We have a merge conflict
             conflict_type = CONFLICT_TYPE_MERGE
         else:
-            base = glob.glob('%s.mine' % path)
+            base = glob.glob("%s.mine" % path)
             if len(base) == 1:
                 # We have an update conflict
                 conflict_type = CONFLICT_TYPE_UPDATE
@@ -124,14 +123,14 @@ class Vc(_vc.Vc):
             return base[0], False
         elif conflict == _vc.CONFLICT_THIS:
             if conflict_type == CONFLICT_TYPE_MERGE:
-                return glob.glob('%s.merge-left.r*' % path)[0], False
+                return glob.glob("%s.merge-left.r*" % path)[0], False
             else:
-                return glob.glob('%s.r*' % path)[0], False
+                return glob.glob("%s.r*" % path)[0], False
         elif conflict == _vc.CONFLICT_OTHER:
             if conflict_type == CONFLICT_TYPE_MERGE:
-                return glob.glob('%s.merge-right.r*' % path)[0], False
+                return glob.glob("%s.merge-right.r*" % path)[0], False
             else:
-                return glob.glob('%s.r*' % path)[-1], False
+                return glob.glob("%s.r*" % path)[-1], False
 
         raise KeyError("Conflict file does not exist")
 
@@ -139,10 +138,9 @@ class Vc(_vc.Vc):
         # SVN < 1.7 needs to add folders from their immediate parent
         dirs = [s for s in files if os.path.isdir(s)]
         files = [s for s in files if os.path.isfile(s)]
-        command = [self.CMD, 'add']
+        command = [self.CMD, "add"]
         for path in dirs:
-            runner(command, [path], refresh=True,
-                   working_dir=os.path.dirname(path))
+            runner(command, [path], refresh=True, working_dir=os.path.dirname(path))
         if files:
             runner(command, files, refresh=True, working_dir=self.location)
 
@@ -178,7 +176,9 @@ class Vc(_vc.Vc):
                 # "svn --xml" outputs utf8, even with Windows non-utf8 locale
                 proc = _vc.popen(
                     [self.CMD, "status", "-v", "--xml", path],
-                    cwd=self.location, use_locale_encoding=False)
+                    cwd=self.location,
+                    use_locale_encoding=False,
+                )
                 tree = ElementTree.parse(proc)
                 break
             except OSError as e:
@@ -200,6 +200,6 @@ class Vc(_vc.Vc):
                     self._tree_cache[path] = state
 
                     rev = status.attrib.get("revision")
-                    rev_label = _("Rev %s") % rev if rev is not None else ''
+                    rev_label = _("Rev %s") % rev if rev is not None else ""
                     self._tree_meta_cache[path] = rev_label
                     self._add_missing_cache_entry(path, state)

@@ -29,33 +29,29 @@ log = logging.getLogger(__name__)
 
 
 class ChunkMap(Gtk.DrawingArea):
-
     __gtype_name__ = "ChunkMap"
 
     adjustment = GObject.Property(
         type=Gtk.Adjustment,
-        nick='Adjustment used for scrolling the mapped view',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Adjustment used for scrolling the mapped view",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     handle_overdraw_alpha = GObject.Property(
         type=float,
-        nick='Alpha of the document handle overdraw',
+        nick="Alpha of the document handle overdraw",
         default=0.2,
     )
 
     handle_outline_alpha = GObject.Property(
         type=float,
-        nick='Alpha of the document handle outline',
+        nick="Alpha of the document handle outline",
         default=0.4,
     )
 
     @GObject.Property(
         type=GObject.TYPE_PYOBJECT,
-        nick='Chunks defining regions in the mapped view',
+        nick="Chunks defining regions in the mapped view",
     )
     def chunks(self):
         return self._chunks
@@ -88,16 +84,15 @@ class ChunkMap(Gtk.DrawingArea):
 
     def do_realize(self):
         if not self.adjustment:
-            log.critical(
-                f'{self.__gtype_name__} initialized without an adjustment')
+            log.critical(f"{self.__gtype_name__} initialized without an adjustment")
             return Gtk.DrawingArea.do_realize(self)
 
-        self.adjustment.connect('changed', lambda w: self.queue_draw())
-        self.adjustment.connect('value-changed', lambda w: self.queue_draw())
+        self.adjustment.connect("changed", lambda w: self.queue_draw())
+        self.adjustment.connect("value-changed", lambda w: self.queue_draw())
 
         meld_settings = get_meld_settings()
-        meld_settings.connect('changed', self.on_setting_changed)
-        self.on_setting_changed(meld_settings, 'style-scheme')
+        meld_settings.connect("changed", self.on_setting_changed)
+        self.on_setting_changed(meld_settings, "style-scheme")
 
         return Gtk.DrawingArea.do_realize(self)
 
@@ -106,30 +101,27 @@ class ChunkMap(Gtk.DrawingArea):
         return Gtk.DrawingArea.do_size_allocate(self, *args)
 
     def on_setting_changed(self, settings, key):
-        if key == 'style-scheme':
+        if key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
             self._cached_map = None
 
     def get_height_scale(self) -> float:
         return 1.0
 
-    def get_map_base_colors(
-            self) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
+    def get_map_base_colors(self) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
         raise NotImplementedError()
 
     def _make_map_base_colors(
-            self, widget) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
+        self, widget
+    ) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
         stylecontext = widget.get_style_context()
-        base_set, base = (
-            stylecontext.lookup_color('theme_base_color'))
+        base_set, base = stylecontext.lookup_color("theme_base_color")
         if not base_set:
             base = make_gdk_rgba(1.0, 1.0, 1.0, 1.0)
-        text_set, text = (
-            stylecontext.lookup_color('theme_text_color'))
+        text_set, text = stylecontext.lookup_color("theme_text_color")
         if not text_set:
             base = make_gdk_rgba(0.0, 0.0, 0.0, 1.0)
-        border_set, border = (
-            stylecontext.lookup_color('borders'))
+        border_set, border = stylecontext.lookup_color("borders")
         if not border_set:
             base = make_gdk_rgba(0.95, 0.95, 0.95, 1.0)
 
@@ -155,7 +147,8 @@ class ChunkMap(Gtk.DrawingArea):
             return
 
         base_bg, base_outline, handle_overdraw, handle_outline = (
-            self.get_map_base_colors())
+            self.get_map_base_colors()
+        )
 
         x0 = self.overdraw_padding + 0.5
         x1 = width - 2 * x0
@@ -163,7 +156,8 @@ class ChunkMap(Gtk.DrawingArea):
 
         if self._cached_map is None:
             surface = cairo.Surface.create_similar(
-                context.get_target(), cairo.CONTENT_COLOR_ALPHA, width, height)
+                context.get_target(), cairo.CONTENT_COLOR_ALPHA, width, height
+            )
             cache_ctx = cairo.Context(surface)
             cache_ctx.set_line_width(1)
 
@@ -202,8 +196,10 @@ class ChunkMap(Gtk.DrawingArea):
         adj_h = self.adjustment.get_page_size() / self.adjustment.get_upper()
 
         context.rectangle(
-            x0 - self.overdraw_padding, round(height_scale * adj_y) + 0.5,
-            x1 + 2 * self.overdraw_padding, round(height_scale * adj_h) - 1,
+            x0 - self.overdraw_padding,
+            round(height_scale * adj_y) + 0.5,
+            x1 + 2 * self.overdraw_padding,
+            round(height_scale * adj_h) - 1,
         )
         context.fill_preserve()
         Gdk.cairo_set_source_rgba(context, handle_outline)
@@ -264,34 +260,24 @@ class ChunkMap(Gtk.DrawingArea):
 
 
 class TextViewChunkMap(ChunkMap):
-
-    __gtype_name__ = 'TextViewChunkMap'
+    __gtype_name__ = "TextViewChunkMap"
 
     textview = GObject.Property(
         type=Gtk.TextView,
-        nick='Textview being mapped',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Textview being mapped",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     paired_adjustment_1 = GObject.Property(
         type=Gtk.Adjustment,
-        nick='Paired adjustment used for scaling the map',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Paired adjustment used for scaling the map",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     paired_adjustment_2 = GObject.Property(
         type=Gtk.Adjustment,
-        nick='Paired adjustment used for scaling the map',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Paired adjustment used for scaling the map",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     def do_realize(self):
@@ -309,10 +295,7 @@ class TextViewChunkMap(ChunkMap):
             self.props.paired_adjustment_1,
             self.props.paired_adjustment_2,
         ]
-        heights = [
-            adj.get_upper() for adj in adjustments
-            if adj.get_upper() > 0
-        ]
+        heights = [adj.get_upper() for adj in adjustments if adj.get_upper() > 0]
         return self.props.adjustment.get_upper() / max(heights)
 
     def get_map_base_colors(self):
@@ -360,25 +343,18 @@ class TextViewChunkMap(ChunkMap):
 
 
 class TreeViewChunkMap(ChunkMap):
-
-    __gtype_name__ = 'TreeViewChunkMap'
+    __gtype_name__ = "TreeViewChunkMap"
 
     treeview = GObject.Property(
         type=Gtk.TreeView,
-        nick='Treeview being mapped',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Treeview being mapped",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     treeview_idx = GObject.Property(
         type=int,
-        nick='Index of the Treeview within the store',
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        nick="Index of the Treeview within the store",
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
     chunk_type_map = {
@@ -392,9 +368,9 @@ class TreeViewChunkMap(ChunkMap):
         self.model_signal_ids = []
 
     def do_realize(self):
-        self.treeview.connect('row-collapsed', self.clear_cached_map)
-        self.treeview.connect('row-expanded', self.clear_cached_map)
-        self.treeview.connect('notify::model', self.connect_model)
+        self.treeview.connect("row-collapsed", self.clear_cached_map)
+        self.treeview.connect("row-expanded", self.clear_cached_map)
+        self.treeview.connect("notify::model", self.connect_model)
         self.connect_model()
 
         return ChunkMap.do_realize(self)
@@ -405,10 +381,10 @@ class TreeViewChunkMap(ChunkMap):
 
         model = self.treeview.get_model()
         self.model_signal_ids = [
-            (model, model.connect('row-changed', self.clear_cached_map)),
-            (model, model.connect('row-deleted', self.clear_cached_map)),
-            (model, model.connect('row-inserted', self.clear_cached_map)),
-            (model, model.connect('rows-reordered', self.clear_cached_map)),
+            (model, model.connect("row-changed", self.clear_cached_map)),
+            (model, model.connect("row-deleted", self.clear_cached_map)),
+            (model, model.connect("row-inserted", self.clear_cached_map)),
+            (model, model.connect("rows-reordered", self.clear_cached_map)),
         ]
 
     def clear_cached_map(self, *args):
@@ -419,8 +395,7 @@ class TreeViewChunkMap(ChunkMap):
 
     def chunk_coords_by_tag(self):
         def recurse_tree_states(rowiter):
-            row_states.append(
-                model.get_state(rowiter.iter, self.treeview_idx))
+            row_states.append(model.get_state(rowiter.iter, self.treeview_idx))
             if self.treeview.row_expanded(rowiter.path):
                 for row in rowiter.iterchildren():
                     recurse_tree_states(row)

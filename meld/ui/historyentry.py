@@ -65,7 +65,8 @@ class HistoryCombo(Gtk.ComboBox):
         type=int,
         nick="History length",
         blurb="Number of history items to display in the combo",
-        minimum=1, maximum=20,
+        minimum=1,
+        maximum=20,
         default=HISTORY_ENTRY_HISTORY_LENGTH_DEFAULT,
     )
 
@@ -83,19 +84,17 @@ class HistoryCombo(Gtk.ComboBox):
         self.history_file = os.path.join(pref_dir, "history.ini")
         self.config = configparser.RawConfigParser()
         if os.path.exists(self.history_file):
-            self.config.read(self.history_file, encoding='utf8')
+            self.config.read(self.history_file, encoding="utf8")
 
         self.set_model(Gtk.ListStore(str, str))
         rentext = Gtk.CellRendererText()
         rentext.props.width_chars = 60
         rentext.props.ellipsize = Pango.EllipsizeMode.END
         self.pack_start(rentext, True)
-        self.add_attribute(rentext, 'text', 0)
+        self.add_attribute(rentext, "text", 0)
 
-        self.connect('notify::history-id',
-                     lambda *args: self._load_history())
-        self.connect('notify::history-length',
-                     lambda *args: self._load_history())
+        self.connect("notify::history-id", lambda *args: self._load_history())
+        self.connect("notify::history-length", lambda *args: self._load_history())
 
     def prepend_history(self, text):
         self._insert_history_item(text, True)
@@ -131,9 +130,9 @@ class HistoryCombo(Gtk.ComboBox):
         store = self.get_model()
         store.clear()
         messages = sorted(self.config.items(section_key))
-        for key, message in messages[:self.props.history_length - 1]:
-            message = message.encode('utf8')
-            message = message.decode('unicode-escape')
+        for key, message in messages[: self.props.history_length - 1]:
+            message = message.encode("utf8")
+            message = message.decode("unicode-escape")
             firstline = message.splitlines()[0]
             store.append((firstline, message))
 
@@ -146,8 +145,8 @@ class HistoryCombo(Gtk.ComboBox):
         self.config.add_section(section_key)
         for i, row in enumerate(self.get_model()):
             # This dance is to avoid newline, etc. issues in the ini file
-            message = row[1].encode('unicode-escape')
-            message = message.decode('utf8')
+            message = row[1].encode("unicode-escape")
+            message = message.decode("utf8")
             self.config.set(section_key, "item%d" % i, message)
-        with open(self.history_file, 'w', encoding='utf8') as f:
+        with open(self.history_file, "w", encoding="utf8") as f:
             self.config.write(f)

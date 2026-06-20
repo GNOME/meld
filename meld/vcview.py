@@ -47,25 +47,35 @@ def cleanup_temp():
     # not marked for translation.
     for f in _temp_files:
         try:
-            assert (os.path.exists(f) and os.path.isabs(f) and
-                    os.path.dirname(f) == temp_location)
+            assert (
+                os.path.exists(f)
+                and os.path.isabs(f)
+                and os.path.dirname(f) == temp_location
+            )
             # Windows throws permissions errors if we remove read-only files
             if os.name == "nt":
                 os.chmod(f, stat.S_IWRITE)
             os.remove(f)
         except Exception:
-            except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
-            print("File \"{0}\" not removed due to".format(f), except_str,
-                  file=sys.stderr)
+            except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
+            print(
+                'File "{0}" not removed due to'.format(f), except_str, file=sys.stderr
+            )
     for f in _temp_dirs:
         try:
-            assert (os.path.exists(f) and os.path.isabs(f) and
-                    os.path.dirname(f) == temp_location)
+            assert (
+                os.path.exists(f)
+                and os.path.isabs(f)
+                and os.path.dirname(f) == temp_location
+            )
             shutil.rmtree(f, ignore_errors=1)
         except Exception:
-            except_str = "{0[0]}: \"{0[1]}\"".format(sys.exc_info())
-            print("Directory \"{0}\" not removed due to".format(f), except_str,
-                  file=sys.stderr)
+            except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
+            print(
+                'Directory "{0}" not removed due to'.format(f),
+                except_str,
+                file=sys.stderr,
+            )
 
 
 _temp_dirs, _temp_files = [], []
@@ -73,7 +83,6 @@ atexit.register(cleanup_temp)
 
 
 class ConsoleStream:
-
     def __init__(self, textview):
         self.textview = textview
         buf = textview.get_buffer()
@@ -83,8 +92,7 @@ class ConsoleStream:
         self.error_tag = buf.create_tag("error")
         # FIXME: Need to add this to the gtkrc?
         self.error_tag.props.foreground = "#cc0000"
-        self.end_mark = buf.create_mark(None, buf.get_end_iter(),
-                                        left_gravity=False)
+        self.end_mark = buf.create_mark(None, buf.get_end_iter(), left_gravity=False)
 
     def command(self, message):
         self.write(message, self.command_tag)
@@ -103,8 +111,9 @@ class ConsoleStream:
         self.textview.scroll_mark_onscreen(self.end_mark)
 
 
-COL_LOCATION, COL_STATUS, COL_OPTIONS, COL_END = \
-    list(range(tree.COL_END, tree.COL_END + 4))
+COL_LOCATION, COL_STATUS, COL_OPTIONS, COL_END = list(
+    range(tree.COL_END, tree.COL_END + 4)
+)
 
 
 class VcTreeStore(tree.DiffTreeStore):
@@ -115,15 +124,14 @@ class VcTreeStore(tree.DiffTreeStore):
         return self.get_value(it, self.column_index(tree.COL_PATH, 0))
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/vcview.ui')
+@Gtk.Template(resource_path="/org/gnome/meld/ui/vcview.ui")
 class VcView(Gtk.Box, MeldDoc):
-
     __gtype_name__ = "VcView"
 
     __gsettings_bindings__ = (
-        ('vc-status-filters', 'status-filters'),
-        ('vc-left-is-local', 'left-is-local'),
-        ('vc-merge-file-order', 'merge-file-order'),
+        ("vc-status-filters", "status-filters"),
+        ("vc-left-is-local", "left-is-local"),
+        ("vc-merge-file-order", "merge-file-order"),
     )
 
     close_signal = MeldDoc.close_signal
@@ -144,15 +152,15 @@ class VcView(Gtk.Box, MeldDoc):
 
     # Map for inter-tab command() calls
     command_map = {
-        'resolve': 'resolve',
+        "resolve": "resolve",
     }
 
     state_actions = {
-        'flatten': ('vc-flatten', None),
-        'modified': ('vc-status-modified', Entry.is_modified),
-        'normal': ('vc-status-normal', Entry.is_normal),
-        'unknown': ('vc-status-unknown', Entry.is_nonvc),
-        'ignored': ('vc-status-ignored', Entry.is_ignored),
+        "flatten": ("vc-flatten", None),
+        "modified": ("vc-status-modified", Entry.is_modified),
+        "normal": ("vc-status-normal", Entry.is_normal),
+        "unknown": ("vc-status-unknown", Entry.is_nonvc),
+        "ignored": ("vc-status-ignored", Entry.is_ignored),
     }
 
     combobox_vcs = Gtk.Template.Child()
@@ -188,91 +196,110 @@ class VcView(Gtk.Box, MeldDoc):
         # Set up per-view action group for top-level menu insertion
         self.view_action_group = Gio.SimpleActionGroup()
 
-        property_actions = (
-            ('vc-console-visible', self.console_vbox, 'visible'),
-        )
+        property_actions = (("vc-console-visible", self.console_vbox, "visible"),)
         for action_name, obj, prop_name in property_actions:
             action = Gio.PropertyAction.new(action_name, obj, prop_name)
             self.view_action_group.add_action(action)
 
         # Manually handle GAction additions
         actions = (
-            ('clear-console', self.clear_consoleview),
-            ('compare', self.action_diff),
-            ('find', self.action_find),
-            ('next-change', self.action_next_change),
-            ('next-change-shortcut', self.action_next_change),
-            ('open-external', self.action_open_external),
-            ('previous-change', self.action_previous_change),
-            ('previous-change-shortcut', self.action_previous_change),
-            ('refresh', self.action_refresh),
-            ('vc-add', self.action_add),
-            ('vc-unstage', self.action_unstage),
-            ('vc-commit', self.action_commit),
-            ('vc-delete-locally', self.action_delete),
-            ('vc-push', self.action_push),
-            ('vc-remove', self.action_remove),
-            ('vc-resolve', self.action_resolved),
-            ('vc-revert', self.action_revert),
-            ('vc-update', self.action_update),
+            ("clear-console", self.clear_consoleview),
+            ("compare", self.action_diff),
+            ("find", self.action_find),
+            ("next-change", self.action_next_change),
+            ("next-change-shortcut", self.action_next_change),
+            ("open-external", self.action_open_external),
+            ("previous-change", self.action_previous_change),
+            ("previous-change-shortcut", self.action_previous_change),
+            ("refresh", self.action_refresh),
+            ("vc-add", self.action_add),
+            ("vc-unstage", self.action_unstage),
+            ("vc-commit", self.action_commit),
+            ("vc-delete-locally", self.action_delete),
+            ("vc-push", self.action_push),
+            ("vc-remove", self.action_remove),
+            ("vc-resolve", self.action_resolved),
+            ("vc-revert", self.action_revert),
+            ("vc-update", self.action_update),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
-            action.connect('activate', callback)
+            action.connect("activate", callback)
             self.view_action_group.add_action(action)
 
         new_boolean = GLib.Variant.new_boolean
         stateful_actions = (
-            ('vc-filter', None, GLib.Variant.new_boolean(False)),
-            ('vc-flatten', self.action_filter_state_change,
-                new_boolean('flatten' in self.props.status_filters)),
-            ('vc-status-modified', self.action_filter_state_change,
-                new_boolean('modified' in self.props.status_filters)),
-            ('vc-status-normal', self.action_filter_state_change,
-                new_boolean('normal' in self.props.status_filters)),
-            ('vc-status-unknown', self.action_filter_state_change,
-                new_boolean('unknown' in self.props.status_filters)),
-            ('vc-status-ignored', self.action_filter_state_change,
-                new_boolean('ignored' in self.props.status_filters)),
+            ("vc-filter", None, GLib.Variant.new_boolean(False)),
+            (
+                "vc-flatten",
+                self.action_filter_state_change,
+                new_boolean("flatten" in self.props.status_filters),
+            ),
+            (
+                "vc-status-modified",
+                self.action_filter_state_change,
+                new_boolean("modified" in self.props.status_filters),
+            ),
+            (
+                "vc-status-normal",
+                self.action_filter_state_change,
+                new_boolean("normal" in self.props.status_filters),
+            ),
+            (
+                "vc-status-unknown",
+                self.action_filter_state_change,
+                new_boolean("unknown" in self.props.status_filters),
+            ),
+            (
+                "vc-status-ignored",
+                self.action_filter_state_change,
+                new_boolean("ignored" in self.props.status_filters),
+            ),
         )
-        for (name, callback, state) in stateful_actions:
+        for name, callback, state in stateful_actions:
             action = Gio.SimpleAction.new_stateful(name, None, state)
             if callback:
-                action.connect('change-state', callback)
+                action.connect("change-state", callback)
             self.view_action_group.add_action(action)
 
         self.model = VcTreeStore()
         self.treeview.set_model(self.model)
         self.treeview.get_selection().connect(
-            "changed", self.on_treeview_selection_changed)
+            "changed", self.on_treeview_selection_changed
+        )
         self.current_path, self.prev_path, self.next_path = None, None, None
 
         self.name_column.set_attributes(
-            self.emblem_renderer,
-            icon_name=tree.COL_ICON,
-            icon_tint=tree.COL_TINT)
+            self.emblem_renderer, icon_name=tree.COL_ICON, icon_tint=tree.COL_TINT
+        )
         self.name_column.set_attributes(
             self.name_renderer,
             text=tree.COL_TEXT,
             foreground_rgba=tree.COL_FG,
             style=tree.COL_STYLE,
             weight=tree.COL_WEIGHT,
-            strikethrough=tree.COL_STRIKE)
-        self.location_column.set_attributes(
-            self.location_renderer, markup=COL_LOCATION)
-        self.status_column.set_attributes(
-            self.status_renderer, markup=COL_STATUS)
-        self.extra_column.set_attributes(
-            self.extra_renderer, markup=COL_OPTIONS)
+            strikethrough=tree.COL_STRIKE,
+        )
+        self.location_column.set_attributes(self.location_renderer, markup=COL_LOCATION)
+        self.status_column.set_attributes(self.status_renderer, markup=COL_STATUS)
+        self.extra_column.set_attributes(self.extra_renderer, markup=COL_OPTIONS)
 
         self.consolestream = ConsoleStream(self.consoleview)
         self.location = None
         self.vc = None
 
-        settings.bind('vc-console-visible', self.console_vbox, 'visible',
-                      Gio.SettingsBindFlags.DEFAULT)
-        settings.bind('vc-console-pane-position', self.vc_console_vpaned,
-                      'position', Gio.SettingsBindFlags.DEFAULT)
+        settings.bind(
+            "vc-console-visible",
+            self.console_vbox,
+            "visible",
+            Gio.SettingsBindFlags.DEFAULT,
+        )
+        settings.bind(
+            "vc-console-pane-position",
+            self.vc_console_vpaned,
+            "position",
+            Gio.SettingsBindFlags.DEFAULT,
+        )
 
     def on_container_switch_in_event(self, window):
         super().on_container_switch_in_event(window)
@@ -289,7 +316,7 @@ class VcView(Gtk.Box, MeldDoc):
             if target_name and name == target_name:
                 return i
 
-        depths = [len(getattr(vc, 'root', [])) for name, vc, enabled in vcs]
+        depths = [len(getattr(vc, "root", [])) for name, vc, enabled in vcs]
         target_depth = max(depths, default=0)
 
         for i, (name, vc, enabled) in enumerate(vcs):
@@ -319,8 +346,8 @@ class VcView(Gtk.Box, MeldDoc):
         else:
             # existing parent directory was found
             for avc, enabled in get_vcs(location):
-                err_str = ''
-                vc_details = {'name': avc.NAME, 'cmd': avc.CMD}
+                err_str = ""
+                vc_details = {"name": avc.NAME, "cmd": avc.CMD}
 
                 if not enabled:
                     # Translators: This error message is shown when no
@@ -386,7 +413,8 @@ class VcView(Gtk.Box, MeldDoc):
 
         try:
             self.model.set_value(
-                root, COL_OPTIONS, self.vc.get_commits_to_push_summary())
+                root, COL_OPTIONS, self.vc.get_commits_to_push_summary()
+            )
         except NotImplementedError:
             pass
 
@@ -405,12 +433,15 @@ class VcView(Gtk.Box, MeldDoc):
     def recompute_label(self):
         self.tab_title = os.path.basename(self.location)
         self.tab_tooltip = GLib.markup_escape_text(
-            "\n".join((
-            # TRANSLATORS: This is the name of the version control
-            # system being used, e.g., "Git" or "Subversion"
-            _("{vc} comparison:").format(vc=self.vc.NAME),
-            self.location,
-        )))
+            "\n".join(
+                (
+                    # TRANSLATORS: This is the name of the version control
+                    # system being used, e.g., "Git" or "Subversion"
+                    _("{vc} comparison:").format(vc=self.vc.NAME),
+                    self.location,
+                )
+            )
+        )
 
     def set_labels(self, labels):
         if labels:
@@ -440,9 +471,8 @@ class VcView(Gtk.Box, MeldDoc):
         symlinks_followed = set()
         todo = [(self.model.get_path(iterstart), rootname)]
 
-        flattened = 'flatten' in self.props.status_filters
-        active_actions = [
-            self.state_actions.get(k) for k in self.props.status_filters]
+        flattened = "flatten" in self.props.status_filters
+        active_actions = [self.state_actions.get(k) for k in self.props.status_filters]
         filters = [a[1] for a in active_actions if a and a[1]]
 
         while todo:
@@ -499,8 +529,7 @@ class VcView(Gtk.Box, MeldDoc):
 
     # TODO: This doesn't fire when the user selects a shortcut folder
     @Gtk.Template.Callback()
-    def on_file_selected(
-            self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
+    def on_file_selected(self, button: Gtk.Button, pane: int, file: Gio.File) -> None:
 
         path = file.get_path()
         self.set_location(path)
@@ -525,52 +554,60 @@ class VcView(Gtk.Box, MeldDoc):
 
         basename = os.path.basename(path)
         meta = {
-            'parent': self,
-            'prompt_resolve': False,
+            "parent": self,
+            "prompt_resolve": False,
         }
 
         # May have removed directories in list.
         vc_entry = self.vc.get_entry(path)
-        if vc_entry and vc_entry.state == tree.STATE_CONFLICT and \
-                hasattr(self.vc, 'get_path_for_conflict'):
+        if (
+            vc_entry
+            and vc_entry.state == tree.STATE_CONFLICT
+            and hasattr(self.vc, "get_path_for_conflict")
+        ):
             local_label = _("%s — local") % basename
             remote_label = _("%s — remote") % basename
 
             # We create new temp files for other, base and this, and
             # then set the output to the current file.
             if self.props.merge_file_order == "local-merge-remote":
-                conflicts = (tree.CONFLICT_THIS, tree.CONFLICT_MERGED,
-                             tree.CONFLICT_OTHER)
-                meta['labels'] = (local_label, None, remote_label)
-                meta['tablabel'] = _("%s (local, merge, remote)") % basename
+                conflicts = (
+                    tree.CONFLICT_THIS,
+                    tree.CONFLICT_MERGED,
+                    tree.CONFLICT_OTHER,
+                )
+                meta["labels"] = (local_label, None, remote_label)
+                meta["tablabel"] = _("%s (local, merge, remote)") % basename
             else:
-                conflicts = (tree.CONFLICT_OTHER, tree.CONFLICT_MERGED,
-                             tree.CONFLICT_THIS)
-                meta['labels'] = (remote_label, None, local_label)
-                meta['tablabel'] = _("%s (remote, merge, local)") % basename
-            diffs = [self.vc.get_path_for_conflict(path, conflict=c)
-                     for c in conflicts]
+                conflicts = (
+                    tree.CONFLICT_OTHER,
+                    tree.CONFLICT_MERGED,
+                    tree.CONFLICT_THIS,
+                )
+                meta["labels"] = (remote_label, None, local_label)
+                meta["tablabel"] = _("%s (remote, merge, local)") % basename
+            diffs = [self.vc.get_path_for_conflict(path, conflict=c) for c in conflicts]
             temps = [p for p, is_temp in diffs if is_temp]
             diffs = [p for p, is_temp in diffs]
             kwargs = {
-                'auto_merge': False,
-                'merge_output': Gio.File.new_for_path(path),
+                "auto_merge": False,
+                "merge_output": Gio.File.new_for_path(path),
             }
-            meta['prompt_resolve'] = True
+            meta["prompt_resolve"] = True
         else:
             remote_label = _("%s — repository") % basename
             comp_path = self.vc.get_path_for_repo_file(path)
             temps = [comp_path]
             if self.props.left_is_local:
                 diffs = [path, comp_path]
-                meta['labels'] = (None, remote_label)
-                meta['tablabel'] = _("%s (working, repository)") % basename
+                meta["labels"] = (None, remote_label)
+                meta["tablabel"] = _("%s (working, repository)") % basename
             else:
                 diffs = [comp_path, path]
-                meta['labels'] = (remote_label, None)
-                meta['tablabel'] = _("%s (repository, working)") % basename
+                meta["labels"] = (remote_label, None)
+                meta["tablabel"] = _("%s (repository, working)") % basename
             kwargs = {}
-        kwargs['meta'] = meta
+        kwargs["meta"] = meta
 
         for temp_file in temps:
             os.chmod(temp_file, 0o444)
@@ -588,7 +625,8 @@ class VcView(Gtk.Box, MeldDoc):
         action.set_state(value)
 
         active_filters = [
-            k for k, (action_name, fn) in self.state_actions.items()
+            k
+            for k, (action_name, fn) in self.state_actions.items()
             if self.get_action_state(action_name)
         ]
 
@@ -611,17 +649,17 @@ class VcView(Gtk.Box, MeldDoc):
         else:
             valid_actions = []
         action_sensitivity = {
-            'compare': 'compare' in valid_actions,
+            "compare": "compare" in valid_actions,
             "open-external": bool(paths),
-            'vc-add': 'add' in valid_actions,
-            'vc-unstage': 'unstage' in valid_actions,
-            'vc-commit': 'commit' in valid_actions,
-            'vc-delete-locally': bool(paths) and self.vc.root not in paths,
-            'vc-push': 'push' in valid_actions,
-            'vc-remove': 'remove' in valid_actions,
-            'vc-resolve': 'resolve' in valid_actions,
-            'vc-revert': 'revert' in valid_actions,
-            'vc-update': 'update' in valid_actions,
+            "vc-add": "add" in valid_actions,
+            "vc-unstage": "unstage" in valid_actions,
+            "vc-commit": "commit" in valid_actions,
+            "vc-delete-locally": bool(paths) and self.vc.root not in paths,
+            "vc-push": "push" in valid_actions,
+            "vc-remove": "remove" in valid_actions,
+            "vc-resolve": "resolve" in valid_actions,
+            "vc-revert": "revert" in valid_actions,
+            "vc-update": "update" in valid_actions,
         }
         for action, sensitivity in action_sensitivity.items():
             self.set_action_enabled(action, sensitivity)
@@ -643,14 +681,15 @@ class VcView(Gtk.Box, MeldDoc):
         def shelljoin(command):
             def quote(s):
                 return '"%s"' % s if len(s.split()) > 1 else s
+
             return " ".join(quote(tok) for tok in command)
 
         files = [os.path.relpath(f, working_dir) for f in files]
         msg = shelljoin(command + files) + " (in %s)\n" % working_dir
         self.consolestream.command(msg)
         readiter = read_pipe_iter(
-            command + files, workdir=working_dir,
-            errorstream=self.consolestream)
+            command + files, workdir=working_dir, errorstream=self.consolestream
+        )
         try:
             result = next(readiter)
             while not result:
@@ -658,8 +697,8 @@ class VcView(Gtk.Box, MeldDoc):
                 result = next(readiter)
         except IOError as err:
             error_dialog(
-                "Error running command",
-                "While running '%s'\nError: %s" % (msg, err))
+                "Error running command", "While running '%s'\nError: %s" % (msg, err)
+            )
             result = (1, "")
 
         returncode, output = result
@@ -705,7 +744,8 @@ class VcView(Gtk.Box, MeldDoc):
     def runner(self, command, files, refresh, working_dir):
         """Schedule a version control command to run as an idle task"""
         self.scheduler.add_task(
-            self._command_iter(command, files, refresh, working_dir))
+            self._command_iter(command, files, refresh, working_dir)
+        )
 
     def sync_runner(self, command, files, refresh, working_dir):
         """Run a version control command immediately"""
@@ -811,7 +851,7 @@ class VcView(Gtk.Box, MeldDoc):
         self.set_location(self.model.get_file_path(root))
 
     def refresh_partial(self, where):
-        if not self.get_action_state('vc-flatten'):
+        if not self.get_action_state("vc-flatten"):
             it = self.find_iter_by_name(where)
             if not it:
                 return
@@ -819,8 +859,7 @@ class VcView(Gtk.Box, MeldDoc):
 
             self.treeview.grab_focus()
             self.vc.refresh_vc_state(where)
-            self.scheduler.add_task(
-                self._search_recursively_iter(path, replace=True))
+            self.scheduler.add_task(self._search_recursively_iter(path, replace=True))
             self.scheduler.add_task(self.on_treeview_selection_changed)
             self.scheduler.add_task(self.on_treeview_cursor_changed)
         else:
@@ -943,4 +982,4 @@ class VcView(Gtk.Box, MeldDoc):
             self.run_diff(paths[0])
 
 
-VcView.set_css_name('meld-vc-view')
+VcView.set_css_name("meld-vc-view")

@@ -47,22 +47,30 @@ from meld.vc._vc import (  # noqa: F401
 _GIGtk = None
 
 try:
-    _GIGtk = get_introspection_module('Gtk')
+    _GIGtk = get_introspection_module("Gtk")
 except Exception:
     pass
 
-COL_PATH, COL_STATE, COL_TEXT, COL_ICON, COL_TINT, COL_FG, COL_STYLE, \
-    COL_WEIGHT, COL_STRIKE, COL_END = list(range(10))
+(
+    COL_PATH,
+    COL_STATE,
+    COL_TEXT,
+    COL_ICON,
+    COL_TINT,
+    COL_FG,
+    COL_STYLE,
+    COL_WEIGHT,
+    COL_STRIKE,
+    COL_END,
+) = list(range(10))
 
-COL_TYPES = (str, str, str, str, Gdk.RGBA, Gdk.RGBA, Pango.Style,
-             Pango.Weight, bool)
+COL_TYPES = (str, str, str, str, Gdk.RGBA, Gdk.RGBA, Pango.Style, Pango.Weight, bool)
 
 
 class DiffTreeStore(SearchableTreeStore):
-
     def __init__(self, ntree, types):
         full_types = []
-        for col_type in (COL_TYPES + tuple(types)):
+        for col_type in COL_TYPES + tuple(types):
             full_types.extend([col_type] * ntree)
         super().__init__(*full_types)
         self._none_of_cols = {
@@ -86,38 +94,38 @@ class DiffTreeStore(SearchableTreeStore):
 
         self.text_attributes = [
             # foreground, style, weight, strikethrough
-            (unk_fg, roman,  normal, None),  # STATE_IGNORED
-            (unk_fg, roman,  normal, None),  # STATE_NONE
-            (None,   roman,  normal, None),  # STATE_NORMAL
-            (None,   italic, normal, None),  # STATE_NOCHANGE
-            (err_fg, roman,  bold,   None),  # STATE_ERROR
+            (unk_fg, roman, normal, None),  # STATE_IGNORED
+            (unk_fg, roman, normal, None),  # STATE_NONE
+            (None, roman, normal, None),  # STATE_NORMAL
+            (None, italic, normal, None),  # STATE_NOCHANGE
+            (err_fg, roman, bold, None),  # STATE_ERROR
             (unk_fg, italic, normal, None),  # STATE_EMPTY
-            (new_fg, roman,  bold,   None),  # STATE_NEW
-            (mod_fg, roman,  bold,   None),  # STATE_MODIFIED
-            (mod_fg, roman,  normal, None),  # STATE_RENAMED
-            (con_fg, roman,  bold,   None),  # STATE_CONFLICT
-            (del_fg, roman,  bold,   True),  # STATE_REMOVED
-            (del_fg, roman,  bold,   True),  # STATE_MISSING
-            (unk_fg, roman,  normal, True),  # STATE_NONEXIST
-            (None,   italic, normal, None),  # STATE_SPINNER
+            (new_fg, roman, bold, None),  # STATE_NEW
+            (mod_fg, roman, bold, None),  # STATE_MODIFIED
+            (mod_fg, roman, normal, None),  # STATE_RENAMED
+            (con_fg, roman, bold, None),  # STATE_CONFLICT
+            (del_fg, roman, bold, True),  # STATE_REMOVED
+            (del_fg, roman, bold, True),  # STATE_MISSING
+            (unk_fg, roman, normal, True),  # STATE_NONEXIST
+            (None, italic, normal, None),  # STATE_SPINNER
         ]
 
         self.icon_details = [
             # file-icon, folder-icon, file-tint
-            ("text-x-generic", "folder", None),    # IGNORED
-            ("text-x-generic", "folder", None),    # NONE
-            ("text-x-generic", "folder", None),    # NORMAL
-            ("text-x-generic", "folder", None),    # NOCHANGE
-            ("dialog-warning-symbolic", None, None),    # ERROR
-            (None, None, None),    # EMPTY
-            ("text-x-generic", "folder", new_fg),    # NEW
-            ("text-x-generic", "folder", mod_fg),    # MODIFIED
-            ("text-x-generic", "folder", mod_fg),    # RENAMED
-            ("text-x-generic", "folder", con_fg),    # CONFLICT
-            ("text-x-generic", "folder", del_fg),    # REMOVED
+            ("text-x-generic", "folder", None),  # IGNORED
+            ("text-x-generic", "folder", None),  # NONE
+            ("text-x-generic", "folder", None),  # NORMAL
+            ("text-x-generic", "folder", None),  # NOCHANGE
+            ("dialog-warning-symbolic", None, None),  # ERROR
+            (None, None, None),  # EMPTY
+            ("text-x-generic", "folder", new_fg),  # NEW
+            ("text-x-generic", "folder", mod_fg),  # MODIFIED
+            ("text-x-generic", "folder", mod_fg),  # RENAMED
+            ("text-x-generic", "folder", con_fg),  # CONFLICT
+            ("text-x-generic", "folder", del_fg),  # REMOVED
             (None, "folder", unk_fg),  # MISSING
             (None, "folder", unk_fg),  # NONEXIST
-            ("text-x-generic", "folder", None),    # SPINNER
+            ("text-x-generic", "folder", None),  # SPINNER
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
@@ -167,16 +175,20 @@ class DiffTreeStore(SearchableTreeStore):
         icon = self.icon_details[state][1 if isdir else 0]
         tint = None if isdir else self.icon_details[state][2]
         fg, style, weight, strike = self.text_attributes[state]
-        self.unsafe_set(it, pane, {
-            COL_STATE: str(state),
-            COL_TEXT: label,
-            COL_ICON: icon,
-            COL_TINT: tint,
-            COL_FG: fg,
-            COL_STYLE: style,
-            COL_WEIGHT: weight,
-            COL_STRIKE: strike
-        })
+        self.unsafe_set(
+            it,
+            pane,
+            {
+                COL_STATE: str(state),
+                COL_TEXT: label,
+                COL_ICON: icon,
+                COL_TINT: tint,
+                COL_FG: fg,
+                COL_STYLE: style,
+                COL_WEIGHT: weight,
+                COL_STRIKE: strike,
+            },
+        )
 
     def get_state(self, it, pane):
         state_idx = self.column_index(COL_STATE, pane)
@@ -189,7 +201,10 @@ class DiffTreeStore(SearchableTreeStore):
         def match_func(it):
             # TODO: It works, but matching on the first pane only is very poor
             return self.get_state(it, 0) not in (
-                STATE_NORMAL, STATE_NOCHANGE, STATE_EMPTY)
+                STATE_NORMAL,
+                STATE_NOCHANGE,
+                STATE_EMPTY,
+            )
 
         return self.get_previous_next_paths(start_path, match_func)
 
@@ -205,7 +220,7 @@ class DiffTreeStore(SearchableTreeStore):
                 yield it
 
     def unsafe_set(self, treeiter, pane, keys_values):
-        """ This must be fastest than super.set,
+        """This must be fastest than super.set,
         at the cost that may crash the application if you don't
         know what your're passing here.
         ie: pass treeiter or column as None crash meld
@@ -218,8 +233,8 @@ class DiffTreeStore(SearchableTreeStore):
         return None
         """
         safe_keys_values = {
-            self.column_index(col, pane):
-            val if val is not None
+            self.column_index(col, pane): val
+            if val is not None
             else self._none_of_cols.get(self.column_index(col, pane))
             for col, val in keys_values.items()
         }
@@ -232,7 +247,6 @@ class DiffTreeStore(SearchableTreeStore):
 
 
 class MeldTreeView(Gtk.TreeView):
-
     __gtype_name__ = "MeldTreeView"
 
     context_menu_model = GObject.Property(

@@ -28,7 +28,7 @@ from meld.ui.gtkutil import alpha_tint
 
 
 def get_background_rgba(renderer):
-    '''Get and cache the expected background for the renderer widget
+    """Get and cache the expected background for the renderer widget
 
     Current versions of GTK+ don't paint the background of text view
     gutters with the actual expected widget background, which causes
@@ -37,13 +37,14 @@ def get_background_rgba(renderer):
     it for performance, and on the basis that all renderers will be
     assigned to similarly-styled views. This is fragile, but the
     alternative is really significantly slower.
-    '''
+    """
     global _background_rgba
     if _background_rgba is None:
         if renderer.props.view:
             stylecontext = renderer.props.view.get_style_context()
-            background_set, _background_rgba = (
-                stylecontext.lookup_color('theme_bg_color'))
+            background_set, _background_rgba = stylecontext.lookup_color(
+                "theme_bg_color"
+            )
     return _background_rgba
 
 
@@ -71,14 +72,14 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
         self.changed_handler_id = None
 
         meld_settings = get_meld_settings()
-        meld_settings.connect('changed', self.on_setting_changed)
+        meld_settings.connect("changed", self.on_setting_changed)
         self.font_string = meld_settings.font.to_string()
-        self.on_setting_changed(meld_settings, 'style-scheme')
+        self.on_setting_changed(meld_settings, "style-scheme")
 
     def on_setting_changed(self, settings, key):
-        if key == 'style-scheme':
+        if key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
-            alpha = self.fill_colors['current-chunk-highlight'].alpha
+            alpha = self.fill_colors["current-chunk-highlight"].alpha
             self.chunk_highlights = {
                 state: alpha_tint(colour, alpha)
                 for state, colour in self.fill_colors.items()
@@ -136,7 +137,9 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
 
         chunk = self._chunk
         x, width = 0, self.get_width()
-        y, height = lines.get_line_yrange(line, GtkSource.GutterRendererAlignmentMode.CELL)
+        y, height = lines.get_line_yrange(
+            line, GtkSource.GutterRendererAlignmentMode.CELL
+        )
         # Adjustment because we want to stroke the bottom border. This needs
         # to match do_snapshot_layer in meld.sourceview or things will not
         # align correctly.

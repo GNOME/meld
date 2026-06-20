@@ -56,7 +56,7 @@ class MeldStatusMenuButton(Gtk.MenuButton):
             ellipsize=Pango.EllipsizeMode.END,
         )
 
-        arrow = Gtk.Image.new_from_icon_name('pan-down-symbolic')
+        arrow = Gtk.Image.new_from_icon_name("pan-down-symbolic")
         arrow.props.valign = Gtk.Align.BASELINE
 
         box = Gtk.Box()
@@ -72,19 +72,20 @@ class MeldStatusMenuButton(Gtk.MenuButton):
         self._label.set_width_chars(width)
 
 
-MeldStatusMenuButton.set_css_name('meld-status-menu-button')
+MeldStatusMenuButton.set_css_name("meld-status-menu-button")
 
 
 class MeldStatusBar(Gtk.Box):
     __gtype_name__ = "MeldStatusBar"
 
     __gsignals__ = {
-        'start-go-to-line': (
-            GObject.SignalFlags.ACTION, None, tuple()),
-        'go-to-line': (
-            GObject.SignalFlags.RUN_FIRST, None, (int,)),
-        'encoding-changed': (
-            GObject.SignalFlags.RUN_FIRST, None, (GtkSource.Encoding,)),
+        "start-go-to-line": (GObject.SignalFlags.ACTION, None, tuple()),
+        "go-to-line": (GObject.SignalFlags.RUN_FIRST, None, (int,)),
+        "encoding-changed": (
+            GObject.SignalFlags.RUN_FIRST,
+            None,
+            (GtkSource.Encoding,),
+        ),
     }
 
     cursor_position = GObject.Property(
@@ -133,7 +134,7 @@ class MeldStatusBar(Gtk.Box):
                 line = int(text)
             except ValueError:
                 return
-            self.emit('go-to-line', max(0, line - 1))
+            self.emit("go-to-line", max(0, line - 1))
 
         def line_entry_mapped(entry):
             line, offset = self.props.cursor_position
@@ -143,7 +144,7 @@ class MeldStatusBar(Gtk.Box):
         # out param (see pygobject#12), but we don't need it here.
         def line_entry_insert_text(entry, new_text, length, position):
             if not new_text.isdigit():
-                GObject.signal_stop_emission_by_name(entry, 'insert-text')
+                GObject.signal_stop_emission_by_name(entry, "insert-text")
                 return
 
         def line_entry_changed(entry):
@@ -154,15 +155,14 @@ class MeldStatusBar(Gtk.Box):
             pop.popdown()
 
         entry = Gtk.Entry()
-        entry.set_tooltip_text(_('Line you want to move the cursor to'))
-        entry.set_icon_from_icon_name(
-            Gtk.EntryIconPosition.PRIMARY, 'go-jump-symbolic')
+        entry.set_tooltip_text(_("Line you want to move the cursor to"))
+        entry.set_icon_from_icon_name(Gtk.EntryIconPosition.PRIMARY, "go-jump-symbolic")
         entry.set_icon_activatable(Gtk.EntryIconPosition.PRIMARY, False)
         entry.set_input_purpose(Gtk.InputPurpose.DIGITS)
-        entry.connect('map', line_entry_mapped)
-        entry.connect('insert-text', line_entry_insert_text)
-        entry.connect('changed', line_entry_changed)
-        entry.connect('activate', line_entry_activated)
+        entry.connect("map", line_entry_mapped)
+        entry.connect("insert-text", line_entry_insert_text)
+        entry.connect("changed", line_entry_changed)
+        entry.connect("activate", line_entry_activated)
 
         selector = Gtk.Grid()
         selector.set_margin_start(6)
@@ -177,14 +177,17 @@ class MeldStatusBar(Gtk.Box):
 
         def format_cursor_position(binding, cursor):
             line, offset = cursor
-            return self._line_column_text.format(
-                line=line + 1, column=offset + 1)
+            return self._line_column_text.format(line=line + 1, column=offset + 1)
 
         button = MeldStatusMenuButton()
         self.bind_property(
-            'cursor_position', button, 'label', GObject.BindingFlags.DEFAULT,
-            format_cursor_position)
-        self.connect('start-go-to-line', lambda *args: button.clicked())
+            "cursor_position",
+            button,
+            "label",
+            GObject.BindingFlags.DEFAULT,
+            format_cursor_position,
+        )
+        self.connect("start-go-to-line", lambda *args: button.clicked())
         button.set_popover(pop)
         # Set a label width to avoid other widgets moving on cursor change
         reasonable_width = len(format_cursor_position(None, (1000, 100))) - 2
@@ -194,15 +197,15 @@ class MeldStatusBar(Gtk.Box):
 
     def construct_encoding_selector(self):
         def change_encoding(selector, encoding):
-            self.emit('encoding-changed', encoding)
+            self.emit("encoding-changed", encoding)
             pop.hide()
 
         def set_initial_encoding(selector):
             selector.select_value(self.props.source_encoding)
 
         selector = EncodingSelector()
-        selector.connect('encoding-selected', change_encoding)
-        selector.connect('map', set_initial_encoding)
+        selector.connect("encoding-selected", change_encoding)
+        selector.connect("map", set_initial_encoding)
 
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
@@ -210,9 +213,12 @@ class MeldStatusBar(Gtk.Box):
 
         button = MeldStatusMenuButton()
         self.bind_property(
-            'source-encoding', button, 'label',
+            "source-encoding",
+            button,
+            "label",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
-            lambda binding, enc: selector.get_value_label(enc))
+            lambda binding, enc: selector.get_value_label(enc),
+        )
         button.set_popover(pop)
 
         return button
@@ -231,8 +237,8 @@ class MeldStatusBar(Gtk.Box):
             selector.select_value(self.props.source_language)
 
         selector = SourceLangSelector()
-        selector.connect('language-selected', change_language)
-        selector.connect('map', set_initial_language)
+        selector.connect("language-selected", change_language)
+        selector.connect("map", set_initial_language)
 
         pop = Gtk.Popover()
         pop.set_position(Gtk.PositionType.TOP)
@@ -240,17 +246,19 @@ class MeldStatusBar(Gtk.Box):
 
         button = MeldStatusMenuButton()
         self.bind_property(
-            'source-language', button, 'label',
+            "source-language",
+            button,
+            "label",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
-            lambda binding, enc: selector.get_value_label(enc))
+            lambda binding, enc: selector.get_value_label(enc),
+        )
         button.set_popover(pop)
 
         return button
 
     def construct_display_popover(self):
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/statusbar-menu.ui')
-        menu = builder.get_object('statusbar-menu')
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/statusbar-menu.ui")
+        menu = builder.get_object("statusbar-menu")
 
         pop = Gtk.PopoverMenu()
         pop.set_menu_model(menu)
@@ -259,7 +267,7 @@ class MeldStatusBar(Gtk.Box):
         button = MeldStatusMenuButton()
         # TRANSLATORS: This is the status bar label for a group of settings,
         # such as text wrapping, show line numbers, whitespace, etc.
-        button.set_label(_('Display'))
+        button.set_label(_("Display"))
         button.set_popover(pop)
 
         return button

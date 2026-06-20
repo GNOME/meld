@@ -33,18 +33,18 @@ ALT_MASK = Gdk.ModifierType.ALT_MASK
 SYNCPOINT_MARK_CATEGORY = "syncpoint"
 SYNCPOINT_SENTINEL = "meld-syncpoint-sentinel"
 
+
 def get_custom_encoding_candidates():
     custom_candidates = []
     try:
-        for charset in settings.get_value('detect-encodings'):
+        for charset in settings.get_value("detect-encodings"):
             encoding = GtkSource.Encoding.get_from_charset(charset)
             if not encoding:
                 log.warning('Invalid charset "%s" skipped', charset)
                 continue
             custom_candidates.append(encoding)
         if custom_candidates:
-            custom_candidates.extend(
-                GtkSource.Encoding.get_default_candidates())
+            custom_candidates.extend(GtkSource.Encoding.get_default_candidates())
     except AttributeError:
         # get_default_candidates() is only available in GtkSourceView 3.18
         # and we'd rather use their defaults than our old detect list.
@@ -53,14 +53,12 @@ def get_custom_encoding_candidates():
 
 
 class LanguageManager:
-
     manager = GtkSource.LanguageManager()
 
     @classmethod
     def get_language_from_file(cls, gfile):
         try:
-            info = gfile.query_info(
-                Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, 0, None)
+            info = gfile.query_info(Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE, 0, None)
         except (GLib.GError, AttributeError):
             return None
         content_type = info.get_content_type()
@@ -73,13 +71,20 @@ class LanguageManager:
 
 
 class TextviewLineAnimationType(Enum):
-    fill = 'fill'
-    stroke = 'stroke'
+    fill = "fill"
+    stroke = "stroke"
 
 
 class TextviewLineAnimation:
-    __slots__ = ("start_mark", "end_mark", "start_rgba", "end_rgba",
-                 "start_time", "duration", "anim_type")
+    __slots__ = (
+        "start_mark",
+        "end_mark",
+        "start_rgba",
+        "end_rgba",
+        "start_time",
+        "duration",
+        "anim_type",
+    )
 
     def __init__(self, mark0, mark1, rgba0, rgba1, duration, anim_type):
         self.start_mark = mark0
@@ -92,7 +97,6 @@ class TextviewLineAnimation:
 
 
 class SourceViewHelperMixin:
-
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
         _found, it = buf.get_iter_at_line(line)
@@ -106,16 +110,15 @@ class SourceViewHelperMixin:
 
 
 class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
-
     __gtype_name__ = "MeldSourceView"
 
     __gsettings_bindings_view__ = (
-        ('highlight-current-line', 'highlight-current-line-local'),
-        ('indent-width', 'tab-width'),
-        ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('enable-space-drawer', 'draw-spaces-bool'),
-        ('wrap-mode', 'wrap-mode'),
-        ('show-line-numbers', 'show-line-numbers'),
+        ("highlight-current-line", "highlight-current-line-local"),
+        ("indent-width", "tab-width"),
+        ("insert-spaces-instead-of-tabs", "insert-spaces-instead-of-tabs"),
+        ("enable-space-drawer", "draw-spaces-bool"),
+        ("wrap-mode", "wrap-mode"),
+        ("show-line-numbers", "show-line-numbers"),
     )
 
     # Named so as not to conflict with the GtkSourceView property
@@ -129,18 +132,22 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         if show == self._show_line_numbers:
             return
 
-        if getattr(self, 'line_renderer', None):
+        if getattr(self, "line_renderer", None):
             self.line_renderer.set_visible(show)
 
         self._show_line_numbers = show
         self.notify("show-line-numbers")
 
     show_line_numbers = GObject.Property(
-        type=bool, default=False, getter=get_show_line_numbers,
-        setter=set_show_line_numbers)
+        type=bool,
+        default=False,
+        getter=get_show_line_numbers,
+        setter=set_show_line_numbers,
+    )
 
     wrap_mode_bool = GObject.Property(
-        type=bool, default=False,
+        type=bool,
+        default=False,
         nick="Wrap mode (Boolean version)",
         blurb=(
             "Mirror of the wrap-mode GtkTextView property, reduced to "
@@ -149,7 +156,8 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     )
 
     draw_spaces_bool = GObject.Property(
-        type=bool, default=False,
+        type=bool,
+        default=False,
         nick="Draw spaces (Boolean version)",
         blurb=(
             "Mirror of the draw-spaces GtkSourceView property, "
@@ -158,12 +166,12 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
     )
 
     overscroll_num_lines = GObject.Property(
-        type=int, default=5, minimum=0, maximum=100,
+        type=int,
+        default=5,
+        minimum=0,
+        maximum=100,
         nick="Overscroll line count",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT
-        ),
+        flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT),
     )
 
     @GObject.Signal(name="popup-menu")
@@ -191,14 +199,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             SYNCPOINT_SENTINEL, SYNCPOINT_MARK_CATEGORY, buf.get_start_iter()
         )
         self.set_buffer(buf)
-        self.connect('notify::overscroll-num-lines', self.notify_overscroll)
+        self.connect("notify::overscroll-num-lines", self.notify_overscroll)
 
     @property
     def line_height(self) -> int:
-        if not getattr(self, '_approx_line_height', None):
+        if not getattr(self, "_approx_line_height", None):
             context = self.get_pango_context()
             layout = Pango.Layout(context)
-            layout.set_text('X', -1)
+            layout.set_text("X", -1)
             _width, self._approx_line_height = layout.get_pixel_size()
 
         return self._approx_line_height
@@ -224,8 +232,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         clipboard.read_text_async(None, text_received_cb)
 
     def add_fading_highlight(
-            self, mark0, mark1, colour_name, duration,
-            anim_type=TextviewLineAnimationType.fill, starting_alpha=1.0):
+        self,
+        mark0,
+        mark1,
+        colour_name,
+        duration,
+        anim_type=TextviewLineAnimationType.fill,
+        starting_alpha=1.0,
+    ):
 
         if not self.get_realized():
             return
@@ -234,18 +248,19 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         rgba1 = self.fill_colors[colour_name].copy()
         rgba0.alpha = starting_alpha
         rgba1.alpha = 0.0
-        anim = TextviewLineAnimation(
-            mark0, mark1, rgba0, rgba1, duration, anim_type)
+        anim = TextviewLineAnimation(mark0, mark1, rgba0, rgba1, duration, anim_type)
         self.animating_chunks.append(anim)
 
     def on_setting_changed(self, settings, key):
-        if key == 'font':
+        if key == "font":
             self._approx_line_height = None
-        elif key == 'style-scheme':
+        elif key == "style-scheme":
             self.highlight_color = colour_lookup_with_fallback(
-                "meld:current-line-highlight", "background")
+                "meld:current-line-highlight", "background"
+            )
             self.syncpoint_color = colour_lookup_with_fallback(
-                "meld:syncpoint-outline", "foreground")
+                "meld:syncpoint-outline", "foreground"
+            )
             self.fill_colors, self.line_colors = get_common_theme()
 
             buf = self.get_buffer()
@@ -253,10 +268,12 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
             tag = buf.get_tag_table().lookup("inline")
             tag.props.background_rgba = colour_lookup_with_fallback(
-                "meld:inline", "background")
+                "meld:inline", "background"
+            )
             tag = buf.get_tag_table().lookup("dimmed")
             tag.props.foreground_rgba = colour_lookup_with_fallback(
-                "meld:dimmed", "foreground")
+                "meld:dimmed", "foreground"
+            )
 
     def on_popup_menu(self, *args):
         # TODO4: This layer of indirection is only needed because of syncpoint
@@ -270,7 +287,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         def wrap_mode_from_bool(binding, from_value):
             if from_value:
-                settings_mode = settings.get_enum('wrap-mode')
+                settings_mode = settings.get_enum("wrap-mode")
                 if settings_mode == Gtk.WrapMode.NONE:
                     mode = Gtk.WrapMode.WORD
                 else:
@@ -283,7 +300,9 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             return bool(from_value)
 
         self.bind_property(
-            'wrap-mode-bool', self, 'wrap-mode',
+            "wrap-mode-bool",
+            self,
+            "wrap-mode",
             GObject.BindingFlags.BIDIRECTIONAL,
             wrap_mode_from_bool,
             wrap_mode_to_bool,
@@ -291,16 +310,18 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.wrap_mode_bool = wrap_mode_to_bool(None, self.props.wrap_mode)
 
         self.bind_property(
-            'draw-spaces-bool', self.props.space_drawer, 'enable-matrix',
+            "draw-spaces-bool",
+            self.props.space_drawer,
+            "enable-matrix",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
 
         meld_settings = get_meld_settings()
 
-        self.on_setting_changed(meld_settings, 'style-scheme')
+        self.on_setting_changed(meld_settings, "style-scheme")
         self.get_buffer().set_style_scheme(meld_settings.style_scheme)
 
-        meld_settings.connect('changed', self.on_setting_changed)
+        meld_settings.connect("changed", self.on_setting_changed)
 
         builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/filediff-menus.ui")
         popup_menu_model = builder.get_object("filediff-context-menu")
@@ -354,7 +375,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
                 color = self.fill_colors[change[0]]
                 snapshot.append_color(color, rect)
                 if self.current_chunk_check(change):
-                    highlight = self.fill_colors['current-chunk-highlight']
+                    highlight = self.fill_colors["current-chunk-highlight"]
                     snapshot.append_color(highlight, rect)
 
             color = self.line_colors[change[0]]
@@ -374,7 +395,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         visible_bottom_margin = visible_rect.y + visible_rect.height - end_y
         if visible_bottom_margin > 0:
             rect.init(x, end_y, width, visible_bottom_margin)
-            color = self.fill_colors['overscroll']
+            color = self.fill_colors["overscroll"]
             snapshot.append_color(color, rect)
 
         # Paint current line highlight
@@ -406,8 +427,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         for c in self.animating_chunks:
             # TODO: Migrate to using the widget frame clock
             current_time = GLib.get_monotonic_time()
-            percent = min(
-                1.0, (current_time - c.start_time) / float(c.duration))
+            percent = min(1.0, (current_time - c.start_time) / float(c.duration))
 
             def scale(start, end, percent):
                 return start + (end - start) * percent
@@ -430,9 +450,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             if c.anim_type == TextviewLineAnimationType.stroke:
                 rounded_rect.init_from_rect(rect, 0.0)
                 snapshot.append_border(
-                    rounded_rect,
-                    [1.0, 1.0, 1.0, 1.0],
-                    [rgba, rgba, rgba, rgba]
+                    rounded_rect, [1.0, 1.0, 1.0, 1.0], [rgba, rgba, rgba, rgba]
                 )
             else:
                 snapshot.append_color(rgba, rect)
@@ -445,6 +463,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.animating_chunks = new_anim_chunks
 
         if self.animating_chunks and self.anim_source_id is None:
+
             def anim_cb(widget, frame_clock, *user_data):
                 self.queue_draw()
                 return GLib.SOURCE_CONTINUE
@@ -468,13 +487,12 @@ Gtk.WidgetClass.install_action(
 
 
 class CommitMessageSourceView(GtkSource.View):
-
     __gtype_name__ = "CommitMessageSourceView"
 
     __gsettings_bindings_view__ = (
-        ('indent-width', 'tab-width'),
-        ('insert-spaces-instead-of-tabs', 'insert-spaces-instead-of-tabs'),
-        ('enable-space-drawer', 'enable-space-drawer'),
+        ("indent-width", "tab-width"),
+        ("insert-spaces-instead-of-tabs", "insert-spaces-instead-of-tabs"),
+        ("enable-space-drawer", "enable-space-drawer"),
     )
 
     enable_space_drawer = GObject.Property(type=bool, default=False)
@@ -483,7 +501,9 @@ class CommitMessageSourceView(GtkSource.View):
         bind_settings(self)
 
         self.bind_property(
-            'enable-space-drawer', self.props.space_drawer, 'enable-matrix',
+            "enable-space-drawer",
+            self.props.space_drawer,
+            "enable-matrix",
             GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE,
         )
 
@@ -491,7 +511,6 @@ class CommitMessageSourceView(GtkSource.View):
 
 
 class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
-
     __gtype_name__ = "MeldSourceMap"
 
     compact_view = GObject.Property(
@@ -504,7 +523,7 @@ class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.connect('notify::compact-view', lambda *args: self.queue_resize())
+        self.connect("notify::compact-view", lambda *args: self.queue_resize())
 
     def do_draw_layer(self, layer, context):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
@@ -512,7 +531,7 @@ class MeldSourceMap(GtkSource.Map, SourceViewHelperMixin):
 
         # Handle bad view assignments and partial initialisation
         parent_view = self.props.view
-        if not hasattr(parent_view, 'chunk_iter'):
+        if not hasattr(parent_view, "chunk_iter"):
             return GtkSource.Map.do_draw_layer(self, layer, context)
 
         context.save()
