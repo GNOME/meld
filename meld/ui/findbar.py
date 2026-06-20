@@ -18,6 +18,8 @@ from typing import ClassVar, Optional
 
 from gi.repository import GObject, Gtk, GtkSource
 
+from meld.ui.gtkutil import GTK_STYLE_CLASS_ERROR
+
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/findbar.ui')
 class FindBar(Gtk.Grid):
@@ -83,11 +85,10 @@ class FindBar(Gtk.Grid):
             self.search_context.props.occurrences_count == 0 and
             self.search_settings.props.search_text
         )
-        style_context = self.find_entry.get_style_context()
         if no_matches:
-            style_context.add_class(Gtk.STYLE_CLASS_ERROR)
+            self.find_entry.add_css_class(GTK_STYLE_CLASS_ERROR)
         else:
-            style_context.remove_class(Gtk.STYLE_CLASS_ERROR)
+            self.find_entry.remove_css_class(GTK_STYLE_CLASS_ERROR)
 
     def set_text_view(self, textview):
         self.textview = textview

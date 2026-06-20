@@ -17,14 +17,21 @@
 import logging
 from enum import Enum
 
-from gi.repository import Gdk, Gio, GLib, GObject, Gtk, GtkSource, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Graphene, Gsk, Gtk, GtkSource, Pango
 
 from meld.meldbuffer import MeldBuffer
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.style import colour_lookup_with_fallback, get_common_theme
+from meld.ui.gtkutil import make_gdk_rgba
 
 log = logging.getLogger(__name__)
 
+CONTROL_MASK = Gdk.ModifierType.CONTROL_MASK
+SHIFT_MASK = Gdk.ModifierType.SHIFT_MASK
+ALT_MASK = Gdk.ModifierType.ALT_MASK
+
+SYNCPOINT_MARK_CATEGORY = "syncpoint"
+SYNCPOINT_SENTINEL = "meld-syncpoint-sentinel"
 
 def get_custom_encoding_candidates():
     custom_candidates = []
@@ -88,7 +95,7 @@ class SourceViewHelperMixin:
 
     def get_y_for_line_num(self, line):
         buf = self.get_buffer()
-        it = buf.get_iter_at_line(line)
+        _found, it = buf.get_iter_at_line(line)
         y, h = self.get_line_yrange(it)
         if line >= buf.get_line_count():
             return y + h
@@ -118,13 +125,14 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         return self._show_line_numbers
 
     def set_show_line_numbers(self, show):
+        show = bool(show)
         if show == self._show_line_numbers:
             return
 
         if getattr(self, 'line_renderer', None):
             self.line_renderer.set_visible(show)
 
-        self._show_line_numbers = bool(show)
+        self._show_line_numbers = show
         self.notify("show-line-numbers")
 
     show_line_numbers = GObject.Property(
@@ -158,56 +166,30 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         ),
     )
 
-    replaced_entries = (
-        # We replace the default GtkSourceView undo mechanism
-        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_z, Gdk.ModifierType.CONTROL_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
-
-        # We replace the default line movement behaviour of Alt+Up/Down
-        (Gdk.KEY_Up, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Up, Gdk.ModifierType.MOD1_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
-        (Gdk.KEY_Down, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Down, Gdk.ModifierType.MOD1_MASK |
-            Gdk.ModifierType.SHIFT_MASK),
-        # ...and Alt+Left/Right
-        (Gdk.KEY_Left, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Left, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_Right, Gdk.ModifierType.MOD1_MASK),
-        (Gdk.KEY_KP_Right, Gdk.ModifierType.MOD1_MASK),
-        # ...and Ctrl+Page Up/Down
-        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
-    )
+    @GObject.Signal(name="popup-menu")
+    def popup_menu(self) -> None: ...
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.drag_dest_add_uri_targets()
-
-        # Most bindings are on SourceView, except the Page Up/Down ones
-        # which are on TextView.
-        binding_set_names = ('GtkSourceView', 'GtkTextView')
-        for set_name in binding_set_names:
-            binding_set = Gtk.binding_set_find(set_name)
-            for key, modifiers in self.replaced_entries:
-                Gtk.binding_entry_remove(binding_set, key, modifiers)
-
         self.anim_source_id = None
         self.animating_chunks = []
-        self.syncpoints = []
         self._show_line_numbers = None
+
+        self.context_menu = None
+
+        self.add_css_class("meld-monospace-font")
 
         buf = MeldBuffer()
         inline_tag = GtkSource.Tag.new("inline")
         inline_tag.props.draw_spaces = True
         buf.get_tag_table().add(inline_tag)
         buf.create_tag("dimmed")
+        # Create a syncpoint mark to enable iteration workaround for pygobject
+        # marshalling issue with GtkSourceBuffer
+        self.syncpoint_mark = buf.create_source_mark(
+            SYNCPOINT_SENTINEL, SYNCPOINT_MARK_CATEGORY, buf.get_start_iter()
+        )
         self.set_buffer(buf)
         self.connect('notify::overscroll-num-lines', self.notify_overscroll)
 
@@ -229,20 +211,17 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         # here is to sanitise the clipboard contents so that it doesn't
         # contain GtkTextTags, by requesting and setting plain text.
 
-        def text_received_cb(clipboard, text, *user_data):
+        def text_received_cb(clipboard, result, *user_data):
+            text = clipboard.read_text_finish(result)
             # On clipboard failure, text will be None
             if not text:
                 return
 
-            # Manual encoding is required here, or the length will be
-            # incorrect, and the API requires a UTF-8 bytestring.
-            utf8_text = text.encode('utf-8')
-            clipboard.set_text(text, len(utf8_text))
-            self.get_buffer().paste_clipboard(
-                clipboard, None, self.get_editable())
+            clipboard.set(text)
+            self.get_buffer().paste_clipboard(clipboard, None, self.get_editable())
 
-        clipboard = self.get_clipboard(Gdk.SELECTION_CLIPBOARD)
-        clipboard.request_text(text_received_cb)
+        clipboard = self.get_clipboard()
+        clipboard.read_text_async(None, text_received_cb)
 
     def add_fading_highlight(
             self, mark0, mark1, colour_name, duration,
@@ -261,7 +240,6 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
     def on_setting_changed(self, settings, key):
         if key == 'font':
-            self.override_font(settings.font)
             self._approx_line_height = None
         elif key == 'style-scheme':
             self.highlight_color = colour_lookup_with_fallback(
@@ -279,6 +257,13 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             tag = buf.get_tag_table().lookup("dimmed")
             tag.props.foreground_rgba = colour_lookup_with_fallback(
                 "meld:dimmed", "foreground")
+
+    def on_popup_menu(self, *args):
+        # TODO4: This layer of indirection is only needed because of syncpoint
+        # menu logic in FileDiff. If we manage to move that around, we could
+        # move the FileDiff popup handling in on_textview_popup_menu and
+        # on_textview_button_press_event to MeldSourceView.
+        self.popup_menu.emit()
 
     def do_realize(self):
         bind_settings(self)
@@ -312,11 +297,20 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         meld_settings = get_meld_settings()
 
-        self.on_setting_changed(meld_settings, 'font')
         self.on_setting_changed(meld_settings, 'style-scheme')
         self.get_buffer().set_style_scheme(meld_settings.style_scheme)
 
         meld_settings.connect('changed', self.on_setting_changed)
+
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/filediff-menus.ui")
+        popup_menu_model = builder.get_object("filediff-context-menu")
+        popup_menu = Gtk.PopoverMenu.new_from_model(popup_menu_model)
+        popup_menu.set_parent(self)
+        # Mimic the appearance of the standard GtkTextView context menu
+        popup_menu.set_position(Gtk.PositionType.BOTTOM)
+        popup_menu.set_has_arrow(False)
+        popup_menu.set_halign(Gtk.Align.START)
+        self.context_menu = popup_menu
 
         return GtkSource.View.do_realize(self)
 
@@ -325,80 +319,105 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             GLib.source_remove(self.anim_source_id)
         return GtkSource.View.do_unrealize(self)
 
-    def do_draw_layer(self, layer, context):
+    def do_snapshot_layer(self, layer, snapshot):
         if layer != Gtk.TextViewLayer.BELOW_TEXT:
-            return GtkSource.View.do_draw_layer(self, layer, context)
+            return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
 
-        context.save()
-        context.set_line_width(1.0)
+        textbuffer = self.get_buffer()
 
-        _, clip = Gdk.cairo_get_clip_rectangle(context)
-        clip_end = clip.y + clip.height
-        bounds = (
-            self.get_line_num_for_y(clip.y),
-            self.get_line_num_for_y(clip_end),
-        )
+        snapshot.save()
+        visible_rect = self.get_visible_rect()
+        start_line = self.get_line_num_for_y(visible_rect.y)
+        end_line = self.get_line_num_for_y(visible_rect.y + visible_rect.height)
 
-        x = clip.x - 0.5
-        width = clip.width + 1
+        _start_iter, end_iter = textbuffer.get_bounds()
+        end_y, end_height = self.get_line_yrange(end_iter)
+        if visible_rect.y + visible_rect.height > end_y + end_height:
+            end_line += 1
+
+        bounds = (start_line, end_line)
+
+        x = 0
+        width = self.get_width() + 1
+
+        rect = Graphene.Rect()
+        rounded_rect = Gsk.RoundedRect()
 
         # Paint chunk backgrounds and outlines
         for change in self.chunk_iter(bounds):
             ypos0 = self.get_y_for_line_num(change[1])
             ypos1 = self.get_y_for_line_num(change[2])
-            height = max(0, ypos1 - ypos0 - 1)
+            height = max(1, ypos1 - ypos0) + 1
 
-            context.rectangle(x, ypos0 + 0.5, width, height)
+            rect.init(x, ypos0, width, height)
             if change[1] != change[2]:
-                context.set_source_rgba(*self.fill_colors[change[0]])
-                context.fill_preserve()
+                color = self.fill_colors[change[0]]
+                snapshot.append_color(color, rect)
                 if self.current_chunk_check(change):
                     highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                    context.fill_preserve()
+                    snapshot.append_color(highlight, rect)
 
-            context.set_source_rgba(*self.line_colors[change[0]])
-            context.stroke()
-
-        textbuffer = self.get_buffer()
+            color = self.line_colors[change[0]]
+            rounded_rect.init_from_rect(rect, 0.0)
+            snapshot.append_border(
+                rounded_rect,
+                [1.0, 0.0, 1.0, 0.0],
+                [color, color, color, color],
+            )
 
         # Check whether we're drawing past the last line in the buffer
         # (i.e., the overscroll) and draw a custom background if so.
         end_y, end_height = self.get_line_yrange(textbuffer.get_end_iter())
-        end_y += end_height
-        visible_bottom_margin = clip_end - end_y
+        # We're adding 2 here so that we don't overlap with the chunk line
+        # drawing if the last chunk is an insert.
+        end_y += end_height + 2
+        visible_bottom_margin = visible_rect.y + visible_rect.height - end_y
         if visible_bottom_margin > 0:
-            context.rectangle(x + 1, end_y, width - 1, visible_bottom_margin)
-            context.set_source_rgba(*self.fill_colors['overscroll'])
-            context.fill()
+            rect.init(x, end_y, width, visible_bottom_margin)
+            color = self.fill_colors['overscroll']
+            snapshot.append_color(color, rect)
 
         # Paint current line highlight
-        if self.props.highlight_current_line_local and self.is_focus():
+        if self.props.highlight_current_line_local:
             it = textbuffer.get_iter_at_mark(textbuffer.get_insert())
             ypos, line_height = self.get_line_yrange(it)
-            context.rectangle(x, ypos, width, line_height)
-            context.set_source_rgba(*self.highlight_color)
-            context.fill()
+            rect.init(x, ypos, width, line_height)
+            highlight = self.highlight_color
+            snapshot.append_color(highlight, rect)
 
         # Draw syncpoint indicator lines
-        for syncpoint in self.syncpoints:
-            if syncpoint is None:
-                continue
+        syncpoint = self.syncpoint_mark.next()
+        while syncpoint:
             syncline = textbuffer.get_iter_at_mark(syncpoint).get_line()
             if bounds[0] <= syncline <= bounds[1]:
                 ypos = self.get_y_for_line_num(syncline)
-                context.rectangle(x, ypos - 0.5, width, 1)
-                context.set_source_rgba(*self.syncpoint_color)
-                context.stroke()
+                rect.init(x, ypos - 0.5, width, 1)
+                color = self.syncpoint_color
+                rounded_rect.init_from_rect(rect, 0.0)
+                snapshot.append_border(
+                    rounded_rect,
+                    [1.0, 1.0, 1.0, 1.0],
+                    [color, color, color, color],
+                )
+            syncpoint = syncpoint.next()
 
         # Overdraw all animated chunks, and update animation states
         new_anim_chunks = []
         for c in self.animating_chunks:
+            # TODO: Migrate to using the widget frame clock
             current_time = GLib.get_monotonic_time()
             percent = min(
                 1.0, (current_time - c.start_time) / float(c.duration))
-            rgba_pairs = zip(c.start_rgba, c.end_rgba)
-            rgba = [s + (e - s) * percent for s, e in rgba_pairs]
+
+            def scale(start, end, percent):
+                return start + (end - start) * percent
+
+            rgba = make_gdk_rgba(
+                scale(c.start_rgba.red, c.end_rgba.red, percent),
+                scale(c.start_rgba.green, c.end_rgba.green, percent),
+                scale(c.start_rgba.blue, c.end_rgba.blue, percent),
+                scale(c.start_rgba.alpha, c.end_rgba.alpha, percent),
+            )
 
             it = textbuffer.get_iter_at_mark(c.start_mark)
             ystart, _ = self.get_line_yrange(it)
@@ -407,12 +426,16 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
             if ystart == yend:
                 ystart -= 1
 
-            context.set_source_rgba(*rgba)
-            context.rectangle(x, ystart, width, yend - ystart)
+            rect.init(x, ystart, width, (yend - ystart) + 1)
             if c.anim_type == TextviewLineAnimationType.stroke:
-                context.stroke()
+                rounded_rect.init_from_rect(rect, 0.0)
+                snapshot.append_border(
+                    rounded_rect,
+                    [1.0, 1.0, 1.0, 1.0],
+                    [rgba, rgba, rgba, rgba]
+                )
             else:
-                context.fill()
+                snapshot.append_color(rgba, rect)
 
             if current_time <= c.start_time + c.duration:
                 new_anim_chunks.append(c)
@@ -422,19 +445,26 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.animating_chunks = new_anim_chunks
 
         if self.animating_chunks and self.anim_source_id is None:
-            def anim_cb():
+            def anim_cb(widget, frame_clock, *user_data):
                 self.queue_draw()
-                return True
-            # Using timeout_add interferes with recalculation of inline
-            # highlighting; this mechanism could be improved.
-            self.anim_source_id = GLib.idle_add(anim_cb)
+                return GLib.SOURCE_CONTINUE
+
+            self.anim_source_id = self.add_tick_callback(anim_cb)
         elif not self.animating_chunks and self.anim_source_id:
-            GLib.source_remove(self.anim_source_id)
+            self.remove_tick_callback(self.anim_source_id)
             self.anim_source_id = None
 
-        context.restore()
+        snapshot.restore()
 
-        return GtkSource.View.do_draw_layer(self, layer, context)
+        return GtkSource.View.do_snapshot_layer(self, layer, snapshot)
+
+
+Gtk.WidgetClass.install_action(
+    MeldSourceView,
+    "menu.popup",
+    None,
+    MeldSourceView.on_popup_menu,
+)
 
 
 class CommitMessageSourceView(GtkSource.View):

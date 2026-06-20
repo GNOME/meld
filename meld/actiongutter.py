@@ -14,41 +14,17 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import bisect
-from typing import Dict, Optional
 
-from gi.repository import Gdk, GdkPixbuf, GObject, Gtk
+from gi.repository import Gdk, Gio, GObject, Graphene, Gsk, Gtk
 
-from meld.conf import _
 from meld.const import ActionMode, ChunkAction
+from meld.matchers.myers import DiffChunk
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
-from meld.ui.gtkcompat import get_style
-from meld.ui.gtkutil import make_gdk_rgba
+from meld.ui.gtkutil import alpha_tint
 
 
-class ActionIcons:
-
-    #: Fixed size of the renderer. Ideally this would be font-dependent and
-    #: would adjust to other textview attributes, but that's both quite
-    #: difficult and not necessarily desirable.
-    pixbuf_height = 16
-    icon_cache: Dict[str, GdkPixbuf.Pixbuf] = {}
-    icon_name_prefix = 'meld-change'
-
-    @classmethod
-    def load(cls, icon_name: str):
-        icon = cls.icon_cache.get(icon_name)
-
-        if not icon:
-            icon_theme = Gtk.IconTheme.get_default()
-            icon = icon_theme.load_icon(
-                f'{cls.icon_name_prefix}-{icon_name}', cls.pixbuf_height, 0)
-            cls.icon_cache[icon_name] = icon
-
-        return icon
-
-
-class ActionGutter(Gtk.DrawingArea):
+class ActionGutter(Gtk.Widget):
 
     __gtype_name__ = 'ActionGutter'
 
@@ -87,16 +63,16 @@ class ActionGutter(Gtk.DrawingArea):
     @icon_direction.setter
     def icon_direction_set(self, direction: Gtk.TextDirection):
         if direction not in (Gtk.TextDirection.LTR, Gtk.TextDirection.RTL):
-            raise ValueError('Invalid icon direction {}'.format(direction))
+            raise ValueError("Invalid icon direction {}".format(direction))
 
         replace_icons = {
-            Gtk.TextDirection.LTR: 'apply-right',
-            Gtk.TextDirection.RTL: 'apply-left',
+            Gtk.TextDirection.LTR: "meld-change-apply-right",
+            Gtk.TextDirection.RTL: "meld-change-apply-left",
         }
-        self.action_map = {
-            ActionMode.Replace: ActionIcons.load(replace_icons[direction]),
-            ActionMode.Delete: ActionIcons.load('delete'),
-            ActionMode.Insert: ActionIcons.load('copy'),
+        self.action_icon_name_map = {
+            ActionMode.Replace: replace_icons[direction],
+            ActionMode.Delete: "meld-change-delete",
+            ActionMode.Insert: "meld-change-copy",
         }
         self._icon_direction = direction
 
@@ -164,37 +140,68 @@ class ActionGutter(Gtk.DrawingArea):
         self.pointer_chunk = None
         self.pressed_chunk = None
 
-        self.motion_controller = Gtk.EventControllerMotion(widget=self)
-        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
-        self.motion_controller.connect("enter", self.motion_event)
-        self.motion_controller.connect("leave", self.motion_event)
-        self.motion_controller.connect("motion", self.motion_event)
+        click_controller = Gtk.GestureClick()
+        click_controller.connect("pressed", self.button_press_event)
+        click_controller.connect("released", self.button_release_event)
+        self.add_controller(click_controller)
+
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        motion_controller.connect("enter", self.motion_event)
+        motion_controller.connect("leave", self.motion_event)
+        motion_controller.connect("motion", self.motion_event)
+        self.add_controller(motion_controller)
+        self.connect("realize", self.on_realize)
 
     def on_setting_changed(self, settings, key):
         if key == 'style-scheme':
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors['current-chunk-highlight'].alpha
             self.chunk_highlights = {
-                state: make_gdk_rgba(*[alpha + c * (1.0 - alpha) for c in colour])
+                state: alpha_tint(colour, alpha)
                 for state, colour in self.fill_colors.items()
             }
 
-    def do_realize(self):
-        self.set_events(
-            Gdk.EventMask.ENTER_NOTIFY_MASK |
-            Gdk.EventMask.LEAVE_NOTIFY_MASK |
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK |
-            Gdk.EventMask.SCROLL_MASK
-        )
+    def on_realize(self, *args):
         self.connect('notify::action-mode', lambda *args: self.queue_draw())
 
         meld_settings = get_meld_settings()
         meld_settings.connect('changed', self.on_setting_changed)
         self.on_setting_changed(meld_settings, 'style-scheme')
 
-        return Gtk.DrawingArea.do_realize(self)
+        button = Gtk.Button()
+        button.set_parent(self)
+        self.button = button
+
+        self.copy_up_action = Gio.SimpleAction.new("chunk-copy-up", None)
+        self.copy_down_action = Gio.SimpleAction.new("chunk-copy-down", None)
+        copy_action_group = Gio.SimpleActionGroup()
+        copy_action_group.add_action(self.copy_up_action)
+        copy_action_group.add_action(self.copy_down_action)
+        self.insert_action_group("gutter", copy_action_group)
+        self.copy_up_action.connect("activate", self.action_copy_up)
+        self.copy_down_action.connect("activate", self.action_copy_down)
+
+        builder = Gtk.Builder.new_from_resource("/org/gnome/meld/ui/filediff-menus.ui")
+        copy_action_model = builder.get_object("gutter-copy-action-menu")
+        popover = Gtk.PopoverMenu.new_from_model(copy_action_model)
+        popover.set_parent(self)
+        popup_position = (
+            Gtk.PositionType.RIGHT
+            if self.icon_direction == Gtk.TextDirection.LTR
+            else Gtk.PositionType.LEFT
+        )
+        popover.set_position(popup_position)
+        popover.set_has_arrow(True)
+        popover.set_halign(Gtk.Align.START)
+        self.popover_menu = popover
+
+    def get_coords_for_button(self, chunk):
+        for button in self.buttons:
+            x1, y1, x2, y2, button_chunk = button
+            if button_chunk == chunk:
+                return x1, y1, x2, y2
+        return None
 
     def update_pointer_chunk(self, x, y):
         # This is the simplest button/intersection implementation in
@@ -228,25 +235,26 @@ class ActionGutter(Gtk.DrawingArea):
             # This is either an enter or motion event; we treat them the same
             self.update_pointer_chunk(x, y)
 
-    def do_button_press_event(self, event):
+    def button_press_event(
+        self, controller: Gtk.GestureClick, npress: int, x: float, y: float
+    ) -> None:
         if self.pointer_chunk:
             self.pressed_chunk = self.pointer_chunk
+            self.queue_draw()
 
-        return Gtk.DrawingArea.do_button_press_event(self, event)
-
-    def do_button_release_event(self, event):
+    def button_release_event(
+        self, controller: Gtk.GestureClick, npress: int, x: float, y: float
+    ) -> None:
         if self.pointer_chunk and self.pointer_chunk == self.pressed_chunk:
-            self.activate(self.pressed_chunk)
+            self.activate(self.pressed_chunk, x, y)
         self.pressed_chunk = None
-
-        return Gtk.DrawingArea.do_button_press_event(self, event)
+        self.queue_draw()
 
     def _action_on_chunk(self, action: ChunkAction, chunk):
         self.chunk_action_activated.emit(
             action.value, self.source_view, self.target_view, chunk)
 
-    def activate(self, chunk):
-
+    def activate(self, chunk: DiffChunk, x: float, y: float):
         action = self._classify_change_actions(chunk)
 
         # FIXME: When fully transitioned to GAction, we should see
@@ -258,27 +266,38 @@ class ActionGutter(Gtk.DrawingArea):
         elif action == ActionMode.Delete:
             self._action_on_chunk(ChunkAction.delete, chunk)
         elif action == ActionMode.Insert:
-            copy_menu = self._make_copy_menu(chunk)
-            copy_menu.popup_at_pointer(None)
+            self.copy_up_action.disconnect_by_func(self.action_copy_up)
+            self.copy_down_action.disconnect_by_func(self.action_copy_down)
+            self.copy_up_action.connect("activate", self.action_copy_up, chunk)
+            self.copy_down_action.connect("activate", self.action_copy_down, chunk)
 
-    def _make_copy_menu(self, chunk):
-        copy_menu = Gtk.Menu()
-        copy_up = Gtk.MenuItem.new_with_mnemonic(_('Copy _up'))
-        copy_down = Gtk.MenuItem.new_with_mnemonic(_('Copy _down'))
-        copy_menu.append(copy_up)
-        copy_menu.append(copy_down)
-        copy_menu.show_all()
+            # Try and get the button coordinates and base the popover
+            # positioning on them
+            coords = self.get_coords_for_button(chunk)
+            if coords:
+                x1, y1, x2, y2 = coords
+                x = x2 if self.icon_direction == Gtk.TextDirection.LTR else x1
+                y = (y1 + y2) / 2
 
-        def copy_chunk(widget, action):
-            self._action_on_chunk(action, chunk)
+            rect = Gdk.Rectangle()
+            rect.x, rect.y, rect.width, rect.height = x, y, 1, 1
+            self.popover_menu.set_pointing_to(rect)
+            self.popover_menu.popup()
 
-        copy_up.connect('activate', copy_chunk, ChunkAction.copy_up)
-        copy_down.connect('activate', copy_chunk, ChunkAction.copy_down)
-        return copy_menu
+    def action_copy_up(self, action, param, chunk):
+        self._action_on_chunk(ChunkAction.copy_up, chunk)
+
+    def action_copy_down(self, action, param, chunk):
+        self._action_on_chunk(ChunkAction.copy_down, chunk)
 
     def get_chunk_range(self, start_y, end_y):
         start_line = self.source_view.get_line_num_for_y(start_y)
         end_line = self.source_view.get_line_num_for_y(end_y)
+
+        _start_iter, end_iter = self.source_view.get_buffer().get_bounds()
+        bounds_y, bounds_height = self.source_view.get_line_yrange(end_iter)
+        if end_y > bounds_y + bounds_height:
+            end_line += 1
 
         start_idx = bisect.bisect(self.chunk_starts, start_line)
         end_idx = bisect.bisect(self.chunk_starts, end_line)
@@ -288,7 +307,7 @@ class ActionGutter(Gtk.DrawingArea):
 
         return self.chunks[start_idx:end_idx]
 
-    def do_draw(self, context):
+    def do_snapshot(self, snapshot):
         view = self.source_view
         if not view or not view.get_realized():
             return
@@ -298,13 +317,7 @@ class ActionGutter(Gtk.DrawingArea):
         width = self.get_allocated_width()
         height = self.get_allocated_height()
 
-        style_context = self.get_style_context()
-        Gtk.render_background(style_context, context, 0, 0, width, height)
-
         buf = view.get_buffer()
-
-        context.save()
-        context.set_line_width(1.0)
 
         # Get our linked view's visible offset, get our vertical offset
         # against our view (e.g., for info bars at the top of the view)
@@ -312,53 +325,67 @@ class ActionGutter(Gtk.DrawingArea):
         view_y_start = view.get_visible_rect().y
         view_y_offset = view.translate_coordinates(self, 0, 0)[1]
         gutter_y_translate = view_y_offset - view_y_start
-        context.translate(0, gutter_y_translate)
 
         button_x = 1
         button_width = width - 2
+        rect = Graphene.Rect()
+        highlight = self.fill_colors["current-chunk-highlight"]
+        self.button.set_visible(True)
+
+        snapshot.save()
+        snapshot.push_clip(Graphene.Rect().init(0, 0, width, height))
+        snapshot.translate(Graphene.Point().init(0, gutter_y_translate))
 
         for chunk in self.get_chunk_range(view_y_start, view_y_start + height):
-
             change_type, start_line, end_line, *_unused = chunk
 
             rect_y = view.get_y_for_line_num(start_line)
-            rect_height = max(
-                0, view.get_y_for_line_num(end_line) - rect_y - 1)
+            rect_height = max(2, view.get_y_for_line_num(end_line) - rect_y + 1)
 
-            # Draw our rectangle outside x bounds, so we don't get
-            # vertical lines. Fill first, over-fill with a highlight
-            # if in the focused chunk, and then stroke the border.
-            context.rectangle(-0.5, rect_y + 0.5, width + 1, rect_height)
+            # Fill first, then over-fill to highlight if in the focused chunk
             if start_line != end_line:
-                context.set_source_rgba(*self.fill_colors[change_type])
-                context.fill_preserve()
+                rect.init(-0.5, rect_y, width + 1, rect_height)
+                snapshot.append_color(self.fill_colors[change_type], rect)
                 if view.current_chunk_check(chunk):
-                    highlight = self.fill_colors['current-chunk-highlight']
-                    context.set_source_rgba(*highlight)
-                    context.fill_preserve()
-            context.set_source_rgba(*self.line_colors[change_type])
-            context.stroke()
+                    snapshot.append_color(highlight, rect)
+
+            path_builder = Gsk.PathBuilder()
+            path_builder.move_to(0, rect_y + 0.5)
+            path_builder.rel_line_to(width, 0)
+            path_builder.move_to(0, rect_y - 0.5 + rect_height)
+            path_builder.rel_line_to(width, 0)
+            path = path_builder.to_path()
+            snapshot.append_stroke(path, Gsk.Stroke(1.0), self.line_colors[chunk[0]])
 
             # Button rendering and tracking
             action = self._classify_change_actions(chunk)
             if action is None:
                 continue
 
-            it = buf.get_iter_at_line(start_line)
+            _found, it = buf.get_iter_at_line(start_line)
             button_y, button_height = view.get_line_yrange(it)
             button_y += 1
             button_height -= 2
 
-            button_style_context = get_style(None, 'button.flat.image-button')
-            if chunk == self.pointer_chunk:
-                button_style_context.set_state(Gtk.StateFlags.PRELIGHT)
+            button_transform = Gsk.Transform().translate(Graphene.Point().init(button_x, button_y))
+            self.button.set_size_request(button_width, button_height)
+            self.button.props.icon_name = self.action_icon_name_map.get(action)
+            self.button.allocate(button_width, button_height, -1, button_transform)
 
-            Gtk.render_background(
-                button_style_context, context, button_x, button_y,
-                button_width, button_height)
-            Gtk.render_frame(
-                button_style_context, context, button_x, button_y,
-                button_width, button_height)
+            match chunk:
+                case self.pressed_chunk:
+                    state = Gtk.StateFlags.ACTIVE
+                    css_classes = ("action-button",)
+                case self.pointer_chunk:
+                    state = Gtk.StateFlags.PRELIGHT
+                    css_classes = ("action-button",)
+                case _:
+                    state = Gtk.StateFlags.NORMAL
+                    css_classes = ("action-button", "flat")
+
+            self.button.set_state_flags(state, clear=True)
+            self.button.set_css_classes(css_classes)
+            self.snapshot_child(self.button, snapshot)
 
             # TODO: Ideally we'd do this in a pre-render step of some
             # kind, but I'm having trouble figuring out what that would
@@ -373,15 +400,13 @@ class ActionGutter(Gtk.DrawingArea):
                 )
             )
 
-            pixbuf = self.action_map.get(action)
-            icon_x = button_x + (button_width - pixbuf.props.width) // 2
-            icon_y = button_y + (button_height - pixbuf.props.height) // 2
-            Gtk.render_icon(
-                button_style_context, context, pixbuf, icon_x, icon_y)
+        # Hide the button so that our ActionGutter widget continues to receive
+        # motion events for the place we last drew the button.
+        self.button.set_visible(False)
+        snapshot.pop()
+        snapshot.restore()
 
-        context.restore()
-
-    def _classify_change_actions(self, change) -> Optional[ActionMode]:
+    def _classify_change_actions(self, change) -> ActionMode | None:
         """Classify possible actions for the given change
 
         Returns the action that can be performed given the content and

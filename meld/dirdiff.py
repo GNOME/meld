@@ -35,12 +35,11 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 # TODO: Don't from-import whole modules
 from meld import misc, tree
 from meld.conf import _
-from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP
+from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP, RecentType
 from meld.externalhelpers import open_files_external
 from meld.iohelpers import find_shared_parent_path, trash_or_confirm
 from meld.melddoc import MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
-from meld.recent import RecentType
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
 from meld.ui.cellrenderers import (
@@ -377,15 +376,13 @@ class ComparisonMarker(NamedTuple):
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/dirdiff.ui')
-class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
+class DirDiff(Gtk.Box, MeldDoc):
 
     __gtype_name__ = "DirDiff"
 
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
-    move_diff = MeldDoc.move_diff
     tab_state_changed = MeldDoc.tab_state_changed
 
     __gsettings_bindings__ = (
@@ -396,6 +393,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         ('folder-filter-text', 'apply-text-filters'),
         ('ignore-blank-lines', 'ignore-blank-lines'),
     )
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     apply_text_filters = GObject.Property(
         type=bool,
@@ -483,15 +483,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         tree.STATE_MODIFIED: ("modified", "folder-status-modified"),
     }
 
-    replaced_entries = (
-        # Remove Ctrl+Page Up/Down bindings. These are used to do horizontal
-        # scrolling in GTK by default, but we preference easy tab switching.
-        (Gdk.KEY_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Up, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_Page_Down, Gdk.ModifierType.CONTROL_MASK),
-        (Gdk.KEY_KP_Page_Down, Gdk.ModifierType.CONTROL_MASK),
-    )
-
     def __init__(self, num_panes):
         super().__init__()
         # FIXME:
@@ -504,12 +495,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         # parent to make Template work.
         MeldDoc.__init__(self)
         bind_settings(self)
-
-        binding_set_names = ("GtkScrolledWindow", "GtkTreeView")
-        for set_name in binding_set_names:
-            binding_set = Gtk.binding_set_find(set_name)
-            for key, modifiers in self.replaced_entries:
-                Gtk.binding_entry_remove(binding_set, key, modifiers)
 
         self.view_action_group = Gio.SimpleActionGroup()
 
@@ -533,9 +518,11 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ('folder-delete', self.action_delete),
             ('folder-expand', self.action_folder_expand),
             ('next-change', self.action_next_change),
+            ('next-change-shortcut', self.action_next_change),
             ('next-pane', self.action_next_pane),
             ('open-external', self.action_open_external),
             ('previous-change', self.action_previous_change),
+            ('previous-change-shortcut', self.action_previous_change),
             ('previous-pane', self.action_prev_pane),
             ('refresh', self.action_refresh),
             ('copy-file-paths', self.action_copy_file_paths),
@@ -563,12 +550,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             if callback:
                 action.connect("change-state", callback)
             self.view_action_group.add_action(action)
-
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/dirdiff-menus.ui')
-        context_menu = builder.get_object('dirdiff-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(context_menu)
-        self.popup_menu.attach_to_widget(self)
 
         builder = Gtk.Builder.new_from_resource(
             '/org/gnome/meld/ui/dirdiff-actions.ui')
@@ -613,14 +594,10 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             ],
         )
 
-        self.ensure_style()
-
         self.custom_labels = []
         self.set_num_panes(num_panes)
 
         self.do_to_others_lock = False
-        for treeview in self.treeview:
-            treeview.set_search_equal_func(tree.treeview_search_cb, None)
         self.force_cursor_recalculate = False
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.focus_pane = None
@@ -901,7 +878,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         for m in self.msgarea_mgr:
             m.clear()
         child = self.model.add_entries(None, locations)
-        self.on_treeview_focus_in_event(self.treeview0, None)
+        self.on_treeview_focus_in_event(None)
         self._update_item_state(child)
         self.recompute_label()
         self.scheduler.remove_all_tasks()
@@ -959,8 +936,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             sel = t.get_selection()
             sel.unselect_all()
 
-        yield _('[{label}] Scanning {folder}').format(
-            label=self.label_text, folder='')
+        yield _("Scanning {folder}").format(folder='')
         prefixlen = 1 + len(
             self.model.value_path(self.model.get_iter(rootpath), 0))
         symlinks_followed = set()
@@ -992,8 +968,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             if not any(os.path.isdir(root) for root in roots):
                 continue
 
-            yield _('[{label}] Scanning {folder}').format(
-                label=self.label_text, folder=roots[0][prefixlen:])
+            yield _("Scanning {folder}").format(folder=roots[0][prefixlen:])
             differences = False
             encoding_errors = []
 
@@ -1133,7 +1108,7 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.treeview[0].expand_to_path(Gtk.TreePath(("0",)))
         for path in sorted(expanded):
             self.treeview[0].expand_to_path(Gtk.TreePath(path))
-        yield _('[{label}] Done').format(label=self.label_text)
+        yield _("Done")
 
         self._scan_in_progress -= 1
         if self._scan_in_progress == 0:
@@ -1185,7 +1160,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                 for p in range(self.num_panes):
                     self.msgarea_mgr[p].clear()
             msgarea.connect("response", clear_all)
-            msgarea.show_all()
 
     def _show_tree_wide_errors(
         self, invalid_filenames, shadowed_entries, whitespace_filenames
@@ -1293,6 +1267,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
                                 Gtk.STYLE_CLASS_DESTRUCTIVE_ACTION,
                             ),
                         ]
+                        # FIXME: This entire copy loop needs to be ported to support
+                        # the new async dialog flow. delete_selected below may provide
+                        # some level of inspiration, though this is more complicated.
                         replace = misc.modal_dialog(
                             primary=_("Replace folder “%s”?") % folder_name,
                             secondary=_(
@@ -1326,23 +1303,31 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         # Reversing paths means that we remove tree rows bottom-up, so
         # tree paths don't change during the iteration.
         paths.reverse()
-        for path in paths:
-            it = self.model.get_iter(path)
-            name = self.model.value_path(it, pane)
-            gfile = Gio.File.new_for_path(name)
+        files = [
+            (path, self.model.value_path(self.model.get_iter(path), pane))
+            for path in paths
+        ]
+
+        def _deleted_file(success, files=files):
+            if success:
+                path, file = files.pop()
+                self.file_deleted(path, pane)
+
+            if not success or not files:
+                return
+
+            _delete_file(files=files)
+
+        def _delete_file(files=files):
+            gfile = Gio.File.new_for_path(files[0][1])
+            filename = GLib.markup_escape_text(gfile.get_parse_name())
 
             try:
-                deleted = trash_or_confirm(gfile)
+                trash_or_confirm(gfile, _deleted_file, parent=self)
             except Exception as e:
-                misc.error_dialog(
-                    _("Error deleting {}").format(
-                        GLib.markup_escape_text(gfile.get_parse_name()),
-                    ),
-                    str(e),
-                )
-            else:
-                if deleted:
-                    self.file_deleted(path, pane)
+                misc.error_dialog(_(f"Error deleting {filename}"), str(e))
+
+        _delete_file(files)
 
     def on_treemodel_row_deleted(self, model, path):
         if self.current_path == path:
@@ -1357,10 +1342,16 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             return
         self.update_action_sensitivity()
 
-    def update_action_sensitivity(self):
-        pane = self._get_focused_pane()
-        if pane is not None:
-            selection = self.treeview[pane].get_selection()
+    def update_action_sensitivity(self, focus_tree=None):
+        if focus_tree is not None:
+            pane = self.treeview.index(focus_tree)
+        else:
+            pane = self._get_focused_pane()
+            if pane is not None:
+                focus_tree = self.treeview[pane]
+
+        if focus_tree is not None:
+            selection = focus_tree.get_selection()
             have_selection = bool(selection.count_selected_rows())
         else:
             have_selection = False
@@ -1460,15 +1451,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
         self.current_path = cursor_path
 
-    @Gtk.Template.Callback()
-    def on_treeview_popup_menu(self, treeview):
-        return tree.TreeviewCommon.on_treeview_popup_menu(self, treeview)
-
-    @Gtk.Template.Callback()
-    def on_treeview_button_press_event(self, treeview, event):
-        return tree.TreeviewCommon.on_treeview_button_press_event(
-            self, treeview, event)
-
     @with_focused_pane
     def action_prev_pane(self, pane, *args):
         new_pane = (pane - 1) % self.num_panes
@@ -1480,12 +1462,13 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
     @Gtk.Template.Callback()
-    def on_treeview_key_press_event(self, view, event):
-        if event.keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
+    def on_treeview_key_press_event(self, controller, keyval, keycode, state, *user_data):
+        if keyval not in (Gdk.KEY_Left, Gdk.KEY_Right):
             return False
 
+        view = controller.get_widget()
         pane = self.treeview.index(view)
-        target_pane = pane + 1 if event.keyval == Gdk.KEY_Right else pane - 1
+        target_pane = pane + 1 if keyval == Gdk.KEY_Right else pane - 1
         if 0 <= target_pane < self.num_panes:
             self.change_focused_tree(view, self.treeview[target_pane])
 
@@ -1543,10 +1526,13 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self._do_to_others(view, self.treeview, "collapse_row", (path,))
 
     @Gtk.Template.Callback()
-    def on_treeview_focus_in_event(self, tree, event):
-        self.focus_pane = tree
-        self.update_action_sensitivity()
-        tree.emit("cursor-changed")
+    def on_treeview_focus_in_event(self, controller):
+        old_pane = self.focus_pane
+        self.focus_pane = controller.get_widget() if controller else self.treeview0
+        self.update_action_sensitivity(self.focus_pane)
+        if old_pane:
+            old_pane.get_selection().unselect_all()
+        self.focus_pane.emit("cursor-changed")
 
     def run_diff_from_iter(self, it):
         rows = self.model.value_paths(it)
@@ -1682,9 +1668,9 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         ]
         files = [f for f in files if f]
         if files:
-            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-            clip.set_text('\n'.join(str(f) for f in files), -1)
-            clip.store()
+            paths_text = "\n".join(str(f) for f in files)
+            clipboard = self.get_clipboard()
+            clipboard.set(paths_text)
 
     def action_ignore_case_change(self, action, value):
         action.set_state(value)
@@ -1918,12 +1904,10 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
             shortnames = misc.shorten_names(*filenames)
             tooltip_names = filenames
 
-        self.label_text = " : ".join(shortnames)
-        self.tooltip_text = "\n".join((
-            _("Folder comparison:"),
-            *tooltip_names,
-        ))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
+        self.tab_title = " : ".join(shortnames)
+        self.tab_tooltip = GLib.markup_escape_text(
+            "\n".join((_("Folder comparison:"), *tooltip_names))
+        )
 
     def set_labels(self, labels):
         labels = labels[:self.num_panes]
@@ -1979,8 +1963,11 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
         self.force_cursor_recalculate = True
 
     @Gtk.Template.Callback()
-    def on_linkmap_scroll_event(self, linkmap, event):
-        self.next_diff(event.direction)
+    def on_linkmap_scroll_event(
+        self, controller: Gtk.EventControllerScroll, dx: float, dy: float
+    ):
+        direction = Gdk.ScrollDirection.DOWN if dy > 0 else Gdk.ScrollDirection.UP
+        self.next_diff(direction)
 
     def next_diff(self, direction):
         if self.focus_pane:
@@ -2005,13 +1992,6 @@ class DirDiff(Gtk.Box, tree.TreeviewCommon, MeldDoc):
 
     def action_refresh(self, *args):
         self.refresh()
-
-    def on_delete_event(self):
-        meld_settings = get_meld_settings()
-        for h in self.settings_handlers:
-            meld_settings.disconnect(h)
-        self.close_signal.emit(0)
-        return Gtk.ResponseType.OK
 
     def action_find(self, *args):
         self.focus_pane.emit("start-interactive-search")

@@ -18,10 +18,10 @@ import enum
 import logging
 from typing import Sequence
 
-from gi.repository import Gio, GObject, Gtk
+from gi.repository import Gio, GObject
 
-from meld.conf import _
-from meld.recent import RecentType
+from meld.const import RecentType
+from meld.settings import get_meld_settings
 from meld.task import FifoScheduler
 
 log = logging.getLogger(__name__)
@@ -34,17 +34,7 @@ class ComparisonState(enum.IntEnum):
     SavingError = 2
 
 
-class LabeledObjectMixin(GObject.GObject):
-
-    label_text = _("untitled")
-    tooltip_text = None
-
-    @GObject.Signal
-    def label_changed(self, label_text: str, tooltip_text: str) -> None:
-        ...
-
-
-class MeldDoc(LabeledObjectMixin, GObject.GObject):
+class MeldDoc(GObject.GObject):
     """Base class for documents in the meld application.
     """
 
@@ -65,18 +55,12 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
     def tab_state_changed(self, old_state: int, new_state: int) -> None:
         ...
 
-    @GObject.Signal(
-        name='move-diff',
-        flags=GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
-    )
-    def move_diff(self, direction: int) -> None:
-        self.next_diff(direction)
-
     def __init__(self) -> None:
         super().__init__()
         self.scheduler = FifoScheduler()
         self.num_panes = 0
         self.view_action_group = Gio.SimpleActionGroup()
+        self.settings_handlers = []
         self._state = ComparisonState.Normal
 
     @property
@@ -150,19 +134,20 @@ class MeldDoc(LabeledObjectMixin, GObject.GObject):
         window.previous_conflict_button.set_visible(show_conflict_actions)
 
         if hasattr(self, "focus_pane") and self.focus_pane:
-            self.scheduler.add_task(self.focus_pane.grab_focus)
 
-    def on_container_switch_out_event(self, window):
-        """Called when the container app switches away from this tab"""
+            def grab_focus():
+                # This function exists only to discard the return value. Otherwise, our
+                # scheduler class will interpret the True return value from grab_focus
+                # (GTK 4 API change) as needing the task to be repeated.
+                self.focus_pane.grab_focus()
 
-        window.insert_action_group('view', None)
+            self.scheduler.add_task(grab_focus)
 
-    # FIXME: Here and in subclasses, on_delete_event are not real GTK+
-    # event handlers, and should be renamed.
-    def on_delete_event(self) -> Gtk.ResponseType:
-        """Called when the docs container is about to close.
-
-        A doc normally returns Gtk.ResponseType.OK, but may instead return
-        Gtk.ResponseType.CANCEL to request that the container not delete it.
-        """
-        return Gtk.ResponseType.OK
+    def request_close(self):
+        """Called when the docs container is about to close"""
+        meld_settings = get_meld_settings()
+        for h in self.settings_handlers:
+            meld_settings.disconnect(h)
+        self.state = ComparisonState.Closing
+        self.scheduler.remove_all_tasks()
+        self.close_signal.emit(0)

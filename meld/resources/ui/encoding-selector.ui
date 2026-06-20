@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
-  <!-- interface-requires gtk+ 3.8 -->
+  <requires lib="gtk" version="4.0"/>
   <object class="GtkListStore" id="liststore">
     <columns>
-      <!-- column-name name -->
       <column type="gchararray"/>
-      <!-- column-name encoding -->
       <column type="GtkSourceEncoding"/>
     </columns>
   </object>
@@ -15,43 +13,26 @@
   <template class="EncodingSelector" parent="GtkGrid">
     <property name="width_request">300</property>
     <property name="height_request">400</property>
-    <property name="visible">True</property>
-    <property name="can_focus">False</property>
-    <property name="has_focus">False</property>
-    <property name="is_focus">False</property>
     <property name="row_spacing">3</property>
-    <property name="border_width">6</property>
     <child>
       <object class="GtkSearchEntry" id="entry">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="has_focus">True</property>
-        <property name="is_focus">False</property>
+        <property name="focusable">True</property>
         <property name="activates_default">True</property>
         <property name="placeholder_text" translatable="yes">Search text encoding…</property>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">0</property>
-        <property name="width">1</property>
-        <property name="height">1</property>
-      </packing>
     </child>
     <child>
       <object class="GtkScrolledWindow" id="scrolledwindow1">
-        <property name="visible">True</property>
-        <property name="can_focus">True</property>
-        <property name="has_focus">False</property>
-        <property name="is_focus">False</property>
+        <property name="focusable">True</property>
         <property name="hexpand">True</property>
         <property name="vexpand">True</property>
-        <property name="shadow_type">in</property>
-        <child>
+        <property name="child">
           <object class="GtkTreeView" id="treeview">
-            <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="has_focus">False</property>
-            <property name="is_focus">False</property>
+            <property name="focusable">True</property>
             <property name="model">treemodelfilter</property>
             <property name="headers_visible">False</property>
             <property name="headers_clickable">False</property>
@@ -70,14 +51,12 @@
               </object>
             </child>
           </object>
-        </child>
+        </property>
+        <layout>
+          <property name="column">0</property>
+          <property name="row">1</property>
+        </layout>
       </object>
-      <packing>
-        <property name="left_attach">0</property>
-        <property name="top_attach">1</property>
-        <property name="width">1</property>
-        <property name="height">1</property>
-      </packing>
     </child>
   </template>
 </interface>

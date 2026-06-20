@@ -39,7 +39,7 @@ nightly:
   stage: check
   image: registry.fedoraproject.org/fedora:latest
   script:
-   - dnf install -y git glib2 gtk3 gtksourceview4 python3-cairo python3-pip python3-gobject-base
+   - dnf install -y git glib2 gtk4 gtksourceview5 libadwaita python3-cairo python3-pip python3-gobject-base
    - pip3 install -r dev-requirements.txt
    - $PYTHON_CHECK_COMMAND
 
@@ -76,9 +76,10 @@ mingw64-dist:
       mingw-w64-${env:MSYS2_ARCH}-gettext
       mingw-w64-${env:MSYS2_ARCH}-gsettings-desktop-schemas
       mingw-w64-${env:MSYS2_ARCH}-gtk-update-icon-cache
-      mingw-w64-${env:MSYS2_ARCH}-gtk3
-      mingw-w64-${env:MSYS2_ARCH}-gtksourceview4
+      mingw-w64-${env:MSYS2_ARCH}-gtk4
+      mingw-w64-${env:MSYS2_ARCH}-gtksourceview5
       mingw-w64-${env:MSYS2_ARCH}-itstool
+      mingw-w64-${env:MSYS2_ARCH}-libadwaita
       mingw-w64-${env:MSYS2_ARCH}-meson
       mingw-w64-${env:MSYS2_ARCH}-nsis
       mingw-w64-${env:MSYS2_ARCH}-pyinstaller

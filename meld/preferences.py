@@ -14,11 +14,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gio, GLib, GObject, Gtk, GtkSource
+import enum
+from typing import Self
+
+from gi.repository import Adw, Gio, GLib, GObject, Gtk, GtkSource
 
 from meld.conf import _
 from meld.filters import FilterEntry
 from meld.settings import settings
+from meld.ui.columnlist import ColumnList
 from meld.ui.listwidget import EditableListWidget
 
 
@@ -116,193 +120,164 @@ class FilterList(Gtk.Box, EditableListWidget):
         settings.set_value(self.settings_key, GLib.Variant('a(sbs)', value))
 
 
-@Gtk.Template(resource_path='/org/gnome/meld/ui/column-list.ui')
-class ColumnList(Gtk.Box, EditableListWidget):
+class PreferenceEnum(str, enum.Enum):
+    def __new__(cls, value, label, unit):
+        obj = str.__new__(cls, [value])
+        obj._value_ = value
+        obj.label = label
+        obj.settings_value = unit
+        return obj
 
-    __gtype_name__ = "ColumnList"
+    @classmethod
+    def from_enum(cls, genum) -> Self:
+        for member in cls:
+            if member.settings_value == genum:
+                return member
+        raise ValueError(f"Unsupported {cls} setting value {genum}")
 
-    treeview = Gtk.Template.Child()
-    remove = Gtk.Template.Child()
-    move_up = Gtk.Template.Child()
-    move_down = Gtk.Template.Child()
 
-    default_entry = [_("label"), False, _("pattern"), True]
+class PreferenceComboRow(Adw.ComboRow):
+    __gtype_name__ = "PreferenceComboRow"
 
-    available_columns = {
-        "size": _("Size"),
-        "modification time": _("Modification time"),
-        "iso-time": _("Modification time (ISO)"),
-        "permissions": _("Permissions"),
-    }
-
+    enum_cls_name = GObject.Property(
+        type=str,
+        flags=GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
+    )
     settings_key = GObject.Property(
         type=str,
-        flags=(
-            GObject.ParamFlags.READABLE |
-            GObject.ParamFlags.WRITABLE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
+        flags=GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY,
     )
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        self.model = self.treeview.get_model()
+    def do_realize(self):
+        Adw.ComboRow.do_realize(self)
 
-        # Unwrap the variant
-        prefs_columns = [
-            (k, v) for k, v in settings.get_value(self.settings_key)
-        ]
-        column_vis = {}
-        column_order = {}
-        for sort_key, (column_name, visibility) in enumerate(prefs_columns):
-            column_vis[column_name] = bool(int(visibility))
-            column_order[column_name] = sort_key
+        self.enum_cls = globals()[self.props.enum_cls_name]
+        self.connect("notify::selected-item", self.selected_item_changed)
+        settings.connect(f"changed::{self.props.settings_key}", self.setting_changed)
+        self.setting_changed(settings, None)
 
-        columns = [
-            (column_vis.get(name, False), name, label)
-            for name, label in self.available_columns.items()
-        ]
-        columns = sorted(
-            columns,
-            key=lambda c: column_order.get(c[1], len(self.available_columns)),
-        )
+        # Need to keep a reference to the closure expression here;
+        # self.props.expresion does not appear to do so.
+        self._expression = Gtk.ClosureExpression.new(str, self.get_text_wrap_label)
+        self.props.expression = self._expression
 
-        for visibility, name, label in columns:
-            self.model.append([visibility, name, label])
-
-        for signal in ('row-changed', 'row-deleted', 'row-inserted',
-                       'rows-reordered'):
-            self.model.connect(signal, self._update_columns)
-
-        self.setup_sensitivity_handling()
-
-    @Gtk.Template.Callback()
-    def on_move_up_clicked(self, button):
-        self.move_up_selected_entry()
-
-    @Gtk.Template.Callback()
-    def on_move_down_clicked(self, button):
-        self.move_down_selected_entry()
-
-    @Gtk.Template.Callback()
-    def on_cellrenderertoggle_toggled(self, ren, path):
-        self.model[path][0] = not ren.get_active()
-
-    def _update_columns(self, *args):
-        value = [(c[1].lower(), c[0]) for c in self.model]
-        settings.set_value(self.settings_key, GLib.Variant('a(sb)', value))
-
-
-class GSettingsComboBox(Gtk.ComboBox):
-
-    def __init__(self):
-        super().__init__()
-        self.connect('notify::gsettings-value', self._setting_changed)
-        self.connect('notify::active', self._active_changed)
-
-    def bind_to(self, key):
-        settings.bind(
-            key, self, 'gsettings-value', Gio.SettingsBindFlags.DEFAULT)
-
-    def _setting_changed(self, obj, val):
-        column = self.get_property('gsettings-column')
-        value = self.get_property('gsettings-value')
-
-        for row in self.get_model():
-            if value == row[column]:
-                idx = row.path[0]
-                break
+    def selected_item_changed(self, row, paramspec):
+        enum_value = self.enum_cls(row.props.selected_item.get_string())
+        if self.enum_cls.setting_type is bool:
+            settings.set_boolean(self.props.settings_key, enum_value.settings_value)
+        elif self.enum_cls.setting_type is int:
+            settings.set_int(self.props.settings_key, enum_value.settings_value)
+        elif self.enum_cls.setting_type is str:
+            settings.set_enum(self.props.settings_key, enum_value.settings_value)
         else:
-            idx = 0
+            raise NotImplementedError()
 
-        if self.get_property('active') != idx:
-            self.set_property('active', idx)
+    def setting_changed(self, settings, key):
+        if self.enum_cls.setting_type is bool:
+            setting_value = settings.get_boolean(self.props.settings_key)
+        elif self.enum_cls.setting_type is int:
+            setting_value = settings.get_int(self.props.settings_key)
+        elif self.enum_cls.setting_type is str:
+            setting_value = settings.get_enum(self.props.settings_key)
+        else:
+            raise NotImplementedError(
+                f"Unsupported Setting type {self.enum_cls.setting_type}"
+            )
 
-    def _active_changed(self, obj, val):
-        active_iter = self.get_active_iter()
-        if active_iter is None:
-            return
-        column = self.get_property('gsettings-column')
-        value = self.get_model()[active_iter][column]
-        self.set_property('gsettings-value', value)
+        enum_value = self.enum_cls.from_enum(setting_value)
+        self.props.selected = self.get_model().find(enum_value._value_)
 
-
-class GSettingsIntComboBox(GSettingsComboBox):
-
-    __gtype_name__ = "GSettingsIntComboBox"
-
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=int)
-
-
-class GSettingsBoolComboBox(GSettingsComboBox):
-
-    __gtype_name__ = "GSettingsBoolComboBox"
-
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=bool, default=False)
+    def get_text_wrap_label(self, string_object):
+        return self.enum_cls(string_object.get_string()).label
 
 
-class GSettingsStringComboBox(GSettingsComboBox):
+class WrapMode(PreferenceEnum):
+    setting_type = enum.nonmember(str)
 
-    __gtype_name__ = "GSettingsStringComboBox"
+    none = ("none", _("Never"), Gtk.WrapMode.NONE)
+    word = ("word", _("At Spaces"), Gtk.WrapMode.WORD)
+    char = ("char", _("Anywhere"), Gtk.WrapMode.CHAR)
 
-    gsettings_column = GObject.Property(type=int, default=0)
-    gsettings_value = GObject.Property(type=str, default="")
+
+class StyleVariant(PreferenceEnum):
+    setting_type = enum.nonmember(str)
+
+    default = ("default", _("Follow System"), Adw.ColorScheme.DEFAULT)
+    force_light = ("force-light", _("Light"), Adw.ColorScheme.FORCE_LIGHT)
+    force_ark = ("force-dark", _("Dark"), Adw.ColorScheme.FORCE_DARK)
+
+
+class TabCharacter(PreferenceEnum):
+    setting_type = enum.nonmember(bool)
+
+    tab = ("tab", _("Tab"), False)
+    spaces = ("spaces", _("Spaces"), True)
+
+
+class TimestampResolution(PreferenceEnum):
+    setting_type = enum.nonmember(int)
+
+    one_ns = ("one_ns", _("1ns (ext4)"), 1)
+    onehundred_ns = ("onehundred_ns", _("100ns (NTFS)"), 100)
+    one_s = ("one_s", _("1s (ext2/ext3)"), 1000000000)
+    two_s = ("two_s", _("2s (VFAT)"), 2000000000)
+    ignore = ("ignore", _("Ignore timestamp"), -1)
+
+
+class VersionPaneOrder(PreferenceEnum):
+    setting_type = enum.nonmember(bool)
+
+    lrrl = ("lrrl", _("Left is remote, right is local"), False)
+    llrr = ("llrr", _("Left is local, right is remote"), True)
+
+
+class MergePaneOrder(PreferenceEnum):
+    setting_type = enum.nonmember(str)
+
+    remote_merge_local = ("remote-merge-local", _("Remote, merge, local"), 1)
+    local_merge_remote = ("local-merge-remote", _("Local, merge, remote"), 0)
 
 
 @Gtk.Template(resource_path='/org/gnome/meld/ui/preferences.ui')
-class PreferencesDialog(Gtk.Dialog):
+class PreferencesDialog(Adw.PreferencesDialog):
 
     __gtype_name__ = "PreferencesDialog"
 
     checkbutton_break_commit_lines = Gtk.Template.Child()
-    checkbutton_default_font = Gtk.Template.Child()
     checkbutton_folder_filter_text = Gtk.Template.Child()
     checkbutton_highlight_current_line = Gtk.Template.Child()
     checkbutton_ignore_blank_lines = Gtk.Template.Child()
     checkbutton_ignore_symlinks = Gtk.Template.Child()
-    checkbutton_prefer_dark_theme = Gtk.Template.Child()
     checkbutton_shallow_compare = Gtk.Template.Child()
     checkbutton_show_commit_margin = Gtk.Template.Child()
     checkbutton_show_line_numbers = Gtk.Template.Child()
     checkbutton_show_overview_map = Gtk.Template.Child()
     checkbutton_show_whitespace = Gtk.Template.Child()
-    checkbutton_spaces_instead_of_tabs = Gtk.Template.Child()
-    checkbutton_use_syntax_highlighting = Gtk.Template.Child()
-    checkbutton_wrap_text = Gtk.Template.Child()
-    checkbutton_wrap_word = Gtk.Template.Child()
     column_list_vbox = Gtk.Template.Child()
-    combo_file_order = Gtk.Template.Child()
-    combo_merge_order = Gtk.Template.Child()
-    combo_overview_map = Gtk.Template.Child()
-    combo_timestamp = Gtk.Template.Child()
-    combobox_style_scheme = Gtk.Template.Child()
     custom_edit_command_entry = Gtk.Template.Child()
+    custom_font_switch_row = Gtk.Template.Child()
     file_filters_vbox = Gtk.Template.Child()
     fontpicker = Gtk.Template.Child()
     spinbutton_commit_margin = Gtk.Template.Child()
     spinbutton_tabsize = Gtk.Template.Child()
-    syntaxschemestore = Gtk.Template.Child()
+    style_scheme_chooser_button = Gtk.Template.Child()
+    syntax_highlighting_switch_row = Gtk.Template.Child()
     system_editor_checkbutton = Gtk.Template.Child()
+    text_wrapping_combo_row = Gtk.Template.Child()
     text_filters_vbox = Gtk.Template.Child()
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
         bindings = [
-            ('use-system-font', self.checkbutton_default_font, 'active'),
             ('custom-font', self.fontpicker, 'font'),
             ('indent-width', self.spinbutton_tabsize, 'value'),
-            ('insert-spaces-instead-of-tabs', self.checkbutton_spaces_instead_of_tabs, 'active'),  # noqa: E501
             ('highlight-current-line', self.checkbutton_highlight_current_line, 'active'),  # noqa: E501
             ('show-line-numbers', self.checkbutton_show_line_numbers, 'active'),  # noqa: E501
-            ('prefer-dark-theme', self.checkbutton_prefer_dark_theme, 'active'),  # noqa: E501
-            ('highlight-syntax', self.checkbutton_use_syntax_highlighting, 'active'),  # noqa: E501
+            ("highlight-syntax", self.syntax_highlighting_switch_row, "enable-expansion"),  # noqa: E501
             ('enable-space-drawer', self.checkbutton_show_whitespace, 'active'),  # noqa: E501
-            ('use-system-editor', self.system_editor_checkbutton, 'active'),
             ('custom-editor-command', self.custom_edit_command_entry, 'text'),
-            ('folder-shallow-comparison', self.checkbutton_shallow_compare, 'active'),  # noqa: E501
+            ("folder-shallow-comparison", self.checkbutton_shallow_compare, "enable-expansion"),  # noqa: E501
             ('folder-filter-text', self.checkbutton_folder_filter_text, 'active'),  # noqa: E501
             ('folder-ignore-symlinks', self.checkbutton_ignore_symlinks, 'active'),  # noqa: E501
             ('vc-show-commit-margin', self.checkbutton_show_commit_margin, 'active'),  # noqa: E501
@@ -319,8 +294,8 @@ class PreferencesDialog(Gtk.Dialog):
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
 
         invert_bindings = [
-            ('use-system-editor', self.custom_edit_command_entry, 'sensitive'),
-            ('use-system-font', self.fontpicker, 'sensitive'),
+            ("use-system-editor", self.system_editor_checkbutton, "enable-expansion"),
+            ("use-system-font", self.custom_font_switch_row, "enable-expansion"),
             ('folder-shallow-comparison', self.checkbutton_folder_filter_text, 'sensitive'),  # noqa: E501
         ]
         for key, obj, attribute in invert_bindings:
@@ -328,53 +303,36 @@ class PreferencesDialog(Gtk.Dialog):
                 key, obj, attribute, Gio.SettingsBindFlags.DEFAULT |
                 Gio.SettingsBindFlags.INVERT_BOOLEAN)
 
-        self.checkbutton_wrap_text.bind_property(
-            'active', self.checkbutton_wrap_word, 'sensitive',
-            GObject.BindingFlags.DEFAULT)
-
-        wrap_mode = settings.get_enum('wrap-mode')
-        self.checkbutton_wrap_text.set_active(wrap_mode != Gtk.WrapMode.NONE)
-        self.checkbutton_wrap_word.set_active(wrap_mode == Gtk.WrapMode.WORD)
-
         filefilter = FilterList(
             filter_type=FilterEntry.SHELL,
             settings_key="filename-filters",
         )
-        self.file_filters_vbox.pack_start(filefilter, True, True, 0)
+        filefilter.set_vexpand(True)
+        self.file_filters_vbox.append(filefilter)
 
         textfilter = FilterList(
             filter_type=FilterEntry.REGEX,
             settings_key="text-filters",
         )
-        self.text_filters_vbox.pack_start(textfilter, True, True, 0)
+        textfilter.set_vexpand(True)
+        self.text_filters_vbox.append(textfilter)
 
         columnlist = ColumnList(settings_key="folder-columns")
-        self.column_list_vbox.pack_start(columnlist, True, True, 0)
+        columnlist.set_vexpand(True)
+        self.column_list_vbox.append(columnlist)
 
-        self.combo_timestamp.bind_to('folder-time-resolution')
-        self.combo_file_order.bind_to('vc-left-is-local')
-        self.combo_overview_map.bind_to('overview-map-style')
-        self.combo_merge_order.bind_to('vc-merge-file-order')
+        def setting_from_scheme(*args):
+            scheme_id = self.style_scheme_chooser_button.props.style_scheme.get_id()
+            settings.set_string("style-scheme", scheme_id)
 
-        # Fill color schemes
-        manager = GtkSource.StyleSchemeManager.get_default()
-        for scheme_id in manager.get_scheme_ids():
+        def scheme_from_setting(*args):
+            manager = GtkSource.StyleSchemeManager.get_default()
+            scheme_id = settings.get_string("style-scheme")
             scheme = manager.get_scheme(scheme_id)
-            self.syntaxschemestore.append([scheme_id, scheme.get_name()])
-        self.combobox_style_scheme.bind_to('style-scheme')
+            self.style_scheme_chooser_button.set_style_scheme(scheme)
 
-        self.show()
-
-    @Gtk.Template.Callback()
-    def on_checkbutton_wrap_text_toggled(self, button):
-        if not self.checkbutton_wrap_text.get_active():
-            wrap_mode = Gtk.WrapMode.NONE
-        elif self.checkbutton_wrap_word.get_active():
-            wrap_mode = Gtk.WrapMode.WORD
-        else:
-            wrap_mode = Gtk.WrapMode.CHAR
-        settings.set_enum('wrap-mode', wrap_mode)
-
-    @Gtk.Template.Callback()
-    def on_response(self, dialog, response_id):
-        self.destroy()
+        self.style_scheme_chooser_button.connect(
+            "notify::style-scheme", setting_from_scheme
+        )
+        settings.connect("changed::style-scheme", scheme_from_setting)
+        scheme_from_setting()

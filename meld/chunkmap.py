@@ -71,28 +71,26 @@ class ChunkMap(Gtk.DrawingArea):
     def __init__(self):
         super().__init__()
         self.chunks = []
-        self._have_grab = False
+        self._grab_coordinates = None
         self._cached_map = None
 
-        self.click_controller = Gtk.GestureMultiPress(widget=self)
-        self.click_controller.connect("pressed", self.button_press_event)
-        self.click_controller.connect("released", self.button_release_event)
+        click_controller = Gtk.GestureClick()
+        click_controller.connect("pressed", self.button_press_event)
+        click_controller.connect("released", self.button_release_event)
+        self.add_controller(click_controller)
 
-        self.motion_controller = Gtk.EventControllerMotion(widget=self)
-        self.motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
-        self.motion_controller.connect("motion", self.motion_event)
+        motion_controller = Gtk.EventControllerMotion()
+        motion_controller.set_propagation_phase(Gtk.PropagationPhase.TARGET)
+        motion_controller.connect("motion", self.motion_event)
+        self.add_controller(motion_controller)
+
+        self.set_draw_func(self.draw)
 
     def do_realize(self):
         if not self.adjustment:
             log.critical(
                 f'{self.__gtype_name__} initialized without an adjustment')
             return Gtk.DrawingArea.do_realize(self)
-
-        self.set_events(
-            Gdk.EventMask.POINTER_MOTION_MASK |
-            Gdk.EventMask.BUTTON_PRESS_MASK |
-            Gdk.EventMask.BUTTON_RELEASE_MASK
-        )
 
         self.adjustment.connect('changed', lambda w: self.queue_draw())
         self.adjustment.connect('value-changed', lambda w: self.queue_draw())
@@ -146,15 +144,15 @@ class ChunkMap(Gtk.DrawingArea):
         """Map chunks to buffer offsets for drawing, ordered by tag"""
         raise NotImplementedError()
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, _chunkmap, context, width, height):
         if not self.adjustment or self.adjustment.get_upper() <= 0:
-            return False
+            return
 
         height = self.get_allocated_height()
         width = self.get_allocated_width()
 
         if width <= 0 or height <= 0:
-            return False
+            return
 
         base_bg, base_outline, handle_overdraw, handle_outline = (
             self.get_map_base_colors())
@@ -187,7 +185,7 @@ class ChunkMap(Gtk.DrawingArea):
                 Gdk.cairo_set_source_rgba(cache_ctx, self.line_colors[tag])
                 cache_ctx.stroke()
 
-            cache_ctx.rectangle(x0, -0.5, x1, height_scale + 0.5)
+            cache_ctx.rectangle(x0, 0.5, x1, height_scale - 1)
             Gdk.cairo_set_source_rgba(cache_ctx, base_outline)
             cache_ctx.stroke()
 
@@ -236,24 +234,22 @@ class ChunkMap(Gtk.DrawingArea):
 
     def button_press_event(
         self,
-        controller: Gtk.GestureMultiPress,
+        controller: Gtk.GestureClick,
         npress: int,
         x: float,
         y: float,
     ) -> None:
         self._scroll_fraction(y)
-        self.grab_add()
-        self._have_grab = True
+        self._grab_coordinates = (x, y)
 
     def button_release_event(
         self,
-        controller: Gtk.GestureMultiPress,
+        controller: Gtk.GestureClick,
         npress: int,
         x: float,
         y: float,
     ) -> bool:
-        self.grab_remove()
-        self._have_grab = False
+        self._grab_coordinates = None
 
     def motion_event(
         self,
@@ -261,7 +257,7 @@ class ChunkMap(Gtk.DrawingArea):
         x: float | None = None,
         y: float | None = None,
     ):
-        if self._have_grab:
+        if self._grab_coordinates and self._grab_coordinates[1] != y:
             self._scroll_fraction(y, animate=False)
 
         return True
@@ -332,23 +328,23 @@ class TextViewChunkMap(ChunkMap):
         y, h = self.textview.get_line_yrange(buf.get_end_iter())
         max_y = float(y + h)
         for chunk in self.chunks:
-            start_iter = buf.get_iter_at_line(chunk.start_a)
+            _found, start_iter = buf.get_iter_at_line(chunk.start_a)
             y0, _ = self.textview.get_line_yrange(start_iter)
             if chunk.start_a == chunk.end_a:
                 y, h = y0, 0
             else:
-                end_iter = buf.get_iter_at_line(chunk.end_a - 1)
+                _found, end_iter = buf.get_iter_at_line(chunk.end_a - 1)
                 y, h = self.textview.get_line_yrange(end_iter)
 
             tagged_diffs[chunk.tag].append((y0 / max_y, (y + h) / max_y))
 
         return tagged_diffs
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, chunkmap, context, width, height):
         if not self.textview:
-            return False
+            return
 
-        return ChunkMap.do_draw(self, context)
+        return ChunkMap.draw(self, chunkmap, context, width, height)
 
     def _scroll_to_location(self, location: float, animate: bool):
         if not self.textview:
@@ -358,9 +354,9 @@ class TextViewChunkMap(ChunkMap):
         if animate:
             self.textview.scroll_to_iter(it, 0.0, True, 1.0, 0.5)
         else:
-            # TODO: Add handling for centreing adjustment like we do
-            # for animated scroll above.
-            self.adjustment.set_value(location)
+            cursor = self.textview.get_iter_location(it)
+            offset = int(cursor.height / 2 - self.adjustment.get_page_size() / 2)
+            self.adjustment.set_value(cursor.y + offset)
 
 
 class TreeViewChunkMap(ChunkMap):
@@ -450,11 +446,11 @@ class TreeViewChunkMap(ChunkMap):
 
         return tagged_diffs
 
-    def do_draw(self, context: cairo.Context) -> bool:
+    def draw(self, chunkmap, context, width, height):
         if not self.treeview:
-            return False
+            return
 
-        return ChunkMap.do_draw(self, context)
+        return ChunkMap.draw(self, chunkmap, context, width, height)
 
     def _scroll_to_location(self, location: float, animate: bool):
         if not self.treeview or self.adjustment.get_upper() <= 0:

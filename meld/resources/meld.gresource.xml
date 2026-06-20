@@ -3,25 +3,24 @@
   <gresource prefix="/org/gnome/meld/icons">
     <file>scalable/apps/org.gnome.Meld.svg</file>
     <file>scalable/apps/org.gnome.Meld.Devel.svg</file>
+    <file preprocess="xml-stripblanks" alias="scalable/actions/git.svg">icons/git.svg</file>
     <file preprocess="xml-stripblanks" alias="scalable/actions/vc-pull-symbolic.svg">icons/vc-pull-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="scalable/actions/vc-push-symbolic.svg">icons/vc-push-symbolic.svg</file>
     <file preprocess="xml-stripblanks" alias="scalable/actions/symbolic-link-symbolic">icons/symbolic-link-symbolic.svg</file>
   </gresource>
   <gresource prefix="/org/gnome/meld">
+    <file preprocess="xml-stripblanks" alias="org.gnome.Meld.metainfo.xml">data/org.gnome.Meld.metainfo.xml</file>
     <file>gtk/help-overlay.ui</file>
-    <file>gtk/menus.ui</file>
     <file>icons/16x16/actions/meld-change-apply-left.png</file>
     <file>icons/16x16/actions/meld-change-apply-right.png</file>
     <file>icons/16x16/actions/meld-change-copy.png</file>
     <file>icons/16x16/actions/meld-change-delete.png</file>
     <file preprocess="xml-stripblanks">icons/scalable/emblems/emblem-new.svg</file>
-    <file>meld.css</file>
-    <file>ui/about-dialog.ui</file>
+    <file>style.css</file>
     <file>ui/appwindow.ui</file>
     <file>ui/column-list.ui</file>
     <file>ui/commit-dialog.ui</file>
     <file>ui/dirdiff-actions.ui</file>
-    <file>ui/dirdiff-menus.ui</file>
     <file>ui/dirdiff.ui</file>
     <file>ui/encoding-selector.ui</file>
     <file>ui/filediff-actions.ui</file>
@@ -29,12 +28,9 @@
     <file>ui/filediff.ui</file>
     <file>ui/filter-list.ui</file>
     <file>ui/findbar.ui</file>
-    <file>ui/imagediff-actions.ui</file>
-    <file>ui/imagediff-menus.ui</file>
     <file>ui/imagediff.ui</file>
     <file>ui/language-selector.ui</file>
     <file>ui/new-diff-tab.ui</file>
-    <file>ui/notebook-label.ui</file>
     <file>ui/patch-dialog.ui</file>
     <file>ui/path-label.ui</file>
     <file>ui/preferences.ui</file>
@@ -43,7 +39,6 @@
     <file>ui/revert-dialog.ui</file>
     <file>ui/save-confirm-dialog.ui</file>
     <file>ui/statusbar-menu.ui</file>
-    <file>ui/vcview-menus.ui</file>
     <file>ui/vcview.ui</file>
   </gresource>
 </gresources>

@@ -27,18 +27,19 @@ log = logging.getLogger(__name__)
 
 
 class MeldBuffer(GtkSource.Buffer):
-
     __gtype_name__ = "MeldBuffer"
 
-    __gsettings_bindings__ = (
-        ('highlight-syntax', 'highlight-syntax'),
-    )
+    __gsettings_bindings__ = (("highlight-syntax", "highlight-syntax"),)
 
     def __init__(self):
         super().__init__()
         bind_settings(self)
         self.data = MeldBufferData()
         self.undo_sequence = None
+
+        # Disable built-in GtkTextBuffer undo, since we replace it. If we don't
+        # disable it fully, the installed shortcuts conflict.
+        self.props.enable_undo = False
 
     def do_begin_user_action(self, *args):
         if self.undo_sequence:
@@ -58,7 +59,8 @@ class MeldBuffer(GtkSource.Buffer):
         """
         if line >= self.get_line_count():
             return self.get_end_iter()
-        return self.get_iter_at_line(line)
+        _found, it = self.get_iter_at_line(line)
+        return it
 
     def insert_at_line(self, line, text):
         """Insert text at the given line, or the end of the buffer.
@@ -85,12 +87,10 @@ class MeldBufferState(enum.Enum):
 
 
 class MeldBufferData(GObject.GObject):
-
     state: MeldBufferState
 
-    @GObject.Signal('file-changed')
-    def file_changed_signal(self) -> None:
-        ...
+    @GObject.Signal("file-changed")
+    def file_changed_signal(self) -> None: ...
 
     encoding = GObject.Property(
         type=GtkSource.Encoding,
@@ -137,7 +137,7 @@ class MeldBufferData(GObject.GObject):
         if not self._gfile:
             return
         monitor = self._gfile.monitor_file(Gio.FileMonitorFlags.NONE, None)
-        handler_id = monitor.connect('changed', self._handle_file_change)
+        handler_id = monitor.connect("changed", self._handle_file_change)
         self._monitor = monitor, handler_id
 
     def disconnect_monitor(self):
@@ -149,9 +149,10 @@ class MeldBufferData(GObject.GObject):
         self._monitor = None
 
     def _query_mtime(self, gfile):
+        time_query = ",".join(
+            (Gio.FILE_ATTRIBUTE_TIME_MODIFIED, Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC)
+        )
         try:
-            time_query = ",".join((Gio.FILE_ATTRIBUTE_TIME_MODIFIED,
-                                   Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC))
             info = gfile.query_info(time_query, 0, None)
         except GLib.GError:
             return None
@@ -175,7 +176,8 @@ class MeldBufferData(GObject.GObject):
         self._sourcefile = GtkSource.File()
         self._sourcefile.set_location(value)
         self._sourcefile.bind_property(
-            'encoding', self, 'encoding', GObject.BindingFlags.DEFAULT)
+            "encoding", self, "encoding", GObject.BindingFlags.DEFAULT
+        )
 
         self.update_mtime()
         self.connect_monitor()
@@ -191,8 +193,7 @@ class MeldBufferData(GObject.GObject):
     @property
     def is_special(self):
         try:
-            info = self._gfile.query_info(
-                Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, None)
+            info = self._gfile.query_info(Gio.FILE_ATTRIBUTE_STANDARD_TYPE, 0, None)
             return info.get_file_type() == Gio.FileType.SPECIAL
         except (AttributeError, GLib.GError):
             return False
@@ -209,7 +210,8 @@ class MeldBufferData(GObject.GObject):
     def writable(self):
         try:
             info = self.gfiletarget.query_info(
-                Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None)
+                Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None
+            )
         except GLib.GError as err:
             if err.code == Gio.IOErrorEnum.NOT_FOUND:
                 return True
@@ -248,13 +250,11 @@ class BufferLines:
             self.textfilter = lambda x, buf, start_iter, end_iter: x
 
         self.lines = [None] * self.buf.get_line_count()
-        self.mark = buf.create_mark(
-            "bufferlines-insert", buf.get_start_iter(), True,
-        )
+        self.mark = buf.create_mark("bufferlines-insert", buf.get_start_iter(), True)
 
-        buf.connect("insert-text", self.on_insert_text),
-        buf.connect("delete-range", self.on_delete_range),
-        buf.connect_after("insert-text", self.after_insert_text),
+        buf.connect("insert-text", self.on_insert_text)
+        buf.connect("delete-range", self.on_delete_range)
+        buf.connect_after("insert-text", self.after_insert_text)
         if cache_debug:
             buf.connect_after("insert-text", self._check_cache_invariant)
             buf.connect_after("delete-range", self._check_cache_invariant)
@@ -279,7 +279,7 @@ class BufferLines:
         # lines. In the single-line case this will be a single element
         # substitution; for multi-line inserts, we will replace the
         # single insertion point line with several empty cache lines.
-        self.lines[start_idx:start_idx + 1] = [None] * (end_idx - start_idx)
+        self.lines[start_idx : start_idx + 1] = [None] * (end_idx - start_idx)
 
     def on_delete_range(self, buf, it0, it1):
         start_idx = it0.get_line()

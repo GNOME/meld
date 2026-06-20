@@ -26,7 +26,7 @@ from meld import misc
 from meld.conf import _
 from meld.const import FileComparisonMode
 from meld.externalhelpers import open_files_external
-from meld.melddoc import ComparisonState, MeldDoc
+from meld.melddoc import MeldDoc
 from meld.misc import with_focused_pane
 from meld.settings import bind_settings
 from meld.ui.util import map_widgets_into_lists
@@ -95,21 +95,24 @@ class ImageDiff(Gtk.Box, MeldDoc):
     close_signal = MeldDoc.close_signal
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
-    label_changed = MeldDoc.label_changed
     tab_state_changed = MeldDoc.tab_state_changed
+
+    tab_title = GObject.Property(type=str, nick="Title used for tab labels")
+    tab_tooltip = GObject.Property(type=str, nick="Tooltip used for tab labels")
 
     scroll_window0 = Gtk.Template.Child()
     viewport0 = Gtk.Template.Child()
-    image_event_box0 = Gtk.Template.Child()
     image_main0 = Gtk.Template.Child()
     scroll_window1 = Gtk.Template.Child()
     viewport1 = Gtk.Template.Child()
-    image_event_box1 = Gtk.Template.Child()
     image_main1 = Gtk.Template.Child()
     scroll_window2 = Gtk.Template.Child()
     viewport2 = Gtk.Template.Child()
-    image_event_box2 = Gtk.Template.Child()
     image_main2 = Gtk.Template.Child()
+
+    image_context_popover0 = Gtk.Template.Child()
+    image_context_popover1 = Gtk.Template.Child()
+    image_context_popover2 = Gtk.Template.Child()
 
     lock_scrolling = GObject.Property(
         type=bool,
@@ -139,8 +142,8 @@ class ImageDiff(Gtk.Box, MeldDoc):
         bind_settings(self)
 
         widget_lists = [
+            "image_context_popover",
             "image_main",
-            "image_event_box",
             "scroll_window",
             "viewport",
         ]
@@ -168,17 +171,6 @@ class ImageDiff(Gtk.Box, MeldDoc):
             action = Gio.SimpleAction.new(name, None)
             action.connect('activate', callback)
             self.view_action_group.add_action(action)
-
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/imagediff-menus.ui')
-        self.popup_menu_model = builder.get_object('imagediff-context-menu')
-        self.popup_menu = Gtk.Menu.new_from_model(self.popup_menu_model)
-        self.popup_menu.attach_to_widget(self)
-
-        builder = Gtk.Builder.new_from_resource(
-            '/org/gnome/meld/ui/imagediff-actions.ui')
-        self.toolbar_actions = builder.get_object('view-toolbar')
-        self.copy_action_button = builder.get_object('copy_action_button')
 
         self.set_num_panes(num_panes)
 
@@ -219,28 +211,23 @@ class ImageDiff(Gtk.Box, MeldDoc):
         duplicate handlers, etc. if you don't do this thing.
         """
 
-        self.image_main[pane].set_from_file(gfile.get_path())
+        self.image_main[pane].set_file(gfile)
 
     def set_num_panes(self, n):
         if n == self.num_panes or n not in (1, 2, 3):
             return
 
         for widget in (
-                self.image_main[:n] + self.image_event_box[:n] +
+                self.image_main[:n] +
                 self.scroll_window[:n] + self.viewport[:n]):
             widget.show()
 
         for widget in (
-                self.image_main[n:] + self.image_event_box[n:] +
+                self.image_main[n:] +
                 self.scroll_window[n:] + self.viewport[n:]):
             widget.hide()
 
         self.num_panes = n
-
-    def on_delete_event(self):
-        self.state = ComparisonState.Closing
-        self.close_signal.emit(0)
-        return Gtk.ResponseType.OK
 
     def recompute_label(self):
         filenames = [f.get_path() for f in self.files if f]
@@ -248,13 +235,14 @@ class ImageDiff(Gtk.Box, MeldDoc):
 
         label = self.meta.get("tablabel", "")
         if label:
-            self.label_text = label
+            self.tab_title = label
             tooltip_names = [label]
         else:
-            self.label_text = " — ".join(shortnames)
+            self.tab_title = " — ".join(shortnames)
             tooltip_names = filenames
-        self.tooltip_text = "\n".join((_("File comparison:"), *tooltip_names))
-        self.label_changed.emit(self.label_text, self.tooltip_text)
+        self.tab_tooltip = GLib.markup_escape_text(
+            "\n".join((_("File comparison:"), *tooltip_names))
+        )
 
     @with_focused_pane
     def action_open_folder(self, pane, *args):
@@ -262,9 +250,7 @@ class ImageDiff(Gtk.Box, MeldDoc):
         if not gfile:
             return
 
-        parent = gfile.get_parent()
-        if parent:
-            open_files_external(gfiles=[parent])
+        open_files_external(gfiles=[gfile], toplevel=self.get_root(), open_parent=True)
 
     @with_focused_pane
     def action_open_external(self, pane, *args):
@@ -276,21 +262,22 @@ class ImageDiff(Gtk.Box, MeldDoc):
         open_files_external(gfiles=gfiles)
 
     @Gtk.Template.Callback()
-    def on_imageview_popup_menu(self, imageview):
-        self.popup_menu.popup_at_pointer()
-        return True
+    def on_imageview_button_press_event(self, controller, n_press, wx, wy):
+        picture = controller.get_widget()
+        picture.grab_focus()
 
-    @Gtk.Template.Callback()
-    def on_imageview_button_press_event(self, event_box, event):
-        if event.button == 3:
-            event_box.grab_focus()
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = wx, wy
+
+        picture_idx = self.image_main.index(picture)
+        context_popover = self.image_context_popover[picture_idx]
+        context_popover.set_pointing_to(rect)
+        context_popover.popup()
+        return True
 
     def _get_focused_pane(self):
         for i in range(self.num_panes):
-            if self.image_event_box[i].is_focus():
+            if self.image_main[i].is_focus():
                 return i
         return -1
 
@@ -301,9 +288,8 @@ class ImageDiff(Gtk.Box, MeldDoc):
             return
 
         path = gfile.get_path() or gfile.get_uri()
-        clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-        clip.set_text(path, -1)
-        clip.store()
+        clipboard = self.get_clipboard()
+        clipboard.set(path)
 
     def _set_external_action_sensitivity(self):
         # FIXME: This sensitivity is very confused. Essentially, it's always
@@ -313,10 +299,10 @@ class ImageDiff(Gtk.Box, MeldDoc):
         self.set_action_enabled("open-external", have_file)
 
     @Gtk.Template.Callback()
-    def on_imageview_focus_in_event(self, view, event):
-        self.focus_pane = view
+    def on_imageview_focus_in_event(self, controller, *user_data):
+        self.focus_pane = controller.get_widget()
         self._set_external_action_sensitivity()
 
     @Gtk.Template.Callback()
-    def on_imageview_focus_out_event(self, view, event):
+    def on_imageview_focus_out_event(self, controller, *user_data):
         self._set_external_action_sensitivity()

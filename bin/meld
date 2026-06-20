@@ -182,7 +182,7 @@ def show_error_and_exit(error_text):
     raise_as_last_resort_to_display = False
     try:
         import gi
-        gi.require_version("Gtk", "3.0")
+        gi.require_version("Gtk", "4.0")
         from gi.repository import Gtk
         Gtk.MessageDialog(
             message_type=Gtk.MessageType.ERROR,
@@ -228,7 +228,7 @@ def check_requirements():
                 module = self.module
 
             mod = importlib.import_module(module)
-            if mod.__name__ == 'gi.repository.Gtk':
+            if mod.__name__ in ("gi.repository.Gtk", "gi.repository.Adw"):
                 version = (mod.get_major_version(), mod.get_minor_version())
             elif mod.__name__ == 'gi.repository.GLib':
                 version = (mod.MAJOR_VERSION, mod.MINOR_VERSION)
@@ -250,12 +250,13 @@ def check_requirements():
     # These requirements are kept in both `bin/meld` and `meson.build`. If you
     # update one, update the other.
     requirements = (
-        Requirement('Python', 'sys', None, 3, 6),
-        Requirement('Gtk+', 'Gtk', '3.0', 3, 22),
-        Requirement('GLib', 'GLib', '2.0', 2, 48),
-        Requirement('GtkSourceView', 'GtkSource', '4', 4, 0),
-        Requirement('pygobject', 'gi', None, 3, 30),
-        Requirement('pycairo', 'cairo', None, 1, 15),
+        Requirement("Python", "sys", None, 3, 10),
+        Requirement("Gtk+", "Gtk", "4.0", 4, 12),
+        Requirement("GLib", "GLib", "2.0", 2, 80),
+        Requirement("GtkSourceView", "GtkSource", "5", 5, 0),
+        Requirement("Adwaita", "Adw", "1", 1, 6),
+        Requirement("pygobject", "gi", None, 3, 46),
+        Requirement("pycairo", "cairo", None, 1, 15),
     )
 
     try:
@@ -326,6 +327,12 @@ def setup_settings():
     meld.settings.create_settings()
 
 
+def setup_style():
+    import meld.style
+
+    meld.style.init_sourceview_style_context()
+
+
 def setup_logging():
     log = logging.getLogger()
 
@@ -380,6 +387,8 @@ def setup_glib_logging():
         if "Drawing a gadget with negative dimensions" in message:
             return True
         if "resource overlay" in message:
+            return True
+        if "Vulkan: Loader Message:" in message:
             return True
         return False
 
@@ -448,7 +457,7 @@ def ci_screenshot():
     # For CI, support screenshot-and-exit by setting envvars
 
     import cairo
-    from gi.repository import Gio, GLib
+    from gi.repository import Gio, GLib, Gtk
 
     screenshot_filename = os.environ.get("MELD_SCREENSHOT_AND_EXIT")
     if not screenshot_filename:
@@ -460,7 +469,10 @@ def ci_screenshot():
         alloc = window.get_allocation()
         surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, alloc.width, alloc.height)
         cr = cairo.Context(surface)
-        window.draw(cr)
+        snapshot = Gtk.Snapshot.new()
+        paintable = Gtk.WidgetPaintable.new(window)
+        paintable.snapshot(snapshot, alloc.width, alloc.height)
+        snapshot.to_node().draw(cr)
         surface.write_to_png(screenshot_filename)
         print(f"Screenshot saved to {screenshot_filename}. Exiting.", file=sys.stderr)
         sys.exit(0)
@@ -490,6 +502,7 @@ def main():
     setup_glib_logging()
     setup_resources()
     setup_settings()
+    setup_style()
     ci_screenshot()
     return run_application()
 

@@ -13,8 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gi.repository import Gdk
+from gi.repository import Gdk, GObject
 
+GTK_STYLE_CLASS_ERROR = "error"
+
+BIND_DEFAULT_CREATE = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
 
 def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RGBA:
     rgba = Gdk.RGBA()
@@ -23,3 +26,16 @@ def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RG
     rgba.blue = blue
     rgba.alpha = alpha
     return rgba
+
+
+def format_gdk_rgba(rgba: Gdk.RGBA) -> str:
+    return f"({rgba.red}, {rgba.green}, {rgba.blue}, {rgba.alpha})"
+
+
+def alpha_tint(rgba: Gdk.RGBA, alpha: float) -> Gdk.RGBA:
+    return make_gdk_rgba(
+        red=alpha + rgba.red * (1.0 - alpha),
+        green=alpha + rgba.green * (1.0 - alpha),
+        blue=alpha + rgba.blue * (1.0 - alpha),
+        alpha=alpha + rgba.alpha * (1.0 - alpha),
+    )

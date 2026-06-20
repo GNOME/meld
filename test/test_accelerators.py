@@ -9,7 +9,7 @@ def test_accelerator_parse():
             accel_strings = [accel_strings]
 
         for accel_string in accel_strings:
-            key, mods = Gtk.accelerator_parse(accel_string)
+            success, key, mods = Gtk.accelerator_parse(accel_string)
             assert key
 
 

@@ -19,6 +19,12 @@
     <value nick="word-char" value="3"/>
   </enum>
 
+  <enum id="org.gnome.meld.stylevariant">
+    <value nick="default" value="0"/>
+    <value nick="force-light" value="1"/>
+    <value nick="force-dark" value="4"/>
+  </enum>
+
   <flags id="org.gnome.meld.spacesflags">
     <value nick="space" value="1"/>
     <value nick="tab" value="2"/>
@@ -48,11 +54,15 @@
 
   <schema id="org.gnome.meld" path="/org/gnome/meld/">
 
-      <!-- GtkSettings overrides -->
-      <key name="prefer-dark-theme" type="b">
-          <default>false</default>
-          <summary>Prefer application-wide dark theme</summary>
-          <description>If true, the GTK dark theme variant will be used, if available. Note that this is separate from the syntax highlighting scheme.</description>
+      <key name="style-variant" enum="org.gnome.meld.stylevariant">
+          <aliases>
+            <alias value="ADW_COLOR_SCHEME_DEFAULT" target="default"/>
+            <alias value="ADW_COLOR_SCHEME_FORCE_LIGHT" target="force-light"/>
+            <alias value="ADW_COLOR_SCHEME_FORCE_DARK" target="force-dark"/>
+          </aliases>
+          <default>'default'</default>
+          <summary>Style Variant</summary>
+          <description>Whther to force the light or dark variant of the GTK theme. If set to 'default', the application will follow the system default variant.</description>
       </key>
 
       <!-- File loading settings -->

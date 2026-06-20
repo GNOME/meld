@@ -31,15 +31,6 @@ class MeldFileButton(Gtk.Button):
         default=Gtk.FileChooserAction.OPEN,
     )
 
-    local_only: bool = GObject.Property(
-        type=bool,
-        nick="Whether selected files should be limited to local file:// URIs",
-        flags=(
-            GObject.ParamFlags.READWRITE |
-            GObject.ParamFlags.CONSTRUCT_ONLY
-        ),
-        default=True,
-    )
 
     dialog_label: str = GObject.Property(
         type=str,
@@ -61,24 +52,26 @@ class MeldFileButton(Gtk.Button):
 
     def do_realize(self) -> None:
         Gtk.Button.do_realize(self)
-
-        image = Gtk.Image.new_from_icon_name(
-            self.icon_action_map[self.action], Gtk.IconSize.BUTTON)
-        self.set_image(image)
+        self.set_icon_name(self.icon_action_map[self.action])
 
     def do_clicked(self) -> None:
         dialog = Gtk.FileChooserNative(
             title=self.dialog_label,
-            transient_for=self.get_toplevel(),
+            transient_for=self.get_native(),
             action=self.action,
-            local_only=self.local_only
         )
 
         if self.file and self.file.get_path():
             dialog.set_file(self.file)
 
-        response = dialog.run()
+        dialog.connect("response", self.on_dialog_response)
+        dialog.show()
+        # Maintain a reference to the dialog until we get a response
+        self.dialog = dialog
+
+    def on_dialog_response(self, dialog: Gtk.FileChooserNative, response: Gtk.ResponseType, *user_data):
         gfile = dialog.get_file()
+        del self.dialog
         dialog.destroy()
 
         if response != Gtk.ResponseType.ACCEPT or not gfile:

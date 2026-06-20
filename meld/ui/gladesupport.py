@@ -1,6 +1,5 @@
 import meld.actiongutter  # noqa: F401
 import meld.chunkmap  # noqa: F401
-import meld.diffgrid  # noqa: F401
 import meld.linkmap  # noqa: F401
 import meld.preferences  # noqa: F401
 import meld.sourceview  # noqa: F401
@@ -8,7 +7,6 @@ import meld.ui.emblemcellrenderer  # noqa: F401
 import meld.ui.filebutton  # noqa: F401
 import meld.ui.historyentry  # noqa: F401
 import meld.ui.msgarea  # noqa: F401
-import meld.ui.notebook  # noqa: F401
 import meld.ui.pathlabel  # noqa: F401
 import meld.ui.recentselector  # noqa: F401
 import meld.ui.statusbar  # noqa: F401

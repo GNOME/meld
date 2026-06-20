@@ -17,12 +17,11 @@
 import difflib
 import os
 
-from gi.repository import Gdk, Gio, GLib, Gtk, GtkSource
+from gi.repository import Gio, GLib, Gtk, GtkSource
 
 from meld.conf import _
 from meld.iohelpers import prompt_save_filename
 from meld.misc import error_dialog
-from meld.settings import get_meld_settings
 from meld.sourceview import LanguageManager
 
 
@@ -41,7 +40,7 @@ class PatchDialog(Gtk.Dialog):
     def __init__(self, filediff):
         super().__init__()
 
-        self.set_transient_for(filediff.get_toplevel())
+        self.set_transient_for(filediff.get_root())
         self.filediff = filediff
 
         buf = GtkSource.Buffer()
@@ -59,14 +58,7 @@ class PatchDialog(Gtk.Dialog):
             self.side_selection_label.hide()
             self.side_selection_box.hide()
 
-        meld_settings = get_meld_settings()
-        self.textview.modify_font(meld_settings.font)
         self.textview.set_editable(False)
-        meld_settings.connect('changed', self.on_setting_changed)
-
-    def on_setting_changed(self, settings, key):
-        if key == "font":
-            self.textview.modify_font(settings.font)
 
     @Gtk.Template.Callback()
     def on_buffer_selection_changed(self, radiobutton):
@@ -141,23 +133,20 @@ class PatchDialog(Gtk.Dialog):
 
     def run(self):
         self.update_patch()
+        self.connect("response", self.on_response)
+        self.show()
 
-        result = super().run()
-        if result < 0:
-            self.hide()
-            return
+    def on_response(self, dialog, response):
+        self.hide()
 
+        # Save patch as a file
+        if response == Gtk.ResponseType.OK:
+            prompt_save_filename(_("Save Patch"), self.save_patch)
         # Copy patch to clipboard
-        if result == 1:
+        elif response == 1:
             buf = self.textview.get_buffer()
             start, end = buf.get_bounds()
-            clip = Gtk.Clipboard.get_default(Gdk.Display.get_default())
-            clip.set_text(buf.get_text(start, end, False), -1)
-            clip.store()
-        # Save patch as a file
-        else:
-            gfile = prompt_save_filename(_("Save Patch"))
-            if gfile:
-                self.save_patch(gfile)
+            clipboard = self.get_clipboard()
+            clipboard.set(buf.get_text(start, end, False))
 
-        self.hide()
+        self.destroy()

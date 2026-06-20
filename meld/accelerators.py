@@ -12,15 +12,19 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.find-previous': ('<Primary><Shift>G', '<Shift>F3'),
     'view.find-replace': '<Primary>H',
     'view.go-to-line': '<Primary>I',
-    # Overridden in CSS
-    'view.next-change': ('<Alt>Down', '<Alt>KP_Down', '<Primary>D'),
+    # We bind the next-change-shortcut action instead of the next-change
+    # action because the latter is used for buttons and so we set its
+    # sensitivity correctly. The -shortcut variant doesn't have
+    # sensitivity set, and so we get alert bells when trying to move
+    # past the last/first change.
+    'view.next-change-shortcut': ('<Alt>Down', '<Alt>KP_Down', '<Primary>D'),
     'view.next-pane': '<Alt>Page_Down',
     'view.open-external': '<Primary><Shift>O',
-    # Overridden in CSS
-    'view.previous-change': ('<Alt>Up', '<Alt>KP_Up', '<Primary>E'),
+    # See view.next-change-shortcut
+    'view.previous-change-shortcut': ('<Alt>Up', '<Alt>KP_Up', '<Primary>E'),
     'view.previous-pane': '<Alt>Page_Up',
     'view.redo': '<Primary><Shift>Z',
-    'view.refresh': ('<control>R', 'F5'),
+    'view.refresh': ('<Control>R', 'F5'),
     'view.save': '<Primary>S',
     'view.save-all': '<Primary><Shift>L',
     'view.save-as': '<Primary><Shift>S',
@@ -39,8 +43,8 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     'view.file-next-conflict': '<Primary>K',
     'view.file-push-left': '<Alt>Left',
     'view.file-push-right': '<Alt>Right',
-    'view.file-pull-left': '<Alt><shift>Right',
-    'view.file-pull-right': '<Alt><shift>Left',
+    'view.file-pull-left': '<Alt><Shift>Right',
+    'view.file-pull-right': '<Alt><Shift>Left',
     'view.file-copy-left-up': '<Alt>bracketleft',
     'view.file-copy-right-up': '<Alt>bracketright',
     'view.file-copy-left-down': '<Alt>semicolon',

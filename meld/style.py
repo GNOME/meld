@@ -1,6 +1,6 @@
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
 # Copyright (C) 2009 Vincent Legoll <vincent.legoll@gmail.com>
-# Copyright (C) 2012-2019 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2012-2026 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -16,11 +16,15 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-from typing import Mapping, Optional, Tuple
+from typing import Mapping, Tuple
 
-from gi.repository import Gdk, Gtk, GtkSource
+from gi.repository import Adw, Gdk, Gtk, GtkSource, Pango
 
 from meld.conf import _
+from meld.settings import get_meld_settings
+
+style_scheme: GtkSource.StyleScheme | None = None
+base_style_scheme: GtkSource.StyleScheme | None = None
 
 
 class MeldStyleScheme(enum.Enum):
@@ -28,28 +32,31 @@ class MeldStyleScheme(enum.Enum):
     dark = "meld-dark"
 
 
-style_scheme: Optional[GtkSource.StyleScheme] = None
-base_style_scheme: Optional[GtkSource.StyleScheme] = None
+def adapt_style_scheme(style_scheme: GtkSource.StyleScheme) -> GtkSource.StyleScheme:
+    adw_manager = Adw.StyleManager.get_default()
+
+    desired_variant = "dark" if adw_manager.get_dark() else "light"
+    variant = style_scheme.get_metadata("variant")
+    other_variant = style_scheme.get_metadata(f"{desired_variant}-variant")
+    # If we have no variant data, or the variant matches, use the scheme
+    if not variant or variant == desired_variant or not other_variant:
+        return style_scheme
+
+    source_manager = GtkSource.StyleSchemeManager.get_default()
+    variant_scheme = source_manager.get_scheme(other_variant)
+    return variant_scheme or style_scheme
 
 
-def set_base_style_scheme(
-    new_style_scheme: GtkSource.StyleScheme,
-    prefer_dark: bool,
-) -> GtkSource.StyleScheme:
-
-    global base_style_scheme
-    global style_scheme
-
-    gtk_settings = Gtk.Settings.get_default()
-    if gtk_settings:
-        gtk_settings.props.gtk_application_prefer_dark_theme = prefer_dark
-
-    style_scheme = new_style_scheme
+def should_use_dark(style_scheme: GtkSource.StyleScheme) -> bool:
+    # If the style scheme has variant metadata, we will trust that
+    variant = style_scheme.get_metadata("variant")
+    if variant:
+        return variant == "dark"
 
     # Get our text background colour by checking the 'text' style of
     # the user's selected style scheme, falling back to the GTK+ theme
     # background if there is no style scheme background set.
-    style = style_scheme.get_style('text') if style_scheme else None
+    style = style_scheme.get_style("text") if style_scheme else None
     if style:
         background = style.props.background
         rgba = Gdk.RGBA()
@@ -58,26 +65,56 @@ def set_base_style_scheme(
         # This case will only be hit for GtkSourceView style schemes
         # that don't set a text background, like the "Classic" scheme.
         from meld.sourceview import MeldSourceView
+
         stylecontext = MeldSourceView().get_style_context()
-        background_set, rgba = (
-            stylecontext.lookup_color('theme_bg_color'))
+        background_set, rgba = stylecontext.lookup_color("theme_bg_color")
         if not background_set:
             rgba = Gdk.RGBA(1, 1, 1, 1)
 
     # This heuristic is absolutely dire. I made it up. There's
     # literally no basis to this.
-    use_dark = (rgba.red + rgba.green + rgba.blue) < 1.0
+    return (rgba.red + rgba.green + rgba.blue) < 1.0
 
-    base_scheme_name = (
-        MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
+
+def set_base_style_scheme(
+    new_style_scheme: GtkSource.StyleScheme,
+) -> GtkSource.StyleScheme:
+    global base_style_scheme
+    global style_scheme
+
+    style_scheme = new_style_scheme
+    use_dark = should_use_dark(style_scheme)
 
     manager = GtkSource.StyleSchemeManager.get_default()
+    base_scheme_name = MeldStyleScheme.dark if use_dark else MeldStyleScheme.base
     base_style_scheme = manager.get_scheme(base_scheme_name.value)
     base_schemes = (MeldStyleScheme.dark.value, MeldStyleScheme.base.value)
     if style_scheme and style_scheme.props.id in base_schemes:
         style_scheme = base_style_scheme
 
     return base_style_scheme
+
+
+def init_sourceview_style_context():
+    def on_setting_changed(meld_settings, key):
+        if key != "font":
+            return
+
+        css_provider.load_from_string(
+            f".meld-monospace-font {{"
+            f"  font-family: {meld_settings.font.get_family()};"
+            f"  font-size: {max(1, meld_settings.font.get_size() / Pango.SCALE)}pt;"
+            f"}}"
+        )
+
+    css_provider = Gtk.CssProvider()
+    Gtk.StyleContext.add_provider_for_display(
+        Gdk.Display.get_default(), css_provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+    )
+
+    meld_settings = get_meld_settings()
+    meld_settings.connect("changed", on_setting_changed)
+    on_setting_changed(meld_settings, "font")
 
 
 def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
@@ -92,10 +129,9 @@ def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
 
     if not style_attr:
         import sys
-        style_detail = f'{name}-{attribute}'
-        print(_(
-            "Couldn’t find color scheme details for {}; "
-            "this is a bad install").format(style_detail), file=sys.stderr)
+
+        err_msg = _("Couldn’t find color scheme details for {}; this is a bad install")
+        print(err_msg.format(f"{name}-{attribute}"), file=sys.stderr)
         sys.exit(1)
 
     colour = Gdk.RGBA()
@@ -115,8 +151,7 @@ def get_common_theme() -> Tuple[ColourMap, ColourMap]:
         "replace": lookup("meld:replace", "background"),
         "error": lookup("meld:error", "background"),
         "focus-highlight": lookup("meld:current-line-highlight", "foreground"),
-        "current-chunk-highlight": lookup(
-            "meld:current-chunk-highlight", "background"),
+        "current-chunk-highlight": lookup("meld:current-chunk-highlight", "background"),
         "overscroll": lookup("meld:overscroll", "background"),
     }
     line_colours = {

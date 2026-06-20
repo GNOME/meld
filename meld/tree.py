@@ -17,7 +17,7 @@
 import os
 
 from gi.module import get_introspection_module
-from gi.repository import Gdk, GLib, GObject, Pango
+from gi.repository import Gdk, Gio, GLib, GObject, Gtk, Pango
 
 from meld.style import colour_lookup_with_fallback
 from meld.treehelpers import SearchableTreeStore
@@ -231,71 +231,83 @@ class DiffTreeStore(SearchableTreeStore):
             self.set(treeiter, safe_keys_values)
 
 
-class TreeviewCommon:
+class MeldTreeView(Gtk.TreeView):
 
-    def on_treeview_popup_menu(self, treeview):
-        cursor_path, cursor_col = treeview.get_cursor()
-        if not cursor_path:
-            self.popup_menu.popup_at_pointer(None)
-            return True
+    __gtype_name__ = "MeldTreeView"
 
-        # We always want to pop up to the right of the first column,
-        # ignoring the actual cursor column location.
-        rect = treeview.get_background_area(
-            cursor_path, treeview.get_column(0))
+    context_menu_model = GObject.Property(
+        type=Gio.MenuModel,
+        flags=GObject.ParamFlags.READWRITE,
+    )
 
-        self.popup_menu.popup_at_rect(
-            treeview.get_bin_window(),
-            rect,
-            Gdk.Gravity.SOUTH_EAST,
-            Gdk.Gravity.NORTH_WEST,
-            None,
+    def __init__(self, *args, **kwargs):
+        Gtk.TreeView.__init__(self, *args, **kwargs)
+
+        controller = Gtk.GestureClick(
+            button=3,
+            propagation_phase=Gtk.PropagationPhase.CAPTURE,
         )
+        controller.connect("pressed", self.on_treeview_button_press_event)
+        self.add_controller(controller)
+        self.set_search_equal_func(self.treeview_search_cb, None)
+
+        # This is the only way I could get the context menu construction to behave
+        # correctly. If the PopoverMenu wasn't constructed *and parented* during
+        # __init__ then even though it appeared and functioned, the focus handling
+        # was all wrong.
+        self.context_menu = Gtk.PopoverMenu(
+            position=Gtk.PositionType.BOTTOM,
+            has_arrow=False,
+            halign=Gtk.Align.START,
+        )
+        self.context_menu.set_parent(self)
+
+    def do_realize(self):
+        Gtk.TreeView.do_realize(self)
+        self.context_menu.set_menu_model(self.context_menu_model)
+
+    def do_size_allocate(self, *args):
+        Gtk.TreeView.do_size_allocate(self, *args)
+        self.context_menu.present()
+
+    def on_treeview_button_press_event(self, controller, n_press, wx, wy):
+        treeview = controller.get_widget()
+        treeview.grab_focus()
+
+        x, y = treeview.convert_widget_to_bin_window_coords(wx, wy)
+        path = treeview.get_path_at_pos(int(x), int(y))
+        if path is None:
+            return False
+
+        controller.set_state(Gtk.EventSequenceState.CLAIMED)
+        selection = treeview.get_selection()
+        model, rows = selection.get_selected_rows()
+
+        row_paths = [str(r) for r in rows]
+        if str(path[0]) not in row_paths:
+            selection.unselect_all()
+            selection.select_path(path[0])
+            treeview.set_cursor(path[0])
+
+        rect = Gdk.Rectangle()
+        rect.x, rect.y = wx, wy
+
+        treeview.context_menu.set_pointing_to(rect)
+        treeview.context_menu.popup()
         return True
 
-    def on_treeview_button_press_event(self, treeview, event):
+    def treeview_search_cb(self, model, column, key, it, data):
+        # If the key contains a path separator, search the whole path,
+        # otherwise just use the filename. If the key is all lower-case, do a
+        # case-insensitive match.
+        abs_search = "/" in key
+        lower_key = key.islower()
 
-        # If we have multiple treeviews, unselect clear other tree selections
-        num_panes = getattr(self, 'num_panes', 1)
-        if num_panes > 1:
-            for t in self.treeview[:self.num_panes]:
-                if t != treeview:
-                    t.get_selection().unselect_all()
-
-        if (event.triggers_context_menu() and
-                event.type == Gdk.EventType.BUTTON_PRESS):
-
-            treeview.grab_focus()
-
-            path = treeview.get_path_at_pos(int(event.x), int(event.y))
-            if path is None:
+        for path in model.value_paths(it):
+            if not path:
+                continue
+            text = path if abs_search else os.path.basename(path)
+            text = text.lower() if lower_key else text
+            if key in text:
                 return False
-
-            selection = treeview.get_selection()
-            model, rows = selection.get_selected_rows()
-
-            if path[0] not in rows:
-                selection.unselect_all()
-                selection.select_path(path[0])
-                treeview.set_cursor(path[0])
-
-            self.popup_menu.popup_at_pointer(event)
-            return True
-        return False
-
-
-def treeview_search_cb(model, column, key, it, data):
-    # If the key contains a path separator, search the whole path,
-    # otherwise just use the filename. If the key is all lower-case, do a
-    # case-insensitive match.
-    abs_search = '/' in key
-    lower_key = key.islower()
-
-    for path in model.value_paths(it):
-        if not path:
-            continue
-        text = path if abs_search else os.path.basename(path)
-        text = text.lower() if lower_key else text
-        if key in text:
-            return False
-    return True
+        return True
