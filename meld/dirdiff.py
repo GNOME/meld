@@ -28,7 +28,15 @@ import unicodedata
 from collections import namedtuple
 from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
-from typing import DefaultDict, Dict, List, NamedTuple, Optional, Tuple
+from typing import (
+    ClassVar,
+    DefaultDict,
+    Dict,
+    List,
+    NamedTuple,
+    Optional,
+    Tuple,
+)
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
@@ -477,7 +485,7 @@ class DirDiff(Gtk.Box, MeldDoc):
     dummy_toolbar_linkmap1 = Gtk.Template.Child()
     toolbar_sourcemap_revealer = Gtk.Template.Child()
 
-    state_actions = {
+    state_actions: ClassVar[dict] = {
         tree.STATE_NORMAL: ("normal", "folder-status-same"),
         tree.STATE_NOCHANGE: ("normal", "folder-status-same"),
         tree.STATE_NEW: ("new", "folder-status-new"),

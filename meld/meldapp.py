@@ -392,7 +392,7 @@ class MeldApp(Adw.Application):
 
         tab = None
         error = None
-        comparisons = [c for c in [args] + options.diff if c]
+        comparisons = [c for c in [args, *options.diff] if c]
 
         # Every Meld invocation creates at most one window. If there is
         # no existing application, a window is created in do_startup().

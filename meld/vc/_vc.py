@@ -82,7 +82,7 @@ def partition(pred, iterable):
 class Entry:
     # These are labels for possible states of version controlled files;
     # not all states have a label to avoid visual clutter.
-    state_names = {
+    state_names: ClassVar[dict] = {
         STATE_IGNORED: _("Ignored"),
         STATE_NONE: _("Unversioned"),
         STATE_NORMAL: "",
@@ -183,7 +183,7 @@ class Vc:
 
         Note that this runs at the *location*, not at the *root*.
         """
-        cmd = (self.CMD,) + args
+        cmd = (self.CMD, *args)
         return subprocess.Popen(
             cmd,
             cwd=self.location,

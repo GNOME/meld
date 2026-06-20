@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
+from typing import ClassVar
 
 from gi.repository import Gio, GLib, GObject, Gtk
 
@@ -38,7 +39,7 @@ class DiffType(enum.IntEnum):
 class NewDiffTab(Gtk.Box):
     __gtype_name__ = "NewDiffTab"
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "diff-created": (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 
@@ -65,14 +66,13 @@ class NewDiffTab(Gtk.Box):
     file_three_way_checkbutton = Gtk.Template.Child()
     vc_chooser0 = Gtk.Template.Child()
 
-    file_chooser_dialogs = {}
-    dir_chooser_dialogs = {}
-    vc_chooser_dialogs = {}
-
     def __init__(self, parentapp):
         super().__init__()
         map_widgets_into_lists(self, ["file_chooser", "dir_chooser", "vc_chooser"])
         map_widgets_to_dict(self, ["file_chooser", "dir_chooser", "vc_chooser"])
+        self.file_chooser_dialogs = {}
+        self.dir_chooser_dialogs = {}
+        self.vc_chooser_dialogs = {}
         self.button_types = [
             self.button_type_file,
             self.button_type_dir,

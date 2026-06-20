@@ -24,6 +24,7 @@
 
 import errno
 import os
+from typing import ClassVar
 
 from . import _vc
 
@@ -33,7 +34,7 @@ class Vc(_vc.Vc):
     NAME = "Mercurial"
     VC_DIR = ".hg"
 
-    state_map = {
+    state_map: ClassVar[dict] = {
         "?": _vc.STATE_NONE,
         "A": _vc.STATE_NEW,
         "C": _vc.STATE_NORMAL,

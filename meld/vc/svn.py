@@ -26,6 +26,7 @@ import errno
 import glob
 import os
 import xml.etree.ElementTree as ElementTree
+from typing import ClassVar
 
 from meld.conf import _
 from . import _vc
@@ -39,7 +40,7 @@ class Vc(_vc.Vc):
     NAME = "Subversion"
     VC_DIR = ".svn"
 
-    state_map = {
+    state_map: ClassVar[dict] = {
         "unversioned": _vc.STATE_NONE,
         "added": _vc.STATE_NEW,
         "normal": _vc.STATE_NORMAL,

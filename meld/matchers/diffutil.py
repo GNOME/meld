@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import ClassVar
+
 from gi.repository import GObject
 
 from meld.matchers.myers import (
@@ -72,7 +74,7 @@ def consume_blank_lines(chunk, texts, pane1, pane2):
 class Differ(GObject.GObject):
     """Utility class to hold diff2 or diff3 chunks"""
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "diffs-changed": (GObject.SignalFlags.RUN_FIRST, None, (object,)),
     }
 

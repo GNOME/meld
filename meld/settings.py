@@ -14,6 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
+from typing import ClassVar
 
 from gi.repository import Adw, Gio, GObject, GtkSource, Pango
 
@@ -24,7 +25,7 @@ import meld.filters
 class MeldSettings(GObject.GObject):
     """Handler for settings that can't easily be bound to object properties"""
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "file-filters-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
         "text-filters-changed": (GObject.SignalFlags.RUN_FIRST, None, ()),
         "changed": (GObject.SignalFlags.RUN_FIRST, None, (str,)),

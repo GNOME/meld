@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from typing import ClassVar
+
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
 from meld.conf import _
@@ -37,7 +39,7 @@ class ColumnList(Gtk.Box):
     listbox = Gtk.Template.Child()
     row_menu = Gtk.Template.Child()
 
-    available_columns = {
+    available_columns: ClassVar[dict] = {
         "size": _("Size"),
         "modification time": _("Modification time"),
         "iso-time": _("Modification time (ISO)"),

@@ -22,7 +22,7 @@ import shutil
 import stat
 import sys
 import tempfile
-from typing import Tuple
+from typing import ClassVar, Tuple
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango
 
@@ -151,11 +151,11 @@ class VcView(Gtk.Box, MeldDoc):
     merge_file_order = GObject.Property(type=str, default="local-merge-remote")
 
     # Map for inter-tab command() calls
-    command_map = {
+    command_map: ClassVar[dict] = {
         "resolve": "resolve",
     }
 
-    state_actions = {
+    state_actions: ClassVar[dict] = {
         "flatten": ("vc-flatten", None),
         "modified": ("vc-status-modified", Entry.is_modified),
         "normal": ("vc-status-normal", Entry.is_normal),
@@ -668,7 +668,11 @@ class VcView(Gtk.Box, MeldDoc):
         model, rows = self.treeview.get_selection().get_selected_rows()
         sel = [self.model.get_file_path(self.model.get_iter(r)) for r in rows]
         # Remove empty entries and trailing slashes
-        return [x[-1] != "/" and x or x[:-1] for x in sel if x is not None]
+        return [
+            path[:-1] if path.endswith("/") else path
+            for path in sel
+            if path is not None
+        ]
 
     def _command_iter(self, command, files, refresh, working_dir):
         """An iterable that runs a VC command on a set of files

@@ -27,6 +27,7 @@ import shutil
 import subprocess
 import tempfile
 from collections import defaultdict
+from typing import ClassVar
 
 from . import _vc
 
@@ -41,7 +42,7 @@ class Vc(_vc.Vc):
     NAME = "Darcs"
     VC_DIR = "_darcs"
 
-    state_map = {
+    state_map: ClassVar[dict] = {
         "a": _vc.STATE_NONE,
         "A": _vc.STATE_NEW,
         "M": _vc.STATE_MODIFIED,

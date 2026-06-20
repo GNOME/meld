@@ -15,7 +15,7 @@
 
 import collections
 import logging
-from typing import Any, List, Mapping, Tuple
+from typing import Any, ClassVar, List, Mapping, Tuple
 
 import cairo
 from gi.repository import Gdk, GObject, Gtk
@@ -357,7 +357,7 @@ class TreeViewChunkMap(ChunkMap):
         flags=(GObject.ParamFlags.READWRITE | GObject.ParamFlags.CONSTRUCT_ONLY),
     )
 
-    chunk_type_map = {
+    chunk_type_map: ClassVar[dict] = {
         STATE_NEW: "insert",
         STATE_ERROR: "error",
         STATE_MODIFIED: "replace",

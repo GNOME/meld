@@ -18,7 +18,7 @@ import copy
 import functools
 import logging
 import math
-from typing import Callable, Optional, Tuple, Type
+from typing import Callable, ClassVar, Optional, Tuple, Type
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -108,14 +108,14 @@ LINE_LENGTH_LIMIT = 8 * 1024
 
 class CursorDetails:
     __slots__ = (
+        "chunk",
+        "line",
+        "next",
+        "next_conflict",
         "pane",
         "pos",
-        "line",
-        "chunk",
         "prev",
-        "next",
         "prev_conflict",
-        "next_conflict",
     )
 
     def __init__(self):
@@ -133,8 +133,6 @@ class FileDiff(Gtk.Box, MeldDoc):
     create_diff_signal = MeldDoc.create_diff_signal
     file_changed_signal = MeldDoc.file_changed_signal
     tab_state_changed = MeldDoc.tab_state_changed
-
-    buttons = []
 
     __gsettings_bindings_view__ = (
         ("ignore-blank-lines", "ignore-blank-lines"),
@@ -209,7 +207,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     differ: Type[Differ]
     comparison_mode: FileComparisonMode
 
-    keylookup = {
+    keylookup: ClassVar[dict] = {
         Gdk.KEY_Shift_L: MASK_SHIFT,
         Gdk.KEY_Shift_R: MASK_SHIFT,
         Gdk.KEY_Control_L: MASK_CTRL,
@@ -217,12 +215,14 @@ class FileDiff(Gtk.Box, MeldDoc):
     }
 
     # Identifiers for MsgArea messages
-    (MSG_SAME, MSG_SLOW_HIGHLIGHT, MSG_SYNCPOINTS) = list(range(3))
+    MSG_SAME = 0
+    MSG_SLOW_HIGHLIGHT = 1
+    MSG_SYNCPOINTS = 2
     # Transient messages that should be removed if any file in the
     # comparison gets reloaded.
-    TRANSIENT_MESSAGES = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
+    TRANSIENT_MESSAGES: ClassVar[set] = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "next-conflict-changed": (GObject.SignalFlags.RUN_FIRST, None, (bool, bool)),
     }
 
@@ -1951,7 +1951,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         # re-highlight added and modified chunks.
         need_clearing = sorted(list(removed_chunks), key=merged_chunk_order)
         need_highlighting = sorted(
-            list(added_chunks) + [modified_chunks], key=merged_chunk_order
+            [*list(added_chunks), modified_chunks], key=merged_chunk_order
         )
 
         alltags = [b.get_tag_table().lookup("inline") for b in self.textbuffer]

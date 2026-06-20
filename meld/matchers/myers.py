@@ -420,7 +420,7 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
                 # Split matching blocks each need to be terminated to get our
                 # split chunks correctly created
                 self.split_matching_blocks.append(
-                    matching_blocks + [(ai + len(a), bi + len(b), 0)]
+                    [*matching_blocks, (ai + len(a), bi + len(b), 0)]
                 )
             self.matching_blocks.append((len(self.a), len(self.b), 0))
             yield 1

@@ -113,7 +113,7 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
 
         # Always calculate display size for at least two-digit line counts
         num_lines = max(buf.get_line_count(), 99)
-        num_digits = int(math.ceil(math.log(num_lines, 10)))
+        num_digits = math.ceil(math.log(num_lines, 10))
 
         if num_digits == self.num_line_digits and not force:
             return

@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import ClassVar, Optional
 
 from gi.repository import Gio, GObject, Gtk
 
@@ -33,7 +33,7 @@ class MeldFileButton(Gtk.Button):
     @GObject.Signal("file-selected")
     def file_selected_signal(self, pane: int, file: Gio.File) -> None: ...
 
-    icon_action_map = {
+    icon_action_map: ClassVar[dict] = {
         Gtk.FileChooserAction.OPEN: "document-open-symbolic",
         Gtk.FileChooserAction.SELECT_FOLDER: "folder-open-symbolic",
     }

@@ -52,7 +52,7 @@ class PathLabel(Gtk.MenuButton):
         try:
             self._update_paths(self._parent_gfile, file)
         except ValueError as e:
-            log.warning(f"Error setting GFile: {str(e)}")
+            log.warning(f"Error setting GFile: {e!s}")
 
     def __get_parent_file(self) -> Optional[Gio.File]:
         return self._parent_gfile
@@ -64,7 +64,7 @@ class PathLabel(Gtk.MenuButton):
         try:
             self._update_paths(parent_file, self._gfile)
         except ValueError as e:
-            log.warning(f"Error setting parent GFile: {str(e)}")
+            log.warning(f"Error setting parent GFile: {e!s}")
 
     def __get_path_label(self) -> Optional[str]:
         return self._path_label

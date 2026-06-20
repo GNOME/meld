@@ -29,7 +29,7 @@ def try_compile(regex, flags=0):
 
 
 class FilterEntry:
-    __slots__ = ("label", "active", "filter", "byte_filter", "filter_string")
+    __slots__ = ("active", "byte_filter", "filter", "filter_string", "label")
 
     REGEX, SHELL = 0, 1
 

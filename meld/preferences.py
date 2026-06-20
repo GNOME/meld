@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-from typing import Self
+from typing import ClassVar, Self
 
 from gi.repository import Adw, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -37,7 +37,7 @@ class FilterList(Gtk.Box, EditableListWidget):
     pattern_column = Gtk.Template.Child()
     validity_renderer = Gtk.Template.Child()
 
-    default_entry = [_("label"), False, _("pattern"), True]
+    default_entry: ClassVar[list] = [_("label"), False, _("pattern"), True]
 
     filter_type = GObject.Property(
         type=int,
@@ -272,31 +272,31 @@ class PreferencesDialog(Adw.PreferencesDialog):
                 "highlight-current-line",
                 self.checkbutton_highlight_current_line,
                 "active",
-            ),  # noqa: E501
-            ("show-line-numbers", self.checkbutton_show_line_numbers, "active"),  # noqa: E501
+            ),
+            ("show-line-numbers", self.checkbutton_show_line_numbers, "active"),
             (
                 "highlight-syntax",
                 self.syntax_highlighting_switch_row,
                 "enable-expansion",
-            ),  # noqa: E501
-            ("enable-space-drawer", self.checkbutton_show_whitespace, "active"),  # noqa: E501
+            ),
+            ("enable-space-drawer", self.checkbutton_show_whitespace, "active"),
             ("custom-editor-command", self.custom_edit_command_entry, "text"),
             (
                 "folder-shallow-comparison",
                 self.checkbutton_shallow_compare,
                 "enable-expansion",
-            ),  # noqa: E501
-            ("folder-filter-text", self.checkbutton_folder_filter_text, "active"),  # noqa: E501
-            ("folder-ignore-symlinks", self.checkbutton_ignore_symlinks, "active"),  # noqa: E501
-            ("vc-show-commit-margin", self.checkbutton_show_commit_margin, "active"),  # noqa: E501
-            ("show-overview-map", self.checkbutton_show_overview_map, "active"),  # noqa: E501
+            ),
+            ("folder-filter-text", self.checkbutton_folder_filter_text, "active"),
+            ("folder-ignore-symlinks", self.checkbutton_ignore_symlinks, "active"),
+            ("vc-show-commit-margin", self.checkbutton_show_commit_margin, "active"),
+            ("show-overview-map", self.checkbutton_show_overview_map, "active"),
             ("vc-commit-margin", self.spinbutton_commit_margin, "value"),
-            ("vc-break-commit-message", self.checkbutton_break_commit_lines, "active"),  # noqa: E501
-            ("ignore-blank-lines", self.checkbutton_ignore_blank_lines, "active"),  # noqa: E501
+            ("vc-break-commit-message", self.checkbutton_break_commit_lines, "active"),
+            ("ignore-blank-lines", self.checkbutton_ignore_blank_lines, "active"),
             # Sensitivity bindings must come after value bindings, or the key
             # writability in gsettings overrides manual sensitivity setting.
-            ("vc-show-commit-margin", self.spinbutton_commit_margin, "sensitive"),  # noqa: E501
-            ("vc-show-commit-margin", self.checkbutton_break_commit_lines, "sensitive"),  # noqa: E501
+            ("vc-show-commit-margin", self.spinbutton_commit_margin, "sensitive"),
+            ("vc-show-commit-margin", self.checkbutton_break_commit_lines, "sensitive"),
         ]
         for key, obj, attribute in bindings:
             settings.bind(key, obj, attribute, Gio.SettingsBindFlags.DEFAULT)
@@ -308,7 +308,7 @@ class PreferencesDialog(Adw.PreferencesDialog):
                 "folder-shallow-comparison",
                 self.checkbutton_folder_filter_text,
                 "sensitive",
-            ),  # noqa: E501
+            ),
         ]
         for key, obj, attribute in invert_bindings:
             settings.bind(

@@ -34,6 +34,7 @@ import stat
 import subprocess
 import tempfile
 from collections import defaultdict
+from typing import ClassVar
 
 from meld.conf import _, ngettext
 from . import _vc
@@ -49,7 +50,7 @@ class Vc(_vc.Vc):
     DIFF_FILES_RE = r":(\d+) (\d+) ([a-z0-9]+) ([a-z0-9]+) ([XADMTU])\t(.*)"
     DIFF_RE = re.compile(DIFF_FILES_RE)
 
-    conflict_map = {
+    conflict_map: ClassVar[dict] = {
         # These are the arguments for git-show
         # CONFLICT_MERGED has no git-show argument unfortunately.
         _vc.CONFLICT_BASE: 1,
@@ -57,7 +58,7 @@ class Vc(_vc.Vc):
         _vc.CONFLICT_REMOTE: 3,
     }
 
-    state_map = {
+    state_map: ClassVar[dict] = {
         "X": _vc.STATE_NONE,  # Unknown
         "A": _vc.STATE_NEW,  # New
         "D": _vc.STATE_REMOVED,  # Deleted

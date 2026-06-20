@@ -77,13 +77,13 @@ class TextviewLineAnimationType(Enum):
 
 class TextviewLineAnimation:
     __slots__ = (
-        "start_mark",
-        "end_mark",
-        "start_rgba",
-        "end_rgba",
-        "start_time",
-        "duration",
         "anim_type",
+        "duration",
+        "end_mark",
+        "end_rgba",
+        "start_mark",
+        "start_rgba",
+        "start_time",
     )
 
     def __init__(self, mark0, mark1, rgba0, rgba1, duration, anim_type):

@@ -33,6 +33,7 @@ def on_undo_button_pressed():
 
 import logging
 import weakref
+from typing import ClassVar
 
 from gi.repository import GObject
 
@@ -64,7 +65,7 @@ class GroupAction:
 class UndoSequence(GObject.GObject):
     """A manager class for operations which can be undone/redone."""
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "can-undo": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
         "can-redo": (GObject.SignalFlags.RUN_FIRST, None, (GObject.TYPE_BOOLEAN,)),
         "checkpointed": (

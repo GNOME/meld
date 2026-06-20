@@ -27,13 +27,14 @@ import errno
 import os
 import re
 from collections import defaultdict
+from typing import ClassVar
 
 from . import _vc
 
 
 class Vc(_vc.Vc):
     CMD = "bzr"
-    CMDARGS = ["--no-aliases", "--no-plugins"]
+    CMDARGS: ClassVar[list] = ["--no-aliases", "--no-plugins"]
     NAME = "Bazaar"
     VC_DIR = ".bzr"
     PATCH_INDEX_RE = "^=== modified file '(.*)' (.*)$"
@@ -47,7 +48,7 @@ class Vc(_vc.Vc):
         _vc.STATE_REMOVED,
     )
 
-    conflict_map = {
+    conflict_map: ClassVar[dict] = {
         _vc.CONFLICT_BASE: ".BASE",
         _vc.CONFLICT_OTHER: ".OTHER",
         _vc.CONFLICT_THIS: ".THIS",
@@ -55,7 +56,7 @@ class Vc(_vc.Vc):
     }
 
     # We use None here to indicate flags that we don't deal with or care about
-    state_1_map = {
+    state_1_map: ClassVar[dict] = {
         " ": None,  # First status column empty
         "+": None,  # File versioned
         "-": None,  # File unversioned
@@ -66,7 +67,7 @@ class Vc(_vc.Vc):
         "P": None,  # Entry for a pending merge (not a file)
     }
 
-    state_2_map = {
+    state_2_map: ClassVar[dict] = {
         " ": _vc.STATE_NORMAL,  # Second status column empty
         "N": _vc.STATE_NEW,  # File created
         "D": _vc.STATE_REMOVED,  # File deleted
@@ -74,7 +75,7 @@ class Vc(_vc.Vc):
         "M": _vc.STATE_MODIFIED,  # File modified
     }
 
-    state_3_map = {
+    state_3_map: ClassVar[dict] = {
         " ": None,
         "*": _vc.STATE_MODIFIED,
         "/": _vc.STATE_MODIFIED,
@@ -88,18 +89,18 @@ class Vc(_vc.Vc):
     )
 
     def add(self, runner, files):
-        fullcmd = [self.CMD] + self.CMDARGS
+        fullcmd = [self.CMD, *self.CMDARGS]
         command = [fullcmd, "add"]
         runner(command, files, refresh=True, working_dir=self.root)
 
     def commit(self, runner, files, message):
-        fullcmd = [self.CMD] + self.CMDARGS
+        fullcmd = [self.CMD, *self.CMDARGS]
         command = [fullcmd, "commit", "-m", message]
         runner(command, [], refresh=True, working_dir=self.root)
 
     def revert(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["revert"] + files,
+            [self.CMD, *self.CMDARGS, "revert", *files],
             [],
             refresh=True,
             working_dir=self.root,
@@ -107,7 +108,7 @@ class Vc(_vc.Vc):
 
     def push(self, runner):
         runner(
-            [self.CMD] + self.CMDARGS + ["push"],
+            [self.CMD, *self.CMDARGS, "push"],
             [],
             refresh=True,
             working_dir=self.root,
@@ -118,7 +119,7 @@ class Vc(_vc.Vc):
         # update instead of pull. For now we've replicated existing
         # functionality, as update will not work for unbound branches.
         runner(
-            [self.CMD] + self.CMDARGS + ["pull"],
+            [self.CMD, *self.CMDARGS, "pull"],
             [],
             refresh=True,
             working_dir=self.root,
@@ -126,7 +127,7 @@ class Vc(_vc.Vc):
 
     def resolve(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["resolve"] + files,
+            [self.CMD, *self.CMDARGS, "resolve", *files],
             [],
             refresh=True,
             working_dir=self.root,
@@ -134,7 +135,7 @@ class Vc(_vc.Vc):
 
     def remove(self, runner, files):
         runner(
-            [self.CMD] + self.CMDARGS + ["rm"] + files,
+            [self.CMD, *self.CMDARGS, "rm", *files],
             [],
             refresh=True,
             working_dir=self.root,
@@ -159,7 +160,7 @@ class Vc(_vc.Vc):
         # FIXME: This actually clears out state information, because the
         # current API doesn't have any state outside of _tree_cache.
         branch_root = (
-            _vc.popen([self.CMD] + self.CMDARGS + ["root", path], cwd=self.location)
+            _vc.popen([self.CMD, *self.CMDARGS, "root", path], cwd=self.location)
             .read()
             .rstrip("\n")
         )
@@ -167,9 +168,14 @@ class Vc(_vc.Vc):
         while 1:
             try:
                 proc = _vc.popen(
-                    [self.CMD]
-                    + self.CMDARGS
-                    + ["status", "-S", "--no-pending", branch_root]
+                    [
+                        self.CMD,
+                        *self.CMDARGS,
+                        "status",
+                        "-S",
+                        "--no-pending",
+                        branch_root,
+                    ]
                 )
                 entries = proc.read().split("\n")[:-1]
                 break

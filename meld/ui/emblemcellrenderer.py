@@ -15,7 +15,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Dict, Tuple
+from typing import ClassVar, Dict, Tuple
 
 import cairo
 from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
@@ -26,7 +26,7 @@ log = logging.getLogger(__name__)
 class EmblemCellRenderer(Gtk.CellRenderer):
     __gtype_name__ = "EmblemCellRenderer"
 
-    icon_cache: Dict[Tuple[str, int], GdkPixbuf.Pixbuf] = {}
+    icon_cache: ClassVar[Dict[Tuple[str, int], GdkPixbuf.Pixbuf]] = {}
 
     icon_name = GObject.Property(
         type=str,

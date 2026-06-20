@@ -1,3 +1,5 @@
+from typing import ClassVar
+
 from gi.repository import GObject, Gtk, GtkSource
 
 from meld.conf import _
@@ -87,7 +89,7 @@ class EncodingSelector(FilteredListSelector, Gtk.Grid):
 
     __gtype_name__ = "EncodingSelector"
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "encoding-selected": (
             GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
             None,
@@ -123,7 +125,7 @@ class EncodingSelector(FilteredListSelector, Gtk.Grid):
 class SourceLangSelector(FilteredListSelector, Gtk.Grid):
     __gtype_name__ = "SourceLangSelector"
 
-    __gsignals__ = {
+    __gsignals__: ClassVar[dict] = {
         "language-selected": (
             GObject.SignalFlags.RUN_FIRST | GObject.SignalFlags.ACTION,
             None,

@@ -60,12 +60,12 @@ class AutoMergeDiffer(diffutil.Differ):
                         out0_bounds = (s1, e1, l0 + chunk[1], l0 + chunk[2])
                         out1_bounds = (s1, e1, l2 + chunk[3], l2 + chunk[4])
                         if chunk[0] == "equal":
-                            out0 = DiffChunk._make(("replace",) + out0_bounds)
-                            out1 = DiffChunk._make(("replace",) + out1_bounds)
+                            out0 = DiffChunk._make(("replace", *out0_bounds))
+                            out1 = DiffChunk._make(("replace", *out1_bounds))
                             yield out0, out1
                         else:
-                            out0 = DiffChunk._make(("conflict",) + out0_bounds)
-                            out1 = DiffChunk._make(("conflict",) + out1_bounds)
+                            out0 = DiffChunk._make(("conflict", *out0_bounds))
+                            out1 = DiffChunk._make(("conflict", *out1_bounds))
                             yield out0, out1
                     return
                 # elif len0 > 0 and len2 > 0:

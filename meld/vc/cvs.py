@@ -25,6 +25,7 @@
 import errno
 import os
 import shutil
+from typing import ClassVar
 
 from . import _vc
 
@@ -37,7 +38,7 @@ class Vc(_vc.Vc):
     VC_ROOT_WALK = False
 
     # According to the output of the 'status' command
-    state_map = {
+    state_map: ClassVar[dict] = {
         "Unknown": _vc.STATE_NONE,
         "Locally Added": _vc.STATE_NEW,
         "Up-to-date": _vc.STATE_NORMAL,
@@ -114,7 +115,7 @@ class Vc(_vc.Vc):
 
                 # Should suppress stderr here
                 proc = _vc.popen(
-                    [self.CMD, "-Q", "status"] + files,
+                    [self.CMD, "-Q", "status", *files],
                     cwd=self.location,
                 )
                 entries = [
