@@ -143,51 +143,7 @@ def get_last_news_entry():
     return "\n".join(lines)
 
 
-def parse_news_entry(news):
-    features, fixes, translators = [], [], []
-    section = None
-    sections = {
-        'Features': features,
-        'Fixes': fixes,
-        'Translations': translators,
-    }
-    for line in news.splitlines():
-        if line.strip(' :') in sections:
-            section = line.strip(' :')
-            continue
-        if not section or not line.strip():
-            continue
-        sections[section].append(line)
-
-    def reformat(section):
-        if not section:
-            return section
-
-        def space_prefix(s):
-            for i in range(1, len(s)):
-                if not s[:i].isspace():
-                    break
-            return i - 1
-
-        indent = min(space_prefix(line) for line in section)
-        return [line[indent:] for line in section]
-
-    return reformat(features), reformat(fixes), reformat(translators)
-
-
-def make_env():
-
-    def minor_version(version):
-        return '.'.join(version.split('.')[:2])
-
-    jinja_env = Environment()
-    jinja_env.filters['minor_version'] = minor_version
-    return jinja_env
-
-
 def get_tokens():
-    news = get_last_news_entry()
-    features, fixes, translators = parse_news_entry(news)
     version = meld.conf.__version__
     major, minor, *release = version.split('.')
     stable_release = int(minor) % 2 == 0
@@ -202,18 +158,15 @@ def get_tokens():
         'release_series': release_series,
         'stable_release': stable_release,
         'translator_langs': get_translator_langs(),
-        'features': features,
-        'fixes': fixes,
-        'translators': translators,
         'commits': get_non_translation_commits(),
     }
 
 
 def render_template(template):
     tokens = get_tokens()
-    jinja_env = make_env()
+    jinja_env = Environment()
     template = jinja_env.from_string(template)
-    return(template.render(tokens))
+    return template.render(tokens)
 
 
 def call_with_output(
@@ -316,20 +269,6 @@ def metainfo():
 
     message = click.edit(filename=filename)
     return message
-
-
-def write_somewhere(filename, output):
-    if filename and os.path.exists(filename):
-        overwrite = click.confirm(
-            'File "%s" already exists. Overwrite?' % filename, abort=True)
-        if not overwrite:
-            raise click.Abort()
-    if filename:
-        with open(filename, 'w') as f:
-            f.write(output)
-        click.echo('Wrote %s' % filename)
-    else:
-        click.echo(output)
 
 
 @cli.command()
