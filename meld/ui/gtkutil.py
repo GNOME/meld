@@ -13,52 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from collections.abc import Iterator
-from contextlib import contextmanager
-
 from gi.repository import Gdk, GObject
 
 GTK_STYLE_CLASS_ERROR = "error"
 
 BIND_DEFAULT_CREATE = GObject.BindingFlags.DEFAULT | GObject.BindingFlags.SYNC_CREATE
-
-
-@contextmanager
-def blocked_signal_handlers(
-    instance: GObject.Object,
-    *,
-    signal_id: int = 0,
-    detail: int = 0,
-    closure: GObject.Closure | None = None,
-    func: int = 0,
-    data: int = 0,
-) -> Iterator[None]:
-    """Block matching signal handlers on `instance` for the duration of the block.
-
-    The `GObject.SignalMatchType` mask is derived from whichever keyword
-    arguments are supplied, so callers only pass the criteria they care
-    about, e.g. ``blocked_signal_handlers(obj, signal_id=sid)``.
-    """
-    mask = GObject.SignalMatchType(0)
-    if signal_id:
-        mask |= GObject.SignalMatchType.ID
-    if detail:
-        mask |= GObject.SignalMatchType.DETAIL
-    if closure is not None:
-        mask |= GObject.SignalMatchType.CLOSURE
-    if func:
-        mask |= GObject.SignalMatchType.FUNC
-    if data:
-        mask |= GObject.SignalMatchType.DATA
-    if not mask:
-        raise ValueError("At least one match criterion must be provided")
-
-    match_args = (instance, mask, signal_id, detail, closure, func, data)
-    GObject.signal_handlers_block_matched(*match_args)
-    try:
-        yield
-    finally:
-        GObject.signal_handlers_unblock_matched(*match_args)
 
 
 def make_gdk_rgba(red: float, green: float, blue: float, alpha: float) -> Gdk.RGBA:
