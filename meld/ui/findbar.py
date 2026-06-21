@@ -18,6 +18,7 @@ from typing import Any, ClassVar
 
 from gi.repository import GObject, Gtk, GtkSource
 
+from meld.signalhelpers import block_signal_handlers
 from meld.ui.gtkutil import GTK_STYLE_CLASS_ERROR
 
 
@@ -122,11 +123,19 @@ class FindBar(Gtk.Grid):
     def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str) -> None:
         self.replace_mode = replace
         self.set_text_view(textview)
-        if text:
-            self.find_entry.set_text(text)
-            FindBar._cached_search = text
-        elif FindBar._cached_search:
-            self.find_entry.set_text(FindBar._cached_search)
+
+        prefilled_text = text or FindBar._cached_search
+        if prefilled_text:
+            # Setting the text triggers GtkSearchEntry "changed" handlers which
+            # end up deselecting our entry text that we select below.
+            with block_signal_handlers(
+                self.find_entry.get_delegate(),
+                signal_id=GObject.signal_lookup("changed", Gtk.Text),
+            ):
+                self.find_entry.set_text(prefilled_text)
+            self.find_entry.select_region(0, -1)
+            FindBar._cached_search = prefilled_text
+
         self.show()
         self.find_entry.grab_focus()
 
