@@ -7,7 +7,7 @@ variables:
 
 pages:
   stage: deploy
-  image: fedora:44
+  image: fedora:43
   script:
     - dnf install -y $DEPENDENCIES
     - jekyll build -d public/
