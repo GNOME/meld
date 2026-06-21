@@ -7,7 +7,7 @@ variables:
 
 pages:
   stage: deploy
-  image: fedora:33
+  image: fedora:44
   script:
     - dnf install -y $DEPENDENCIES
     - jekyll build -d public/
@@ -22,7 +22,7 @@ pages:
 
 cloudflareworkers:
   stage: publish
-  image: node:18-alpine
+  image: node:24-alpine
   script:
     - npm install -g wrangler
     - npm install workers-site/
