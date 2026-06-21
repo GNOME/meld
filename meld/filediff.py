@@ -435,8 +435,9 @@ class FileDiff(Gtk.Box, MeldDoc):
             buf.data.file_changed_signal.connect(self.notify_file_changed)
         self.update_text_actions_sensitivity()
 
-        self.findbar = FindBar(self.grid)
+        self.findbar = FindBar()
         self.findbar.set_visible(False)
+        self.findbar.set_text_views(self.textview)
         self.grid.attach(self.findbar, 0, 2, 10, 1)
 
         self.set_num_panes(num_panes)

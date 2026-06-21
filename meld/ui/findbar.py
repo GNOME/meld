@@ -46,12 +46,16 @@ class FindBar(Gtk.Grid):
     def activate_secondary(self) -> None:
         self._find_text(backwards=True)
 
-    def __init__(self, parent):
+    def __init__(self):
         super().__init__()
 
+        # Track all textviews for highlighting, and the current textview for
+        # search tracking
+        self.textviews = []
+        self.textview = None
+        self.search_contexts = {}
         self.search_context = None
         self.notify_id = None
-        self.set_text_view(None)
 
         # Create and bind our GtkSourceSearchSettings
         settings = GtkSource.SearchSettings()
@@ -75,14 +79,19 @@ class FindBar(Gtk.Grid):
         )
 
     def hide(self):
-        self.set_text_view(None)
+        self.search_context.disconnect(self.notify_id)
+        self.textview = None
+        self.search_context = None
         self.wrap_box.set_visible(False)
         Gtk.Widget.hide(self)
 
     def update_match_state(self, *args):
-        # Note that -1 here implies that the search is still running
+        # We only show an error state for the active pane results, even if
+        # there are matches in other panes. Also, an occurrences_count of -1
+        # implies that the search is still running.
         no_matches = (
-            self.search_context.props.occurrences_count == 0
+            self.search_context
+            and self.search_context.props.occurrences_count == 0
             and self.search_settings.props.search_text
         )
         if no_matches:
@@ -90,21 +99,25 @@ class FindBar(Gtk.Grid):
         else:
             self.find_entry.remove_css_class(GTK_STYLE_CLASS_ERROR)
 
-    def set_text_view(self, textview):
-        self.textview = textview
-        if textview is not None:
-            self.search_context = GtkSource.SearchContext.new(
+    def set_text_views(self, textviews: list[Gtk.TextView]):
+        self.textviews = list(textviews)
+        self.search_contexts = {}
+
+        for textview in self.textviews:
+            context = GtkSource.SearchContext.new(
                 textview.get_buffer(), self.search_settings
             )
-            self.search_context.set_highlight(True)
-            self.notify_id = self.search_context.connect(
-                "notify::occurrences-count", self.update_match_state
-            )
-        else:
-            if self.notify_id:
-                self.search_context.disconnect(self.notify_id)
-                self.notify_id = None
-            self.search_context = None
+            context.set_highlight(True)
+            self.search_contexts[textview] = context
+
+    def set_text_view(self, textview: Gtk.TextView):
+        """Set the active textview that find/replace acts on"""
+        self.textview = textview
+        self.search_context = self.search_contexts.get(textview)
+        self.notify_id = self.search_context.connect(
+            "notify::occurrences-count", self.update_match_state
+        )
+        self.update_match_state()
 
     def start_find(self, *, textview: Gtk.TextView, replace: bool, text: str):
         self.replace_mode = replace
