@@ -13,7 +13,7 @@ pages:
     - jekyll build -d public/
     - git checkout main
     - mkdir public/help/
-    - yelp-build html -o public/help help/C
+    - yelp-build html -o public/help $PWD/help/C
   artifacts:
     paths:
       - public
