@@ -20,11 +20,9 @@
             <i class="fas fa-download"></i> Source <small>(.tar.xz)</small>
           </a>
 
-          {% if release.platforms contains 'windows' %}
-          <a class="btn btn-primary mr-2" role="button" href="https://download.gnome.org/binaries/win32/meld/{{ short_version }}/Meld-{{ release.version }}-mingw.msi">
-            <i class="fas fa-download"></i> Windows <small>(.msi)</small>
+          <a class="btn btn-primary mr-2" role="button" href="https://gitlab.gnome.org/GNOME/meld/-/packages/{{ release.package }}">
+            <i class="fas fa-download"></i> Windows and macOS binaries
           </a>
-          {% endif %}
         </div>
       </div>
     </div>
