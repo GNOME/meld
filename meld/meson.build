@@ -28,6 +28,7 @@ folders = {
     'preferences.py',
     'recent.py',
     'settings.py',
+    'signalhelpers.py',
     'sourceview.py',
     'style.py',
     'syncpoints.py',
