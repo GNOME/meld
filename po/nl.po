@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-05-09 21:41+0000\n"
-"PO-Revision-Date: 2026-06-10 14:05+0200\n"
+"POT-Creation-Date: 2026-06-24 21:46+0000\n"
+"PO-Revision-Date: 2026-06-26 15:50+0200\n"
 "Last-Translator: Dick Groskamp <dikgro@yahoo.co.uk>\n"
 "Language-Team: GNOME-NL https://matrix.to/#/#nl:gnome.org\n"
 "Language: nl\n"
@@ -16,9 +16,14 @@ msgstr "Project-Id-Version: meld cvs\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+#: bin/meld:274
+#, c-format
+msgid "Meld requires %s."
+msgstr "Meld vereist %s."
+
 #: data/org.gnome.Meld.desktop.in.in:2
-#: data/org.gnome.Meld.metainfo.xml.in.in:10 meld/resources/ui/appwindow.ui:9
-#: meld/resources/ui/appwindow.ui:17
+#: meld/resources/data/org.gnome.Meld.metainfo.xml.in.in:10
+#: meld/resources/ui/appwindow.ui:7
 msgid "Meld"
 msgstr "Meld"
 
@@ -27,64 +32,46 @@ msgid "Diff Viewer"
 msgstr "Diff weergeven"
 
 #: data/org.gnome.Meld.desktop.in.in:4
-#: data/org.gnome.Meld.metainfo.xml.in.in:11
+#: meld/resources/data/org.gnome.Meld.metainfo.xml.in.in:11
 msgid "Compare and merge your files"
 msgstr "Vergelijken en samenvoegen van uw bestanden"
 
 #. TRANSLATORS: Search terms to find this application. Do NOT translate or localize the semicolons! The list MUST also end with a semicolon!
 #: data/org.gnome.Meld.desktop.in.in:6
 msgid "diff;merge;"
-msgstr "diff;merge;"
-
-#: data/org.gnome.Meld.metainfo.xml.in.in:13
-msgid ""
-"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
-"compare files, directories, and version controlled projects. It provides "
-"two- and three-way comparison of both files and directories, and supports "
-"many version control systems including Git, Mercurial, Bazaar and Subversion."
-msgstr "Meld is een visueel programma voor het weergeven van verschillen en samenvoegingen, gericht op ontwikkelaars. Meld helpt u bij het vergelijken van bestanden, mappen en projecten die versiebeheerd worden. Het verschaft twee- en drieweg vergelijkingen van zowel bestanden als mappen, en ondersteunt veel systemen voor versiebeheer, inclusief Git, Mercurial, Bazaar en Subversion."
-
-#: data/org.gnome.Meld.metainfo.xml.in.in:20
-msgid ""
-"Meld helps you review code changes, understand patches, and makes enormous "
-"merge conflicts slightly less painful."
-msgstr "Meld helpt u wijzigingen in code te beoordelen, patches te begrijpen en maakt enorme conflicten voor samenvoegen enigszins minder pijnlijk."
-
-#: data/org.gnome.Meld.metainfo.xml.in.in:51
-msgid "Kai Willadsen"
-msgstr "Kai Willadsen"
+msgstr "diff;merge;verschil;samenvoegen;"
 
 #: data/mime/org.gnome.Meld.xml.in:4
 msgid "Meld comparison description"
 msgstr "Meld beschrijving vergelijking"
 
-#: data/org.gnome.Meld.gschema.xml:37
+#: data/org.gnome.Meld.gschema.xml:43
 msgid "Default window width"
 msgstr "Standaardbreedte venster"
 
-#: data/org.gnome.Meld.gschema.xml:41
+#: data/org.gnome.Meld.gschema.xml:47
 msgid "Default window height"
 msgstr "Standaardhoogte venster"
 
-#: data/org.gnome.Meld.gschema.xml:45
+#: data/org.gnome.Meld.gschema.xml:51
 msgid "Default window maximized state"
 msgstr "Standaard gemaximaliseerde status venster"
 
-#: data/org.gnome.Meld.gschema.xml:54
-msgid "Prefer application-wide dark theme"
-msgstr "Voorkeur voor toepassingsbrede donkere thema"
+#: data/org.gnome.Meld.gschema.xml:64
+msgid "Style Variant"
+msgstr "Stijlvariant"
 
-#: data/org.gnome.Meld.gschema.xml:55
+#: data/org.gnome.Meld.gschema.xml:65
 msgid ""
-"If true, the GTK dark theme variant will be used, if available. Note that "
-"this is separate from the syntax highlighting scheme."
-msgstr "Indien true zal de variant voor het donkere GTK thema wordne gebruikt, indien beschikbaar. Onthoud dat dit losstaat van het schema voor het accentueren van de syntaxis."
+"Whther to force the light or dark variant of the GTK theme. If set to "
+"'default', the application will follow the system default variant."
+msgstr "Of de lichte of donkere variant van het GTK-thema moet worden gebruikt. Indien ingesteld op 'default', zal de toepassing de variant voor de systeemstandaard volgen."
 
-#: data/org.gnome.Meld.gschema.xml:61
+#: data/org.gnome.Meld.gschema.xml:71
 msgid "Additional automatically detected text encodings"
 msgstr "Aanvullende automatisch gedetecteerde tekstcoderingen"
 
-#: data/org.gnome.Meld.gschema.xml:62
+#: data/org.gnome.Meld.gschema.xml:72
 msgid ""
 "Meld will use these text encodings to try to decode loaded text files before "
 "trying any other encodings. In addition to the encodings in this list, UTF-8 "
@@ -92,180 +79,180 @@ msgid ""
 "may also be tried, depending on the user’s locale."
 msgstr "Meld zal deze tekstcoderingen gebruiken om te proberen geladen tekstbestanden te decoderen voordat het andere coderingen probeert. In aanvulling op de coderingen in deze lijst, zullen UTF-8 en de huidige standaard-locale codering worden gebruikt; andere coderingen zouden ook geprobeerd kunnen worden, afhankelijk van de locale van de gebruiker."
 
-#: data/org.gnome.Meld.gschema.xml:69
+#: data/org.gnome.Meld.gschema.xml:79
 msgid "Width of an indentation step"
 msgstr "Breedte voor stap inspringen"
 
-#: data/org.gnome.Meld.gschema.xml:70
+#: data/org.gnome.Meld.gschema.xml:80
 msgid "The number of spaces to use for a single indent step"
 msgstr "Het aantal spaties  om te gebruiken voor een stap van inspringen"
 
-#: data/org.gnome.Meld.gschema.xml:74
+#: data/org.gnome.Meld.gschema.xml:84
 msgid "Whether to indent using spaces or tabs"
 msgstr "Of inspringen tabs of spaties gebruikt"
 
-#: data/org.gnome.Meld.gschema.xml:75
+#: data/org.gnome.Meld.gschema.xml:85
 msgid "If true, any new indentation will use spaces instead of tabs."
 msgstr "Indien true zal een nieuwe inspringing spaties gebruiken, in plaats van tabs."
 
-#: data/org.gnome.Meld.gschema.xml:79 meld/resources/ui/statusbar-menu.ui:5
+#: data/org.gnome.Meld.gschema.xml:89 meld/resources/ui/statusbar-menu.ui:5
 msgid "Show line numbers"
 msgstr "Regelnummers weergeven"
 
-#: data/org.gnome.Meld.gschema.xml:80
+#: data/org.gnome.Meld.gschema.xml:90
 msgid "If true, line numbers will be shown in the gutter of file comparisons."
 msgstr "Indien true zullen in de marge regelnummers worden weergegeven voor bestandsvergelijkingen."
 
-#: data/org.gnome.Meld.gschema.xml:84
+#: data/org.gnome.Meld.gschema.xml:94
 msgid "Highlight syntax"
 msgstr "Syntaxis accentueren"
 
-#: data/org.gnome.Meld.gschema.xml:85
+#: data/org.gnome.Meld.gschema.xml:95
 msgid ""
 "Whether to highlight syntax in comparisons. Because of Meld’s own color "
 "highlighting, this is off by default."
 msgstr "Of syntaxis in vergelijkingen moet worden geaccentueerd. Wegens het eigen in kleur accentueren van Meld is dit standaard uitgeschakeld."
 
-#: data/org.gnome.Meld.gschema.xml:89
+#: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
 msgstr "Kleurenschema om te gebruiken voor accentueren van syntaxis"
 
-#: data/org.gnome.Meld.gschema.xml:90
+#: data/org.gnome.Meld.gschema.xml:100
 msgid "Used by GtkSourceView to determine colors for syntax highlighting"
 msgstr "Gebruikt door GtkSourceView om kleuren te bepalen voor accentueren van syntaxis"
 
-#: data/org.gnome.Meld.gschema.xml:94
+#: data/org.gnome.Meld.gschema.xml:104
 msgid "Draw whitespace"
 msgstr "Witruimte tekenen"
 
-#: data/org.gnome.Meld.gschema.xml:95
+#: data/org.gnome.Meld.gschema.xml:105
 msgid ""
 "If true, whitespace characters will be drawn in comparisons even if they are "
 "not in a changed area."
 msgstr "Indien true zullen tekens voor witruimte in vergelijkingen worden getekend, zelfs als ze niet in een gewijzigd gebied staan."
 
-#: data/org.gnome.Meld.gschema.xml:104
+#: data/org.gnome.Meld.gschema.xml:114
 msgid "Wrap mode"
 msgstr "Modus Doorloop"
 
-#: data/org.gnome.Meld.gschema.xml:105
+#: data/org.gnome.Meld.gschema.xml:115
 msgid ""
 "Lines in file comparisons will be wrapped according to this setting, either "
 "not at all ('none'), at any character ('char') or only at the end of words "
 "('word')."
 msgstr "Regels in bestandsvergelijkingen zullen overeenkomstig deze instelling doorlopen, ofwel helemaal niet ('none'), op een teken ('char') of alleen aan het einde van woorden ('word')."
 
-#: data/org.gnome.Meld.gschema.xml:112 meld/resources/ui/statusbar-menu.ui:13
+#: data/org.gnome.Meld.gschema.xml:122 meld/resources/ui/statusbar-menu.ui:13
 msgid "Highlight current line"
 msgstr "Huidige regel accentueren"
 
-#: data/org.gnome.Meld.gschema.xml:113
+#: data/org.gnome.Meld.gschema.xml:123
 msgid ""
 "If true, the line containing the cursor will be highlighted in file "
 "comparisons."
 msgstr "Indien true zal de regel die de cursor bevat worden geaccentueerd in bestandsvergelijkingen."
 
-#: data/org.gnome.Meld.gschema.xml:117
+#: data/org.gnome.Meld.gschema.xml:127
 msgid "Use the system default monospace font"
 msgstr "Standaard systeem monospace lettertype gebruiken"
 
-#: data/org.gnome.Meld.gschema.xml:118
+#: data/org.gnome.Meld.gschema.xml:128
 msgid ""
 "If false, custom-font will be used instead of the system monospace font."
 msgstr "Indien false zal een aangepast lettertype worden gebruikt, in plaats van het monospace lettertype van het systeem."
 
-#: data/org.gnome.Meld.gschema.xml:122
+#: data/org.gnome.Meld.gschema.xml:132
 msgid "Custom font"
 msgstr "Aangepast lettertype"
 
-#: data/org.gnome.Meld.gschema.xml:123
+#: data/org.gnome.Meld.gschema.xml:133
 msgid ""
 "The custom font to use, stored as a string and parsed as a Pango font "
 "description."
-msgstr "Het te gebruiken aangepaste lettertype, opgeslagen als ene tekenreeks en geparset als een Pango lettertypebeschrijving."
+msgstr "Het te gebruiken aangepaste lettertype, opgeslagen als een tekenreeks en geparset als een Pango lettertypebeschrijving."
 
-#: data/org.gnome.Meld.gschema.xml:129
+#: data/org.gnome.Meld.gschema.xml:139
 msgid "Show overview source map"
 msgstr "Overzicht bronmap weergeven"
 
-#: data/org.gnome.Meld.gschema.xml:130
+#: data/org.gnome.Meld.gschema.xml:140
 msgid ""
 "If true, file comparisons will have paired source maps for compared files."
 msgstr "Indien true zullen bestandsvergelijkingen gepaarde bronmappen voor vergeleken bestanden hebben."
 
-#: data/org.gnome.Meld.gschema.xml:135
+#: data/org.gnome.Meld.gschema.xml:145
 msgid "Style of overview map"
 msgstr "Stijl overzichtsmap"
 
-#: data/org.gnome.Meld.gschema.xml:136
+#: data/org.gnome.Meld.gschema.xml:146
 msgid "Style options for how the overview map is displayed."
 msgstr "Stijlopties voor hoe de overzichtsmap wordt weergegeven."
 
-#: data/org.gnome.Meld.gschema.xml:142
+#: data/org.gnome.Meld.gschema.xml:152
 msgid "Ignore blank lines when comparing files"
 msgstr "Blanco regels negeren bij vergelijken bestanden"
 
-#: data/org.gnome.Meld.gschema.xml:143
+#: data/org.gnome.Meld.gschema.xml:153
 msgid ""
 "If true, blank lines will be trimmed when highlighting changes between files."
 msgstr "Indien true zullen blanco regels worden afgebroken bij het accentueren van wijzigingen tussen bestanden."
 
-#: data/org.gnome.Meld.gschema.xml:150
+#: data/org.gnome.Meld.gschema.xml:160
 msgid "Use the system default editor"
 msgstr "Standaard systeembewerker gebruiken"
 
-#: data/org.gnome.Meld.gschema.xml:151
+#: data/org.gnome.Meld.gschema.xml:161
 msgid ""
 "If false, custom-editor-command will be used instead of the system editor "
 "when opening files externally."
 msgstr "Indien false zal een opdracht voor een aangepaste bewerker worden gebruikt in plaats van de systeembewerker bij het extern openen van bestanden."
 
-#: data/org.gnome.Meld.gschema.xml:155
+#: data/org.gnome.Meld.gschema.xml:165
 msgid "The custom editor launch command"
 msgstr "De opdracht voor het starten van de aangepaste bewerker"
 
-#: data/org.gnome.Meld.gschema.xml:156
+#: data/org.gnome.Meld.gschema.xml:166
 msgid ""
 "The command used to launch a custom editor. Some limited templating is "
 "supported here; at the moment '{file}' and '{line}' are recognised tokens."
 msgstr "De opdracht die wordt gebruikt om een aangepaste bewerker te starten. Enige beperkte mogelijkheid voor sjablonen wordt hier ondersteund; op dit moment zijn '{file}' en '{line}' herkende tokens."
 
-#: data/org.gnome.Meld.gschema.xml:162
+#: data/org.gnome.Meld.gschema.xml:172
 msgid "Columns to display"
 msgstr "Weer te geven kolommen"
 
-#: data/org.gnome.Meld.gschema.xml:163
+#: data/org.gnome.Meld.gschema.xml:173
 msgid ""
 "List of column names in folder comparison and whether they should be "
 "displayed."
 msgstr "Lijst met kolomnamen bij bestandsvergelijkingen en of die zouden moeten worden weergegeven."
 
-#: data/org.gnome.Meld.gschema.xml:167 meld/resources/ui/preferences.ui:968
+#: data/org.gnome.Meld.gschema.xml:177 meld/resources/ui/preferences.ui:241
 msgid "Ignore symbolic links"
 msgstr "Symbolische links negeren"
 
-#: data/org.gnome.Meld.gschema.xml:168
+#: data/org.gnome.Meld.gschema.xml:178
 msgid ""
 "If true, folder comparisons do not follow symbolic links when traversing the "
 "folder tree."
 msgstr "Indien true zullen mapvergelijkingen geen symbolische links volgen bij het navigeren door de mappenboom."
 
-#: data/org.gnome.Meld.gschema.xml:172
+#: data/org.gnome.Meld.gschema.xml:182
 msgid "Use shallow comparison"
 msgstr "Oppervlakkig vergelijken gebruiken"
 
-#: data/org.gnome.Meld.gschema.xml:173
+#: data/org.gnome.Meld.gschema.xml:183
 msgid ""
 "If true, folder comparisons compare files based solely on size and mtime, "
 "considering files to be identical if their size and mtime match, and "
 "different otherwise."
 msgstr "Indien true zullen mapvergelijkingen bestanden slechts vergelijken op grootte en mtime, waarbij bestanden identiek worden geacht als hun grootte en mtime overeenkomen en anders verschillend zijn."
 
-#: data/org.gnome.Meld.gschema.xml:177
+#: data/org.gnome.Meld.gschema.xml:187
 msgid "File timestamp resolution"
 msgstr "Oplossen tijdstempel bestand"
 
-#: data/org.gnome.Meld.gschema.xml:178
+#: data/org.gnome.Meld.gschema.xml:188
 msgid ""
 "When comparing based on mtime, this is the minimum difference in nanoseconds "
 "between two files before they’re considered to have different mtimes. This "
@@ -273,102 +260,102 @@ msgid ""
 "resolution."
 msgstr "Bij het vergelijken gebaseerd op mtime is dit het minimale verschil in nanoseconden tussen twee bestanden voordat ze worden geacht verschillende mtimes te hebben. Dit is nuttig bij het vergelijken van bestanden tussen bestandssystemen met verschillend oplossen van tijdstempel."
 
-#: data/org.gnome.Meld.gschema.xml:182 meld/resources/ui/preferences.ui:867
+#: data/org.gnome.Meld.gschema.xml:192 meld/resources/ui/preferences.ui:250
 msgid "Apply text filters during folder comparisons"
 msgstr "Tekstfilters toepassen bij mapvergelijkingen"
 
-#: data/org.gnome.Meld.gschema.xml:183
+#: data/org.gnome.Meld.gschema.xml:193
 msgid ""
 "If true, folder comparisons that compare file contents also apply active "
 "text filters and the blank line trimming option, and ignore newline "
 "differences."
 msgstr "Indien true zullen mapvergelijkingen die ook bestandsinhoud vergelijken ook actieve tekstfilters toepassen en de optie voor afbreken van blanco regels, en negeren verschillen voor nieuwe regels."
 
-#: data/org.gnome.Meld.gschema.xml:187
+#: data/org.gnome.Meld.gschema.xml:197
 msgid "File status filters"
 msgstr "Filters bestandsstatus"
 
-#: data/org.gnome.Meld.gschema.xml:188
+#: data/org.gnome.Meld.gschema.xml:198
 msgid "List of statuses used to filter visible files in folder comparison."
 msgstr "Lijst met statussen die wordt gebruikt voor het filteren van zichtbare bestanden bij mapvergelijkingen."
 
-#: data/org.gnome.Meld.gschema.xml:194
+#: data/org.gnome.Meld.gschema.xml:204
 msgid "Show the version control console output"
 msgstr "Uitvoer van console versiebeheer weergeven"
 
-#: data/org.gnome.Meld.gschema.xml:195
+#: data/org.gnome.Meld.gschema.xml:205
 msgid ""
 "If true, a console output section will be shown in version control views, "
 "showing the commands run for version control operations."
 msgstr "Indien true zal een gedeelte voor uitvoer van de console worden weergegeven in weergaven van versiebeheer, dat de uitgevoerde opdrachten voor bewerkingen van versiebeheer zal laten zien."
 
-#: data/org.gnome.Meld.gschema.xml:199
+#: data/org.gnome.Meld.gschema.xml:209
 msgid "Version control pane position"
 msgstr "Positie paneel Versiebeheer"
 
-#: data/org.gnome.Meld.gschema.xml:200
+#: data/org.gnome.Meld.gschema.xml:210
 msgid ""
 "This is the height of the main version control tree when the console pane is "
 "shown."
 msgstr "Dit is de hoogte van het hoofdvenster van versiebeheer als het paneel voor de console wordt weergegeven."
 
-#: data/org.gnome.Meld.gschema.xml:204
+#: data/org.gnome.Meld.gschema.xml:214
 msgid "Present version comparisons as left-local/right-remote"
 msgstr "Huidige versievergelijkingen als links-lokaal/rechts-afstand"
 
-#: data/org.gnome.Meld.gschema.xml:205
+#: data/org.gnome.Meld.gschema.xml:215
 msgid ""
 "If true, version control comparisons will use a left-is-local, right-is-"
 "remote scheme to determine what order to present files in panes. Otherwise, "
 "a left-is-theirs, right-is-mine scheme is used."
 msgstr "Indien true zullen vergelijkingen van versiebeheer een schema van links-is-lokaal, rechts-is-op afstand gebruiken om te bepalen in welke volgorde bestanden in panelen weer te geven. Anders wordt een schema van links-is-hun, rechts-is-mijn gebruikt."
 
-#: data/org.gnome.Meld.gschema.xml:209
+#: data/org.gnome.Meld.gschema.xml:219
 msgid "Order for files in three-way version control merge comparisons"
 msgstr "Volgorde van bestanden voor drieweg samenvoegvergelijkingen voor versiebeheer"
 
-#: data/org.gnome.Meld.gschema.xml:210
+#: data/org.gnome.Meld.gschema.xml:220
 msgid ""
 "Choices for file order are remote/merged/local and local/merged/remote. This "
 "preference only affects three-way comparisons launched from the version "
 "control view, so is used solely for merges/conflict resolution within Meld."
 msgstr "Keuzen voor bestandsvolgorde zijn op afstand/samengevoegd/lokaal en lokaal/samengevoegd/op afstand. Deze voorkeur beïnvloedt alleen drieweg vergelijkingen in de weergave van versiebeheer en wordt dus uitsluitend gebruikt voor het oplossen van conflicten bij samenvoegen binnen Meld."
 
-#: data/org.gnome.Meld.gschema.xml:214
+#: data/org.gnome.Meld.gschema.xml:224
 msgid "Show margin in commit message editor"
 msgstr "Marge weergeven in bewerker voor bericht commit"
 
-#: data/org.gnome.Meld.gschema.xml:215
+#: data/org.gnome.Meld.gschema.xml:225
 msgid ""
 "If true, a guide will be displayed to show what column the margin is at in "
 "the version control commit message editor."
 msgstr "Indien true zal een hulplijn worden weergegeven om aan te geven op welke marge de kolom staat in de bewerker voor het bericht van de commit voor versiebeheer."
 
-#: data/org.gnome.Meld.gschema.xml:219
+#: data/org.gnome.Meld.gschema.xml:229
 msgid "Margin column in commit message editor"
 msgstr "Marge kolom in bewerker voor bericht commit"
 
-#: data/org.gnome.Meld.gschema.xml:220
+#: data/org.gnome.Meld.gschema.xml:230
 msgid ""
 "The column at which to show the margin in the version control commit message "
 "editor."
 msgstr "De kolom waarvoor de marge moet worden weergegeven in de bewerker voor het bericht van de commit voor versiebeheer."
 
-#: data/org.gnome.Meld.gschema.xml:224
+#: data/org.gnome.Meld.gschema.xml:234
 msgid "Automatically hard-wrap commit messages"
 msgstr "Automatische berichten voor commit met harde doorloop"
 
-#: data/org.gnome.Meld.gschema.xml:225
+#: data/org.gnome.Meld.gschema.xml:235
 msgid ""
 "If true, the version control commit message editor will hard-wrap (i.e., "
 "insert line breaks) at the commit margin before commit."
 msgstr "Indien true zal de bewerker voor het bericht van de commit voor versiebeheer hard doorlopen (d.i. regeleinden invoegen) bij de marge van de commit voor het indienen."
 
-#: data/org.gnome.Meld.gschema.xml:229
+#: data/org.gnome.Meld.gschema.xml:239
 msgid "Version control status filters"
 msgstr "Statusfilters versiebeheer"
 
-#: data/org.gnome.Meld.gschema.xml:230
+#: data/org.gnome.Meld.gschema.xml:240
 msgid ""
 "List of statuses used to filter visible files in version control comparison."
 msgstr "Lijst met statussen die wordt gebruikt voor het filteren van zichtbare bestanden in vergelijkingen van versiebeheer."
@@ -377,7 +364,7 @@ msgstr "Lijst met statussen die wordt gebruikt voor het filteren van zichtbare b
 #. Translators: A list of default filters, each of which is
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
-#: data/org.gnome.Meld.gschema.xml:240
+#: data/org.gnome.Meld.gschema.xml:250
 msgid ""
 "[\n"
 "              (\"Backups\", true, \"#*# .#* ~* *~ *.{orig,bak,swp}\"),\n"
@@ -399,11 +386,11 @@ msgstr "[\n"
 "              (\"Media\", false, \"*.{jxl,jpg,jpeg,gif,png,avif,webp,heif,heic,bmp,tif,tiff,raw,dng,cr2,wav,wave,mp3,ogg,oga,vorbis,spx,opus,flac,ac3,aac,aif,aiff,aifc,alac,m4a,3gp,wma,aup,aup3,avi,mov,mpg,mpeg,mp4,m4v,webm,ogv,flv,xcf,xpm,ora,kra,psd,psp}\")\n"
 "            ]"
 
-#: data/org.gnome.Meld.gschema.xml:249
+#: data/org.gnome.Meld.gschema.xml:259
 msgid "Filename-based filters"
 msgstr "Op bestandsnaam gebaseerde filters"
 
-#: data/org.gnome.Meld.gschema.xml:250
+#: data/org.gnome.Meld.gschema.xml:260
 msgid ""
 "List of predefined filename-based filters that, if active, will remove "
 "matching files from a folder comparison."
@@ -413,7 +400,7 @@ msgstr "Lijst met vooraf gedefinieerde op bestandsnamen gebaseerde filters die, 
 #. Translators: A list of default filters, each of which is
 #. composed of a (name, enabled, pattern) in GVariant syntax.
 #. Please only translate the name of each filter.
-#: data/org.gnome.Meld.gschema.xml:258
+#: data/org.gnome.Meld.gschema.xml:268
 msgid ""
 "[\n"
 "              (\"CVS/SVN Keywords\", false, \"\\\\$\\\\w+(:[^\\\\n$]+)?\\\\$"
@@ -437,11 +424,11 @@ msgstr "[\n"
 "              (\"Script Comment\", false, \"#.*\")\n"
 "            ]"
 
-#: data/org.gnome.Meld.gschema.xml:269
+#: data/org.gnome.Meld.gschema.xml:279
 msgid "Text-based filters"
 msgstr "Op tekst gebaseerde filters"
 
-#: data/org.gnome.Meld.gschema.xml:270
+#: data/org.gnome.Meld.gschema.xml:280
 msgid ""
 "List of predefined text-based regex filters that, if active, will remove "
 "text from being used in a file comparison. The text will still be displayed, "
@@ -463,6 +450,24 @@ msgstr "Meld donker schema"
 #: data/styles/meld-dark.style-scheme.xml.in:3
 msgid "Dark color scheme for Meld highlighting"
 msgstr "Donker kleurenschema voor accentueren in Meld"
+
+#: meld/resources/data/org.gnome.Meld.metainfo.xml.in.in:13
+msgid ""
+"Meld is a visual diff and merge tool targeted at developers. Meld helps you "
+"compare files, directories, and version controlled projects. It provides "
+"two- and three-way comparison of both files and directories, and supports "
+"many version control systems including Git, Mercurial, Bazaar and Subversion."
+msgstr "Meld is een visueel programma voor het weergeven van verschillen en samenvoegingen, gericht op ontwikkelaars. Meld helpt u bij het vergelijken van bestanden, mappen en projecten die versiebeheerd worden. Het verschaft twee- en drieweg vergelijkingen van zowel bestanden als mappen, en ondersteunt veel systemen voor versiebeheer, inclusief Git, Mercurial, Bazaar en Subversion."
+
+#: meld/resources/data/org.gnome.Meld.metainfo.xml.in.in:20
+msgid ""
+"Meld helps you review code changes, understand patches, and makes enormous "
+"merge conflicts slightly less painful."
+msgstr "Meld helpt u wijzigingen in code te beoordelen, patches te begrijpen en maakt enorme conflicten voor samenvoegen enigszins minder pijnlijk."
+
+#: meld/resources/data/org.gnome.Meld.metainfo.xml.in.in:51
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
 
 #: meld/resources/gtk/help-overlay.ui:14
 msgctxt "shortcut window"
@@ -775,754 +780,825 @@ msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr "Uitvoer console weergeven/verbergen"
 
-#: meld/resources/gtk/menus.ui:7
-msgid "Save As…"
-msgstr "Opslaan als…"
-
-#: meld/resources/gtk/menus.ui:11
-msgid "Save A_ll"
-msgstr "A_lles opslaan"
-
-#: meld/resources/gtk/menus.ui:15
-msgid "Revert Files…"
-msgstr "Bestanden omdraaien…"
-
-#: meld/resources/gtk/menus.ui:19 meld/resources/ui/dirdiff-menus.ui:51
-msgid "_Open Externally"
-msgstr "Extern _openen"
-
-#: meld/resources/gtk/menus.ui:26
-msgid "Refresh Comparison"
-msgstr "Vergelijking vernieuwen"
-
-#: meld/resources/gtk/menus.ui:33
-msgid "_Find…"
-msgstr "_Zoeken…"
-
-#: meld/resources/gtk/menus.ui:37
-msgid "_Replace…"
-msgstr "_Vervangen…"
-
-#: meld/resources/gtk/menus.ui:43
-msgid "_View"
-msgstr "_Weergave"
-
-#: meld/resources/gtk/menus.ui:47
-msgid "Fullscreen"
-msgstr "Volledig scherm"
-
-#: meld/resources/gtk/menus.ui:51
-msgid "Overview Map"
-msgstr "Overzichtsmap"
-
-#: meld/resources/gtk/menus.ui:55
-msgid "Version Control Console"
-msgstr "Console versiebeheer"
-
-#: meld/resources/gtk/menus.ui:59
-msgid "Lock Scrolling"
-msgstr "Scrollen vastzetten"
-
-#: meld/resources/gtk/menus.ui:66
-msgid "Swap Left and Right Panes"
-msgstr "Linker- en rechterpaneel wisselen"
-
-#: meld/resources/gtk/menus.ui:72
-msgid "_Comparison"
-msgstr "_Vergelijking"
-
-#: meld/resources/gtk/menus.ui:74
-msgid "_Stop"
-msgstr "_Stoppen"
-
-#: meld/resources/gtk/menus.ui:80
-msgid "Merge All from _Left"
-msgstr "Alles vanaf _links samenvoegen"
-
-#: meld/resources/gtk/menus.ui:84
-msgid "Merge All from _Right"
-msgstr "Alles vanaf _rechts samenvoegen"
-
-#: meld/resources/gtk/menus.ui:88
-msgid "Merge _All"
-msgstr "_Alles samenvoegen"
-
-#: meld/resources/gtk/menus.ui:95
-msgid "Format as _Patch…"
-msgstr "Opmaken als _Patch…"
-
-#: meld/resources/gtk/menus.ui:104
-msgid "_Preferences"
-msgstr "_Voorkeuren"
-
-#: meld/resources/gtk/menus.ui:108
-msgid "Keyboard Shortcuts"
-msgstr "Sneltoetsen voor toetsenbord"
-
-#: meld/resources/gtk/menus.ui:112
-msgid "_Help"
-msgstr "_Help"
-
-#: meld/resources/gtk/menus.ui:116
-msgid "_About Meld"
-msgstr "_Over Meld"
-
-#: meld/resources/gtk/menus.ui:129
-msgid "File Status"
-msgstr "Status bestand"
-
-#: meld/resources/gtk/menus.ui:131
-msgid "Same"
-msgstr "Hetzelfde"
-
-#: meld/resources/gtk/menus.ui:135
-msgid "New"
-msgstr "Nieuw"
-
-#: meld/resources/gtk/menus.ui:139 meld/resources/gtk/menus.ui:162
-#: meld/vc/_vc.py:80
-msgid "Modified"
-msgstr "Bewerkt"
-
-#: meld/resources/gtk/menus.ui:149
-msgid "Ignore Filename Case"
-msgstr "Hoofd-/kleine letters bestandsnaam negeren"
-
-#: meld/resources/gtk/menus.ui:153
-msgid "Normalize Unicode Paths"
-msgstr "Paden Unicode normaliseren"
-
-#: meld/resources/gtk/menus.ui:166
-msgid "Normal"
-msgstr "Normaal"
-
-#: meld/resources/gtk/menus.ui:170 meld/vc/_vc.py:74
-msgid "Unversioned"
-msgstr "Niet geversioneerd"
-
-#: meld/resources/gtk/menus.ui:174 meld/vc/_vc.py:73
-msgid "Ignored"
-msgstr "Genegeerd"
-
-#: meld/resources/gtk/menus.ui:181
-msgid "Flatten Folders"
-msgstr "Platte mappen"
-
-#: meld/resources/ui/about-dialog.ui:8
-msgid ""
-"Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2022 Kai Willadsen"
-msgstr "Copyright © 2002-2009 Stephen Kennedy\n"
-"Copyright © 2009-2022 Kai Willadsen"
-
-#: meld/resources/ui/about-dialog.ui:14
-msgid "translator-credits"
-msgstr "Vincent van Adrighem, Wouter Bolsterlee, Hannie Dumoleyn, Sense Hofstede, Justin van Steijn, Reinout van Schouwen en Nathan Follens."
-
-#: meld/resources/ui/appwindow.ui:30
+#: meld/resources/ui/appwindow.ui:29
 msgid "Start a new comparison"
 msgstr "Nieuwe vergelijking beginnen"
 
-#: meld/resources/ui/appwindow.ui:46
+#: meld/resources/ui/appwindow.ui:36
 msgid "Open a recent comparison"
 msgstr "Recente vergelijking openen"
 
-#: meld/resources/ui/appwindow.ui:74
+#: meld/resources/ui/appwindow.ui:52
 msgid "Go to the previous change"
 msgstr "Ga naar vorige wijziging"
 
-#: meld/resources/ui/appwindow.ui:94
+#: meld/resources/ui/appwindow.ui:60
 msgid "Go to the next change"
 msgstr "Ga naar volgende wijziging"
 
-#: meld/resources/ui/appwindow.ui:124
+#: meld/resources/ui/appwindow.ui:76
 msgid "Go to the previous conflict"
 msgstr "Ga naar vorige conflict"
 
-#: meld/resources/ui/appwindow.ui:144
+#: meld/resources/ui/appwindow.ui:84
 msgid "Go to the next conflict"
 msgstr "Ga naar volgende conflict"
 
-#: meld/resources/ui/appwindow.ui:194
+#: meld/resources/ui/appwindow.ui:103
 msgid "Version Filters"
 msgstr "Versie-filters"
 
-#: meld/resources/ui/appwindow.ui:210 meld/resources/ui/preferences.ui:1506
+#: meld/resources/ui/appwindow.ui:109
 msgid "File Filters"
 msgstr "Bestandsfilters"
 
-#: meld/resources/ui/appwindow.ui:226 meld/resources/ui/preferences.ui:1698
+#: meld/resources/ui/appwindow.ui:115
 msgid "Text Filters"
 msgstr "Tekstfilters"
 
-#: meld/resources/ui/column-list.ui:37 meld/resources/ui/filter-list.ui:39
-msgid "Active"
-msgstr "Actief"
+#: meld/resources/ui/appwindow.ui:171
+msgid "Save As…"
+msgstr "Opslaan als…"
 
-#: meld/resources/ui/column-list.ui:50
-msgid "Column Name"
-msgstr "Kolomnaam"
+#: meld/resources/ui/appwindow.ui:175
+msgid "Save A_ll"
+msgstr "A_lles opslaan"
 
-#: meld/resources/ui/column-list.ui:83 meld/resources/ui/filter-list.ui:127
-#: meld/resources/ui/vcview-menus.ui:26 meld/vcview.py:774
-msgid "_Remove"
-msgstr "_Verwijderen"
+#: meld/resources/ui/appwindow.ui:179
+msgid "Revert Files…"
+msgstr "Bestanden omdraaien…"
 
-#: meld/resources/ui/column-list.ui:96 meld/resources/ui/filter-list.ui:151
-msgid "Move item up"
-msgstr "Item naar boven verplaatsen"
+#: meld/resources/ui/appwindow.ui:183 meld/resources/ui/dirdiff.ui:431
+msgid "_Open Externally"
+msgstr "Extern _openen"
 
-#: meld/resources/ui/column-list.ui:98 meld/resources/ui/filter-list.ui:153
-msgid "Move _Up"
-msgstr "Naar bo_ven"
+#: meld/resources/ui/appwindow.ui:190
+msgid "Refresh Comparison"
+msgstr "Vergelijking vernieuwen"
 
-#: meld/resources/ui/column-list.ui:112 meld/resources/ui/filter-list.ui:167
-msgid "Move item down"
-msgstr "Item naar beneden verplaatsen"
+#: meld/resources/ui/appwindow.ui:197
+msgid "_Find…"
+msgstr "_Zoeken…"
 
-#: meld/resources/ui/column-list.ui:114 meld/resources/ui/filter-list.ui:169
-msgid "Move _Down"
-msgstr "Naar be_neden"
+#: meld/resources/ui/appwindow.ui:201
+msgid "_Replace…"
+msgstr "_Vervangen…"
 
-#: meld/resources/ui/commit-dialog.ui:8
-msgid "Commit"
-msgstr "Doorvoeren"
+#: meld/resources/ui/appwindow.ui:207
+msgid "_View"
+msgstr "_Weergave"
 
-#: meld/resources/ui/commit-dialog.ui:36
+#: meld/resources/ui/appwindow.ui:211
+msgid "Fullscreen"
+msgstr "Volledig scherm"
+
+#: meld/resources/ui/appwindow.ui:215
+msgid "Overview Map"
+msgstr "Overzichtsmap"
+
+#: meld/resources/ui/appwindow.ui:219
+msgid "Version Control Console"
+msgstr "Console versiebeheer"
+
+#: meld/resources/ui/appwindow.ui:223
+msgid "Lock Scrolling"
+msgstr "Scrollen vastzetten"
+
+#: meld/resources/ui/appwindow.ui:230
+msgid "Swap Left and Right Panes"
+msgstr "Linker- en rechterpaneel wisselen"
+
+#: meld/resources/ui/appwindow.ui:236
+msgid "_Comparison"
+msgstr "_Vergelijking"
+
+#: meld/resources/ui/appwindow.ui:238
+msgid "_Stop"
+msgstr "_Stoppen"
+
+#: meld/resources/ui/appwindow.ui:244
+msgid "Merge All from _Left"
+msgstr "Alles vanaf _links samenvoegen"
+
+#: meld/resources/ui/appwindow.ui:248
+msgid "Merge All from _Right"
+msgstr "Alles vanaf _rechts samenvoegen"
+
+#: meld/resources/ui/appwindow.ui:252
+msgid "Merge _All"
+msgstr "_Alles samenvoegen"
+
+#: meld/resources/ui/appwindow.ui:259
+msgid "Format as _Patch…"
+msgstr "Opmaken als _Patch…"
+
+#: meld/resources/ui/appwindow.ui:268
+msgid "_Preferences"
+msgstr "_Voorkeuren"
+
+#: meld/resources/ui/appwindow.ui:272
+msgid "Keyboard Shortcuts"
+msgstr "Sneltoetsen voor toetsenbord"
+
+#: meld/resources/ui/appwindow.ui:276
+msgid "_Help"
+msgstr "_Help"
+
+#: meld/resources/ui/appwindow.ui:280
+msgid "_About Meld"
+msgstr "_Over Meld"
+
+#: meld/resources/ui/appwindow.ui:293
+msgid "File Status"
+msgstr "Status bestand"
+
+#: meld/resources/ui/appwindow.ui:295
+msgid "Same"
+msgstr "Hetzelfde"
+
+#: meld/resources/ui/appwindow.ui:299
+msgid "New"
+msgstr "Nieuw"
+
+#: meld/resources/ui/appwindow.ui:303 meld/resources/ui/appwindow.ui:326
+#: meld/vc/_vc.py:93
+msgid "Modified"
+msgstr "Bewerkt"
+
+#: meld/resources/ui/appwindow.ui:313
+msgid "Ignore Filename Case"
+msgstr "Hoofd-/kleine letters bestandsnaam negeren"
+
+#: meld/resources/ui/appwindow.ui:317
+msgid "Normalize Unicode Paths"
+msgstr "Paden Unicode normaliseren"
+
+#: meld/resources/ui/appwindow.ui:330
+msgid "Normal"
+msgstr "Normaal"
+
+#: meld/resources/ui/appwindow.ui:334 meld/vc/_vc.py:87
+msgid "Unversioned"
+msgstr "Niet geversioneerd"
+
+#: meld/resources/ui/appwindow.ui:338 meld/vc/_vc.py:86
+msgid "Ignored"
+msgstr "Genegeerd"
+
+#: meld/resources/ui/appwindow.ui:345
+msgid "Flatten Folders"
+msgstr "Platte mappen"
+
+#: meld/resources/ui/column-list.ui:8
+msgid "Move Up"
+msgstr "Naar boven"
+
+#: meld/resources/ui/column-list.ui:12
+msgid "Move Down"
+msgstr "Naar beneden"
+
+#: meld/resources/ui/commit-dialog.ui:6
 msgid "Commit Files"
 msgstr "Doorvoeren bestanden"
 
-#: meld/resources/ui/commit-dialog.ui:117
+#: meld/resources/ui/commit-dialog.ui:15
+msgid "Changed Files"
+msgstr "Gewijzigde bestanden"
+
+#: meld/resources/ui/commit-dialog.ui:36
 msgid "Log Message"
 msgstr "Log bericht"
 
-#: meld/resources/ui/commit-dialog.ui:181
+#: meld/resources/ui/commit-dialog.ui:65
 msgid "Previous logs:"
 msgstr "Vorige logs:"
 
-#: meld/resources/ui/commit-dialog.ui:244 meld/resources/ui/patch-dialog.ui:41
-#: meld/resources/ui/push-dialog.ui:24 meld/resources/ui/revert-dialog.ui:24
-#: meld/resources/ui/save-confirm-dialog.ui:41 meld/dirdiff.py:1290
-#: meld/iohelpers.py:56 meld/iohelpers.py:116
+#: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
+#: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1300
+#: meld/iohelpers.py:68 meld/vcview.py:807
 msgid "_Cancel"
 msgstr "_Annuleren"
 
-#: meld/resources/ui/commit-dialog.ui:259
+#: meld/resources/ui/commit-dialog.ui:86
 msgid "Co_mmit"
 msgstr "Doo_rvoeren"
 
-#: meld/resources/ui/dirdiff-actions.ui:20
+#: meld/resources/ui/dirdiff-actions.ui:15
 msgid "Copy to left"
 msgstr "Naar links kopiëren"
 
-#: meld/resources/ui/dirdiff-actions.ui:42
+#: meld/resources/ui/dirdiff-actions.ui:31
 msgid "Copy to right"
 msgstr "Naar rechts kopiëren"
 
-#: meld/resources/ui/dirdiff-actions.ui:66
+#: meld/resources/ui/dirdiff-actions.ui:49
 msgid "Delete selected"
 msgstr "Geselecteerde verwijderen"
 
-#: meld/resources/ui/dirdiff-menus.ui:7
-msgid "_Compare Selected Files"
-msgstr "Gesele_cteerde bestanden vergelijken"
-
-#: meld/resources/ui/dirdiff-menus.ui:14
-msgid "_Mark Selected File"
-msgstr "Geselecteerde bestand _markeren"
-
-#: meld/resources/ui/dirdiff-menus.ui:18
-msgid "Compare _with Marked File"
-msgstr "Vergelijken _met gemarkeerde bestand"
-
-#: meld/resources/ui/dirdiff-menus.ui:25
-msgid "Copy to _Left"
-msgstr "Naar _links kopiëren"
-
-#: meld/resources/ui/dirdiff-menus.ui:29
-msgid "Copy to _Right"
-msgstr "Naar _rechts kopiëren"
-
-#: meld/resources/ui/dirdiff-menus.ui:33
-msgid "_Delete Selected"
-msgstr "_Geselecteerde verwijderen"
-
-#: meld/resources/ui/dirdiff-menus.ui:40
-msgid "Collapse Recursively"
-msgstr "Recursief inklappen"
-
-#: meld/resources/ui/dirdiff-menus.ui:44
-msgid "Expand Recursively"
-msgstr "Recursief uitklappen"
-
-#: meld/resources/ui/dirdiff-menus.ui:55
-msgid "_Copy File Paths"
-msgstr "Bestandspaden _kopiëren"
-
-#: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:74
-#: meld/resources/ui/dirdiff.ui:114 meld/resources/ui/vcview.ui:152
+#: meld/resources/ui/dirdiff.ui:33 meld/resources/ui/dirdiff.ui:66
+#: meld/resources/ui/dirdiff.ui:99 meld/resources/ui/vcview.ui:122
 msgid "Select Folder"
 msgstr "Map selecteren"
 
-#: meld/resources/ui/dirdiff.ui:35 meld/resources/ui/dirdiff.ui:75
-#: meld/resources/ui/dirdiff.ui:115
+#: meld/resources/ui/dirdiff.ui:34 meld/resources/ui/dirdiff.ui:67
+#: meld/resources/ui/dirdiff.ui:100
 msgid "Select folder to open in this pane"
 msgstr "Selecteer de map om in dit paneel te openen"
 
-#: meld/resources/ui/dirdiff.ui:43
+#: meld/resources/ui/dirdiff.ui:41
 msgid "Folder 1"
 msgstr "Map 1"
 
-#: meld/resources/ui/dirdiff.ui:83
+#: meld/resources/ui/dirdiff.ui:74
 msgid "Folder 2"
 msgstr "Map 2"
 
-#: meld/resources/ui/dirdiff.ui:123
+#: meld/resources/ui/dirdiff.ui:107
 msgid "Folder 3"
 msgstr "Map 3"
 
-#: meld/resources/ui/encoding-selector.ui:31
+#: meld/resources/ui/dirdiff.ui:387
+msgid "_Compare Selected Files"
+msgstr "Gesele_cteerde bestanden vergelijken"
+
+#: meld/resources/ui/dirdiff.ui:394
+msgid "_Mark Selected File"
+msgstr "Geselecteerde bestand _markeren"
+
+#: meld/resources/ui/dirdiff.ui:398
+msgid "Compare _with Marked File"
+msgstr "Vergelijken _met gemarkeerde bestand"
+
+#: meld/resources/ui/dirdiff.ui:405
+msgid "Copy to _Left"
+msgstr "Naar _links kopiëren"
+
+#: meld/resources/ui/dirdiff.ui:409
+msgid "Copy to _Right"
+msgstr "Naar _rechts kopiëren"
+
+#: meld/resources/ui/dirdiff.ui:413
+msgid "_Delete Selected"
+msgstr "_Geselecteerde verwijderen"
+
+#: meld/resources/ui/dirdiff.ui:420
+msgid "Collapse Recursively"
+msgstr "Recursief inklappen"
+
+#: meld/resources/ui/dirdiff.ui:424
+msgid "Expand Recursively"
+msgstr "Recursief uitklappen"
+
+#: meld/resources/ui/dirdiff.ui:435
+msgid "_Copy File Paths"
+msgstr "Bestandspaden _kopiëren"
+
+#: meld/resources/ui/encoding-selector.ui:21
 msgid "Search text encoding…"
 msgstr "Tekstcodering zoeken…"
 
-#: meld/resources/ui/filediff-actions.ui:20
+#: meld/resources/ui/filediff-actions.ui:15
 msgid "Push current change to the left"
 msgstr "Push huidige wijziging naar links"
 
-#: meld/resources/ui/filediff-actions.ui:42
+#: meld/resources/ui/filediff-actions.ui:31
 msgid "Push current change to the right"
 msgstr "Push huidige wijziging naar rechts"
 
-#: meld/resources/ui/filediff-actions.ui:65
+#: meld/resources/ui/filediff-actions.ui:49
 msgid "Copy chunks"
 msgstr "Blokken kopiëren"
 
-#: meld/resources/ui/filediff-actions.ui:87
+#: meld/resources/ui/filediff-actions.ui:64
 msgid "Delete change"
 msgstr "Wijziging verwijderen"
 
-#: meld/resources/ui/filediff-menus.ui:7
+#: meld/resources/ui/filediff-menus.ui:8
 msgid "Copy change above the left chunk"
 msgstr "Wijziging boven linkerblok kopiëren"
 
-#: meld/resources/ui/filediff-menus.ui:11
+#: meld/resources/ui/filediff-menus.ui:12
 msgid "Copy change below the left chunk"
 msgstr "Wijziging onder linkerblok kopiëren"
 
-#: meld/resources/ui/filediff-menus.ui:15
+#: meld/resources/ui/filediff-menus.ui:16
 msgid "Copy change above the right chunk"
 msgstr "Wijziging boven rechterblok kopiëren"
 
-#: meld/resources/ui/filediff-menus.ui:19
+#: meld/resources/ui/filediff-menus.ui:20
 msgid "Copy change below the right chunk"
 msgstr "Wijziging onder rechterblok kopiëren"
 
-#: meld/resources/ui/filediff-menus.ui:28
+#: meld/resources/ui/filediff-menus.ui:29
 msgid "_Undo"
 msgstr "_Ongedana maken"
 
-#: meld/resources/ui/filediff-menus.ui:32
+#: meld/resources/ui/filediff-menus.ui:33
 msgid "_Redo"
 msgstr "_Opnieuw"
 
-#: meld/resources/ui/filediff-menus.ui:39
+#: meld/resources/ui/filediff-menus.ui:40
 msgid "Cu_t"
 msgstr "Kn_ippen"
 
-#: meld/resources/ui/filediff-menus.ui:43
+#: meld/resources/ui/filediff-menus.ui:44
 msgid "_Copy"
 msgstr "_Kopiëren"
 
-#: meld/resources/ui/filediff-menus.ui:47
+#: meld/resources/ui/filediff-menus.ui:48
 msgid "_Paste"
 msgstr "_Plakken"
 
-#: meld/resources/ui/filediff-menus.ui:54
-#: meld/resources/ui/imagediff-menus.ui:7 meld/resources/ui/path-label.ui:81
+#: meld/resources/ui/filediff-menus.ui:55 meld/resources/ui/imagediff.ui:140
+#: meld/resources/ui/path-label.ui:53
 msgid "Open Containing Folder"
 msgstr "Map waarin openen"
 
-#: meld/resources/ui/filediff-menus.ui:58
-#: meld/resources/ui/imagediff-menus.ui:11
+#: meld/resources/ui/filediff-menus.ui:59 meld/resources/ui/imagediff.ui:144
 msgid "Copy Full Path"
 msgstr "Volledig pad kopiëren"
 
-#: meld/resources/ui/filediff.ui:32 meld/resources/ui/filediff.ui:100
-#: meld/resources/ui/filediff.ui:168
+#: meld/resources/ui/filediff-menus.ui:66
+msgid "Add Synchronization Point"
+msgstr "Synchronisatiepunt toevoegen"
+
+#: meld/resources/ui/filediff-menus.ui:71
+msgid "Move Synchronization Point"
+msgstr "Synchronisatiepunt verplaatsen"
+
+#: meld/resources/ui/filediff-menus.ui:76
+msgid "Match Synchronization Point"
+msgstr "Overeenkomst synchronisatiepunt"
+
+#: meld/resources/ui/filediff-menus.ui:81
+msgid "Remove Synchronization Point"
+msgstr "Synchronisatiepunt verwijderen"
+
+#: meld/resources/ui/filediff-menus.ui:86
+msgid "Clear Synchronization Points"
+msgstr "Synchronisatiepunten leegmaken"
+
+#: meld/resources/ui/filediff-menus.ui:94
+msgid "Copy Up"
+msgstr "Omhoog kopiëren"
+
+#: meld/resources/ui/filediff-menus.ui:98
+msgid "Copy Down"
+msgstr "Omlaag kopiëren"
+
+#: meld/resources/ui/filediff.ui:26 meld/resources/ui/filediff.ui:82
+#: meld/resources/ui/filediff.ui:138
 msgid ""
 "This file can not be written to. You may click here to unlock this file and "
 "make changes anyway, but these changes must be saved to a new file."
-msgstr "Naar dit bestand kan niet worden geschreven. U kunt hier klikken om dit ebstand te ontgrendelen en toch wijzigingen maken, maar die wijzigingen moeten worden opgeslagen naar ene nieuw bestand."
+msgstr "Naar dit bestand kan niet worden geschreven. U kunt hier klikken om dit bestand te ontgrendelen en toch wijzigingen maken, maar die wijzigingen moeten worden opgeslagen naar een nieuw bestand."
 
-#: meld/resources/ui/filediff.ui:46 meld/resources/ui/filediff.ui:114
-#: meld/resources/ui/filediff.ui:182
+#: meld/resources/ui/filediff.ui:38 meld/resources/ui/filediff.ui:94
+#: meld/resources/ui/filediff.ui:150
 msgid "Save file in this pane"
 msgstr "Bestand in dit paneel opslaan"
 
-#: meld/resources/ui/filediff.ui:71 meld/resources/ui/filediff.ui:139
-#: meld/resources/ui/filediff.ui:207
+#: meld/resources/ui/filediff.ui:56 meld/resources/ui/filediff.ui:112
+#: meld/resources/ui/filediff.ui:168
+msgid "Select File"
+msgstr "Bestand selecteren"
+
+#: meld/resources/ui/filediff.ui:57 meld/resources/ui/filediff.ui:113
+#: meld/resources/ui/filediff.ui:169
 msgid "Open file in this pane"
 msgstr "Bestand in dit paneel openen"
 
-#: meld/resources/ui/filediff.ui:79
+#: meld/resources/ui/filediff.ui:63
 msgid "File 3"
 msgstr "Bestand 3"
 
-#: meld/resources/ui/filediff.ui:147
+#: meld/resources/ui/filediff.ui:119
 msgid "File 2"
 msgstr "Bestand 2"
 
-#: meld/resources/ui/filediff.ui:215 meld/resources/ui/vcview.ui:161
+#: meld/resources/ui/filediff.ui:175
 msgid "File 1"
 msgstr "Bestand 1"
 
+#: meld/resources/ui/filter-list.ui:33
+msgid "Active"
+msgstr "Actief"
+
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:53 meld/resources/ui/vcview.ui:230
-#: meld/dirdiff.py:634
+#: meld/resources/ui/filter-list.ui:47 meld/resources/ui/vcview.ui:182
+#: meld/dirdiff.py:636
 msgid "Name"
 msgstr "Naam"
 
-#: meld/resources/ui/filter-list.ui:67
+#: meld/resources/ui/filter-list.ui:61
 msgid "Pattern"
 msgstr "Patroon"
 
-#: meld/resources/ui/filter-list.ui:109
+#: meld/resources/ui/filter-list.ui:92
 msgid "Add new filter"
 msgstr "Nieuw filter toevoegen"
 
-#: meld/resources/ui/filter-list.ui:111 meld/resources/ui/vcview-menus.ui:18
+#: meld/resources/ui/filter-list.ui:93 meld/resources/ui/vcview.ui:285
 msgid "_Add"
 msgstr "_Toevoegen"
 
-#: meld/resources/ui/filter-list.ui:125
+#: meld/resources/ui/filter-list.ui:101
 msgid "Remove selected filter"
 msgstr "Geselecteerde filter verwijderen"
 
-#: meld/resources/ui/findbar.ui:16
+#: meld/resources/ui/filter-list.ui:102 meld/resources/ui/vcview.ui:293
+#: meld/vcview.py:808
+msgid "_Remove"
+msgstr "_Verwijderen"
+
+#: meld/resources/ui/filter-list.ui:115
+msgid "Move item up"
+msgstr "Item naar boven verplaatsen"
+
+#: meld/resources/ui/filter-list.ui:116
+msgid "Move _Up"
+msgstr "Naar bo_ven"
+
+#: meld/resources/ui/filter-list.ui:124
+msgid "Move item down"
+msgstr "Item naar beneden verplaatsen"
+
+#: meld/resources/ui/filter-list.ui:125
+msgid "Move _Down"
+msgstr "Naar be_neden"
+
+#: meld/resources/ui/findbar.ui:12
 msgid "Previous Result"
 msgstr "Vorige resultaat"
 
-#: meld/resources/ui/findbar.ui:38
+#: meld/resources/ui/findbar.ui:24
 msgid "Next Result"
 msgstr "Volgende resultaat"
 
-#: meld/resources/ui/findbar.ui:69
+#: meld/resources/ui/findbar.ui:45
 msgid "Find"
 msgstr "Zoeken"
 
-#: meld/resources/ui/findbar.ui:86
+#: meld/resources/ui/findbar.ui:59
 msgid "Replace"
 msgstr "Vervangen"
 
-#: meld/resources/ui/findbar.ui:108
+#: meld/resources/ui/findbar.ui:77
 msgid "_Match case"
 msgstr "Hoofdlettergevoelig"
 
-#: meld/resources/ui/findbar.ui:124
+#: meld/resources/ui/findbar.ui:84
 msgid "Who_le word"
 msgstr "_Heel woord"
 
-#: meld/resources/ui/findbar.ui:140
+#: meld/resources/ui/findbar.ui:92
 msgid "Regular e_xpression"
 msgstr "Reguliere e_xpressie"
 
-#: meld/resources/ui/findbar.ui:181
+#: meld/resources/ui/findbar.ui:117
 msgid "Wrapped"
 msgstr "Doorloop"
 
-#: meld/resources/ui/findbar.ui:199
+#: meld/resources/ui/findbar.ui:130
 msgid "Replace _All"
 msgstr "_Alles vervangen"
 
-#: meld/resources/ui/findbar.ui:214 meld/dirdiff.py:1292 meld/iohelpers.py:117
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1302
 msgid "_Replace"
 msgstr "_Vervangen"
 
-#: meld/resources/ui/findbar.ui:232
+#: meld/resources/ui/findbar.ui:160
 msgid "Switch between Find and Find-and-Replace"
 msgstr "Schakelen tussen Zoeken en Zoeken-en-vervangen"
 
-#: meld/resources/ui/language-selector.ui:31
+#: meld/resources/ui/language-selector.ui:21
 msgid "Search highlight mode…"
 msgstr "Zoeken modus accentueren…"
 
-#: meld/resources/ui/new-diff-tab.ui:21 meld/meldwindow.py:352
-#: meld/newdifftab.py:49
+#: meld/resources/ui/new-diff-tab.ui:13 meld/newdifftab.py:49
 msgid "New comparison"
 msgstr "Nieuwe vergelijking"
 
-#: meld/resources/ui/new-diff-tab.ui:76
+#: meld/resources/ui/new-diff-tab.ui:50
 msgid "File"
 msgstr "Bestand"
 
-#: meld/resources/ui/new-diff-tab.ui:126
+#: meld/resources/ui/new-diff-tab.ui:81
 msgid "Folder"
 msgstr "Map"
 
-#: meld/resources/ui/new-diff-tab.ui:176
+#: meld/resources/ui/new-diff-tab.ui:110
 msgid "Version control"
 msgstr "Versiebeheer"
 
-#: meld/resources/ui/new-diff-tab.ui:243 meld/resources/ui/new-diff-tab.ui:364
+#: meld/resources/ui/new-diff-tab.ui:159 meld/resources/ui/new-diff-tab.ui:264
 msgid "_3-way comparison"
 msgstr "_3-weg vergelijking"
 
-#: meld/resources/ui/new-diff-tab.ui:263
+#: meld/resources/ui/new-diff-tab.ui:173
 msgid "Select First File"
 msgstr "Eerste bestand selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:277
+#: meld/resources/ui/new-diff-tab.ui:185
 msgid "Select Second File"
 msgstr "Tweede bestand selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:292
+#: meld/resources/ui/new-diff-tab.ui:198
 msgid "Select Third File"
 msgstr "Derde bestand selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:328
+#: meld/resources/ui/new-diff-tab.ui:229
 msgid "Select First Folder"
 msgstr "Eerste map selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:341
+#: meld/resources/ui/new-diff-tab.ui:241
 msgid "Select Second Folder"
 msgstr "Tweede map selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:355
+#: meld/resources/ui/new-diff-tab.ui:254
 msgid "Select Third Folder"
 msgstr "Derde map selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:406
-msgid "Select A Version-Controlled Folder"
-msgstr "Een versiebeheerde map selecteren"
+#: meld/resources/ui/new-diff-tab.ui:297
+msgid "Select Version-controlled Folder"
+msgstr "Versiebeheerde map selecteren"
 
-#: meld/resources/ui/new-diff-tab.ui:455
+#: meld/resources/ui/new-diff-tab.ui:326
 msgid "_Blank comparison"
 msgstr "_Blanco vergelijking"
 
-#: meld/resources/ui/new-diff-tab.ui:473
+#: meld/resources/ui/new-diff-tab.ui:336
 msgid "C_ompare"
 msgstr "V_ergelijken"
 
-#: meld/resources/ui/notebook-label.ui:26
-msgid "Close Tab"
-msgstr "Tab sluiten"
-
-#: meld/resources/ui/patch-dialog.ui:9
+#: meld/resources/ui/patch-dialog.ui:5
 msgid "Format as Patch"
 msgstr "Opmaken als Patch"
 
-#: meld/resources/ui/patch-dialog.ui:26
-msgid "Copy to Clipboard"
-msgstr "Kopiëren naar klembord"
-
-#: meld/resources/ui/patch-dialog.ui:57 meld/patchdialog.py:159
-msgid "Save Patch"
-msgstr "Patch opslaan"
-
-#: meld/resources/ui/patch-dialog.ui:88
+#: meld/resources/ui/patch-dialog.ui:20
 msgid "Use differences between:"
 msgstr "Verschillen gebruiken tussen:"
 
-#: meld/resources/ui/patch-dialog.ui:105
+#: meld/resources/ui/patch-dialog.ui:30
 msgid "Left and middle panes"
 msgstr "Linker- en middelste paneel"
 
-#: meld/resources/ui/patch-dialog.ui:123
+#: meld/resources/ui/patch-dialog.ui:38
 msgid "Middle and right panes"
 msgstr "Middelste en rechterpaneel"
 
-#: meld/resources/ui/patch-dialog.ui:149
+#: meld/resources/ui/patch-dialog.ui:48
 msgid "_Reverse patch direction"
 msgstr "_Richting patch omdraaien"
 
-#: meld/resources/ui/path-label.ui:23
+#: meld/resources/ui/patch-dialog.ui:76
+msgid "Copy to Clipboard"
+msgstr "Kopiëren naar klembord"
+
+#: meld/resources/ui/patch-dialog.ui:92 meld/patchdialog.py:141
+msgid "Save Patch"
+msgstr "Patch opslaan"
+
+#: meld/resources/ui/path-label.ui:20
 msgid "Path"
 msgstr "Pad"
 
-#: meld/resources/ui/path-label.ui:65
+#: meld/resources/ui/path-label.ui:45
 msgid "Copy Path"
 msgstr "Pad kopiëren"
 
-#: meld/resources/ui/path-label.ui:70
+#: meld/resources/ui/path-label.ui:47
 msgid "Copy the full path"
 msgstr "Volledig pad kopiëren"
 
-#: meld/resources/ui/path-label.ui:86
+#: meld/resources/ui/path-label.ui:55
 msgid "View the folder in file manager"
 msgstr "Map in bestandsbeheerder bekijken"
 
-#: meld/resources/ui/preferences.ui:22 meld/resources/ui/preferences.ui:31
-msgid "Preferences"
-msgstr "Voorkeuren"
-
-#: meld/resources/ui/preferences.ui:75
-msgid "Font"
-msgstr "Lettertype"
-
-#: meld/resources/ui/preferences.ui:112
-msgid "_Use the system fixed width font"
-msgstr "_Lettertype met vaste breedte van systeem gebruiken"
-
-#: meld/resources/ui/preferences.ui:136
-msgid "_Editor font:"
-msgstr "_Bewerker lettertype:"
-
-#. TRANSLATORS: This is the status bar label for a group of settings,
-#. such as text wrapping, show line numbers, whitespace, etc.
-#: meld/resources/ui/preferences.ui:199 meld/ui/statusbar.py:293
-msgid "Display"
-msgstr "Weergave"
-
-# breedte tab/tabbreedte
-#: meld/resources/ui/preferences.ui:245
-msgid "_Tab width:"
-msgstr "_Tabbreedte:"
-
-#: meld/resources/ui/preferences.ui:278
-msgid "_Insert spaces instead of tabs"
-msgstr "_Spaties invoegen in plaats van tabs"
-
-#: meld/resources/ui/preferences.ui:294
-msgid "Enable text _wrapping"
-msgstr "Tekst_doorloop inschakelen"
-
-#: meld/resources/ui/preferences.ui:316
-msgid "Do not _split words over two lines"
-msgstr "Woorden niet _splitsen over twee regels"
-
-#: meld/resources/ui/preferences.ui:337
-msgid "Highlight _current line"
-msgstr "Huidige regel _accentueren"
-
-#: meld/resources/ui/preferences.ui:353
-msgid "Show _line numbers"
-msgstr "_Regelnummers weergeven"
-
-#: meld/resources/ui/preferences.ui:369
-msgid "Show w_hitespace"
-msgstr "W_itruimte weergeven"
-
-#: meld/resources/ui/preferences.ui:385
-msgid "Prefer dark theme"
-msgstr "Voorkeur donker thema"
-
-#: meld/resources/ui/preferences.ui:401
-msgid "Use s_yntax highlighting"
-msgstr "S_yntaxis accentueren gebruiken"
-
-#: meld/resources/ui/preferences.ui:425
-msgid "Syntax highlighting color scheme:"
-msgstr "Kleurenschema voor syntaxis accentueren:"
-
-#: meld/resources/ui/preferences.ui:490
-msgid "Code Overview"
-msgstr "Overzicht code"
-
-#: meld/resources/ui/preferences.ui:527
-msgid "Show overview map"
-msgstr "Overzichtsmap weergeven"
-
-#: meld/resources/ui/preferences.ui:551
-msgid "Overview map style:"
-msgstr "Stijl Overzichtsmap:"
-
-#: meld/resources/ui/preferences.ui:619
-msgid "External Editor"
-msgstr "Externe bewerker"
-
-#: meld/resources/ui/preferences.ui:657
-msgid "Use _default system editor"
-msgstr "_Standaard systeembewerker gebruiken"
-
-#: meld/resources/ui/preferences.ui:681
-msgid "Edito_r command:"
-msgstr "Opdracht bewerker:"
-
-#: meld/resources/ui/preferences.ui:737
+#: meld/resources/ui/preferences.ui:10
 msgid "Editor"
 msgstr "Bewerker"
 
-#: meld/resources/ui/preferences.ui:760
-msgid "Shallow Comparison"
-msgstr "Oppervlakkige vergelijking"
+#: meld/resources/ui/preferences.ui:14
+msgid "Appearance"
+msgstr "Uiterlijk"
 
-#: meld/resources/ui/preferences.ui:798
-msgid "C_ompare files based only on size and timestamp"
-msgstr "B_estanden vergelijken, alleen gebaseerd op grootte en tijdstempel"
+#: meld/resources/ui/preferences.ui:17
+msgid "Interface Style"
+msgstr "Stijl interface"
 
-#: meld/resources/ui/preferences.ui:822
-msgid "_Timestamp resolution:"
-msgstr "Oplossing _tijdstempel:"
+#: meld/resources/ui/preferences.ui:34
+msgid "Use Custom Font"
+msgstr "Aangepast lettertype gebruiken"
 
-#: meld/resources/ui/preferences.ui:886
-msgid "Note: enabling text filters may make comparing large files much slower"
-msgstr "Opmerking: inschakelen van tekstfilters zou het vergelijken van grote bestanden veel trager kunnen maken"
+#: meld/resources/ui/preferences.ui:35
+msgid "Choose a font different to the system default monospace font"
+msgstr "Kies een ander lettertype dan het monospace lettertype van de systeemstandaard"
 
-#: meld/resources/ui/preferences.ui:936
-msgid "Symbolic Links"
-msgstr "Symbolische links"
+#: meld/resources/ui/preferences.ui:43
+msgid "Font"
+msgstr "Lettertype"
 
-#: meld/resources/ui/preferences.ui:1006
+#: meld/resources/ui/preferences.ui:44
+msgid "The font used within the editor"
+msgstr "Het in de bewerker gebruikte lettertype"
+
+#: meld/resources/ui/preferences.ui:59
+msgid "Use Syntax Highlighting"
+msgstr "Accentueren van syntaxis gebruiken"
+
+#: meld/resources/ui/preferences.ui:67
+msgid "Color Scheme"
+msgstr "Kleurenschema"
+
+#: meld/resources/ui/preferences.ui:86
+msgid "Wrap Text"
+msgstr "Tekstterugloop"
+
+#: meld/resources/ui/preferences.ui:87
+msgid "How text should be wrapped when wider than the pane"
+msgstr "Hoe tekst zou moeten doorlopen als dat breder is dan het venster"
+
+#: meld/resources/ui/preferences.ui:107
+msgid "Highlight Current Line"
+msgstr "Huidige regel accentueren"
+
+#: meld/resources/ui/preferences.ui:108
+msgid "Make the current line stand out with highlights"
+msgstr "Markeer de huidige regel met accenten"
+
+#: meld/resources/ui/preferences.ui:113
+msgid "Show Line Numbers"
+msgstr "Regelnummers weergeven"
+
+#: meld/resources/ui/preferences.ui:114
+msgid "Display line numbers next to each line of text"
+msgstr "Regelnummers naast elke regel tekst weergeven"
+
+#: meld/resources/ui/preferences.ui:123 meld/resources/ui/statusbar-menu.ui:9
+msgid "Show whitespace"
+msgstr "Witruimte weergeven"
+
+#: meld/resources/ui/preferences.ui:130
+msgid "Indentation"
+msgstr "Inspringen"
+
+#: meld/resources/ui/preferences.ui:133
+msgid "Tab character"
+msgstr "Tab-teken"
+
+#: meld/resources/ui/preferences.ui:134
+msgid "The character to be inserted for Tab"
+msgstr "Het teken dat moet worden ingevoerd voor Tab"
+
+#: meld/resources/ui/preferences.ui:140
+msgid "tab"
+msgstr "tab"
+
+#: meld/resources/ui/preferences.ui:141
+msgid "spaces"
+msgstr "spaties"
+
+#: meld/resources/ui/preferences.ui:149
+msgid "_Indentation Size"
+msgstr "Breedte _inspringen"
+
+#: meld/resources/ui/preferences.ui:150
+msgid "The number of characters to indent"
+msgstr "Het aantal in te springen tekens"
+
+#: meld/resources/ui/preferences.ui:167
+msgid "Code Overview"
+msgstr "Overzicht code"
+
+#: meld/resources/ui/preferences.ui:170
+msgid "Show overview map"
+msgstr "Overzichtsmap weergeven"
+
+#: meld/resources/ui/preferences.ui:177
+msgid "External Editor"
+msgstr "Externe bewerker"
+
+#: meld/resources/ui/preferences.ui:181
+msgid "Use custom text editor"
+msgstr "Aangepaste bewerker gebruiken"
+
+#: meld/resources/ui/preferences.ui:182
+msgid "Choose an external text editor different to the system default"
+msgstr "Kies een andere externe tekstbewerker dan de systeemstandaard"
+
+#: meld/resources/ui/preferences.ui:190
+msgid "Custom Editor Command"
+msgstr "Opdracht aangepaste bewerker"
+
+#: meld/resources/ui/preferences.ui:201
+msgid "Folder Comparison"
+msgstr "Mapvergelijking"
+
+#: meld/resources/ui/preferences.ui:205
+msgid "Comparison Options"
+msgstr "Opties voor vergelijken"
+
+#: meld/resources/ui/preferences.ui:209
+msgid "Compare files based only on size and timestamp"
+msgstr "Bestanden vergelijken, alleen gebaseerd op grootte en tijdstempel"
+
+#: meld/resources/ui/preferences.ui:217
+msgid "Timestamp resolution"
+msgstr "Oplossing tijdstempel"
+
+#: meld/resources/ui/preferences.ui:251
+msgid "Enabling text filters will make comparing large files much slower"
+msgstr "Inschakelen van tekstfilters maakt het vergelijken van grote bestanden veel trager"
+
+#: meld/resources/ui/preferences.ui:258
 msgid "Visible Columns"
 msgstr "Zichtbare kolommen"
 
-#: meld/resources/ui/preferences.ui:1075
-msgid "Folder Comparisons"
-msgstr "Mappen vergelijken"
-
-#: meld/resources/ui/preferences.ui:1099
-msgid "Version Comparisons"
-msgstr "Versie-vergelijkingen"
-
-#: meld/resources/ui/preferences.ui:1145
-msgid "_Order when comparing file revisions:"
-msgstr "_Volgorde bij vergelijken bestandsrevisies:"
-
-#: meld/resources/ui/preferences.ui:1193
-msgid "Order when _merging files:"
-msgstr "Volgorde bij sa_menvoegen van bestanden:"
-
-#: meld/resources/ui/preferences.ui:1262
-msgid "Commit Messages"
-msgstr "Commit-berichten"
-
-#: meld/resources/ui/preferences.ui:1306
-msgid "Show _right margin at:"
-msgstr "_Rechtermarge weergeven op:"
-
-#: meld/resources/ui/preferences.ui:1347
-msgid "Automatically _break lines at right margin on commit"
-msgstr "Automatisch _regels afbreken op rechtermarge bij commit"
-
-#: meld/resources/ui/preferences.ui:1397
+#: meld/resources/ui/preferences.ui:274
 msgid "Version Control"
 msgstr "Versiebeheer"
 
-#: meld/resources/ui/preferences.ui:1421
+#: meld/resources/ui/preferences.ui:278
+msgid "Version Comparisons"
+msgstr "Versie-vergelijkingen"
+
+#: meld/resources/ui/preferences.ui:282
+msgid "Order when Comparing File Revisions"
+msgstr "Volgorde bij vergelijken van bestandsrevisies"
+
+#: meld/resources/ui/preferences.ui:288
+msgid "lrrl"
+msgstr "lrrl"
+
+#: meld/resources/ui/preferences.ui:289
+msgid "llrr"
+msgstr "llrr"
+
+#: meld/resources/ui/preferences.ui:297
+msgid "Order when Merging Files"
+msgstr "Volgorde bij samenvoegen van bestanden"
+
+#: meld/resources/ui/preferences.ui:303
+msgid "remote-merge-local"
+msgstr "afstand-samenvoegen-lokaal"
+
+#: meld/resources/ui/preferences.ui:304
+msgid "local-merge-remote"
+msgstr "lokaal-samenvoegen-afstand"
+
+#: meld/resources/ui/preferences.ui:314
+msgid "Commit Message"
+msgstr "Commit-bericht"
+
+#: meld/resources/ui/preferences.ui:317
+msgid "Show right margin"
+msgstr "Rechtermarge weergeven"
+
+#: meld/resources/ui/preferences.ui:322
+msgid "Margin position"
+msgstr "Positie marge"
+
+#: meld/resources/ui/preferences.ui:336
+msgid "Automatically _break lines at right margin on commit"
+msgstr "Automatisch _regels afbreken op rechtermarge bij commit"
+
+#: meld/resources/ui/preferences.ui:346
+msgid "Filters"
+msgstr "Filters"
+
+#: meld/resources/ui/preferences.ui:350
 msgid "Filename filters"
 msgstr "Bestandsnaam filters"
 
 #. Translators: 'filter out' refers to removing matched files and folders from the display
-#: meld/resources/ui/preferences.ui:1461
+#: meld/resources/ui/preferences.ui:351
 msgid ""
 "When performing directory comparisons, you may filter out files and "
 "directories by name. Each pattern is a list of shell style wildcards "
 "separated by spaces."
 msgstr "Bij het vergelijken van mappen kunnen bestanden en mappen gefilterd worden op naam. Elk patroon is een lijst met jokertekens in shellstijl, gescheiden door spaties."
 
-#: meld/resources/ui/preferences.ui:1530
+#: meld/resources/ui/preferences.ui:362
 msgid "Change trimming"
 msgstr "Afbreken wijzigen"
 
-#: meld/resources/ui/preferences.ui:1568
+#: meld/resources/ui/preferences.ui:365
 msgid "Trim blank line differences from the start and end of changes"
 msgstr "Verschillen in blanco regels tussen begin en einde van wijzigingen afbreken"
 
-#: meld/resources/ui/preferences.ui:1613
+#: meld/resources/ui/preferences.ui:366
+msgid ""
+"Removing blank lines can simplify comparisons, and can combine with text "
+"filters to fully remove changes."
+msgstr "Verwijderen van blanco regels kan vergelijkingen vereenvoudigen en kunnen met tekstfilters worden gecombineerd om wijzigingen volledig te verwijderen."
+
+#: meld/resources/ui/preferences.ui:373
 msgid "Text filters"
 msgstr "Tekstfilters"
 
-#: meld/resources/ui/preferences.ui:1653
+#: meld/resources/ui/preferences.ui:374
 msgid ""
 "When performing file comparisons, you may ignore certain types of changes. "
 "Each pattern here is a python regular expression which replaces matching "
@@ -1531,320 +1607,264 @@ msgid ""
 "details."
 msgstr "Bij het uitvoeren van bestandsvergelijkingen kunt u sommige wijzigingen negeren. Elk patroon is een Python reguliere expressie die overeenkomende tekst vervangt door lege tekst, voordat wordt vergeleken. Indien de expressie groepen bevat, worden alleen de groepen vervangen. Zie de gebruikshandleiding voor meer details."
 
-#: meld/resources/ui/preferences.ui:1744
-msgid "Left is remote, right is local"
-msgstr "Links is op afstand, rechts is lokaal"
-
-#: meld/resources/ui/preferences.ui:1748
-msgid "Left is local, right is remote"
-msgstr "Links is lokaal, rechts is op afstand"
-
-#: meld/resources/ui/preferences.ui:1762
-msgid "Simple change map"
-msgstr "Eenvoudig overzicht wijzigingen"
-
-#: meld/resources/ui/preferences.ui:1766
-msgid "Compact source map"
-msgstr "Compacte bronmap"
-
-#: meld/resources/ui/preferences.ui:1770
-msgid "Full source map"
-msgstr "Volledige bronmap"
-
-#: meld/resources/ui/preferences.ui:1784
-msgid "Remote, merge, local"
-msgstr "Afstand, samenvoegen, lokaal"
-
-#: meld/resources/ui/preferences.ui:1788
-msgid "Local, merge, remote"
-msgstr "Lokaal, samenvoegen, afstand"
-
-#: meld/resources/ui/preferences.ui:1810
-msgid "1ns (ext4)"
-msgstr "1ns (ext4)"
-
-#: meld/resources/ui/preferences.ui:1814
-msgid "100ns (NTFS)"
-msgstr "100ns (NTFS)"
-
-#: meld/resources/ui/preferences.ui:1818
-msgid "1s (ext2/ext3)"
-msgstr "1s (ext2/ext3)"
-
-#: meld/resources/ui/preferences.ui:1822
-msgid "2s (VFAT)"
-msgstr "2s (VFAT)"
-
-#: meld/resources/ui/preferences.ui:1826
-msgid "Ignore timestamp"
-msgstr "Tijdstempel negeren"
-
-#: meld/resources/ui/push-dialog.ui:9
+#: meld/resources/ui/push-dialog.ui:6
 msgid "Push local commits to remote?"
 msgstr "Lokale commits naar remote pushen?"
 
-#: meld/resources/ui/push-dialog.ui:10
+#: meld/resources/ui/push-dialog.ui:7
 msgid "The commits to be pushed are determined by your version control system."
 msgstr "De commits die moeten worden gepusht, worden bepaald door uw systeem voor versiebeheer."
 
-#: meld/resources/ui/push-dialog.ui:38
+#: meld/resources/ui/push-dialog.ui:13
 msgid "_Push commits"
 msgstr "Commits _pushen"
 
-#: meld/resources/ui/recent-selector.ui:16
+#: meld/resources/ui/recent-selector.ui:29
 msgid "Search recent comparisons…"
 msgstr "Recente vergelijkingen zoeken…"
 
-#: meld/resources/ui/recent-selector.ui:43
+#: meld/resources/ui/recent-selector.ui:56
 msgid "_Open"
 msgstr "_Openen"
 
-#: meld/resources/ui/revert-dialog.ui:9
+#: meld/resources/ui/revert-dialog.ui:6
 msgid "Discard unsaved changes to documents?"
 msgstr "Niet opgeslagen wijzigingen opslaan naar documenten?"
 
-#: meld/resources/ui/revert-dialog.ui:10
+#: meld/resources/ui/revert-dialog.ui:7
 msgid "Changes made to the following documents will be permanently lost:"
 msgstr "Wijzigingen die zijn gemaakt in de volgende documenten gaan permanent verloren:"
 
-#: meld/resources/ui/revert-dialog.ui:38
+#: meld/resources/ui/revert-dialog.ui:18
+#: meld/resources/ui/save-confirm-dialog.ui:16
 msgid "_Discard"
 msgstr "_Negeren"
 
-#: meld/resources/ui/save-confirm-dialog.ui:9
+#: meld/resources/ui/save-confirm-dialog.ui:6
 msgid "Save changes to documents before closing?"
 msgstr "Wijzigingen opslaan naar documenten voor het sluiten?"
 
-#: meld/resources/ui/save-confirm-dialog.ui:10
-msgid "If you don’t save, changes will be permanently lost."
-msgstr "Als u niet opslaat, gaan wijzigingen permanent verloren."
+#: meld/resources/ui/save-confirm-dialog.ui:7
+msgid ""
+"Open documents contain unsaved changes. Changes which are not saved will be "
+"permanently lost."
+msgstr "Geopende documenten bevatten niet-opgeslagen wijzigingen. Wijzigingen die niet worden opgeslagen, zullen permanent verloren gaan."
 
-#: meld/resources/ui/save-confirm-dialog.ui:24
-msgid "Close _without Saving"
-msgstr "Sluiten _zonder op te slaan"
-
-#: meld/resources/ui/save-confirm-dialog.ui:55
+#: meld/resources/ui/save-confirm-dialog.ui:17
 msgid "_Save"
 msgstr "Op_slaan"
-
-#: meld/resources/ui/statusbar-menu.ui:9
-msgid "Show whitespace"
-msgstr "Witruimte weergeven"
 
 #: meld/resources/ui/statusbar-menu.ui:17
 msgid "Text wrapping"
 msgstr "Tekst doorlopen"
 
-#: meld/resources/ui/vcview-menus.ui:7
-msgid "_Compare"
-msgstr "_Vergelijken"
-
-#: meld/resources/ui/vcview-menus.ui:11
-msgid "Co_mmit…"
-msgstr "Doo_rvoeren…"
-
-#: meld/resources/ui/vcview-menus.ui:22
-msgid "_Unstage"
-msgstr "_Unstage"
-
-#: meld/resources/ui/vcview-menus.ui:30
-msgid "Re_vert"
-msgstr "Te_rugdraaien"
-
-#: meld/resources/ui/vcview-menus.ui:34
-msgid "Delete"
-msgstr "Verwijderen"
-
-#: meld/resources/ui/vcview-menus.ui:41
-msgid "Resolve Conflict"
-msgstr "Conflict oplossen"
-
-#: meld/resources/ui/vcview.ui:17
+#: meld/resources/ui/vcview.ui:11
 msgid "Commit changes to version control"
 msgstr "Wijzigingen naar versiebeheer doorvoeren"
 
-#: meld/resources/ui/vcview.ui:22
+#: meld/resources/ui/vcview.ui:14
 msgid "Commit…"
 msgstr "Doorvoeren…"
 
-#: meld/resources/ui/vcview.ui:39
+#: meld/resources/ui/vcview.ui:28
 msgid "Pull remote changes to the local repository"
 msgstr "Wijzigingen op afstand ophalen naar de lokale opslagruimte"
 
-#: meld/resources/ui/vcview.ui:52
+#: meld/resources/ui/vcview.ui:39
 msgid "Push local changes to remote"
 msgstr "Lokale wijzigingen doorvoeren naar op afstand"
 
-#: meld/resources/ui/vcview.ui:75
+#: meld/resources/ui/vcview.ui:58
 msgid "Add to version control"
 msgstr "Toevoegen aan versiebeheer"
 
-#: meld/resources/ui/vcview.ui:88
+#: meld/resources/ui/vcview.ui:69
 msgid "Remove staged changes"
 msgstr "Wijzigingen in staging verwijderen"
 
-#: meld/resources/ui/vcview.ui:101
+#: meld/resources/ui/vcview.ui:80
 msgid "Remove from version control"
 msgstr "Uit versiebeheer verwijderen"
 
-#: meld/resources/ui/vcview.ui:114
+#: meld/resources/ui/vcview.ui:91
 msgid "Revert working copy to original state"
 msgstr "Werkkopie terugdraaien naar originele status"
 
-#: meld/resources/ui/vcview.ui:127
+#: meld/resources/ui/vcview.ui:102
 msgid "Mark as resolved in version control"
 msgstr "Markeren als opgelost in versiebeheer"
 
-#: meld/resources/ui/vcview.ui:153
+#: meld/resources/ui/vcview.ui:123
 msgid "Open version controlled folder in this pane"
 msgstr "Versiebeheerde map openen in dit paneel"
 
-#: meld/resources/ui/vcview.ui:242
+#: meld/resources/ui/vcview.ui:130
+msgid "Unknown folder"
+msgstr "Onbekende map"
+
+#: meld/resources/ui/vcview.ui:194
 msgid "Location"
 msgstr "Locatie"
 
-#: meld/resources/ui/vcview.ui:251
+#: meld/resources/ui/vcview.ui:203
 msgid "Status"
 msgstr "Status"
 
-#: meld/resources/ui/vcview.ui:260
+#: meld/resources/ui/vcview.ui:212
 msgid "Extra"
 msgstr "Extra"
 
-#: meld/resources/ui/vcview.ui:292
+#: meld/resources/ui/vcview.ui:236
 msgid "Console output"
 msgstr "Uitvoer console"
 
-#: meld/actiongutter.py:266
-msgid "Copy _up"
-msgstr "Om_hoog kopiëren"
+#: meld/resources/ui/vcview.ui:265
+msgid "_Clear"
+msgstr "_Leegmaken"
 
-#: meld/actiongutter.py:267
-msgid "Copy _down"
-msgstr "Om_laag kopiëren"
+#: meld/resources/ui/vcview.ui:274
+msgid "_Compare"
+msgstr "_Vergelijken"
 
-#: meld/const.py:34
+#: meld/resources/ui/vcview.ui:278
+msgid "Co_mmit…"
+msgstr "Doo_rvoeren…"
+
+#: meld/resources/ui/vcview.ui:289
+msgid "_Unstage"
+msgstr "_Unstage"
+
+#: meld/resources/ui/vcview.ui:297
+msgid "Re_vert"
+msgstr "Te_rugdraaien"
+
+#: meld/resources/ui/vcview.ui:301
+msgid "Delete"
+msgstr "Verwijderen"
+
+#: meld/resources/ui/vcview.ui:308
+msgid "Resolve Conflict"
+msgstr "Conflict oplossen"
+
+#: meld/const.py:40
 msgid "UNIX (LF)"
 msgstr "UNIX (LF)"
 
-#: meld/const.py:35
+#: meld/const.py:41
 msgid "DOS/Windows (CR-LF)"
 msgstr "DOS/Windows (CR-LF)"
 
-#: meld/const.py:36
+#: meld/const.py:42
 msgid "Mac OS (CR)"
 msgstr "macOS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:654 meld/preferences.py:132
+#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Grootte"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:662 meld/preferences.py:133
+#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Tijd wijziging"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:670 meld/preferences.py:134
+#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Tijd wijziging (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:678 meld/preferences.py:135
+#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Toegangsrechten"
 
-#: meld/dirdiff.py:962 meld/dirdiff.py:995
+#: meld/dirdiff.py:972 meld/dirdiff.py:1002
 #, python-brace-format
-msgid "[{label}] Scanning {folder}"
-msgstr "[{label}] Scannen {folder}"
+msgid "Scanning {folder}"
+msgstr "Scannen {folder}"
 
-#: meld/dirdiff.py:1136
-#, python-brace-format
-msgid "[{label}] Done"
-msgstr "[{label}] Voltooid"
+#: meld/dirdiff.py:1141
+msgid "Done"
+msgstr "Voltooid"
 
-#: meld/dirdiff.py:1149
+#: meld/dirdiff.py:1153
 msgid "Folder {} is being compared to itself"
 msgstr "Map {} wordt met zichzelf vergeleken"
 
-#: meld/dirdiff.py:1155
+#: meld/dirdiff.py:1161
 msgid "Folders have no differences"
 msgstr "Mappen hebben geen verschillen"
 
-#: meld/dirdiff.py:1157
+#: meld/dirdiff.py:1162
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhoud van gescande bestanden in mappen is identiek."
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1164
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "Gescande bestanden in mappen lijken identiek, maar de inhoud is niet gescand."
 
-#: meld/dirdiff.py:1162
+#: meld/dirdiff.py:1168
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Bestandsfilters worden gebruikt, dus zijn niet alle bestanden gescand."
 
-#: meld/dirdiff.py:1164
+#: meld/dirdiff.py:1171
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Tekstfilters worden gebruikt en die zouden verschillen in de inhoud kunnen maskeren."
 
-#: meld/dirdiff.py:1180 meld/filediff.py:2126
+#: meld/dirdiff.py:1187 meld/filediff.py:2150
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1182 meld/filediff.py:2128 meld/filediff.py:2158
-#: meld/filediff.py:2160 meld/ui/msgarea.py:127 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1189 meld/filediff.py:2152 meld/filediff.py:2182
+#: meld/filediff.py:2184 meld/ui/msgarea.py:140 meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:1193
+#: meld/dirdiff.py:1200
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Er traden meerdere fouten op bij het scannen van deze map"
 
-#: meld/dirdiff.py:1194
+#: meld/dirdiff.py:1201
 msgid "Files with invalid encodings found"
 msgstr "Bestanden met ongeldige coderingen gevonden"
 
-#. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1196
+#: meld/dirdiff.py:1204
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Sommige bestanden hadden een onjuiste codering. De namen leken op:"
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1206
 msgid "Files hidden by case insensitive comparison"
 msgstr "Bestanden verborgen door hoofdletterongevoelige vergelijking"
 
-#. TRANSLATORS: This is followed by a list of files
-#: meld/dirdiff.py:1200
+#: meld/dirdiff.py:1209
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr "U gebruikt een hoofdletterongevoelige vergelijking op een hoofdlettergevoelig bestandssysteem. De volgende bestanden in deze map zijn verborgen:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1213
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Bestanden hadden een niet overeenkomende voorafgaande of achterliggende witruimte"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1216
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "Deze vergelijking vond enkele bestanden die alleen van elkaar verschilden in voorafgaande en achterliggende witruimte. Hun namen zijn:"
 
-#: meld/dirdiff.py:1217
+#: meld/dirdiff.py:1227
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "‘{first_file}’ verborgen door ‘{second_file}’"
 
-#: meld/dirdiff.py:1297
+#: meld/dirdiff.py:1311
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Map ‘%s’ vervangen?"
 
-#: meld/dirdiff.py:1299
+#: meld/dirdiff.py:1313
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1852,11 +1872,11 @@ msgid ""
 msgstr "Er bestaat al een andere map met dezelfde naam in ‘%s’.\n"
 "Als u de bestaande map vervangt, gaan alle bestanden erin verloren."
 
-#: meld/dirdiff.py:1312
+#: meld/dirdiff.py:1328
 msgid "Error copying file"
 msgstr "Fout tijdens kopiëren van bestand"
 
-#: meld/dirdiff.py:1313
+#: meld/dirdiff.py:1329
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1868,79 +1888,50 @@ msgstr "Kon {source} niet kopiëren\n"
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1338 meld/vcview.py:797
-msgid "Error deleting {}"
-msgstr "Fout bij verwijderen van {}"
-
-#: meld/dirdiff.py:1910
+#: meld/dirdiff.py:1942
 msgid "No folder"
 msgstr "Geen map"
 
-#: meld/dirdiff.py:1923
+#: meld/dirdiff.py:1955
 msgid "Folder comparison:"
 msgstr "Mappen vergelijken:"
 
-#: meld/externalhelpers.py:107
+#: meld/externalhelpers.py:130
 msgid "Failed to launch custom editor"
 msgstr "Starten aangepaste bewerker mislukt"
 
-#: meld/externalhelpers.py:120
+#: meld/externalhelpers.py:140
 msgid "Unsupported file type"
 msgstr "Niet ondersteund bestandstype"
 
-#: meld/externalhelpers.py:121
-#, python-brace-format
-msgid "External opening of files of type {file_type} is not supported"
-msgstr "Extern openen van bestanden van het type {file_type} wordt niet ondersteund"
-
-#: meld/filediff.py:1198
+#: meld/filediff.py:1244
 msgid "Comparison results will be inaccurate"
 msgstr "Resultaten van de vergelijking zullen niet nauwkeurig zijn"
 
-#: meld/filediff.py:1200
+#: meld/filediff.py:1246
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr "Een filter wijzigde het aantal regels in het bestand, wat niet ondersteund wordt. De vergelijking zal niet nauwkeurig zijn."
 
-#: meld/filediff.py:1271
+#: meld/filediff.py:1288
 msgid "Mark conflict as resolved?"
 msgstr "Conflict als opgelost markeren?"
 
-#: meld/filediff.py:1273
+#: meld/filediff.py:1290
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Als het conflict met succes werd opgelost, kunt u het nu als opgelost markeren."
 
-#: meld/filediff.py:1276
+#: meld/filediff.py:1294
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: meld/filediff.py:1277
+#: meld/filediff.py:1295
 msgid "Mark _Resolved"
 msgstr "Markeren als _Opgelost"
 
-#: meld/filediff.py:1475 meld/filediff.py:1491
-msgid "Add Synchronization Point"
-msgstr "Synchronisatiepunt toevoegen"
-
-#: meld/filediff.py:1479
-msgid "Remove Synchronization Point"
-msgstr "Synchronisatiepunt verwijderen"
-
-#: meld/filediff.py:1483
-msgid "Move Synchronization Point"
-msgstr "Synchronisatiepunt verplaatsen"
-
-#: meld/filediff.py:1487
-msgid "Match Synchronization Point"
-msgstr "Overeenkomst synchronisatiepunt"
-
-#: meld/filediff.py:1511
-msgid "Clear Synchronization Points"
-msgstr "Synchronisatiepunten leegmaken"
-
-#: meld/filediff.py:1571 meld/imagediff.py:256
+#: meld/filediff.py:1574 meld/imagediff.py:238
 msgid "File comparison:"
 msgstr "Bestandsvergelijking:"
 
@@ -1951,17 +1942,17 @@ msgid ""
 "{LINE_LENGTH_LIMIT})"
 msgstr "Regel {line_number} overschreed maximale regellengte ({line_length} > {LINE_LENGTH_LIMIT})"
 
-#: meld/filediff.py:1768
+#: meld/filediff.py:1766
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Er was een probleem bij het openen van het bestand ‘%s’."
 
-#: meld/filediff.py:1790
+#: meld/filediff.py:1788
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Bestand %s lijkt een binair bestand te zijn."
 
-#: meld/filediff.py:1792
+#: meld/filediff.py:1789
 msgid "Do you want to open the file using the default application?"
 msgstr "Wilt u het bestand openen met de standaardtoepassing?"
 
@@ -1969,48 +1960,38 @@ msgstr "Wilt u het bestand openen met de standaardtoepassing?"
 msgid "Open"
 msgstr "Openen"
 
-#: meld/filediff.py:1818
-#, python-format
-msgid "[%s] Merging files"
-msgstr "[%s] Bestanden samenvoegen"
-
-#: meld/filediff.py:1832
-#, python-format
-msgid "[%s] Computing differences"
-msgstr "[%s] Verschillen berekenen"
-
-#: meld/filediff.py:1896
+#: meld/filediff.py:1895
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Bestand %s is op schijf gewijzigd"
 
-#: meld/filediff.py:1897
+#: meld/filediff.py:1896
 msgid "Do you want to reload the file?"
 msgstr "Wilt u het bestand opnieuw laden?"
 
-#: meld/filediff.py:1899
+#: meld/filediff.py:1901
 msgid "_Reload"
 msgstr "_Opnieuw laden"
 
-#: meld/filediff.py:2084
+#: meld/filediff.py:2102
 msgid "File {} is being compared to itself"
 msgstr "Bestand {} wordt met zichzelf vergeleken"
 
-#: meld/filediff.py:2092
+#: meld/filediff.py:2113
 msgid "Files are identical"
 msgstr "Bestanden zijn identiek"
 
-#: meld/filediff.py:2105
+#: meld/filediff.py:2127
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr "Tekstfilters worden gebruikt en zouden verschillen tussen de bestanden kunnen maskeren. Wilt u de niet gefilterde bestanden vergelijken?"
 
-#: meld/filediff.py:2110
+#: meld/filediff.py:2133
 msgid "Files differ in line endings only"
 msgstr "Bestanden verschillen alleen in regeleinden"
 
-#: meld/filediff.py:2112
+#: meld/filediff.py:2135
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2018,74 +1999,74 @@ msgid ""
 msgstr "Bestanden zijn identiek, behalve voor verschillen in regeleinden:\n"
 "%s"
 
-#: meld/filediff.py:2131
+#: meld/filediff.py:2155
 msgid "Show without filters"
 msgstr "Zonder filters weergeven"
 
-#: meld/filediff.py:2152
+#: meld/filediff.py:2174
 msgid "Change highlighting incomplete"
 msgstr "Wijzigen accentueren niet volledig"
 
-#: meld/filediff.py:2153
+#: meld/filediff.py:2176
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr "Sommige wijzigingen werden niet geaccentueerd, omdat ze te groot waren. U kunt Meld forceren om langer over het accentueren van wijzigingen te doen, hoewel dit traag zou kunnen worden."
 
-#: meld/filediff.py:2162
+#: meld/filediff.py:2185
 msgid "Keep highlighting"
 msgstr "Accentueren behouden"
 
-#: meld/filediff.py:2164
+#: meld/filediff.py:2187
 msgid "_Keep highlighting"
 msgstr "_Accentueren behouden"
 
-#: meld/filediff.py:2177
+#: meld/filediff.py:2198
 msgid "Saving failed"
 msgstr "Opslaan mislukt"
 
-#: meld/filediff.py:2178
+#: meld/filediff.py:2200
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr "Overweeg om kritieke wijzigingen te kopiëren naar een ander programma of bestand om gegevensverlies te vermijden."
 
-#: meld/filediff.py:2187
+#: meld/filediff.py:2209
 msgid "Save Left Pane As"
 msgstr "Linkerpaneel opslaan als"
 
-#: meld/filediff.py:2189
+#: meld/filediff.py:2211
 msgid "Save Middle Pane As"
 msgstr "Middelste paneel opslaan als"
 
-#: meld/filediff.py:2191
+#: meld/filediff.py:2213
 msgid "Save Right Pane As"
 msgstr "Rechterpaneel opslaan als"
 
-#: meld/filediff.py:2202
+#: meld/filediff.py:2234
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Bestand %s is op schijf gewijzigd nadat het werd geopend"
 
-#: meld/filediff.py:2204
+#: meld/filediff.py:2237
 msgid "If you save it, any external changes will be lost."
 msgstr "Als u het opslaat, zullen externe wijzigingen verloren gaan."
 
-#: meld/filediff.py:2208
+#: meld/filediff.py:2241
 msgid "Save Anyway"
 msgstr "Toch opslaan"
 
-#: meld/filediff.py:2209
+#: meld/filediff.py:2242
 msgid "Don’t Save"
 msgstr "Niet opslaan"
 
-#: meld/filediff.py:2251
+#: meld/filediff.py:2280
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Bestand ‘{}’ bevat tekens die niet kunnen worden gecodeerd met zijn huidige codering ‘{}’."
 
-#: meld/filediff.py:2255 meld/patchdialog.py:138
+#: meld/filediff.py:2284 meld/patchdialog.py:127
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2093,100 +2074,91 @@ msgid ""
 msgstr "Kon bestand niet opslaan omdat:\n"
 "%s"
 
-#: meld/filediff.py:2259 meld/patchdialog.py:137
+#: meld/filediff.py:2289 meld/patchdialog.py:126
 #, python-format
 msgid "Could not save file %s."
 msgstr "Kon bestand %s niet opslaan."
 
-#: meld/filediff.py:2676
+#: meld/filediff.py:2707
 msgid "Live comparison updating disabled"
 msgstr "Live bijwerken van vergelijking uitgeschakeld"
 
-#: meld/filediff.py:2677
+#: meld/filediff.py:2709
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr "Live bijwerken van vergelijkingen is uitgeschakeld als synchronisatiepunten actief zijn. U kunt nog steeds handmatig de vergelijking vernieuwen en live bijwerken zal terugkeren als synchronisatiepunten worden leeggemaakt."
 
-#: meld/filediff.py:2706
+#: meld/filediff.py:2749
 msgid "Can't swap unsaved files"
 msgstr "Kan niet opgeslagen bestanden niet wisselen"
 
-#: meld/filediff.py:2708
+#: meld/filediff.py:2750
 msgid "Files must be saved to disk before swapping panes."
 msgstr "Bestanden moeten op schijf zijn opgeslagen voordat panelen kunnen worden gewisseld."
 
-#: meld/filediff.py:2715
+#: meld/filediff.py:2756
 msgid "Can't swap version control comparisons"
 msgstr "Kan vergelijkingen van versiebeheer niet wisselen"
 
-#: meld/filediff.py:2717
+#: meld/filediff.py:2757
 msgid "Swapping panes is not supported in version control mode."
 msgstr "Wisselen van panelen wordt niet ondersteund in de modus voor versiebeheer."
 
-#: meld/iohelpers.py:41
+#: meld/iohelpers.py:40
 msgid "Deleting remote folders is not supported"
 msgstr "Verwijderen van mappen op afstand wordt niet ondersteund"
 
-#: meld/iohelpers.py:43
+#: meld/iohelpers.py:42
 msgid "Not a file or directory"
 msgstr "Geen bestand of map"
 
-#: meld/iohelpers.py:47
-msgid "“{}” can’t be put in the trash. Do you want to delete it immediately?"
-msgstr "‘{}’ kan niet in de prullenbak worden geplaatst. Wilt u het direct verwijderen?"
+#: meld/iohelpers.py:62
+msgid "Delete Permanently?"
+msgstr "Permanent verwijderen?"
 
-#: meld/iohelpers.py:52
-msgid "This remote location does not support sending items to the trash."
-msgstr "Deze locatie op afstand ondersteunt niet het plaatsen van items in de prullenbak."
+#: meld/iohelpers.py:65
+msgid "Do you want to delete it permanently?"
+msgstr "Wilt u het permanent verwijderen?"
 
-#: meld/iohelpers.py:58
+#: meld/iohelpers.py:69
 msgid "_Delete Permanently"
 msgstr "_Permanent verwijderen"
 
-#: meld/iohelpers.py:110
-#, python-format
-msgid "Replace file “%s”?"
-msgstr "Bestand ‘%s’ vervangen?"
+#: meld/meldapp.py:135
+msgid "translator-credits"
+msgstr "Vincent van Adrighem, Wouter Bolsterlee, Hannie Dumoleyn, Sense Hofstede, Justin van Steijn, Reinout van Schouwen, Nathan Follens en Dick Groskamp."
 
-#: meld/iohelpers.py:112
-#, python-format
-msgid ""
-"A file with this name already exists in “%s”.\n"
-"If you replace the existing file, its contents will be lost."
-msgstr "Er bestaat al een bestand met deze naam in ‘%s’.\n"
-"Als u het bestaande bestand vervangt, gaat de inhoud ervan verloren."
-
-#: meld/meldapp.py:188
+#: meld/meldapp.py:183
 msgid "wrong number of arguments supplied to --diff"
 msgstr "verkeerd aantal argumenten opgegeven voor --diff"
 
-#: meld/meldapp.py:193
+#: meld/meldapp.py:189
 msgid "Start with an empty window"
 msgstr "Begin met een leeg venster"
 
-#: meld/meldapp.py:194 meld/meldapp.py:196
+#: meld/meldapp.py:191 meld/meldapp.py:195
 msgid "file"
 msgstr "bestand"
 
-#: meld/meldapp.py:194 meld/meldapp.py:198
+#: meld/meldapp.py:191 meld/meldapp.py:199
 msgid "folder"
 msgstr "map"
 
-#: meld/meldapp.py:195
+#: meld/meldapp.py:192
 msgid "Start a version control comparison"
 msgstr "Begin een vergelijking van versiebeheer"
 
-#: meld/meldapp.py:197
+#: meld/meldapp.py:196
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Begin een 2- of 3-weg bestandsvergelijking"
 
-#: meld/meldapp.py:199
+#: meld/meldapp.py:200
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Begin een 2- of 3-weg mapvergelijking"
 
-#: meld/meldapp.py:205
+#: meld/meldapp.py:207
 msgid ""
 "\n"
 "\n"
@@ -2196,70 +2168,70 @@ msgstr "\n"
 "\n"
 "Voor bestandsvergelijkingen zou het speciale argument @blank kunnen worden gebruikt, in plaats van een argument <file> om een blanco paneel te maken."
 
-#: meld/meldapp.py:249
+#: meld/meldapp.py:251
 #, python-format
 msgid "Error: %s\n"
 msgstr "Fout: %s\n"
 
-#: meld/meldapp.py:256
+#: meld/meldapp.py:258
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld is een programma voor het vergelijken van bestanden en mappen."
 
-#: meld/meldapp.py:260
+#: meld/meldapp.py:266
 msgid "Set label to use instead of file name"
 msgstr "Label instellen om te gebruiken in plaats van bestandsnaam"
 
-#: meld/meldapp.py:263
+#: meld/meldapp.py:273
 msgid "Open a new tab in an already running instance"
 msgstr "Open een nieuwe tab in een al uitgevoerde instantie"
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:280
 msgid "Automatically compare all differing files on startup"
 msgstr "Automatisch alle verschillende bestanden vergelijken bij opstarten"
 
-#: meld/meldapp.py:269
+#: meld/meldapp.py:283
 msgid "Ignored for compatibility"
 msgstr "Genegeerd voor compatibiliteit"
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:292
 msgid "Set the target file for saving a merge result"
 msgstr "Stel het doelbestand in voor het opslaan van een resultaat van samenvoegen"
 
-#: meld/meldapp.py:276
+#: meld/meldapp.py:299
 msgid "Automatically merge files"
 msgstr "Automatisch bestanden samenvoegen"
 
-#: meld/meldapp.py:280
+#: meld/meldapp.py:308
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Een opgeslagen vergelijking uit een Meld vergelijkingsbestand laden"
 
-#: meld/meldapp.py:284
+#: meld/meldapp.py:317
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Een tab diff maken voor de ondersteunde bestanden of mappen"
 
-#: meld/meldapp.py:304
+#: meld/meldapp.py:338
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "teveel argumenten (wilde 0-3, kreeg %d)"
 
-#: meld/meldapp.py:307
+#: meld/meldapp.py:340
 msgid "can’t auto-merge less than 3 files"
 msgstr "kan niet minder dan 3 bestanden automatisch samenvoegen"
 
-#: meld/meldapp.py:309
+#: meld/meldapp.py:342
 msgid "can’t auto-merge directories"
 msgstr "kan geen mappen automatisch samenvoegen"
 
-#: meld/meldapp.py:324
+#: meld/meldapp.py:355
 msgid "Error reading saved comparison file"
 msgstr "Fout bij lezen van opgeslagen vergelijkingsbestand"
 
-#: meld/meldapp.py:352
+#: meld/meldapp.py:383
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "ongeldig pad of URI ‘%s’"
 
-#: meld/meldapp.py:359
+#: meld/meldapp.py:389
 msgid "remote folder “{}” not supported"
 msgstr "map op afstand ‘{}’ niet ondersteund"
 
@@ -2268,28 +2240,24 @@ msgstr "map op afstand ‘{}’ niet ondersteund"
 msgid "<unnamed>"
 msgstr "<naamloos>"
 
-#: meld/melddoc.py:39
-msgid "untitled"
-msgstr "naamloos"
-
-#: meld/meldwindow.py:161
+#: meld/meldwindow.py:137
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: meld/meldwindow.py:397
+#: meld/meldwindow.py:372
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Heb drie bestanden nodig om automatisch samen te voegen, kreeg: %r"
 
-#: meld/meldwindow.py:427
+#: meld/meldwindow.py:401
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Kan geen mix van bestanden en mappen vergelijken"
 
-#: meld/meldwindow.py:481
+#: meld/meldwindow.py:456
 msgid "Cannot compare a non-existent file"
 msgstr "Kan geen niet bestaand bestand vergelijken"
 
-#: meld/misc.py:154
+#: meld/misc.py:111
 msgid ""
 "{}\n"
 "\n"
@@ -2300,50 +2268,128 @@ msgstr "{}\n"
 "Meld kwam een kritieke fout tegen bij het uitvoeren van:\n"
 "<tt>{}</tt>"
 
-#: meld/misc.py:205
+#: meld/misc.py:165
 msgid "[None]"
 msgstr "[Geen]"
 
-#: meld/preferences.py:37 meld/preferences.py:129
+#: meld/preferences.py:40
 msgid "label"
 msgstr "label"
 
-#: meld/preferences.py:37 meld/preferences.py:129
+#: meld/preferences.py:40
 msgid "pattern"
 msgstr "patroon"
 
-#: meld/recent.py:119
+#: meld/preferences.py:194
+msgid "Never"
+msgstr "Nooit"
+
+#: meld/preferences.py:195
+msgid "At Spaces"
+msgstr "Bij spaties"
+
+#: meld/preferences.py:196
+msgid "Anywhere"
+msgstr "Overal"
+
+#: meld/preferences.py:202
+msgid "Follow System"
+msgstr "Systeem volgen"
+
+#: meld/preferences.py:203
+msgid "Light"
+msgstr "Licht"
+
+#: meld/preferences.py:204
+msgid "Dark"
+msgstr "Donker"
+
+#: meld/preferences.py:210
+msgid "Tab"
+msgstr "Tab"
+
+#: meld/preferences.py:211
+msgid "Spaces"
+msgstr "Spaties"
+
+#: meld/preferences.py:217
+msgid "1ns (ext4)"
+msgstr "1ns (ext4)"
+
+#: meld/preferences.py:218
+msgid "100ns (NTFS)"
+msgstr "100ns (NTFS)"
+
+#: meld/preferences.py:219
+msgid "1s (ext2/ext3)"
+msgstr "1s (ext2/ext3)"
+
+#: meld/preferences.py:220
+msgid "2s (VFAT)"
+msgstr "2s (VFAT)"
+
+#: meld/preferences.py:221
+msgid "Ignore timestamp"
+msgstr "Tijdstempel negeren"
+
+#: meld/preferences.py:227
+msgid "Left is remote, right is local"
+msgstr "Links is op afstand, rechts is lokaal"
+
+#: meld/preferences.py:228
+msgid "Left is local, right is remote"
+msgstr "Links is lokaal, rechts is op afstand"
+
+#: meld/preferences.py:234
+msgid "Remote, merge, local"
+msgstr "Afstand, samenvoegen, lokaal"
+
+#: meld/preferences.py:235
+msgid "Local, merge, remote"
+msgstr "Lokaal, samenvoegen, afstand"
+
+#: meld/recent.py:110
 msgid "Version control:"
 msgstr "Versiebeheer:"
 
-#: meld/style.py:97
+#: meld/style.py:133
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr "Kon geen details voor kleurenschema vinden voor {}; dit is een slechte installatie"
 
-#: meld/ui/bufferselectors.py:110
+#: meld/ui/bufferselectors.py:112
 #, python-brace-format
 msgid "{name} ({charset})"
 msgstr "{name} ({charset})"
 
-#: meld/ui/bufferselectors.py:140 meld/ui/bufferselectors.py:148
+#: meld/ui/bufferselectors.py:144 meld/ui/bufferselectors.py:152
 msgid "Plain Text"
 msgstr "Platte tekst"
 
-#: meld/ui/pathlabel.py:36
+#: meld/ui/columnlist.py:115
+msgid "Column options"
+msgstr "Opties kolommen"
+
+#: meld/ui/pathlabel.py:34
 msgid "Unnamed file"
 msgstr "Naamloos bestand"
 
 #. Abbreviation for line, column so that it will fit in the status bar
-#: meld/ui/statusbar.py:125
+#: meld/ui/statusbar.py:112
 #, python-brace-format
 msgid "Ln {line}, Col {column}"
 msgstr "Rg {line}, Kol {column}"
 
-#: meld/ui/statusbar.py:187
+#: meld/ui/statusbar.py:160
 msgid "Line you want to move the cursor to"
 msgstr "Regel waar u de cursor naartoe wilt verplaatsen"
 
-#: meld/ui/vcdialogs.py:50
+#. TRANSLATORS: This is the status bar label for a group of settings,
+#. such as text wrapping, show line numbers, whitespace, etc.
+#: meld/ui/statusbar.py:272
+msgid "Display"
+msgstr "Weergave"
+
+#: meld/ui/vcdialogs.py:58
 msgid "No files will be committed"
 msgstr "Er zullen geen bestanden worden doorgevoerd"
 
@@ -2355,191 +2401,322 @@ msgstr "Er zullen geen bestanden worden doorgevoerd"
 msgid "{unpushed_commits} in {unpushed_branches}"
 msgstr "{unpushed_commits} in {unpushed_branches}"
 
-#: meld/vc/git.py:95 meld/vc/git.py:105
+#: meld/vc/git.py:95 meld/vc/git.py:107
 #, python-format
 msgid "%d unpushed commit"
 msgid_plural "%d unpushed commits"
 msgstr[0] "%d niet doorgevoerde commit"
 msgstr[1] "%d niet doorgevoerde commits"
 
-#: meld/vc/git.py:98
+#: meld/vc/git.py:99
 #, python-format
 msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] "%d branch"
 msgstr[1] "%d branches"
 
-#: meld/vc/git.py:363
+#: meld/vc/git.py:374
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modus gewijzigd van {old_mode} naar {new_mode}"
 
-#: meld/vc/git.py:371
+#: meld/vc/git.py:384
 msgid "Partially staged"
 msgstr "Gedeeltelijk gestaged"
 
-#: meld/vc/git.py:371
+#: meld/vc/git.py:384
 msgid "Staged"
 msgstr "Gestaged"
 
 #. Translators: This is the displayed name of a version control system
 #. when no version control system is actually found.
-#: meld/vc/_null.py:38
+#: meld/vc/_null.py:37
 msgid "None"
 msgstr "Geen"
 
-#: meld/vc/svn.py:203
+#: meld/vc/svn.py:204
 #, python-format
 msgid "Rev %s"
 msgstr "Rev %s"
 
-#: meld/vc/_vc.py:58
+#: meld/vc/_vc.py:72
 msgid "Merged"
 msgstr "Samengevoegd"
 
-#: meld/vc/_vc.py:58
+#: meld/vc/_vc.py:72
 msgid "Base"
 msgstr "Basis"
 
-#: meld/vc/_vc.py:58
+#: meld/vc/_vc.py:72
 msgid "Local"
 msgstr "Lokaal"
 
-#: meld/vc/_vc.py:58
+#: meld/vc/_vc.py:72
 msgid "Remote"
 msgstr "Afstand"
 
-#: meld/vc/_vc.py:77
+#: meld/vc/_vc.py:90
 msgid "Error"
 msgstr "Fout"
 
-#: meld/vc/_vc.py:79
+#: meld/vc/_vc.py:92
 msgid "Newly added"
 msgstr "Nieuw toegevoegd"
 
-#: meld/vc/_vc.py:81
+#: meld/vc/_vc.py:94
 msgid "Renamed"
 msgstr "Hernoemd"
 
-#: meld/vc/_vc.py:82
+#: meld/vc/_vc.py:95
 msgid "Conflict"
 msgstr "Conflict"
 
-#: meld/vc/_vc.py:83
+#: meld/vc/_vc.py:96
 msgid "Removed"
 msgstr "Verwijderd"
 
-#: meld/vc/_vc.py:84
+#: meld/vc/_vc.py:97
 msgid "Missing"
 msgstr "Ontbreekt"
 
-#: meld/vc/_vc.py:85
+#: meld/vc/_vc.py:98
 msgid "Not present"
 msgstr "Niet aanwezig"
 
-#: meld/vc/_vc.py:86
+#: meld/vc/_vc.py:99
 msgid "Scanning…"
 msgstr "Scannen…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:351
+#: meld/vcview.py:355
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (niet gevonden)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:355
+#: meld/vcview.py:359
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s niet geïnstalleerd)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:359
+#: meld/vcview.py:363
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (ongeldige opslagruimte)"
 
-#: meld/vcview.py:373
+#: meld/vcview.py:377
 msgid "No valid version control system found in this folder"
 msgstr "Geen geldig systeem voor versiebeheer gevonden in deze map"
 
-#: meld/vcview.py:375
+#: meld/vcview.py:379
 msgid "Choose which version control system to use"
 msgstr "Kies welk systeem voor versiebeheer te gebruiken"
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:433
+#: meld/vcview.py:440
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr "{vc} vergelijking:"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:448
+#: meld/vcview.py:456
 msgid "Scanning repository"
 msgstr "Opslagruimte scannen"
 
-#: meld/vcview.py:477
+#: meld/vcview.py:484
 #, python-format
 msgid "Scanning %s"
 msgstr "Scannen %s"
 
-#: meld/vcview.py:516
+#: meld/vcview.py:523
 msgid "(Empty)"
 msgstr "(Leeg)"
 
-#: meld/vcview.py:564
+#: meld/vcview.py:568
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokaal"
 
-#: meld/vcview.py:565
+#: meld/vcview.py:569
 #, python-format
 msgid "%s — remote"
 msgstr "%s — afstand"
 
-#: meld/vcview.py:573
+#: meld/vcview.py:580
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokaal, samenvoegen, afstand)"
 
-#: meld/vcview.py:578
+#: meld/vcview.py:588
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (afstand, samenvoegen, lokaal)"
 
-#: meld/vcview.py:589
+#: meld/vcview.py:598
 #, python-format
 msgid "%s — repository"
 msgstr "%s — opslagruimte"
 
-#: meld/vcview.py:595
+#: meld/vcview.py:604
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (werk, opslagruimte)"
 
-#: meld/vcview.py:599
+#: meld/vcview.py:608
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (opslagruimte, werk)"
 
-#: meld/vcview.py:768
+#: meld/vcview.py:801
 msgid "Remove folder and all its files?"
 msgstr "Deze map en al zijn bestanden verwijderen?"
 
-#: meld/vcview.py:770
+#: meld/vcview.py:803
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr "Dit zal alle geselecteerde bestanden en mappen verwijderen, en alle bestanden binnen elke geselecteerde map, uit versiebeheer."
 
-#: meld/vcview.py:884
-msgid "Clear"
-msgstr "Leegmaken"
+#~ msgid "Prefer application-wide dark theme"
+#~ msgstr "Voorkeur voor toepassingsbrede donkere thema"
+
+#~ msgid ""
+#~ "If true, the GTK dark theme variant will be used, if available. Note that "
+#~ "this is separate from the syntax highlighting scheme."
+#~ msgstr ""
+#~ "Indien true zal de variant voor het donkere GTK thema wordne gebruikt, "
+#~ "indien beschikbaar. Onthoud dat dit losstaat van het schema voor het "
+#~ "accentueren van de syntaxis."
+
+#~ msgid ""
+#~ "Copyright © 2002-2009 Stephen Kennedy\n"
+#~ "Copyright © 2009-2022 Kai Willadsen"
+#~ msgstr ""
+#~ "Copyright © 2002-2009 Stephen Kennedy\n"
+#~ "Copyright © 2009-2022 Kai Willadsen"
+
+#~ msgid "Column Name"
+#~ msgstr "Kolomnaam"
+
+#~ msgid "Commit"
+#~ msgstr "Doorvoeren"
+
+#~ msgid "Close Tab"
+#~ msgstr "Tab sluiten"
+
+#~ msgid "Preferences"
+#~ msgstr "Voorkeuren"
+
+#~ msgid "_Use the system fixed width font"
+#~ msgstr "_Lettertype met vaste breedte van systeem gebruiken"
+
+#~ msgid "_Editor font:"
+#~ msgstr "_Bewerker lettertype:"
+
+# breedte tab/tabbreedte
+#~ msgid "_Tab width:"
+#~ msgstr "_Tabbreedte:"
+
+#~ msgid "_Insert spaces instead of tabs"
+#~ msgstr "_Spaties invoegen in plaats van tabs"
+
+#~ msgid "Enable text _wrapping"
+#~ msgstr "Tekst_doorloop inschakelen"
+
+#~ msgid "Do not _split words over two lines"
+#~ msgstr "Woorden niet _splitsen over twee regels"
+
+#~ msgid "Highlight _current line"
+#~ msgstr "Huidige regel _accentueren"
+
+#~ msgid "Show _line numbers"
+#~ msgstr "_Regelnummers weergeven"
+
+#~ msgid "Show w_hitespace"
+#~ msgstr "W_itruimte weergeven"
+
+#~ msgid "Prefer dark theme"
+#~ msgstr "Voorkeur donker thema"
+
+#~ msgid "Syntax highlighting color scheme:"
+#~ msgstr "Kleurenschema voor syntaxis accentueren:"
+
+#~ msgid "Overview map style:"
+#~ msgstr "Stijl Overzichtsmap:"
+
+#~ msgid "Use _default system editor"
+#~ msgstr "_Standaard systeembewerker gebruiken"
+
+#~ msgid "Shallow Comparison"
+#~ msgstr "Oppervlakkige vergelijking"
+
+#~ msgid "Symbolic Links"
+#~ msgstr "Symbolische links"
+
+#~ msgid "Simple change map"
+#~ msgstr "Eenvoudig overzicht wijzigingen"
+
+#~ msgid "Compact source map"
+#~ msgstr "Compacte bronmap"
+
+#~ msgid "Full source map"
+#~ msgstr "Volledige bronmap"
+
+#~ msgid "Close _without Saving"
+#~ msgstr "Sluiten _zonder op te slaan"
+
+#, python-brace-format
+#~ msgid "[{label}] Done"
+#~ msgstr "[{label}] Voltooid"
+
+#~ msgid "Error deleting {}"
+#~ msgstr "Fout bij verwijderen van {}"
+
+#, python-brace-format
+#~ msgid "External opening of files of type {file_type} is not supported"
+#~ msgstr ""
+#~ "Extern openen van bestanden van het type {file_type} wordt niet "
+#~ "ondersteund"
+
+#, python-format
+#~ msgid "[%s] Merging files"
+#~ msgstr "[%s] Bestanden samenvoegen"
+
+#, python-format
+#~ msgid "[%s] Computing differences"
+#~ msgstr "[%s] Verschillen berekenen"
+
+#~ msgid ""
+#~ "“{}” can’t be put in the trash. Do you want to delete it immediately?"
+#~ msgstr ""
+#~ "‘{}’ kan niet in de prullenbak worden geplaatst. Wilt u het direct "
+#~ "verwijderen?"
+
+#~ msgid "This remote location does not support sending items to the trash."
+#~ msgstr ""
+#~ "Deze locatie op afstand ondersteunt niet het plaatsen van items in de "
+#~ "prullenbak."
+
+#, python-format
+#~ msgid "Replace file “%s”?"
+#~ msgstr "Bestand ‘%s’ vervangen?"
+
+#, python-format
+#~ msgid ""
+#~ "A file with this name already exists in “%s”.\n"
+#~ "If you replace the existing file, its contents will be lost."
+#~ msgstr ""
+#~ "Er bestaat al een bestand met deze naam in ‘%s’.\n"
+#~ "Als u het bestaande bestand vervangt, gaat de inhoud ervan verloren."
+
+#~ msgid "untitled"
+#~ msgstr "naamloos"
 
 #~ msgid ""
 #~ "Ignored:Non CVS:::Error::Newly added:Modified:<b>Conflict</"
@@ -2770,10 +2947,6 @@ msgstr "Leegmaken"
 #~ "\n"
 #~ "U kan deze operatie niet ongedaan maken."
 
-#, c-format
-#~ msgid "Meld requires %s or higher."
-#~ msgstr "Meld vereist %s of hoger."
-
 #~ msgid ""
 #~ "Due to incompatible API changes some functions may not operate as "
 #~ "expected."
@@ -2939,9 +3112,6 @@ msgstr "Leegmaken"
 #~ msgid "Left"
 #~ msgstr "Links"
 
-#~ msgid "Right"
-#~ msgstr "Rechts"
-
 #~ msgid "(gnome-default-editor)"
 #~ msgstr "(gnome standaard editor)"
 
@@ -3015,9 +3185,6 @@ msgstr "Leegmaken"
 
 #~ msgid "C_VS Browser"
 #~ msgstr "C_VS verkenner"
-
-#~ msgid "Choose Files"
-#~ msgstr "Kies bestanden"
 
 #~ msgid ""
 #~ "Choose how the central bar of the diff viewer is drawn. You may wish to "
@@ -3147,9 +3314,6 @@ msgstr "Leegmaken"
 #~ msgid "Whitespace is significant"
 #~ msgstr "Witruimte is signifikant"
 
-#~ msgid "_Character"
-#~ msgstr "_Karakter"
-
 #~ msgid "_Contents"
 #~ msgstr "_Inhoud"
 
@@ -3193,9 +3357,6 @@ msgstr "Leegmaken"
 
 #~ msgid "*"
 #~ msgstr "*"
-
-#~ msgid " spaces."
-#~ msgstr " spaties."
 
 #~ msgid "Tabs equivalent to "
 #~ msgstr "Tabs zijn gelijk aan "
