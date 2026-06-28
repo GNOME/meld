@@ -92,10 +92,12 @@ ShowInstDetails show
 ShowUninstDetails show
 
 Var cmdLineInstallDir
+Var prevUninstaller
+Var prevInstallDir
 
 Section -SETTINGS
     SetOutPath "$INSTDIR"
-    SetOverwrite ifnewer
+    SetOverwrite on
 SectionEnd
 
 Section "!${APPNAME}" sec_app
@@ -172,9 +174,30 @@ Function .onInit
 
     !insertmacro MULTIUSER_INIT
 
+    ; Upgrade handling. Uninstall existing NSIS installs first.
+    SetRegView 64
+    ReadRegStr $prevUninstaller SHCTX "${UNINST_KEY}" "UninstallString"
+    ReadRegStr $prevInstallDir SHCTX "${UNINST_KEY}" "InstallLocation"
+    StrCmp $prevUninstaller "" skip_nsis_uninstall
+        ExecWait '"$prevUninstaller" /S _?=$prevInstallDir'
+        Delete "$prevUninstaller"
+        RMDir "$prevInstallDir"
+    skip_nsis_uninstall:
+
+    ; Clean up old MSI install and keys if present
+    Call UninstallMeldMSI
+    DeleteRegKey HKLM "SOFTWARE\Meld"
+
     ; If cmd line included /INSTDIR, override the install dir set by MultiUser
     StrCmp $cmdLineInstallDir "" +2
         StrCpy $INSTDIR $cmdLineInstallDir
+FunctionEnd
+
+Function UninstallMeldMSI
+    ; Remove legacy 3.22.x cx_Freeze MSI installer by ProductCode
+    ExecWait 'msiexec /x {F305FD7B-EE65-4D75-ADB4-A6BD7D5F86B9} /qb /norestart'  ; 3.22.0
+    ExecWait 'msiexec /x {E15CF8E8-E1C9-4251-8994-292DF7FD4BA5} /qb /norestart'  ; 3.22.1
+    ExecWait 'msiexec /x {5E3C8A4B-6F37-40F0-892A-DC4D20D565FF} /qb /norestart'  ; 3.22.2
 FunctionEnd
 
 Function un.onInit
