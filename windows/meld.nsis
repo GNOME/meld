@@ -195,9 +195,9 @@ FunctionEnd
 
 Function UninstallMeldMSI
     ; Remove legacy 3.22.x cx_Freeze MSI installer by ProductCode
-    ExecWait 'msiexec /x {F305FD7B-EE65-4D75-ADB4-A6BD7D5F86B9} /qb /norestart'  ; 3.22.0
-    ExecWait 'msiexec /x {E15CF8E8-E1C9-4251-8994-292DF7FD4BA5} /qb /norestart'  ; 3.22.1
-    ExecWait 'msiexec /x {5E3C8A4B-6F37-40F0-892A-DC4D20D565FF} /qb /norestart'  ; 3.22.2
+    ExecWait 'msiexec /x {F305FD7B-EE65-4D75-ADB4-A6BD7D5F86B9} /qn /norestart'  ; 3.22.0
+    ExecWait 'msiexec /x {E15CF8E8-E1C9-4251-8994-292DF7FD4BA5} /qn /norestart'  ; 3.22.1
+    ExecWait 'msiexec /x {5E3C8A4B-6F37-40F0-892A-DC4D20D565FF} /qn /norestart'  ; 3.22.2
 FunctionEnd
 
 Function un.onInit
