@@ -82,8 +82,9 @@ a = Analysis(
             "themes": ["Adwaita"],
             "languages": get_install_languages(),
             "module-versions": {
-                "Gtk": "3.0",
-                "GtkSource": "4",
+                "Gtk": "4.0",
+                "GtkSource": "5",
+                "Adw": "1",
             },
         },
     },
