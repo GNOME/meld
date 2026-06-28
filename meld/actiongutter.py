@@ -154,7 +154,9 @@ class ActionGutter(Gtk.Widget):
         self.connect("realize", self.on_realize)
 
     def on_setting_changed(self, settings, key):
-        if key == "style-scheme":
+        if key == "font":
+            self.queue_draw()
+        elif key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
             alpha = self.fill_colors["current-chunk-highlight"].alpha
             self.chunk_highlights = {
