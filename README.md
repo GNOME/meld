@@ -39,7 +39,7 @@ Build requirements
 * gettext
 * GLib 2.66 and its development utilities such as `glib-compile-schemas`
 
-For Windows build requirements, see `mingw64-dist` section of `.gitlab-ci.yml`
+For Windows build requirements, see `mingw-dist` section of `.gitlab-ci.yml`
 
 
 Running
