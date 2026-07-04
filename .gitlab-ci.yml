@@ -5,11 +5,6 @@ include:
     inputs:
       dist-job-name: "flatpak"
 
-variables:
-  GNOME_SDK: 42
-
-image: quay.io/gnome_infrastructure/gnome-runtime-images:gnome-${GNOME_SDK}
-
 stages:
   - check
   - test
