@@ -32,12 +32,13 @@ flatpak:
 
 nightly:
   extends: '.publish_nightly'
-  dependencies:
+  needs:
     - 'flatpak'
 
 .pythonchecks:
   stage: check
   image: registry.fedoraproject.org/fedora:latest
+  needs: []
   script:
    - dnf install -y git glib2 gtk4 gtksourceview5 libadwaita python3-cairo python3-pip python3-gobject-base
    - pip3 install -r dev-requirements.txt
@@ -55,6 +56,7 @@ pytest:
 
 mingw64-dist:
   stage: build
+  needs: []
   variables:
     DESTDIR: install-tree
     MSYS2_ARCH: "x86_64"
@@ -114,6 +116,7 @@ mingw64-dist:
 
 macos:
   stage: build
+  needs: []
   tags:
     - macos
     - arm64
