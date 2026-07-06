@@ -196,9 +196,36 @@ Function .onInit
         RMDir "$prevInstallDir"
     skip_nsis_uninstall:
 
-    ; Clean up old MSI install and keys if present
-    Call UninstallMeldMSI
-    DeleteRegKey HKLM "SOFTWARE\Meld"
+    ; Clean up old machine-wide MSI install if present. This requires admin,
+    ; but we launch unelevated, so detect this case and error.
+    Call LegacyMsiPresent
+    ${If} $R0 != ""
+        UserInfo::GetAccountType
+        Pop $R2
+        ${If} $R2 != "Admin"
+            ${IfNot} ${Silent}
+                MessageBox MB_OK|MB_ICONSTOP \
+                    "A previous MSI installation of Meld was found.$\n$\nPlease \
+                     re-run this installer as Administrator to remove the \
+                     previous version."
+            ${EndIf}
+            SetErrorLevel 2
+            Quit
+        ${EndIf}
+
+        Call UninstallMeldMSI
+        ${If} $R1 == "1"
+            ${IfNot} ${Silent}
+                MessageBox MB_OK|MB_ICONSTOP \
+                    "The previous version of Meld could not be removed \
+                     automatically. Please uninstall it using $\"Apps & \
+                     features$\" and run this installer again."
+            ${EndIf}
+            SetErrorLevel 2
+            Quit
+        ${EndIf}
+        DeleteRegKey HKLM "SOFTWARE\Meld"
+    ${EndIf}
 
     ; If cmd line included /INSTDIR, override the install dir set by MultiUser
     ${If} $cmdLineInstallDir != ""
@@ -206,11 +233,34 @@ Function .onInit
     ${EndIf}
 FunctionEnd
 
+Function LegacyMsiPresent
+    ; Check for a legacy per-machine (MSI) install and set $R0, based on the
+    ; MSI writing to HKLM\SOFTWARE\Meld.
+    SetRegView 64
+    ReadRegStr $R0 HKLM "SOFTWARE\Meld" "InstallDir"
+    ${If} $R0 == ""
+        SetRegView 32
+        ReadRegStr $R0 HKLM "SOFTWARE\Meld" "InstallDir"
+        SetRegView 64
+    ${EndIf}
+FunctionEnd
+
+!macro RemoveMsiProduct code
+    ; msiexec returns 0 (removed) or 1605 (not installed) on success
+    ExecWait 'msiexec /x ${code} /qn /norestart' $0
+    ${If} $0 != 0
+    ${AndIf} $0 != 1605
+        StrCpy $R1 "1"
+    ${EndIf}
+!macroend
+
 Function UninstallMeldMSI
     ; Remove legacy 3.22.x cx_Freeze MSI installer by ProductCode
-    ExecWait 'msiexec /x {F305FD7B-EE65-4D75-ADB4-A6BD7D5F86B9} /qn /norestart'  ; 3.22.0
-    ExecWait 'msiexec /x {E15CF8E8-E1C9-4251-8994-292DF7FD4BA5} /qn /norestart'  ; 3.22.1
-    ExecWait 'msiexec /x {5E3C8A4B-6F37-40F0-892A-DC4D20D565FF} /qn /norestart'  ; 3.22.2
+    ; Sets $R1 to "1" if any removal failed (ignoring not installed MSIs)
+    StrCpy $R1 "0"
+    !insertmacro RemoveMsiProduct "{F305FD7B-EE65-4D75-ADB4-A6BD7D5F86B9}"  ; 3.22.0
+    !insertmacro RemoveMsiProduct "{E15CF8E8-E1C9-4251-8994-292DF7FD4BA5}"  ; 3.22.1
+    !insertmacro RemoveMsiProduct "{5E3C8A4B-6F37-40F0-892A-DC4D20D565FF}"  ; 3.22.2
 FunctionEnd
 
 Function un.onInit
