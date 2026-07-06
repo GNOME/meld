@@ -17,6 +17,10 @@
 !define ICON "${APPDIR}\_internal\meld.ico"
 !include version.nsh
 
+!ifndef ARCH
+    !error "ARCH is not defined; version.nsh must define it (see meld.spec)."
+!endif
+
 !define UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APPNAME}"
 
 !define MULTIUSER_EXECUTIONLEVEL Highest

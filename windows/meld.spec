@@ -1,4 +1,5 @@
 import json
+import platform
 import shutil
 import subprocess
 import sys
@@ -108,6 +109,8 @@ pyinstaller_versionfile.create_versionfile(
 
 with open("version.nsh", "w") as f:
     print(f'!define VERSION "{version_string}"', file=f)
+    # Installer requires ARCH for registry view selection
+    print(f'!define ARCH "{platform.machine()}"', file=f)
 
 exe = EXE(
     pyz,
