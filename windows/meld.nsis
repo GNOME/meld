@@ -157,7 +157,10 @@ Section "Uninstall"
     DeleteRegKey SHCTX "${UNINST_KEY}"
 
     RMDir /r /REBOOTOK "$SMPROGRAMS\${APPNAME}"
-    RMDir /r /REBOOTOK "$INSTDIR"
+
+    ; Only recursively delete $INSTDIR if it actually contains our executable.
+    IfFileExists "$INSTDIR\meld.exe" 0 +2
+        RMDir /r /REBOOTOK "$INSTDIR"
 SectionEnd
 
 ; Functions
