@@ -126,7 +126,7 @@ Section "!${APPNAME}" sec_app
 
     ; Add ourselves to Add/Remove Programs
     WriteRegStr SHCTX "${UNINST_KEY}" "DisplayName" "${APPNAME}"
-    WriteRegStr SHCTX "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\${ICON}"
+    WriteRegStr SHCTX "${UNINST_KEY}" "DisplayIcon" "$INSTDIR\meld.ico"
     WriteRegStr SHCTX "${UNINST_KEY}" "UninstallString" '"$INSTDIR\uninstall.exe"'
     WriteRegStr SHCTX "${UNINST_KEY}" "InstallLocation" "$INSTDIR"
     WriteRegStr SHCTX "${UNINST_KEY}" "HelpLink" "${WEBSITE}"
