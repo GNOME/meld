@@ -120,7 +120,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=False,
     icon="meld.ico",
     version="file_version_info.txt",
     console=False,
@@ -135,7 +135,6 @@ coll = COLLECT(
     a.binaries,
     a.datas,
     strip=False,
-    upx=True,
-    upx_exclude=[],
+    upx=False,
     name="meld",
 )
