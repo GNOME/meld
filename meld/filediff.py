@@ -218,6 +218,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     MSG_SAME = 0
     MSG_SLOW_HIGHLIGHT = 1
     MSG_SYNCPOINTS = 2
+    MSG_LINE_TOO_LONG = 3
     # Transient messages that should be removed if any file in the
     # comparison gets reloaded.
     TRANSIENT_MESSAGES: ClassVar[set] = {MSG_SAME, MSG_SLOW_HIGHLIGHT}
@@ -309,6 +310,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self._sync_hscroll_lock = False
         self.linediffer = self.differ()
         self.force_highlight = False
+        self.force_load = False
 
         self.syncpoints = Syncpoints(self.textbuffer[:num_panes])
         self.in_nested_textview_gutter_expose = False
@@ -1696,15 +1698,17 @@ class FileDiff(Gtk.Box, MeldDoc):
         last_it = it.copy()
         while it.forward_line():
             # last_it is now on a fully-loaded line, so we can check it
-            if last_it.get_chars_in_line() > LINE_LENGTH_LIMIT:
+            if not self.force_load and last_it.get_chars_in_line() > LINE_LENGTH_LIMIT:
                 failed_it = last_it
                 break
             last_it.assign(it)
 
         # We also have to check the last line in the file, which would
         # otherwise be skipped by the above logic.
-        if (current_bytes == total_bytes) and (
-            it.get_chars_in_line() > LINE_LENGTH_LIMIT
+        if (
+            not self.force_load
+            and current_bytes == total_bytes
+            and it.get_chars_in_line() > LINE_LENGTH_LIMIT
         ):
             failed_it = it
 
@@ -1716,7 +1720,9 @@ class FileDiff(Gtk.Box, MeldDoc):
                 FileLoadError.LINE_TOO_LONG,
                 _(
                     "Line {line_number} exceeded maximum line length "
-                    "({line_length} > {LINE_LENGTH_LIMIT})"
+                    "({line_length} > {LINE_LENGTH_LIMIT}).\n\n"
+                    "Loading files with very long lines may make Meld slow or "
+                    "unresponsive."
                 ).format(
                     line_number=failed_it.get_line() + 1,
                     line_length=failed_it.get_chars_in_line(),
@@ -1768,10 +1774,15 @@ class FileDiff(Gtk.Box, MeldDoc):
             if errors.get(pane):
                 error, error_text = errors[pane]
             else:
+                error = None
                 error_text = err.message
-            self.msgarea_mgr[pane].add_dismissable_msg(
-                "dialog-error-symbolic", primary, error_text
-            )
+
+            if error == FileLoadError.LINE_TOO_LONG:
+                self._prompt_load_long_lines(pane, primary, error_text)
+            else:
+                self.msgarea_mgr[pane].add_dismissable_msg(
+                    "dialog-error-symbolic", primary, error_text
+                )
             buf.data.state = MeldBufferState.LOAD_ERROR
 
         start, end = buf.get_bounds()
@@ -2186,6 +2197,28 @@ class FileDiff(Gtk.Box, MeldDoc):
             if index == 0:
                 button.props.label = _("_Keep highlighting")
             msgarea.connect("response", on_msgarea_highlighting_response)
+
+    def _prompt_load_long_lines(self, pane, primary, secondary):
+        # Rather than failing outright on very long lines, offer the user
+        # the chance to load the files anyway.
+        def on_load_anyway_response(msgarea, respid):
+            for mgr in self.msgarea_mgr:
+                mgr.clear()
+            if respid == Gtk.ResponseType.OK:
+                self.force_load = True
+                buffers = self.textbuffer[: self.num_panes]
+                gfiles = [b.data.gfile for b in buffers]
+                encodings = [b.data.encoding for b in buffers]
+                self.set_files(gfiles, encodings=encodings)
+
+        mgr = self.msgarea_mgr[pane]
+        msgarea = mgr.new_from_text_and_icon(
+            primary, secondary, "dialog-warning-symbolic"
+        )
+        mgr.set_msg_id(FileDiff.MSG_LINE_TOO_LONG)
+        msgarea.add_button(_("Hi_de"), Gtk.ResponseType.CLOSE)
+        msgarea.add_button(_("_Load anyway"), Gtk.ResponseType.OK)
+        msgarea.connect("response", on_load_anyway_response)
 
     def on_msgarea_identical_response(self, msgarea, respid):
         for mgr in self.msgarea_mgr:
