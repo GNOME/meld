@@ -103,7 +103,7 @@ PANE_LEFT, PANE_RIGHT = -1, +1
 
 LOAD_PROGRESS_MARK = "meld-load-progress"
 #: Line length at which we'll cancel loads because of potential hangs
-LINE_LENGTH_LIMIT = 8 * 1024
+LINE_LENGTH_LIMIT = 16 * 1024
 
 
 class CursorDetails:
