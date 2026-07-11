@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-06-28 06:00+0000\n"
-"PO-Revision-Date: 2026-06-28 21:35+0300\n"
+"POT-Creation-Date: 2026-07-11 00:54+0000\n"
+"PO-Revision-Date: 2026-07-11 21:07+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -66,9 +66,6 @@ msgid "Style Variant"
 msgstr "Варіант стилю"
 
 #: data/org.gnome.Meld.gschema.xml:65
-#| msgid ""
-#| "Whther to force the light or dark variant of the GTK theme. If set to "
-#| "'default', the application will follow the system default variant."
 msgid ""
 "Whether to force the light or dark variant of the GTK theme. If set to "
 "'default', the application will follow the system default variant."
@@ -1956,12 +1953,13 @@ msgstr ""
 "Використано текстові фільтри, що могли замаскувати відмінності у вмісті "
 "файлів."
 
-#: meld/dirdiff.py:1187 meld/filediff.py:2150
+#: meld/dirdiff.py:1187 meld/filediff.py:2161
 msgid "Hide"
 msgstr "Приховати"
 
-#: meld/dirdiff.py:1189 meld/filediff.py:2152 meld/filediff.py:2182
-#: meld/filediff.py:2184 meld/ui/msgarea.py:140 meld/ui/msgarea.py:152
+#: meld/dirdiff.py:1189 meld/filediff.py:2163 meld/filediff.py:2193
+#: meld/filediff.py:2195 meld/filediff.py:2219 meld/ui/msgarea.py:140
+#: meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "_Сховати"
 
@@ -2054,11 +2052,11 @@ msgstr "Не вдалося запустити нетиповий редакто
 msgid "Unsupported file type"
 msgstr "Непідтримуваний тип файлів"
 
-#: meld/filediff.py:1244
+#: meld/filediff.py:1246
 msgid "Comparison results will be inaccurate"
 msgstr "Результати порівняння не будуть точними"
 
-#: meld/filediff.py:1246
+#: meld/filediff.py:1248
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
@@ -2066,77 +2064,85 @@ msgstr ""
 "Фільтром змінено кількість рядків у файлі. Підтримку обробки таких змін не "
 "реалізовано. Порівняння може бути неточним."
 
-#: meld/filediff.py:1288
+#: meld/filediff.py:1290
 msgid "Mark conflict as resolved?"
 msgstr "Позначити конфлікт як розв'язаний?"
 
-#: meld/filediff.py:1290
+#: meld/filediff.py:1292
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 "Якщо конфлікт успішно розв'язано, ви можете позначити його як розв'язаний."
 
-#: meld/filediff.py:1294
+#: meld/filediff.py:1296
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: meld/filediff.py:1295
+#: meld/filediff.py:1297
 msgid "Mark _Resolved"
 msgstr "Позначити як _розв'язаний"
 
-#: meld/filediff.py:1574 meld/imagediff.py:238
+#: meld/filediff.py:1576 meld/imagediff.py:238
 msgid "File comparison:"
 msgstr "Порівняння файлів:"
 
-#: meld/filediff.py:1718
+#: meld/filediff.py:1722
 #, python-brace-format
+#| msgid ""
+#| "Line {line_number} exceeded maximum line length ({line_length} > "
+#| "{LINE_LENGTH_LIMIT})"
 msgid ""
 "Line {line_number} exceeded maximum line length ({line_length} > "
-"{LINE_LENGTH_LIMIT})"
+"{LINE_LENGTH_LIMIT}).\n"
+"\n"
+"Loading files with very long lines may make Meld slow or unresponsive."
 msgstr ""
 "У рядку {line_number} перевищено максимальну довжину рядка, ({line_length} > "
-"{LINE_LENGTH_LIMIT})"
+"{LINE_LENGTH_LIMIT})\n"
+"\n"
+"Завантаження файлів із дуже довгими рядками може уповільнити роботу Meld або"
+" звузити можливості інтерактивної обробки у програмі."
 
-#: meld/filediff.py:1766
+#: meld/filediff.py:1772
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Помилка відкриття файла «%s»."
 
-#: meld/filediff.py:1788
+#: meld/filediff.py:1799
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Здається, файл %s є файлом двійкових даних."
 
-#: meld/filediff.py:1789
+#: meld/filediff.py:1800
 msgid "Do you want to open the file using the default application?"
 msgstr "Хочете відкрити файл за допомогою типової програми?"
 
-#: meld/filediff.py:1794
+#: meld/filediff.py:1805
 msgid "Open"
 msgstr "Відкрити"
 
-#: meld/filediff.py:1895
+#: meld/filediff.py:1906
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "До файла %s було внесено зміни на диску"
 
-#: meld/filediff.py:1896
+#: meld/filediff.py:1907
 msgid "Do you want to reload the file?"
 msgstr "Хочете перезавантажити файл?"
 
-#: meld/filediff.py:1901
+#: meld/filediff.py:1912
 msgid "_Reload"
 msgstr "Перезаванта_жити"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2113
 msgid "File {} is being compared to itself"
 msgstr "Виконуємо порівняння файла {} із самим собою"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2124
 msgid "Files are identical"
 msgstr "Файли є однаковими"
 
-#: meld/filediff.py:2127
+#: meld/filediff.py:2138
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
@@ -2144,11 +2150,11 @@ msgstr ""
 "Використано текстові фільтри, які могли замаскувати відмінності між файлами. "
 "Хочете виконати порівняння файлів без фільтрування?"
 
-#: meld/filediff.py:2133
+#: meld/filediff.py:2144
 msgid "Files differ in line endings only"
 msgstr "Файли відрізняються лише символами завершення рядків"
 
-#: meld/filediff.py:2135
+#: meld/filediff.py:2146
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2157,15 +2163,15 @@ msgstr ""
 "Файли є однаковими, окрім різних символів завершення рядків:\n"
 "%s"
 
-#: meld/filediff.py:2155
+#: meld/filediff.py:2166
 msgid "Show without filters"
 msgstr "Показати без фільтрів"
 
-#: meld/filediff.py:2174
+#: meld/filediff.py:2185
 msgid "Change highlighting incomplete"
 msgstr "Неповна зміна підсвічування"
 
-#: meld/filediff.py:2176
+#: meld/filediff.py:2187
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
@@ -2174,19 +2180,24 @@ msgstr ""
 "наказати Meld підсвітити більші зміни, але вам доведеться почекати, доки "
 "програма виконає ваш наказ."
 
-#: meld/filediff.py:2185
+#: meld/filediff.py:2196
 msgid "Keep highlighting"
 msgstr "Зберігати підсвічування"
 
-#: meld/filediff.py:2187
+#: meld/filediff.py:2198
 msgid "_Keep highlighting"
 msgstr "З_берігати підсвічування"
 
-#: meld/filediff.py:2198
+#: meld/filediff.py:2220
+#| msgid "Save Anyway"
+msgid "_Load anyway"
+msgstr "З_авантажити попри це"
+
+#: meld/filediff.py:2231
 msgid "Saving failed"
 msgstr "Не вдалося зберегти"
 
-#: meld/filediff.py:2200
+#: meld/filediff.py:2233
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
@@ -2194,37 +2205,37 @@ msgstr ""
 "Вам варто скопіювати критичні зміни до вікна іншої програми або файла, щоб "
 "уникнути втрати даних."
 
-#: meld/filediff.py:2209
+#: meld/filediff.py:2242
 msgid "Save Left Pane As"
 msgstr "Зберегти ліву панель як"
 
-#: meld/filediff.py:2211
+#: meld/filediff.py:2244
 msgid "Save Middle Pane As"
 msgstr "Зберегти середню панель як"
 
-#: meld/filediff.py:2213
+#: meld/filediff.py:2246
 msgid "Save Right Pane As"
 msgstr "Зберегти праву панель як"
 
-#: meld/filediff.py:2234
+#: meld/filediff.py:2267
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "З часу відкриття до файла %s було внесено зміни на диску"
 
-#: meld/filediff.py:2237
+#: meld/filediff.py:2270
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 "Якщо ви збережете файл, внесені сторонніми програмами зміни буде втрачено."
 
-#: meld/filediff.py:2241
+#: meld/filediff.py:2274
 msgid "Save Anyway"
 msgstr "Зберегти попри це"
 
-#: meld/filediff.py:2242
+#: meld/filediff.py:2275
 msgid "Don’t Save"
 msgstr "Не зберігати"
 
-#: meld/filediff.py:2280
+#: meld/filediff.py:2313
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2232,7 +2243,7 @@ msgstr ""
 "У файлі «{}» містяться символи, які не входять до його поточного кодування "
 "«{}»."
 
-#: meld/filediff.py:2284 meld/patchdialog.py:127
+#: meld/filediff.py:2317 meld/patchdialog.py:127
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2241,16 +2252,16 @@ msgstr ""
 "Не вдалося зберегти файл. Причина:\n"
 "%s"
 
-#: meld/filediff.py:2289 meld/patchdialog.py:126
+#: meld/filediff.py:2322 meld/patchdialog.py:126
 #, python-format
 msgid "Could not save file %s."
 msgstr "Не вдалося зберегти файл %s."
 
-#: meld/filediff.py:2707
+#: meld/filediff.py:2740
 msgid "Live comparison updating disabled"
 msgstr "Інтерактивне оновлення порівняння вимкнено"
 
-#: meld/filediff.py:2709
+#: meld/filediff.py:2742
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2260,19 +2271,19 @@ msgstr ""
 "вимкнено. Ви можете оновити вміст об'єктів порівняння вручну. Інтерактивне "
 "оновлення буде увімкнено після вилучення усіх точок синхронізації."
 
-#: meld/filediff.py:2749
+#: meld/filediff.py:2782
 msgid "Can't swap unsaved files"
 msgstr "Не можна міняти місцями незбережені файли"
 
-#: meld/filediff.py:2750
+#: meld/filediff.py:2783
 msgid "Files must be saved to disk before swapping panes."
 msgstr "До обміну місцями панелями файли має бути збережено на диск."
 
-#: meld/filediff.py:2756
+#: meld/filediff.py:2789
 msgid "Can't swap version control comparisons"
 msgstr "Не можна міняти місцями порівняння керування версіями"
 
-#: meld/filediff.py:2757
+#: meld/filediff.py:2790
 msgid "Swapping panes is not supported in version control mode."
 msgstr ""
 "У режимі керування версіями не передбачено можливості обміну місцями для "
