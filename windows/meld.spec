@@ -1,4 +1,5 @@
 import json
+import platform
 import shutil
 import subprocess
 import sys
@@ -82,8 +83,9 @@ a = Analysis(
             "themes": ["Adwaita"],
             "languages": get_install_languages(),
             "module-versions": {
-                "Gtk": "3.0",
-                "GtkSource": "4",
+                "Gtk": "4.0",
+                "GtkSource": "5",
+                "Adw": "1",
             },
         },
     },
@@ -107,6 +109,8 @@ pyinstaller_versionfile.create_versionfile(
 
 with open("version.nsh", "w") as f:
     print(f'!define VERSION "{version_string}"', file=f)
+    # Installer requires ARCH for registry view selection
+    print(f'!define ARCH "{platform.machine()}"', file=f)
 
 exe = EXE(
     pyz,
@@ -117,7 +121,7 @@ exe = EXE(
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
+    upx=False,
     icon="meld.ico",
     version="file_version_info.txt",
     console=False,
@@ -132,7 +136,6 @@ coll = COLLECT(
     a.binaries,
     a.datas,
     strip=False,
-    upx=True,
-    upx_exclude=[],
+    upx=False,
     name="meld",
 )
