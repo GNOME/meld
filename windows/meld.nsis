@@ -173,6 +173,21 @@ SectionEnd
 
 ; Functions
 
+!macro RequireAdminOrQuit
+    UserInfo::GetAccountType
+    Pop $R2
+    ${If} $R2 != "Admin"
+        ${IfNot} ${Silent}
+            MessageBox MB_OK|MB_ICONSTOP \
+                "A previous all-users installation of Meld was found.$\n$\nPlease \
+                 re-run this installer as Administrator to remove the \
+                 previous version."
+        ${EndIf}
+        SetErrorLevel 2
+        Quit
+    ${EndIf}
+!macroend
+
 Function .onInit
     ; Multiuser.nsh breaks /D command line parameter. Parse /INSTDIR instead.
     ; Cribbing from https://nsis-dev.github.io/NSIS-Forums/html/t-299280.html
@@ -186,32 +201,29 @@ Function .onInit
 
     !insertmacro MULTIUSER_INIT
 
-    ; Upgrade handling. Uninstall existing NSIS installs first.
+    ; On upgrade, uninstall existing NSIS installs first
     SetRegView 64
-    ReadRegStr $prevUninstaller SHCTX "${UNINST_KEY}" "UninstallString"
-    ReadRegStr $prevInstallDir SHCTX "${UNINST_KEY}" "InstallLocation"
-    StrCmp $prevUninstaller "" skip_nsis_uninstall
+    ReadRegStr $prevUninstaller HKCU "${UNINST_KEY}" "UninstallString"
+    ReadRegStr $prevInstallDir HKCU "${UNINST_KEY}" "InstallLocation"
+    ${If} $prevUninstaller == ""
+        ; No current-user install; check for an local-machine install
+        ReadRegStr $prevUninstaller HKLM "${UNINST_KEY}" "UninstallString"
+        ReadRegStr $prevInstallDir HKLM "${UNINST_KEY}" "InstallLocation"
+        ${If} $prevUninstaller != ""
+            !insertmacro RequireAdminOrQuit
+        ${EndIf}
+    ${EndIf}
+    ${If} $prevUninstaller != ""
         ExecWait '$prevUninstaller /S _?=$prevInstallDir'
         Delete "$prevUninstaller"
         RMDir "$prevInstallDir"
-    skip_nsis_uninstall:
+    ${EndIf}
 
-    ; Clean up old machine-wide MSI install if present. This requires admin,
-    ; but we launch unelevated, so detect this case and error.
+    ; Clean up old machine-wide MSI install if present
     Call LegacyMsiPresent
     ${If} $R0 != ""
-        UserInfo::GetAccountType
-        Pop $R2
-        ${If} $R2 != "Admin"
-            ${IfNot} ${Silent}
-                MessageBox MB_OK|MB_ICONSTOP \
-                    "A previous MSI installation of Meld was found.$\n$\nPlease \
-                     re-run this installer as Administrator to remove the \
-                     previous version."
-            ${EndIf}
-            SetErrorLevel 2
-            Quit
-        ${EndIf}
+        ; MSI install was local-machine only, so quit if we don't have admin
+        !insertmacro RequireAdminOrQuit
 
         Call UninstallMeldMSI
         ${If} $R1 == "1"
