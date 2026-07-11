@@ -191,7 +191,7 @@ Function .onInit
     ReadRegStr $prevUninstaller SHCTX "${UNINST_KEY}" "UninstallString"
     ReadRegStr $prevInstallDir SHCTX "${UNINST_KEY}" "InstallLocation"
     StrCmp $prevUninstaller "" skip_nsis_uninstall
-        ExecWait '"$prevUninstaller" /S _?=$prevInstallDir'
+        ExecWait '$prevUninstaller /S _?=$prevInstallDir'
         Delete "$prevUninstaller"
         RMDir "$prevInstallDir"
     skip_nsis_uninstall:
