@@ -348,7 +348,7 @@ def setup_logging():
     if uninstalled and devel:
         log.setLevel(logging.INFO)
     else:
-        log.setLevel(logging.CRITICAL)
+        log.setLevel(logging.ERROR)
 
     if sys.platform == "win32":
         from gi.repository import GLib
