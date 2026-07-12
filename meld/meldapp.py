@@ -23,6 +23,7 @@ from gi.repository import Adw, Gio, GLib, Gtk
 
 import meld.accelerators
 import meld.conf
+from meld.archivehelpers import have_active_mounts, unmount_archives
 from meld.conf import _
 from meld.filediff import FileDiff
 from meld.meldwindow import MeldWindow
@@ -93,8 +94,12 @@ class MeldApp(Adw.Application):
         self.activate()
         return 0
 
-    def do_window_removed(self, widget):
-        Adw.Application.do_window_removed(self, widget)
+    def do_window_removed(self, window: Gtk.Window):
+        if len(self.get_windows()) == 1 and have_active_mounts():
+            unmount_archives(lambda: self.do_window_removed(window))
+            return
+
+        Adw.Application.do_window_removed(self, window)
         if not len(self.get_windows()):
             self.quit()
 

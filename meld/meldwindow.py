@@ -439,7 +439,7 @@ class MeldWindow(Adw.ApplicationWindow):
         is patched with the archive roots and ``open_paths`` is re-entered.
         """
 
-        def on_mounted(mounted_root, error, *, allow_none: bool):
+        def on_mounted(archive_gfile, mounted_root, error, *, allow_none: bool):
             if mounted_root is None and not allow_none:
                 error_dialog(
                     _("Failed to mount archive"),
