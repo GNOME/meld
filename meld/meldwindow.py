@@ -22,6 +22,7 @@ from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
+from meld.archivehelpers import is_archive, mount_archive_async
 from meld.conf import IS_DEVEL, _
 from meld.const import (
     FILE_FILTER_ACTION_FORMAT,
@@ -32,7 +33,6 @@ from meld.const import (
 from meld.dirdiff import DirDiff
 from meld.filediff import FileDiff
 from meld.imagediff import ImageDiff, files_are_images
-from meld.iohelpers import is_archive, mount_archive_async
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
 from meld.misc import error_dialog, guess_if_remote_x11
