@@ -14,7 +14,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import Optional
+from typing import Any
 
 from gi.repository import Gio, GObject, Gtk
 
@@ -37,15 +37,15 @@ class PathLabel(Gtk.MenuButton):
     full_path_label: Gtk.Entry = Gtk.Template.Child()
     label_widget: Gtk.Label = Gtk.Template.Child()
 
-    _gfile: Optional[Gio.File]
-    _parent_gfile: Optional[Gio.File]
-    _path_label: Optional[str]
-    _icon_name: Optional[str]
+    _gfile: Gio.File | None
+    _parent_gfile: Gio.File | None
+    _path_label: str | None
+    _icon_name: str | None
 
-    def __get_file(self) -> Optional[Gio.File]:
+    def __get_file(self) -> Gio.File | None:
         return self._gfile
 
-    def __set_file(self, file: Optional[Gio.File]) -> None:
+    def __set_file(self, file: Gio.File | None) -> None:
         if file == self._gfile:
             return
 
@@ -54,10 +54,10 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f"Error setting GFile: {e!s}")
 
-    def __get_parent_file(self) -> Optional[Gio.File]:
+    def __get_parent_file(self) -> Gio.File | None:
         return self._parent_gfile
 
-    def __set_parent_file(self, parent_file: Optional[Gio.File]) -> None:
+    def __set_parent_file(self, parent_file: Gio.File | None) -> None:
         if parent_file == self._parent_gfile:
             return
 
@@ -66,7 +66,7 @@ class PathLabel(Gtk.MenuButton):
         except ValueError as e:
             log.warning(f"Error setting parent GFile: {e!s}")
 
-    def __get_path_label(self) -> Optional[str]:
+    def __get_path_label(self) -> str | None:
         return self._path_label
 
     gfile = GObject.Property(
@@ -161,8 +161,8 @@ class PathLabel(Gtk.MenuButton):
 
     def _update_paths(
         self,
-        parent: Optional[Gio.File],
-        descendant: Optional[Gio.File],
+        parent: Gio.File | None,
+        descendant: Gio.File | None,
     ) -> None:
         # If either of the parent or the main gfiles are not set, the
         # relationship is fine (because it's not yet established).
@@ -198,14 +198,14 @@ class PathLabel(Gtk.MenuButton):
         self._path_label = format_parent_relative_path(parent, descendant)
         self.notify("path_label")
 
-    def action_copy_full_path(self, *args):
+    def action_copy_full_path(self, *args: Any) -> None:
         if not self.gfile:
             return
 
         path = self.gfile.get_path() or self.gfile.get_uri()
         self.get_clipboard().set(path)
 
-    def action_open_folder(self, *args):
+    def action_open_folder(self, *args: Any) -> None:
         if not self.gfile:
             return
 
