@@ -18,9 +18,11 @@ from typing import Any
 
 from gi.repository import Gio, GObject, Gtk
 
+from meld.archivehelpers import get_mount_for_path
 from meld.conf import _
 from meld.iohelpers import (
     format_home_relative_path,
+    format_mount_relative_path,
     format_parent_relative_path,
 )
 
@@ -159,6 +161,20 @@ class PathLabel(Gtk.MenuButton):
             return from_value.get_parse_name()
         return ""
 
+    def _format_path(self) -> str | None:
+        if not self._gfile:
+            return None
+
+        if mount := get_mount_for_path(self._gfile):
+            return format_mount_relative_path(mount, self._gfile)
+
+        if self._parent_gfile:
+            return format_parent_relative_path(self._parent_gfile, self._gfile)
+
+        # If we have no parent yet but have a descendant, we'll use
+        # the descendant name as the better-than-nothing label.
+        return format_home_relative_path(self._gfile)
+
     def _update_paths(
         self,
         parent: Gio.File | None,
@@ -170,11 +186,8 @@ class PathLabel(Gtk.MenuButton):
             self._parent_gfile = parent
             self._gfile = descendant
 
-            # If we have no parent yet but have a descendant, we'll use
-            # the descendant name as the better-than-nothing label.
-            if descendant:
-                self._path_label = format_home_relative_path(descendant)
-                self.notify("path_label")
+            self._path_label = self._format_path()
+            self.notify("path_label")
             return
 
         descendant_parent = descendant.get_parent()
@@ -195,7 +208,7 @@ class PathLabel(Gtk.MenuButton):
         self._parent_gfile = parent
         self._gfile = descendant
 
-        self._path_label = format_parent_relative_path(parent, descendant)
+        self._path_label = self._format_path()
         self.notify("path_label")
 
     def action_copy_full_path(self, *args: Any) -> None:

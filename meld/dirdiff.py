@@ -42,6 +42,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # TODO: Don't from-import whole modules
 from meld import misc, tree
+from meld.archivehelpers import get_mount_for_path, get_original_file_for_mount
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP, RecentType
 from meld.externalhelpers import open_files_external
@@ -1939,6 +1940,13 @@ class DirDiff(Gtk.Box, MeldDoc):
     def recompute_label(self):
         root = self.model.get_iter_first()
         filenames = self.model.value_paths(root)
+
+        for i, path in enumerate(filenames):
+            gfile = Gio.File.new_for_path(path)
+            if mount := get_mount_for_path(gfile):
+                mount_file = get_original_file_for_mount(mount)
+                filenames[i] = mount_file.get_path()
+
         filenames = [f or _("No folder") for f in filenames]
         if self.custom_labels:
             shortnames = [

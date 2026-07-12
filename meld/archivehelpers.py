@@ -43,11 +43,27 @@ ARCHIVE_QUERY_ATTRS = ",".join(
     )
 )
 
-_archive_mounts: set[Gio.Mount] = set()
+_archive_mounts: dict[Gio.Mount, Gio.File] = {}
 
 
 def have_active_mounts() -> bool:
     return bool(_archive_mounts)
+
+
+def get_mount_for_path(gfile: Gio.File) -> Gio.Mount | None:
+    try:
+        mount = gfile.find_enclosing_mount(None)
+        for m in _archive_mounts:
+            if m.get_root().equal(mount.get_root()):
+                return m
+    except GLib.Error:
+        # NOT_FOUND is expected and indicates it's not in any mount
+        ...
+    return None
+
+
+def get_original_file_for_mount(mount: Gio.Mount) -> Gio.File:
+    return _archive_mounts[mount]
 
 
 def is_archive(gfile: Gio.File | None) -> bool:
@@ -95,7 +111,7 @@ def mount_archive_async(
 
         try:
             mount = source.find_enclosing_mount(None)
-            _archive_mounts.add(mount)
+            _archive_mounts[mount] = gfile
         except GLib.Error as err:
             log.error(
                 f"Failed to find archive mount: {err}; automatic unmount will fail"
@@ -117,8 +133,8 @@ def unmount_archive_async(mount: Gio.Mount, callback: Callable[[], None]):
         except GLib.Error as err:
             log.error(f"Failed to unmount archive {mount.get_name()}: {err.message}")
         # When called from the unmount-everything helper, this mount will have
-        # already been removed. This discard is for more proactive unmounting.
-        _archive_mounts.discard(mount)
+        # already been removed. This pop is for more proactive unmounting.
+        _archive_mounts.pop(mount, None)
         callback()
 
     log.info(f"Unmounting archive {mount.get_name()}")
@@ -129,7 +145,7 @@ def unmount_archive_async(mount: Gio.Mount, callback: Callable[[], None]):
 
 
 def unmount_archives(callback: Callable[[], None]) -> bool:
-    mount = _archive_mounts.pop()
+    mount, _gfile = _archive_mounts.popitem()
     # If we're on the last mount, we callback to the originally passed-in
     # callback. Otherwise we continue processing _archive_mounts.
     if _archive_mounts:

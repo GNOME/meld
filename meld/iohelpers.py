@@ -128,6 +128,13 @@ def format_home_relative_path(gfile: Gio.File) -> str:
         return gfile.get_parse_name()
 
 
+def format_mount_relative_path(mount: Gio.Mount, gfile: Gio.File) -> str:
+    relative_path = mount.get_root().get_relative_path(gfile)
+    # Guard against None returns
+    relative_path = relative_path or ""
+    return f"{mount.get_name()}{' — ' if relative_path else ''}{relative_path}"
+
+
 def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
     """Format shortened child paths using a common parent
 
