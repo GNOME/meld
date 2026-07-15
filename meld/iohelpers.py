@@ -130,9 +130,9 @@ def format_home_relative_path(gfile: Gio.File) -> str:
 
 def format_mount_relative_path(mount: Gio.Mount, gfile: Gio.File) -> str:
     relative_path = mount.get_root().get_relative_path(gfile)
-    # Guard against None returns
-    relative_path = relative_path or ""
-    return f"{mount.get_name()}{' — ' if relative_path else ''}{relative_path}"
+    if relative_path:
+        return f"{mount.get_name()} — {relative_path}"
+    return mount.get_name()
 
 
 def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
