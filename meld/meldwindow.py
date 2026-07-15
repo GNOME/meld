@@ -460,7 +460,7 @@ class MeldWindow(Adw.ApplicationWindow):
                 )
             return
 
-        gfile = pending.pop()
+        gfile = pending.pop(0)
         if is_archive(gfile):
             mount_archive_async(gfile, on_mounted)
         else:
