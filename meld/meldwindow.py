@@ -464,7 +464,7 @@ class MeldWindow(Adw.ApplicationWindow):
         if is_archive(gfile):
             mount_archive_async(gfile, on_mounted)
         else:
-            on_mounted(gfile, None, allow_none=True)
+            on_mounted(gfile, None, None, allow_none=True)
 
     def _single_file_open(self, gfile):
         doc = VcView()

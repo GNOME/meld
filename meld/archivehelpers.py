@@ -82,7 +82,7 @@ def is_archive(gfile: Gio.File | None) -> bool:
     return info.get_content_type() in ARCHIVE_CONTENT_TYPES
 
 
-def _make_archive_gfile(gfile: Gio.File) -> Gio.File:
+def _make_mountable_archive_gfile(gfile: Gio.File) -> Gio.File:
     """Return a mountable Gio.File from the provided archive file"""
     uri = gfile.get_uri()
     encoded = urllib.parse.quote(urllib.parse.quote(uri, safe=""), safe="")
@@ -103,7 +103,7 @@ def mount_archive_async(
             if already_mounted:
                 # Don't track archive mounts that we don't do ourselves. They
                 # are someone else's responsibility to unmount, etc.
-                callback(gfile, archive_gfile, None, allow_none=False)
+                callback(gfile, mountable_archive_gfile, None, allow_none=False)
                 return
             log.error(f"Failed to mount archive {gfile.get_uri()}: {err.message}")
             callback(gfile, None, err, allow_none=False)
@@ -117,11 +117,11 @@ def mount_archive_async(
                 f"Failed to find archive mount: {err}; automatic unmount will fail"
             )
 
-        callback(gfile, archive_gfile, None, allow_none=False)
+        callback(gfile, mountable_archive_gfile, None, allow_none=False)
 
     mount_operation = Gio.MountOperation()
-    archive_gfile = _make_archive_gfile(gfile)
-    archive_gfile.mount_enclosing_volume(
+    mountable_archive_gfile = _make_mountable_archive_gfile(gfile)
+    mountable_archive_gfile.mount_enclosing_volume(
         Gio.MountMountFlags.NONE, mount_operation, None, _on_mount
     )
 
@@ -144,7 +144,7 @@ def unmount_archive_async(mount: Gio.Mount, callback: Callable[[], None]):
     )
 
 
-def unmount_archives(callback: Callable[[], None]) -> bool:
+def unmount_archives(callback: Callable[[], None]) -> None:
     mount, _gfile = _archive_mounts.popitem()
     # If we're on the last mount, we callback to the originally passed-in
     # callback. Otherwise we continue processing _archive_mounts.
