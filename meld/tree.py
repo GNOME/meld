@@ -130,6 +130,9 @@ class DiffTreeStore(SearchableTreeStore):
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
 
+    def iter_is_root(self, it: Gtk.TreeIter) -> bool:
+        return self.iter_parent(it) is None
+
     def value_paths(self, it):
         return [self.value_path(it, i) for i in range(self.ntree)]
 

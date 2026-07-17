@@ -66,6 +66,17 @@ def get_original_file_for_mount(mount: Gio.Mount) -> Gio.File:
     return _archive_mounts[mount]
 
 
+def format_archive_gfile(gfile: Gio.File) -> str | None:
+    if mount := get_mount_for_path(gfile):
+        return get_original_file_for_mount(mount).get_path()
+    return None
+
+
+def format_archive_path(path: str) -> str | None:
+    gfile = Gio.File.new_for_path(path)
+    return format_archive_gfile(gfile)
+
+
 def is_archive(gfile: Gio.File | None) -> bool:
     if not gfile:
         return False
