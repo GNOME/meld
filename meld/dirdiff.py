@@ -42,11 +42,16 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # TODO: Don't from-import whole modules
 from meld import misc, tree
+from meld.archivehelpers import (
+    format_archive_path,
+    is_mounted_archive_root,
+    unmount_archives_by_file,
+)
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP, RecentType
 from meld.externalhelpers import open_files_external
 from meld.iohelpers import find_shared_parent_path, trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -931,11 +936,10 @@ class DirDiff(Gtk.Box, MeldDoc):
         """
 
         for pane in range(self.model.ntree):
-            path = self.model.get_value(
-                it, self.model.column_index(tree.COL_PATH, pane)
+            label = self.model.get_value(
+                it, self.model.column_index(tree.COL_TEXT, pane)
             )
-            filename = GLib.markup_escape_text(os.path.basename(path))
-            label = _(f"{filename} (scanning…)")
+            label = _(f"{label} (scanning…)")
 
             self.model.set_state(it, pane, tree.STATE_SPINNER, label, True)
             self.model.unsafe_set(
@@ -1825,15 +1829,18 @@ class DirDiff(Gtk.Box, MeldDoc):
         lstats = [none_lstat(f) for f in files[: self.num_panes]]
         symlinks = {i for i, s in enumerate(lstats) if s and stat.S_ISLNK(s.st_mode)}
 
-        def format_name_override(f):
-            source = GLib.markup_escape_text(os.path.basename(f))
-            target = GLib.markup_escape_text(os.readlink(f))
-            return "{} ⟶ {}".format(source, target)
+        is_root = self.model.iter_is_root(it)
 
-        name_overrides = [
-            format_name_override(f) if i in symlinks else None
-            for i, f in enumerate(files)
-        ]
+        def name_override(i: int, file: str) -> str | None:
+            if i in symlinks:
+                source = GLib.markup_escape_text(os.path.basename(file))
+                target = GLib.markup_escape_text(os.readlink(file))
+                return f"{source} ⟶ {target}"
+            if is_root and (archive := format_archive_path(file)):
+                return GLib.markup_escape_text(archive)
+            return None
+
+        name_overrides = [name_override(i, f) for i, f in enumerate(files)]
 
         existing_times = [s.st_mtime for s in stats if s]
         newest_time = max(existing_times) if existing_times else 0
@@ -1939,7 +1946,8 @@ class DirDiff(Gtk.Box, MeldDoc):
     def recompute_label(self):
         root = self.model.get_iter_first()
         filenames = self.model.value_paths(root)
-        filenames = [f or _("No folder") for f in filenames]
+
+        filenames = [format_archive_path(f) or f or _("No folder") for f in filenames]
         if self.custom_labels:
             shortnames = [
                 custom or filename
@@ -2046,6 +2054,22 @@ class DirDiff(Gtk.Box, MeldDoc):
         modified_states = (tree.STATE_MODIFIED, tree.STATE_CONFLICT)
         for it in self.model.state_rows(modified_states):
             self.run_diff_from_iter(it)
+
+    def request_close(self):
+        self.state = ComparisonState.Closing
+
+        root = self.model.get_iter_first()
+        gfiles = [
+            Gio.File.new_for_path(f) if f else None
+            for f in self.model.value_paths(root)
+        ]
+        if archive_mounts := [f for f in gfiles if is_mounted_archive_root(f)]:
+            return unmount_archives_by_file(archive_mounts, self.request_close_cb)
+
+        return self.request_close_cb()
+
+    def request_close_cb(self):
+        super().request_close()
 
 
 DirDiff.set_css_name("meld-folder-diff")

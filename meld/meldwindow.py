@@ -16,12 +16,13 @@
 
 import logging
 import os
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Callable, Dict, Optional, Sequence
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
 # Import support module to get all builder-constructed widgets in the namespace
 import meld.ui.gladesupport  # noqa: F401
+from meld.archivehelpers import is_archive, mount_archive_async
 from meld.conf import IS_DEVEL, _
 from meld.const import (
     FILE_FILTER_ACTION_FORMAT,
@@ -34,7 +35,7 @@ from meld.filediff import FileDiff
 from meld.imagediff import ImageDiff, files_are_images
 from meld.melddoc import ComparisonState, MeldDoc
 from meld.menuhelpers import replace_menu_section
-from meld.misc import guess_if_remote_x11
+from meld.misc import error_dialog, guess_if_remote_x11
 from meld.newdifftab import NewDiffTab
 from meld.recent import get_recent_comparisons
 from meld.settings import get_meld_settings
@@ -161,7 +162,11 @@ class MeldWindow(Adw.ApplicationWindow):
         if not files:
             return False
 
-        self.open_paths(files)
+        def _log_open_error(tab: MeldDoc | None, error: Exception | None) -> None:
+            if error:
+                log.warning("Couldn't open comparison: %s", error)
+
+        self.open_paths(files, on_complete=_log_open_error)
         return True
 
     def on_idle(self):
@@ -324,7 +329,7 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.tab_state_changed.connect(self.on_page_state_changed)
         doc.close_signal.connect(self.page_removed)
 
-    def append_new_comparison(self):
+    def append_new_comparison(self) -> NewDiffTab:
         doc = NewDiffTab(self)
         self._append_page(doc)
 
@@ -340,7 +345,6 @@ class MeldWindow(Adw.ApplicationWindow):
         gfiles: Sequence[Optional[Gio.File]],
         auto_compare: bool = False,
     ) -> DirDiff:
-        assert len(gfiles) in (1, 2, 3)
         doc = DirDiff(len(gfiles))
         self._append_page(doc)
         gfiles = [f or Gio.File.new_for_path("") for f in gfiles]
@@ -350,9 +354,9 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.scheduler.add_task(doc.auto_compare)
         return doc
 
-    def append_filediff(self, gfiles, *, encodings=None, merge_output=None, meta=None):
-        assert len(gfiles) in (1, 2, 3)
-
+    def append_filediff(
+        self, gfiles, *, encodings=None, merge_output=None, meta=None
+    ) -> FileDiff | ImageDiff:
         # Check whether to show image window or not.
         if files_are_images(gfiles):
             doc = ImageDiff(len(gfiles))
@@ -366,7 +370,7 @@ class MeldWindow(Adw.ApplicationWindow):
             doc.set_meta(meta)
         return doc
 
-    def append_filemerge(self, gfiles, merge_output=None):
+    def append_filemerge(self, gfiles, merge_output=None) -> FileDiff:
         if len(gfiles) != 3:
             raise ValueError(
                 _("Need three files to auto-merge, got: %r")
@@ -386,7 +390,7 @@ class MeldWindow(Adw.ApplicationWindow):
         auto_merge: bool = False,
         merge_output: Optional[Gio.File] = None,
         meta: Optional[Dict[str, Any]] = None,
-    ):
+    ) -> DirDiff | FileDiff | ImageDiff:
         have_directories = False
         have_files = False
         for f in gfiles:
@@ -406,7 +410,7 @@ class MeldWindow(Adw.ApplicationWindow):
         else:
             return self.append_filediff(gfiles, merge_output=merge_output, meta=meta)
 
-    def append_vcview(self, location, auto_compare=False):
+    def append_vcview(self, location, auto_compare=False) -> VcView:
         doc = VcView()
         self._append_page(doc)
         if isinstance(location, (list, tuple)):
@@ -431,6 +435,36 @@ class MeldWindow(Adw.ApplicationWindow):
         recent_comparisons.add(tab)
         return tab
 
+    def _mount_archives_and_open(self, pending, extracted, on_complete, **kwargs):
+        """Mount any archive gfiles in pending and open_paths on the result
+
+        Mounts are kicked off one at a time to keep error handling simple;
+        once all archives have been mounted, the original ``gfiles`` list
+        is patched with the archive roots and ``open_paths`` is re-entered.
+        """
+
+        def on_mounted(mounted_archive: Gio.File | None, error: GLib.Error | None):
+            if not mounted_archive:
+                error_dialog(
+                    _("Failed to mount archive"),
+                    _(f"Error mounting archive {gfile.get_uri()}: {error}"),
+                )
+                on_complete(None, error)
+                return
+            extracted.append(mounted_archive)
+            self._mount_archives_and_open(pending, extracted, on_complete, **kwargs)
+
+        if not pending:
+            self.open_paths(extracted, on_complete=on_complete, **kwargs)
+            return
+
+        gfile = pending.pop(0)
+        if is_archive(gfile):
+            mount_archive_async(gfile, on_mounted)
+        else:
+            extracted.append(gfile)
+            self._mount_archives_and_open(pending, extracted, on_complete, **kwargs)
+
     def _single_file_open(self, gfile):
         doc = VcView()
 
@@ -448,12 +482,32 @@ class MeldWindow(Adw.ApplicationWindow):
         )
         doc.run_diff(path)
 
-    def open_paths(self, gfiles, auto_compare=False, auto_merge=False, focus=False):
+    def open_paths(
+        self,
+        gfiles: list[Gio.File],
+        *,
+        auto_compare: bool = False,
+        auto_merge: bool = False,
+        focus: bool = False,
+        on_complete: Callable[[MeldDoc | None, Exception | None], None],
+    ):
+        if any(is_archive(gfile) for gfile in gfiles):
+            self._mount_archives_and_open(
+                list(gfiles),
+                [],
+                on_complete,
+                auto_compare=auto_compare,
+                auto_merge=auto_merge,
+                focus=focus,
+            )
+            return
+
         tab = None
         if len(gfiles) == 1:
             gfile = gfiles[0]
             if not gfile.query_exists():
-                raise ValueError(_("Cannot compare a non-existent file"))
+                on_complete(None, ValueError(_("Cannot compare a non-existent file")))
+                return
 
             if not gfile or (
                 gfile.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
@@ -467,12 +521,13 @@ class MeldWindow(Adw.ApplicationWindow):
             tab = self.append_diff(
                 gfiles, auto_compare=auto_compare, auto_merge=auto_merge
             )
+
         if tab:
             get_recent_comparisons().add(tab)
             if focus:
                 self.tabview.set_selected_page(self.tabview.get_page(tab))
 
-        return tab
+        on_complete(tab, None)
 
     def current_doc(self):
         """Get the current doc or a dummy object if there is no current"""

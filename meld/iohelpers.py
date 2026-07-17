@@ -1,3 +1,4 @@
+import logging
 import pathlib
 from typing import Optional, Sequence
 
@@ -5,6 +6,8 @@ from gi.repository import Adw, Gio, GLib, Gtk
 
 from meld.conf import _
 from meld.misc import get_modal_parent
+
+log = logging.getLogger(__name__)
 
 
 def trash_or_confirm(
@@ -123,6 +126,13 @@ def format_home_relative_path(gfile: Gio.File) -> str:
         return GLib.build_filenamev(["~", home_relative])
     else:
         return gfile.get_parse_name()
+
+
+def format_mount_relative_path(mount: Gio.Mount, gfile: Gio.File) -> str:
+    relative_path = mount.get_root().get_relative_path(gfile)
+    if relative_path:
+        return f"{mount.get_name()} — {relative_path}"
+    return mount.get_name()
 
 
 def format_parent_relative_path(parent: Gio.File, descendant: Gio.File) -> str:
