@@ -114,10 +114,10 @@ def mount_archive_async(
             if already_mounted:
                 # Don't track archive mounts that we don't do ourselves. They
                 # are someone else's responsibility to unmount, etc.
-                callback(gfile, mountable_archive_gfile, None, allow_none=False)
+                callback(mountable_archive_gfile, None)
                 return
             log.error(f"Failed to mount archive {gfile.get_uri()}: {err.message}")
-            callback(gfile, None, err, allow_none=False)
+            callback(None, err)
             return
 
         try:
@@ -128,7 +128,7 @@ def mount_archive_async(
                 f"Failed to find archive mount: {err}; automatic unmount will fail"
             )
 
-        callback(gfile, mountable_archive_gfile, None, allow_none=False)
+        callback(mountable_archive_gfile, None)
 
     mount_operation = Gio.MountOperation()
     mountable_archive_gfile = _make_mountable_archive_gfile(gfile)
