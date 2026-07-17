@@ -42,12 +42,16 @@ from gi.repository import Gdk, Gio, GLib, GObject, Gtk
 
 # TODO: Don't from-import whole modules
 from meld import misc, tree
-from meld.archivehelpers import format_archive_path
+from meld.archivehelpers import (
+    format_archive_path,
+    is_mounted_archive_root,
+    unmount_archives_by_file,
+)
 from meld.conf import _
 from meld.const import FILE_FILTER_ACTION_FORMAT, MISSING_TIMESTAMP, RecentType
 from meld.externalhelpers import open_files_external
 from meld.iohelpers import find_shared_parent_path, trash_or_confirm
-from meld.melddoc import MeldDoc
+from meld.melddoc import ComparisonState, MeldDoc
 from meld.misc import all_same, apply_text_filters, with_focused_pane
 from meld.settings import bind_settings, get_meld_settings, settings
 from meld.treehelpers import refocus_deleted_path, tree_path_as_tuple
@@ -2050,6 +2054,22 @@ class DirDiff(Gtk.Box, MeldDoc):
         modified_states = (tree.STATE_MODIFIED, tree.STATE_CONFLICT)
         for it in self.model.state_rows(modified_states):
             self.run_diff_from_iter(it)
+
+    def request_close(self):
+        self.state = ComparisonState.Closing
+
+        root = self.model.get_iter_first()
+        gfiles = [
+            Gio.File.new_for_path(f) if f else None
+            for f in self.model.value_paths(root)
+        ]
+        if archive_mounts := [f for f in gfiles if is_mounted_archive_root(f)]:
+            return unmount_archives_by_file(archive_mounts, self.request_close_cb)
+
+        return self.request_close_cb()
+
+    def request_close_cb(self):
+        super().request_close()
 
 
 DirDiff.set_css_name("meld-folder-diff")

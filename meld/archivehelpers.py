@@ -93,6 +93,13 @@ def is_archive(gfile: Gio.File | None) -> bool:
     return info.get_content_type() in ARCHIVE_CONTENT_TYPES
 
 
+def is_mounted_archive_root(gfile: Gio.File | None) -> bool:
+    for mount in _archive_mounts.keys():
+        if mount.get_root().get_path() == gfile.get_path():
+            return True
+    return False
+
+
 def _make_mountable_archive_gfile(gfile: Gio.File) -> Gio.File:
     """Return a mountable Gio.File from the provided archive file"""
     uri = gfile.get_uri()
@@ -156,10 +163,27 @@ def unmount_archive_async(mount: Gio.Mount, callback: Callable[[], None]):
 
 
 def unmount_archives(callback: Callable[[], None]) -> None:
-    mount, _gfile = _archive_mounts.popitem()
+    gfiles = [mount.get_root() for mount in _archive_mounts]
+    unmount_archives_by_file(gfiles, callback)
+
+
+def unmount_archives_by_file(
+    gfiles: list[Gio.File], callback: Callable[[], None]
+) -> None:
+    gfile = gfiles.pop()
+
+    for mount in _archive_mounts.keys():
+        if mount.get_root().get_path() == gfile.get_path():
+            break
+    else:
+        log.warning(f"Tried to unmount unknown archive {gfile.get_path()}")
+        if gfiles:
+            unmount_archives_by_file(gfiles, callback)
+        return
+
     # If we're on the last mount, we callback to the originally passed-in
-    # callback. Otherwise we continue processing _archive_mounts.
-    if _archive_mounts:
-        unmount_archive_async(mount, lambda: unmount_archives(callback))
+    # callback. Otherwise we continue processing gfiles..
+    if gfiles:
+        unmount_archive_async(mount, lambda: unmount_archives_by_file(gfiles, callback))
     else:
         unmount_archive_async(mount, callback)
