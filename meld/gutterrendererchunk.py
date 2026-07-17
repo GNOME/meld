@@ -55,13 +55,13 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
     __gtype_name__ = "GutterRendererChunkLines"
 
     def __init__(self, from_pane, to_pane, linediffer):
-        super().__init__()
-
-        self.set_alignment_mode(GtkSource.GutterRendererAlignmentMode.FIRST)
-        self.props.xpad = 3
-        self.props.ypad = 0
-        self.props.xalign = 1.0
-        self.props.yalign = 0.5
+        super().__init__(
+            xpad=3,
+            ypad=0,
+            xalign=1.0,
+            yalign=0.5,
+            alignment_mode=GtkSource.GutterRendererAlignmentMode.FIRST,
+        )
 
         self.from_pane = from_pane
         self.to_pane = to_pane
