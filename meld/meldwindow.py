@@ -16,7 +16,7 @@
 
 import logging
 import os
-from typing import Any, Dict, Optional, Sequence
+from typing import Any, Callable, Dict, Optional, Sequence
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
@@ -162,7 +162,11 @@ class MeldWindow(Adw.ApplicationWindow):
         if not files:
             return False
 
-        self.open_paths(files)
+        def _log_open_error(tab: MeldDoc | None, error: Exception | None) -> None:
+            if error:
+                log.warning("Couldn't open comparison: %s", error)
+
+        self.open_paths(files, on_complete=_log_open_error)
         return True
 
     def on_idle(self):
@@ -431,7 +435,7 @@ class MeldWindow(Adw.ApplicationWindow):
         recent_comparisons.add(tab)
         return tab
 
-    def _mount_archives_and_open(self, pending, extracted, **kwargs):
+    def _mount_archives_and_open(self, pending, extracted, on_complete, **kwargs):
         """Mount any archive gfiles in pending and open_paths on the result
 
         Mounts are kicked off one at a time to keep error handling simple;
@@ -445,19 +449,13 @@ class MeldWindow(Adw.ApplicationWindow):
                     _("Failed to mount archive"),
                     _(f"Error mounting archive {gfile.get_uri()}: {error}"),
                 )
+                on_complete(None, error)
                 return
             extracted.append(mounted_archive)
-            self._mount_archives_and_open(pending, extracted, **kwargs)
+            self._mount_archives_and_open(pending, extracted, on_complete, **kwargs)
 
         if not pending:
-            try:
-                self.open_paths(extracted, **kwargs)
-            except ValueError as err:
-                paths = ", ".join([f.get_path() for f in extracted])
-                error_dialog(
-                    _("Couldn't compare paths"),
-                    _(f"Failed to compare paths {paths}: {err}"),
-                )
+            self.open_paths(extracted, on_complete=on_complete, **kwargs)
             return
 
         gfile = pending.pop(0)
@@ -465,7 +463,7 @@ class MeldWindow(Adw.ApplicationWindow):
             mount_archive_async(gfile, on_mounted)
         else:
             extracted.append(gfile)
-            self._mount_archives_and_open(pending, extracted, **kwargs)
+            self._mount_archives_and_open(pending, extracted, on_complete, **kwargs)
 
     def _single_file_open(self, gfile):
         doc = VcView()
@@ -484,23 +482,32 @@ class MeldWindow(Adw.ApplicationWindow):
         )
         doc.run_diff(path)
 
-    def open_paths(self, gfiles, auto_compare=False, auto_merge=False, focus=False):
-
+    def open_paths(
+        self,
+        gfiles: list[Gio.File],
+        *,
+        auto_compare: bool = False,
+        auto_merge: bool = False,
+        focus: bool = False,
+        on_complete: Callable[[MeldDoc | None, Exception | None], None],
+    ):
         if any(is_archive(gfile) for gfile in gfiles):
             self._mount_archives_and_open(
                 list(gfiles),
                 [],
+                on_complete,
                 auto_compare=auto_compare,
                 auto_merge=auto_merge,
                 focus=focus,
             )
-            return None
+            return
 
         tab = None
         if len(gfiles) == 1:
             gfile = gfiles[0]
             if not gfile.query_exists():
-                raise ValueError(_("Cannot compare a non-existent file"))
+                on_complete(None, ValueError(_("Cannot compare a non-existent file")))
+                return
 
             if not gfile or (
                 gfile.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
@@ -514,12 +521,13 @@ class MeldWindow(Adw.ApplicationWindow):
             tab = self.append_diff(
                 gfiles, auto_compare=auto_compare, auto_merge=auto_merge
             )
+
         if tab:
             get_recent_comparisons().add(tab)
             if focus:
                 self.tabview.set_selected_page(self.tabview.get_page(tab))
 
-        return tab
+        on_complete(tab, None)
 
     def current_doc(self):
         """Get the current doc or a dummy object if there is no current"""

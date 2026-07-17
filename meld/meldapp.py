@@ -73,26 +73,7 @@ class MeldApp(Adw.Application):
         self.get_active_window().present()
 
     def do_command_line(self, command_line):
-        tab = self.parse_args(command_line)
-
-        if isinstance(tab, int):
-            return tab
-        elif tab:
-
-            def done(tab, status):
-                self.release()
-                tab.command_line.set_exit_status(status)
-                tab.command_line = None
-
-            self.hold()
-            tab.command_line = command_line
-            tab.close_signal.connect(done)
-
-        window = self.get_active_window()
-        if not window.has_pages():
-            window.append_new_comparison()
-        self.activate()
-        return 0
+        return self.parse_args(command_line)
 
     def do_window_removed(self, window: Gtk.Window):
         if len(self.get_windows()) == 1 and have_active_mounts():
@@ -153,21 +134,25 @@ class MeldApp(Adw.Application):
         self.add_window(window)
         return window
 
-    def open_files(self, gfiles, *, window=None, close_on_error=False, **kwargs):
+    def open_files(
+        self, gfiles, *, window=None, close_on_error=False, on_complete, **kwargs
+    ):
         """Open a comparison between files in a Meld window
 
         :param gfiles: list of Gio.File to be compared
         :param window: window in which to open comparison tabs; if
             None, the current window is used
         :param close_on_error: if true, close window if an error occurs
+        :param on_complete: callback to fire after the comparison is created
         """
         window = window or self.get_active_window()
-        try:
-            return window.open_paths(gfiles, **kwargs)
-        except ValueError:
-            if close_on_error:
+
+        def wrapped(tab, error):
+            if error is not None and close_on_error:
                 self.remove_window(window)
-            raise
+            on_complete(tab, error)
+
+        window.open_paths(gfiles, on_complete=wrapped, **kwargs)
 
     def diff_files_callback(self, option, opt_str, value, parser):
         """Gather --diff arguments and append to a list"""
@@ -189,7 +174,7 @@ class MeldApp(Adw.Application):
             )
         parser.values.diff.append(diff_files_args)
 
-    def parse_args(self, command_line):
+    def parse_args(self, command_line) -> int:
         usages = [
             ("", _("Start with an empty window")),
             (
@@ -350,10 +335,30 @@ class MeldApp(Adw.Application):
             cleanup()
             return parser.exit_status
 
+        def hold_primary_tab(tab):
+            # Keep the invocation alive so its exit status is reported when
+            # the command line's comparison tab is closed.
+            def done(tab, status):
+                self.release()
+                tab.command_line.set_exit_status(status)
+                tab.command_line = None
+
+            self.hold()
+            tab.command_line = command_line
+            tab.close_signal.connect(done)
+
+        def finalize():
+            # Run after every comparison from this command line has started or failed
+            window = self.get_active_window()
+            if not window.has_pages():
+                window.append_new_comparison()
+            self.activate()
+
         if options.comparison_file or (len(args) == 1 and args[0].endswith(".meldcmp")):
             path = options.comparison_file or args[0]
             comparison_file_path = os.path.expanduser(path)
             gio_file = Gio.File.new_for_path(comparison_file_path)
+            tab = None
             try:
                 tab = self.get_active_window().append_recent(gio_file.get_uri())
             except (IOError, ValueError):
@@ -361,7 +366,10 @@ class MeldApp(Adw.Application):
             if parser.should_exit:
                 cleanup()
                 return parser.exit_status
-            return tab
+            if tab:
+                hold_primary_tab(tab)
+            finalize()
+            return 0
 
         def make_file_from_command_line(arg):
             f = command_line.create_file_for_arg(arg)
@@ -395,10 +403,6 @@ class MeldApp(Adw.Application):
 
             return f
 
-        tab = None
-        error = None
-        comparisons = [c for c in [args, *options.diff] if c]
-
         # Every Meld invocation creates at most one window. If there is
         # no existing application, a window is created in do_startup().
         # If there is an existing application, then this is a remote
@@ -414,34 +418,59 @@ class MeldApp(Adw.Application):
             window = self.new_window()
             close_on_error = True
 
+        # Some comparisons open synchronously, some asynchronously. We need to
+        # kick them all off and wait for all to either start or fail before
+        # handling window activation and empty-window handling.
+        error = None
+        have_comparison = False
+        pending_comparisons = 1
+
+        def mark_complete(tab=None, err=None):
+            nonlocal error, have_comparison, pending_comparisons
+            if err:
+                error = err
+                log.debug("Couldn't open comparison: %s", err, exc_info=True)
+            elif tab:
+                have_comparison = True
+            pending_comparisons -= 1
+            if pending_comparisons == 0:
+                finalize()
+
+        comparisons = [c for c in [args, *options.diff] if c]
+
         for i, paths in enumerate(comparisons):
             auto_merge = options.auto_merge and i == 0
+            is_primary = i == 0
+
+            def on_complete(tab, err, is_primary=is_primary):
+                if is_primary and tab:
+                    if options.label:
+                        tab.set_labels(options.label)
+                    if options.outfile and isinstance(tab, FileDiff):
+                        outfile = make_file_from_command_line(options.outfile)
+                        tab.set_merge_output_file(outfile)
+                    if len(comparisons) == 1:
+                        hold_primary_tab(tab)
+                mark_complete(tab, err)
+
+            pending_comparisons += 1
             try:
                 files = [make_file_from_command_line(p) for p in paths]
-                tab = self.open_files(
-                    files,
-                    window=window,
-                    close_on_error=close_on_error,
-                    auto_compare=options.auto_compare,
-                    auto_merge=auto_merge,
-                    focus=i == 0,
-                )
             except ValueError as err:
-                error = err
-                log.debug("Couldn't open comparison: %s", error, exc_info=True)
-            else:
-                if i > 0:
-                    continue
-
-                if options.label:
-                    tab.set_labels(options.label)
-
-                if options.outfile and isinstance(tab, FileDiff):
-                    outfile = make_file_from_command_line(options.outfile)
-                    tab.set_merge_output_file(outfile)
+                on_complete(None, err)
+                continue
+            self.open_files(
+                files,
+                window=window,
+                close_on_error=close_on_error,
+                on_complete=on_complete,
+                auto_compare=options.auto_compare,
+                auto_merge=auto_merge,
+                focus=is_primary,
+            )
 
         if error:
-            if not tab:
+            if not have_comparison:
                 parser.local_error(error)
             else:
                 print(error)
@@ -454,4 +483,5 @@ class MeldApp(Adw.Application):
             return parser.exit_status
 
         parser.command_line = None
-        return tab if len(comparisons) == 1 else None
+        mark_complete()
+        return 0
