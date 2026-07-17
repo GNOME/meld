@@ -27,30 +27,6 @@ from meld.style import get_common_theme
 from meld.ui.gtkutil import alpha_tint
 
 
-def get_background_rgba(renderer):
-    """Get and cache the expected background for the renderer widget
-
-    Current versions of GTK+ don't paint the background of text view
-    gutters with the actual expected widget background, which causes
-    them to look wrong when put next to any other widgets. This hack
-    just gets the background from the renderer's view, and then caches
-    it for performance, and on the basis that all renderers will be
-    assigned to similarly-styled views. This is fragile, but the
-    alternative is really significantly slower.
-    """
-    global _background_rgba
-    if _background_rgba is None:
-        if renderer.props.view:
-            stylecontext = renderer.props.view.get_style_context()
-            background_set, _background_rgba = stylecontext.lookup_color(
-                "theme_bg_color"
-            )
-    return _background_rgba
-
-
-_background_rgba = None
-
-
 class GutterRendererChunkLines(GtkSource.GutterRendererText):
     __gtype_name__ = "GutterRendererChunkLines"
 
@@ -145,18 +121,15 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
         # align correctly.
         height += 1
 
-        if not chunk or chunk[1] == chunk[2]:
-            # For some reason, the background drawing doesn't work as we
-            # expect in the gutter context; this gives us our desired result
-            background_rgba = get_background_rgba(self)
-        elif self.props.view.current_chunk_check(chunk):
-            background_rgba = self.chunk_highlights[chunk[0]]
-        else:
-            background_rgba = self.fill_colors[chunk[0]]
+        if chunk and chunk[1] != chunk[2]:
+            if self.props.view.current_chunk_check(chunk):
+                background_rgba = self.chunk_highlights[chunk[0]]
+            else:
+                background_rgba = self.fill_colors[chunk[0]]
 
-        rect = Graphene.Rect()
-        rect.init(x, y + 1, width, height)
-        snapshot.append_color(background_rgba, rect)
+            rect = Graphene.Rect()
+            rect.init(x, y + 1, width, height)
+            snapshot.append_color(background_rgba, rect)
 
         # If we don't have a chunk, we don't draw any borders
         if chunk:
@@ -181,3 +154,6 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
         return GtkSource.GutterRendererText.do_snapshot_line(
             self, snapshot, lines, line
         )
+
+
+GutterRendererChunkLines.set_css_name("meld-gutter-line-renderer")
