@@ -189,7 +189,7 @@ class MeldStatusBar(Gtk.Box):
             GObject.BindingFlags.DEFAULT,
             format_cursor_position,
         )
-        self.connect("start-go-to-line", lambda *args: button.clicked())
+        self.connect("start-go-to-line", lambda *args: button.popup())
         button.set_popover(pop)
         # Set a label width to avoid other widgets moving on cursor change
         reasonable_width = len(format_cursor_position(None, (1000, 100))) - 2
