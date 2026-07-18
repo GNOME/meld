@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-07-11 00:54+0000\n"
-"PO-Revision-Date: 2026-07-11 16:44+0800\n"
+"POT-Creation-Date: 2026-07-17 06:08+0000\n"
+"PO-Revision-Date: 2026-07-18 09:34+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -1022,8 +1022,8 @@ msgstr "上次的日志："
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1300
-#: meld/iohelpers.py:68 meld/vcview.py:807
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1304
+#: meld/iohelpers.py:71 meld/vcview.py:807
 msgid "_Cancel"
 msgstr "取消(_C)"
 
@@ -1236,7 +1236,7 @@ msgstr "启用"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:47 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:641
 msgid "Name"
 msgstr "名称"
 
@@ -1313,7 +1313,7 @@ msgstr "有换行"
 msgid "Replace _All"
 msgstr "全部替换(_A)"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1302
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1306
 msgid "_Replace"
 msgstr "替换(_R)"
 
@@ -1813,87 +1813,87 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:664 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "大小"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:672 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "修改时间"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:680 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "修改时间（ISO）"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:688 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "权限"
 
-#: meld/dirdiff.py:972 meld/dirdiff.py:1002
+#: meld/dirdiff.py:976 meld/dirdiff.py:1006
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "正在扫描 {folder}"
 
-#: meld/dirdiff.py:1141
+#: meld/dirdiff.py:1145
 msgid "Done"
 msgstr "完成"
 
-#: meld/dirdiff.py:1153
+#: meld/dirdiff.py:1157
 msgid "Folder {} is being compared to itself"
 msgstr "文件夹 {} 正与自己进行比较"
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1165
 msgid "Folders have no differences"
 msgstr "文件夹间没有差异"
 
-#: meld/dirdiff.py:1162
+#: meld/dirdiff.py:1166
 msgid "Contents of scanned files in folders are identical."
 msgstr "文件夹中的已扫描文件的内容相同。"
 
-#: meld/dirdiff.py:1164
+#: meld/dirdiff.py:1168
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "文件夹中的已扫描文件似乎相同，但是内容尚未被扫描。"
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1172
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "正在使用文件筛选器，因此并非所有文件都已被扫描。"
 
-#: meld/dirdiff.py:1171
+#: meld/dirdiff.py:1175
 msgid "Text filters are in use and may be masking content differences."
 msgstr "正在使用文本筛选器，可能会屏蔽内容的差异。"
 
-#: meld/dirdiff.py:1187 meld/filediff.py:2161
+#: meld/dirdiff.py:1191 meld/filediff.py:2161
 msgid "Hide"
 msgstr "隐藏"
 
-#: meld/dirdiff.py:1189 meld/filediff.py:2163 meld/filediff.py:2193
+#: meld/dirdiff.py:1193 meld/filediff.py:2163 meld/filediff.py:2193
 #: meld/filediff.py:2195 meld/filediff.py:2219 meld/ui/msgarea.py:140
 #: meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "隐藏(_D)"
 
-#: meld/dirdiff.py:1200
+#: meld/dirdiff.py:1204
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "扫描此文件夹时出现了多个错误"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1205
 msgid "Files with invalid encodings found"
 msgstr "发现编码无效的文件"
 
-#: meld/dirdiff.py:1204
+#: meld/dirdiff.py:1208
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "某些文件编码不正确。名称是这样的："
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1210
 msgid "Files hidden by case insensitive comparison"
 msgstr "因不区分大小写比较而隐藏的文件"
 
-#: meld/dirdiff.py:1209
+#: meld/dirdiff.py:1213
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1901,27 +1901,27 @@ msgstr ""
 "您正在区分大小写的文件系统上运行不区分大小写的比较。此文件夹中的以下文件被隐"
 "藏："
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1217
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "文件具有不匹配的起始或尾部空白"
 
-#: meld/dirdiff.py:1216
+#: meld/dirdiff.py:1220
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "此次比较发现了一些仅存在起始和尾部空白差异的文件。它们的名称为："
 
-#: meld/dirdiff.py:1227
+#: meld/dirdiff.py:1231
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "“{first_file}” 已被 “{second_file}”隐藏"
 
-#: meld/dirdiff.py:1311
+#: meld/dirdiff.py:1315
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "要替换文件夹“%s”吗？"
 
-#: meld/dirdiff.py:1313
+#: meld/dirdiff.py:1317
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1930,11 +1930,11 @@ msgstr ""
 "另一个同名的文件夹已存在于“%s”中。\n"
 "如果要替换已存在的文件夹，其中的所有文件都将丢失。"
 
-#: meld/dirdiff.py:1328
+#: meld/dirdiff.py:1332
 msgid "Error copying file"
 msgstr "复制文件时出错"
 
-#: meld/dirdiff.py:1329
+#: meld/dirdiff.py:1333
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1947,11 +1947,11 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1942
+#: meld/dirdiff.py:1950
 msgid "No folder"
 msgstr "没有文件夹"
 
-#: meld/dirdiff.py:1955
+#: meld/dirdiff.py:1963
 msgid "Folder comparison:"
 msgstr "文件夹比较："
 
@@ -2179,27 +2179,27 @@ msgstr "无法交换版本控制比较"
 msgid "Swapping panes is not supported in version control mode."
 msgstr "在版本控制模式中不支持交换窗格。"
 
-#: meld/iohelpers.py:40
+#: meld/iohelpers.py:43
 msgid "Deleting remote folders is not supported"
 msgstr "不支持删除远端文件夹"
 
-#: meld/iohelpers.py:42
+#: meld/iohelpers.py:45
 msgid "Not a file or directory"
 msgstr "不是文件或目录"
 
-#: meld/iohelpers.py:62
+#: meld/iohelpers.py:65
 msgid "Delete Permanently?"
 msgstr "永久删除吗？"
 
-#: meld/iohelpers.py:65
+#: meld/iohelpers.py:68
 msgid "Do you want to delete it permanently?"
 msgstr "您要永久删除它吗？"
 
-#: meld/iohelpers.py:69
+#: meld/iohelpers.py:72
 msgid "_Delete Permanently"
 msgstr "永久删除(_D)"
 
-#: meld/meldapp.py:135
+#: meld/meldapp.py:121
 msgid "translator-credits"
 msgstr ""
 "Funda Wang <fundawang@linux.net.cn>, 2004, 2005\n"
@@ -2210,35 +2210,35 @@ msgstr ""
 "Whired Planck <fungdaat31@outlook.com>, 2020-2021\n"
 "lumingzh <lumingzh@qq.com>, 2024-2026"
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:173
 msgid "wrong number of arguments supplied to --diff"
 msgstr "提供给 --diff 的参数个数错误"
 
-#: meld/meldapp.py:189
+#: meld/meldapp.py:179
 msgid "Start with an empty window"
 msgstr "启动时打开空白窗口"
 
-#: meld/meldapp.py:191 meld/meldapp.py:195
+#: meld/meldapp.py:181 meld/meldapp.py:185
 msgid "file"
 msgstr "文件"
 
-#: meld/meldapp.py:191 meld/meldapp.py:199
+#: meld/meldapp.py:181 meld/meldapp.py:189
 msgid "folder"
 msgstr "文件夹"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:182
 msgid "Start a version control comparison"
 msgstr "开始版本控制比较"
 
-#: meld/meldapp.py:196
+#: meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "开始两方或三方文件比较"
 
-#: meld/meldapp.py:200
+#: meld/meldapp.py:190
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "开始两方或三方文件夹比较"
 
-#: meld/meldapp.py:207
+#: meld/meldapp.py:197
 msgid ""
 "\n"
 "\n"
@@ -2249,70 +2249,70 @@ msgstr ""
 "\n"
 "对于文件比较，可以使用特殊参数 @blank 代替 <file> 参数来创建空白窗格。"
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:241
 #, python-format
 msgid "Error: %s\n"
 msgstr "错误：%s\n"
 
-#: meld/meldapp.py:258
+#: meld/meldapp.py:248
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld 是一个文件和目录比较工具。"
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:256
 msgid "Set label to use instead of file name"
 msgstr "设置并使用标签来代替文件名"
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:263
 msgid "Open a new tab in an already running instance"
 msgstr "在已经运行的实例中打开一个新标签页"
 
-#: meld/meldapp.py:280
+#: meld/meldapp.py:270
 msgid "Automatically compare all differing files on startup"
 msgstr "启动时自动比较所有不同的文件"
 
-#: meld/meldapp.py:283
+#: meld/meldapp.py:273
 msgid "Ignored for compatibility"
 msgstr "为保持兼容而忽略"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:282
 msgid "Set the target file for saving a merge result"
 msgstr "设置用于保存合并结果的目标文件"
 
-#: meld/meldapp.py:299
+#: meld/meldapp.py:289
 msgid "Automatically merge files"
 msgstr "自动合并文件"
 
-#: meld/meldapp.py:308
+#: meld/meldapp.py:298
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "从 Meld 比较文件加载保存的比较"
 
-#: meld/meldapp.py:317
+#: meld/meldapp.py:307
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "为提供的文件或文件夹创建差异标签页"
 
-#: meld/meldapp.py:338
+#: meld/meldapp.py:328
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "参数过多（需要 0-3 个，得到 %d  个）"
 
-#: meld/meldapp.py:340
+#: meld/meldapp.py:330
 msgid "can’t auto-merge less than 3 files"
 msgstr "无法自动合并少于 3 个的文件"
 
-#: meld/meldapp.py:342
+#: meld/meldapp.py:332
 msgid "can’t auto-merge directories"
 msgstr "无法自动合并目录"
 
-#: meld/meldapp.py:355
+#: meld/meldapp.py:365
 msgid "Error reading saved comparison file"
 msgstr "读取保存的比较文件时出错"
 
-#: meld/meldapp.py:383
+#: meld/meldapp.py:396
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "无效路径或 URI“%s"
 
-#: meld/meldapp.py:389
+#: meld/meldapp.py:402
 msgid "remote folder “{}” not supported"
 msgstr "不支持远端文件夹“{}”"
 
@@ -2321,20 +2321,24 @@ msgstr "不支持远端文件夹“{}”"
 msgid "<unnamed>"
 msgstr "<未命名>"
 
-#: meld/meldwindow.py:137
+#: meld/meldwindow.py:138
 msgid "Filename"
 msgstr "文件名"
 
-#: meld/meldwindow.py:372
+#: meld/meldwindow.py:376
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "需要三个文件以自动合并，已得到：%r"
 
-#: meld/meldwindow.py:401
+#: meld/meldwindow.py:405
 msgid "Cannot compare a mixture of files and directories"
 msgstr "无法对文件和目录混合比较"
 
-#: meld/meldwindow.py:456
+#: meld/meldwindow.py:449
+msgid "Failed to mount archive"
+msgstr "挂载归档文件失败"
+
+#: meld/meldwindow.py:509
 msgid "Cannot compare a non-existent file"
 msgstr "无法比较不存在的文件"
 
@@ -2451,7 +2455,7 @@ msgstr "纯文本"
 msgid "Column options"
 msgstr "列选项"
 
-#: meld/ui/pathlabel.py:34
+#: meld/ui/pathlabel.py:36
 msgid "Unnamed file"
 msgstr "未命名文件"
 
