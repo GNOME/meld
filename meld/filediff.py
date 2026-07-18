@@ -1850,8 +1850,12 @@ class FileDiff(Gtk.Box, MeldDoc):
             for buf in self.textbuffer:
                 buf.place_cursor(buf.get_start_iter())
 
-            chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
-            target_chunk = chunk if chunk is not None else next_
+            if self.linediffer.conflicts:
+                target_chunk = self.linediffer.conflicts[0]
+            else:
+                chunk, prev, next_ = self.linediffer.locate_chunk(1, 0)
+                target_chunk = chunk if chunk is not None else next_
+
             if target_chunk is not None:
                 self.scheduler.add_task(
                     lambda: self.go_to_chunk(target_chunk, centered=True), True
