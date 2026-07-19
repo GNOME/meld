@@ -23,7 +23,6 @@ from gi.repository import Gdk, GObject, Gtk
 from meld.settings import get_meld_settings
 from meld.style import get_common_theme
 from meld.tree import STATE_ERROR, STATE_MODIFIED, STATE_NEW
-from meld.ui.gtkutil import make_gdk_rgba
 
 log = logging.getLogger(__name__)
 
@@ -69,6 +68,7 @@ class ChunkMap(Gtk.DrawingArea):
         self.chunks = []
         self._grab_coordinates = None
         self._cached_map = None
+        self._base_colors = None
 
         click_controller = Gtk.GestureClick()
         click_controller.connect("pressed", self.button_press_event)
@@ -100,6 +100,11 @@ class ChunkMap(Gtk.DrawingArea):
         self._cached_map = None
         return Gtk.DrawingArea.do_size_allocate(self, *args)
 
+    def do_css_changed(self, change):
+        self._base_colors = None
+        self._cached_map = None
+        Gtk.DrawingArea.do_css_changed(self, change)
+
     def on_setting_changed(self, settings, key):
         if key == "style-scheme":
             self.fill_colors, self.line_colors = get_common_theme()
@@ -109,28 +114,25 @@ class ChunkMap(Gtk.DrawingArea):
         return 1.0
 
     def get_map_base_colors(self) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
-        raise NotImplementedError()
+        if not self._base_colors:
+            # Workaround to let us look up named CSS colours for our custom
+            # painting.
+            probe = Gtk.Box()
+            probe.set_css_classes(["meld-chunkmap-base"])
+            base = probe.get_color()
+            probe.set_css_classes(["meld-chunkmap-text"])
+            text = probe.get_color()
 
-    def _make_map_base_colors(
-        self, widget
-    ) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
-        stylecontext = widget.get_style_context()
-        base_set, base = stylecontext.lookup_color("theme_base_color")
-        if not base_set:
-            base = make_gdk_rgba(1.0, 1.0, 1.0, 1.0)
-        text_set, text = stylecontext.lookup_color("theme_text_color")
-        if not text_set:
-            text = make_gdk_rgba(0.0, 0.0, 0.0, 1.0)
-        border_set, border = stylecontext.lookup_color("borders")
-        if not border_set:
-            border = make_gdk_rgba(0.95, 0.95, 0.95, 1.0)
+            border = self.get_color()
 
-        handle_overdraw = text.copy()
-        handle_overdraw.alpha = self.handle_overdraw_alpha
-        handle_outline = text.copy()
-        handle_outline.alpha = self.handle_outline_alpha
+            handle_overdraw = text.copy()
+            handle_overdraw.alpha = self.handle_overdraw_alpha
+            handle_outline = text.copy()
+            handle_outline.alpha = self.handle_outline_alpha
 
-        return base, border, handle_overdraw, handle_outline
+            self._base_colors = (base, border, handle_overdraw, handle_outline)
+
+        return self._base_colors
 
     def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
@@ -298,9 +300,6 @@ class TextViewChunkMap(ChunkMap):
         heights = [adj.get_upper() for adj in adjustments if adj.get_upper() > 0]
         return self.props.adjustment.get_upper() / max(heights)
 
-    def get_map_base_colors(self):
-        return self._make_map_base_colors(self.textview)
-
     def chunk_coords_by_tag(self):
 
         buf = self.textview.get_buffer()
@@ -340,6 +339,9 @@ class TextViewChunkMap(ChunkMap):
             cursor = self.textview.get_iter_location(it)
             offset = int(cursor.height / 2 - self.adjustment.get_page_size() / 2)
             self.adjustment.set_value(cursor.y + offset)
+
+
+TextViewChunkMap.set_css_name("chunk-map")
 
 
 class TreeViewChunkMap(ChunkMap):
@@ -390,9 +392,6 @@ class TreeViewChunkMap(ChunkMap):
     def clear_cached_map(self, *args):
         self._cached_map = None
 
-    def get_map_base_colors(self):
-        return self._make_map_base_colors(self.treeview)
-
     def chunk_coords_by_tag(self):
         def recurse_tree_states(rowiter):
             row_states.append(model.get_state(rowiter.iter, self.treeview_idx))
@@ -436,3 +435,6 @@ class TreeViewChunkMap(ChunkMap):
             self.treeview.scroll_to_point(-1, location)
         else:
             self.adjustment.set_value(location)
+
+
+TreeViewChunkMap.set_css_name("chunk-map")
