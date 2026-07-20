@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-06-25 18:57+0000\n"
-"PO-Revision-Date: 2026-06-27 14:51+020011\n"
+"POT-Creation-Date: 2026-07-18 04:38+0000\n"
+"PO-Revision-Date: 2026-07-20 11:21+0200\n"
 "Last-Translator: Dick Groskamp <dikgro@yahoo.co.uk>\n"
 "Language-Team: GNOME-NL https://matrix.to/#/#nl:gnome.org\n"
 "Language: nl\n"
@@ -975,8 +975,8 @@ msgstr "Vorige logs:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1300
-#: meld/iohelpers.py:68 meld/vcview.py:807
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1304
+#: meld/iohelpers.py:71 meld/vcview.py:807
 msgid "_Cancel"
 msgstr "_Annuleren"
 
@@ -1187,7 +1187,7 @@ msgstr "Actief"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:47 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:641
 msgid "Name"
 msgstr "Naam"
 
@@ -1264,7 +1264,7 @@ msgstr "Doorloop"
 msgid "Replace _All"
 msgstr "_Alles vervangen"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1302
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1306
 msgid "_Replace"
 msgstr "_Vervangen"
 
@@ -1759,112 +1759,113 @@ msgid "Mac OS (CR)"
 msgstr "macOS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:664 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Grootte"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:672 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Tijd wijziging"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:680 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Tijd wijziging (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:688 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Toegangsrechten"
 
-#: meld/dirdiff.py:972 meld/dirdiff.py:1002
+#: meld/dirdiff.py:976 meld/dirdiff.py:1006
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "Scannen {folder}"
 
-#: meld/dirdiff.py:1141
+#: meld/dirdiff.py:1145
 msgid "Done"
 msgstr "Voltooid"
 
-#: meld/dirdiff.py:1153
+#: meld/dirdiff.py:1157
 msgid "Folder {} is being compared to itself"
 msgstr "Map {} wordt met zichzelf vergeleken"
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1165
 msgid "Folders have no differences"
 msgstr "Mappen hebben geen verschillen"
 
-#: meld/dirdiff.py:1162
+#: meld/dirdiff.py:1166
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhoud van gescande bestanden in mappen is identiek."
 
-#: meld/dirdiff.py:1164
+#: meld/dirdiff.py:1168
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "Gescande bestanden in mappen lijken identiek, maar de inhoud is niet gescand."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1172
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Bestandsfilters worden gebruikt, dus zijn niet alle bestanden gescand."
 
-#: meld/dirdiff.py:1171
+#: meld/dirdiff.py:1175
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Tekstfilters worden gebruikt en die zouden verschillen in de inhoud kunnen maskeren."
 
-#: meld/dirdiff.py:1187 meld/filediff.py:2150
+#: meld/dirdiff.py:1191 meld/filediff.py:2165
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1189 meld/filediff.py:2152 meld/filediff.py:2182
-#: meld/filediff.py:2184 meld/ui/msgarea.py:140 meld/ui/msgarea.py:152
+#: meld/dirdiff.py:1193 meld/filediff.py:2167 meld/filediff.py:2197
+#: meld/filediff.py:2199 meld/filediff.py:2223 meld/ui/msgarea.py:140
+#: meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:1200
+#: meld/dirdiff.py:1204
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Er traden meerdere fouten op bij het scannen van deze map"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1205
 msgid "Files with invalid encodings found"
 msgstr "Bestanden met ongeldige coderingen gevonden"
 
-#: meld/dirdiff.py:1204
+#: meld/dirdiff.py:1208
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Sommige bestanden hadden een onjuiste codering. De namen leken op:"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1210
 msgid "Files hidden by case insensitive comparison"
 msgstr "Bestanden verborgen door hoofdletterongevoelige vergelijking"
 
-#: meld/dirdiff.py:1209
+#: meld/dirdiff.py:1213
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr "U gebruikt een hoofdletterongevoelige vergelijking op een hoofdlettergevoelig bestandssysteem. De volgende bestanden in deze map zijn verborgen:"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1217
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Bestanden hadden een niet overeenkomende voorafgaande of achterliggende witruimte"
 
-#: meld/dirdiff.py:1216
+#: meld/dirdiff.py:1220
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "Deze vergelijking vond enkele bestanden die alleen van elkaar verschilden in voorafgaande en achterliggende witruimte. Hun namen zijn:"
 
-#: meld/dirdiff.py:1227
+#: meld/dirdiff.py:1231
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "‘{first_file}’ verborgen door ‘{second_file}’"
 
-#: meld/dirdiff.py:1311
+#: meld/dirdiff.py:1315
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Map ‘%s’ vervangen?"
 
-#: meld/dirdiff.py:1313
+#: meld/dirdiff.py:1317
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1872,11 +1873,11 @@ msgid ""
 msgstr "Er bestaat al een andere map met dezelfde naam in ‘%s’.\n"
 "Als u de bestaande map vervangt, gaan alle bestanden erin verloren."
 
-#: meld/dirdiff.py:1328
+#: meld/dirdiff.py:1332
 msgid "Error copying file"
 msgstr "Fout tijdens kopiëren van bestand"
 
-#: meld/dirdiff.py:1329
+#: meld/dirdiff.py:1333
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1888,11 +1889,11 @@ msgstr "Kon {source} niet kopiëren\n"
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1942
+#: meld/dirdiff.py:1950
 msgid "No folder"
 msgstr "Geen map"
 
-#: meld/dirdiff.py:1955
+#: meld/dirdiff.py:1963
 msgid "Folder comparison:"
 msgstr "Mappen vergelijken:"
 
@@ -1904,94 +1905,98 @@ msgstr "Starten aangepaste bewerker mislukt"
 msgid "Unsupported file type"
 msgstr "Niet ondersteund bestandstype"
 
-#: meld/filediff.py:1244
+#: meld/filediff.py:1246
 msgid "Comparison results will be inaccurate"
 msgstr "Resultaten van de vergelijking zullen niet nauwkeurig zijn"
 
-#: meld/filediff.py:1246
+#: meld/filediff.py:1248
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr "Een filter wijzigde het aantal regels in het bestand, wat niet ondersteund wordt. De vergelijking zal niet nauwkeurig zijn."
 
-#: meld/filediff.py:1288
+#: meld/filediff.py:1290
 msgid "Mark conflict as resolved?"
 msgstr "Conflict als opgelost markeren?"
 
-#: meld/filediff.py:1290
+#: meld/filediff.py:1292
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Als het conflict met succes werd opgelost, kunt u het nu als opgelost markeren."
 
-#: meld/filediff.py:1294
+#: meld/filediff.py:1296
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: meld/filediff.py:1295
+#: meld/filediff.py:1297
 msgid "Mark _Resolved"
 msgstr "Markeren als _Opgelost"
 
-#: meld/filediff.py:1574 meld/imagediff.py:238
+#: meld/filediff.py:1576 meld/imagediff.py:238
 msgid "File comparison:"
 msgstr "Bestandsvergelijking:"
 
-#: meld/filediff.py:1718
+#: meld/filediff.py:1722
 #, python-brace-format
 msgid ""
 "Line {line_number} exceeded maximum line length ({line_length} > "
-"{LINE_LENGTH_LIMIT})"
-msgstr "Regel {line_number} overschreed maximale regellengte ({line_length} > {LINE_LENGTH_LIMIT})"
+"{LINE_LENGTH_LIMIT}).\n"
+"\n"
+"Loading files with very long lines may make Meld slow or unresponsive."
+msgstr "Regel {line_number} overschreed de maximale regellengte ({line_length} > {LINE_LENGTH_LIMIT}).\n"
+"\n"
+"Laden van bestanden met hele lange regels zou Meld langzaam kunnen maken of zelfs niet laten reageren."
 
-#: meld/filediff.py:1766
+#: meld/filediff.py:1772
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Er was een probleem bij het openen van het bestand ‘%s’."
 
-#: meld/filediff.py:1788
+#: meld/filediff.py:1799
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Bestand %s lijkt een binair bestand te zijn."
 
-#: meld/filediff.py:1789
+#: meld/filediff.py:1800
 msgid "Do you want to open the file using the default application?"
 msgstr "Wilt u het bestand openen met de standaardtoepassing?"
 
-#: meld/filediff.py:1794
+#: meld/filediff.py:1805
 msgid "Open"
 msgstr "Openen"
 
-#: meld/filediff.py:1895
+#: meld/filediff.py:1910
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Bestand %s is op schijf gewijzigd"
 
-#: meld/filediff.py:1896
+#: meld/filediff.py:1911
 msgid "Do you want to reload the file?"
 msgstr "Wilt u het bestand opnieuw laden?"
 
-#: meld/filediff.py:1901
+#: meld/filediff.py:1916
 msgid "_Reload"
 msgstr "_Opnieuw laden"
 
-#: meld/filediff.py:2102
+#: meld/filediff.py:2117
 msgid "File {} is being compared to itself"
 msgstr "Bestand {} wordt met zichzelf vergeleken"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2128
 msgid "Files are identical"
 msgstr "Bestanden zijn identiek"
 
-#: meld/filediff.py:2127
+#: meld/filediff.py:2142
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr "Tekstfilters worden gebruikt en zouden verschillen tussen de bestanden kunnen maskeren. Wilt u de niet gefilterde bestanden vergelijken?"
 
-#: meld/filediff.py:2133
+#: meld/filediff.py:2148
 msgid "Files differ in line endings only"
 msgstr "Bestanden verschillen alleen in regeleinden"
 
-#: meld/filediff.py:2135
+#: meld/filediff.py:2150
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -1999,74 +2004,78 @@ msgid ""
 msgstr "Bestanden zijn identiek, behalve voor verschillen in regeleinden:\n"
 "%s"
 
-#: meld/filediff.py:2155
+#: meld/filediff.py:2170
 msgid "Show without filters"
 msgstr "Zonder filters weergeven"
 
-#: meld/filediff.py:2174
+#: meld/filediff.py:2189
 msgid "Change highlighting incomplete"
 msgstr "Wijzigen accentueren niet volledig"
 
-#: meld/filediff.py:2176
+#: meld/filediff.py:2191
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr "Sommige wijzigingen werden niet geaccentueerd, omdat ze te groot waren. U kunt Meld forceren om langer over het accentueren van wijzigingen te doen, hoewel dit traag zou kunnen worden."
 
-#: meld/filediff.py:2185
+#: meld/filediff.py:2200
 msgid "Keep highlighting"
 msgstr "Accentueren behouden"
 
-#: meld/filediff.py:2187
+#: meld/filediff.py:2202
 msgid "_Keep highlighting"
 msgstr "_Accentueren behouden"
 
-#: meld/filediff.py:2198
+#: meld/filediff.py:2224
+msgid "_Load anyway"
+msgstr "Toch _laden"
+
+#: meld/filediff.py:2235
 msgid "Saving failed"
 msgstr "Opslaan mislukt"
 
-#: meld/filediff.py:2200
+#: meld/filediff.py:2237
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr "Overweeg om kritieke wijzigingen te kopiëren naar een ander programma of bestand om gegevensverlies te vermijden."
 
-#: meld/filediff.py:2209
+#: meld/filediff.py:2246
 msgid "Save Left Pane As"
 msgstr "Linkerpaneel opslaan als"
 
-#: meld/filediff.py:2211
+#: meld/filediff.py:2248
 msgid "Save Middle Pane As"
 msgstr "Middelste paneel opslaan als"
 
-#: meld/filediff.py:2213
+#: meld/filediff.py:2250
 msgid "Save Right Pane As"
 msgstr "Rechterpaneel opslaan als"
 
-#: meld/filediff.py:2234
+#: meld/filediff.py:2271
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "Bestand %s is op schijf gewijzigd nadat het werd geopend"
 
-#: meld/filediff.py:2237
+#: meld/filediff.py:2274
 msgid "If you save it, any external changes will be lost."
 msgstr "Als u het opslaat, zullen externe wijzigingen verloren gaan."
 
-#: meld/filediff.py:2241
+#: meld/filediff.py:2278
 msgid "Save Anyway"
 msgstr "Toch opslaan"
 
-#: meld/filediff.py:2242
+#: meld/filediff.py:2279
 msgid "Don’t Save"
 msgstr "Niet opslaan"
 
-#: meld/filediff.py:2280
+#: meld/filediff.py:2317
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "Bestand ‘{}’ bevat tekens die niet kunnen worden gecodeerd met zijn huidige codering ‘{}’."
 
-#: meld/filediff.py:2284 meld/patchdialog.py:127
+#: meld/filediff.py:2321 meld/patchdialog.py:127
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2074,91 +2083,91 @@ msgid ""
 msgstr "Kon bestand niet opslaan omdat:\n"
 "%s"
 
-#: meld/filediff.py:2289 meld/patchdialog.py:126
+#: meld/filediff.py:2326 meld/patchdialog.py:126
 #, python-format
 msgid "Could not save file %s."
 msgstr "Kon bestand %s niet opslaan."
 
-#: meld/filediff.py:2707
+#: meld/filediff.py:2744
 msgid "Live comparison updating disabled"
 msgstr "Live bijwerken van vergelijking uitgeschakeld"
 
-#: meld/filediff.py:2709
+#: meld/filediff.py:2746
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr "Live bijwerken van vergelijkingen is uitgeschakeld als synchronisatiepunten actief zijn. U kunt nog steeds handmatig de vergelijking vernieuwen en live bijwerken zal terugkeren als synchronisatiepunten worden leeggemaakt."
 
-#: meld/filediff.py:2749
+#: meld/filediff.py:2786
 msgid "Can't swap unsaved files"
 msgstr "Kan niet opgeslagen bestanden niet wisselen"
 
-#: meld/filediff.py:2750
+#: meld/filediff.py:2787
 msgid "Files must be saved to disk before swapping panes."
 msgstr "Bestanden moeten op schijf zijn opgeslagen voordat panelen kunnen worden gewisseld."
 
-#: meld/filediff.py:2756
+#: meld/filediff.py:2793
 msgid "Can't swap version control comparisons"
 msgstr "Kan vergelijkingen van versiebeheer niet wisselen"
 
-#: meld/filediff.py:2757
+#: meld/filediff.py:2794
 msgid "Swapping panes is not supported in version control mode."
 msgstr "Wisselen van panelen wordt niet ondersteund in de modus voor versiebeheer."
 
-#: meld/iohelpers.py:40
+#: meld/iohelpers.py:43
 msgid "Deleting remote folders is not supported"
 msgstr "Verwijderen van mappen op afstand wordt niet ondersteund"
 
-#: meld/iohelpers.py:42
+#: meld/iohelpers.py:45
 msgid "Not a file or directory"
 msgstr "Geen bestand of map"
 
-#: meld/iohelpers.py:62
+#: meld/iohelpers.py:65
 msgid "Delete Permanently?"
 msgstr "Permanent verwijderen?"
 
-#: meld/iohelpers.py:65
+#: meld/iohelpers.py:68
 msgid "Do you want to delete it permanently?"
 msgstr "Wilt u het permanent verwijderen?"
 
-#: meld/iohelpers.py:69
+#: meld/iohelpers.py:72
 msgid "_Delete Permanently"
 msgstr "_Permanent verwijderen"
 
-#: meld/meldapp.py:135
+#: meld/meldapp.py:121
 msgid "translator-credits"
 msgstr "Vincent van Adrighem, Wouter Bolsterlee, Hannie Dumoleyn, Sense Hofstede, Justin van Steijn, Reinout van Schouwen, Nathan Follens en Dick Groskamp."
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:173
 msgid "wrong number of arguments supplied to --diff"
 msgstr "verkeerd aantal argumenten opgegeven voor --diff"
 
-#: meld/meldapp.py:189
+#: meld/meldapp.py:179
 msgid "Start with an empty window"
 msgstr "Begin met een leeg venster"
 
-#: meld/meldapp.py:191 meld/meldapp.py:195
+#: meld/meldapp.py:181 meld/meldapp.py:185
 msgid "file"
 msgstr "bestand"
 
-#: meld/meldapp.py:191 meld/meldapp.py:199
+#: meld/meldapp.py:181 meld/meldapp.py:189
 msgid "folder"
 msgstr "map"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:182
 msgid "Start a version control comparison"
 msgstr "Begin een vergelijking van versiebeheer"
 
-#: meld/meldapp.py:196
+#: meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr "Begin een 2- of 3-weg bestandsvergelijking"
 
-#: meld/meldapp.py:200
+#: meld/meldapp.py:190
 msgid "Start a 2- or 3-way folder comparison"
 msgstr "Begin een 2- of 3-weg mapvergelijking"
 
-#: meld/meldapp.py:207
+#: meld/meldapp.py:197
 msgid ""
 "\n"
 "\n"
@@ -2168,70 +2177,70 @@ msgstr "\n"
 "\n"
 "Voor bestandsvergelijkingen zou het speciale argument @blank kunnen worden gebruikt, in plaats van een argument <file> om een blanco paneel te maken."
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:241
 #, python-format
 msgid "Error: %s\n"
 msgstr "Fout: %s\n"
 
-#: meld/meldapp.py:258
+#: meld/meldapp.py:248
 msgid "Meld is a file and directory comparison tool."
 msgstr "Meld is een programma voor het vergelijken van bestanden en mappen."
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:256
 msgid "Set label to use instead of file name"
 msgstr "Label instellen om te gebruiken in plaats van bestandsnaam"
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:263
 msgid "Open a new tab in an already running instance"
 msgstr "Open een nieuwe tab in een al uitgevoerde instantie"
 
-#: meld/meldapp.py:280
+#: meld/meldapp.py:270
 msgid "Automatically compare all differing files on startup"
 msgstr "Automatisch alle verschillende bestanden vergelijken bij opstarten"
 
-#: meld/meldapp.py:283
+#: meld/meldapp.py:273
 msgid "Ignored for compatibility"
 msgstr "Genegeerd voor compatibiliteit"
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:282
 msgid "Set the target file for saving a merge result"
 msgstr "Stel het doelbestand in voor het opslaan van een resultaat van samenvoegen"
 
-#: meld/meldapp.py:299
+#: meld/meldapp.py:289
 msgid "Automatically merge files"
 msgstr "Automatisch bestanden samenvoegen"
 
-#: meld/meldapp.py:308
+#: meld/meldapp.py:298
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr "Een opgeslagen vergelijking uit een Meld vergelijkingsbestand laden"
 
-#: meld/meldapp.py:317
+#: meld/meldapp.py:307
 msgid "Create a diff tab for the supplied files or folders"
 msgstr "Een tab diff maken voor de ondersteunde bestanden of mappen"
 
-#: meld/meldapp.py:338
+#: meld/meldapp.py:328
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr "teveel argumenten (wilde 0-3, kreeg %d)"
 
-#: meld/meldapp.py:340
+#: meld/meldapp.py:330
 msgid "can’t auto-merge less than 3 files"
 msgstr "kan niet minder dan 3 bestanden automatisch samenvoegen"
 
-#: meld/meldapp.py:342
+#: meld/meldapp.py:332
 msgid "can’t auto-merge directories"
 msgstr "kan geen mappen automatisch samenvoegen"
 
-#: meld/meldapp.py:355
+#: meld/meldapp.py:365
 msgid "Error reading saved comparison file"
 msgstr "Fout bij lezen van opgeslagen vergelijkingsbestand"
 
-#: meld/meldapp.py:383
+#: meld/meldapp.py:396
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr "ongeldig pad of URI ‘%s’"
 
-#: meld/meldapp.py:389
+#: meld/meldapp.py:402
 msgid "remote folder “{}” not supported"
 msgstr "map op afstand ‘{}’ niet ondersteund"
 
@@ -2240,20 +2249,24 @@ msgstr "map op afstand ‘{}’ niet ondersteund"
 msgid "<unnamed>"
 msgstr "<naamloos>"
 
-#: meld/meldwindow.py:137
+#: meld/meldwindow.py:138
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: meld/meldwindow.py:372
+#: meld/meldwindow.py:376
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Heb drie bestanden nodig om automatisch samen te voegen, kreeg: %r"
 
-#: meld/meldwindow.py:401
+#: meld/meldwindow.py:405
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Kan geen mix van bestanden en mappen vergelijken"
 
-#: meld/meldwindow.py:456
+#: meld/meldwindow.py:449
+msgid "Failed to mount archive"
+msgstr "Mounten van archief mislukt"
+
+#: meld/meldwindow.py:509
 msgid "Cannot compare a non-existent file"
 msgstr "Kan geen niet bestaand bestand vergelijken"
 
@@ -2369,7 +2382,7 @@ msgstr "Platte tekst"
 msgid "Column options"
 msgstr "Opties kolommen"
 
-#: meld/ui/pathlabel.py:34
+#: meld/ui/pathlabel.py:36
 msgid "Unnamed file"
 msgstr "Naamloos bestand"
 
