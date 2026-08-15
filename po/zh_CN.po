@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-07-17 06:08+0000\n"
-"PO-Revision-Date: 2026-07-18 09:34+0800\n"
+"POT-Creation-Date: 2026-08-07 14:08+0000\n"
+"PO-Revision-Date: 2026-08-15 18:02+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -92,7 +92,7 @@ msgid ""
 msgstr ""
 "Meld 会在尝试其他编码之前，使用这些文本编码来尝试解码所加载的文本文件。除了本"
 "列表中的编码，Meld 将会始终使用 UTF-8 和当前语言环境默认编码；取决于用户的语"
-"言环境，其它编码可能也会尝试。"
+"言环境，其他编码可能也会尝试。"
 
 #: data/org.gnome.Meld.gschema.xml:79
 msgid "Width of an indentation step"
@@ -1867,12 +1867,12 @@ msgstr "正在使用文件筛选器，因此并非所有文件都已被扫描。
 msgid "Text filters are in use and may be masking content differences."
 msgstr "正在使用文本筛选器，可能会屏蔽内容的差异。"
 
-#: meld/dirdiff.py:1191 meld/filediff.py:2161
+#: meld/dirdiff.py:1191 meld/filediff.py:2165
 msgid "Hide"
 msgstr "隐藏"
 
-#: meld/dirdiff.py:1193 meld/filediff.py:2163 meld/filediff.py:2193
-#: meld/filediff.py:2195 meld/filediff.py:2219 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1193 meld/filediff.py:2167 meld/filediff.py:2197
+#: meld/filediff.py:2199 meld/filediff.py:2223 meld/ui/msgarea.py:140
 #: meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "隐藏(_D)"
@@ -2024,38 +2024,38 @@ msgstr "确定要使用默认程序打开文件吗？"
 msgid "Open"
 msgstr "打开"
 
-#: meld/filediff.py:1906
+#: meld/filediff.py:1910
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "文件 %s 在磁盘上已更改"
 
-#: meld/filediff.py:1907
+#: meld/filediff.py:1911
 msgid "Do you want to reload the file?"
 msgstr "您想重新加载该文件吗？"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:1916
 msgid "_Reload"
 msgstr "重新加载(_R)"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2117
 msgid "File {} is being compared to itself"
 msgstr "文件 {} 正与自己进行比较"
 
-#: meld/filediff.py:2124
+#: meld/filediff.py:2128
 msgid "Files are identical"
 msgstr "文件完全相同"
 
-#: meld/filediff.py:2138
+#: meld/filediff.py:2142
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr "正在使用文本筛选器，可能会屏蔽文件之间的差异。您想比较未筛选的文件吗？"
 
-#: meld/filediff.py:2144
+#: meld/filediff.py:2148
 msgid "Files differ in line endings only"
 msgstr "文件间仅行尾存在差异"
 
-#: meld/filediff.py:2146
+#: meld/filediff.py:2150
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
@@ -2064,79 +2064,79 @@ msgstr ""
 "文件除了行尾均相同，差异细节：\n"
 "%s"
 
-#: meld/filediff.py:2166
+#: meld/filediff.py:2170
 msgid "Show without filters"
 msgstr "显示未筛选的结果"
 
-#: meld/filediff.py:2185
+#: meld/filediff.py:2189
 msgid "Change highlighting incomplete"
 msgstr "更改的高亮显示不完整"
 
-#: meld/filediff.py:2187
+#: meld/filediff.py:2191
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
 "某些更改由于太大没有被高亮。您可以强制高亮显示大幅的更改，尽管这可能很慢。"
 
-#: meld/filediff.py:2196
+#: meld/filediff.py:2200
 msgid "Keep highlighting"
 msgstr "保持语法高亮"
 
-#: meld/filediff.py:2198
+#: meld/filediff.py:2202
 msgid "_Keep highlighting"
 msgstr "保持语法高亮(_K)"
 
-#: meld/filediff.py:2220
+#: meld/filediff.py:2224
 msgid "_Load anyway"
 msgstr "仍然加载(_L)"
 
-#: meld/filediff.py:2231
+#: meld/filediff.py:2235
 msgid "Saving failed"
 msgstr "保存失败"
 
-#: meld/filediff.py:2233
+#: meld/filediff.py:2237
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr "请考虑将任何重要的更改复制到其他程序或文件中以避免数据丢失。"
 
-#: meld/filediff.py:2242
+#: meld/filediff.py:2246
 msgid "Save Left Pane As"
 msgstr "左侧窗格保存为"
 
-#: meld/filediff.py:2244
+#: meld/filediff.py:2248
 msgid "Save Middle Pane As"
 msgstr "中间窗格保存为"
 
-#: meld/filediff.py:2246
+#: meld/filediff.py:2250
 msgid "Save Right Pane As"
 msgstr "右侧窗格保存为"
 
-#: meld/filediff.py:2267
+#: meld/filediff.py:2271
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr "文件 %s 打开后在磁盘上已更改"
 
-#: meld/filediff.py:2270
+#: meld/filediff.py:2274
 msgid "If you save it, any external changes will be lost."
 msgstr "如果您保存它，外部的更改将丢失。"
 
-#: meld/filediff.py:2274
+#: meld/filediff.py:2278
 msgid "Save Anyway"
 msgstr "仍然保存"
 
-#: meld/filediff.py:2275
+#: meld/filediff.py:2279
 msgid "Don’t Save"
 msgstr "不保存"
 
-#: meld/filediff.py:2313
+#: meld/filediff.py:2317
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr "文件“{}”包含了其当前编码“{}”无法编码的字符。"
 
-#: meld/filediff.py:2317 meld/patchdialog.py:127
+#: meld/filediff.py:2321 meld/patchdialog.py:127
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
@@ -2145,16 +2145,16 @@ msgstr ""
 "由于以下原因无法保存文件：\n"
 "%s"
 
-#: meld/filediff.py:2322 meld/patchdialog.py:126
+#: meld/filediff.py:2326 meld/patchdialog.py:126
 #, python-format
 msgid "Could not save file %s."
 msgstr "无法保存文件 %s。"
 
-#: meld/filediff.py:2740
+#: meld/filediff.py:2744
 msgid "Live comparison updating disabled"
 msgstr "实时比较更新已禁用"
 
-#: meld/filediff.py:2742
+#: meld/filediff.py:2746
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
@@ -2163,19 +2163,19 @@ msgstr ""
 "使用同步点时比较的实时更新会禁用。您仍然可以手动刷新比较，实时更新会在同步点"
 "清除后恢复启用。"
 
-#: meld/filediff.py:2782
+#: meld/filediff.py:2786
 msgid "Can't swap unsaved files"
 msgstr "无法交换未保存的文件"
 
-#: meld/filediff.py:2783
+#: meld/filediff.py:2787
 msgid "Files must be saved to disk before swapping panes."
 msgstr "必须在交换窗格前将文件保存到磁盘。"
 
-#: meld/filediff.py:2789
+#: meld/filediff.py:2793
 msgid "Can't swap version control comparisons"
 msgstr "无法交换版本控制比较"
 
-#: meld/filediff.py:2790
+#: meld/filediff.py:2794
 msgid "Swapping panes is not supported in version control mode."
 msgstr "在版本控制模式中不支持交换窗格。"
 
