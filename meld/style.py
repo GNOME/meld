@@ -64,9 +64,8 @@ def set_base_style_scheme(
         if not background_set:
             rgba = Gdk.RGBA(1, 1, 1, 1)
 
-    # This heuristic is absolutely dire. I made it up. There's
-    # literally no basis to this.
-    use_dark = (rgba.red + rgba.green + rgba.blue) < 1.0
+    # Dark mode detection as recommended by Microsoft
+    use_dark = (2.0 * rgba.red + 5.0 * rgba.green + rgba.blue) < 4.0
 
     base_scheme_name = (
         MeldStyleScheme.dark if use_dark else MeldStyleScheme.base)
