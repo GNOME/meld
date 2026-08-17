@@ -71,9 +71,8 @@ def should_use_dark(style_scheme: GtkSource.StyleScheme) -> bool:
         if not background_set:
             rgba = Gdk.RGBA(1, 1, 1, 1)
 
-    # This heuristic is absolutely dire. I made it up. There's
-    # literally no basis to this.
-    return (rgba.red + rgba.green + rgba.blue) < 1.0
+    # Dark mode detection as recommended by Microsoft
+    return (2.0 * rgba.red + 5.0 * rgba.green + rgba.blue) < 4.0
 
 
 def set_base_style_scheme(
