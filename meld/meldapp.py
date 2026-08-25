@@ -119,7 +119,7 @@ class MeldApp(Adw.Application):
         dialog.set_developers(["Kai Willadsen", "Stephen Kennedy", "Vincent Legoll"])
         dialog.set_artists(["GNOME Project", "Josef Vybíral"])
         dialog.set_translator_credits(_("translator-credits"))
-        dialog.present()
+        dialog.present(self.get_active_window())
 
     def quit_callback(self, action, parameter):
         for window in self.get_windows():
