@@ -18,16 +18,17 @@ Requirements
 
 * Python 3.10
 * pycairo (Python3 bindings for cairo without GObject layer)
-* PyGObject 3.38 (Python3 bindings for GObject introspection)
+* PyGObject 3.46 (Python3 bindings for GObject introspection)
 * gsettings-desktop-schemas
 
 And following packages with GObject introspection:
 
-* GLib 2.66
+* GLib 2.80
 * Pango
 * PangoCairo
-* GTK+ 3.24
-* GtkSourceView 4.0
+* GTK 4.20
+* GtkSourceView 5.0
+* libadwaita 1.8
 
 
 Build requirements
@@ -37,7 +38,7 @@ Build requirements
 * Meson 1.11
 * Ninja
 * gettext
-* GLib 2.66 and its development utilities such as `glib-compile-schemas`
+* GLib 2.80 and its development utilities such as `glib-compile-schemas`
 
 For Windows build requirements, see `mingw-dist` section of `.gitlab-ci.yml`
 

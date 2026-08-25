@@ -18,10 +18,10 @@ endif
 # These requirements are kept in both `bin/meld` and `meson.build`. If you
 # update one, update the other.
 dependency('python3', version: '>= 3.10')
-dependency('gtk4', version: '>= 4.12')
+dependency('gtk4', version: '>= 4.20')
 dependency('glib-2.0', version: '>= 2.80')
-dependency('gtksourceview-5', version: '>= 5.0.0')
-dependency('libadwaita-1', version: '>= 1.6')
+dependency('gtksourceview-5', version: '>= 5.0')
+dependency('libadwaita-1', version: '>= 1.8')
 dependency('pygobject-3.0', version: '>= 3.46')
 dependency('py3cairo', version: '>= 1.15.0')
 
