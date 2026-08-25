@@ -15,9 +15,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import functools
 import logging
 from collections.abc import Sequence
-from typing import Optional
 
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -34,21 +34,17 @@ from meld.ui.util import map_widgets_into_lists
 log = logging.getLogger(__name__)
 
 
-# Cache the supported image MIME types.
-_supported_mime_types: Optional[Sequence[str]] = None
-
-
+@functools.cache
 def get_supported_image_mime_types() -> Sequence[str]:
-    global _supported_mime_types
+    """Get the mimetypes list of supported image formats"""
 
-    if _supported_mime_types is None:
-        # Get list of supported formats.
-        _supported_mime_types = []
-        supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
-        for image_format in supported_image_formats:
-            _supported_mime_types += image_format.get_mime_types()
+    # Get list of supported formats.
+    supported_mime_types = []
+    supported_image_formats = GdkPixbuf.Pixbuf.get_formats()
+    for image_format in supported_image_formats:
+        supported_mime_types += image_format.get_mime_types()
 
-    return _supported_mime_types
+    return supported_mime_types
 
 
 def file_is_image(gfile):
