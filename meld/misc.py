@@ -70,10 +70,8 @@ def get_modal_parent(widget: Optional[Gtk.Widget] = None) -> Gtk.Window:
     parent: Gtk.Window
     if not widget:
         parent = Gtk.Application.get_default().get_active_window()
-    elif not isinstance(widget, Gtk.Window):
-        parent = widget.get_root()
     else:
-        parent = widget
+        parent = widget.get_root()
     return parent
 
 
