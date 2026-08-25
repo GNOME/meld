@@ -827,7 +827,7 @@ class VcView(Gtk.Box, MeldDoc):
                 return
 
             gfile = Gio.File.new_for_path(files.pop())
-            filename = GLib.markup_escape_text(gfile.get_parse_name())
+            filename = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _delete_file, parent=self)
