@@ -19,7 +19,7 @@ import logging
 import optparse
 import os
 
-from gi.repository import Adw, Gio, GLib, Gtk
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk
 
 import meld.accelerators
 import meld.conf
@@ -52,9 +52,23 @@ class MeldApp(Adw.Application):
     def make_resource_path(self, resource_path: str) -> str:
         return f"{self.props.resource_base_path}/{resource_path}"
 
+    @staticmethod
+    def apply_css():
+        # Without this, the status labels and path labels have bold text.
+        provider = Gtk.CssProvider()
+        provider.load_from_data(
+            ".status-menu-label, .path-label-label { font-weight: normal; }"
+        )
+        Gtk.StyleContext.add_provider_for_display(
+            Gdk.Display.get_default(),
+            provider,
+            Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION,
+        )
+
     def do_startup(self):
         Adw.Application.do_startup(self)
         meld.accelerators.register_accels(self)
+        self.apply_css()
 
         actions = (
             ("preferences", self.preferences_callback),
