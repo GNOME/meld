@@ -215,13 +215,18 @@ def show_error_and_exit(error_text):
         import gi
 
         gi.require_version("Gtk", "4.0")
-        from gi.repository import Gtk
+        from gi.repository import GLib, Gtk
 
-        Gtk.MessageDialog(
-            message_type=Gtk.MessageType.ERROR,
-            buttons=Gtk.ButtonsType.CLOSE,
-            text=error_text,
-        ).run()
+        if not Gtk.init_check():
+            raise RuntimeError("Gtk could not be initialized")
+
+        # GTK 4 has no synchronous dialogs, so run a main loop until the
+        # alert is dismissed; otherwise we'd exit before it's onscreen.
+        loop = GLib.MainLoop()
+        Gtk.AlertDialog(message=error_text).choose(
+            None, None, lambda *args: loop.quit()
+        )
+        loop.run()
     except Exception:
         # tkinter is imported here only to show a UI warning about
         # missing dependencies.
