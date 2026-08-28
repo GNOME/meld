@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 # Copyright (C) 2002-2006 Stephen Kennedy <stevek@gnome.org>
-# Copyright (C) 2009-2014 Kai Willadsen <kai.willadsen@gmail.com>
+# Copyright (C) 2009-2026 Kai Willadsen <kai.willadsen@gmail.com>
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -24,36 +24,24 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
-# On Windows, pythonw.exe (which doesn't display a console window) supplies
-# dummy stdout and stderr streams that silently throw away any output. However,
-# these streams seem to have issues with flush() so we just redirect stdout and
-# stderr to actual dummy files (the equivalent of /dev/null).
-# Regarding pythonw.exe stdout, see also http://bugs.python.org/issue706263
-# Also cx_Freeze built with Win32GUI base sets sys.stdout to None
-# leading to exceptions in print() and freeze_support() that uses flush()
-if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
-    devnull = open(os.devnull, "w")
-    sys.stdout = sys.stderr = devnull
+log = logging.getLogger()
 
-# Main module hasn't multiprocessing workers, so not imported in subprocesses.
-# This allows skipping '__name__ == "main"' guard, but freezed case is special.
-freeze_support()
+uninstalled = False
+frozen = getattr(sys, "frozen", False)
+devel = False
 
 
-def disable_stdout_buffering():
+def setup_process():
+    # Windowed Windows builds (i.e., PyInstaller with console=False) have no
+    # valid stdio handles, so Python sets sys.stdout and sys.stderr to None.
+    # Point them at devnull before anything tries to write or flush.
+    if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
+        devnull = open(os.devnull, "w")
+        sys.stdout = sys.stderr = devnull
 
-    class Unbuffered:
-        def __init__(self, file):
-            self.file = file
-
-        def write(self, arg):
-            self.file.write(arg)
-            self.file.flush()
-
-        def __getattr__(self, attr):
-            return getattr(self.file, attr)
-
-    sys.stdout = Unbuffered(sys.stdout)
+    # Frozen multiprocessing children re-enter and exit here. Must come after
+    # the stream fixup above, because it flushes.
+    freeze_support()
 
 
 def get_meld_dir():
@@ -68,134 +56,144 @@ def get_meld_dir():
     return os.path.abspath(os.path.join(os.path.dirname(self_path), ".."))
 
 
-frozen = getattr(sys, "frozen", False)
-melddir = get_meld_dir()
+def setup_import_paths():
+    global uninstalled
+    global devel
 
-uninstalled = False
-if os.path.exists(os.path.join(melddir, "meld.doap")):
-    sys.path[0:0] = [melddir]
-    uninstalled = True
-devel = os.path.exists(os.path.join(melddir, ".git"))
+    melddir = get_meld_dir()
 
-if uninstalled:
-    # Import system hackery to import conf.py.in without copying it to
-    # have a .py suffix. This is entirely so that we can run from a git
-    # checkout without any user intervention.
-    import importlib.machinery
-    import importlib.util
+    if os.path.exists(os.path.join(melddir, "meld.doap")):
+        sys.path[0:0] = [melddir]
+        uninstalled = True
+    devel = os.path.exists(os.path.join(melddir, ".git"))
 
-    loader = importlib.machinery.SourceFileLoader(
-        "meld.conf", os.path.join(melddir, "meld/conf.py.in")
+    if uninstalled:
+        # Import system hackery to import conf.py.in without copying it to
+        # have a .py suffix. This is entirely so that we can run from a git
+        # checkout without any user intervention.
+        import importlib.machinery
+        import importlib.util
+
+        loader = importlib.machinery.SourceFileLoader(
+            "meld.conf", os.path.join(melddir, "meld/conf.py.in")
+        )
+        spec = importlib.util.spec_from_loader(loader.name, loader)
+        mod = importlib.util.module_from_spec(spec)
+        loader.exec_module(mod)
+
+        import meld
+
+        meld.conf = mod
+        sys.modules["meld.conf"] = mod
+
+    import meld.conf
+
+    # Silence warnings on non-devel releases (minor version is divisible by 2)
+    is_stable = not bool(int(meld.conf.__version__.split(".")[1]) % 2)
+    if is_stable:
+        import warnings
+
+        warnings.simplefilter("ignore")
+
+    if uninstalled:
+        meld.conf.uninstalled()
+    elif frozen:
+        meld.conf.frozen()
+    elif "Contents/MacOS" in sys.executable:
+        meld.conf.setup_macos_application_bundle()
+    elif meld.conf.IS_WHEEL:
+        meld.conf.setup_wheel()
+
+
+def setup_i18n():
+    import gettext
+
+    import meld.conf
+
+    locale_domain = meld.conf.__package__
+    locale_dir = meld.conf.LOCALEDIR
+
+    gettext.bindtextdomain(locale_domain, locale_dir)
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error as e:
+        log.error(f"Couldn't set the locale: {e}; falling back to 'C' locale")
+        locale.setlocale(locale.LC_ALL, "C")
+    gettext.textdomain(locale_domain)
+
+    try:
+        from gi.repository import GLib
+
+        languages = GLib.get_language_names_with_category("LC_MESSAGES")
+    except Exception:
+        languages = None
+
+    trans = gettext.translation(
+        locale_domain,
+        localedir=str(locale_dir),
+        languages=languages,
+        fallback=True,
     )
-    spec = importlib.util.spec_from_loader(loader.name, loader)
-    mod = importlib.util.module_from_spec(spec)
-    loader.exec_module(mod)
 
-    import meld
+    meld.conf._ = trans.gettext
+    meld.conf.ngettext = trans.ngettext
 
-    meld.conf = mod
-    sys.modules["meld.conf"] = mod
+    try:
+        if os.name == "nt":
+            from ctypes import CDLL, c_char_p, c_wchar_p
 
-import meld.conf  # noqa: E402
-
-# Silence warnings on non-devel releases (minor version is divisible by 2)
-is_stable = not bool(int(meld.conf.__version__.split(".")[1]) % 2)
-if is_stable:
-    import warnings
-
-    warnings.simplefilter("ignore")
-
-if uninstalled:
-    meld.conf.uninstalled()
-elif frozen:
-    meld.conf.frozen()
-elif "Contents/MacOS" in sys.executable:
-    meld.conf.setup_macos_application_bundle()
-elif meld.conf.IS_WHEEL:
-    meld.conf.setup_wheel()
-
-# TODO: Possibly move to elib.intl
-import gettext  # noqa: E402
-
-locale_domain = meld.conf.__package__
-locale_dir = meld.conf.LOCALEDIR
-
-gettext.bindtextdomain(locale_domain, locale_dir)
-try:
-    locale.setlocale(locale.LC_ALL, "")
-except locale.Error as e:
-    print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
-    locale.setlocale(locale.LC_ALL, "C")
-gettext.textdomain(locale_domain)
-trans = gettext.translation(locale_domain, localedir=str(locale_dir), fallback=True)
-_ = meld.conf._ = trans.gettext
-meld.conf.ngettext = trans.ngettext
-
-try:
-    if os.name == "nt":
-        from ctypes import CDLL
-
-        if frozen:
-            libintl = CDLL("libintl-8")
-        else:
-            try:
-                libintl = CDLL("intl")
-            except FileNotFoundError:
+            if frozen:
+                libintl = CDLL("libintl-8")
+            else:
                 try:
-                    libintl = CDLL("libintl-8")
+                    libintl = CDLL("intl")
                 except FileNotFoundError:
-                    libintl = CDLL("intl-8")
-        libintl.bindtextdomain(locale_domain, str(locale_dir))
-        libintl.bind_textdomain_codeset(locale_domain, "UTF-8")
-        libintl.textdomain(locale_domain)
-        del libintl
-    else:
-        locale.bindtextdomain(locale_domain, str(locale_dir))
-        locale.bind_textdomain_codeset(locale_domain, "UTF-8")
-        locale.textdomain(locale_domain)
-except AttributeError as e:
-    # Python builds linked without libintl (i.e., OSX) don't have
-    # bindtextdomain(), which causes Gtk.Builder translations to fail.
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
-except locale.Error as e:
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
-except WindowsError as e:
-    # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
-    # Let's just continue, as translations are non-essential.
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
+                    try:
+                        libintl = CDLL("libintl-8")
+                    except FileNotFoundError:
+                        libintl = CDLL("intl-8")
+
+            libintl.wbindtextdomain.argtypes = (c_char_p, c_wchar_p)
+            libintl.wbindtextdomain(locale_domain.encode(), str(locale_dir))
+            libintl.bind_textdomain_codeset(locale_domain.encode(), b"UTF-8")
+            libintl.textdomain(locale_domain.encode())
+
+            del libintl
+        else:
+            locale.bindtextdomain(locale_domain, str(locale_dir))
+            locale.bind_textdomain_codeset(locale_domain, "UTF-8")
+            locale.textdomain(locale_domain)
+    except (AttributeError, locale.Error, WindowsError) as e:
+        # AttributeError because Python builds linked without libintl don't have
+        # bindtextdomain(), which causes Gtk.Builder translations to fail.
+        #
+        # WindowsError because accessing cdll.intl sometimes fails on Windows
+        # for unknown reasons.
+        log.error(f"Translation setup failed; translations will not be used.\n{e}")
 
 
 def show_error_and_exit(error_text):
-    """
-    Show error in a robust way: always print to stdout and try to
-    display gui message via gtk or tkinter (first available).
-    Empty toplevel window is used as message box parent since
-    parentless message box cause toolkit and windowing system problems.
-    This function is both python 2 and python 3 compatible since it is used
-    to display wrong python version.
-    """
-    print(error_text)
+    # Show error in a robust way: always log to stderr and try to
+    # display a message via GTK (falling back to tkinter).
+
+    log.error(error_text)
     raise_as_last_resort_to_display = False
     try:
         import gi
 
         gi.require_version("Gtk", "4.0")
-        from gi.repository import Gtk
+        from gi.repository import GLib, Gtk
 
-        Gtk.MessageDialog(
-            message_type=Gtk.MessageType.ERROR,
-            buttons=Gtk.ButtonsType.CLOSE,
-            text=error_text,
-        ).run()
+        if not Gtk.init_check():
+            raise RuntimeError("Gtk could not be initialized")
+
+        # GTK 4 has no synchronous dialogs, so run a main loop until the
+        # alert is dismissed; otherwise we'd exit before it's onscreen.
+        loop = GLib.MainLoop()
+        Gtk.AlertDialog(message=error_text).choose(
+            None, None, lambda *args: loop.quit()
+        )
+        loop.run()
     except Exception:
         # tkinter is imported here only to show a UI warning about
         # missing dependencies.
@@ -216,9 +214,10 @@ def show_error_and_exit(error_text):
 
 
 def check_requirements():
-
     import importlib
     from typing import NamedTuple, Optional
+
+    from meld.conf import _
 
     class Requirement(NamedTuple):
         name: str
@@ -277,6 +276,8 @@ def check_requirements():
 def setup_resources():
     from gi.repository import Gio, GtkSource
 
+    import meld.conf
+
     resource_filename = meld.conf.APPLICATION_ID + ".gresource"
     resource_file = os.path.join(meld.conf.DATADIR, resource_filename)
 
@@ -289,7 +290,7 @@ def setup_resources():
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
             ],
-            cwd=melddir,
+            cwd=get_meld_dir(),
         )
 
     try:
@@ -328,7 +329,7 @@ def setup_settings():
         have_schema = False
 
     if uninstalled and not have_schema:
-        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR], cwd=melddir)
+        subprocess.call(["glib-compile-schemas", meld.conf.DATADIR], cwd=get_meld_dir())
 
     import meld.settings
 
@@ -342,8 +343,6 @@ def setup_style():
 
 
 def setup_logging():
-    log = logging.getLogger()
-
     # If we're running uninstalled and from Git, turn up the logging level
     if uninstalled and devel:
         log.setLevel(logging.INFO)
@@ -357,16 +356,20 @@ def setup_logging():
         handler = logging.FileHandler(log_path)
         log.setLevel(logging.INFO)
 
+        # Since we're logging to a file not the terminal we want timestamps, etc.
+        handler.setFormatter(
+            logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+        )
+
         # Set excepthook so that we get exceptions on Windows
         def logging_except_hook(exc_type, exc_instance, tb):
             log.error("Unhandled exception", exc_info=(exc_type, exc_instance, tb))
 
         sys.excepthook = logging_except_hook
     else:
+        # Make setup issues read like plain console output
         handler = logging.StreamHandler()
-
-    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
-    handler.setFormatter(formatter)
+        handler.setFormatter(logging.Formatter("%(message)s"))
     log.addHandler(handler)
 
 
@@ -388,7 +391,7 @@ def setup_glib_logging():
     )
 
     log_domain = "Gtk"
-    log = logging.getLogger(log_domain)
+    gtk_log = logging.getLogger(log_domain)
 
     def silence(message):
         if "Drawing a gadget with negative dimensions" in message:
@@ -403,7 +406,7 @@ def setup_glib_logging():
     # syslog-style API.
     def log_adapter(domain, level, message, user_data):
         if not silence(message):
-            log.log(levels.get(level, logging.WARNING), message)
+            gtk_log.log(levels.get(level, logging.WARNING), message)
 
     try:
         GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
@@ -418,12 +421,12 @@ def setup_glib_logging():
     def structured_log_adapter(level, fields, field_count, user_data):
         # Don't even format the message if it will be discarded
         py_logging_level = levels.get(level, logging.WARNING)
-        if log.isEnabledFor(py_logging_level):
+        if gtk_log.isEnabledFor(py_logging_level):
             # at least glib 2.52 log_writer_format_fields can raise on win32
             try:
                 message = GLib.log_writer_format_fields(level, fields, True)
                 if not silence(message):
-                    log.log(py_logging_level, message)
+                    gtk_log.log(py_logging_level, message)
             except Exception:
                 GLib.log_writer_standard_streams(level, fields, user_data)
         return GLib.LogWriterOutput.HANDLED
@@ -481,7 +484,7 @@ def ci_screenshot():
         paintable.snapshot(snapshot, alloc.width, alloc.height)
         snapshot.to_node().draw(cr)
         surface.write_to_png(screenshot_filename)
-        print(f"Screenshot saved to {screenshot_filename}. Exiting.", file=sys.stderr)
+        log.info(f"Screenshot saved to {screenshot_filename}. Exiting.")
         sys.exit(0)
 
     timeout_ms = int(os.environ.get("MELD_SCREENSHOT_TIMEOUT_MS", "3000"))
@@ -491,17 +494,25 @@ def ci_screenshot():
 def run_application():
     from meld.meldapp import MeldApp
 
+    # Reset our logging format to a regular one
+    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+    for handler in log.handlers:
+        handler.setFormatter(formatter)
+
     app = MeldApp()
 
     if sys.platform != "win32":
+        import gi
+        from gi.repository import GLib
+
         try:
-            from gi.repository import GLib, GLibUnix
+            gi.require_version("GLibUnix", "2.0")
+
+            from gi.repository import GLibUnix
 
             signal_add = GLibUnix.signal_add
-        except (ImportError, AttributeError):
+        except (ImportError, AttributeError, ValueError):
             # Support glib <= 2.86
-            from gi.repository import GLib
-
             signal_add = GLib.unix_signal_add
 
         signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
@@ -510,9 +521,11 @@ def run_application():
 
 
 def main():
+    setup_process()
+    setup_import_paths()
     environment_hacks()
     setup_logging()
-    disable_stdout_buffering()
+    setup_i18n()
     check_requirements()
     setup_glib_logging()
     setup_resources()
