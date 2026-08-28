@@ -5,8 +5,14 @@ import subprocess
 import sys
 from pathlib import Path
 
-import pyinstaller_versionfile
 from packaging.version import Version
+
+# This spec is only actually used for the Windows build. The guards here are to
+# make it possible to run pyinstaller on Linux for build testing.
+WINDOWS = sys.platform == "win32"
+
+if WINDOWS:
+    import pyinstaller_versionfile
 
 
 def get_install_tree_library_path():
@@ -96,16 +102,17 @@ a = Analysis(
 )
 pyz = PYZ(a.pure)
 
-pyinstaller_versionfile.create_versionfile(
-    output_file="file_version_info.txt",
-    version=version_string,
-    company_name="Meld",
-    file_description="Meld",
-    internal_name="Meld",
-    legal_copyright=copyright,
-    original_filename="meld.exe",
-    product_name="Meld",
-)
+if WINDOWS:
+    pyinstaller_versionfile.create_versionfile(
+        output_file="file_version_info.txt",
+        version=version_string,
+        company_name="Meld",
+        file_description="Meld",
+        internal_name="Meld",
+        legal_copyright=copyright,
+        original_filename="meld.exe",
+        product_name="Meld",
+    )
 
 with open("version.nsh", "w") as f:
     print(f'!define VERSION "{version_string}"', file=f)
@@ -122,9 +129,9 @@ exe = EXE(
     bootloader_ignore_signals=False,
     strip=False,
     upx=False,
-    icon="meld.ico",
-    version="file_version_info.txt",
-    console=False,
+    icon="meld.ico" if WINDOWS else None,
+    version="file_version_info.txt" if WINDOWS else None,
+    console=not WINDOWS,
     disable_windowed_traceback=False,
     argv_emulation=False,
     target_arch=None,
