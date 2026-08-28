@@ -57,7 +57,6 @@ class MeldStatusMenuButton(Gtk.MenuButton):
             xalign=1.0,
             ellipsize=Pango.EllipsizeMode.END,
         )
-        label.add_css_class("status-menu-label")
 
         arrow = Gtk.Image.new_from_icon_name("pan-down-symbolic")
         arrow.props.valign = Gtk.Align.BASELINE
