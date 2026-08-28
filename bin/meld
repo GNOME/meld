@@ -135,10 +135,7 @@ def setup_i18n():
     try:
         locale.setlocale(locale.LC_ALL, "")
     except locale.Error as e:
-        print(
-            "Couldn't set the locale: %s; falling back to 'C' locale" % e,
-            file=sys.stderr,
-        )
+        log.error(f"Couldn't set the locale: {e}; falling back to 'C' locale")
         locale.setlocale(locale.LC_ALL, "C")
     gettext.textdomain(locale_domain)
 
@@ -184,40 +181,20 @@ def setup_i18n():
             locale.bindtextdomain(locale_domain, str(locale_dir))
             locale.bind_textdomain_codeset(locale_domain, "UTF-8")
             locale.textdomain(locale_domain)
-    except AttributeError as e:
-        # Python builds linked without libintl (i.e., OSX) don't have
+    except (AttributeError, locale.Error, WindowsError) as e:
+        # AttributeError because Python builds linked without libintl don't have
         # bindtextdomain(), which causes Gtk.Builder translations to fail.
-        print(
-            "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e),
-            file=sys.stderr,
-        )
-    except locale.Error as e:
-        print(
-            "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e),
-            file=sys.stderr,
-        )
-    except WindowsError as e:
-        # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
-        # Let's just continue, as translations are non-essential.
-        print(
-            "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e),
-            file=sys.stderr,
-        )
+        #
+        # WindowsError because accessing cdll.intl sometimes fails on Windows
+        # for unknown reasons.
+        log.error(f"Translation setup failed; translations will not be used.\n{e}")
 
 
 def show_error_and_exit(error_text):
-    """
-    Show error in a robust way: always print to stdout and try to
-    display gui message via gtk or tkinter (first available).
-    Empty toplevel window is used as message box parent since
-    parentless message box cause toolkit and windowing system problems.
-    This function is both python 2 and python 3 compatible since it is used
-    to display wrong python version.
-    """
-    print(error_text, file=sys.stderr)
+    # Show error in a robust way: always log to stderr and try to
+    # display a message via GTK (falling back to tkinter).
+
+    log.error(error_text)
     raise_as_last_resort_to_display = False
     try:
         import gi
@@ -397,16 +374,20 @@ def setup_logging():
         handler = logging.FileHandler(log_path)
         log.setLevel(logging.INFO)
 
+        # Since we're logging to a file not the terminal we want timestamps, etc.
+        handler.setFormatter(
+            logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+        )
+
         # Set excepthook so that we get exceptions on Windows
         def logging_except_hook(exc_type, exc_instance, tb):
             log.error("Unhandled exception", exc_info=(exc_type, exc_instance, tb))
 
         sys.excepthook = logging_except_hook
     else:
+        # Make setup issues read like plain console output
         handler = logging.StreamHandler()
-
-    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
-    handler.setFormatter(formatter)
+        handler.setFormatter(logging.Formatter("%(message)s"))
     log.addHandler(handler)
 
 
@@ -521,7 +502,7 @@ def ci_screenshot():
         paintable.snapshot(snapshot, alloc.width, alloc.height)
         snapshot.to_node().draw(cr)
         surface.write_to_png(screenshot_filename)
-        print(f"Screenshot saved to {screenshot_filename}. Exiting.", file=sys.stderr)
+        log.info(f"Screenshot saved to {screenshot_filename}. Exiting.")
         sys.exit(0)
 
     timeout_ms = int(os.environ.get("MELD_SCREENSHOT_TIMEOUT_MS", "3000"))
@@ -530,6 +511,11 @@ def ci_screenshot():
 
 def run_application():
     from meld.meldapp import MeldApp
+
+    # Reset our logging format to a regular one
+    formatter = logging.Formatter("%(asctime)s %(levelname)s %(name)s: %(message)s")
+    for handler in log.handlers:
+        handler.setFormatter(formatter)
 
     app = MeldApp()
 
