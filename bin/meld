@@ -494,14 +494,17 @@ def run_application():
     app = MeldApp()
 
     if sys.platform != "win32":
+        import gi
+        from gi.repository import GLib
+
         try:
-            from gi.repository import GLib, GLibUnix
+            gi.require_version("GLibUnix", "2.0")
+
+            from gi.repository import GLibUnix
 
             signal_add = GLibUnix.signal_add
-        except (ImportError, AttributeError):
+        except (ImportError, AttributeError, ValueError):
             # Support glib <= 2.86
-            from gi.repository import GLib
-
             signal_add = GLib.unix_signal_add
 
         signal_add(GLib.PRIORITY_DEFAULT, signal.SIGINT, lambda *args: app.quit())
