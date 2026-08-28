@@ -114,81 +114,82 @@ elif "Contents/MacOS" in sys.executable:
 elif meld.conf.IS_WHEEL:
     meld.conf.setup_wheel()
 
-# TODO: Possibly move to elib.intl
-import gettext  # noqa: E402
 
-locale_domain = meld.conf.__package__
-locale_dir = meld.conf.LOCALEDIR
+def setup_i18n():
+    import gettext
 
-gettext.bindtextdomain(locale_domain, locale_dir)
-try:
-    locale.setlocale(locale.LC_ALL, "")
-except locale.Error as e:
-    print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
-    locale.setlocale(locale.LC_ALL, "C")
-gettext.textdomain(locale_domain)
+    locale_domain = meld.conf.__package__
+    locale_dir = meld.conf.LOCALEDIR
 
-try:
-    from gi.repository import GLib
+    gettext.bindtextdomain(locale_domain, locale_dir)
+    try:
+        locale.setlocale(locale.LC_ALL, "")
+    except locale.Error as e:
+        print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
+        locale.setlocale(locale.LC_ALL, "C")
+    gettext.textdomain(locale_domain)
 
-    languages = GLib.get_language_names_with_category("LC_MESSAGES")
-except Exception:
-    languages = None
+    try:
+        from gi.repository import GLib
 
-trans = gettext.translation(
-    locale_domain,
-    localedir=str(locale_dir),
-    languages=languages,
-    fallback=True,
-)
+        languages = GLib.get_language_names_with_category("LC_MESSAGES")
+    except Exception:
+        languages = None
 
-_ = meld.conf._ = trans.gettext
-meld.conf.ngettext = trans.ngettext
+    trans = gettext.translation(
+        locale_domain,
+        localedir=str(locale_dir),
+        languages=languages,
+        fallback=True,
+    )
 
-try:
-    if os.name == "nt":
-        from ctypes import CDLL, c_char_p, c_wchar_p
+    meld.conf._ = trans.gettext
+    meld.conf.ngettext = trans.ngettext
 
-        if frozen:
-            libintl = CDLL("libintl-8")
-        else:
-            try:
-                libintl = CDLL("intl")
-            except FileNotFoundError:
+    try:
+        if os.name == "nt":
+            from ctypes import CDLL, c_char_p, c_wchar_p
+
+            if frozen:
+                libintl = CDLL("libintl-8")
+            else:
                 try:
-                    libintl = CDLL("libintl-8")
+                    libintl = CDLL("intl")
                 except FileNotFoundError:
-                    libintl = CDLL("intl-8")
+                    try:
+                        libintl = CDLL("libintl-8")
+                    except FileNotFoundError:
+                        libintl = CDLL("intl-8")
 
-        libintl.wbindtextdomain.argtypes = (c_char_p, c_wchar_p)
-        libintl.wbindtextdomain(locale_domain.encode(), str(locale_dir))
-        libintl.bind_textdomain_codeset(locale_domain.encode(), b"UTF-8")
-        libintl.textdomain(locale_domain.encode())
+            libintl.wbindtextdomain.argtypes = (c_char_p, c_wchar_p)
+            libintl.wbindtextdomain(locale_domain.encode(), str(locale_dir))
+            libintl.bind_textdomain_codeset(locale_domain.encode(), b"UTF-8")
+            libintl.textdomain(locale_domain.encode())
 
-        del libintl
-    else:
-        locale.bindtextdomain(locale_domain, str(locale_dir))
-        locale.bind_textdomain_codeset(locale_domain, "UTF-8")
-        locale.textdomain(locale_domain)
-except AttributeError as e:
-    # Python builds linked without libintl (i.e., OSX) don't have
-    # bindtextdomain(), which causes Gtk.Builder translations to fail.
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
-except locale.Error as e:
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
-except WindowsError as e:
-    # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
-    # Let's just continue, as translations are non-essential.
-    print(
-        "Couldn't bind the translation domain. Some translations won't "
-        "work.\n{}".format(e)
-    )
+            del libintl
+        else:
+            locale.bindtextdomain(locale_domain, str(locale_dir))
+            locale.bind_textdomain_codeset(locale_domain, "UTF-8")
+            locale.textdomain(locale_domain)
+    except AttributeError as e:
+        # Python builds linked without libintl (i.e., OSX) don't have
+        # bindtextdomain(), which causes Gtk.Builder translations to fail.
+        print(
+            "Couldn't bind the translation domain. Some translations won't "
+            "work.\n{}".format(e)
+        )
+    except locale.Error as e:
+        print(
+            "Couldn't bind the translation domain. Some translations won't "
+            "work.\n{}".format(e)
+        )
+    except WindowsError as e:
+        # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
+        # Let's just continue, as translations are non-essential.
+        print(
+            "Couldn't bind the translation domain. Some translations won't "
+            "work.\n{}".format(e)
+        )
 
 
 def show_error_and_exit(error_text):
@@ -233,9 +234,10 @@ def show_error_and_exit(error_text):
 
 
 def check_requirements():
-
     import importlib
     from typing import NamedTuple, Optional
+
+    from meld.conf import _
 
     class Requirement(NamedTuple):
         name: str
@@ -533,6 +535,7 @@ def main():
     environment_hacks()
     setup_logging()
     disable_stdout_buffering()
+    setup_i18n()
     check_requirements()
     setup_glib_logging()
     setup_resources()
