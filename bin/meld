@@ -26,24 +26,22 @@ from multiprocessing import freeze_support
 
 log = logging.getLogger()
 
-# On Windows, pythonw.exe (which doesn't display a console window) supplies
-# dummy stdout and stderr streams that silently throw away any output. However,
-# these streams seem to have issues with flush() so we just redirect stdout and
-# stderr to actual dummy files (the equivalent of /dev/null).
-# Regarding pythonw.exe stdout, see also http://bugs.python.org/issue706263
-# Also cx_Freeze built with Win32GUI base sets sys.stdout to None
-# leading to exceptions in print() and freeze_support() that uses flush()
-if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
-    devnull = open(os.devnull, "w")
-    sys.stdout = sys.stderr = devnull
-
-# Main module hasn't multiprocessing workers, so not imported in subprocesses.
-# This allows skipping '__name__ == "main"' guard, but freezed case is special.
-freeze_support()
-
 uninstalled = False
 frozen = getattr(sys, "frozen", False)
 devel = False
+
+
+def setup_process():
+    # Windowed Windows builds (i.e., PyInstaller with console=False) have no
+    # valid stdio handles, so Python sets sys.stdout and sys.stderr to None.
+    # Point them at devnull before anything tries to write or flush.
+    if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
+        devnull = open(os.devnull, "w")
+        sys.stdout = sys.stderr = devnull
+
+    # Frozen multiprocessing children re-enter and exit here. Must come after
+    # the stream fixup above, because it flushes.
+    freeze_support()
 
 
 def disable_stdout_buffering():
@@ -539,6 +537,7 @@ def run_application():
 
 
 def main():
+    setup_process()
     setup_import_paths()
     environment_hacks()
     setup_logging()
