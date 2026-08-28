@@ -70,14 +70,12 @@ def get_modal_parent(widget: Optional[Gtk.Widget] = None) -> Gtk.Window:
     parent: Gtk.Window
     if not widget:
         parent = Gtk.Application.get_default().get_active_window()
-    elif not isinstance(widget, Gtk.Window):
-        parent = widget.get_root()
     else:
-        parent = widget
+        parent = widget.get_root()
     return parent
 
 
-def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
+def error_dialog(primary: str, secondary: str) -> None:
     """A common error dialog handler for Meld
 
     This should only ever be used as a last resort, and for errors that
@@ -86,7 +84,7 @@ def error_dialog(primary: str, secondary: str) -> Gtk.ResponseType:
 
     Primary must be plain text. Secondary must be valid markup.
     """
-    Gtk.AlertDialog(message=primary, detail=secondary, modal=True).show()
+    Gtk.AlertDialog(message=primary, detail=secondary).show(get_modal_parent())
 
 
 def user_critical(primary: str, message: str) -> Callable[[Callable], Callable]:
