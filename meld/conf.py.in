@@ -52,7 +52,7 @@ def frozen():
         DATADIR_IS_UNINSTALLED = True
 
     DATADIR = os.path.join(melddir, "share", "meld")
-    LOCALEDIR = os.path.join(melddir, "share", "mo")
+    LOCALEDIR = os.path.join(melddir, "share", "locale")
     IS_DEVEL = False
 
 
@@ -62,7 +62,7 @@ def uninstalled():
     melddir = Path(__file__).resolve().parent.parent
 
     DATADIR = melddir / "data"
-    LOCALEDIR = melddir / "build" / "mo"
+    LOCALEDIR = melddir / "build" / "locale"
     DATADIR_IS_UNINSTALLED = True
 
     resource_path = melddir / "meld" / "resources"
