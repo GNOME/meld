@@ -44,22 +44,6 @@ def setup_process():
     freeze_support()
 
 
-def disable_stdout_buffering():
-
-    class Unbuffered:
-        def __init__(self, file):
-            self.file = file
-
-        def write(self, arg):
-            self.file.write(arg)
-            self.file.flush()
-
-        def __getattr__(self, attr):
-            return getattr(self.file, attr)
-
-    sys.stdout = Unbuffered(sys.stdout)
-
-
 def get_meld_dir():
     global frozen
     if frozen:
@@ -541,7 +525,6 @@ def main():
     setup_import_paths()
     environment_hacks()
     setup_logging()
-    disable_stdout_buffering()
     setup_i18n()
     check_requirements()
     setup_glib_logging()
