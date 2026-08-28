@@ -125,7 +125,10 @@ def setup_i18n():
     try:
         locale.setlocale(locale.LC_ALL, "")
     except locale.Error as e:
-        print("Couldn't set the locale: %s; falling back to 'C' locale" % e)
+        print(
+            "Couldn't set the locale: %s; falling back to 'C' locale" % e,
+            file=sys.stderr,
+        )
         locale.setlocale(locale.LC_ALL, "C")
     gettext.textdomain(locale_domain)
 
@@ -176,19 +179,22 @@ def setup_i18n():
         # bindtextdomain(), which causes Gtk.Builder translations to fail.
         print(
             "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e)
+            "work.\n{}".format(e),
+            file=sys.stderr,
         )
     except locale.Error as e:
         print(
             "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e)
+            "work.\n{}".format(e),
+            file=sys.stderr,
         )
     except WindowsError as e:
         # Accessing cdll.intl sometimes fails on Windows for unknown reasons.
         # Let's just continue, as translations are non-essential.
         print(
             "Couldn't bind the translation domain. Some translations won't "
-            "work.\n{}".format(e)
+            "work.\n{}".format(e),
+            file=sys.stderr,
         )
 
 
@@ -201,7 +207,7 @@ def show_error_and_exit(error_text):
     This function is both python 2 and python 3 compatible since it is used
     to display wrong python version.
     """
-    print(error_text)
+    print(error_text, file=sys.stderr)
     raise_as_last_resort_to_display = False
     try:
         import gi
