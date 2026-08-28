@@ -24,6 +24,8 @@ import subprocess
 import sys
 from multiprocessing import freeze_support
 
+log = logging.getLogger()
+
 # On Windows, pythonw.exe (which doesn't display a console window) supplies
 # dummy stdout and stderr streams that silently throw away any output. However,
 # these streams seem to have issues with flush() so we just redirect stdout and
@@ -367,8 +369,6 @@ def setup_style():
 
 
 def setup_logging():
-    log = logging.getLogger()
-
     # If we're running uninstalled and from Git, turn up the logging level
     if uninstalled and devel:
         log.setLevel(logging.INFO)
@@ -413,7 +413,7 @@ def setup_glib_logging():
     )
 
     log_domain = "Gtk"
-    log = logging.getLogger(log_domain)
+    gtk_log = logging.getLogger(log_domain)
 
     def silence(message):
         if "Drawing a gadget with negative dimensions" in message:
@@ -428,7 +428,7 @@ def setup_glib_logging():
     # syslog-style API.
     def log_adapter(domain, level, message, user_data):
         if not silence(message):
-            log.log(levels.get(level, logging.WARNING), message)
+            gtk_log.log(levels.get(level, logging.WARNING), message)
 
     try:
         GLib.log_set_handler(log_domain, level_flag, log_adapter, None)
@@ -443,12 +443,12 @@ def setup_glib_logging():
     def structured_log_adapter(level, fields, field_count, user_data):
         # Don't even format the message if it will be discarded
         py_logging_level = levels.get(level, logging.WARNING)
-        if log.isEnabledFor(py_logging_level):
+        if gtk_log.isEnabledFor(py_logging_level):
             # at least glib 2.52 log_writer_format_fields can raise on win32
             try:
                 message = GLib.log_writer_format_fields(level, fields, True)
                 if not silence(message):
-                    log.log(py_logging_level, message)
+                    gtk_log.log(py_logging_level, message)
             except Exception:
                 GLib.log_writer_standard_streams(level, fields, user_data)
         return GLib.LogWriterOutput.HANDLED
