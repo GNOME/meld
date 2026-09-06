@@ -2596,8 +2596,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         def chunk_iter(i):
             def chunks(bounds):
-                for chunk in self.linediffer.single_changes(i, bounds):
-                    yield chunk
+                yield from self.linediffer.single_changes(i, bounds)
 
             return chunks
 

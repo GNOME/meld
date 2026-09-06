@@ -502,8 +502,7 @@ class Differ(GObject.GObject):
                 assert len(using[0]) == 1
                 yield using[0][0], None
             else:
-                for c in self._auto_merge(using, texts):
-                    yield c
+                yield from self._auto_merge(using, texts)
 
     def set_sequences_iter(self, sequences):
         assert 0 <= len(sequences) <= 3

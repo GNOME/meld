@@ -380,8 +380,7 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
 
     def initialise(self):
         if self.syncpoints is None or len(self.syncpoints) == 0:
-            for i in super().initialise():
-                yield i
+            yield from super().initialise()
         else:
             chunks = []
             ai = 0
