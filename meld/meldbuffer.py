@@ -214,9 +214,7 @@ class MeldBufferData(GObject.GObject):
                 Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None
             )
         except GLib.GError as err:
-            if err.code == Gio.IOErrorEnum.NOT_FOUND:
-                return True
-            return False
+            return err.code == Gio.IOErrorEnum.NOT_FOUND
         except AttributeError:
             return False
         return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)

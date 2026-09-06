@@ -64,9 +64,10 @@ def file_is_image(gfile):
         file_content_type = info.get_content_type()
         return file_content_type in get_supported_image_mime_types()
     except GLib.Error as err:
-        if err.code == Gio.IOErrorEnum.NOT_FOUND:
-            return False
-        elif err.code == Gio.IOErrorEnum.NOT_MOUNTED:
+        if (
+            err.code == Gio.IOErrorEnum.NOT_FOUND
+            or err.code == Gio.IOErrorEnum.NOT_MOUNTED
+        ):
             return False
         raise
 
