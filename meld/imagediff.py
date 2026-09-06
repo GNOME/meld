@@ -78,7 +78,14 @@ def file_is_image(gfile):
 def files_are_images(gfiles):
     """Check if all files in the list are images."""
 
-    for gfile in gfiles:
+    check_files = [f for f in gfiles if f]
+
+    # Special case: if all files are blank, use text diff
+    if not check_files:
+        return False
+
+    # Check if any non-blank file is not an image
+    for gfile in check_files:
         if not file_is_image(gfile):
             return False
 
