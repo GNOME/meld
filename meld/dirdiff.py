@@ -929,10 +929,10 @@ class DirDiff(Gtk.Box, MeldDoc):
         """
 
         for pane in range(self.model.ntree):
-            label = self.model.get_value(
+            folder_name = self.model.get_value(
                 it, self.model.column_index(tree.COL_TEXT, pane)
             )
-            label = _(f"{label} (scanning…)")
+            label = _("{folder_name} (scanning…)").format(folder_name=folder_name)
 
             self.model.set_state(it, pane, tree.STATE_SPINNER, label, True)
             self.model.unsafe_set(
@@ -1356,12 +1356,12 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         def _delete_file(files=files):
             gfile = Gio.File.new_for_path(files[0][1])
-            filename = gfile.get_parse_name()
+            path = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _deleted_file, parent=self)
             except Exception as e:
-                misc.error_dialog(_(f"Error deleting {filename}"), str(e))
+                misc.error_dialog(_("Error deleting {}").format(path), str(e))
 
         _delete_file(files)
 

@@ -64,9 +64,8 @@ def trash_or_confirm(
     dialog = Adw.AlertDialog(
         heading=_("Delete Permanently?"),
         body=_(
-            f"“{filename}” can't be put in the trash. "
-            "Do you want to delete it permanently?"
-        ),
+            "“{}” can’t be put in the trash. Do you want to delete it permanently?"
+        ).format(filename),
     )
     dialog.add_response("cancel", _("_Cancel"))
     dialog.add_response("delete", _("_Delete Permanently"))

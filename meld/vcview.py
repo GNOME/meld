@@ -821,12 +821,12 @@ class VcView(Gtk.Box, MeldDoc):
                 return
 
             gfile = Gio.File.new_for_path(files.pop())
-            filename = gfile.get_parse_name()
+            path = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _delete_file, parent=self)
             except Exception as e:
-                error_dialog(_(f"Error deleting {filename}"), str(e))
+                error_dialog(_("Error deleting {}").format(path), str(e))
 
         _delete_file(True, files)
 

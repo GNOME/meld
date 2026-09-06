@@ -132,10 +132,12 @@ def open_cb(
     else:
         # Being guarded about value_nick here, since it's probably not
         # exactly guaranteed API.
-        file_type = getattr(file_type, "value_nick", "unknown")
+        type_ = getattr(file_type, "value_nick", "unknown")
         error_dialog(
             _("Unsupported file type"),
-            _(f"External opening of files of type '{file_type}' is not supported"),
+            _(
+                "External opening of files of type “{file_type}” is not supported"
+            ).format(file_type=type_),
         )
 
 

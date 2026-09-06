@@ -445,7 +445,9 @@ class MeldWindow(Adw.ApplicationWindow):
             if not mounted_archive:
                 error_dialog(
                     _("Failed to mount archive"),
-                    _(f"Error mounting archive {gfile.get_uri()}: {error}"),
+                    _("Error mounting archive {uri}: {error}").format(
+                        uri=gfile.get_uri(), error=error
+                    ),
                 )
                 on_complete(None, error)
                 return
