@@ -2012,7 +2012,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     continue
 
                 def apply_highlight(
-                    bufs, tags, start_marks, end_marks, texts, to_pane, chunk, matches
+                    bufs, tags, start_marks, end_marks, texts, pane, chunk, clr, matches
                 ):
                     starts = [
                         bufs[0].get_iter_at_mark(start_marks[0]),
@@ -2028,7 +2028,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     bufs[1].delete_mark(start_marks[1])
                     bufs[1].delete_mark(end_marks[1])
 
-                    if not self.linediffer.has_chunk(to_pane, chunk):
+                    if not self.linediffer.has_chunk(pane, chunk):
                         return
 
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
@@ -2037,7 +2037,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     if texts != (text1, textn):
                         return
 
-                    if clear:
+                    if clr:
                         bufs[0].remove_tag(tags[0], starts[0], ends[0])
                         bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
@@ -2096,6 +2096,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     (text1, textn),
                     to_pane,
                     chunk,
+                    clear,
                 )
                 self._cached_match.match(text1, textn, match_cb)
 
