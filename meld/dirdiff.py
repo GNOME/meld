@@ -146,7 +146,7 @@ def _contents_same(contents, file_size):
     for start, end in chunk_range:
         chunk = contents[0][start:end]
         for index in other_files_index:
-            if not chunk == contents[index][start:end]:
+            if chunk != contents[index][start:end]:
                 return Different
 
 

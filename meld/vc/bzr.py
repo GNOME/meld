@@ -258,7 +258,7 @@ class Vc(_vc.Vc):
         return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def get_path_for_conflict(self, path, conflict):
-        if path in self._reverse_rename_cache and not conflict == _vc.CONFLICT_MERGED:
+        if path in self._reverse_rename_cache and conflict != _vc.CONFLICT_MERGED:
             path = self._reverse_rename_cache[path]
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")
