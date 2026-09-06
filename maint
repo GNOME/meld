@@ -21,11 +21,11 @@ spec = importlib.util.spec_from_loader(loader.name, loader)
 mod = importlib.util.module_from_spec(spec)
 loader.exec_module(mod)
 
-import meld  # noqa: E402 isort:skip
+import meld
 
 meld.conf = mod
 sys.modules["meld.conf"] = mod
-import meld.conf  # noqa: E402 isort:skip
+import meld.conf
 
 
 PO_DIR = "po"
