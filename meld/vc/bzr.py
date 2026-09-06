@@ -226,7 +226,7 @@ class Vc(_vc.Vc):
                 if executable_match:
                     meta.append(executable_match.group(2))
 
-            path = path[:-1] if path.endswith("/") else path
+            path = path.removesuffix("/")
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
             # Bazaar entries will only be REMOVED in the second state column

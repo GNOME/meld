@@ -666,11 +666,7 @@ class VcView(Gtk.Box, MeldDoc):
         model, rows = self.treeview.get_selection().get_selected_rows()
         sel = [self.model.get_file_path(self.model.get_iter(r)) for r in rows]
         # Remove empty entries and trailing slashes
-        return [
-            path[:-1] if path.endswith("/") else path
-            for path in sel
-            if path is not None
-        ]
+        return [path.removesuffix("/") for path in sel if path is not None]
 
     def _command_iter(self, command, files, refresh, working_dir):
         """An iterable that runs a VC command on a set of files
