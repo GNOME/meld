@@ -81,7 +81,7 @@ class MeldStatusBar(Gtk.Box):
     __gtype_name__ = "MeldStatusBar"
 
     __gsignals__: ClassVar[dict] = {
-        "start-go-to-line": (GObject.SignalFlags.ACTION, None, tuple()),
+        "start-go-to-line": (GObject.SignalFlags.ACTION, None, ()),
         "go-to-line": (GObject.SignalFlags.RUN_FIRST, None, (int,)),
         "encoding-changed": (
             GObject.SignalFlags.RUN_FIRST,

@@ -90,7 +90,7 @@ class Differ(GObject.GObject):
         self.syncpoints = []
         self.conflicts = []
         self._old_merge_cache = set()
-        self._changed_chunks = tuple()
+        self._changed_chunks = ()
         self._merge_cache = []
         self._line_cache = [[], [], []]
         self.ignore_blanks = False
@@ -124,7 +124,7 @@ class Differ(GObject.GObject):
         added_chunks = set(self._merge_cache) - self._old_merge_cache
         modified_chunks = self._changed_chunks
         if modified_chunks in removed_chunks:
-            modified_chunks = tuple()
+            modified_chunks = ()
         chunk_changes = (removed_chunks, added_chunks, modified_chunks)
 
         mergeable0, mergeable1 = False, False
@@ -225,7 +225,7 @@ class Differ(GObject.GObject):
         # Calculate the expected differences in the chunk set if no cascading
         # changes occur, making sure to not include the changed chunk itself
         self._old_merge_cache = set()
-        self._changed_chunks = tuple()
+        self._changed_chunks = ()
         chunk_changed = False
         for c1, c2 in self._merge_cache:
             if sequence == 0:
