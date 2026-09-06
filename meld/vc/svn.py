@@ -25,8 +25,8 @@
 import errno
 import glob
 import os
-import xml.etree.ElementTree as ElementTree
 from typing import ClassVar
+from xml.etree import ElementTree
 
 from meld.conf import _
 from . import _vc
