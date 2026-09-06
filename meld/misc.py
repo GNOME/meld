@@ -135,7 +135,7 @@ def shorten_names(*names: str) -> list[str]:
     common = common.intersection(*(p.parents for p in paths))
     if not common:
         return list(names)
-    common_parent = sorted(common, key=lambda p: -len(p.parts))[0]
+    common_parent = max(common, key=lambda p: len(p.parts))
 
     paths = [p.relative_to(common_parent) for p in paths]
     basenames = [p.name for p in paths]

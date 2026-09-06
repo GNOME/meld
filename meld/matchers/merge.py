@@ -251,8 +251,7 @@ class Merger(diffutil.Differ):
             if change[0] is not None:
                 low_mark = change[0][LO]
             if change[1] is not None:
-                if change[1][LO] > low_mark:
-                    low_mark = change[1][LO]
+                low_mark = max(low_mark, change[1][LO])
             for i in range(lastline, low_mark, 1):
                 mergedtext.append(self.texts[1][i])
             mergedline += low_mark - lastline
