@@ -149,8 +149,9 @@ class MeldBufferData(GObject.GObject):
         self._monitor = None
 
     def _query_mtime(self, gfile):
-        time_query = ",".join(
-            (Gio.FILE_ATTRIBUTE_TIME_MODIFIED, Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC)
+        time_query = (
+            f"{Gio.FILE_ATTRIBUTE_TIME_MODIFIED},"
+            f"{Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC}"
         )
         try:
             info = gfile.query_info(time_query, 0, None)

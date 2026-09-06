@@ -36,11 +36,8 @@ ARCHIVE_CONTENT_TYPES = {
     "application/zip",
 }
 
-ARCHIVE_QUERY_ATTRS = ",".join(
-    (
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-    )
+ARCHIVE_QUERY_ATTRS = (
+    f"{Gio.FILE_ATTRIBUTE_STANDARD_TYPE},{Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE}"
 )
 
 _archive_mounts: dict[Gio.Mount, Gio.File] = {}

@@ -31,11 +31,8 @@ from meld.settings import get_settings
 log = logging.getLogger(__name__)
 
 
-OPEN_EXTERNAL_QUERY_ATTRS = ",".join(
-    (
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-    )
+OPEN_EXTERNAL_QUERY_ATTRS = (
+    f"{Gio.FILE_ATTRIBUTE_STANDARD_TYPE},{Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE}"
 )
 
 
