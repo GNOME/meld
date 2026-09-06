@@ -152,7 +152,7 @@ def get_tokens():
     version = meld.conf.__version__
     major, minor, *release = version.split(".")
     stable_release = int(minor) % 2 == 0
-    release_series = "{}.{}".format(major, minor)
+    release_series = f"{major}.{minor}"
 
     return {
         "date": datetime.date.today().isoformat(),  # noqa: DTZ011

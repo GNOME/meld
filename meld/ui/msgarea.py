@@ -48,7 +48,7 @@ def layout_text_and_icon(
     )
 
     primary_label = Gtk.Label(
-        label="<b>{}</b>".format(primary_text),
+        label=f"<b>{primary_text}</b>",
         wrap=True,
         wrap_mode=Pango.WrapMode.WORD_CHAR,
         use_markup=True,
@@ -64,7 +64,7 @@ def layout_text_and_icon(
 
     if secondary_text:
         secondary_label = Gtk.Label(
-            label="<small>{}</small>".format(secondary_text),
+            label=f"<small>{secondary_text}</small>",
             wrap=True,
             wrap_mode=Pango.WrapMode.WORD,
             use_markup=True,

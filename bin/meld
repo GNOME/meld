@@ -230,7 +230,7 @@ def check_requirements():
                 import gi
 
                 gi.require_version(self.module, self.gi_version)
-                module = "gi.repository.{}".format(self.module)
+                module = f"gi.repository.{self.module}"
             else:
                 module = self.module
 
@@ -251,7 +251,7 @@ def check_requirements():
                 raise RuntimeError("Unsupported version")
 
         def __str__(self):
-            return "{} {}.{}".format(self.name, self.major_version, self.minor_version)
+            return f"{self.name} {self.major_version}.{self.minor_version}"
 
     # These requirements are kept in both `bin/meld` and `meson.build`. If you
     # update one, update the other.
@@ -284,7 +284,7 @@ def setup_resources():
         subprocess.call(
             [
                 "glib-compile-resources",
-                "--target={}".format(resource_file),
+                f"--target={resource_file}",
                 "--sourcedir=meld/resources",
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
@@ -307,7 +307,7 @@ def setup_resources():
     # GtkSourceView if we're uninstalled and they're missing
     if uninstalled:
         for style in ("meld-base", "meld-dark"):
-            path = os.path.join(style_path, "{}.style-scheme.xml".format(style))
+            path = os.path.join(style_path, f"{style}.style-scheme.xml")
             if not os.path.exists(path):
                 import shutil
 

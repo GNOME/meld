@@ -62,7 +62,7 @@ class ActionGutter(Gtk.Widget):
     @icon_direction.setter
     def icon_direction_set(self, direction: Gtk.TextDirection):
         if direction not in (Gtk.TextDirection.LTR, Gtk.TextDirection.RTL):
-            raise ValueError("Invalid icon direction {}".format(direction))
+            raise ValueError(f"Invalid icon direction {direction}")
 
         replace_icons = {
             Gtk.TextDirection.LTR: "meld-change-apply-right",
