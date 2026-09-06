@@ -261,7 +261,7 @@ class Vc:
             valid_actions.add("resolve")
         if (
             all(s not in non_removeable_states for s in states)
-            and self.root not in path_states.keys()
+            and self.root not in path_states
         ):
             valid_actions.add("remove")
         if all(s not in non_revertable_states for s in states):

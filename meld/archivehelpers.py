@@ -94,7 +94,7 @@ def is_archive(gfile: Gio.File | None) -> bool:
 
 
 def is_mounted_archive_root(gfile: Gio.File | None) -> bool:
-    for mount in _archive_mounts.keys():
+    for mount in _archive_mounts:
         if mount.get_root().get_path() == gfile.get_path():
             return True
     return False
@@ -172,7 +172,7 @@ def unmount_archives_by_file(
 ) -> None:
     gfile = gfiles.pop()
 
-    for mount in _archive_mounts.keys():
+    for mount in _archive_mounts:
         if mount.get_root().get_path() == gfile.get_path():
             break
     else:

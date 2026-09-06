@@ -754,7 +754,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         # the always-present name column
         configured_columns = [name for name, visible in columns] + ["name"]
         missing_columns = [
-            c for c in self.columns_dict[0].keys() if c not in configured_columns
+            c for c in self.columns_dict[0] if c not in configured_columns
         ]
 
         for i, treeview in enumerate(self.treeview):
