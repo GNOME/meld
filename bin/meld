@@ -208,7 +208,7 @@ def show_error_and_exit(error_text):
             # Frozen app may lack console but be able to show exceptions.
             raise_as_last_resort_to_display = frozen
     if raise_as_last_resort_to_display:
-        raise Exception(error_text)
+        raise RuntimeError(error_text)
     sys.exit(1)
 
 
@@ -306,7 +306,7 @@ def setup_resources():
     # Just copy style schemes to the file ending expected by
     # GtkSourceView if we're uninstalled and they're missing
     if uninstalled:
-        for style in {"meld-base", "meld-dark"}:
+        for style in ("meld-base", "meld-dark"):
             path = os.path.join(style_path, "{}.style-scheme.xml".format(style))
             if not os.path.exists(path):
                 import shutil
