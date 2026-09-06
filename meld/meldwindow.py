@@ -300,7 +300,7 @@ class MeldWindow(Adw.ApplicationWindow):
     def on_open_recent(self, recent_selector, uri):
         try:
             self.append_recent(uri)
-        except (IOError, ValueError):
+        except (OSError, ValueError):
             # FIXME: Need error handling, but no sensible display location
             log.exception(f"Error opening recent file {uri}")
 

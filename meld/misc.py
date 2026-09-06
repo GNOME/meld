@@ -219,19 +219,19 @@ def read_pipe_iter(
                     if len(state[2]) == 0:
                         yield None
                     else:
-                        raise Exception("Error reading pipe")
+                        raise OSError("Error reading pipe")
                 if childout in state[0]:
                     try:
                         # get buffer size
                         bits.append(childout.read(4096))
-                    except IOError:
+                    except OSError:
                         # FIXME: ick need to fix
                         break
                 if childerr in state[0]:
                     try:
                         # how many chars?
                         errorstream.error(childerr.read(1))
-                    except IOError:
+                    except OSError:
                         # FIXME: ick need to fix
                         break
             status = self.proc.wait()

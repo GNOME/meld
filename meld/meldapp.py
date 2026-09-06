@@ -361,7 +361,7 @@ class MeldApp(Adw.Application):
             tab = None
             try:
                 tab = self.get_active_window().append_recent(gio_file.get_uri())
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 parser.local_error(_("Error reading saved comparison file"))
             if parser.should_exit:
                 cleanup()

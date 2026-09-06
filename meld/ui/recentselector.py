@@ -75,7 +75,7 @@ class RecentSelector(Gtk.Grid):
                 # We're only checking that we can read this item as validation
                 get_recent_comparisons().read(item.get_uri())
                 self.model.append(RecentListModelEntry.from_recent_info(item))
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 pass
 
     @Gtk.Template.Callback()

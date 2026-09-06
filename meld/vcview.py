@@ -699,7 +699,7 @@ class VcView(Gtk.Box, MeldDoc):
             while not result:
                 yield 1
                 result = next(readiter)
-        except IOError as err:
+        except OSError as err:
             error_dialog(
                 "Error running command", "While running '%s'\nError: %s" % (msg, err)
             )

@@ -248,7 +248,7 @@ def _files_same(files, regexes, comparison_args):
                 m.close()
             for h in handles:
                 h.close()
-    except IOError:
+    except OSError:
         # Don't cache generic errors as results
         return FileError
 
@@ -1320,7 +1320,7 @@ class DirDiff(Gtk.Box, MeldDoc):
                             continue
                     misc.copytree(src, dst)
                     self.recursively_update(path)
-            except (OSError, IOError, shutil.Error) as err:
+            except (OSError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
                     _("Couldn’t copy {source}\nto {dest}.\n\n{error}").format(
