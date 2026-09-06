@@ -2313,7 +2313,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         except GLib.Error as err:
             # TODO: Handle recoverable error cases, like external modifications
             # or invalid buffer characters.
-            filename = GLib.markup_escape_text(gfile.get_parse_name())
+            filename = gfile.get_parse_name()
 
             if err.matches(Gio.io_error_quark(), Gio.IOErrorEnum.INVALID_DATA):
                 encoding = saver.get_file().get_encoding()
@@ -2322,9 +2322,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     "using its current encoding “{}”."
                 ).format(filename, encoding.to_string())
             else:
-                secondary = _("Couldn’t save file due to:\n%s") % (
-                    GLib.markup_escape_text(str(err))
-                )
+                secondary = _("Couldn’t save file due to:\n%s") % str(err)
 
             misc.error_dialog(
                 primary=_("Could not save file %s.") % filename,

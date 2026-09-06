@@ -121,11 +121,10 @@ class PatchDialog(Gtk.Dialog):
         try:
             saver.save_finish(result)
         except GLib.Error as err:
-            filename = GLib.markup_escape_text(gfile.get_parse_name())
+            filename = gfile.get_parse_name()
             error_dialog(
                 primary=_("Could not save file %s.") % filename,
-                secondary=_("Couldn’t save file due to:\n%s")
-                % (GLib.markup_escape_text(str(err))),
+                secondary=_("Couldn’t save file due to:\n%s") % str(err),
             )
 
     def run(self):

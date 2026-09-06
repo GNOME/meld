@@ -59,7 +59,7 @@ def trash_or_confirm(
         except Exception as e:
             raise RuntimeError(str(e))
 
-    filename = GLib.markup_escape_text(gfile.get_parse_name())
+    filename = gfile.get_parse_name()
 
     dialog = Adw.AlertDialog(
         heading=_("Delete Permanently?"),

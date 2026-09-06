@@ -1331,9 +1331,9 @@ class DirDiff(Gtk.Box, MeldDoc):
                 misc.error_dialog(
                     _("Error copying file"),
                     _("Couldn’t copy {source}\nto {dest}.\n\n{error}").format(
-                        source=GLib.markup_escape_text(src),
-                        dest=GLib.markup_escape_text(dst),
-                        error=GLib.markup_escape_text(str(err)),
+                        source=src,
+                        dest=dst,
+                        error=str(err),
                     ),
                 )
 
@@ -1363,7 +1363,7 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         def _delete_file(files=files):
             gfile = Gio.File.new_for_path(files[0][1])
-            filename = GLib.markup_escape_text(gfile.get_parse_name())
+            filename = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _deleted_file, parent=self)

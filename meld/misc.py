@@ -37,7 +37,7 @@ from typing import (
     Union,
 )
 
-from gi.repository import GLib, Gtk
+from gi.repository import Gtk
 
 from meld.conf import _
 
@@ -81,8 +81,6 @@ def error_dialog(primary: str, secondary: str) -> None:
     This should only ever be used as a last resort, and for errors that
     a user is unlikely to encounter. If you're tempted to use this,
     think twice.
-
-    Primary must be plain text. Secondary must be valid markup.
     """
     Gtk.AlertDialog(message=primary, detail=secondary).show(get_modal_parent())
 
@@ -106,10 +104,8 @@ def user_critical(primary: str, message: str) -> Callable[[Callable], Callable]:
                 error_dialog(
                     primary=primary,
                     secondary=_(
-                        "{}\n\n"
-                        "Meld encountered a critical error while running:\n"
-                        "<tt>{}</tt>"
-                    ).format(message, GLib.markup_escape_text(str(function))),
+                        "{}\n\nMeld encountered a critical error while running:\n{}"
+                    ).format(message, str(function)),
                 )
                 raise
 
