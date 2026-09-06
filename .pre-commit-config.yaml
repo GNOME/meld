@@ -22,14 +22,10 @@ repos:
         args: [--no-sort-keys, --indent=2]
     -   id: trailing-whitespace
 
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.18
-  hooks:
-    - id: ruff-format
-
-- repo: https://github.com/astral-sh/ruff-pre-commit
-  rev: v0.15.18
-  hooks:
-    - id: ruff-check
+-   repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.16.6
+    hooks:
+    -   id: ruff-check
+    -   id: ruff-format
 
 exclude: ^po/.*\.po$
