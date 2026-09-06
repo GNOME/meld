@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 
 from gi.module import get_introspection_module
@@ -44,12 +45,14 @@ from meld.vc._vc import (  # noqa: F401
     STATE_SPINNER,
 )
 
+log = logging.getLogger(__name__)
+
 _GIGtk = None
 
 try:
     _GIGtk = get_introspection_module("Gtk")
 except Exception:
-    pass
+    log.warning("Unexpected error in introspection; folder comparisons may be slower")
 
 (
     COL_PATH,
