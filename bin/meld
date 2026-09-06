@@ -394,13 +394,14 @@ def setup_glib_logging():
     gtk_log = logging.getLogger(log_domain)
 
     def silence(message):
-        if "Drawing a gadget with negative dimensions" in message:
-            return True
-        if "resource overlay" in message:
-            return True
-        if "Vulkan: Loader Message:" in message:
-            return True
-        return False
+        return any(
+            fragment in message
+            for fragment in (
+                "Drawing a gadget with negative dimensions",
+                "resource overlay",
+                "Vulkan: Loader Message:",
+            )
+        )
 
     # This logging handler is for "old" glib logging using a simple
     # syslog-style API.

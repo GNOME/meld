@@ -312,10 +312,8 @@ class MeldWindow(Adw.ApplicationWindow):
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
         # cycling through X pages when X diffs are initiated.
-        if (
-            isinstance(self.current_doc(), DirDiff)
-            or isinstance(self.current_doc(), VcView)
-            or isinstance(doc, NewDiffTab)
+        if isinstance(self.current_doc(), (DirDiff, VcView)) or isinstance(
+            doc, NewDiffTab
         ):
             self.tabview.set_selected_page(self.tabview.get_page(doc))
 
