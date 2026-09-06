@@ -156,7 +156,7 @@ def get_tokens():
     release_series = "{}.{}".format(major, minor)
 
     return {
-        "date": datetime.date.today().isoformat(),
+        "date": datetime.date.today().isoformat(),  # noqa: DTZ011
         # Appstream appears to expect release dates in UTC.
         "utcdate": datetime.datetime.now(datetime.UTC).date().isoformat(),
         "app": meld.conf.__package__,

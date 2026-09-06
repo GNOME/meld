@@ -38,7 +38,7 @@ class CellRendererDate(Gtk.CellRendererText):
             time_str = ""
         else:
             try:
-                mod_datetime = datetime.datetime.fromtimestamp(value)
+                mod_datetime = datetime.datetime.fromtimestamp(value)  # noqa: DTZ006
                 time_str = self._format_datetime(mod_datetime)
             except Exception:
                 time_str = ""
