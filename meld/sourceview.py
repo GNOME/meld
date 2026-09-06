@@ -211,7 +211,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         return self._approx_line_height
 
-    def notify_overscroll(self, view, param):
+    def notify_overscroll(self, *args):
         self.props.bottom_margin = self.overscroll_num_lines * self.line_height
 
     def do_paste_clipboard(self, *args):
@@ -252,9 +252,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.animating_chunks.append(anim)
 
     def on_setting_changed(self, settings, key):
-        if key == "font":
-            self._approx_line_height = None
-        elif key == "style-scheme":
+        if key == "style-scheme":
             self.highlight_color = colour_lookup_with_fallback(
                 "meld:current-line-highlight", "background"
             )
@@ -334,6 +332,11 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
         self.context_menu = popup_menu
 
         return GtkSource.View.do_realize(self)
+
+    def do_css_changed(self, change):
+        self._approx_line_height = None
+        self.notify_overscroll()
+        return GtkSource.View.do_css_changed(self, change)
 
     def do_unrealize(self):
         if self.anim_source_id:

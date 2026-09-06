@@ -56,7 +56,10 @@ class MeldSettings(GObject.GObject):
             )
             self.emit("text-filters-changed")
         elif key in ("use-system-font", "custom-font"):
+            from meld.style import reset_font_zoom
+
             self.font = self._current_font_from_gsetting()
+            reset_font_zoom()
             self.emit("changed", "font")
         elif key == "style-scheme":
             self.style_scheme = self._style_scheme_from_gsettings()

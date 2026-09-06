@@ -50,6 +50,9 @@ VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
     "view.file-copy-right-down": "<Alt>quoteright",
     "view.file-delete": ("<Alt>Delete", "<Alt>KP_Delete"),
     "view.show-overview-map": "F9",
+    "view.zoom-in": ("<Primary>plus", "<Primary>equal", "<Primary>KP_Add"),
+    "view.zoom-out": ("<Primary>minus", "<Primary>KP_Subtract"),
+    "view.zoom-reset": ("<Primary>0", "<Primary>KP_0"),
     # Folder comparison actions
     "view.folder-compare": "Return",
     "view.folder-copy-left": "<Alt>Left",

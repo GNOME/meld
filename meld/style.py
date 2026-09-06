@@ -26,6 +26,9 @@ from meld.settings import get_meld_settings
 style_scheme: GtkSource.StyleScheme | None = None
 base_style_scheme: GtkSource.StyleScheme | None = None
 
+#: Font zoom offset in points, applied to the configured font size
+_font_size_offset: int = 0
+
 
 class MeldStyleScheme(enum.Enum):
     base = "meld-base"
@@ -94,15 +97,43 @@ def set_base_style_scheme(
     return base_style_scheme
 
 
+def reset_font_zoom() -> None:
+    global _font_size_offset
+
+    _font_size_offset = 0
+
+
+def update_font_zoom(change: int | None) -> None:
+    global _font_size_offset
+
+    meld_settings = get_meld_settings()
+
+    # None/zero resets the zoom factor
+    offset = (_font_size_offset + change) if change else 0
+
+    # Ensure that we can't zoom out past 1pt
+    font_size = meld_settings.font.get_size() // Pango.SCALE
+    offset = max(offset, 1 - font_size)
+    if offset == _font_size_offset:
+        return
+
+    _font_size_offset = offset
+    # Several widgets hook into the font changed signal already; reusing it
+    # here is the simplest option to keep them responsive
+    meld_settings.emit("changed", "font")
+
+
 def init_sourceview_style_context():
     def on_setting_changed(meld_settings, key):
         if key != "font":
             return
 
+        font_size = meld_settings.font.get_size() // Pango.SCALE
+        scaled_font_size = max(1, font_size + _font_size_offset)
         css_provider.load_from_string(
             f".meld-monospace-font {{"
             f"  font-family: {meld_settings.font.get_family()};"
-            f"  font-size: {max(1, meld_settings.font.get_size() / Pango.SCALE)}pt;"
+            f"  font-size: {scaled_font_size}pt;"
             f"}}"
         )
 

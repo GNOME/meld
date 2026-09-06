@@ -52,7 +52,6 @@ class MeldWindow(Adw.ApplicationWindow):
     __gtype_name__ = "MeldWindow"
 
     folder_filter_button: Gtk.Button = Gtk.Template.Child()
-    gear_menu_button = Gtk.Template.Child()
     next_conflict_button = Gtk.Template.Child()
     tabview = Gtk.Template.Child()
     previous_conflict_button = Gtk.Template.Child()

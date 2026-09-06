@@ -56,6 +56,7 @@ from meld.sourceview import (
     TextviewLineAnimationType,
     get_custom_encoding_candidates,
 )
+from meld.style import update_font_zoom
 from meld.syncpoints import SyncpointAction, Syncpoints
 from meld.ui.findbar import FindBar
 from meld.ui.util import (
@@ -389,6 +390,9 @@ class FileDiff(Gtk.Box, MeldDoc):
             ("save-as", self.action_save_as),
             ("undo", self.action_undo),
             ("swap-2-panes", self.action_swap),
+            ("zoom-in", self.action_zoom_in),
+            ("zoom-out", self.action_zoom_out),
+            ("zoom-reset", self.action_zoom_reset),
         )
         for name, callback in actions:
             action = Gio.SimpleAction.new(name, None)
@@ -2797,6 +2801,15 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.set_labels([self.filelabel[1].props.label, self.filelabel[0].props.label])
         self.set_files([gfiles[1], gfiles[0]])
+
+    def action_zoom_in(self, *args):
+        update_font_zoom(1)
+
+    def action_zoom_out(self, *args):
+        update_font_zoom(-1)
+
+    def action_zoom_reset(self, *args):
+        update_font_zoom(None)
 
 
 FileDiff.set_css_name("meld-file-diff")
