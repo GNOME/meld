@@ -160,7 +160,9 @@ class DiffTreeStore(SearchableTreeStore):
             self.set_state(it, pane, STATE_EMPTY, text)
         return it
 
-    def add_error(self, parent, msg, pane, defaults={}):
+    def add_error(self, parent, msg, pane, defaults=None):
+        if defaults is None:
+            defaults = {}
         it = self.append(parent)
         key_values = {COL_STATE: str(STATE_ERROR)}
         key_values.update(defaults)

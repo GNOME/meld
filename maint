@@ -97,7 +97,7 @@ def get_translation_commits(folder):
     return commits
 
 
-def get_translator_langs(folders=[PO_DIR, HELP_DIR]):
+def get_translator_langs(folders=(PO_DIR, HELP_DIR)):
 
     def get_lang(path):
         filename = os.path.basename(path)
