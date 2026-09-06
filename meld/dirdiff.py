@@ -195,11 +195,11 @@ def _files_same(files, regexes, comparison_args):
     regexes = tuple(regexes) if apply_text_filters else ()
 
     # If all entries are directories, they are considered to be the same
-    if all([stat.S_ISDIR(s.mode) for s in stats]):
+    if all(stat.S_ISDIR(s.mode) for s in stats):
         return Same
 
     # If any entries are not regular files, consider them different
-    if not all([stat.S_ISREG(s.mode) for s in stats]):
+    if not all(stat.S_ISREG(s.mode) for s in stats):
         return Different
 
     # Compare files superficially if the options tells us to

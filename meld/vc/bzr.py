@@ -154,7 +154,7 @@ class Vc(_vc.Vc):
                         files.append(os.path.relpath(path, self.root))
             else:
                 files.append(os.path.relpath(p, self.root))
-        return sorted(list(set(files)))
+        return sorted(set(files))
 
     def _update_tree_state_cache(self, path):
         # FIXME: This actually clears out state information, because the

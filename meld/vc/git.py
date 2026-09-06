@@ -146,7 +146,7 @@ class Vc(_vc.Vc):
                 files.extend(names)
             else:
                 files.append(os.path.relpath(p, self.root))
-        return sorted(list(set(files)))
+        return sorted(set(files))
 
     def get_commit_message_prefill(self):
         commit_path = os.path.join(self.root, ".git", "MERGE_MSG")

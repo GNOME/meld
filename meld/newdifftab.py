@@ -90,7 +90,7 @@ class NewDiffTab(Gtk.Box):
     @Gtk.Template.Callback()
     def on_button_type_toggled(self, button, *args):
         if not button.get_active():
-            if not any([b.get_active() for b in self.button_types]):
+            if not any(b.get_active() for b in self.button_types):
                 button.set_active(True)
             return
 

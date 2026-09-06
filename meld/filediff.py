@@ -1968,7 +1968,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         # We need to clear removed and modified chunks, and need to
         # re-highlight added and modified chunks.
-        need_clearing = sorted(list(removed_chunks), key=merged_chunk_order)
+        need_clearing = sorted(removed_chunks, key=merged_chunk_order)
         need_highlighting = sorted(
             [*list(added_chunks), modified_chunks], key=merged_chunk_order
         )
@@ -2134,7 +2134,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                 # are active, and may be altering the comparison. It would be
                 # better if we only showed this message if the filters *did*
                 # change the text in question.
-                active_filters = any([f.active for f in self.text_filters])
+                active_filters = any(f.active for f in self.text_filters)
 
                 bufs = self.textbuffer[: self.num_panes]
                 newlines = [b.data.sourcefile.get_newline_type() for b in bufs]
