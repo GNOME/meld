@@ -928,7 +928,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.go_to_chunk(self.cursor.next)
 
     def get_action_chunk(self, src, dst):
-        valid_panes = list(range(0, self.num_panes))
+        valid_panes = list(range(self.num_panes))
         if src not in valid_panes or dst not in valid_panes:
             raise ValueError("Action was taken on invalid panes")
         if self.cursor.chunk is None:

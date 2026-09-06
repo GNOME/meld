@@ -214,7 +214,7 @@ class Vc:
         provided by the version control system, most commonly these are
         given in merging, revert or cherry-picking scenarios.
         """
-        return None
+        return
 
     def get_commits_to_push_summary(self):
         """Return a one-line readable description of unpushed commits

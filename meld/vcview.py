@@ -58,9 +58,7 @@ def cleanup_temp():
             os.remove(f)
         except Exception:
             except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
-            print(
-                'File "{0}" not removed due to'.format(f), except_str, file=sys.stderr
-            )
+            print('File "{}" not removed due to'.format(f), except_str, file=sys.stderr)
     for f in _temp_dirs:
         try:
             assert (
@@ -72,7 +70,7 @@ def cleanup_temp():
         except Exception:
             except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
             print(
-                'Directory "{0}" not removed due to'.format(f),
+                'Directory "{}" not removed due to'.format(f),
                 except_str,
                 file=sys.stderr,
             )

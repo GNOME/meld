@@ -46,7 +46,7 @@ class FilterEntry:
             # TODO: Register a custom error handling function to replace
             # encoding errors with '.'?
             regex = regex.encode("utf8", "replace")
-        return try_compile(regex, re.M)
+        return try_compile(regex, re.MULTILINE)
 
     @classmethod
     def compile_shell_pattern(cls, pattern):
