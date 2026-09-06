@@ -225,7 +225,7 @@ def _files_same(files, regexes, comparison_args):
 
     try:
         mmaps = []
-        handles = [open(file_path, "rb") for file_path in files]
+        handles = [open(file_path, "rb") for file_path in files]  # noqa: SIM115
         try:
             contents, mmaps, is_bin = _files_contents(handles, stats)
 

@@ -36,7 +36,7 @@ def setup_process():
     # valid stdio handles, so Python sets sys.stdout and sys.stderr to None.
     # Point them at devnull before anything tries to write or flush.
     if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
-        devnull = open(os.devnull, "w")
+        devnull = open(os.devnull, "w")  # noqa: SIM115
         sys.stdout = sys.stderr = devnull
 
     # Frozen multiprocessing children re-enter and exit here. Must come after
