@@ -1772,7 +1772,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                 pass
 
             filename = GLib.markup_escape_text(gfile.get_parse_name())
-            primary = _("There was a problem opening the file “%s”." % filename)
+            primary = _("There was a problem opening the file “%s”.") % filename
             # If we have custom errors defined, use those instead
             if errors.get(pane):
                 error, error_text = errors[pane]

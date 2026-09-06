@@ -370,10 +370,8 @@ class Vc(_vc.Vc):
                 # Git entries can't be MISSING; that's just an unstaged REMOVED
                 self._add_missing_cache_entry(path, state)
                 if old_mode != new_mode:
-                    msg = _(
-                        "Mode changed from {old_mode} to {new_mode}".format(
-                            old_mode=old_mode, new_mode=new_mode
-                        )
+                    msg = _("Mode changed from {old_mode} to {new_mode}").format(
+                        old_mode=old_mode, new_mode=new_mode
                     )
                     tree_meta_cache[path].append(msg)
                 collection = unstaged if new_sha == NULL_SHA else staged
