@@ -70,7 +70,6 @@ class MeldDoc(GObject.GObject):
 
     def get_comparison(self) -> RecentType:
         """Get the comparison type and URI(s) being compared"""
-        pass
 
     def action_stop(self, *args) -> None:
         if self.scheduler.tasks_pending():

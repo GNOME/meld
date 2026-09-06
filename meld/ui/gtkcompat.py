@@ -75,7 +75,6 @@ def append_element(path, selector):
                     break
             else:
                 log.error("Unknown pseudo-class :%s", name)
-                pass
             break
         else:
             assert False
