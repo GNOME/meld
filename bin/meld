@@ -45,7 +45,6 @@ def setup_process():
 
 
 def get_meld_dir():
-    global frozen
     if frozen:
         if hasattr(sys, "_MEIPASS"):
             return sys._MEIPASS
@@ -447,7 +446,6 @@ def environment_hacks():
     # This may confuse vc utils run from meld
     # but otherwise meld just crash on start, see #267
 
-    global frozen
     if frozen and "MSYSTEM" in os.environ:
         lib_dir = os.path.join(get_meld_dir(), "lib")
         os.environ["PATH"] = lib_dir + os.pathsep + os.environ["PATH"]
