@@ -495,12 +495,11 @@ def call_temp_output(cmd, cwd, file_id="", suffix=None):
 
 # Return the return value of a given command
 def call(cmd, cwd=None):
-    devnull = open(os.devnull, "wb")
     return subprocess.call(
         cmd,
         cwd=cwd,
-        stdout=devnull,
-        stderr=devnull,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
         startupinfo=get_hide_window_startupinfo(),
     )
 
