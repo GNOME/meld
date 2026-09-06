@@ -174,5 +174,5 @@ class Vc(_vc.Vc):
                 new_name = new[len(self.root) + 1 :]
                 tree_meta_cache[new] = "%s ➡ %s" % (old_name, new_name)
 
-            self._tree_cache.update(dict((x, y) for x, y in tree_cache.items()))
+            self._tree_cache.update({x: y for x, y in tree_cache.items()})
             self._tree_meta_cache = dict(tree_meta_cache)

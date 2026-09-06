@@ -344,7 +344,7 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
             return (a, b)
 
         def index_matching_kmers(a, b):
-            aset = set([a[i : i + 3] for i in range(len(a) - 2)])
+            aset = {a[i : i + 3] for i in range(len(a) - 2)}
             matches, index = [], []
             next_poss_match = 0
             # Start from where we can get a valid triple

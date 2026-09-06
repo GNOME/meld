@@ -787,10 +787,8 @@ class DirDiff(Gtk.Box, MeldDoc):
         meld_settings = get_meld_settings()
 
         # Ordering of name filters is irrelevant
-        old_active = set([f.filter_string for f in self.name_filters if f.active])
-        new_active = set(
-            [f.filter_string for f in meld_settings.file_filters if f.active]
-        )
+        old_active = {f.filter_string for f in self.name_filters if f.active}
+        new_active = {f.filter_string for f in meld_settings.file_filters if f.active}
         active_filters_changed = old_active != new_active
 
         # TODO: Rework name_filters to use a map-like structure so that we
@@ -1123,7 +1121,7 @@ class DirDiff(Gtk.Box, MeldDoc):
             if differences:
                 expanded.add(tree_path_as_tuple(path))
 
-        duplicate_dirs = list(set(p for p in roots if roots.count(p) > 1))
+        duplicate_dirs = list({p for p in roots if roots.count(p) > 1})
         if any((invalid_filenames, shadowed_entries, whitespace_filenames)):
             self._show_tree_wide_errors(
                 invalid_filenames, shadowed_entries, whitespace_filenames

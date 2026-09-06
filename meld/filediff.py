@@ -1378,7 +1378,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     def _scroll_to_actions(self, actions):
         """Scroll all views affected by *actions* to the current cursor"""
 
-        affected_buffers = set(a.buffer for a in actions)
+        affected_buffers = {a.buffer for a in actions}
         for buf in affected_buffers:
             buf_index = self.textbuffer.index(buf)
             view = self.textview[buf_index]
