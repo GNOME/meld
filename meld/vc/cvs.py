@@ -136,15 +136,12 @@ class Vc(_vc.Vc):
             self._tree_cache[path] = _vc.STATE_NORMAL
         else:
             # There are 1 or more [modified] files, parse their state
-            for entry in zip(files, entries):
-                statekey = entry[1].split(":")[-1].strip()
-                name = entry[0].strip()
+            for file, entry in zip(files, entries):
+                statekey = entry.split(":")[-1].strip()
+                name = file.strip()
 
-                if os.path.basename(name) not in entry[1]:
-                    # ? The short filename got from
-                    # 'cvs -Q status <path/file>' does not match <file>
-                    raise
-
+                if os.path.basename(name) not in entry:
+                    raise RuntimeError(f"CVS status for {name} does not match {entry}")
                 path = os.path.join(self.location, name)
                 state = self.state_map.get(statekey, _vc.STATE_NONE)
                 self._tree_cache[path] = state
