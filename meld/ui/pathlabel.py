@@ -223,3 +223,19 @@ class PathLabel(Gtk.MenuButton):
             return
 
         self.file_launcher.open_containing_folder()
+
+    @Gtk.Template.Callback()
+    def on_label_widget_query_tooltip(
+        self,
+        label: Gtk.Label,
+        _x: int,
+        _y: int,
+        _keyboard_mode: bool,
+        tooltip: Gtk.Tooltip,
+    ) -> bool:
+        layout = label.get_layout()
+        if layout.is_ellipsized():
+            tooltip.set_text(label.get_text())
+            return True
+        else:
+            return False
