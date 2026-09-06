@@ -432,7 +432,7 @@ class MeldApp(Adw.Application):
             nonlocal error, have_comparison, pending_comparisons
             if err:
                 error = err
-                log.debug("Couldn't open comparison: %s", err, exc_info=True)
+                log.debug("Couldn't open comparison: %s", err)
             elif tab:
                 have_comparison = True
             pending_comparisons -= 1
