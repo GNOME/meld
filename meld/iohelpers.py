@@ -1,6 +1,6 @@
 import logging
 import pathlib
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 from gi.repository import Adw, Gio, GLib, Gtk
 
@@ -77,7 +77,7 @@ def trash_or_confirm(
 
 
 def prompt_save_filename(
-    title: str, callback, *, parent: Optional[Gtk.Widget] = None
+    title: str, callback, *, parent: Gtk.Widget | None = None
 ) -> None:
 
     def on_response(dialog: Gtk.FileChooserNative, response: int, callback):
@@ -96,8 +96,8 @@ def prompt_save_filename(
 
 
 def find_shared_parent_path(
-    paths: Sequence[Optional[Gio.File]],
-) -> Optional[Gio.File]:
+    paths: Sequence[Gio.File | None],
+) -> Gio.File | None:
 
     if not paths or not paths[0] or any(path is None for path in paths):
         return None

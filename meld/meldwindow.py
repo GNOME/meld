@@ -16,7 +16,8 @@
 
 import logging
 import os
-from typing import Any, Callable, Dict, Optional, Sequence
+from collections.abc import Callable, Sequence
+from typing import Any
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
@@ -341,7 +342,7 @@ class MeldWindow(Adw.ApplicationWindow):
 
     def append_dirdiff(
         self,
-        gfiles: Sequence[Optional[Gio.File]],
+        gfiles: Sequence[Gio.File | None],
         auto_compare: bool = False,
     ) -> DirDiff:
         doc = DirDiff(len(gfiles))
@@ -384,11 +385,11 @@ class MeldWindow(Adw.ApplicationWindow):
 
     def append_diff(
         self,
-        gfiles: Sequence[Optional[Gio.File]],
+        gfiles: Sequence[Gio.File | None],
         auto_compare: bool = False,
         auto_merge: bool = False,
-        merge_output: Optional[Gio.File] = None,
-        meta: Optional[Dict[str, Any]] = None,
+        merge_output: Gio.File | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> DirDiff | FileDiff | ImageDiff:
         have_directories = False
         have_files = False

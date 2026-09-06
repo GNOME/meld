@@ -16,7 +16,7 @@
 
 import enum
 import logging
-from typing import Sequence
+from collections.abc import Sequence
 
 from gi.repository import Gio, GObject
 

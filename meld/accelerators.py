@@ -1,8 +1,8 @@
-from typing import Dict, Sequence, Union
+from collections.abc import Sequence
 
 from gi.repository import Gtk
 
-VIEW_ACCELERATORS: Dict[str, Union[str, Sequence[str]]] = {
+VIEW_ACCELERATORS: dict[str, str | Sequence[str]] = {
     "app.quit": "<Primary>Q",
     "app.help": "F1",
     "app.preferences": "<Primary>comma",

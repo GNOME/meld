@@ -215,14 +215,14 @@ def show_error_and_exit(error_text):
 
 def check_requirements():
     import importlib
-    from typing import NamedTuple, Optional
+    from typing import NamedTuple
 
     from meld.conf import _
 
     class Requirement(NamedTuple):
         name: str
-        module: Optional[str]
-        gi_version: Optional[str]
+        module: str | None
+        gi_version: str | None
         major_version: int
         minor_version: int
 

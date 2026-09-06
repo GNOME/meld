@@ -29,7 +29,6 @@ import logging
 import os
 import sys
 import tempfile
-from typing import List, Tuple
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -120,7 +119,7 @@ class RecentFiles:
         recent_metadata.is_private = True
         self.recent_manager.add_full(gfile.get_uri(), recent_metadata)
 
-    def read(self, uri: str) -> Tuple[RecentType, List[Gio.File]]:
+    def read(self, uri: str) -> tuple[RecentType, list[Gio.File]]:
         """Read stored comparison from URI"""
         comp_gfile = Gio.File.new_for_uri(uri)
         comp_path = comp_gfile.get_path()

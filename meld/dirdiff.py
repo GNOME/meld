@@ -30,12 +30,7 @@ from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
 from typing import (
     ClassVar,
-    DefaultDict,
-    Dict,
-    List,
     NamedTuple,
-    Optional,
-    Tuple,
 )
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
@@ -300,10 +295,10 @@ class ComparisonOptions:
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
-    items: DefaultDict[str, List[Optional[str]]]
-    stripped_items: Dict[str, str]
-    errors: List[Tuple[int, str, str]]
-    whitespace: List[Tuple[int, str]]
+    items: collections.defaultdict[str, list[str | None]]
+    stripped_items: dict[str, str]
+    errors: list[tuple[int, str, str]]
+    whitespace: list[tuple[int, str]]
 
     def __init__(self, n: int, options: ComparisonOptions):
         self.items = collections.defaultdict(lambda: [None] * n)
@@ -419,7 +414,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         ),
         default=False,
     )
-    folders: List[Optional[Gio.File]] = GObject.Property(
+    folders: list[Gio.File | None] = GObject.Property(
         type=object,
         nick="Folders being compared",
         blurb="List of folders being compared, as GFiles",
@@ -461,7 +456,7 @@ class DirDiff(Gtk.Box, MeldDoc):
     chunkmap0 = Gtk.Template.Child()
     chunkmap1 = Gtk.Template.Child()
     chunkmap2 = Gtk.Template.Child()
-    folder_label: "List[PathLabel]"
+    folder_label: "list[PathLabel]"
     folder_label0 = Gtk.Template.Child()
     folder_label1 = Gtk.Template.Child()
     folder_label2 = Gtk.Template.Child()
@@ -779,7 +774,7 @@ class DirDiff(Gtk.Box, MeldDoc):
 
             treeview.set_headers_visible(have_extra_columns)
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         # TODO: Make text filters available in folder comparison
         return False, True, False
 

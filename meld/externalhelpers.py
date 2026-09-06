@@ -20,7 +20,7 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import List, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -143,7 +143,7 @@ def open_cb(
 
 
 def open_files_external(
-    gfiles: List[Gio.File],
+    gfiles: list[Gio.File],
     *,
     line: int = 0,
     toplevel: Gtk.Widget | None = None,

@@ -22,7 +22,7 @@ import shutil
 import stat
 import sys
 import tempfile
-from typing import ClassVar, Tuple
+from typing import ClassVar
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango
 
@@ -618,7 +618,7 @@ class VcView(Gtk.Box, MeldDoc):
             kwargs,
         )
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         return False, False, True
 
     def action_filter_state_change(self, action, value):

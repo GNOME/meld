@@ -18,7 +18,8 @@ import copy
 import functools
 import logging
 import math
-from typing import Callable, ClassVar, Optional, Tuple, Type
+from collections.abc import Callable
+from typing import ClassVar
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -205,7 +206,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
 
-    differ: Type[Differ]
+    differ: type[Differ]
     comparison_mode: FileComparisonMode
 
     keylookup: ClassVar[dict] = {
@@ -584,7 +585,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         for sourcemap in self.sourcemap:
             sourcemap.props.compact_view = style == "compact-sourcemap"
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         return True, False, False
 
     def get_conflict_visibility(self) -> bool:
@@ -873,9 +874,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         direction = Gdk.ScrollDirection.DOWN if dy > 0 else Gdk.ScrollDirection.UP
         self.next_diff(direction, use_viewport=True)
 
-    def _is_chunk_in_area(
-        self, chunk_id: Optional[int], pane: int, area: Gdk.Rectangle
-    ):
+    def _is_chunk_in_area(self, chunk_id: int | None, pane: int, area: Gdk.Rectangle):
 
         if chunk_id is None:
             return False
@@ -1743,7 +1742,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self,
         loader: GtkSource.FileLoader,
         result: Gio.AsyncResult,
-        user_data: Tuple[int, dict[int, str]],
+        user_data: tuple[int, dict[int, str]],
     ):
         gfile = loader.get_location()
         buf = loader.get_buffer()
