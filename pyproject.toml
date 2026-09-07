@@ -68,10 +68,12 @@ ignore = [
     # We use broad exception catching when interacting with external systems
     # quite a bit (e.g., version control)
     "BLE001",
-    # These are probably interim ignores. They should mostly be fixed at
-    # some point.
-    "UP031",
     "RUF015",
+    # The below are interim ignores that should be fixed at some point, but are
+    # too disruptive to do now. UP031 will break many existing translated
+    # strings for no immediate benefit, and RUF059 needs actual thought about
+    # the relevant logic.
+    "UP031",
     "RUF059",
 ]
 allowed-confusables = ["’"]
