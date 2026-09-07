@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-07-11 00:54+0000\n"
-"PO-Revision-Date: 2026-07-16 07:54+0200\n"
+"POT-Creation-Date: 2026-09-06 20:47+0000\n"
+"PO-Revision-Date: 2026-09-07 07:13+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.9\n"
 
-#: bin/meld:274
+#: bin/meld:273
 #, c-format
 msgid "Meld requires %s."
 msgstr "Meld-ს სჭირდება %s."
@@ -426,7 +426,7 @@ msgstr ""
 
 #: data/styles/meld-base.style-scheme.xml.in:1
 msgid "Classic (Meld)"
-msgstr ""
+msgstr "კლასიკური (Meld)"
 
 #: data/styles/meld-base.style-scheme.xml.in:3
 msgid "Base color scheme for Meld highlighting"
@@ -719,7 +719,7 @@ msgid "Copy change below right"
 msgstr ""
 
 #: meld/resources/gtk/help-overlay.ui:375
-#: meld/resources/gtk/help-overlay.ui:410
+#: meld/resources/gtk/help-overlay.ui:431
 msgctxt "shortcut window"
 msgid "Delete change"
 msgstr "ცვლილების წაშლა"
@@ -729,42 +729,57 @@ msgctxt "shortcut window"
 msgid "Show overview map"
 msgstr "მიმოხილვის რუკის ჩვენება"
 
-#: meld/resources/gtk/help-overlay.ui:391
+#: meld/resources/gtk/help-overlay.ui:389
+msgctxt "shortcut window"
+msgid "Zoom in"
+msgstr "გადიდება"
+
+#: meld/resources/gtk/help-overlay.ui:396
+msgctxt "shortcut window"
+msgid "Zoom out"
+msgstr "დაპატარავება"
+
+#: meld/resources/gtk/help-overlay.ui:403
+msgctxt "shortcut window"
+msgid "Reset zoom"
+msgstr "გადიდების საწყისი პარამეტრები"
+
+#: meld/resources/gtk/help-overlay.ui:412
 msgctxt "shortcut window"
 msgid "Folder comparison"
 msgstr "საქაღალდის შედარება"
 
-#: meld/resources/gtk/help-overlay.ui:396
+#: meld/resources/gtk/help-overlay.ui:417
 msgctxt "shortcut window"
 msgid "Copy to left"
 msgstr "მარცხნივ კოპირება"
 
-#: meld/resources/gtk/help-overlay.ui:403
+#: meld/resources/gtk/help-overlay.ui:424
 msgctxt "shortcut window"
 msgid "Copy to right"
 msgstr "მარჯვნივ კოპირება"
 
-#: meld/resources/gtk/help-overlay.ui:417
+#: meld/resources/gtk/help-overlay.ui:438
 msgctxt "shortcut window"
 msgid "Expand the current folder"
 msgstr "მიმდინარე საქაღალდის ამოკეცვა"
 
-#: meld/resources/gtk/help-overlay.ui:424
+#: meld/resources/gtk/help-overlay.ui:445
 msgctxt "shortcut window"
 msgid "Collapse the current folder"
 msgstr "მიმდინარე საქაღალდის ჩაკეცვა"
 
-#: meld/resources/gtk/help-overlay.ui:433
+#: meld/resources/gtk/help-overlay.ui:454
 msgctxt "shortcut window"
 msgid "Version control comparison"
 msgstr "ვერსიის კონტროლის შედარება"
 
-#: meld/resources/gtk/help-overlay.ui:438
+#: meld/resources/gtk/help-overlay.ui:459
 msgctxt "shortcut window"
 msgid "Commit to version control"
 msgstr ""
 
-#: meld/resources/gtk/help-overlay.ui:445
+#: meld/resources/gtk/help-overlay.ui:466
 msgctxt "shortcut window"
 msgid "Show/hide console output"
 msgstr ""
@@ -854,87 +869,99 @@ msgid "Lock Scrolling"
 msgstr "გადახვევის დაბლოკვა"
 
 #: meld/resources/ui/appwindow.ui:230
-msgid "Swap Left and Right Panes"
-msgstr "მარჯვენა და მარცხენა პანელების მიმოცვლა"
+msgid "Zoom In"
+msgstr "გადიდება"
 
-#: meld/resources/ui/appwindow.ui:236
+#: meld/resources/ui/appwindow.ui:234
+msgid "Zoom Out"
+msgstr "დაპატარავება"
+
+#: meld/resources/ui/appwindow.ui:238
+msgid "Reset Zoom"
+msgstr "გადიდების ჩამოყრა"
+
+#: meld/resources/ui/appwindow.ui:245
+msgid "Swap Panes"
+msgstr "პანელების მიმოცვლა"
+
+#: meld/resources/ui/appwindow.ui:251
 msgid "_Comparison"
 msgstr "შ_ედარება"
 
-#: meld/resources/ui/appwindow.ui:238
+#: meld/resources/ui/appwindow.ui:253
 msgid "_Stop"
 msgstr "_შეჩერება"
 
-#: meld/resources/ui/appwindow.ui:244
+#: meld/resources/ui/appwindow.ui:259
 msgid "Merge All from _Left"
 msgstr "მარ_ცხნიდან ყველას შერწყმა"
 
-#: meld/resources/ui/appwindow.ui:248
+#: meld/resources/ui/appwindow.ui:263
 msgid "Merge All from _Right"
 msgstr "მარ_ჯვნიდან ყველას შერწყმა"
 
-#: meld/resources/ui/appwindow.ui:252
+#: meld/resources/ui/appwindow.ui:267
 msgid "Merge _All"
 msgstr "ყველ_აფრის შერწყმა"
 
-#: meld/resources/ui/appwindow.ui:259
+#: meld/resources/ui/appwindow.ui:274
 msgid "Format as _Patch…"
 msgstr ""
 
-#: meld/resources/ui/appwindow.ui:268
+#: meld/resources/ui/appwindow.ui:283
 msgid "_Preferences"
 msgstr "_მორგება"
 
-#: meld/resources/ui/appwindow.ui:272
+#: meld/resources/ui/appwindow.ui:287
 msgid "Keyboard Shortcuts"
 msgstr "კლავიატურის ბმულები"
 
-#: meld/resources/ui/appwindow.ui:276
+#: meld/resources/ui/appwindow.ui:291
 msgid "_Help"
 msgstr "_დახმარება"
 
-#: meld/resources/ui/appwindow.ui:280
+#: meld/resources/ui/appwindow.ui:295
 msgid "_About Meld"
 msgstr "Meld-ის შესახებ"
 
-#: meld/resources/ui/appwindow.ui:293
+#: meld/resources/ui/appwindow.ui:308
 msgid "File Status"
 msgstr "ფაილის სტატუსი"
 
-#: meld/resources/ui/appwindow.ui:295
+#: meld/resources/ui/appwindow.ui:310
 msgid "Same"
 msgstr "იგივე"
 
-#: meld/resources/ui/appwindow.ui:299
+#: meld/resources/ui/appwindow.ui:314
 msgid "New"
 msgstr "ახალი"
 
-#: meld/resources/ui/appwindow.ui:303 meld/resources/ui/appwindow.ui:326
+#: meld/resources/ui/appwindow.ui:318 meld/resources/ui/appwindow.ui:341
 #: meld/vc/_vc.py:93
 msgid "Modified"
 msgstr "შეიცვალა"
 
-#: meld/resources/ui/appwindow.ui:313
+#: meld/resources/ui/appwindow.ui:328
 msgid "Ignore Filename Case"
 msgstr ""
 
-#: meld/resources/ui/appwindow.ui:317
+#: meld/resources/ui/appwindow.ui:332
 msgid "Normalize Unicode Paths"
 msgstr ""
 
-#: meld/resources/ui/appwindow.ui:330
+#: meld/resources/ui/appwindow.ui:345
 msgid "Normal"
 msgstr "ნორმალური"
 
-#: meld/resources/ui/appwindow.ui:334 meld/vc/_vc.py:87
+#: meld/resources/ui/appwindow.ui:349 meld/vc/_vc.py:87
 msgid "Unversioned"
 msgstr "უვერსიო"
 
-#: meld/resources/ui/appwindow.ui:338 meld/vc/_vc.py:86
+#: meld/resources/ui/appwindow.ui:353 meld/vc/_vc.py:86
 msgid "Ignored"
 msgstr "იგნორირებულია"
 
-#: meld/resources/ui/appwindow.ui:345
+#: meld/resources/ui/appwindow.ui:360
 msgid "Flatten Folders"
 msgstr "საქაღალდეების გაბრტყელება"
 
@@ -964,8 +991,8 @@ msgstr "წინა ჟურნალი:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1300
-#: meld/iohelpers.py:68 meld/vcview.py:807
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1304
+#: meld/iohelpers.py:71 meld/vcview.py:807
 msgid "_Cancel"
 msgstr "_გაუქმება"
 
@@ -1170,50 +1197,50 @@ msgstr "ფაილი 2"
 msgid "File 1"
 msgstr "ფაილი 1"
 
-#: meld/resources/ui/filter-list.ui:33
+#: meld/resources/ui/filter-list.ui:34
 msgid "Active"
 msgstr "აქტიური"
 
 #. Create icon and filename CellRenderer
-#: meld/resources/ui/filter-list.ui:47 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
+#: meld/dirdiff.py:641
 msgid "Name"
 msgstr "სახელი"
 
-#: meld/resources/ui/filter-list.ui:61
+#: meld/resources/ui/filter-list.ui:62
 msgid "Pattern"
 msgstr "შაბლონი"
 
-#: meld/resources/ui/filter-list.ui:92
+#: meld/resources/ui/filter-list.ui:93
 msgid "Add new filter"
 msgstr "ახალი ფილტრის დამატება"
 
-#: meld/resources/ui/filter-list.ui:93 meld/resources/ui/vcview.ui:285
+#: meld/resources/ui/filter-list.ui:94 meld/resources/ui/vcview.ui:285
 msgid "_Add"
 msgstr "_დამატება"
 
-#: meld/resources/ui/filter-list.ui:101
+#: meld/resources/ui/filter-list.ui:102
 msgid "Remove selected filter"
 msgstr ""
 
-#: meld/resources/ui/filter-list.ui:102 meld/resources/ui/vcview.ui:293
+#: meld/resources/ui/filter-list.ui:103 meld/resources/ui/vcview.ui:293
 #: meld/vcview.py:808
 msgid "_Remove"
 msgstr "მოცილება"
 
-#: meld/resources/ui/filter-list.ui:115
+#: meld/resources/ui/filter-list.ui:116
 msgid "Move item up"
 msgstr "ჩანაწერის აწევა"
 
-#: meld/resources/ui/filter-list.ui:116
+#: meld/resources/ui/filter-list.ui:117
 msgid "Move _Up"
 msgstr "_აწევა"
 
-#: meld/resources/ui/filter-list.ui:124
+#: meld/resources/ui/filter-list.ui:125
 msgid "Move item down"
 msgstr "ჩანაწერის ჩამოწევა"
 
-#: meld/resources/ui/filter-list.ui:125
+#: meld/resources/ui/filter-list.ui:126
 msgid "Move _Down"
 msgstr "_ჩამოწევა"
 
@@ -1253,7 +1280,7 @@ msgstr "_გადატანილი"
 msgid "Replace _All"
 msgstr "ყველ_აფრის ჩანაცვლება"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1302
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1306
 msgid "_Replace"
 msgstr "_ჩანაცვლება"
 
@@ -1345,7 +1372,7 @@ msgstr ""
 msgid "Copy to Clipboard"
 msgstr "გაცვლის ბუფერში კოპირება"
 
-#: meld/resources/ui/patch-dialog.ui:92 meld/patchdialog.py:141
+#: meld/resources/ui/patch-dialog.ui:92 meld/patchdialog.py:140
 msgid "Save Patch"
 msgstr ""
 
@@ -1441,14 +1468,6 @@ msgstr ""
 msgid "The character to be inserted for Tab"
 msgstr "სიმბოლო, რომელიც ტაბულაციისთვის ჩაისმება"
 
-#: meld/resources/ui/preferences.ui:140
-msgid "tab"
-msgstr "ჩანართი"
-
-#: meld/resources/ui/preferences.ui:141
-msgid "spaces"
-msgstr "გამოტოვებები"
-
 #: meld/resources/ui/preferences.ui:149
 msgid "_Indentation Size"
 msgstr ""
@@ -1517,24 +1536,8 @@ msgstr ""
 msgid "Order when Comparing File Revisions"
 msgstr ""
 
-#: meld/resources/ui/preferences.ui:288
-msgid "lrrl"
-msgstr "lrrl"
-
-#: meld/resources/ui/preferences.ui:289
-msgid "llrr"
-msgstr "llrr"
-
 #: meld/resources/ui/preferences.ui:297
 msgid "Order when Merging Files"
-msgstr ""
-
-#: meld/resources/ui/preferences.ui:303
-msgid "remote-merge-local"
-msgstr ""
-
-#: meld/resources/ui/preferences.ui:304
-msgid "local-merge-remote"
 msgstr ""
 
 #: meld/resources/ui/preferences.ui:314
@@ -1750,124 +1753,124 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:664 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "ზომა"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:672 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "მოდიფიკაციის დრო"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:680 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr ""
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:688 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "წვდომები"
 
-#: meld/dirdiff.py:972 meld/dirdiff.py:1002
+#: meld/dirdiff.py:976 meld/dirdiff.py:1006
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "{folder}-ის სკანირება"
 
-#: meld/dirdiff.py:1141
+#: meld/dirdiff.py:1145
 msgid "Done"
 msgstr "მზადაა"
 
-#: meld/dirdiff.py:1153
+#: meld/dirdiff.py:1157
 msgid "Folder {} is being compared to itself"
 msgstr ""
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1165
 msgid "Folders have no differences"
 msgstr ""
 
-#: meld/dirdiff.py:1162
+#: meld/dirdiff.py:1166
 msgid "Contents of scanned files in folders are identical."
 msgstr ""
 
-#: meld/dirdiff.py:1164
+#: meld/dirdiff.py:1168
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1172
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 
-#: meld/dirdiff.py:1171
+#: meld/dirdiff.py:1175
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 
-#: meld/dirdiff.py:1187 meld/filediff.py:2161
+#: meld/dirdiff.py:1191 meld/filediff.py:2169
 msgid "Hide"
 msgstr "დამალვა"
 
-#: meld/dirdiff.py:1189 meld/filediff.py:2163 meld/filediff.py:2193
-#: meld/filediff.py:2195 meld/filediff.py:2219 meld/ui/msgarea.py:140
+#: meld/dirdiff.py:1193 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:140
 #: meld/ui/msgarea.py:152
 msgid "Hi_de"
 msgstr "დამალვა"
 
-#: meld/dirdiff.py:1200
+#: meld/dirdiff.py:1204
 msgid "Multiple errors occurred while scanning this folder"
 msgstr ""
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1205
 msgid "Files with invalid encodings found"
 msgstr ""
 
-#: meld/dirdiff.py:1204
+#: meld/dirdiff.py:1208
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1210
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 
-#: meld/dirdiff.py:1209
+#: meld/dirdiff.py:1213
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr ""
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1217
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr ""
 
-#: meld/dirdiff.py:1216
+#: meld/dirdiff.py:1220
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr ""
 
-#: meld/dirdiff.py:1227
+#: meld/dirdiff.py:1231
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr ""
 
-#: meld/dirdiff.py:1311
+#: meld/dirdiff.py:1315
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "ჩავანაცვლო საქაღალდე \"%s\"?"
 
-#: meld/dirdiff.py:1313
+#: meld/dirdiff.py:1317
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
 "If you replace the existing folder, all files in it will be lost."
 msgstr ""
 
-#: meld/dirdiff.py:1328
+#: meld/dirdiff.py:1332
 msgid "Error copying file"
 msgstr "ფაილის კოპირების შეცდომა"
 
-#: meld/dirdiff.py:1329
+#: meld/dirdiff.py:1333
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1876,11 +1879,11 @@ msgid ""
 "{error}"
 msgstr ""
 
-#: meld/dirdiff.py:1942
+#: meld/dirdiff.py:1950
 msgid "No folder"
 msgstr "საქაღალდის გარეშე"
 
-#: meld/dirdiff.py:1955
+#: meld/dirdiff.py:1963
 msgid "Folder comparison:"
 msgstr "საქაღალდის შედარება:"
 
@@ -1892,38 +1895,38 @@ msgstr ""
 msgid "Unsupported file type"
 msgstr ""
 
-#: meld/filediff.py:1246
+#: meld/filediff.py:1250
 msgid "Comparison results will be inaccurate"
 msgstr ""
 
-#: meld/filediff.py:1248
+#: meld/filediff.py:1252
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr ""
 
-#: meld/filediff.py:1290
+#: meld/filediff.py:1294
 msgid "Mark conflict as resolved?"
 msgstr ""
 
-#: meld/filediff.py:1292
+#: meld/filediff.py:1296
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 
-#: meld/filediff.py:1296
+#: meld/filediff.py:1300
 msgid "Cancel"
 msgstr "_გაუქმება"
 
-#: meld/filediff.py:1297
+#: meld/filediff.py:1301
 msgid "Mark _Resolved"
 msgstr ""
 
-#: meld/filediff.py:1576 meld/imagediff.py:238
+#: meld/filediff.py:1580 meld/imagediff.py:241
 msgid "File comparison:"
 msgstr ""
 
-#: meld/filediff.py:1722
+#: meld/filediff.py:1726
 #, python-brace-format
 msgid ""
 "Line {line_number} exceeded maximum line length ({line_length} > "
@@ -1932,225 +1935,225 @@ msgid ""
 "Loading files with very long lines may make Meld slow or unresponsive."
 msgstr ""
 
-#: meld/filediff.py:1772
+#: meld/filediff.py:1776
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "ფაილის გახსნის შეცდომა: %s."
 
-#: meld/filediff.py:1799
+#: meld/filediff.py:1803
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr ""
 
-#: meld/filediff.py:1800
+#: meld/filediff.py:1804
 msgid "Do you want to open the file using the default application?"
 msgstr ""
 
-#: meld/filediff.py:1805
+#: meld/filediff.py:1809
 msgid "Open"
 msgstr "გახსნა"
 
-#: meld/filediff.py:1906
+#: meld/filediff.py:1914
 #, python-format
 msgid "File %s has changed on disk"
 msgstr ""
 
-#: meld/filediff.py:1907
+#: meld/filediff.py:1915
 msgid "Do you want to reload the file?"
 msgstr "გნებავთ, ფაილი თავიდან ჩატვირთოთ?"
 
-#: meld/filediff.py:1912
+#: meld/filediff.py:1920
 msgid "_Reload"
 msgstr "_გადატვირთვა"
 
-#: meld/filediff.py:2113
+#: meld/filediff.py:2121
 msgid "File {} is being compared to itself"
 msgstr ""
 
-#: meld/filediff.py:2124
+#: meld/filediff.py:2132
 msgid "Files are identical"
 msgstr ""
 
-#: meld/filediff.py:2138
+#: meld/filediff.py:2146
 msgid ""
 "Text filters are being used, and may be masking differences between files. "
 "Would you like to compare the unfiltered files?"
 msgstr ""
 
-#: meld/filediff.py:2144
+#: meld/filediff.py:2152
 msgid "Files differ in line endings only"
 msgstr ""
 
-#: meld/filediff.py:2146
+#: meld/filediff.py:2154
 #, python-format
 msgid ""
 "Files are identical except for differing line endings:\n"
 "%s"
 msgstr ""
 
-#: meld/filediff.py:2166
+#: meld/filediff.py:2174
 msgid "Show without filters"
 msgstr ""
 
-#: meld/filediff.py:2185
+#: meld/filediff.py:2193
 msgid "Change highlighting incomplete"
 msgstr ""
 
-#: meld/filediff.py:2187
+#: meld/filediff.py:2195
 msgid ""
 "Some changes were not highlighted because they were too large. You can force "
 "Meld to take longer to highlight larger changes, though this may be slow."
 msgstr ""
 
-#: meld/filediff.py:2196
+#: meld/filediff.py:2204
 msgid "Keep highlighting"
 msgstr ""
 
-#: meld/filediff.py:2198
+#: meld/filediff.py:2206
 msgid "_Keep highlighting"
 msgstr ""
 
-#: meld/filediff.py:2220
+#: meld/filediff.py:2228
 msgid "_Load anyway"
 msgstr "_მაინც ჩატვირთვა"
 
-#: meld/filediff.py:2231
+#: meld/filediff.py:2239
 msgid "Saving failed"
 msgstr "შენახვის შეცდომა"
 
-#: meld/filediff.py:2233
+#: meld/filediff.py:2241
 msgid ""
 "Please consider copying any critical changes to another program or file to "
 "avoid data loss."
 msgstr ""
 
-#: meld/filediff.py:2242
+#: meld/filediff.py:2250
 msgid "Save Left Pane As"
 msgstr ""
 
-#: meld/filediff.py:2244
+#: meld/filediff.py:2252
 msgid "Save Middle Pane As"
 msgstr ""
 
-#: meld/filediff.py:2246
+#: meld/filediff.py:2254
 msgid "Save Right Pane As"
 msgstr ""
 
-#: meld/filediff.py:2267
+#: meld/filediff.py:2275
 #, python-format
 msgid "File %s has changed on disk since it was opened"
 msgstr ""
 
-#: meld/filediff.py:2270
+#: meld/filediff.py:2278
 msgid "If you save it, any external changes will be lost."
 msgstr ""
 
-#: meld/filediff.py:2274
+#: meld/filediff.py:2282
 msgid "Save Anyway"
 msgstr "მაინც შენახვა"
 
-#: meld/filediff.py:2275
+#: meld/filediff.py:2283
 msgid "Don’t Save"
 msgstr "არ შეინახო"
 
-#: meld/filediff.py:2313
+#: meld/filediff.py:2321
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
 msgstr ""
 
-#: meld/filediff.py:2317 meld/patchdialog.py:127
+#: meld/filediff.py:2325 meld/patchdialog.py:127
 #, python-format
 msgid ""
 "Couldn’t save file due to:\n"
 "%s"
 msgstr ""
 
-#: meld/filediff.py:2322 meld/patchdialog.py:126
+#: meld/filediff.py:2328 meld/patchdialog.py:126
 #, python-format
 msgid "Could not save file %s."
 msgstr ""
 
-#: meld/filediff.py:2740
+#: meld/filediff.py:2746
 msgid "Live comparison updating disabled"
 msgstr ""
 
-#: meld/filediff.py:2742
+#: meld/filediff.py:2748
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr ""
 
-#: meld/filediff.py:2782
+#: meld/filediff.py:2788
 msgid "Can't swap unsaved files"
 msgstr ""
 
-#: meld/filediff.py:2783
+#: meld/filediff.py:2789
 msgid "Files must be saved to disk before swapping panes."
 msgstr ""
 
-#: meld/filediff.py:2789
+#: meld/filediff.py:2795
 msgid "Can't swap version control comparisons"
 msgstr ""
 
-#: meld/filediff.py:2790
+#: meld/filediff.py:2796
 msgid "Swapping panes is not supported in version control mode."
 msgstr ""
 
-#: meld/iohelpers.py:40
+#: meld/iohelpers.py:43
 msgid "Deleting remote folders is not supported"
 msgstr ""
 
-#: meld/iohelpers.py:42
+#: meld/iohelpers.py:45
 msgid "Not a file or directory"
 msgstr ""
 
-#: meld/iohelpers.py:62
+#: meld/iohelpers.py:65
 msgid "Delete Permanently?"
 msgstr "წაიშალოს სამუდამოდ?"
 
-#: meld/iohelpers.py:65
+#: meld/iohelpers.py:68
 msgid "Do you want to delete it permanently?"
 msgstr "გნებავთ, ის სამუდამოდ წაშალოთ?"
 
-#: meld/iohelpers.py:69
+#: meld/iohelpers.py:72
 msgid "_Delete Permanently"
 msgstr "_სამუდამოდ წაშლა"
 
-#: meld/meldapp.py:135
+#: meld/meldapp.py:121
 msgid "translator-credits"
 msgstr "თემური დოღონაძე"
 
-#: meld/meldapp.py:183
+#: meld/meldapp.py:173
 msgid "wrong number of arguments supplied to --diff"
 msgstr ""
 
-#: meld/meldapp.py:189
+#: meld/meldapp.py:179
 msgid "Start with an empty window"
 msgstr ""
 
-#: meld/meldapp.py:191 meld/meldapp.py:195
+#: meld/meldapp.py:181 meld/meldapp.py:185
 msgid "file"
 msgstr "ფაილი"
 
-#: meld/meldapp.py:191 meld/meldapp.py:199
+#: meld/meldapp.py:181 meld/meldapp.py:189
 msgid "folder"
 msgstr "საქაღალდე"
 
-#: meld/meldapp.py:192
+#: meld/meldapp.py:182
 msgid "Start a version control comparison"
 msgstr ""
 
-#: meld/meldapp.py:196
+#: meld/meldapp.py:186
 msgid "Start a 2- or 3-way file comparison"
 msgstr ""
 
-#: meld/meldapp.py:200
+#: meld/meldapp.py:190
 msgid "Start a 2- or 3-way folder comparison"
 msgstr ""
 
-#: meld/meldapp.py:207
+#: meld/meldapp.py:197
 msgid ""
 "\n"
 "\n"
@@ -2158,70 +2161,70 @@ msgid ""
 "a <file> argument to create a blank pane."
 msgstr ""
 
-#: meld/meldapp.py:251
+#: meld/meldapp.py:241
 #, python-format
 msgid "Error: %s\n"
 msgstr "შეცდომა: %s\n"
 
-#: meld/meldapp.py:258
+#: meld/meldapp.py:248
 msgid "Meld is a file and directory comparison tool."
 msgstr ""
 
-#: meld/meldapp.py:266
+#: meld/meldapp.py:256
 msgid "Set label to use instead of file name"
 msgstr ""
 
-#: meld/meldapp.py:273
+#: meld/meldapp.py:263
 msgid "Open a new tab in an already running instance"
 msgstr ""
 
-#: meld/meldapp.py:280
+#: meld/meldapp.py:270
 msgid "Automatically compare all differing files on startup"
 msgstr ""
 
-#: meld/meldapp.py:283
+#: meld/meldapp.py:273
 msgid "Ignored for compatibility"
 msgstr ""
 
-#: meld/meldapp.py:292
+#: meld/meldapp.py:282
 msgid "Set the target file for saving a merge result"
 msgstr ""
 
-#: meld/meldapp.py:299
+#: meld/meldapp.py:289
 msgid "Automatically merge files"
 msgstr ""
 
-#: meld/meldapp.py:308
+#: meld/meldapp.py:298
 msgid "Load a saved comparison from a Meld comparison file"
 msgstr ""
 
-#: meld/meldapp.py:317
+#: meld/meldapp.py:307
 msgid "Create a diff tab for the supplied files or folders"
 msgstr ""
 
-#: meld/meldapp.py:338
+#: meld/meldapp.py:328
 #, python-format
 msgid "too many arguments (wanted 0-3, got %d)"
 msgstr ""
 
-#: meld/meldapp.py:340
+#: meld/meldapp.py:330
 msgid "can’t auto-merge less than 3 files"
 msgstr ""
 
-#: meld/meldapp.py:342
+#: meld/meldapp.py:332
 msgid "can’t auto-merge directories"
 msgstr ""
 
-#: meld/meldapp.py:355
+#: meld/meldapp.py:365
 msgid "Error reading saved comparison file"
 msgstr ""
 
-#: meld/meldapp.py:383
+#: meld/meldapp.py:396
 #, python-format
 msgid "invalid path or URI “%s”"
 msgstr ""
 
-#: meld/meldapp.py:389
+#: meld/meldapp.py:402
 msgid "remote folder “{}” not supported"
 msgstr ""
 
@@ -2234,28 +2237,32 @@ msgstr "<უსახელო>"
 msgid "Filename"
 msgstr "ფაილის სახელი"
 
-#: meld/meldwindow.py:372
+#: meld/meldwindow.py:375
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 
-#: meld/meldwindow.py:401
+#: meld/meldwindow.py:404
 msgid "Cannot compare a mixture of files and directories"
 msgstr ""
 
-#: meld/meldwindow.py:456
+#: meld/meldwindow.py:448
+msgid "Failed to mount archive"
+msgstr ""
+
+#: meld/meldwindow.py:508
 msgid "Cannot compare a non-existent file"
 msgstr ""
 
-#: meld/misc.py:111
+#: meld/misc.py:107
 msgid ""
 "{}\n"
 "\n"
 "Meld encountered a critical error while running:\n"
-"<tt>{}</tt>"
+"{}"
 msgstr ""
 
-#: meld/misc.py:165
+#: meld/misc.py:159
 msgid "[None]"
 msgstr "[არცერთი]"
 
@@ -2339,7 +2346,7 @@ msgstr ""
 msgid "Version control:"
 msgstr "ვერსიის კონტროლი:"
 
-#: meld/style.py:133
+#: meld/style.py:163
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr ""
 
@@ -2356,7 +2363,7 @@ msgstr "უბრალო ტექსტი"
 msgid "Column options"
 msgstr "სვეტის მორგება"
 
-#: meld/ui/pathlabel.py:34
+#: meld/ui/pathlabel.py:36
 msgid "Unnamed file"
 msgstr ""
 
@@ -2517,7 +2524,7 @@ msgstr ""
 #: meld/vcview.py:484
 #, python-format
 msgid "Scanning %s"
-msgstr ""
+msgstr "%s-ის სკანირება"
 
 #: meld/vcview.py:523
 msgid "(Empty)"
@@ -2567,6 +2574,21 @@ msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr ""
+
+#~ msgid "Swap Left and Right Panes"
+#~ msgstr "მარჯვენა და მარცხენა პანელების მიმოცვლა"
+
+#~ msgid "tab"
+#~ msgstr "ჩანართი"
+
+#~ msgid "spaces"
+#~ msgstr "გამოტოვებები"
+
+#~ msgid "lrrl"
+#~ msgstr "lrrl"
+
+#~ msgid "llrr"
+#~ msgstr "llrr"
 
 #~ msgid "Column Name"
 #~ msgstr "სვეტისსახელი"
