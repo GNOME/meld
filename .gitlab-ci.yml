@@ -44,7 +44,7 @@ nightly:
   before_script:
     - dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv
     - uv venv --system-site-packages
-    - uv sync --no-install-project
+    - uv pip install --group dev
 
 lint:
   extends: .pythonchecks
