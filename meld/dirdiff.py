@@ -69,7 +69,6 @@ if typing.TYPE_CHECKING:
 
 log = logging.getLogger(__name__)
 
-
 class StatItem(namedtuple("StatItem", "mode size time")):
     __slots__ = ()
 
@@ -632,6 +631,10 @@ class DirDiff(Gtk.Box, MeldDoc):
         self.current_path, self.prev_path, self.next_path = None, None, None
         self.focus_pane = None
         self.row_expansions = set()
+        self._scanned_paths = set()
+        self._scanning_paths = set()
+        self._pending_expand = set()
+        self._expand_lock = False
 
         # One column-dict for each treeview, for changing visibility and order
         self.columns_dict = [{}, {}, {}]
@@ -910,6 +913,11 @@ class DirDiff(Gtk.Box, MeldDoc):
         self.current_path = None
         self.marked = None
         self.model.clear()
+        self.row_expansions = set()
+        self._scanned_paths = set()
+        self._scanning_paths = set()
+        self._pending_expand = set()
+        self._expand_lock = False
         for m in self.msgarea_mgr:
             m.clear()
         child = self.model.add_entries(None, locations)
@@ -918,7 +926,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         self.recompute_label()
         self.scheduler.remove_all_tasks()
         self._scan_in_progress = 0
-        self.recursively_update(Gtk.TreePath.new_first())
+        self.update_single_level(Gtk.TreePath.new_first())
 
     def get_comparison(self):
         root = self.model.get_iter_first()
@@ -967,6 +975,61 @@ class DirDiff(Gtk.Box, MeldDoc):
             self._update_item_state(it)
         self._scan_in_progress += 1
         self.scheduler.add_task(self._search_recursively_iter(path))
+
+    def update_single_level(self, path, expand_on_complete=False):
+        """Scan a single level of the tree at 'path' (lazy loading).
+
+        State tracking (_scanning_paths, _scan_in_progress) is updated
+        synchronously, but all TreeModel modifications (removing
+        children, marking rows) are deferred to a GLib idle callback to
+        avoid modifying the model during GTK signal handlers, which can
+        cause crashes in GTK's C-level code.
+        """
+        path_str = str(path)
+        # Guard against re-entrant / duplicate scans of the same path
+        if path_str in self._scanning_paths or path_str in self._scanned_paths:
+            return
+        self._scanning_paths.add(path_str)
+        self._scan_in_progress += 1
+        if expand_on_complete:
+            self._pending_expand.add(path_str)
+        GLib.idle_add(self._do_single_level_model_work, path_str)
+
+    def _do_single_level_model_work(self, path_str):
+        """Idle callback: modify the TreeModel for a pending scan.
+
+        This runs outside any signal handler, so model modifications
+        (remove, set_state) are safe here.
+        """
+        try:
+            path = Gtk.TreePath.new_from_string(path_str)
+            it = self.model.get_iter(path)
+            child = self.model.iter_children(it)
+            while child:
+                self.model.remove(child)
+                child = self.model.iter_children(it)
+            if self._scan_in_progress == 1:
+                self.mark_in_progress_row(it)
+            else:
+                self._update_item_state(it)
+            self.scheduler.add_task(self._scan_single_level_wrapper(path))
+        except Exception:
+            log.exception("Error in _do_single_level_model_work for %s", path_str)
+            self._scanning_paths.discard(path_str)
+            self._scan_in_progress = max(0, self._scan_in_progress - 1)
+            self._pending_expand.discard(path_str)
+        return False
+
+    def _scan_single_level_wrapper(self, rootpath):
+        """Wrapper that ensures state cleanup if the scan fails."""
+        rootpath_str = str(rootpath)
+        try:
+            yield from self._scan_single_level_iter(rootpath)
+        except Exception:
+            log.exception("Error in scan for %s", rootpath_str)
+            self._scanning_paths.discard(rootpath_str)
+            self._scan_in_progress = max(0, self._scan_in_progress - 1)
+            self._pending_expand.discard(rootpath_str)
 
     def _search_recursively_iter(self, rootpath):
         for t in self.treeview:
@@ -1152,6 +1215,183 @@ class DirDiff(Gtk.Box, MeldDoc):
         self.force_cursor_recalculate = True
         self.treeview[0].set_cursor(rootpath)
 
+    def _scan_single_level_iter(self, rootpath):
+        """Scan a single level of directory entries at 'rootpath'.
+
+        This is the lazy-loading version of _search_recursively_iter.
+        It reads only the immediate children of the folder at rootpath,
+        without recursing into subdirectories. For each subdirectory
+        found, a placeholder child is added so the expand arrow shows.
+        """
+        for t in self.treeview:
+            sel = t.get_selection()
+            sel.unselect_all()
+
+        yield _("Scanning {folder}").format(folder="")
+        prefixlen = 1 + len(self.model.value_path(self.model.get_iter(rootpath), 0))
+        symlinks_followed = set()
+        if isinstance(rootpath, tuple):
+            rootpath = Gtk.TreePath(rootpath)
+
+        it = self.model.get_iter(rootpath)
+        roots = self.model.value_paths(it)
+
+        if not any(os.path.isdir(root) for root in roots):
+            yield _("Done")
+            self._scan_in_progress -= 1
+            if self._scan_in_progress == 0:
+                self._update_item_state(it)
+            self._scanned_paths.add(str(rootpath))
+            self._scanning_paths.discard(str(rootpath))
+            return
+
+        yield _("Scanning {folder}").format(folder=roots[0][prefixlen:])
+        differences = False
+        encoding_errors = []
+        shadowed_entries = []
+        whitespace_filenames = []
+
+        comparison_options = ComparisonOptions(
+            ignore_case=self.get_action_state("folder-ignore-case"),
+            normalize_encoding=self.get_action_state("folder-normalize-encoding"),
+        )
+
+        dirs = CanonicalListing(self.num_panes, comparison_options)
+        files = CanonicalListing(self.num_panes, comparison_options)
+
+        for pane, root in enumerate(roots):
+            if not os.path.isdir(root):
+                continue
+
+            try:
+                entries = os.listdir(root)
+            except OSError as err:
+                self.model.add_error(it, err.strerror, pane)
+                differences = True
+                continue
+
+            for f in self.name_filters:
+                if not f.active or f.filter is None:
+                    continue
+                entries = [e for e in entries if f.filter.match(e) is None]
+
+            for e in entries:
+                try:
+                    e.encode("utf8")
+                except UnicodeEncodeError:
+                    invalid = e.encode("utf8", "surrogatepass")
+                    printable = invalid.decode("utf8", "backslashreplace")
+                    encoding_errors.append((pane, printable))
+                    continue
+
+                try:
+                    s = os.lstat(os.path.join(root, e))
+                except OSError as err:
+                    error_string = e + err.strerror
+                    self.model.add_error(it, error_string, pane)
+                    continue
+
+                if stat.S_ISLNK(s.st_mode):
+                    if self.props.ignore_symlinks:
+                        continue
+                    key = (s.st_dev, s.st_ino)
+                    if key in symlinks_followed:
+                        continue
+                    symlinks_followed.add(key)
+                    try:
+                        s = os.stat(os.path.join(root, e))
+                        if stat.S_ISREG(s.st_mode):
+                            files.add(pane, e)
+                        elif stat.S_ISDIR(s.st_mode):
+                            dirs.add(pane, e)
+                    except OSError as err:
+                        if err.errno == errno.ENOENT:
+                            error_string = e + ": Dangling symlink"
+                        else:
+                            error_string = e + err.strerror
+                        self.model.add_error(it, error_string, pane)
+                        differences = True
+                elif stat.S_ISREG(s.st_mode):
+                    files.add(pane, e)
+                elif stat.S_ISDIR(s.st_mode):
+                    dirs.add(pane, e)
+                else:
+                    pass
+
+        for pane, f in encoding_errors:
+            invalid_filenames = [(pane, roots[pane], f)]
+            self._show_tree_wide_errors(
+                invalid_filenames, shadowed_entries, whitespace_filenames
+            )
+
+        for pane, f1, f2 in dirs.errors + files.errors:
+            shadowed_entries.append((pane, roots[pane], f1, f2))
+
+        for pane, f in dirs.whitespace + files.whitespace:
+            whitespace_filenames.append((pane, roots[pane], f))
+
+        if shadowed_entries or whitespace_filenames:
+            self._show_tree_wide_errors(
+                encoding_errors, shadowed_entries, whitespace_filenames
+            )
+
+        alldirs = self._filter_on_state(roots, dirs.get())
+        allfiles = self._filter_on_state(roots, files.get())
+
+        if alldirs or allfiles:
+            for names in alldirs:
+                entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                child = self.model.add_entries(it, entries)
+                self._update_item_state(child)
+                # Add placeholder child so expand arrow shows for lazy loading
+                self.model.add_empty(child, _("(loading…)"))
+            for names in allfiles:
+                entries = [os.path.join(r, n) for r, n in zip(roots, names)]
+                child = self.model.add_entries(it, entries)
+                self._update_item_state(child)
+        else:
+            if tree.STATE_NORMAL in self.state_filters or not all(
+                os.path.isdir(f) for f in roots
+            ):
+                self.model.add_empty(it)
+            else:
+                while not self.model.iter_has_child(it):
+                    parent = self.model.iter_parent(it)
+                    if parent is None:
+                        self.model.add_empty(it)
+                        break
+                    had_siblings = self.model.remove(it)
+                    if had_siblings:
+                        parent_path = self.model.get_path(parent)
+                    it = parent
+
+        # Mark this path as scanned
+        self._scanned_paths.add(str(rootpath))
+        self._scanning_paths.discard(str(rootpath))
+
+        yield _("Done")
+
+        self._scan_in_progress -= 1
+        if self._scan_in_progress == 0:
+            self._update_item_state(self.model.get_iter(rootpath))
+
+        # If this was triggered by a double-click, expand the row
+        path_str = str(rootpath)
+        if path_str in self._pending_expand:
+            self._pending_expand.discard(path_str)
+            # Use expand_lock to prevent re-entrant row-expanded signal
+            # from triggering another scan
+            self._expand_lock = True
+            try:
+                for view in self.treeview[: self.num_panes]:
+                    if not view.row_expanded(rootpath):
+                        view.expand_row(rootpath, False)
+            finally:
+                self._expand_lock = False
+
+        self.force_cursor_recalculate = True
+        self.treeview[0].set_cursor(rootpath)
+
     def _show_duplicate_directory(self, duplicate_directory):
         for index in range(self.num_panes):
             primary = _("Folder {} is being compared to itself").format(
@@ -1326,7 +1566,8 @@ class DirDiff(Gtk.Box, MeldDoc):
                         if replace != Gtk.ResponseType.OK:
                             continue
                     misc.copytree(src, dst)
-                    self.recursively_update(path)
+                    self._scanned_paths.discard(str(path))
+                    self.update_single_level(path)
             except (OSError, IOError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
@@ -1379,6 +1620,18 @@ class DirDiff(Gtk.Box, MeldDoc):
                 self.focus_pane.set_cursor(self.current_path)
 
         self.row_expansions = set()
+        # Clean up scanned/scanning state for the deleted path and its descendants.
+        # We must NOT clear _scanning_paths entirely because a parent scan
+        # might still be in progress (e.g., when removing placeholder children
+        # during lazy-load scan setup).
+        deleted_prefix = str(path) + ":"
+        self._scanned_paths = {
+            p for p in self._scanned_paths
+            if p != str(path) and not p.startswith(deleted_prefix)
+        }
+        # Don't touch _scanning_paths, _pending_expand, or _expand_lock
+        # here — they are managed by the scan lifecycle and clearing them
+        # could allow duplicate scans or cause expand state corruption.
 
     def on_treeview_selection_changed(self, selection, pane):
         if not self.treeview[pane].is_focus():
@@ -1557,11 +1810,24 @@ class DirDiff(Gtk.Box, MeldDoc):
             if view.row_expanded(path):
                 view.collapse_row(path)
             else:
-                view.expand_row(path, False)
+                path_str = str(path)
+                if path_str in self._scanned_paths:
+                    view.expand_row(path, False)
+                elif path_str not in self._scanning_paths:
+                    self.update_single_level(path, expand_on_complete=True)
 
     @Gtk.Template.Callback()
     def on_treeview_row_expanded(self, view, it, path):
         self.row_expansions.add(str(path))
+
+        # Skip lazy-load scan if expand_lock is set (we're already
+        # handling the expand programmatically from within a scan)
+        if not self._expand_lock:
+            path_str = str(path)
+            # Lazy loading: scan only if not already scanned and not scanning
+            if path_str not in self._scanned_paths and path_str not in self._scanning_paths:
+                self.update_single_level(path, expand_on_complete=True)
+
         for row in self.model[path].iterchildren():
             if str(row.path) in self.row_expansions:
                 view.expand_row(row.path, False)
@@ -1678,7 +1944,7 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         paths = self._get_selected_paths(pane)
         for path in paths:
-            self.treeview[pane].expand_row(path, True)
+            self.treeview[pane].expand_row(path, False)
 
     def action_copy_left(self, *args):
         self.copy_selected(-1)
