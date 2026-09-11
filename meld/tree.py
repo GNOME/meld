@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import os
 
 from gi.module import get_introspection_module
@@ -44,12 +45,14 @@ from meld.vc._vc import (  # noqa: F401
     STATE_SPINNER,
 )
 
+log = logging.getLogger(__name__)
+
 _GIGtk = None
 
 try:
     _GIGtk = get_introspection_module("Gtk")
 except Exception:
-    pass
+    log.warning("Unexpected error in introspection; folder comparisons may be slower")
 
 (
     COL_PATH,
@@ -160,7 +163,9 @@ class DiffTreeStore(SearchableTreeStore):
             self.set_state(it, pane, STATE_EMPTY, text)
         return it
 
-    def add_error(self, parent, msg, pane, defaults={}):
+    def add_error(self, parent, msg, pane, defaults=None):
+        if defaults is None:
+            defaults = {}
         it = self.append(parent)
         key_values = {COL_STATE: str(STATE_ERROR)}
         key_values.update(defaults)
@@ -242,7 +247,7 @@ class DiffTreeStore(SearchableTreeStore):
             for col, val in keys_values.items()
         }
         if _GIGtk and treeiter:
-            columns = [col for col in safe_keys_values.keys()]
+            columns = [col for col in safe_keys_values]
             values = [val for val in safe_keys_values.values()]
             _GIGtk.TreeStore.set(self, treeiter, columns, values)
         else:

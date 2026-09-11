@@ -16,7 +16,8 @@
 
 import logging
 import os
-from typing import Any, Callable, Dict, Optional, Sequence
+from collections.abc import Callable, Sequence
+from typing import Any
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk
 
@@ -299,7 +300,7 @@ class MeldWindow(Adw.ApplicationWindow):
     def on_open_recent(self, recent_selector, uri):
         try:
             self.append_recent(uri)
-        except (IOError, ValueError):
+        except (OSError, ValueError):
             # FIXME: Need error handling, but no sensible display location
             log.exception(f"Error opening recent file {uri}")
 
@@ -311,10 +312,8 @@ class MeldWindow(Adw.ApplicationWindow):
         # Change focus to the newly created page only if the user is on a
         # DirDiff or VcView page, or if it's a new tab page. This prevents
         # cycling through X pages when X diffs are initiated.
-        if (
-            isinstance(self.current_doc(), DirDiff)
-            or isinstance(self.current_doc(), VcView)
-            or isinstance(doc, NewDiffTab)
+        if isinstance(self.current_doc(), (DirDiff, VcView)) or isinstance(
+            doc, NewDiffTab
         ):
             self.tabview.set_selected_page(self.tabview.get_page(doc))
 
@@ -341,7 +340,7 @@ class MeldWindow(Adw.ApplicationWindow):
 
     def append_dirdiff(
         self,
-        gfiles: Sequence[Optional[Gio.File]],
+        gfiles: Sequence[Gio.File | None],
         auto_compare: bool = False,
     ) -> DirDiff:
         doc = DirDiff(len(gfiles))
@@ -384,11 +383,11 @@ class MeldWindow(Adw.ApplicationWindow):
 
     def append_diff(
         self,
-        gfiles: Sequence[Optional[Gio.File]],
+        gfiles: Sequence[Gio.File | None],
         auto_compare: bool = False,
         auto_merge: bool = False,
-        merge_output: Optional[Gio.File] = None,
-        meta: Optional[Dict[str, Any]] = None,
+        merge_output: Gio.File | None = None,
+        meta: dict[str, Any] | None = None,
     ) -> DirDiff | FileDiff | ImageDiff:
         have_directories = False
         have_files = False
@@ -446,7 +445,9 @@ class MeldWindow(Adw.ApplicationWindow):
             if not mounted_archive:
                 error_dialog(
                     _("Failed to mount archive"),
-                    _(f"Error mounting archive {gfile.get_uri()}: {error}"),
+                    _("Error mounting archive {uri}: {error}").format(
+                        uri=gfile.get_uri(), error=error
+                    ),
                 )
                 on_complete(None, error)
                 return

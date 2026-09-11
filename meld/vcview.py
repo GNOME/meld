@@ -22,7 +22,7 @@ import shutil
 import stat
 import sys
 import tempfile
-from typing import ClassVar, Tuple
+from typing import ClassVar
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, Pango
 
@@ -58,9 +58,7 @@ def cleanup_temp():
             os.remove(f)
         except Exception:
             except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
-            print(
-                'File "{0}" not removed due to'.format(f), except_str, file=sys.stderr
-            )
+            print(f'File "{f}" not removed due to', except_str, file=sys.stderr)
     for f in _temp_dirs:
         try:
             assert (
@@ -72,7 +70,7 @@ def cleanup_temp():
         except Exception:
             except_str = '{0[0]}: "{0[1]}"'.format(sys.exc_info())
             print(
-                'Directory "{0}" not removed due to'.format(f),
+                f'Directory "{f}" not removed due to',
                 except_str,
                 file=sys.stderr,
             )
@@ -618,7 +616,7 @@ class VcView(Gtk.Box, MeldDoc):
             kwargs,
         )
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         return False, False, True
 
     def action_filter_state_change(self, action, value):
@@ -668,11 +666,7 @@ class VcView(Gtk.Box, MeldDoc):
         model, rows = self.treeview.get_selection().get_selected_rows()
         sel = [self.model.get_file_path(self.model.get_iter(r)) for r in rows]
         # Remove empty entries and trailing slashes
-        return [
-            path[:-1] if path.endswith("/") else path
-            for path in sel
-            if path is not None
-        ]
+        return [path.removesuffix("/") for path in sel if path is not None]
 
     def _command_iter(self, command, files, refresh, working_dir):
         """An iterable that runs a VC command on a set of files
@@ -699,7 +693,7 @@ class VcView(Gtk.Box, MeldDoc):
             while not result:
                 yield 1
                 result = next(readiter)
-        except IOError as err:
+        except OSError as err:
             error_dialog(
                 "Error running command", "While running '%s'\nError: %s" % (msg, err)
             )
@@ -827,12 +821,12 @@ class VcView(Gtk.Box, MeldDoc):
                 return
 
             gfile = Gio.File.new_for_path(files.pop())
-            filename = gfile.get_parse_name()
+            path = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _delete_file, parent=self)
             except Exception as e:
-                error_dialog(_(f"Error deleting {filename}"), str(e))
+                error_dialog(_("Error deleting {}").format(path), str(e))
 
         _delete_file(True, files)
 

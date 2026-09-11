@@ -14,7 +14,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import logging
-from typing import List
 
 from gi.repository import Gio, GObject
 
@@ -61,7 +60,7 @@ def map_widgets_to_dict(widget, widgetnames):
 
 
 def make_multiobject_property_action(
-    obj_list: List[GObject.Object], prop_name: str
+    obj_list: list[GObject.Object], prop_name: str
 ) -> Gio.PropertyAction:
     """Construct a property action linked to multiple objects
 

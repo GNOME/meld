@@ -10,7 +10,7 @@ DiffResult = Enum(
 
 def abspath(*args):
     d = path.dirname(__file__)
-    return list(path.join(d, arg) for arg in args)
+    return [path.join(d, arg) for arg in args]
 
 
 cmp_args = {

@@ -15,7 +15,8 @@
 
 import collections
 import logging
-from typing import Any, ClassVar, List, Mapping, Tuple
+from collections.abc import Mapping
+from typing import Any, ClassVar
 
 import cairo
 from gi.repository import Gdk, GObject, Gtk
@@ -113,7 +114,7 @@ class ChunkMap(Gtk.DrawingArea):
     def get_height_scale(self) -> float:
         return 1.0
 
-    def get_map_base_colors(self) -> Tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
+    def get_map_base_colors(self) -> tuple[Gdk.RGBA, Gdk.RGBA, Gdk.RGBA, Gdk.RGBA]:
         if not self._base_colors:
             # Workaround to let us look up named CSS colours for our custom
             # painting.
@@ -134,7 +135,7 @@ class ChunkMap(Gtk.DrawingArea):
 
         return self._base_colors
 
-    def chunk_coords_by_tag(self) -> Mapping[str, List[Tuple[float, float]]]:
+    def chunk_coords_by_tag(self) -> Mapping[str, list[tuple[float, float]]]:
         """Map chunks to buffer offsets for drawing, ordered by tag"""
         raise NotImplementedError()
 
@@ -304,7 +305,7 @@ class TextViewChunkMap(ChunkMap):
 
         buf = self.textview.get_buffer()
 
-        tagged_diffs: Mapping[str, List[Tuple[float, float]]]
+        tagged_diffs: Mapping[str, list[tuple[float, float]]]
         tagged_diffs = collections.defaultdict(list)
 
         y, h = self.textview.get_line_yrange(buf.get_end_iter())
@@ -405,7 +406,7 @@ class TreeViewChunkMap(ChunkMap):
         # Terminating mark to force the last chunk to be added
         row_states.append(None)
 
-        tagged_diffs: Mapping[str, List[Tuple[float, float]]]
+        tagged_diffs: Mapping[str, list[tuple[float, float]]]
         tagged_diffs = collections.defaultdict(list)
 
         numlines = len(row_states) - 1

@@ -16,7 +16,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import enum
-from typing import Mapping, Tuple
+from collections.abc import Mapping
 
 from gi.repository import Adw, Gdk, Gtk, GtkSource, Pango
 
@@ -172,7 +172,7 @@ def colour_lookup_with_fallback(name: str, attribute: str) -> Gdk.RGBA:
 ColourMap = Mapping[str, Gdk.RGBA]
 
 
-def get_common_theme() -> Tuple[ColourMap, ColourMap]:
+def get_common_theme() -> tuple[ColourMap, ColourMap]:
     lookup = colour_lookup_with_fallback
     fill_colours = {
         "insert": lookup("meld:insert", "background"),

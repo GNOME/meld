@@ -36,7 +36,7 @@ def setup_process():
     # valid stdio handles, so Python sets sys.stdout and sys.stderr to None.
     # Point them at devnull before anything tries to write or flush.
     if sys.executable.endswith("pythonw.exe") or sys.stdout is None:
-        devnull = open(os.devnull, "w")
+        devnull = open(os.devnull, "w")  # noqa: SIM115
         sys.stdout = sys.stderr = devnull
 
     # Frozen multiprocessing children re-enter and exit here. Must come after
@@ -45,7 +45,6 @@ def setup_process():
 
 
 def get_meld_dir():
-    global frozen
     if frozen:
         if hasattr(sys, "_MEIPASS"):
             return sys._MEIPASS
@@ -163,7 +162,7 @@ def setup_i18n():
             locale.bindtextdomain(locale_domain, str(locale_dir))
             locale.bind_textdomain_codeset(locale_domain, "UTF-8")
             locale.textdomain(locale_domain)
-    except (AttributeError, locale.Error, WindowsError) as e:
+    except (OSError, AttributeError, locale.Error) as e:
         # AttributeError because Python builds linked without libintl don't have
         # bindtextdomain(), which causes Gtk.Builder translations to fail.
         #
@@ -209,20 +208,20 @@ def show_error_and_exit(error_text):
             # Frozen app may lack console but be able to show exceptions.
             raise_as_last_resort_to_display = frozen
     if raise_as_last_resort_to_display:
-        raise Exception(error_text)
+        raise RuntimeError(error_text)
     sys.exit(1)
 
 
 def check_requirements():
     import importlib
-    from typing import NamedTuple, Optional
+    from typing import NamedTuple
 
     from meld.conf import _
 
     class Requirement(NamedTuple):
         name: str
-        module: Optional[str]
-        gi_version: Optional[str]
+        module: str | None
+        gi_version: str | None
         major_version: int
         minor_version: int
 
@@ -231,7 +230,7 @@ def check_requirements():
                 import gi
 
                 gi.require_version(self.module, self.gi_version)
-                module = "gi.repository.{}".format(self.module)
+                module = f"gi.repository.{self.module}"
             else:
                 module = self.module
 
@@ -252,7 +251,7 @@ def check_requirements():
                 raise RuntimeError("Unsupported version")
 
         def __str__(self):
-            return "{} {}.{}".format(self.name, self.major_version, self.minor_version)
+            return f"{self.name} {self.major_version}.{self.minor_version}"
 
     # These requirements are kept in both `bin/meld` and `meson.build`. If you
     # update one, update the other.
@@ -285,7 +284,7 @@ def setup_resources():
         subprocess.call(
             [
                 "glib-compile-resources",
-                "--target={}".format(resource_file),
+                f"--target={resource_file}",
                 "--sourcedir=meld/resources",
                 "--sourcedir=data/icons/hicolor",
                 "meld/resources/meld.gresource.xml",
@@ -307,8 +306,8 @@ def setup_resources():
     # Just copy style schemes to the file ending expected by
     # GtkSourceView if we're uninstalled and they're missing
     if uninstalled:
-        for style in {"meld-base", "meld-dark"}:
-            path = os.path.join(style_path, "{}.style-scheme.xml".format(style))
+        for style in ("meld-base", "meld-dark"):
+            path = os.path.join(style_path, f"{style}.style-scheme.xml")
             if not os.path.exists(path):
                 import shutil
 
@@ -394,13 +393,14 @@ def setup_glib_logging():
     gtk_log = logging.getLogger(log_domain)
 
     def silence(message):
-        if "Drawing a gadget with negative dimensions" in message:
-            return True
-        if "resource overlay" in message:
-            return True
-        if "Vulkan: Loader Message:" in message:
-            return True
-        return False
+        return any(
+            fragment in message
+            for fragment in (
+                "Drawing a gadget with negative dimensions",
+                "resource overlay",
+                "Vulkan: Loader Message:",
+            )
+        )
 
     # This logging handler is for "old" glib logging using a simple
     # syslog-style API.
@@ -446,7 +446,6 @@ def environment_hacks():
     # This may confuse vc utils run from meld
     # but otherwise meld just crash on start, see #267
 
-    global frozen
     if frozen and "MSYSTEM" in os.environ:
         lib_dir = os.path.join(get_meld_dir(), "lib")
         os.environ["PATH"] = lib_dir + os.pathsep + os.environ["PATH"]

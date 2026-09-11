@@ -154,7 +154,7 @@ class Vc(_vc.Vc):
                         files.append(os.path.relpath(path, self.root))
             else:
                 files.append(os.path.relpath(p, self.root))
-        return sorted(list(set(files)))
+        return sorted(set(files))
 
     def _update_tree_state_cache(self, path):
         # FIXME: This actually clears out state information, because the
@@ -226,7 +226,7 @@ class Vc(_vc.Vc):
                 if executable_match:
                     meta.append(executable_match.group(2))
 
-            path = path[:-1] if path.endswith("/") else path
+            path = path.removesuffix("/")
             tree_cache[path].update(states)
             tree_meta_cache[path].extend(meta)
             # Bazaar entries will only be REMOVED in the second state column
@@ -241,7 +241,7 @@ class Vc(_vc.Vc):
                 del tree_meta_cache[old]
             self._reverse_rename_cache[new] = old
 
-        self._tree_cache.update(dict((x, max(y)) for x, y in tree_cache.items()))
+        self._tree_cache.update({x: max(y) for x, y in tree_cache.items()})
         self._tree_meta_cache = dict(tree_meta_cache)
 
     def get_path_for_repo_file(self, path, commit=None):
@@ -258,7 +258,7 @@ class Vc(_vc.Vc):
         return _vc.call_temp_output(args, cwd=self.root, suffix=suffix)
 
     def get_path_for_conflict(self, path, conflict):
-        if path in self._reverse_rename_cache and not conflict == _vc.CONFLICT_MERGED:
+        if path in self._reverse_rename_cache and conflict != _vc.CONFLICT_MERGED:
             path = self._reverse_rename_cache[path]
         if not path.startswith(self.root + os.path.sep):
             raise _vc.InvalidVCPath(self, path, "Path not in repository")

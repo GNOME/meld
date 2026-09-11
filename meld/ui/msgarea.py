@@ -19,7 +19,6 @@
 # newer GTK+.
 # Copyright (C) 2013 Kai Willadsen <kai.willadsen@gmail.com>
 
-from typing import Optional
 
 from gi.repository import Gtk, Pango
 
@@ -28,8 +27,8 @@ from meld.conf import _
 
 def layout_text_and_icon(
     primary_text: str,
-    secondary_text: Optional[str] = None,
-    icon_name: Optional[str] = None,
+    secondary_text: str | None = None,
+    icon_name: str | None = None,
 ):
     hbox_content = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=8)
 
@@ -49,7 +48,7 @@ def layout_text_and_icon(
     )
 
     primary_label = Gtk.Label(
-        label="<b>{}</b>".format(primary_text),
+        label=f"<b>{primary_text}</b>",
         wrap=True,
         wrap_mode=Pango.WrapMode.WORD_CHAR,
         use_markup=True,
@@ -65,7 +64,7 @@ def layout_text_and_icon(
 
     if secondary_text:
         secondary_label = Gtk.Label(
-            label="<small>{}</small>".format(secondary_text),
+            label=f"<small>{secondary_text}</small>",
             wrap=True,
             wrap_mode=Pango.WrapMode.WORD,
             use_markup=True,
@@ -108,8 +107,8 @@ class MsgAreaController(Gtk.Box):
     def new_from_text_and_icon(
         self,
         primary: str,
-        secondary: Optional[str] = None,
-        icon_name: Optional[str] = None,
+        secondary: str | None = None,
+        icon_name: str | None = None,
     ):
         self.clear()
         msgarea = self.__msgarea = Gtk.InfoBar(hexpand=True)

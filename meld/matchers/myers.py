@@ -344,7 +344,7 @@ class InlineMyersSequenceMatcher(MyersSequenceMatcher):
             return (a, b)
 
         def index_matching_kmers(a, b):
-            aset = set([a[i : i + 3] for i in range(len(a) - 2)])
+            aset = {a[i : i + 3] for i in range(len(a) - 2)}
             matches, index = [], []
             next_poss_match = 0
             # Start from where we can get a valid triple
@@ -380,8 +380,7 @@ class SyncPointMyersSequenceMatcher(MyersSequenceMatcher):
 
     def initialise(self):
         if self.syncpoints is None or len(self.syncpoints) == 0:
-            for i in super().initialise():
-                yield i
+            yield from super().initialise()
         else:
             chunks = []
             ai = 0

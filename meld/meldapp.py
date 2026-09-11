@@ -328,7 +328,7 @@ class MeldApp(Adw.Application):
             parser.local_error(_("too many arguments (wanted 0-3, got %d)") % len(args))
         elif options.auto_merge and len(args) < 3:
             parser.local_error(_("can’t auto-merge less than 3 files"))
-        elif options.auto_merge and any([os.path.isdir(f) for f in args]):
+        elif options.auto_merge and any(os.path.isdir(f) for f in args):
             parser.local_error(_("can’t auto-merge directories"))
 
         if parser.should_exit:
@@ -361,7 +361,7 @@ class MeldApp(Adw.Application):
             tab = None
             try:
                 tab = self.get_active_window().append_recent(gio_file.get_uri())
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 parser.local_error(_("Error reading saved comparison file"))
             if parser.should_exit:
                 cleanup()
@@ -397,9 +397,12 @@ class MeldApp(Adw.Application):
 
             # TODO: support for directories specified by URIs
             file_type = f.query_file_type(Gio.FileQueryInfoFlags.NONE, None)
-            if not f.is_native() and file_type == Gio.FileType.DIRECTORY:
-                if f.get_path() is None:
-                    raise ValueError(_("remote folder “{}” not supported").format(arg))
+            if (
+                not f.is_native()
+                and file_type == Gio.FileType.DIRECTORY
+                and f.get_path() is None
+            ):
+                raise ValueError(_("remote folder “{}” not supported").format(arg))
 
             return f
 
@@ -429,7 +432,7 @@ class MeldApp(Adw.Application):
             nonlocal error, have_comparison, pending_comparisons
             if err:
                 error = err
-                log.debug("Couldn't open comparison: %s", err, exc_info=True)
+                log.debug("Couldn't open comparison: %s", err)
             elif tab:
                 have_comparison = True
             pending_comparisons -= 1

@@ -23,7 +23,7 @@ def try_compile(regex, flags=0):
     try:
         compiled = re.compile(regex, flags)
     except re.error:
-        log.warning("Error compiling regex {!r} with flags {!r}".format(regex, flags))
+        log.warning(f"Error compiling regex {regex!r} with flags {flags!r}")
         compiled = None
     return compiled
 
@@ -46,7 +46,7 @@ class FilterEntry:
             # TODO: Register a custom error handling function to replace
             # encoding errors with '.'?
             regex = regex.encode("utf8", "replace")
-        return try_compile(regex, re.M)
+        return try_compile(regex, re.MULTILINE)
 
     @classmethod
     def compile_shell_pattern(cls, pattern):

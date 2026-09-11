@@ -31,20 +31,30 @@ nightly:
   stage: check
   image: registry.fedoraproject.org/fedora:latest
   needs: []
-  script:
-   - dnf install -y git glib2 gtk4 gtksourceview5 libadwaita python3-cairo python3-pip python3-gobject-base
-   - pip3 install -r dev-requirements.txt
-   - $PYTHON_CHECK_COMMAND
+  variables:
+    PRE_COMMIT_HOME: $CI_PROJECT_DIR/.cache/pre-commit
+    UV_CACHE_DIR: $CI_PROJECT_DIR/.cache/uv
+  cache:
+    key:
+      files:
+        - pyproject.toml
+        - .pre-commit-config.yaml
+    paths:
+      - .cache/
+  before_script:
+    - dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv
+    - uv venv --system-site-packages
+    - uv pip install --group dev
 
 lint:
   extends: .pythonchecks
-  variables:
-      PYTHON_CHECK_COMMAND: "pre-commit run --all-files --show-diff-on-failure"
+  script:
+    - uv run --no-sync pre-commit run --all-files --show-diff-on-failure
 
 pytest:
   extends: .pythonchecks
-  variables:
-      PYTHON_CHECK_COMMAND: "pytest"
+  script:
+    - uv run --no-sync pytest
 
 mingw-dist:
   stage: build

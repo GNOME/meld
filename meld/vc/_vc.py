@@ -214,7 +214,7 @@ class Vc:
         provided by the version control system, most commonly these are
         given in merging, revert or cherry-picking scenarios.
         """
-        return None
+        return
 
     def get_commits_to_push_summary(self):
         """Return a one-line readable description of unpushed commits
@@ -261,7 +261,7 @@ class Vc:
             valid_actions.add("resolve")
         if (
             all(s not in non_removeable_states for s in states)
-            and self.root not in path_states.keys()
+            and self.root not in path_states
         ):
             valid_actions.add("remove")
         if all(s not in non_revertable_states for s in states):
@@ -495,12 +495,11 @@ def call_temp_output(cmd, cwd, file_id="", suffix=None):
 
 # Return the return value of a given command
 def call(cmd, cwd=None):
-    devnull = open(os.devnull, "wb")
     return subprocess.call(
         cmd,
         cwd=cwd,
-        stdout=devnull,
-        stderr=devnull,
+        stdout=subprocess.DEVNULL,
+        stderr=subprocess.DEVNULL,
         startupinfo=get_hide_window_startupinfo(),
     )
 

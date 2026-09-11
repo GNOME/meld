@@ -29,7 +29,6 @@ import logging
 import os
 import sys
 import tempfile
-from typing import List, Tuple
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -120,12 +119,12 @@ class RecentFiles:
         recent_metadata.is_private = True
         self.recent_manager.add_full(gfile.get_uri(), recent_metadata)
 
-    def read(self, uri: str) -> Tuple[RecentType, List[Gio.File]]:
+    def read(self, uri: str) -> tuple[RecentType, list[Gio.File]]:
         """Read stored comparison from URI"""
         comp_gfile = Gio.File.new_for_uri(uri)
         comp_path = comp_gfile.get_path()
         if not comp_gfile.query_exists(None) or not comp_path:
-            raise IOError("Recent comparison file does not exist")
+            raise OSError("Recent comparison file does not exist")
 
         try:
             config = configparser.RawConfigParser()
@@ -174,7 +173,7 @@ class RecentFiles:
             try:
                 _, _ = self.read(item.get_uri())
                 can_open = True
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 pass
             if not can_open:
                 self.recent_manager.remove_item(item.get_uri())
@@ -186,7 +185,7 @@ class RecentFiles:
             try:
                 item_uri = item.get_uri()
                 recent_type, gfiles = self.read(item_uri)
-            except (IOError, ValueError):
+            except (OSError, ValueError):
                 continue
             # Store and look up comparisons by type and paths
             gfile_uris = tuple(gfile.get_uri() for gfile in gfiles)

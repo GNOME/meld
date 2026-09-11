@@ -1,6 +1,6 @@
 import logging
 import urllib.parse
-from typing import Callable
+from collections.abc import Callable
 
 from gi.repository import Gio, GLib
 
@@ -36,11 +36,8 @@ ARCHIVE_CONTENT_TYPES = {
     "application/zip",
 }
 
-ARCHIVE_QUERY_ATTRS = ",".join(
-    (
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-    )
+ARCHIVE_QUERY_ATTRS = (
+    f"{Gio.FILE_ATTRIBUTE_STANDARD_TYPE},{Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE}"
 )
 
 _archive_mounts: dict[Gio.Mount, Gio.File] = {}
@@ -94,7 +91,7 @@ def is_archive(gfile: Gio.File | None) -> bool:
 
 
 def is_mounted_archive_root(gfile: Gio.File | None) -> bool:
-    for mount in _archive_mounts.keys():
+    for mount in _archive_mounts:
         if mount.get_root().get_path() == gfile.get_path():
             return True
     return False
@@ -172,7 +169,7 @@ def unmount_archives_by_file(
 ) -> None:
     gfile = gfiles.pop()
 
-    for mount in _archive_mounts.keys():
+    for mount in _archive_mounts:
         if mount.get_root().get_path() == gfile.get_path():
             break
     else:

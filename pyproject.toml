@@ -1,8 +1,8 @@
 [build-system]
 build-backend = "mesonpy"
 requires = [
-    "meson-python == 0.19.0",
-    "meson == 1.11.1",
+    "meson-python == 0.20.0",
+    "meson == 1.12.0",
 ]
 
 [project]
@@ -47,13 +47,39 @@ source = "https://gitlab.gnome.org/GNOME/meld/-/tree/main"
 download = "https://gitlab.gnome.org/GNOME/meld/-/releases"
 tracker = "https://gitlab.gnome.org/GNOME/meld/-/issues"
 
+[dependency-groups]
+dev = [
+    "ruff==0.16.*",
+    "pre-commit==4.6.*",
+    "pytest==9.1.*",
+    "pytest-mock==3.15.*",
+]
+
 [tool.meson-python.args]
 setup = ['-Dis_wheel=true']
 
+[tool.ruff]
+# Extensionless Python scripts, so that a bare `ruff check` covers the same
+# files that the pre-commit hook does.
+extend-include = ["bin/meld", "maint"]
+
 [tool.ruff.lint]
-select = ["E4", "E5", "E7", "E9", "F", "I", "RUF"]
-ignore = ["RUF015", "RUF059"]
+ignore = [
+    # We use broad exception catching when interacting with external systems
+    # quite a bit (e.g., version control)
+    "BLE001",
+    "RUF015",
+    # The below are interim ignores that should be fixed at some point, but are
+    # too disruptive to do now. UP031 will break many existing translated
+    # strings for no immediate benefit, and RUF059 needs actual thought about
+    # the relevant logic.
+    "UP031",
+    "RUF059",
+]
 allowed-confusables = ["’"]
+
+[tool.ruff.lint.per-file-ignores]
+"test/**" = ["RUF059"]
 
 [tool.ruff.lint.isort]
 known-first-party = [
@@ -65,7 +91,7 @@ no-lines-before = [
 order-by-type = true
 
 [tool.pytest.ini_options]
-minversion = "7.0"
+minversion = "9.0"
 testpaths = [
     "test",
 ]

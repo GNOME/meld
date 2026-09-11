@@ -16,7 +16,7 @@
 
 import enum
 import logging
-from typing import Sequence
+from collections.abc import Sequence
 
 from gi.repository import Gio, GObject
 
@@ -70,7 +70,6 @@ class MeldDoc(GObject.GObject):
 
     def get_comparison(self) -> RecentType:
         """Get the comparison type and URI(s) being compared"""
-        pass
 
     def action_stop(self, *args) -> None:
         if self.scheduler.tasks_pending():

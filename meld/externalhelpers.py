@@ -20,7 +20,7 @@ import shlex
 import string
 import subprocess
 import sys
-from typing import List, Mapping, Sequence
+from collections.abc import Mapping, Sequence
 
 from gi.repository import Gio, GLib, Gtk
 
@@ -31,11 +31,8 @@ from meld.settings import get_settings
 log = logging.getLogger(__name__)
 
 
-OPEN_EXTERNAL_QUERY_ATTRS = ",".join(
-    (
-        Gio.FILE_ATTRIBUTE_STANDARD_TYPE,
-        Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
-    )
+OPEN_EXTERNAL_QUERY_ATTRS = (
+    f"{Gio.FILE_ATTRIBUTE_STANDARD_TYPE},{Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE}"
 )
 
 
@@ -135,15 +132,17 @@ def open_cb(
     else:
         # Being guarded about value_nick here, since it's probably not
         # exactly guaranteed API.
-        file_type = getattr(file_type, "value_nick", "unknown")
+        type_ = getattr(file_type, "value_nick", "unknown")
         error_dialog(
             _("Unsupported file type"),
-            _(f"External opening of files of type '{file_type}' is not supported"),
+            _(
+                "External opening of files of type “{file_type}” is not supported"
+            ).format(file_type=type_),
         )
 
 
 def open_files_external(
-    gfiles: List[Gio.File],
+    gfiles: list[Gio.File],
     *,
     line: int = 0,
     toplevel: Gtk.Widget | None = None,

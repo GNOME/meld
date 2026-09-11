@@ -18,7 +18,8 @@ import copy
 import functools
 import logging
 import math
-from typing import Callable, ClassVar, Optional, Tuple, Type
+from collections.abc import Callable
+from typing import ClassVar
 
 from gi.repository import Adw, Gdk, Gio, GLib, GObject, Gtk, GtkSource
 
@@ -205,7 +206,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     vbox1 = Gtk.Template.Child()
     vbox2 = Gtk.Template.Child()
 
-    differ: Type[Differ]
+    differ: type[Differ]
     comparison_mode: FileComparisonMode
 
     keylookup: ClassVar[dict] = {
@@ -584,7 +585,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         for sourcemap in self.sourcemap:
             sourcemap.props.compact_view = style == "compact-sourcemap"
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         return True, False, False
 
     def get_conflict_visibility(self) -> bool:
@@ -873,9 +874,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         direction = Gdk.ScrollDirection.DOWN if dy > 0 else Gdk.ScrollDirection.UP
         self.next_diff(direction, use_viewport=True)
 
-    def _is_chunk_in_area(
-        self, chunk_id: Optional[int], pane: int, area: Gdk.Rectangle
-    ):
+    def _is_chunk_in_area(self, chunk_id: int | None, pane: int, area: Gdk.Rectangle):
 
         if chunk_id is None:
             return False
@@ -929,7 +928,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.go_to_chunk(self.cursor.next)
 
     def get_action_chunk(self, src, dst):
-        valid_panes = list(range(0, self.num_panes))
+        valid_panes = list(range(self.num_panes))
         if src not in valid_panes or dst not in valid_panes:
             raise ValueError("Action was taken on invalid panes")
         if self.cursor.chunk is None:
@@ -1379,7 +1378,7 @@ class FileDiff(Gtk.Box, MeldDoc):
     def _scroll_to_actions(self, actions):
         """Scroll all views affected by *actions* to the current cursor"""
 
-        affected_buffers = set(a.buffer for a in actions)
+        affected_buffers = {a.buffer for a in actions}
         for buf in affected_buffers:
             buf_index = self.textbuffer.index(buf)
             view = self.textview[buf_index]
@@ -1743,7 +1742,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         self,
         loader: GtkSource.FileLoader,
         result: Gio.AsyncResult,
-        user_data: Tuple[int, dict[int, str]],
+        user_data: tuple[int, dict[int, str]],
     ):
         gfile = loader.get_location()
         buf = loader.get_buffer()
@@ -1773,7 +1772,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                 pass
 
             filename = GLib.markup_escape_text(gfile.get_parse_name())
-            primary = _("There was a problem opening the file “%s”." % filename)
+            primary = _("There was a problem opening the file “%s”.") % filename
             # If we have custom errors defined, use those instead
             if errors.get(pane):
                 error, error_text = errors[pane]
@@ -1969,7 +1968,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         # We need to clear removed and modified chunks, and need to
         # re-highlight added and modified chunks.
-        need_clearing = sorted(list(removed_chunks), key=merged_chunk_order)
+        need_clearing = sorted(removed_chunks, key=merged_chunk_order)
         need_highlighting = sorted(
             [*list(added_chunks), modified_chunks], key=merged_chunk_order
         )
@@ -2013,7 +2012,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     continue
 
                 def apply_highlight(
-                    bufs, tags, start_marks, end_marks, texts, to_pane, chunk, matches
+                    bufs, tags, start_marks, end_marks, texts, pane, chunk, clr, matches
                 ):
                     starts = [
                         bufs[0].get_iter_at_mark(start_marks[0]),
@@ -2029,7 +2028,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     bufs[1].delete_mark(start_marks[1])
                     bufs[1].delete_mark(end_marks[1])
 
-                    if not self.linediffer.has_chunk(to_pane, chunk):
+                    if not self.linediffer.has_chunk(pane, chunk):
                         return
 
                     text1 = bufs[0].get_text(starts[0], ends[0], False)
@@ -2038,7 +2037,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     if texts != (text1, textn):
                         return
 
-                    if clear:
+                    if clr:
                         bufs[0].remove_tag(tags[0], starts[0], ends[0])
                         bufs[1].remove_tag(tags[1], starts[1], ends[1])
 
@@ -2097,6 +2096,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                     (text1, textn),
                     to_pane,
                     chunk,
+                    clear,
                 )
                 self._cached_match.match(text1, textn, match_cb)
 
@@ -2135,7 +2135,7 @@ class FileDiff(Gtk.Box, MeldDoc):
                 # are active, and may be altering the comparison. It would be
                 # better if we only showed this message if the filters *did*
                 # change the text in question.
-                active_filters = any([f.active for f in self.text_filters])
+                active_filters = any(f.active for f in self.text_filters)
 
                 bufs = self.textbuffer[: self.num_panes]
                 newlines = [b.data.sourcefile.get_newline_type() for b in bufs]
@@ -2597,8 +2597,7 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         def chunk_iter(i):
             def chunks(bounds):
-                for chunk in self.linediffer.single_changes(i, bounds):
-                    yield chunk
+                yield from self.linediffer.single_changes(i, bounds)
 
             return chunks
 

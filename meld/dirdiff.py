@@ -30,12 +30,7 @@ from decimal import Decimal
 from mmap import ACCESS_COPY, mmap
 from typing import (
     ClassVar,
-    DefaultDict,
-    Dict,
-    List,
     NamedTuple,
-    Optional,
-    Tuple,
 )
 
 from gi.repository import Gdk, Gio, GLib, GObject, Gtk
@@ -151,7 +146,7 @@ def _contents_same(contents, file_size):
     for start, end in chunk_range:
         chunk = contents[0][start:end]
         for index in other_files_index:
-            if not chunk == contents[index][start:end]:
+            if chunk != contents[index][start:end]:
                 return Different
 
 
@@ -200,11 +195,11 @@ def _files_same(files, regexes, comparison_args):
     regexes = tuple(regexes) if apply_text_filters else ()
 
     # If all entries are directories, they are considered to be the same
-    if all([stat.S_ISDIR(s.mode) for s in stats]):
+    if all(stat.S_ISDIR(s.mode) for s in stats):
         return Same
 
     # If any entries are not regular files, consider them different
-    if not all([stat.S_ISREG(s.mode) for s in stats]):
+    if not all(stat.S_ISREG(s.mode) for s in stats):
         return Different
 
     # Compare files superficially if the options tells us to
@@ -230,7 +225,7 @@ def _files_same(files, regexes, comparison_args):
 
     try:
         mmaps = []
-        handles = [open(file_path, "rb") for file_path in files]
+        handles = [open(file_path, "rb") for file_path in files]  # noqa: SIM115
         try:
             contents, mmaps, is_bin = _files_contents(handles, stats)
 
@@ -253,7 +248,7 @@ def _files_same(files, regexes, comparison_args):
                 m.close()
             for h in handles:
                 h.close()
-    except IOError:
+    except OSError:
         # Don't cache generic errors as results
         return FileError
 
@@ -300,10 +295,10 @@ class ComparisonOptions:
 class CanonicalListing:
     """Multi-pane lists with canonicalised matching and error detection"""
 
-    items: DefaultDict[str, List[Optional[str]]]
-    stripped_items: Dict[str, str]
-    errors: List[Tuple[int, str, str]]
-    whitespace: List[Tuple[int, str]]
+    items: collections.defaultdict[str, list[str | None]]
+    stripped_items: dict[str, str]
+    errors: list[tuple[int, str, str]]
+    whitespace: list[tuple[int, str]]
 
     def __init__(self, n: int, options: ComparisonOptions):
         self.items = collections.defaultdict(lambda: [None] * n)
@@ -419,7 +414,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         ),
         default=False,
     )
-    folders: List[Optional[Gio.File]] = GObject.Property(
+    folders: list[Gio.File | None] = GObject.Property(
         type=object,
         nick="Folders being compared",
         blurb="List of folders being compared, as GFiles",
@@ -461,7 +456,7 @@ class DirDiff(Gtk.Box, MeldDoc):
     chunkmap0 = Gtk.Template.Child()
     chunkmap1 = Gtk.Template.Child()
     chunkmap2 = Gtk.Template.Child()
-    folder_label: "List[PathLabel]"
+    folder_label: "list[PathLabel]"
     folder_label0 = Gtk.Template.Child()
     folder_label1 = Gtk.Template.Child()
     folder_label2 = Gtk.Template.Child()
@@ -759,7 +754,7 @@ class DirDiff(Gtk.Box, MeldDoc):
         # the always-present name column
         configured_columns = [name for name, visible in columns] + ["name"]
         missing_columns = [
-            c for c in self.columns_dict[0].keys() if c not in configured_columns
+            c for c in self.columns_dict[0] if c not in configured_columns
         ]
 
         for i, treeview in enumerate(self.treeview):
@@ -779,7 +774,7 @@ class DirDiff(Gtk.Box, MeldDoc):
 
             treeview.set_headers_visible(have_extra_columns)
 
-    def get_filter_visibility(self) -> Tuple[bool, bool, bool]:
+    def get_filter_visibility(self) -> tuple[bool, bool, bool]:
         # TODO: Make text filters available in folder comparison
         return False, True, False
 
@@ -792,10 +787,8 @@ class DirDiff(Gtk.Box, MeldDoc):
         meld_settings = get_meld_settings()
 
         # Ordering of name filters is irrelevant
-        old_active = set([f.filter_string for f in self.name_filters if f.active])
-        new_active = set(
-            [f.filter_string for f in meld_settings.file_filters if f.active]
-        )
+        old_active = {f.filter_string for f in self.name_filters if f.active}
+        new_active = {f.filter_string for f in meld_settings.file_filters if f.active}
         active_filters_changed = old_active != new_active
 
         # TODO: Rework name_filters to use a map-like structure so that we
@@ -936,10 +929,10 @@ class DirDiff(Gtk.Box, MeldDoc):
         """
 
         for pane in range(self.model.ntree):
-            label = self.model.get_value(
+            folder_name = self.model.get_value(
                 it, self.model.column_index(tree.COL_TEXT, pane)
             )
-            label = _(f"{label} (scanning…)")
+            label = _("{folder_name} (scanning…)").format(folder_name=folder_name)
 
             self.model.set_state(it, pane, tree.STATE_SPINNER, label, True)
             self.model.unsafe_set(
@@ -1128,7 +1121,7 @@ class DirDiff(Gtk.Box, MeldDoc):
             if differences:
                 expanded.add(tree_path_as_tuple(path))
 
-        duplicate_dirs = list(set(p for p in roots if roots.count(p) > 1))
+        duplicate_dirs = list({p for p in roots if roots.count(p) > 1})
         if any((invalid_filenames, shadowed_entries, whitespace_filenames)):
             self._show_tree_wide_errors(
                 invalid_filenames, shadowed_entries, whitespace_filenames
@@ -1327,7 +1320,7 @@ class DirDiff(Gtk.Box, MeldDoc):
                             continue
                     misc.copytree(src, dst)
                     self.recursively_update(path)
-            except (OSError, IOError, shutil.Error) as err:
+            except (OSError, shutil.Error) as err:
                 misc.error_dialog(
                     _("Error copying file"),
                     _("Couldn’t copy {source}\nto {dest}.\n\n{error}").format(
@@ -1363,12 +1356,12 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         def _delete_file(files=files):
             gfile = Gio.File.new_for_path(files[0][1])
-            filename = gfile.get_parse_name()
+            path = gfile.get_parse_name()
 
             try:
                 trash_or_confirm(gfile, _deleted_file, parent=self)
             except Exception as e:
-                misc.error_dialog(_(f"Error deleting {filename}"), str(e))
+                misc.error_dialog(_("Error deleting {}").format(path), str(e))
 
         _delete_file(files)
 

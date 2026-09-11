@@ -16,7 +16,7 @@
 
 import enum
 import logging
-from typing import Any, List, Optional
+from typing import Any
 
 from gi.repository import Gio, GLib, GObject, GtkSource
 
@@ -106,7 +106,7 @@ class MeldBufferData(GObject.GObject):
         self._sourcefile = None
         self.reset(gfile=None, state=MeldBufferState.EMPTY)
 
-    def reset(self, gfile: Optional[Gio.File], state: MeldBufferState):
+    def reset(self, gfile: Gio.File | None, state: MeldBufferState):
         same_file = gfile and self._gfile and gfile.equal(self._gfile)
         self.gfile = gfile
         if same_file:
@@ -149,8 +149,9 @@ class MeldBufferData(GObject.GObject):
         self._monitor = None
 
     def _query_mtime(self, gfile):
-        time_query = ",".join(
-            (Gio.FILE_ATTRIBUTE_TIME_MODIFIED, Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC)
+        time_query = (
+            f"{Gio.FILE_ATTRIBUTE_TIME_MODIFIED},"
+            f"{Gio.FILE_ATTRIBUTE_TIME_MODIFIED_USEC}"
         )
         try:
             info = gfile.query_info(time_query, 0, None)
@@ -199,7 +200,7 @@ class MeldBufferData(GObject.GObject):
             return False
 
     @property
-    def file_id(self) -> Optional[str]:
+    def file_id(self) -> str | None:
         try:
             info = self._gfile.query_info(Gio.FILE_ATTRIBUTE_ID_FILE, 0, None)
             return info.get_attribute_string(Gio.FILE_ATTRIBUTE_ID_FILE)
@@ -213,9 +214,7 @@ class MeldBufferData(GObject.GObject):
                 Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE, 0, None
             )
         except GLib.GError as err:
-            if err.code == Gio.IOErrorEnum.NOT_FOUND:
-                return True
-            return False
+            return err.code == Gio.IOErrorEnum.NOT_FOUND
         except AttributeError:
             return False
         return info.get_attribute_boolean(Gio.FILE_ATTRIBUTE_ACCESS_CAN_WRITE)
@@ -240,7 +239,7 @@ class BufferLines:
     #: Cached copy of the (possibly filtered) text in a single line,
     #: where an entry of None indicates that there is no cached result
     #: available.
-    lines: List[Optional[str]]
+    lines: list[str | None]
 
     def __init__(self, buf, textfilter=None, *, cache_debug: bool = False):
         self.buf = buf

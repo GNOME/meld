@@ -1,4 +1,4 @@
-from typing import ClassVar, Optional
+from typing import ClassVar
 
 from gi.repository import Gio, GObject, Gtk
 
@@ -6,7 +6,7 @@ from gi.repository import Gio, GObject, Gtk
 class MeldFileButton(Gtk.Button):
     __gtype_name__ = "MeldFileButton"
 
-    file: Optional[Gio.File] = GObject.Property(
+    file: Gio.File | None = GObject.Property(
         type=Gio.File,
         nick="Most recently selected file",
     )
