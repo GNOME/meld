@@ -17,6 +17,7 @@
 
 import functools
 import logging
+import sys
 from collections.abc import Sequence
 
 from gi.repository import Gdk, GdkPixbuf, Gio, GLib, GObject, Gtk, GtkSource
@@ -54,7 +55,15 @@ def file_is_image(gfile):
     if not gfile:
         return False
 
-    # Check MIME type of the file.
+    # Probe local files directly on Windows, where GIO content type detection
+    # may not identify common image formats.
+    if sys.platform == "win32":
+        path = gfile.get_path()
+        if path:
+            image_format, _width, _height = GdkPixbuf.Pixbuf.get_file_info(path)
+            return image_format is not None
+
+    # Check the MIME type on other platforms and for non-local Windows files.
     try:
         info = gfile.query_info(
             Gio.FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
