@@ -8,8 +8,11 @@ import os
 import re
 import subprocess
 import sys
+import urllib.parse
 
 import click
+import keyring
+import requests
 from jinja2 import Environment
 
 # Import system hackery to import conf.py.in without copying it to
@@ -26,10 +29,15 @@ meld.conf = mod
 sys.modules['meld.conf'] = mod
 import meld.conf  # noqa: E402 isort:skip
 
-
+PACKAGE = meld.conf.__package__
 PO_DIR = "po"
 HELP_DIR = "help"
-RELEASE_BRANCH_RE = r'%s-\d+-\d+' % meld.conf.__package__
+GITLAB_PROJECT_ID = "GNOME/meld"
+PROJECT_API_URL = (
+    "https://gitlab.gnome.org/api/v4/projects/"
+    f"{urllib.parse.quote_plus(GITLAB_PROJECT_ID)}"
+)
+RELEASE_BRANCH_RE = r'%s-\d+-\d+' % PACKAGE
 VERSION_RE = r'__version__\s*=\s*"(?P<version>.*)"'
 
 NEWS_TEMPLATE = """
@@ -197,7 +205,7 @@ def get_tokens():
         'date': datetime.date.today().isoformat(),
         # Appstream appears to expect release dates in UTC.
         'utcdate': datetime.datetime.now(datetime.UTC).date().isoformat(),
-        'app': meld.conf.__package__,
+        'app': PACKAGE,
         'version': version,
         'release_series': release_series,
         'stable_release': stable_release,
@@ -229,6 +237,29 @@ def call_with_output(
     if abort_on_fail and proc.returncode:
         raise click.Abort()
     return proc.returncode
+
+
+def get_gitlab_token():
+    auth_token = keyring.get_password("gitlab-api", GITLAB_PROJECT_ID)
+    if not auth_token:
+        raise click.ClickException(
+            f"No password in keychain for {GITLAB_PROJECT_ID}\n\n"
+            "Set password using the Python `keyring` package. "
+            "From the command line:\n"
+            f"  $ keyring set gitlab-api {GITLAB_PROJECT_ID}\n"
+            "and enter your secret token from the Gitlab UI.\n"
+        )
+    return auth_token
+
+
+def gitlab_api_request(method, url, token, **kwargs):
+    response = requests.request(method, url, headers={"PRIVATE-TOKEN": token}, **kwargs)
+    if not response.ok:
+        click.secho(
+            f"\n{response.status_code} {response.reason}: {response.text}\n", fg="red"
+        )
+        raise click.Abort()
+    return response
 
 
 def check_release_branch():
@@ -277,6 +308,57 @@ def push():
 @click.group()
 def cli():
     pass
+
+
+@cli.command("upload-release-asset")
+@click.argument("asset", type=click.Path(exists=True, dir_okay=False))
+@click.option("--tag", "tag_name", required=True, help="Release tag to attach to")
+@click.option("--label", required=True, help="Name shown on the release page")
+@click.option("--force", is_flag=True, help="Override version match checks")
+def upload_release_asset(asset, tag_name, label, force):
+    """Upload a binary and attach it to an existing release"""
+
+    token = get_gitlab_token()
+
+    # Match the CI job's stripping of the macOS build number
+    name = re.sub(r"\+[0-9]+", "", os.path.basename(asset), count=1)
+    name = name.replace("_", "-", 1)
+    package_url = f"{PROJECT_API_URL}/packages/generic/{PACKAGE}/{tag_name}/{name}"
+
+    if not force:
+        version = re.search(r"\d+\.\d+\.\d+", name)
+        if not version:
+            raise click.ClickException(
+                f"No version number in {name}; use --force to override"
+            )
+        elif version.group() != tag_name:
+            raise click.ClickException(
+                f"{name} looks like version {version.group()}, not "
+                f"{tag_name}; use --force to override"
+            )
+
+    click.confirm(
+        f"Upload {os.path.basename(asset)} to "
+        f"{PACKAGE}/{tag_name}/{name} and add it to release {tag_name}?",
+        abort=True,
+    )
+
+    click.echo(f"Uploading {name}...")
+    with open(asset, "rb") as f:
+        gitlab_api_request("PUT", package_url, token, data=f)
+
+    click.echo(f"Linking {name} into release {tag_name}...")
+    gitlab_api_request(
+        "POST",
+        f"{PROJECT_API_URL}/releases/{tag_name}/assets/links",
+        token,
+        json={
+            "name": label,
+            "url": package_url,
+            "direct_asset_path": f"/binaries/{name}",
+            "link_type": "package",
+        },
+    )
 
 
 @cli.command()
@@ -335,7 +417,7 @@ def write_somewhere(filename, output):
 @cli.command()
 def dist():
     build_dir = '_build'
-    archive = '%s-%s.tar.xz' % (meld.conf.__package__, meld.conf.__version__)
+    archive = '%s-%s.tar.xz' % (PACKAGE, meld.conf.__version__)
     dist_archive_path = os.path.abspath(
         os.path.join(build_dir, 'meson-dist', archive))
 
