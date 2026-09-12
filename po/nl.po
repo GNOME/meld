@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-06 02:58+0000\n"
-"PO-Revision-Date: 2026-09-06 17:31+0200\n"
+"POT-Creation-Date: 2026-09-11 07:15+0000\n"
+"PO-Revision-Date: 2026-09-11 10:46+0200\n"
 "Last-Translator: Dick Groskamp <dikgro@yahoo.co.uk>\n"
 "Language-Team: GNOME-NL https://matrix.to/#/#nl:gnome.org\n"
 "Language: nl\n"
@@ -16,7 +16,7 @@ msgstr "Project-Id-Version: meld cvs\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: bin/meld:273
+#: bin/meld:272
 #, c-format
 msgid "Meld requires %s."
 msgstr "Meld vereist %s."
@@ -1002,8 +1002,8 @@ msgstr "Vorige logs:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1304
-#: meld/iohelpers.py:71 meld/vcview.py:807
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "_Annuleren"
 
@@ -1214,7 +1214,7 @@ msgstr "Actief"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:641
+#: meld/dirdiff.py:636
 msgid "Name"
 msgstr "Naam"
 
@@ -1235,7 +1235,7 @@ msgid "Remove selected filter"
 msgstr "Geselecteerde filter verwijderen"
 
 #: meld/resources/ui/filter-list.ui:103 meld/resources/ui/vcview.ui:293
-#: meld/vcview.py:808
+#: meld/vcview.py:802
 msgid "_Remove"
 msgstr "_Verwijderen"
 
@@ -1291,7 +1291,7 @@ msgstr "Doorloop"
 msgid "Replace _All"
 msgstr "_Alles vervangen"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1306
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
 msgid "_Replace"
 msgstr "_Vervangen"
 
@@ -1762,113 +1762,118 @@ msgid "Mac OS (CR)"
 msgstr "macOS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:664 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Grootte"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:672 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Tijd wijziging"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:680 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Tijd wijziging (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:688 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Toegangsrechten"
 
-#: meld/dirdiff.py:976 meld/dirdiff.py:1006
+#: meld/dirdiff.py:935
+#, python-brace-format
+msgid "{folder_name} (scanning…)"
+msgstr "{folder_name} (scannen…)"
+
+#: meld/dirdiff.py:969 meld/dirdiff.py:999
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "Scannen {folder}"
 
-#: meld/dirdiff.py:1145
+#: meld/dirdiff.py:1138
 msgid "Done"
 msgstr "Voltooid"
 
-#: meld/dirdiff.py:1157
+#: meld/dirdiff.py:1150
 msgid "Folder {} is being compared to itself"
 msgstr "Map {} wordt met zichzelf vergeleken"
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1158
 msgid "Folders have no differences"
 msgstr "Mappen hebben geen verschillen"
 
-#: meld/dirdiff.py:1166
+#: meld/dirdiff.py:1159
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhoud van gescande bestanden in mappen is identiek."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1161
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "Gescande bestanden in mappen lijken identiek, maar de inhoud is niet gescand."
 
-#: meld/dirdiff.py:1172
+#: meld/dirdiff.py:1165
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Bestandsfilters worden gebruikt, dus zijn niet alle bestanden gescand."
 
-#: meld/dirdiff.py:1175
+#: meld/dirdiff.py:1168
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Tekstfilters worden gebruikt en die zouden verschillen in de inhoud kunnen maskeren."
 
-#: meld/dirdiff.py:1191 meld/filediff.py:2169
+#: meld/dirdiff.py:1184 meld/filediff.py:2169
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1193 meld/filediff.py:2171 meld/filediff.py:2201
-#: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:140
-#: meld/ui/msgarea.py:152
+#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
+#: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:1204
+#: meld/dirdiff.py:1197
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Er traden meerdere fouten op bij het scannen van deze map"
 
-#: meld/dirdiff.py:1205
+#: meld/dirdiff.py:1198
 msgid "Files with invalid encodings found"
 msgstr "Bestanden met ongeldige coderingen gevonden"
 
-#: meld/dirdiff.py:1208
+#: meld/dirdiff.py:1201
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Sommige bestanden hadden een onjuiste codering. De namen leken op:"
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1203
 msgid "Files hidden by case insensitive comparison"
 msgstr "Bestanden verborgen door hoofdletterongevoelige vergelijking"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1206
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr "U gebruikt een hoofdletterongevoelige vergelijking op een hoofdlettergevoelig bestandssysteem. De volgende bestanden in deze map zijn verborgen:"
 
-#: meld/dirdiff.py:1217
+#: meld/dirdiff.py:1210
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Bestanden hadden een niet overeenkomende voorafgaande of achterliggende witruimte"
 
-#: meld/dirdiff.py:1220
+#: meld/dirdiff.py:1213
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "Deze vergelijking vond enkele bestanden die alleen van elkaar verschilden in voorafgaande en achterliggende witruimte. Hun namen zijn:"
 
-#: meld/dirdiff.py:1231
+#: meld/dirdiff.py:1224
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "‘{first_file}’ verborgen door ‘{second_file}’"
 
-#: meld/dirdiff.py:1315
+#: meld/dirdiff.py:1308
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Map ‘%s’ vervangen?"
 
-#: meld/dirdiff.py:1317
+#: meld/dirdiff.py:1310
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1876,11 +1881,11 @@ msgid ""
 msgstr "Er bestaat al een andere map met dezelfde naam in ‘%s’.\n"
 "Als u de bestaande map vervangt, gaan alle bestanden erin verloren."
 
-#: meld/dirdiff.py:1332
+#: meld/dirdiff.py:1325
 msgid "Error copying file"
 msgstr "Fout tijdens kopiëren van bestand"
 
-#: meld/dirdiff.py:1333
+#: meld/dirdiff.py:1326
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1892,54 +1897,63 @@ msgstr "Kon {source} niet kopiëren\n"
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1950
+#: meld/dirdiff.py:1364 meld/vcview.py:829
+msgid "Error deleting {}"
+msgstr "Fout bij verwijderen van {}"
+
+#: meld/dirdiff.py:1943
 msgid "No folder"
 msgstr "Geen map"
 
-#: meld/dirdiff.py:1963
+#: meld/dirdiff.py:1956
 msgid "Folder comparison:"
 msgstr "Mappen vergelijken:"
 
-#: meld/externalhelpers.py:130
+#: meld/externalhelpers.py:127
 msgid "Failed to launch custom editor"
 msgstr "Starten aangepaste bewerker mislukt"
 
-#: meld/externalhelpers.py:140
+#: meld/externalhelpers.py:137
 msgid "Unsupported file type"
 msgstr "Niet ondersteund bestandstype"
 
-#: meld/filediff.py:1250
+#: meld/externalhelpers.py:139
+#, python-brace-format
+msgid "External opening of files of type “{file_type}” is not supported"
+msgstr "Extern openen van bestanden van het type ‘{file_type}’ wordt niet ondersteund"
+
+#: meld/filediff.py:1249
 msgid "Comparison results will be inaccurate"
 msgstr "Resultaten van de vergelijking zullen niet nauwkeurig zijn"
 
-#: meld/filediff.py:1252
+#: meld/filediff.py:1251
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr "Een filter wijzigde het aantal regels in het bestand, wat niet ondersteund wordt. De vergelijking zal niet nauwkeurig zijn."
 
-#: meld/filediff.py:1294
+#: meld/filediff.py:1293
 msgid "Mark conflict as resolved?"
 msgstr "Conflict als opgelost markeren?"
 
-#: meld/filediff.py:1296
+#: meld/filediff.py:1295
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr "Als het conflict met succes werd opgelost, kunt u het nu als opgelost markeren."
 
-#: meld/filediff.py:1300
+#: meld/filediff.py:1299
 msgid "Cancel"
 msgstr "Annuleren"
 
-#: meld/filediff.py:1301
+#: meld/filediff.py:1300
 msgid "Mark _Resolved"
 msgstr "Markeren als _Opgelost"
 
-#: meld/filediff.py:1580 meld/imagediff.py:241
+#: meld/filediff.py:1579 meld/imagediff.py:251
 msgid "File comparison:"
 msgstr "Bestandsvergelijking:"
 
-#: meld/filediff.py:1726
+#: meld/filediff.py:1725
 #, python-brace-format
 msgid ""
 "Line {line_number} exceeded maximum line length ({line_length} > "
@@ -1950,34 +1964,34 @@ msgstr "Regel {line_number} overschreed de maximale regellengte ({line_length} >
 "\n"
 "Laden van bestanden met hele lange regels zou Meld langzaam kunnen maken of zelfs niet laten reageren."
 
-#: meld/filediff.py:1776
+#: meld/filediff.py:1775
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "Er was een probleem bij het openen van het bestand ‘%s’."
 
-#: meld/filediff.py:1803
+#: meld/filediff.py:1802
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr "Bestand %s lijkt een binair bestand te zijn."
 
-#: meld/filediff.py:1804
+#: meld/filediff.py:1803
 msgid "Do you want to open the file using the default application?"
 msgstr "Wilt u het bestand openen met de standaardtoepassing?"
 
-#: meld/filediff.py:1809
+#: meld/filediff.py:1808
 msgid "Open"
 msgstr "Openen"
 
-#: meld/filediff.py:1914
+#: meld/filediff.py:1913
 #, python-format
 msgid "File %s has changed on disk"
 msgstr "Bestand %s is op schijf gewijzigd"
 
-#: meld/filediff.py:1915
+#: meld/filediff.py:1914
 msgid "Do you want to reload the file?"
 msgstr "Wilt u het bestand opnieuw laden?"
 
-#: meld/filediff.py:1920
+#: meld/filediff.py:1919
 msgid "_Reload"
 msgstr "_Opnieuw laden"
 
@@ -2091,30 +2105,30 @@ msgstr "Kon bestand niet opslaan omdat:\n"
 msgid "Could not save file %s."
 msgstr "Kon bestand %s niet opslaan."
 
-#: meld/filediff.py:2746
+#: meld/filediff.py:2745
 msgid "Live comparison updating disabled"
 msgstr "Live bijwerken van vergelijking uitgeschakeld"
 
-#: meld/filediff.py:2748
+#: meld/filediff.py:2747
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr "Live bijwerken van vergelijkingen is uitgeschakeld als synchronisatiepunten actief zijn. U kunt nog steeds handmatig de vergelijking vernieuwen en live bijwerken zal terugkeren als synchronisatiepunten worden leeggemaakt."
 
-#: meld/filediff.py:2788
+#: meld/filediff.py:2787
 msgid "Can't swap unsaved files"
 msgstr "Kan niet opgeslagen bestanden niet wisselen"
 
-#: meld/filediff.py:2789
+#: meld/filediff.py:2788
 msgid "Files must be saved to disk before swapping panes."
 msgstr "Bestanden moeten op schijf zijn opgeslagen voordat panelen kunnen worden gewisseld."
 
-#: meld/filediff.py:2795
+#: meld/filediff.py:2794
 msgid "Can't swap version control comparisons"
 msgstr "Kan vergelijkingen van versiebeheer niet wisselen"
 
-#: meld/filediff.py:2796
+#: meld/filediff.py:2795
 msgid "Swapping panes is not supported in version control mode."
 msgstr "Wisselen van panelen wordt niet ondersteund in de modus voor versiebeheer."
 
@@ -2130,11 +2144,11 @@ msgstr "Geen bestand of map"
 msgid "Delete Permanently?"
 msgstr "Permanent verwijderen?"
 
-#: meld/iohelpers.py:68
-msgid "Do you want to delete it permanently?"
-msgstr "Wilt u het permanent verwijderen?"
+#: meld/iohelpers.py:67
+msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
+msgstr "‘{}’ kan niet in de prullenbak worden geplaatst. Wilt u het permanent verwijderen?"
 
-#: meld/iohelpers.py:72
+#: meld/iohelpers.py:71
 msgid "_Delete Permanently"
 msgstr "_Permanent verwijderen"
 
@@ -2243,7 +2257,7 @@ msgstr "Fout bij lezen van opgeslagen vergelijkingsbestand"
 msgid "invalid path or URI “%s”"
 msgstr "ongeldig pad of URI ‘%s’"
 
-#: meld/meldapp.py:402
+#: meld/meldapp.py:405
 msgid "remote folder “{}” not supported"
 msgstr "map op afstand ‘{}’ niet ondersteund"
 
@@ -2252,28 +2266,33 @@ msgstr "map op afstand ‘{}’ niet ondersteund"
 msgid "<unnamed>"
 msgstr "<naamloos>"
 
-#: meld/meldwindow.py:137
+#: meld/meldwindow.py:138
 msgid "Filename"
 msgstr "Bestandsnaam"
 
-#: meld/meldwindow.py:375
+#: meld/meldwindow.py:374
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr "Heb drie bestanden nodig om automatisch samen te voegen, kreeg: %r"
 
-#: meld/meldwindow.py:404
+#: meld/meldwindow.py:403
 msgid "Cannot compare a mixture of files and directories"
 msgstr "Kan geen mix van bestanden en mappen vergelijken"
 
-#: meld/meldwindow.py:448
+#: meld/meldwindow.py:447
 msgid "Failed to mount archive"
 msgstr "Mounten van archief mislukt"
 
-#: meld/meldwindow.py:508
+#: meld/meldwindow.py:448
+#, python-brace-format
+msgid "Error mounting archive {uri}: {error}"
+msgstr "Fout bij mounten van archief {uri}: {error}"
+
+#: meld/meldwindow.py:509
 msgid "Cannot compare a non-existent file"
 msgstr "Kan geen niet bestaand bestand vergelijken"
 
-#: meld/misc.py:107
+#: meld/misc.py:101
 msgid ""
 "{}\n"
 "\n"
@@ -2284,7 +2303,7 @@ msgstr "{}\n"
 "Meld kwam een kritieke fout tegen bij de uitvoering:\n"
 "{}"
 
-#: meld/misc.py:159
+#: meld/misc.py:153
 msgid "[None]"
 msgstr "[Geen]"
 
@@ -2364,7 +2383,7 @@ msgstr "Afstand, samenvoegen, lokaal"
 msgid "Local, merge, remote"
 msgstr "Lokaal, samenvoegen, afstand"
 
-#: meld/recent.py:110
+#: meld/recent.py:109
 msgid "Version control:"
 msgstr "Versiebeheer:"
 
@@ -2431,16 +2450,16 @@ msgid_plural "%d branches"
 msgstr[0] "%d branch"
 msgstr[1] "%d branches"
 
-#: meld/vc/git.py:374
+#: meld/vc/git.py:373
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr "Modus gewijzigd van {old_mode} naar {new_mode}"
 
-#: meld/vc/git.py:384
+#: meld/vc/git.py:382
 msgid "Partially staged"
 msgstr "Gedeeltelijk gestaged"
 
-#: meld/vc/git.py:384
+#: meld/vc/git.py:382
 msgid "Staged"
 msgstr "Gestaged"
 
@@ -2505,99 +2524,102 @@ msgstr "Scannen…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:355
+#: meld/vcview.py:353
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (niet gevonden)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:359
+#: meld/vcview.py:357
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s niet geïnstalleerd)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:363
+#: meld/vcview.py:361
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr "%(name)s (ongeldige opslagruimte)"
 
-#: meld/vcview.py:377
+#: meld/vcview.py:375
 msgid "No valid version control system found in this folder"
 msgstr "Geen geldig systeem voor versiebeheer gevonden in deze map"
 
-#: meld/vcview.py:379
+#: meld/vcview.py:377
 msgid "Choose which version control system to use"
 msgstr "Kies welk systeem voor versiebeheer te gebruiken"
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:440
+#: meld/vcview.py:438
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr "{vc} vergelijking:"
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:456
+#: meld/vcview.py:454
 msgid "Scanning repository"
 msgstr "Opslagruimte scannen"
 
-#: meld/vcview.py:484
+#: meld/vcview.py:482
 #, python-format
 msgid "Scanning %s"
 msgstr "Scannen %s"
 
-#: meld/vcview.py:523
+#: meld/vcview.py:521
 msgid "(Empty)"
 msgstr "(Leeg)"
 
-#: meld/vcview.py:568
+#: meld/vcview.py:566
 #, python-format
 msgid "%s — local"
 msgstr "%s — lokaal"
 
-#: meld/vcview.py:569
+#: meld/vcview.py:567
 #, python-format
 msgid "%s — remote"
 msgstr "%s — afstand"
 
-#: meld/vcview.py:580
+#: meld/vcview.py:578
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr "%s (lokaal, samenvoegen, afstand)"
 
-#: meld/vcview.py:588
+#: meld/vcview.py:586
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr "%s (afstand, samenvoegen, lokaal)"
 
-#: meld/vcview.py:598
+#: meld/vcview.py:596
 #, python-format
 msgid "%s — repository"
 msgstr "%s — opslagruimte"
 
-#: meld/vcview.py:604
+#: meld/vcview.py:602
 #, python-format
 msgid "%s (working, repository)"
 msgstr "%s (werk, opslagruimte)"
 
-#: meld/vcview.py:608
+#: meld/vcview.py:606
 #, python-format
 msgid "%s (repository, working)"
 msgstr "%s (opslagruimte, werk)"
 
-#: meld/vcview.py:801
+#: meld/vcview.py:795
 msgid "Remove folder and all its files?"
 msgstr "Deze map en al zijn bestanden verwijderen?"
 
-#: meld/vcview.py:803
+#: meld/vcview.py:797
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr "Dit zal alle geselecteerde bestanden en mappen verwijderen, en alle bestanden binnen elke geselecteerde map, uit versiebeheer."
+
+#~ msgid "Do you want to delete it permanently?"
+#~ msgstr "Wilt u het permanent verwijderen?"
 
 #~ msgid "Swap Left and Right Panes"
 #~ msgstr "Linker- en rechterpaneel wisselen"
@@ -2712,15 +2734,6 @@ msgstr "Dit zal alle geselecteerde bestanden en mappen verwijderen, en alle best
 #~ msgid "[{label}] Done"
 #~ msgstr "[{label}] Voltooid"
 
-#~ msgid "Error deleting {}"
-#~ msgstr "Fout bij verwijderen van {}"
-
-#, python-brace-format
-#~ msgid "External opening of files of type {file_type} is not supported"
-#~ msgstr ""
-#~ "Extern openen van bestanden van het type {file_type} wordt niet "
-#~ "ondersteund"
-
 #, python-format
 #~ msgid "[%s] Merging files"
 #~ msgstr "[%s] Bestanden samenvoegen"
@@ -2728,12 +2741,6 @@ msgstr "Dit zal alle geselecteerde bestanden en mappen verwijderen, en alle best
 #, python-format
 #~ msgid "[%s] Computing differences"
 #~ msgstr "[%s] Verschillen berekenen"
-
-#~ msgid ""
-#~ "“{}” can’t be put in the trash. Do you want to delete it immediately?"
-#~ msgstr ""
-#~ "‘{}’ kan niet in de prullenbak worden geplaatst. Wilt u het direct "
-#~ "verwijderen?"
 
 #~ msgid "This remote location does not support sending items to the trash."
 #~ msgstr ""
