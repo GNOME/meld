@@ -10,6 +10,7 @@ stages:
   - test
   - build
   - deploy
+  - release
 
 
 flatpak:
@@ -163,3 +164,46 @@ macos:
   artifacts:
     paths:
       - Meld*.dmg
+
+.release-asset:
+  stage: release
+  image: registry.fedoraproject.org/fedora:latest
+  variables:
+    PACKAGE_REGISTRY_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/meld/${CI_COMMIT_TAG}"
+    RELEASE_LINKS_URL: "${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/releases/${CI_COMMIT_TAG}/assets/links"
+  rules:
+    - if: $CI_COMMIT_TAG && $CI_COMMIT_REF_PROTECTED
+  script:
+    - artifact=$(ls $ARTIFACT_GLOB)
+    # Get rid of the pipeline ID in the filename (only affects macOS)
+    - filename=$(echo "$artifact" | sed -E 's/\+[0-9]+//; s/_/-/')
+    # Upload to the generic package registry, and attach to the release
+    - >
+      curl --fail-with-body --header "JOB-TOKEN: ${CI_JOB_TOKEN}" --upload-file "$artifact" "${PACKAGE_REGISTRY_URL}/${filename}"
+    - |
+      curl --fail-with-body --json @- "$RELEASE_LINKS_URL" --header "JOB-TOKEN: ${CI_JOB_TOKEN}" <<EOF
+      {
+        "name": "${LABEL}",
+        "url": "${PACKAGE_REGISTRY_URL}/${filename}",
+        "direct_asset_path": "/binaries/${filename}",
+        "link_type": "package"
+      }
+      EOF
+
+release-asset-windows:
+  extends: .release-asset
+  needs:
+    - release-service
+    - mingw-dist
+  variables:
+    ARTIFACT_GLOB: "meld-*.exe"
+    LABEL: "Windows installer"
+
+release-asset-macos:
+  extends: .release-asset
+  needs:
+    - release-service
+    - macos
+  variables:
+    ARTIFACT_GLOB: "Meld*.dmg"
+    LABEL: "macOS image"
