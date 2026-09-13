@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-06 20:47+0000\n"
-"PO-Revision-Date: 2026-09-07 07:13+0200\n"
+"POT-Creation-Date: 2026-09-11 07:15+0000\n"
+"PO-Revision-Date: 2026-09-13 18:06+0200\n"
 "Last-Translator: Ekaterine Papava <papava.e@gtu.ge>\n"
 "Language-Team: Georgian <ka@li.org>\n"
 "Language: ka\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Poedit 3.9\n"
 
-#: bin/meld:273
+#: bin/meld:272
 #, c-format
 msgid "Meld requires %s."
 msgstr "Meld-ს სჭირდება %s."
@@ -991,8 +991,8 @@ msgstr "წინა ჟურნალი:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1304
-#: meld/iohelpers.py:71 meld/vcview.py:807
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "_გაუქმება"
 
@@ -1203,7 +1203,7 @@ msgstr "აქტიური"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:641
+#: meld/dirdiff.py:636
 msgid "Name"
 msgstr "სახელი"
 
@@ -1224,7 +1224,7 @@ msgid "Remove selected filter"
 msgstr ""
 
 #: meld/resources/ui/filter-list.ui:103 meld/resources/ui/vcview.ui:293
-#: meld/vcview.py:808
+#: meld/vcview.py:802
 msgid "_Remove"
 msgstr "მოცილება"
 
@@ -1280,7 +1280,7 @@ msgstr "_გადატანილი"
 msgid "Replace _All"
 msgstr "ყველ_აფრის ჩანაცვლება"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1306
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
 msgid "_Replace"
 msgstr "_ჩანაცვლება"
 
@@ -1753,124 +1753,129 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:664 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "ზომა"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:672 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "მოდიფიკაციის დრო"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:680 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr ""
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:688 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "წვდომები"
 
-#: meld/dirdiff.py:976 meld/dirdiff.py:1006
+#: meld/dirdiff.py:935
+#, python-brace-format
+msgid "{folder_name} (scanning…)"
+msgstr ""
+
+#: meld/dirdiff.py:969 meld/dirdiff.py:999
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "{folder}-ის სკანირება"
 
-#: meld/dirdiff.py:1145
+#: meld/dirdiff.py:1138
 msgid "Done"
 msgstr "მზადაა"
 
-#: meld/dirdiff.py:1157
+#: meld/dirdiff.py:1150
 msgid "Folder {} is being compared to itself"
 msgstr ""
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1158
 msgid "Folders have no differences"
 msgstr ""
 
-#: meld/dirdiff.py:1166
+#: meld/dirdiff.py:1159
 msgid "Contents of scanned files in folders are identical."
 msgstr ""
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1161
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 
-#: meld/dirdiff.py:1172
+#: meld/dirdiff.py:1165
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 
-#: meld/dirdiff.py:1175
+#: meld/dirdiff.py:1168
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 
-#: meld/dirdiff.py:1191 meld/filediff.py:2169
+#: meld/dirdiff.py:1184 meld/filediff.py:2169
 msgid "Hide"
 msgstr "დამალვა"
 
-#: meld/dirdiff.py:1193 meld/filediff.py:2171 meld/filediff.py:2201
-#: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:140
-#: meld/ui/msgarea.py:152
+#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
+#: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "დამალვა"
 
-#: meld/dirdiff.py:1204
+#: meld/dirdiff.py:1197
 msgid "Multiple errors occurred while scanning this folder"
 msgstr ""
 
-#: meld/dirdiff.py:1205
+#: meld/dirdiff.py:1198
 msgid "Files with invalid encodings found"
 msgstr ""
 
-#: meld/dirdiff.py:1208
+#: meld/dirdiff.py:1201
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1203
 msgid "Files hidden by case insensitive comparison"
 msgstr ""
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1206
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr ""
 
-#: meld/dirdiff.py:1217
+#: meld/dirdiff.py:1210
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr ""
 
-#: meld/dirdiff.py:1220
+#: meld/dirdiff.py:1213
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr ""
 
-#: meld/dirdiff.py:1231
+#: meld/dirdiff.py:1224
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr ""
 
-#: meld/dirdiff.py:1315
+#: meld/dirdiff.py:1308
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "ჩავანაცვლო საქაღალდე \"%s\"?"
 
-#: meld/dirdiff.py:1317
+#: meld/dirdiff.py:1310
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
 "If you replace the existing folder, all files in it will be lost."
 msgstr ""
 
-#: meld/dirdiff.py:1332
+#: meld/dirdiff.py:1325
 msgid "Error copying file"
 msgstr "ფაილის კოპირების შეცდომა"
 
-#: meld/dirdiff.py:1333
+#: meld/dirdiff.py:1326
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1879,54 +1884,63 @@ msgid ""
 "{error}"
 msgstr ""
 
-#: meld/dirdiff.py:1950
+#: meld/dirdiff.py:1364 meld/vcview.py:829
+msgid "Error deleting {}"
+msgstr "{}-ის წაშლის შეცდომა"
+
+#: meld/dirdiff.py:1943
 msgid "No folder"
 msgstr "საქაღალდის გარეშე"
 
-#: meld/dirdiff.py:1963
+#: meld/dirdiff.py:1956
 msgid "Folder comparison:"
 msgstr "საქაღალდის შედარება:"
 
-#: meld/externalhelpers.py:130
+#: meld/externalhelpers.py:127
 msgid "Failed to launch custom editor"
 msgstr ""
 
-#: meld/externalhelpers.py:140
+#: meld/externalhelpers.py:137
 msgid "Unsupported file type"
 msgstr ""
 
-#: meld/filediff.py:1250
+#: meld/externalhelpers.py:139
+#, python-brace-format
+msgid "External opening of files of type “{file_type}” is not supported"
+msgstr ""
+
+#: meld/filediff.py:1249
 msgid "Comparison results will be inaccurate"
 msgstr ""
 
-#: meld/filediff.py:1252
+#: meld/filediff.py:1251
 msgid ""
 "A filter changed the number of lines in the file, which is unsupported. The "
 "comparison will not be accurate."
 msgstr ""
 
-#: meld/filediff.py:1294
+#: meld/filediff.py:1293
 msgid "Mark conflict as resolved?"
 msgstr ""
 
-#: meld/filediff.py:1296
+#: meld/filediff.py:1295
 msgid ""
 "If the conflict was resolved successfully, you may mark it as resolved now."
 msgstr ""
 
-#: meld/filediff.py:1300
+#: meld/filediff.py:1299
 msgid "Cancel"
 msgstr "_გაუქმება"
 
-#: meld/filediff.py:1301
+#: meld/filediff.py:1300
 msgid "Mark _Resolved"
 msgstr ""
 
-#: meld/filediff.py:1580 meld/imagediff.py:241
+#: meld/filediff.py:1579 meld/imagediff.py:251
 msgid "File comparison:"
 msgstr ""
 
-#: meld/filediff.py:1726
+#: meld/filediff.py:1725
 #, python-brace-format
 msgid ""
 "Line {line_number} exceeded maximum line length ({line_length} > "
@@ -1935,34 +1949,34 @@ msgid ""
 "Loading files with very long lines may make Meld slow or unresponsive."
 msgstr ""
 
-#: meld/filediff.py:1776
+#: meld/filediff.py:1775
 #, python-format
 msgid "There was a problem opening the file “%s”."
 msgstr "ფაილის გახსნის შეცდომა: %s."
 
-#: meld/filediff.py:1803
+#: meld/filediff.py:1802
 #, python-format
 msgid "File %s appears to be a binary file."
 msgstr ""
 
-#: meld/filediff.py:1804
+#: meld/filediff.py:1803
 msgid "Do you want to open the file using the default application?"
 msgstr ""
 
-#: meld/filediff.py:1809
+#: meld/filediff.py:1808
 msgid "Open"
 msgstr "გახსნა"
 
-#: meld/filediff.py:1914
+#: meld/filediff.py:1913
 #, python-format
 msgid "File %s has changed on disk"
 msgstr ""
 
-#: meld/filediff.py:1915
+#: meld/filediff.py:1914
 msgid "Do you want to reload the file?"
 msgstr "გნებავთ, ფაილი თავიდან ჩატვირთოთ?"
 
-#: meld/filediff.py:1920
+#: meld/filediff.py:1919
 msgid "_Reload"
 msgstr "_გადატვირთვა"
 
@@ -2074,30 +2088,30 @@ msgstr ""
 msgid "Could not save file %s."
 msgstr ""
 
-#: meld/filediff.py:2746
+#: meld/filediff.py:2745
 msgid "Live comparison updating disabled"
 msgstr ""
 
-#: meld/filediff.py:2748
+#: meld/filediff.py:2747
 msgid ""
 "Live updating of comparisons is disabled when synchronization points are "
 "active. You can still manually refresh the comparison, and live updates will "
 "resume when synchronization points are cleared."
 msgstr ""
 
-#: meld/filediff.py:2788
+#: meld/filediff.py:2787
 msgid "Can't swap unsaved files"
 msgstr ""
 
-#: meld/filediff.py:2789
+#: meld/filediff.py:2788
 msgid "Files must be saved to disk before swapping panes."
 msgstr ""
 
-#: meld/filediff.py:2795
+#: meld/filediff.py:2794
 msgid "Can't swap version control comparisons"
 msgstr ""
 
-#: meld/filediff.py:2796
+#: meld/filediff.py:2795
 msgid "Swapping panes is not supported in version control mode."
 msgstr ""
 
@@ -2113,11 +2127,12 @@ msgstr ""
 msgid "Delete Permanently?"
 msgstr "წაიშალოს სამუდამოდ?"
 
-#: meld/iohelpers.py:68
-msgid "Do you want to delete it permanently?"
-msgstr "გნებავთ, ის სამუდამოდ წაშალოთ?"
+#: meld/iohelpers.py:67
+msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
+msgstr ""
+"\"{}\"-ის ნაგვის ყუთში გადატანა შეუძლებელია. გნებავთ, ის სამუდამოდ წაშალოთ?"
 
-#: meld/iohelpers.py:72
+#: meld/iohelpers.py:71
 msgid "_Delete Permanently"
 msgstr "_სამუდამოდ წაშლა"
 
@@ -2224,7 +2239,7 @@ msgstr ""
 msgid "invalid path or URI “%s”"
 msgstr ""
 
-#: meld/meldapp.py:402
+#: meld/meldapp.py:405
 msgid "remote folder “{}” not supported"
 msgstr ""
 
@@ -2233,28 +2248,33 @@ msgstr ""
 msgid "<unnamed>"
 msgstr "<უსახელო>"
 
-#: meld/meldwindow.py:137
+#: meld/meldwindow.py:138
 msgid "Filename"
 msgstr "ფაილის სახელი"
 
-#: meld/meldwindow.py:375
+#: meld/meldwindow.py:374
 #, python-format
 msgid "Need three files to auto-merge, got: %r"
 msgstr ""
 
-#: meld/meldwindow.py:404
+#: meld/meldwindow.py:403
 msgid "Cannot compare a mixture of files and directories"
 msgstr ""
 
-#: meld/meldwindow.py:448
+#: meld/meldwindow.py:447
 msgid "Failed to mount archive"
 msgstr ""
 
-#: meld/meldwindow.py:508
+#: meld/meldwindow.py:448
+#, python-brace-format
+msgid "Error mounting archive {uri}: {error}"
+msgstr ""
+
+#: meld/meldwindow.py:509
 msgid "Cannot compare a non-existent file"
 msgstr ""
 
-#: meld/misc.py:107
+#: meld/misc.py:101
 msgid ""
 "{}\n"
 "\n"
@@ -2262,7 +2282,7 @@ msgid ""
 "{}"
 msgstr ""
 
-#: meld/misc.py:159
+#: meld/misc.py:153
 msgid "[None]"
 msgstr "[არცერთი]"
 
@@ -2342,7 +2362,7 @@ msgstr ""
 msgid "Local, merge, remote"
 msgstr ""
 
-#: meld/recent.py:110
+#: meld/recent.py:109
 msgid "Version control:"
 msgstr "ვერსიის კონტროლი:"
 
@@ -2407,16 +2427,16 @@ msgid "%d branch"
 msgid_plural "%d branches"
 msgstr[0] ""
 
-#: meld/vc/git.py:374
+#: meld/vc/git.py:373
 #, python-brace-format
 msgid "Mode changed from {old_mode} to {new_mode}"
 msgstr ""
 
-#: meld/vc/git.py:384
+#: meld/vc/git.py:382
 msgid "Partially staged"
 msgstr ""
 
-#: meld/vc/git.py:384
+#: meld/vc/git.py:382
 msgid "Staged"
 msgstr "შუალედური შენახვით"
 
@@ -2481,95 +2501,95 @@ msgstr "სკანირება…"
 
 #. Translators: This error message is shown when no
 #. repository of this type is found.
-#: meld/vcview.py:355
+#: meld/vcview.py:353
 #, python-format
 msgid "%(name)s (not found)"
 msgstr "%(name)s (ვერ ვიპოვე)"
 
 #. Translators: This error message is shown when a version
 #. control binary isn't installed.
-#: meld/vcview.py:359
+#: meld/vcview.py:357
 #, python-format
 msgid "%(name)s (%(cmd)s not installed)"
 msgstr "%(name)s (%(cmd)s დაყენებული არაა)"
 
 #. Translators: This error message is shown when a version
 #. controlled repository is invalid.
-#: meld/vcview.py:363
+#: meld/vcview.py:361
 #, python-format
 msgid "%(name)s (invalid repository)"
 msgstr ""
 
-#: meld/vcview.py:377
+#: meld/vcview.py:375
 msgid "No valid version control system found in this folder"
 msgstr ""
 
-#: meld/vcview.py:379
+#: meld/vcview.py:377
 msgid "Choose which version control system to use"
 msgstr ""
 
 #. TRANSLATORS: This is the name of the version control
 #. system being used, e.g., "Git" or "Subversion"
-#: meld/vcview.py:440
+#: meld/vcview.py:438
 #, python-brace-format
 msgid "{vc} comparison:"
 msgstr ""
 
 #. Initial yield so when we add this to our tasks, we don't
 #. create iterators that may be invalidated.
-#: meld/vcview.py:456
+#: meld/vcview.py:454
 msgid "Scanning repository"
 msgstr ""
 
-#: meld/vcview.py:484
+#: meld/vcview.py:482
 #, python-format
 msgid "Scanning %s"
 msgstr "%s-ის სკანირება"
 
-#: meld/vcview.py:523
+#: meld/vcview.py:521
 msgid "(Empty)"
 msgstr "(ცარიელი)"
 
-#: meld/vcview.py:568
+#: meld/vcview.py:566
 #, python-format
 msgid "%s — local"
 msgstr "%s — ლოკალური"
 
-#: meld/vcview.py:569
+#: meld/vcview.py:567
 #, python-format
 msgid "%s — remote"
 msgstr "%s — დაშორებული"
 
-#: meld/vcview.py:580
+#: meld/vcview.py:578
 #, python-format
 msgid "%s (local, merge, remote)"
 msgstr ""
 
-#: meld/vcview.py:588
+#: meld/vcview.py:586
 #, python-format
 msgid "%s (remote, merge, local)"
 msgstr ""
 
-#: meld/vcview.py:598
+#: meld/vcview.py:596
 #, python-format
 msgid "%s — repository"
 msgstr "%s — რეპოზიტორია"
 
-#: meld/vcview.py:604
+#: meld/vcview.py:602
 #, python-format
 msgid "%s (working, repository)"
 msgstr ""
 
-#: meld/vcview.py:608
+#: meld/vcview.py:606
 #, python-format
 msgid "%s (repository, working)"
 msgstr ""
 
-#: meld/vcview.py:801
+#: meld/vcview.py:795
 msgid "Remove folder and all its files?"
 msgstr ""
 
-#: meld/vcview.py:803
+#: meld/vcview.py:797
 msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
@@ -2623,9 +2643,6 @@ msgstr ""
 #, python-brace-format
 #~ msgid "[{label}] Done"
 #~ msgstr "[{label}] დასრულდა"
-
-#~ msgid "Error deleting {}"
-#~ msgstr "{}-ის წაშლის შეცდომა"
 
 #~ msgid "This remote location does not support sending items to the trash."
 #~ msgstr ""
