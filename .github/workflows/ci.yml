@@ -104,13 +104,15 @@ jobs:
           # Under MSYS2 "--prefix=/" is rewritten to the msys root, so the tree
           # lands in pyinstaller-build/a/_temp/msys64/{bin,lib,share}. meld.spec
           # expects lib/ and share/ directly in pyinstaller-build: hoist them.
+          # mv, not cp -a: cp chokes recreating the help/*/figures symlinks.
           inst=meson-build/pyinstaller-build
           pydir=$(find "$inst" -type d -path '*/lib/python3.*' -prune | head -n1)
           test -n "$pydir" || { echo "no installed python lib under $inst" >&2; exit 1; }
           root=$(dirname "$(dirname "$pydir")")
           if [ "$root" != "$inst" ]; then
-            cp -a "$root"/. "$inst"/
+            mv "$root"/* "$inst"/
           fi
+          find "$inst/share" -xtype l -print -delete
           ls "$inst" "$inst/lib"
           cp windows/meld.spec meson-build/pyinstaller-build
           cd meson-build/pyinstaller-build
