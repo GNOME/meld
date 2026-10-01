@@ -1,0 +1,40 @@
+name: CI (Forgejo)
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: docker
+    container: registry.fedoraproject.org/fedora:latest
+    steps:
+      - name: Install dependencies
+        run: dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv xorg-x11-server-Xvfb
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pre-commit
+            ~/.cache/uv
+          key: lint-${{ hashFiles('pyproject.toml', '.pre-commit-config.yaml') }}
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - run: build-aux/ci/check.sh lint
+
+  pytest:
+    runs-on: docker
+    container: registry.fedoraproject.org/fedora:latest
+    steps:
+      - name: Install dependencies
+        run: dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv xorg-x11-server-Xvfb
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: pytest-${{ hashFiles('pyproject.toml') }}
+      - run: build-aux/ci/check.sh test

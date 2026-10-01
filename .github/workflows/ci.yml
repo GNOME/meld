@@ -1,0 +1,99 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  workflow_call:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:latest
+    steps:
+      - name: Install dependencies
+        run: dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv xorg-x11-server-Xvfb
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pre-commit
+            ~/.cache/uv
+          key: lint-${{ hashFiles('pyproject.toml', '.pre-commit-config.yaml') }}
+      - run: git config --global --add safe.directory "$GITHUB_WORKSPACE"
+      - run: build-aux/ci/check.sh lint
+
+  pytest:
+    runs-on: ubuntu-latest
+    container: registry.fedoraproject.org/fedora:latest
+    steps:
+      - name: Install dependencies
+        run: dnf install -y git gtk4 gtksourceview5 libadwaita python3-cairo python3-gobject-base uv xorg-x11-server-Xvfb
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/uv
+          key: pytest-${{ hashFiles('pyproject.toml') }}
+      - run: build-aux/ci/check.sh test
+
+  flatpak:
+    runs-on: ubuntu-latest
+    # Tracks the GNOME nightly runtime like the GitLab job; may break on its own.
+    continue-on-error: true
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:gnome-nightly
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: meld-dev.flatpak
+          manifest-path: build-aux/org.gnome.Meld.Devel.json
+          cache-key: flatpak-builder-${{ github.sha }}
+          upload-artifact: true
+
+  windows:
+    runs-on: windows-latest
+    # Rolling msys2 packages can break this; it exists to produce installers.
+    continue-on-error: true
+    defaults:
+      run:
+        shell: msys2 {0}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: msys2/setup-msys2@v2
+        with:
+          msystem: UCRT64
+          update: true
+          pacboy: >-
+            adwaita-icon-theme:p appstream:p desktop-file-utils:p gettext:p
+            gsettings-desktop-schemas:p gtk-update-icon-cache:p gtk4:p
+            gtksourceview5:p itstool:p libadwaita:p meson:p nsis:p
+            pyinstaller:p python-gobject:p python-lxml:p python-markupsafe:p
+            python-pip:p python-pytest:p python-yaml:p glib2:p
+      - name: Build installer
+        run: |
+          pip install pyinstaller-versionfile
+          meson setup --prefix=/ . meson-build/
+          meson compile -v -C meson-build/
+          meson install -C meson-build/ --destdir=pyinstaller-build/
+          cp windows/meld.spec meson-build/pyinstaller-build
+          cd meson-build/pyinstaller-build
+          pyinstaller ./meld.spec
+          cp version.nsh dist/
+          cp ../../windows/meld.nsis dist/
+          cd dist
+          makensis ./meld.nsis
+          mv meld-*.exe "$GITHUB_WORKSPACE/"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: meld-*.exe
