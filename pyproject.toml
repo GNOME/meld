@@ -7,21 +7,15 @@ requires = [
 
 [project]
 name = "Meld"
-dynamic = ["version"]
-license = {file = "COPYING"}
-description = """
-Meld is a visual diff and merge tool targeted at developers. Meld helps you
-compare files, directories, and version controlled projects. It provides
-two- and three-way comparison of both files and directories, and supports
-many version control systems.
-"""
-
+dynamic = [
+    "version",
+]
+description = "Meld is a visual diff and merge tool targeted at developers. Meld helps you\ncompare files, directories, and version controlled projects. It provides\ntwo- and three-way comparison of both files and directories, and supports\nmany version control systems.\n"
 maintainers = [
-    {name = "Kai Willadsen", email = "kai.willadsen@gmail.com"},
+    { name = "Kai Willadsen", email = "kai.willadsen@gmail.com" },
 ]
 requires-python = ">=3.10"
-dependencies = [
-]
+dependencies = []
 readme = "README.md"
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -35,10 +29,14 @@ classifiers = [
     "Topic :: Software Development",
     "Topic :: Software Development :: Version Control",
 ]
-keywords=[
+keywords = [
     "diff",
     "merge",
 ]
+version = "3.99.1"
+
+[project.license]
+file = "COPYING"
 
 [project.urls]
 homepage = "https://meld.app/"
@@ -56,30 +54,31 @@ dev = [
 ]
 
 [tool.meson-python.args]
-setup = ['-Dis_wheel=true']
+setup = [
+    "-Dis_wheel=true",
+]
 
 [tool.ruff]
-# Extensionless Python scripts, so that a bare `ruff check` covers the same
-# files that the pre-commit hook does.
-extend-include = ["bin/meld", "maint"]
+extend-include = [
+    "bin/meld",
+    "maint",
+]
 
 [tool.ruff.lint]
 ignore = [
-    # We use broad exception catching when interacting with external systems
-    # quite a bit (e.g., version control)
     "BLE001",
     "RUF015",
-    # The below are interim ignores that should be fixed at some point, but are
-    # too disruptive to do now. UP031 will break many existing translated
-    # strings for no immediate benefit, and RUF059 needs actual thought about
-    # the relevant logic.
     "UP031",
     "RUF059",
 ]
-allowed-confusables = ["’"]
+allowed-confusables = [
+    "’",
+]
 
 [tool.ruff.lint.per-file-ignores]
-"test/**" = ["RUF059"]
+"test/**" = [
+    "RUF059",
+]
 
 [tool.ruff.lint.isort]
 known-first-party = [
