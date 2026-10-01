@@ -17,11 +17,11 @@ VIEW_ACCELERATORS: dict[str, str | Sequence[str]] = {
     # sensitivity set, and so we get alert bells when trying to move
     # past the last/first change.
     "view.next-change-shortcut": ("<Alt>Down", "<Alt>KP_Down", "<Primary>D"),
-    "view.next-pane": "<Alt>Page_Down",
+    "view.next-pane": ("<Alt>Page_Down", "F6"),
     "view.open-external": "<Primary><Shift>O",
     # See view.next-change-shortcut
     "view.previous-change-shortcut": ("<Alt>Up", "<Alt>KP_Up", "<Primary>E"),
-    "view.previous-pane": "<Alt>Page_Up",
+    "view.previous-pane": ("<Alt>Page_Up", "<Shift>F6"),
     "view.redo": "<Primary><Shift>Z",
     "view.refresh": ("<Control>R", "F5"),
     "view.save": "<Primary>S",
@@ -61,6 +61,10 @@ VIEW_ACCELERATORS: dict[str, str | Sequence[str]] = {
     # Version control actions
     "view.vc-commit": "<Primary>M",
     "view.vc-console-visible": "F9",
+    # Jump straight to a given comparison pane (1-based keys, 0-based argument)
+    "view.focus-pane(0)": ("<Alt>1", "<Alt>KP_1"),
+    "view.focus-pane(1)": ("<Alt>2", "<Alt>KP_2"),
+    "view.focus-pane(2)": ("<Alt>3", "<Alt>KP_3"),
     # Swap the two panes
     "view.swap-2-panes": "<Alt>backslash",
 }

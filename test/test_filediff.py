@@ -113,3 +113,57 @@ def test_filter_text(text, ignored_ranges, expected_text):
 
     assert toggles == ignored_ranges
     assert text == expected_text
+
+
+@pytest.mark.parametrize(
+    "num_panes, focused, action, expected",
+    [
+        (2, 0, "action_next_pane", 1),
+        (2, 1, "action_next_pane", 0),  # wraps, so two panes toggle
+        (2, 0, "action_prev_pane", 1),
+        (3, 2, "action_next_pane", 0),
+        (3, 0, "action_prev_pane", 2),
+        (3, 1, "action_next_pane", 2),
+    ],
+)
+def test_pane_cycling(num_panes, focused, action, expected):
+    from meld.filediff import FileDiff
+
+    filediff = mock.MagicMock(spec=FileDiff)
+    filediff.num_panes = num_panes
+    filediff._get_focused_pane.return_value = focused
+    filediff._switch_pane = lambda n: FileDiff._switch_pane(filediff, n)
+    filediff.textview = [mock.Mock() for _ in range(num_panes)]
+
+    getattr(FileDiff, action)(filediff)
+
+    filediff.move_cursor_pane.assert_called_once_with(focused, expected)
+
+
+def test_pane_focus_without_focused_textview():
+    from meld.filediff import FileDiff
+
+    filediff = mock.MagicMock(spec=FileDiff)
+    filediff.num_panes = 3
+    filediff._get_focused_pane.return_value = -1
+    filediff.textview = [mock.Mock() for _ in range(3)]
+    filediff._switch_pane = lambda n: FileDiff._switch_pane(filediff, n)
+
+    FileDiff.action_next_pane(filediff)
+
+    filediff.move_cursor_pane.assert_not_called()
+    filediff.textview[0].grab_focus.assert_called_once()
+
+
+@pytest.mark.parametrize(
+    "target, called", [(0, True), (2, True), (3, False), (-1, False)]
+)
+def test_focus_pane_action(target, called):
+    from gi.repository import GLib
+
+    from meld.filediff import FileDiff
+
+    filediff = mock.MagicMock(spec=FileDiff)
+    filediff.num_panes = 3
+    FileDiff.action_focus_pane(filediff, None, GLib.Variant.new_int32(target))
+    assert filediff._switch_pane.called == called

@@ -400,6 +400,11 @@ class FileDiff(Gtk.Box, MeldDoc):
             action.connect("activate", callback)
             self.view_action_group.add_action(action)
 
+        # Direct pane focus, e.g. ``view.focus-pane(1)`` for the second pane
+        focus_action = Gio.SimpleAction.new("focus-pane", GLib.VariantType.new("i"))
+        focus_action.connect("activate", self.action_focus_pane)
+        self.view_action_group.add_action(focus_action)
+
         state_actions = (("text-filter", None, GLib.Variant.new_boolean(False)),)
         for name, callback, state in state_actions:
             action = Gio.SimpleAction.new_stateful(name, None, state)
@@ -802,8 +807,6 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.set_action_enabled("file-copy-left-down", copy_left)
         self.set_action_enabled("file-copy-right-up", copy_right)
         self.set_action_enabled("file-copy-right-down", copy_right)
-        self.set_action_enabled("previous-pane", pane > 0)
-        self.set_action_enabled("next-pane", pane < self.num_panes - 1)
         self.set_action_enabled("swap-2-panes", self.num_panes == 2)
 
         self.update_text_actions_sensitivity()
@@ -1160,15 +1163,30 @@ class FileDiff(Gtk.Box, MeldDoc):
         new_line = self._corresponding_chunk_line(chunk, line, pane, new_pane)
         self.move_cursor(new_pane, new_line)
 
+    def _switch_pane(self, new_pane: int) -> None:
+        """Focus ``new_pane``, keeping the cursor on the corresponding line"""
+        pane = self._get_focused_pane(use_last_focused_pane=True)
+        if pane == new_pane:
+            self.textview[new_pane].grab_focus()
+        elif pane == -1:
+            # Focus is somewhere else (e.g., the find bar) and there's no
+            # pane we can map the cursor from.
+            self.textview[new_pane].grab_focus()
+        else:
+            self.move_cursor_pane(pane, new_pane)
+
     def action_prev_pane(self, *args):
-        pane = self._get_focused_pane()
-        new_pane = (pane - 1) % self.num_panes
-        self.move_cursor_pane(pane, new_pane)
+        pane = self._get_focused_pane(use_last_focused_pane=True)
+        self._switch_pane((pane - 1) % self.num_panes)
 
     def action_next_pane(self, *args):
-        pane = self._get_focused_pane()
-        new_pane = (pane + 1) % self.num_panes
-        self.move_cursor_pane(pane, new_pane)
+        pane = self._get_focused_pane(use_last_focused_pane=True)
+        self._switch_pane((pane + 1) % self.num_panes)
+
+    def action_focus_pane(self, action, param, *args):
+        new_pane = param.get_int32()
+        if 0 <= new_pane < self.num_panes:
+            self._switch_pane(new_pane)
 
     def _set_external_action_sensitivity(self):
         # FIXME: This sensitivity is very confused. Essentially, it's always

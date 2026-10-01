@@ -539,6 +539,10 @@ class DirDiff(Gtk.Box, MeldDoc):
             action.connect("activate", callback)
             self.view_action_group.add_action(action)
 
+        focus_action = Gio.SimpleAction.new("focus-pane", GLib.VariantType.new("i"))
+        focus_action.connect("activate", self.action_focus_pane)
+        self.view_action_group.add_action(focus_action)
+
         actions = (
             ("folder-filter", None, GLib.Variant.new_boolean(False)),
             (
@@ -1491,15 +1495,31 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         self.current_path = cursor_path
 
-    @with_focused_pane
-    def action_prev_pane(self, pane, *args):
-        new_pane = (pane - 1) % self.num_panes
-        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+    def _switch_pane(self, new_pane: int) -> None:
+        pane = self._get_focused_pane()
+        if pane is None and self.focus_pane in self.treeview:
+            pane = self.treeview.index(self.focus_pane)
+        if pane is None or pane == new_pane:
+            self.treeview[new_pane].grab_focus()
+        else:
+            self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
 
-    @with_focused_pane
-    def action_next_pane(self, pane, *args):
-        new_pane = (pane + 1) % self.num_panes
-        self.change_focused_tree(self.treeview[pane], self.treeview[new_pane])
+    def _current_pane(self) -> int:
+        pane = self._get_focused_pane()
+        if pane is None and self.focus_pane in self.treeview:
+            pane = self.treeview.index(self.focus_pane)
+        return pane if pane is not None else 0
+
+    def action_prev_pane(self, *args):
+        self._switch_pane((self._current_pane() - 1) % self.num_panes)
+
+    def action_next_pane(self, *args):
+        self._switch_pane((self._current_pane() + 1) % self.num_panes)
+
+    def action_focus_pane(self, action, param, *args):
+        new_pane = param.get_int32()
+        if 0 <= new_pane < self.num_panes:
+            self._switch_pane(new_pane)
 
     @Gtk.Template.Callback()
     def on_treeview_key_press_event(
