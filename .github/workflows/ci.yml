@@ -81,7 +81,9 @@ jobs:
         run: |
           sed -i '/^\[options\]/a DisableDownloadTimeout' /etc/pacman.conf
           for attempt in 1 2 3; do
-            if pacboy --noconfirm -S --needed \
+            # pacboy comes from pactoys; setup-msys2 only installs it when its
+            # own `pacboy:` input is used.
+            if pacman --noconfirm -S --needed pactoys && pacboy --noconfirm -S --needed \
                 adwaita-icon-theme:p appstream:p desktop-file-utils:p gettext:p \
                 gsettings-desktop-schemas:p gtk-update-icon-cache:p gtk4:p \
                 gtksourceview5:p itstool:p libadwaita:p meson:p nsis:p \
