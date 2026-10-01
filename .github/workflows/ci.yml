@@ -73,15 +73,29 @@ jobs:
         with:
           msystem: UCRT64
           update: true
-          pacboy: >-
-            adwaita-icon-theme:p appstream:p desktop-file-utils:p gettext:p
-            gsettings-desktop-schemas:p gtk-update-icon-cache:p gtk4:p
-            gtksourceview5:p itstool:p libadwaita:p meson:p nsis:p
-            pyinstaller:p python-gobject:p python-lxml:p python-markupsafe:p
-            python-pip:p python-pytest:p python-yaml:p glib2:p
+          # The restored package cache never prevented the re-download.
+          cache: false
+      - name: Install dependencies
+        # Mirrors (ftp2.osuosl.org) regularly stall with "Operation too slow",
+        # so disable the low-speed timeout and retry the whole transaction.
+        run: |
+          sed -i '/^\[options\]/a DisableDownloadTimeout' /etc/pacman.conf
+          for attempt in 1 2 3; do
+            if pacboy --noconfirm -S --needed \
+                adwaita-icon-theme:p appstream:p desktop-file-utils:p gettext:p \
+                gsettings-desktop-schemas:p gtk-update-icon-cache:p gtk4:p \
+                gtksourceview5:p itstool:p libadwaita:p meson:p nsis:p \
+                pyinstaller:p python-gobject:p python-lxml:p python-markupsafe:p \
+                python-pip:p python-pytest:p python-yaml:p glib2:p; then
+              exit 0
+            fi
+            echo "pacboy attempt $attempt failed" >&2
+            sleep $((attempt * 15))
+          done
+          exit 1
       - name: Build installer
         run: |
-          pip install pyinstaller-versionfile
+          pip install --break-system-packages pyinstaller-versionfile
           meson setup --prefix=/ . meson-build/
           meson compile -v -C meson-build/
           meson install -C meson-build/ --destdir=pyinstaller-build/
@@ -92,7 +106,7 @@ jobs:
           cp ../../windows/meld.nsis dist/
           cd dist
           makensis ./meld.nsis
-          mv meld-*.exe "$GITHUB_WORKSPACE/"
+          mv meld-*.exe "$(cygpath -u "$GITHUB_WORKSPACE")/"
       - uses: actions/upload-artifact@v4
         with:
           name: windows-installer
