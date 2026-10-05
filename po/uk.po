@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-07 21:55+0000\n"
-"PO-Revision-Date: 2026-09-11 10:00+0300\n"
+"POT-Creation-Date: 2026-09-11 07:15+0000\n"
+"PO-Revision-Date: 2026-10-05 22:15+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "Language: uk\n"
@@ -1918,7 +1918,6 @@ msgstr "Права доступу"
 
 #: meld/dirdiff.py:935
 #, python-brace-format
-#| msgid "{filename} (scanning…)"
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name} (сканування…)"
 
@@ -1932,6 +1931,7 @@ msgid "Done"
 msgstr "Виконано"
 
 #: meld/dirdiff.py:1150
+#, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "Виконуємо порівняння теки {} із самою собою"
 
@@ -2046,6 +2046,7 @@ msgstr ""
 "{error}"
 
 #: meld/dirdiff.py:1364 meld/vcview.py:829
+#, python-brace-format
 msgid "Error deleting {}"
 msgstr "Помилка під час спроби вилучити {}"
 
@@ -2067,7 +2068,6 @@ msgstr "Непідтримуваний тип файлів"
 
 #: meld/externalhelpers.py:139
 #, python-brace-format
-#| msgid "External opening of files of type {file_type} is not supported"
 msgid "External opening of files of type “{file_type}” is not supported"
 msgstr ""
 "Підтримки відкриття файлів типу «{file_type}» у зовнішній програмі не "
@@ -2103,7 +2103,7 @@ msgstr "Скасувати"
 msgid "Mark _Resolved"
 msgstr "Позначити як _розв'язаний"
 
-#: meld/filediff.py:1579 meld/imagediff.py:242
+#: meld/filediff.py:1579 meld/imagediff.py:251
 msgid "File comparison:"
 msgstr "Порівняння файлів:"
 
@@ -2153,6 +2153,7 @@ msgid "_Reload"
 msgstr "Перезаванта_жити"
 
 #: meld/filediff.py:2121
+#, python-brace-format
 msgid "File {} is being compared to itself"
 msgstr "Виконуємо порівняння файла {} із самим собою"
 
@@ -2253,6 +2254,7 @@ msgid "Don’t Save"
 msgstr "Не зберігати"
 
 #: meld/filediff.py:2321
+#, python-brace-format
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2319,12 +2321,11 @@ msgid "Delete Permanently?"
 msgstr "Вилучити остаточно?"
 
 #: meld/iohelpers.py:67
+#, python-brace-format
 #| msgid ""
-#| "“{}” can’t be put in the trash. Do you want to delete it immediately?"
+#| "“{}” can’t be put in the trash. Do you want to delete it permanently?"
 msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
-msgstr ""
-"«{}» не можна пересунути до смітника. Не вдалося перемістити «{}» у смітник. "
-"Остаточно його вилучити?"
+msgstr "Не вдалося перемістити «{}» у смітник. Остаточно його вилучити?"
 
 #: meld/iohelpers.py:71
 msgid "_Delete Permanently"
@@ -2439,6 +2440,7 @@ msgid "invalid path or URI “%s”"
 msgstr "некоректний шлях або адреса «%s»"
 
 #: meld/meldapp.py:405
+#, python-brace-format
 msgid "remote folder “{}” not supported"
 msgstr "підтримки віддалених тек «{}» не передбачено"
 
@@ -2474,6 +2476,7 @@ msgid "Cannot compare a non-existent file"
 msgstr "Неможливо виконати порівняння із файлом, якого не існує"
 
 #: meld/misc.py:101
+#, python-brace-format
 msgid ""
 "{}\n"
 "\n"
@@ -2570,6 +2573,7 @@ msgid "Version control:"
 msgstr "Керування версіями:"
 
 #: meld/style.py:163
+#, python-brace-format
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr ""
 "Не вдалося знайти параметри схеми кольорів для {} — якісь проблеми зі "
