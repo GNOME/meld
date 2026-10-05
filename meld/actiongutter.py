@@ -216,8 +216,8 @@ class ActionGutter(Gtk.DrawingArea):
     def motion_event(
         self,
         controller: Gtk.EventControllerMotion,
-        x: float | None = None,
-        y: float | None = None,
+        x = None,
+        y = None,
     ):
         if x is None or y is None:
             # Missing coordinates are leave events

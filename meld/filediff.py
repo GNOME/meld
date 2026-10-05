@@ -1686,7 +1686,7 @@ class FileDiff(Gtk.Box, MeldDoc):
         total_bytes: int,
         loader: GtkSource.FileLoader,
         cancellable: Gio.Cancellable,
-        errors: dict[int, str],
+        errors,
     ) -> None:
         failed_it = None
         buffer = loader.get_buffer()

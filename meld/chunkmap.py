@@ -258,8 +258,8 @@ class ChunkMap(Gtk.DrawingArea):
     def motion_event(
         self,
         controller: Gtk.EventControllerMotion,
-        x: float | None = None,
-        y: float | None = None,
+        x: float = None,
+        y: float = None,
     ):
         if self._have_grab:
             self._scroll_fraction(y, animate=False)
