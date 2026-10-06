@@ -20,7 +20,7 @@ desktop_file = i18n.merge_file(
 # Validate Desktop file
 desktop_file_validate = find_program('desktop-file-validate', required: false)
 if desktop_file_validate.found()
-  test (
+  test(
     'Validate desktop file',
     desktop_file_validate,
     args: desktop_file.full_path(),
@@ -57,18 +57,20 @@ else
   configure_file(
     input: '@0@.gschema.xml'.format(resource_base_id),
     output: 'gschemas.compiled',
-    command: [compile_schemas, meson.current_source_dir(), '--targetdir', meson.current_build_dir()],
+    command: [
+      compile_schemas,
+      meson.current_source_dir(),
+      '--targetdir',
+      meson.current_build_dir(),
+    ],
     install_dir: datadir / 'meld',
   )
 endif
 
 # Install GtkSourceview style files
-styles = [
-  'meld-base.style-scheme.xml',
-  'meld-dark.style-scheme.xml',
-]
+styles = ['meld-base.style-scheme.xml', 'meld-dark.style-scheme.xml']
 
-foreach style: styles
+foreach style : styles
   i18n.merge_file(
     input: 'styles' / style + '.in',
     output: style,
@@ -82,7 +84,7 @@ endforeach
 # Install icons
 icon_sizes = ['scalable']
 
-foreach i: icon_sizes
+foreach i : icon_sizes
   install_data(
     'icons/hicolor' / i / 'apps' / application_id + '.svg',
     install_dir: icondir / 'hicolor' / i / 'apps',

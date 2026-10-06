@@ -28,4 +28,13 @@ repos:
     -   id: ruff-check
     -   id: ruff-format
 
+-   repo: local
+    hooks:
+    -   id: meson-format
+        name: Meson format
+        language: python
+        entry: meson format -e -i
+        files: ^(.*/)?(meson\.build|meson_options\.txt|meson\.options)$
+        additional_dependencies: ['meson==1.8.5']
+
 exclude: ^po/.*\.po$

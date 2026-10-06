@@ -82,7 +82,7 @@ folders = {
   ],
 }
 
-foreach folder_name, sources: folders
+foreach folder_name, sources : folders
   pkgdir = meson.project_name() / folder_name
   python3.install_sources(sources, pure: true, subdir: pkgdir)
 endforeach
