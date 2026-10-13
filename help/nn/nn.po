@@ -1,0 +1,1689 @@
+# Norwegian Nynorsk translation for meld.
+# Copyright (C) 2026 meld's COPYRIGHT HOLDER
+# This file is distributed under the same license as the meld package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: meld main\n"
+"POT-Creation-Date: 2026-10-10 17:34+0000\n"
+"PO-Revision-Date: 2026-10-12 12:00+0200\n"
+"Last-Translator: Roy-Magne Mo <rmo@sunnmore.net>\n"
+"Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
+"Language: nn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr "Roy-Magne Mo <rmo@sunnmore.net>"
+
+#. (itstool) path: info/title
+#: C/command-line.page:5 C/file-changes.page:5 C/file-filters.page:5
+#: C/flattened-view.page:5 C/resolving-conflicts.page:5 C/text-filters.page:5
+msgctxt "sort"
+msgid "2"
+msgstr "2"
+
+#. (itstool) path: credit/name
+#: C/command-line.page:10 C/file-changes.page:10 C/file-filters.page:10
+#: C/file-mode.page:11 C/flattened-view.page:10 C/folder-mode.page:10
+#: C/index.page:12 C/introduction.page:10 C/missing-functionality.page:10
+#: C/preferences.page:10 C/resolving-conflicts.page:10 C/text-filters.page:11
+#: C/vc-mode.page:10 C/vc-supported.page:10
+msgid "Kai Willadsen"
+msgstr "Kai Willadsen"
+
+#. (itstool) path: credit/years
+#: C/command-line.page:12 C/file-changes.page:12 C/file-filters.page:12
+#: C/file-mode.page:13 C/flattened-view.page:12 C/folder-mode.page:12
+#: C/index.page:14 C/introduction.page:12 C/missing-functionality.page:12
+#: C/resolving-conflicts.page:12 C/text-filters.page:13 C/vc-mode.page:12
+#: C/vc-supported.page:12
+msgid "2012"
+msgstr "2012"
+
+#. (itstool) path: page/title
+#: C/command-line.page:15
+msgid "Command line usage"
+msgstr "Bruk frå kommandolinja"
+
+#. (itstool) path: page/p
+#: C/command-line.page:17
+msgid ""
+"If you start <app>Meld</app> from the command line, you can tell it what to "
+"do when it starts."
+msgstr ""
+"Viss du startar <app>Meld</app> frå kommandolinja, kan du fortelje han kva "
+"han skal gjere ved oppstart."
+
+#. (itstool) path: page/p
+#: C/command-line.page:20
+msgid ""
+"For a two- or three-way <link xref=\"file-mode\">file comparison</link>, "
+"start <app>Meld</app> with <cmd>meld <var>file1</var> <var>file2</var></cmd> "
+"or <cmd>meld <var>file1</var> <var>file2</var> <var>file3</var></cmd> "
+"respectively."
+msgstr ""
+"For ei to- eller trevegs <link xref=\"file-mode\">filsamanlikning</link>, "
+"start <app>Meld</app> med <cmd>meld <var>fil1</var> <var>fil2</var></cmd> "
+"eller <cmd>meld <var>fil1</var> <var>fil2</var> <var>fil3</var></cmd> "
+"høvesvis."
+
+#. (itstool) path: page/p
+#: C/command-line.page:26
+msgid ""
+"For a two- or three-way <link xref=\"folder-mode\">directory comparison</"
+"link>, start <app>Meld</app> with <cmd>meld <var>dir1</var> <var>dir2</var></"
+"cmd> or <cmd>meld <var>dir1</var> <var>dir2</var> <var>dir3</var></cmd>."
+msgstr ""
+"For ei to- eller trevegssamanlikning av <link xref=\"folder-"
+"mode\">mapper</link>, start <app>Meld</app> med <cmd>meld <var>mappe1</var> "
+"<var>mappe2</var></cmd> eller <cmd>meld <var>mappe1</var> <var>mappe2</var> "
+"<var>mappe3</var></cmd>."
+
+#. (itstool) path: page/p
+#: C/command-line.page:31
+msgid ""
+"You can start a <link xref=\"vc-mode\">version control</link> comparison by "
+"just giving a single argument; if that file or directory is managed by a "
+"<link xref=\"vc-supported\">recognized version control system</link>, it "
+"will start a version control comparison on that argument. For example, "
+"<cmd>meld .</cmd> would start a version control view of the current "
+"directory."
+msgstr ""
+"Du kan starte ei <link xref=\"vc-mode\">versjonskontrollsamanlikning</link> "
+"ved å berre gje eit enkelt argument; om den fila eller mappa vert styrt av "
+"eit <link xref=\"vc-supported\">kjend versjonskontrollsystem</link>, vil han"
+" starte ei versjonskontrollsamanlikning på det argumentet. Til dømes vil "
+"<cmd>meld .</cmd> starte ei versjonskontroll-vising av den gjeldande mappa."
+
+#. (itstool) path: note/p
+#: C/command-line.page:40
+msgid "Run <cmd>meld --help</cmd> for a list of all command line options."
+msgstr ""
+"Køyr <cmd>meld --help</cmd> for ei liste over alle kommandoalternativ."
+
+#. (itstool) path: page/title
+#: C/file-changes.page:16
+msgid "Dealing with changes"
+msgstr "Handtere endringar"
+
+#. (itstool) path: page/p
+#: C/file-changes.page:18
+msgid ""
+"<app>Meld</app> deals with differences between files as a list of <em>change "
+"blocks</em> or more simply <em>changes</em>. Each change is a group of lines "
+"which correspond between files. Since these changes are what you're usually "
+"interested in, <app>Meld</app> gives you specific tools to navigate between "
+"these changes and to edit them. You can find these tools in the <gui "
+"style=\"menu\">Changes</gui> menu."
+msgstr ""
+"<app>Meld</app> handterer skilnadar mellom filer som ei liste over "
+"<em>endringsblokker</em> eller enklare sagt <em>endringar</em>. Kvar endring"
+" er ei gruppe linjer som svarar til kvarandre mellom filer. Sidan det er "
+"desse endringane du vanlegvis er interessert i, gjev <app>Meld</app> deg "
+"spesifikke verktøy for å navigere mellom desse endringane og redigere dei. "
+"Du finn desse verktøya i <gui style=\"menu\">Endringar</gui>-menyen."
+
+#. (itstool) path: section/title
+#: C/file-changes.page:30
+msgid "Navigating between changes"
+msgstr "Navigere mellom endringar"
+
+#. (itstool) path: section/p
+#: C/file-changes.page:32
+msgid ""
+"You can navigate between changes with the previous and next change buttons "
+"in the toolbar. You can also use your mouse's scroll wheel to move between "
+"changes, by scrolling on the central change bar."
+msgstr ""
+"Du kan navigere mellom endringar med knappane for førre og neste endring i "
+"verktøylinja. Du kan òg bruke musehjulet til å flytte mellom endringar ved å"
+" rulle på den sentrale endringslinja."
+
+#. (itstool) path: section/title
+#: C/file-changes.page:43
+msgid "Changing changes"
+msgstr "Endre endringar"
+
+#. (itstool) path: section/p
+#: C/file-changes.page:45
+msgid ""
+"In addition to directly editing text files, <app>Meld</app> gives you tools "
+"to move, copy or delete individual differences between files. The bar "
+"between two files not only shows you what parts of the two files correspond, "
+"but also lets you selectively merge or delete differing changes by clicking "
+"the arrow or cross icons next to the start of each change."
+msgstr ""
+"I tillegg til å redigere tekstfiler direkte, gjev <app>Meld</app> deg "
+"verktøy til å flytte, kopiere eller slette enkelte skilnadar mellom filer. "
+"Linja mellom to filer viser ikkje berre kva delar av dei to filene som "
+"samsvarar, men let deg òg selektivt slå saman eller slette avvikande "
+"endringar ved å klikke på pil- eller krossikonet ved starten av kvar "
+"endring."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:49
+msgid ""
+"The default action is <em>replace</em>. This action replaces the contents of "
+"the corresponding change with the current change."
+msgstr ""
+"Standardhandlinga er <em>erstatt</em>. Denne handlinga erstattar innhaldet i"
+" den tilsvarande endringa med den gjeldande endringa."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:56
+msgid ""
+"Hold down the <key>Shift</key> key to change the current action to "
+"<em>delete</em>. This action deletes the current change."
+msgstr ""
+"Hald inne <key>Shift</key>-tasten for å endre den gjeldande handlinga til "
+"<em>slett</em>. Denne handlinga slettar den gjeldande endringa."
+
+#. (itstool) path: section/p
+#: C/file-changes.page:59
+msgid ""
+"Hold down the <key>Ctrl</key> key to change the current action to "
+"<em>insert</em>. This action inserts the current change above or below (as "
+"selected) the corresponding change."
+msgstr ""
+"Hald inne <key>Ctrl</key>-tasten for å endre den gjeldande handlinga til "
+"<em>setje inn</em>. Denne handlinga set inn den gjeldande endringa over "
+"eller under (som valt) den tilsvarande endringa."
+
+#. (itstool) path: page/title
+#: C/file-filters.page:15
+msgid "Filtering out files"
+msgstr "Filtrere ut filer"
+
+#. (itstool) path: page/p
+#: C/file-filters.page:17
+msgid ""
+"When you compare folders, you may want to be able to ignore some files. For "
+"example, you may wish to only see files that are present and different in "
+"both folders, ignoring those that are the same or only exist in one folder. "
+"Alternatively, you might want to ignore all the files in your <file>.git</"
+"file> directory, or ignore all images."
+msgstr ""
+"Når du samanliknar mapper, vil du kanskje kunne ignorere enkelte filer. Til "
+"dømes vil du kanskje berre sjå filer som finst og er ulike i begge mapper, "
+"og ignorere dei som er like eller berre finst i éi mappe. Eller du vil "
+"kanskje ignorere alle filene i <file>.git</file>-mappa di, eller ignorere "
+"alle bilete."
+
+#. (itstool) path: page/p
+#: C/file-filters.page:25
+msgid ""
+"<app>Meld</app> has several different ways of controlling which files and "
+"what kind of differences you see. You can filter based on <link xref=\"#file-"
+"state-filter\">differences between a file across folders</link> or <link "
+"xref=\"#file-name-filter\">file and folder names</link>. You can also tell "
+"<app>Meld</app> to treat filenames as being <link xref=\"#file-case-"
+"filter\">case insensitive</link>. Finally, you can use <link xref=\"text-"
+"filters\">text filters</link> to change what both folder and file "
+"comparisons see."
+msgstr ""
+"<app>Meld</app> har fleire ulike måtar å styre kva filer og kva slag "
+"skilnadar du ser på. Du kan filtrere basert på <link xref=\"#file-state-"
+"filter\">skilnadar mellom ei fil på tvers av mapper</link> eller <link "
+"xref=\"#file-name-filter\">fil- og mappenamn</link>. Du kan også be "
+"<app>Meld</app> om å handsame filnamn som <link xref=\"#file-case-"
+"filter\">uavhengig av store og små bokstavar</link>. Til slutt kan du bruke "
+"<link xref=\"text-filters\">tekstfilter</link> til å endre kva både mappe- "
+"og filsamanlikningar ser."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:37
+msgid ""
+"Any <link xref=\"text-filters\">text filters</link> you've defined "
+"<em>automatically apply</em> when comparing folders. Files that are "
+"identical after all of the text filters are applied are not highlighted as "
+"being different, but are shown in italics."
+msgstr ""
+"<link xref=\"text-filters\">Tekstfilter</link> du har definert <em>vert "
+"automatisk brukt</em> når mapper vert samanlikna. Filer som er identiske "
+"etter at alle tekstfilter er brukte, vert ikkje utheva som ulike, men vert "
+"viste i kursiv."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:48
+msgid "File differences filtering"
+msgstr "Filtrering etter filskilnadar"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:50
+msgid ""
+"In a folder comparison, each line contains a single file or folder that is "
+"present in at least one of the folders being compared. Each of these lines "
+"is classified as being either <em>Modified</em>, <em>New</em> or <em>Same</"
+"em>:"
+msgstr ""
+"I ei mappesamanlikning inneheld kvar linje ei enkelt fil eller mappe som "
+"finst i minst ei av mappene som vert samanlikna. Kvar av desse linjene er "
+"klassifisert som anten <em>Endra</em>, <em>Ny</em> eller <em>Same</em>:"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:58 C/folder-mode.page:144 C/vc-mode.page:105
+msgid "Modified"
+msgstr "Endra"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:59
+msgid "The file exists in multiple folders, but the files are different"
+msgstr "Fila finst i fleire mapper, men filene er ulike"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:62 C/folder-mode.page:158 C/folder-mode.page:230
+#: C/vc-mode.page:119
+msgid "New"
+msgstr "Ny"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:63
+msgid "The file exists in one folder but not in the others"
+msgstr "Fila finst i ei mappe, men ikkje i dei andre"
+
+#. (itstool) path: item/title
+#. (itstool) path: td/p
+#: C/file-filters.page:66 C/folder-mode.page:114 C/vc-mode.page:91
+msgid "Same"
+msgstr "Same"
+
+#. (itstool) path: item/p
+#: C/file-filters.page:67
+msgid "The file exists in all folders, and is the same everywhere"
+msgstr "Fila finst i alle mapper, og er den same overalt"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:70
+msgid ""
+"You can change which types of differences you see in your current comparison "
+"by using the <gui style=\"button\">File Filters</gui> button on the toolbar."
+msgstr ""
+"Du kan endre kva typar skilnadar du ser i den gjeldande samanlikninga ved å "
+"bruke <gui style=\"button\">Filfilter</gui>-knappen på verktøylinja."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:77
+msgid ""
+"Currently, you can only filter files based on their state; folders can't be "
+"filtered in this way. For example, you can't tell <app>Meld</app> to ignore "
+"all folders that contain only new files. A folder containing only \"New\" "
+"files would show up as empty, but still present."
+msgstr ""
+"For tida kan du berre filtrere filer basert på tilstanden deira; mapper kan "
+"ikkje filtrerast på denne måten. Til dømes kan du ikkje be <app>Meld</app> "
+"om å ignorere alle mapper som berre inneheld nye filer. Ei mappe som berre "
+"inneheld «Ny»-filer vert viste som tom, men likevel til stades."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:91
+msgid "Filename filtering"
+msgstr "Filnamnfiltrering"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:93
+msgid ""
+"<app>Meld</app> comes with a useful set of filename filters that let you "
+"ignore uninteresting files and folders like common backup files and the "
+"metadata folders of version control systems. Each filename filter can be "
+"separately activated or deactivated from the <gui style=\"button\">File "
+"Filters</gui> button on the toolbar."
+msgstr ""
+"<app>Meld</app> kjem med eit nyttig sett med filnamnfilter som let deg "
+"ignorere uinteressante filer og mapper som vanlege reservekopifiler og "
+"metadatamapper for versjonskontrollsystem. Kvart filnamnfilter kan slåast på"
+" eller av separat frå <gui style=\"button\">Filfilter</gui>-knappen på "
+"verktøylinja."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:101
+msgid ""
+"You can add, remove or change filename filters from the <gui "
+"style=\"tab\">File Filters</gui> section of the <gui>Preferences</gui> "
+"dialog. Filename filters specify patterns of filenames that will <em>not</"
+"em> be looked at when performing a folder comparison. Any file that matches "
+"an active filter won't even show up in the tree comparison. Filename filters "
+"match both files and folders; if a folder matches a filter, it and all of "
+"its contents are ignored."
+msgstr ""
+"Du kan leggje til, fjerne eller endre filnamnfilter frå <gui "
+"style=\"tab\">Filfilter</gui>-delen i vindauget <gui>Innstillingar</gui>. "
+"Filnamnfilter spesifiserer mønster for filnamn som <em>ikkje</em> vert sett "
+"på når du samanliknar mapper. Ei fil som passar eit filter som er slått på, "
+"vert ikkje ein gong vist i trevisinga. Filnamnfilter passar både filer og "
+"mapper; viss ei mappe passar eit filter, vert ho og alt innhaldet ignorert."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:111
+msgid ""
+"Filename filters match according to shell glob patterns. For example, "
+"<code>*.jpg</code> will match all filenames ending in <code>.jpg</code>. The "
+"following table lists all of the shell glob characters that <app>Meld</app> "
+"recognises."
+msgstr ""
+"Filnamnfilter samsvarar etter glob-mønster for skal. Til dømes vil "
+"<code>*.jpg</code> treffe alle filnamn som endar på <code>.jpg</code>. "
+"Tabellen nedanfor viser alle glob-teikna for skal som <app>Meld</app> "
+"kjenner att."
+
+#. (itstool) path: table/title
+#: C/file-filters.page:119
+msgid "Shell glob patterns"
+msgstr "Glob-mønster for skal"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:123
+msgid "Wildcard"
+msgstr "Jokerteikn"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:123
+msgid "Matches"
+msgstr "Treff"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:129
+msgid "<code>*</code>"
+msgstr "<code>*</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:130
+msgid "anything (i.e., zero or more characters)"
+msgstr "noko (dvs. null eller fleire teikn)"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:133
+msgid "<code>?</code>"
+msgstr "<code>?</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:134
+msgid "exactly one character"
+msgstr "nøyaktig eitt teikn"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:137
+msgid "<code>[abc]</code>"
+msgstr "<code>[abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:138
+msgid "any one of the listed characters"
+msgstr "eitt av dei oppgjevne teikna"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:141
+msgid "<code>[!abc]</code>"
+msgstr "<code>[!abc]</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:142
+msgid "anything <em>except</em> one of the listed characters"
+msgstr "alt <em>utanom</em> eitt av dei oppgjevne teikna"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:145
+msgid "<code>{cat,dog}</code>"
+msgstr "<code>{cat,dog}</code>"
+
+#. (itstool) path: td/p
+#: C/file-filters.page:146
+msgid "either \"cat\" or \"dog\""
+msgstr "anten «katt» eller «hund»"
+
+#. (itstool) path: note/p
+#: C/file-filters.page:152
+msgid ""
+"Changing a filter's <gui>Active</gui> setting in the <gui>Preferences</gui> "
+"dialog changes whether that filter is active <em>by default</em>."
+msgstr ""
+"Å endre innstillinga <gui>På</gui> for eit filter i vindauget "
+"<gui>Innstillingar</gui> endrar om filteret er slått på <em>som "
+"standard</em>."
+
+#. (itstool) path: note/p
+#: C/file-filters.page:158
+msgid ""
+"Activating a filter from the menu or the toolbar turns the filter on or off "
+"for <em>this comparison only</em>."
+msgstr ""
+"Når du slår eit filter på eller av frå menyen eller verktøylinja, gjeld det "
+"berre for <em>denne samanlikninga</em>."
+
+#. (itstool) path: section/title
+#: C/file-filters.page:169
+msgid "Case insensitive filenames"
+msgstr "Filnamn utan omsyn til store og små bokstavar"
+
+#. (itstool) path: section/p
+#: C/file-filters.page:171
+msgid ""
+"Files are compared across directories according to their name. This "
+"comparison is case sensitive by default; that is, the files <file>README</"
+"file>, <file>readme</file> and <file>ReadMe</file> would all be seen as "
+"different files."
+msgstr ""
+"Filer vert samanlikna på tvers av mapper etter namnet. Som standard skil "
+"denne samanlikninga mellom store og små bokstavar; det vil seie at filene "
+"<file>README</file>, <file>readme</file> og <file>ReadMe</file> vert sett på"
+" som ulike filer."
+
+#. (itstool) path: section/p
+#: C/file-filters.page:178
+msgid ""
+"When comparing folders on some filesystems (e.g., HFS+ or FAT) you may wish "
+"to make <app>Meld</app> treat filenames as case insensitive. You can do this "
+"by using the <gui style=\"button\">File Filters</gui> button on the toolbar "
+"and selecting <gui style=\"menuitem\">Ignore Filename Case</gui>."
+msgstr ""
+"Når du samanliknar mapper på enkelte filsystem (t.d. HFS+ eller FAT), kan du"
+" ønskje å få <app>Meld</app> til å handsame filnamn som utan skilnad på "
+"store og små bokstavar. Dette kan du gjere ved å bruke <gui "
+"style=\"button\">Filfilter</gui>-knappen i verktøylinja og velje <gui "
+"style=\"menuitem\">Ignorer store og små bokstavar i filnamn</gui>."
+
+#. (itstool) path: info/title
+#: C/file-mode.page:5 C/folder-mode.page:5 C/introduction.page:5
+#: C/missing-functionality.page:5 C/preferences.page:5
+msgctxt "sort"
+msgid "1"
+msgstr "1"
+
+#. (itstool) path: page/title
+#: C/file-mode.page:17
+msgid "Getting started comparing files"
+msgstr "Slik kjem du i gang med å samanlikne filer"
+
+#. (itstool) path: page/p
+#: C/file-mode.page:19
+msgid ""
+"<app>Meld</app> lets you compare two or three text files side-by-side. You "
+"can start a new file comparison using the new comparison button on the "
+"toolbar."
+msgstr ""
+"<app>Meld</app> lèt deg samanlikne to eller tre tekstfiler ved sida av "
+"kvarandre. Du kan byrje ei ny filsamanlikning ved å bruke den nye "
+"samanlikningsknappen i verktøylinja."
+
+#. (itstool) path: page/p
+#: C/file-mode.page:24
+msgid ""
+"Once you've selected your files, <app>Meld</app> will show them side-by-"
+"side. Differences between the files will be highlighted to make individual "
+"changes easier to see. Editing the files will cause the comparison to update "
+"on-the-fly. For details on navigating between individual changes, and on how "
+"to use change-based editing, see <link xref=\"file-changes\"/>."
+msgstr ""
+"Når du har valt filene, vil <app>Meld</app> vise dei ved sida av kvarandre. "
+"Skilnadar mellom filene vert utheva slik at det vert lettare å sjå "
+"enkeltendringar. Redigering av filene fører til at samanlikninga vert "
+"oppdatert fortløpande. For detaljar om navigering mellom enkeltendringar, og"
+" korleis du brukar endringsbasert redigering, sjå <link xref=\"file-"
+"changes\"/>."
+
+#. (itstool) path: section/title
+#: C/file-mode.page:33
+msgid "<app>Meld</app>'s file comparisons"
+msgstr "<app>Meld</app> sine filsamanlikningar"
+
+#. (itstool) path: section/p
+#: C/file-mode.page:35
+msgid ""
+"There are several different parts to a file comparison. The most important "
+"parts are the editors where your files appear. In addition to these editors, "
+"the areas around and between your files give you a visual overview and "
+"actions to help you handle changes between the files."
+msgstr ""
+"Det er fleire ulike delar i ei filsamanlikning. Dei viktigaste delane er "
+"redigeringsfelta der filene dine vert viste. I tillegg til desse "
+"redigeringsfelta gjev områda rundt og mellom filene dine ei visuell oversikt"
+" og handlingar som hjelper deg å handtere endringar mellom filene."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:41
+msgid ""
+"On the right-hand side of the window, there are small vertical bars showing "
+"various colored blocks. These bars are designed to give you an overview of "
+"all of the differences between your files. Each colored block represents a "
+"section that is inserted, deleted, changed or in conflict between your "
+"files, depending on the block's color used."
+msgstr ""
+"Til høgre i vindauget er det små vertikale stolpar som viser ulike farga "
+"blokker. Desse stolpane er laga for å gje deg ei oversikt over alle "
+"skilnadane mellom filene dine. Kvar farga blokk representerer eit avsnitt "
+"som er sett inn, sletta, endra eller i konflikt mellom filene dine, avhengig"
+" av kva farge som er brukt på blokka."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:48
+msgid ""
+"In between each pair of files is a segment that shows how the changed "
+"sections between your files correspond to each other. You can click on the "
+"arrows in a segment to replace sections in one file with sections from the "
+"other. You can also delete, copy or merge changes. For details on what you "
+"can do with individual change segments, see <link xref=\"file-changes#change-"
+"actions\"/>."
+msgstr ""
+"Mellom kvart filpar er eit segment som viser korleis dei endra delane mellom"
+" filene dine svarar til kvarandre. Du kan klikke på pilene i eit segment for"
+" å erstatte delar i ei fil med delar frå den andre. Du kan også slette, "
+"kopiere eller slå saman endringar. For detaljar om kva du kan gjere med "
+"kvart enkelt endringssegment, sjå <link xref=\"file-changes#change-"
+"actions\"/>."
+
+#. (itstool) path: section/title
+#: C/file-mode.page:60
+msgid "Saving your changes"
+msgstr "Lagrar endringane dine"
+
+#. (itstool) path: section/p
+#: C/file-mode.page:62
+msgid ""
+"Once you've finished editing your files, you need to save each file you've "
+"changed."
+msgstr ""
+"Når du er ferdig med å redigere filene dine, må du lagre kvar fil du har "
+"endra."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:66
+msgid ""
+"You can tell whether your files have been saved since they last changed by "
+"the save icon that appears next to the file name above each file. Also, if "
+"you have multiple comparisons open, their notebook labels will show an "
+"asterisk (<code>*</code>) after any file that hasn't been saved."
+msgstr ""
+"Du kan sjå om filene dine er lagra sidan sist endring ved hjelp av "
+"lagreikonet som dukkar opp ved sida av filnamnet over kvar fil. Dersom du "
+"har fleire samanlikningar opne, vil det også stå ein asterisk "
+"(<code>*</code>) etter alle filer som ikkje er lagra i fanenamna."
+
+#. (itstool) path: section/p
+#: C/file-mode.page:73
+msgid ""
+"You can save the current file by selecting the save button above the file "
+"being compared, or using the <keyseq><key>Ctrl</key><key>S</key></keyseq> "
+"keyboard shortcut."
+msgstr ""
+"Du kan lagre den gjeldande fila ved å velje lagre-knappen over fila som vert"
+" samanlikna, eller bruke tastatursnarvegen "
+"<keyseq><key>Ctrl</key><key>S</key></keyseq>."
+
+#. (itstool) path: note/p
+#: C/file-mode.page:79
+msgid ""
+"Saving only saves the <em>currently focused</em> file, which is the file "
+"containing the cursor. If you can't tell which file is focused, you can "
+"click on the file to focus it before saving."
+msgstr ""
+"Lagring lagrar berre fila som er <em>i fokus</em>, altså fila der peikaren "
+"står. Om du ikkje kan sjå kva fil som er i fokus, kan du klikke på fila før "
+"du lagrar."
+
+#. (itstool) path: page/title
+#: C/flattened-view.page:15
+msgid "Flattened view"
+msgstr "Flat vising"
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:17
+msgid ""
+"When viewing large folders, you may be interested in only a few files among "
+"the thousands in the folder itself. For this reason, <app>Meld</app> "
+"includes a <em>flattened view</em> of a folder; only files that have not "
+"been filtered out (e.g., by <link xref=\"vc-mode#vc-state-filtering\"/>) are "
+"shown, and the folder hierarchy is stripped away, with file paths shown in "
+"the <em>Location</em> column."
+msgstr ""
+"Når du ser på store mapper, kan det hende at du berre er interessert i nokre"
+" få filer blant dei tusenvis som er i sjølve mappa. Av den grunn har "
+"<app>Meld</app> ei <em>flat vising</em> av ei mappe; berre filer som ikkje "
+"er filtrerte bort (t.d. ved <link xref=\"vc-mode#vc-state-filtering\"/>) "
+"vert viste, og mappehierarkiet er fjerna, med filstiar viste i kolonnen "
+"<em>Plassering</em>."
+
+#. (itstool) path: page/p
+#: C/flattened-view.page:27
+msgid ""
+"You can toggle the flattened view on or off using the <gui "
+"style=\"button\">Version Filters</gui> button on the toolbar and selecting "
+"<gui style=\"menuitem\">Flatten Folders</gui>."
+msgstr ""
+"Du kan slå den flate visinga av eller på ved å bruke <gui "
+"style=\"button\">Versjonsfilter</gui>-knappen på verktøylinja og velje <gui "
+"style=\"menuitem\">Flat ut mapper</gui>."
+
+#. (itstool) path: page/title
+#: C/folder-mode.page:16
+msgid "Getting started comparing folders"
+msgstr "Slik kjem du i gang med å samanlikne mapper"
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:18
+msgid ""
+"<app>Meld</app> lets you compare two or three folders side-by-side. You can "
+"start a new folder comparison using the new comparison button on the "
+"toolbar, and clicking on the <gui style=\"tab\">Directory Comparison</gui> "
+"tab."
+msgstr ""
+"<app>Meld</app> lèt deg samanlikne to eller tre mapper ved sida av "
+"kvarandre. Du kan byrje ei ny mappesamanlikning ved å bruke den nye "
+"samanlikningsknappen i verktøylinja, og ved å klikke på <gui "
+"style=\"tab\">Mappe</gui>-fana."
+
+#. (itstool) path: page/p
+#: C/folder-mode.page:25
+msgid ""
+"Your selected folders will be shown as side-by-side trees, with differences "
+"between files in each folder highlighted. You can copy or delete files from "
+"either folder, or compare individual text files in more detail."
+msgstr ""
+"Mappene du har valt, vert vist som tre som står ved sida av kvarandre, og "
+"skilnadar mellom filer i kvar mappe vert utheva. Du kan kopiere eller slette"
+" filer frå kvar av mappene, eller samanlikne enkelte tekstfiler meir "
+"detaljert."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:35
+msgid "The folder comparison view"
+msgstr "Mappesamanlikningsvising"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:37
+msgid ""
+"The main parts of a folder comparison are the trees showing the folders "
+"you're comparing. You can easily <link xref=\"#folder-navigation\">move "
+"around</link> these comparisons to find changes that you're interested in. "
+"When you select a file or folder, more detailed information is given in the "
+"status bar at the bottom of the window. Pressing <key>Enter</key> on a "
+"selected file, or double-clicking any file in the tree will open a side-by-"
+"side <link xref=\"file-mode\">file comparison</link> of the files in a new "
+"tab, but this will only work properly if they're text files!"
+msgstr ""
+"Hovuddelane i ei mappesamanlikning er trea som viser mappene du samanliknar."
+" Du kan lett <link xref=\"#folder-navigation\">flytte rundt</link> i desse "
+"samanlikningane for å finne endringar du er interessert i. Når du vel ei fil"
+" eller mappe, vert meir detaljert informasjon vist i statuslinja nedst i "
+"vindauget. Trykkjer du <key>Enter</key> på ei vald fil, eller dobbeltklikkar"
+" på ei fil i treet, vert det opna ei <link xref=\"file-"
+"mode\">filsamanlikning</link> av filene, side om side, i ei ny fane, men "
+"dette fungerer berre ordentleg om dei er tekstfiler!"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:49
+msgid ""
+"There are bars on the right-hand side of the window that show you a simple "
+"colored summary of the comparison results. Each file or folder in the "
+"comparison corresponds to a small section of these bars, though <app>Meld</"
+"app> doesn't show <em>Same</em> files so that it's easier to see any "
+"actually important differences. You can click anywhere on this bar to jump "
+"straight to that place in the comparison."
+msgstr ""
+"Det er stolpar på høgresida av vindauget som viser deg eit enkelt farga "
+"samandrag av samanlikningsresultata. Kvar fil eller mappe i samanlikninga "
+"svarar til ein liten del av desse stolpane, sjølv om <app>Meld</app> ikkje "
+"viser <em>Same</em>-filer slik at det er lettare å sjå faktisk viktige "
+"skilnadar. Du kan klikke kvar som helst på denne stolpen for å hoppe rett "
+"til den staden i samanlikninga."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:62
+msgid "Navigating folder comparisons"
+msgstr "Navigere i mappesamanlikningar"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:64
+msgid ""
+"You can jump between changed files (that is, any files/folders that are "
+"<em>not</em> classified as being identical) with the previous and next "
+"change buttons in the toolbar."
+msgstr ""
+"Du kan hoppe mellom endra filer (det vil seie alle filer/mapper som "
+"<em>ikkje</em> er klassifiserte som identiske) med knappane for førre og "
+"neste endring i verktøylinja."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:69
+msgid ""
+"You can use the <key>Left</key> and <key>Right</key> arrow keys to move "
+"between the folders you're comparing. This is useful so that you can select "
+"an individual file for copying or deletion."
+msgstr ""
+"Du kan bruke <key>Venstre</key> og <key>Høgre</key> piltastane til å flytte "
+"mellom mappene du samanliknar. Dette er nyttig slik at du kan velje ei "
+"enkelt fil til kopiering eller sletting."
+
+#. (itstool) path: section/title
+#: C/folder-mode.page:79
+msgid "States in folder comparisons"
+msgstr "Tilstandar i mappesamanlikningar"
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:81
+msgid ""
+"Each file or folder in a tree has its own <em>state</em>, telling you how it "
+"differed from its corresponding files/folders. The possible states are:"
+msgstr ""
+"Kvar fil eller mappe i eit tre har sin eigen <em>tilstand</em>, som fortel "
+"korleis han skil seg frå tilsvarande filer/mapper. Dei moglege tilstandane "
+"er:"
+
+#. (itstool) path: table/title
+#: C/folder-mode.page:102
+msgid "Folder comparison states"
+msgstr "Tilstandar i mappesamanlikning"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:106 C/vc-mode.page:83
+msgid "State"
+msgstr "Tilstand"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:107 C/folder-mode.page:223 C/vc-mode.page:84
+msgid "Appearance"
+msgstr "Utsjånad"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:108 C/folder-mode.page:224 C/vc-mode.page:85
+msgid "Meaning"
+msgstr "Tyding"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:116 C/vc-mode.page:93
+msgid "Normal font"
+msgstr "Normal skrift"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:122
+msgid "The file/folder is the same across all compared folders."
+msgstr "Fila/mappa er den same på tvers av alle samanlikna mapper."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:128
+msgid "Same when filtered"
+msgstr "Same når filtrert"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:130
+msgid "Italics"
+msgstr "Kursiv"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:136
+msgid ""
+"These files are different across folders, but once <link xref=\"text-"
+"filters\">text filters</link> are applied, these files become identical."
+msgstr ""
+"Desse filene er ulike på tvers av mapper, men når <link xref=\"text-"
+"filters\">tekstfilter</link> er brukte, vert desse filene identiske."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:146
+msgid "Blue and bold"
+msgstr "Blå og feit"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:152
+msgid "These files differ between the folders being compared."
+msgstr "Desse filene skil seg mellom mappene som vert samanlikna."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:160 C/vc-mode.page:121
+msgid "Green and bold"
+msgstr "Grøn og feit"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:166
+msgid "This file/folder exists in this folder, but not in the others."
+msgstr "Denne fila/mappa finst i denne mappa, men ikkje i dei andre."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:172 C/vc-mode.page:165
+msgid "Missing"
+msgstr "Manglar"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:174
+msgid "Grayed out text with a line through the middle"
+msgstr "Grå tekst med ei linje gjennom midten"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:180
+msgid ""
+"This file/folder doesn't exist in this folder, but does in one of the others."
+msgstr "Denne fila/mappa finst ikkje i denne mappa, men i ei av dei andre."
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:187 C/vc-mode.page:210
+msgid "Error"
+msgstr "Feil"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:189 C/vc-mode.page:212
+msgid "Bright red with a yellow background and bold"
+msgstr "Knallraud med gul bakgrunn og feit skrift"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:195
+msgid ""
+"When comparing this file, an error occurred. The most common error causes "
+"are file permissions (i.e., <app>Meld</app> was not allowed to open the "
+"file) and filename encoding errors."
+msgstr ""
+"Når du samanliknar denne fila, oppstod det ein feil. Dei vanlegaste "
+"feilårsakene er filløyve (det vil seie at <app>Meld</app> ikkje fekk opne "
+"fila) og feil med kodinga av filnamn."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:205
+msgid ""
+"You can filter out files based on these states, for example, to show only "
+"files that have been <em>Modified</em>. You can read more about this in "
+"<link xref=\"file-filters#file-state-filter\"/>."
+msgstr ""
+"Du kan filtrere ut filer basert på desse tilstandane, til dømes for berre å "
+"vise filer som er <em>Endra</em>. Du kan lese meir om dette i <link "
+"xref=\"file-filters#file-state-filter\"/>."
+
+#. (itstool) path: section/p
+#: C/folder-mode.page:211
+msgid ""
+"The icons in some rows have emblems added to them to show additional "
+"information. Note that these icons may change depending on your icon theme, "
+"so these descriptions are only a guide."
+msgstr ""
+"I nokre rader har ikon emblem lagt til for å vise tilleggsinformasjon. Merk "
+"at desse ikona kan endre seg avhengig av ikontemaet ditt, så desse "
+"skildringane er berre rettleiande."
+
+#. (itstool) path: table/title
+#: C/folder-mode.page:218
+msgid "Additional emblems"
+msgstr "Tilleggsemblem"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:222
+msgid "Emblem"
+msgstr "Emblem"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:231
+msgid "Small blue dot"
+msgstr "Lita blå prikk"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:232
+msgid ""
+"Used to indicate the \"newest\" (i.e., most recently modified) file in the "
+"row"
+msgstr ""
+"Vert nytta til å vise den «nyaste» (det vil seie den som er endra sist) fila"
+" i rada"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:236
+msgid "Symbolic link"
+msgstr "Symbolsk lenkje"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:237
+msgid "Arrow"
+msgstr "Pil"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:238
+msgid "Shows that the row item is a symbolic link"
+msgstr "Viser at radobjektet er ei symbolsk lenkje"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:241
+msgid "Selected"
+msgstr "Vald"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:242
+msgid "Tick mark"
+msgstr "Hakemerke"
+
+#. (itstool) path: td/p
+#: C/folder-mode.page:243
+msgid ""
+"Shows that a file has been selected for a marked comparison, used to compare "
+"differently named files across folders"
+msgstr ""
+"Viser at ei fil er vald for ei merkt samanlikning, brukt til å samanlikne "
+"filer med ulike namn på tvers av mapper"
+
+#. (itstool) path: info/title
+#: C/index.page:6
+msgctxt "link:trail"
+msgid "Meld Help"
+msgstr "Meld hjelp"
+
+#. (itstool) path: info/title
+#: C/index.page:7
+msgctxt "link"
+msgid "Meld Help"
+msgstr "Meld hjelp"
+
+#. (itstool) path: info/title
+#: C/index.page:8
+msgctxt "text"
+msgid "Meld Help"
+msgstr "Meld hjelp"
+
+#. (itstool) path: page/title
+#: C/index.page:18
+msgid "<_:media-1/> Meld Help"
+msgstr "<_:media-1/> Meld hjelp"
+
+#. (itstool) path: section/title
+#: C/index.page:24
+msgid "Introduction"
+msgstr "Innleiing"
+
+#. (itstool) path: section/title
+#: C/index.page:28
+msgid "Comparing Files"
+msgstr "Samanlikne filer"
+
+#. (itstool) path: section/title
+#: C/index.page:32
+msgid "Comparing Folders"
+msgstr "Samanlikne mapper"
+
+#. (itstool) path: section/title
+#: C/index.page:36
+msgid "Using Meld with Version Control"
+msgstr "Bruk Meld med versjonskontroll"
+
+#. (itstool) path: section/title
+#: C/index.page:40
+msgid "Advanced Usage"
+msgstr "Avansert bruk"
+
+#. (itstool) path: page/title
+#: C/introduction.page:15
+msgid "What is Meld?"
+msgstr "Kva er Meld?"
+
+#. (itstool) path: page/p
+#: C/introduction.page:16
+msgid ""
+"<app>Meld</app> is a tool for comparing files and directories, and for "
+"resolving differences between them. It is also useful for comparing changes "
+"captured by version control systems."
+msgstr ""
+"<app>Meld</app> er eit verktøy for å samanlikne filer og mapper, og for å "
+"løyse skilnadar mellom dei. Det er også nyttig for å samanlikne endringar "
+"fanga opp av versjonskontrollsystem."
+
+#. (itstool) path: page/p
+#: C/introduction.page:22
+msgid ""
+"<app>Meld</app> shows differences between two or three files (or two or "
+"three directories) and allows you to move content between them, or edit the "
+"files manually. <app>Meld</app>'s focus is on helping developers compare and "
+"merge source files, and get a visual overview of changes in their favorite "
+"version control system."
+msgstr ""
+"<app>Meld</app> viser skilnadar mellom to eller tre filer (eller to eller "
+"tre mapper) og let deg flytte innhald mellom dei, eller redigere filene "
+"manuelt. <app>Meld</app> sitt fokus er å hjelpe utviklarar med å samanlikne "
+"og slå saman kjeldefiler, og få ei visuell oversikt over endringar i "
+"favorittversjonskontrollsystemet sitt."
+
+#. (itstool) path: p/link
+#: C/legal.xml:4
+msgid "Creative Commons Attribution-Share Alike 3.0 Unported License"
+msgstr "Creative Commons Namngjeving-Del på same vilkår 3.0 Unported-lisens"
+
+#. (itstool) path: license/p
+#: C/legal.xml:3
+msgid "This work is licensed under a <_:link-1/>."
+msgstr "Dette verket er lisensiert under <_:link-1/>."
+
+#. (itstool) path: license/p
+#: C/legal.xml:6
+msgid ""
+"As a special exception, the copyright holders give you permission to copy, "
+"modify, and distribute the example code contained in this document under the "
+"terms of your choosing, without restriction."
+msgstr ""
+"Som eit særskilt unntak gjev innehavarane av opphavsretten deg løyve til å "
+"kopiere, endre og distribuere eksempelkoden i dette dokumentet under vilkår "
+"du sjølv vel, utan avgrensing."
+
+#. (itstool) path: page/title
+#: C/missing-functionality.page:15
+msgid "Things that <app>Meld</app> doesn't do"
+msgstr "Ting som <app>Meld</app> ikkje gjer"
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:17
+msgid ""
+"Have you ever spent half an hour poking around an application trying to find "
+"out how to do something, thinking that <em>surely</em> there must be an "
+"option for this?"
+msgstr ""
+"Har du nokon gong brukt ein halvtime på å leite i ein app for å finne ut "
+"korleis du gjer noko, og tenkt at det <em>sjølvsagt</em> må finnast eit val "
+"for dette?"
+
+#. (itstool) path: page/p
+#: C/missing-functionality.page:23
+msgid ""
+"This section lists a few of the common things that <app>Meld</app> "
+"<em>doesn't</em> do, either as a deliberate choice, or because we just "
+"haven't had time."
+msgstr ""
+"Denne delen listar opp nokre av dei vanlege tinga som <app>Meld</app> "
+"<em>ikkje</em> gjer, anten som eit medvite val, eller fordi vi berre ikkje "
+"har hatt tid."
+
+#. (itstool) path: section/title
+#: C/missing-functionality.page:30
+msgid "Aligning changes by adding lines"
+msgstr "Justere endringar ved å leggje til linjer"
+
+#. (itstool) path: section/p
+#: C/missing-functionality.page:31
+msgid ""
+"When <app>Meld</app> shows differences between files, it shows both files as "
+"they would appear in a normal text editor. It does <em>not</em> insert "
+"additional lines so that the left and right sides of a particular change are "
+"the same size. There is no option to do this."
+msgstr ""
+"Når <app>Meld</app> viser skilnadar mellom filer, viser han begge filene "
+"slik dei ville ha sett ut i ein vanleg tekstredigering. Han set "
+"<em>ikkje</em> inn ekstra linjer slik at venstre og høgre side av ei bestemt"
+" endring vert like store. Det finst ingen innstilling for å gjere dette."
+
+#. (itstool) path: credit/years
+#: C/preferences.page:12
+msgid "2013"
+msgstr "2013"
+
+#. (itstool) path: page/title
+#: C/preferences.page:15
+msgid "Meld's preferences"
+msgstr "Meld sine innstillingar"
+
+#. (itstool) path: terms/title
+#: C/preferences.page:18
+msgid "Editor preferences"
+msgstr "Innstillingar for redigering"
+
+#. (itstool) path: item/title
+#: C/preferences.page:20
+msgid "Editor command"
+msgstr "Redigeringskommando"
+
+#. (itstool) path: item/p
+#: C/preferences.page:21
+msgid ""
+"The name of the command to run to open text files in an external editor. "
+"This may be just the command (e.g., <cmd>gedit</cmd>) in which case the file "
+"to be opened will be passed as the last argument. Alternatively, you can add "
+"<code>{file}</code> and <code>{line}</code> elements to the command, in "
+"which case <app>Meld</app> will substitute the file path and current line "
+"number respectively (e.g., <cmd>gedit {file}:{line}</cmd>)."
+msgstr ""
+"Namnet på kommandoen som skal køyrast for å opne tekstfiler i ein ekstern "
+"redigering. Dette kan berre vere kommandoen (t.d. <cmd>gedit</cmd>), i så "
+"fall vil fila som skal opnast verte overført som det siste argumentet. "
+"Alternativt kan du leggje til <code>{file}</code> og <code>{line}</code> i "
+"kommandoen, i så fall vil <app>Meld</app> erstatte filstien og linjenummeret"
+" der det står (t.d. <cmd>gedit {file}:{line}</cmd>)."
+
+#. (itstool) path: terms/title
+#: C/preferences.page:31
+msgid "Folder Comparison preferences"
+msgstr "Innstillingar for mappesamanlikning"
+
+#. (itstool) path: item/title
+#: C/preferences.page:33
+msgid "Apply text filters during folder comparisons"
+msgstr "Bruk tekstfilter under mappesamanlikningar"
+
+#. (itstool) path: item/p
+#: C/preferences.page:34
+msgid ""
+"When comparing files in folder comparison mode, text filters and other text "
+"manipulation options can be applied to the contents of files. If this option "
+"is enabled, all currently enabled text filters will be applied, the blank "
+"line trimming option will be applied as appropriate, and differences in line "
+"endings will be ignored."
+msgstr ""
+"Når du samanliknar filer i samanlikningsmodus for mapper, kan tekstfilter og"
+" andre tekstmanipuleringsval brukast på filinnhaldet. Viss dette valet er "
+"slått på, vert alle tekstfilter som er slått på brukte, valet for å trimme "
+"tomme linjer vert brukt der det passar, og skilnadar i linjeskift vert "
+"ignorerte."
+
+#. (itstool) path: item/p
+#: C/preferences.page:40
+msgid ""
+"Enabling this option means that <app>Meld</app> must fully read all non-"
+"binary files into memory during the folder comparison. With large text "
+"files, this can be slow and may cause memory issues."
+msgstr ""
+"Viss du slår på dette valet, må <app>Meld</app> lese alle ikkje-binære filer"
+" fullt ut inn i minnet under samanlikninga av mapper. Med store tekstfiler "
+"kan dette gå seint og føre til minneproblem."
+
+#. (itstool) path: item/p
+#: C/preferences.page:44
+msgid ""
+"This option only has an effect if \"Compare files based only on size and "
+"timestamp\" is not enabled."
+msgstr ""
+"Dette valet har berre ein effekt om «Samanlikn filer berre ut frå storleik "
+"og tidsstempel» ikkje er slått på."
+
+#. (itstool) path: page/title
+#: C/resolving-conflicts.page:15
+msgid "Resolving merge conflicts"
+msgstr "Løyse samanslåingskonfliktar"
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:17
+msgid ""
+"One of the best uses of <app>Meld</app> is to resolve conflicts that occur "
+"while merging different branches."
+msgstr ""
+"Eitt av dei beste bruksområda for <app>Meld</app> er å løyse konfliktar som "
+"oppstår når ulike greinar vert slått saman."
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:22
+msgid ""
+"For example, when using <app>Git</app>, <cmd>git mergetool</cmd> will start "
+"a 'merge helper'; <app>Meld</app> is one such helper. If you want to make "
+"<app>git mergetool</app> use <app>Meld</app> by default, you can add"
+msgstr ""
+"Til dømes, når du brukar <app>Git</app>, vil <cmd>git mergetool</cmd> starte"
+" ein «samanslåingshjelpar»; <app>Meld</app> er ein slik hjelpar. Om du vil "
+"at <app>git mergetool</app> skal bruke <app>Meld</app> som standard, kan du "
+"leggje til"
+
+#. (itstool) path: page/code
+#: C/resolving-conflicts.page:27
+#, no-wrap
+msgid ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+msgstr ""
+"\n"
+"[merge]\n"
+"    tool = meld\n"
+
+#. (itstool) path: page/p
+#: C/resolving-conflicts.page:31
+msgid ""
+"to <file>.git/gitconfig</file>. See the <app>git mergetool</app> manual for "
+"details."
+msgstr ""
+"til <file>.git/gitconfig</file>. Sjå manualen for <app>git mergetool</app> "
+"for detaljar."
+
+#. (itstool) path: page/title
+#: C/text-filters.page:17
+msgid "Filtering out text"
+msgstr "Filtrere ut tekst"
+
+#. (itstool) path: page/p
+#: C/text-filters.page:19
+msgid ""
+"When comparing several files, you may have sections of text where "
+"differences aren't really important. For example, you may want to focus on "
+"changed sections of code, and ignore any changes in comment lines. With text "
+"filters you can tell <app>Meld</app> to ignore text that matches a pattern "
+"(i.e., a regular expression) when showing differences between files."
+msgstr ""
+"Når du samanliknar fleire filer, kan du ha tekstbolkar der skilnadane ikkje "
+"er særleg viktige. Du vil til dømes kanskje konsentrere deg om endra "
+"kodebolkar, og ignorere endringar i kommentarlinjene. Med tekstfilter kan du"
+" be <app>Meld</app> om å ignorere tekst som passar eit mønster (det vil seie"
+" eit regulært uttrykk) når det viser skilnadane mellom filer."
+
+#. (itstool) path: note/p
+#: C/text-filters.page:28
+msgid ""
+"Text filters don't just affect file comparisons, but also folder "
+"comparisons. Check the <link xref=\"file-filters\">file filtering notes</"
+"link> for more details."
+msgstr ""
+"Tekstfilter påverkar ikkje berre filsamanlikningar, men òg "
+"mappesamanlikningar. Sjekk <link xref=\"file-filters\">merknadene om "
+"filfiltrering</link> for meir informasjon."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:37
+msgid "Adding and using text filters"
+msgstr "Legg til og bruk tekstfilter"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:39
+msgid ""
+"You can turn text filters on or off from the the <gui>Text Filters</gui> tab "
+"in <gui>Preferences</gui> dialog. <app>Meld</app> comes with a few simple "
+"filters that you might find useful, but you can add your own as well."
+msgstr ""
+"Du kan slå tekstfilter på eller av frå <gui>Tekstfilter</gui>-fana i "
+"<gui>Innstillingar</gui>-vindauget. <app>Meld</app> kjem med nokre enkle "
+"filter som du kanskje synest er nyttige, men du kan òg leggje til dine "
+"eigne."
+
+#. (itstool) path: section/p
+#: C/text-filters.page:45
+msgid ""
+"In <app>Meld</app>, text filters are regular expressions that are matched "
+"against the text of files you're comparing. Any text that is matched is "
+"ignored during the comparison; you'll still see this text in the comparison "
+"view, but it won't be taken into account when finding differences. Text "
+"filters are applied in order, so it's possible for the first filter to "
+"remove text that now makes the second filter match, and so on."
+msgstr ""
+"I <app>Meld</app> er tekstfilter regulære uttrykk som vert samanlikna med "
+"teksten i filene du samanliknar. All tekst som samsvarar, vert ignorert "
+"under samanlikninga; du vil framleis sjå denne teksten i "
+"samanlikningsvisinga, men han vil ikkje verte teken med når skilnadane vert "
+"funne. Tekstfilter vert brukte i rekkjefølgje, så det er mogleg at det "
+"første filteret fjernar tekst som no gjer at det andre filteret treffer, og "
+"så bortetter."
+
+#. (itstool) path: note/p
+#: C/text-filters.page:55
+msgid ""
+"If you're not familiar with regular expressions, you might want to check out "
+"the Python <link href=\"http://docs.python.org/howto/regex.html\">Regular "
+"Expression HOWTO</link>."
+msgstr ""
+"Viss du ikkje kjenner til regulære uttrykk, kan du sjå på Python-dokumentet "
+"<link href=\"http://docs.python.org/howto/regex.html\">Regular Expression "
+"HOWTO</link>."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:67
+msgid "Getting text filters right"
+msgstr "Få tekstfiltera rett"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:69
+msgid ""
+"It's easy to get text filtering wrong, and Meld's support for filtering "
+"isn't complete. In particular, a text filter can't change the number of "
+"lines in a file. For example, if we had the built-in <gui>Script comment</"
+"gui> filter enabled, and compared the following files:"
+msgstr ""
+"Det er lett å gjere feil med tekstfiltrering, og Meld si støtte for "
+"filtrering er ikkje fullstendig. Særleg kan ikkje eit tekstfilter endre "
+"talet på linjer i ei fil. Til dømes, om vi hadde slått på det innebygde "
+"filteret <gui>Skriptkommentar</gui>, og samanlikna desse filene:"
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:80
+msgid "<file>comment1.txt</file>"
+msgstr "<file>comment1.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:81
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b#comment\n"
+"c\n"
+"d"
+msgstr ""
+"\n"
+"a\n"
+"b#comment\n"
+"c\n"
+"d"
+
+#. (itstool) path: listing/title
+#: C/text-filters.page:90
+msgid "<file>comment2.txt</file>"
+msgstr "<file>comment2.txt</file>"
+
+#. (itstool) path: listing/code
+#: C/text-filters.page:91
+#, no-wrap
+msgid ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#comment"
+msgstr ""
+"\n"
+"a\n"
+"b\n"
+"c\n"
+"#comment"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:101
+msgid ""
+"then the lines starting with <code>b</code> would be shown as identical (the "
+"comment is stripped out) but the <code>d</code> line would be shown as "
+"different to the comment line on the right. This happens because the "
+"<code>#comment</code> is removed from the right-hand side, but the line "
+"itself can not be removed; <app>Meld</app> will show the <code>d</code> line "
+"as being different to what it sees as a blank line on the other side."
+msgstr ""
+"då vert linjene som byrjar med <code>b</code> vist som identiske "
+"(kommentaren vert fjerna), men <code>d</code>-linja vert vist som ulik "
+"kommentarlinja på høgresida. Dette skjer fordi <code>#comment</code> vert "
+"fjerna frå høgresida, men sjølve linja kan ikkje fjernast; <app>Meld</app> "
+"vil vise <code>d</code>-linja som ulik det som vert oppfatta som ei tom "
+"linje på den andre sida."
+
+#. (itstool) path: section/title
+#: C/text-filters.page:114
+msgid "Blank lines and filters"
+msgstr "Tomme linjer og filter"
+
+#. (itstool) path: section/p
+#: C/text-filters.page:116
+msgid ""
+"The <gui>Ignore changes which insert or delete blank lines</gui> preference "
+"in the <gui>Text Filters</gui> tab requires special explanation. If this "
+"special filter is enabled, then any change consisting only of blank lines is "
+"completely ignored. This may occur because there was an actual whitespace "
+"change in the text, but it may also arise if your active text filters have "
+"removed all of the other content from a change, leaving only blank lines."
+msgstr ""
+"Valet <gui>Ignorer endringar som set inn eller slettar tomme linjer</gui> i "
+"fana <gui>Tekstfilter</gui> krev ei særskild forklaring. Om dette filteret "
+"er slått på, vert all endring som berre består av blanke linjer heilt "
+"ignorert. Dette kan skje fordi det var ei faktisk endring i mellomrom i "
+"teksten, men det kan også oppstå om tekstfiltera dine som er slått på har "
+"fjerna alt anna innhald i ei endring, slik at det berre står att blanke "
+"linjer."
+
+#. (itstool) path: section/p
+#: C/text-filters.page:125
+msgid ""
+"You can use this option to get around some of the <link xref=\"#text-filter-"
+"problems\">problems and limitations</link> resulting from filters not being "
+"able to remove whole lines, but it can also be useful in and of itself."
+msgstr ""
+"Du kan bruke dette valet for å omgå nokre av <link xref=\"#text-filter-"
+"problems\">problema og avgrensingane</link> som kjem av at filter ikkje kan "
+"fjerne heile linjer, men det kan også vere nyttig i seg sjølv."
+
+#. (itstool) path: info/title
+#: C/vc-mode.page:5
+msgctxt "sort"
+msgid "0"
+msgstr "0"
+
+#. (itstool) path: page/title
+#: C/vc-mode.page:16
+msgid "Viewing version-controlled files"
+msgstr "Vise versjonskontrollerte filer"
+
+#. (itstool) path: page/p
+#: C/vc-mode.page:18
+msgid ""
+"<app>Meld</app> integrates with <link xref=\"vc-supported\">many version "
+"control systems</link> to let you review local changes and perform simple "
+"version control tasks. You can start a new version control comparison using "
+"the new comparison button on the toolbar, and clicking on the <gui "
+"style=\"tab\">Version Control</gui> tab."
+msgstr ""
+"<app>Meld</app> integrerer med <link xref=\"vc-supported\">mange "
+"versjonskontrollsystem</link> slik at du kan gjennomgå lokale endringar og "
+"utføre enkle versjonskontrolloppgåver. Du kan byrje ein ny "
+"versjonskontrollsamanlikning ved å bruke den nye samanlikningsknappen på "
+"verktøylinja, og klikke på <gui style=\"tab\">Versjonskontroll</gui>-fana."
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:28
+msgid "Version control comparisons"
+msgstr "Versjonskontrollsamanlikningar"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:30
+msgid ""
+"Version control comparisons show the differences between the contents of "
+"your folder and the current repository version. Each file in your local copy "
+"has a <link xref=\"#vc-state\">state</link> that indicates how it differs "
+"from the repository copy."
+msgstr ""
+"Versjonskontrollsamanlikningar viser skilnadane mellom innhaldet i mappa di "
+"og den gjeldande versjonen i lageret. Kvar fil i den lokale kopien din har "
+"ein <link xref=\"#vc-state\">tilstand</link> som viser korleis han skil seg "
+"frå kopien i lageret."
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:44
+msgid ""
+"If you want to look at a particular file's differences, you can select it "
+"and press <key>Enter</key>, or double-click the file to start a <link "
+"xref=\"file-mode\">file comparison</link>. You can also interact with your "
+"version control system using the <gui style=\"menu\">Changes</gui> menu."
+msgstr ""
+"Viss du vil sjå skilnadane til ei bestemt fil, kan du velje ho og trykkje "
+"<key>Enter</key>, eller dobbeltklikke på fila for å starte ei <link "
+"xref=\"file-mode\">filsamanlikning</link>. Du kan også samhandle med "
+"versjonskontrollsystemet ditt ved å bruke <gui "
+"style=\"menu\">Endringar</gui>-menyen."
+
+#. (itstool) path: section/title
+#. (itstool) path: table/title
+#: C/vc-mode.page:54 C/vc-mode.page:79
+msgid "Version control states"
+msgstr "Tilstandar i versjonskontroll"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:56
+msgid ""
+"Each file or folder in a version control comparison has a <em>state</em>, "
+"obtained from the version control system itself. <app>Meld</app> maps these "
+"different states into a standard set of very similar concepts. As such, "
+"<app>Meld</app> might use slightly different names for states than your "
+"version control system does. The possible states are:"
+msgstr ""
+"Kvar fil eller mappe i ei versjonskontrollsamanlikning har ein "
+"<em>tilstand</em>, henta frå sjølve versjonskontrollsystemet. "
+"<app>Meld</app> kartlegg desse ulike tilstandane til eit standardsett av "
+"svært like konsept. Dermed kan <app>Meld</app> bruke litt andre namn for "
+"tilstandar enn det versjonskontrollsystemet ditt gjer. Dei moglege "
+"tilstandane er:"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:99
+msgid "The file/folder is the same as the repository version."
+msgstr "Fil/mappa er den same som versjonen i lageret."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:107
+msgid "Red and bold"
+msgstr "Raud og feit"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:113
+msgid "This file is different to the repository version."
+msgstr "Denne fila skil seg frå versjonen i lageret."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:127
+msgid ""
+"This file/folder is new, and is scheduled to be added to the repository."
+msgstr "Denne fila/mappa er ny, og skal leggjast til i lageret."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:134
+msgid "Removed"
+msgstr "Fjerna"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:136
+msgid "Red bold text with a line through the middle"
+msgstr "Raud feit tekst med ei linje gjennom midten"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:142
+msgid ""
+"This file/folder existed, but is scheduled to be removed from the repository."
+msgstr "Denne fila/mappa fanst, men er planlagd fjerna frå lageret."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:149
+msgid "Conflict"
+msgstr "Konflikt"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:151
+msgid "Bright red bold text"
+msgstr "Knallraud, feit tekst"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:157
+msgid ""
+"When trying to merge with the repository, the differences between the local "
+"file and the repository could not be resolved, and the file is now in "
+"conflict with the repository contents"
+msgstr ""
+"Når du prøver å slå saman med lageret, kunne ikkje skilnadane mellom den "
+"lokale fila og lageret løysast, og fila er no i konflikt med innhaldet i "
+"lageret"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:167
+msgid "Blue bold text with a line through the middle"
+msgstr "Blå feit tekst med ei linje gjennom midten"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:173
+msgid "This file/folder should be present, but isn't."
+msgstr "Denne fila/mappa burde vere til stades, men er det ikkje."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:179
+msgid "Ignored"
+msgstr "Ignorert"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:181 C/vc-mode.page:197
+msgid "Grayed out text"
+msgstr "Grå tekst"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:187
+msgid ""
+"This file/folder has been explicitly ignored (e.g., by an entry in "
+"<file>.gitignore</file>) and is not being tracked by version control."
+msgstr ""
+"Denne fila/mappa er eksplisitt ignorert (t.d. av ei oppføring i "
+"<file>.gitignore</file>) og vert ikkje følgd av versjonskontroll."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:195
+msgid "Unversioned"
+msgstr "Uversjonert"
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:203
+msgid ""
+"This file is not in the version control system; it is only in the local copy."
+msgstr ""
+"Denne fila er ikkje i versjonskontrollsystemet; ho er berre i den lokale "
+"kopien."
+
+#. (itstool) path: td/p
+#: C/vc-mode.page:218
+msgid "The version control system has reported a problem with this file."
+msgstr "Versjonskontrollsystemet har rapportert eit problem med denne fila."
+
+#. (itstool) path: section/title
+#: C/vc-mode.page:228
+msgid "Version control state filtering"
+msgstr "Filtrering av versjonskontrolltilstand"
+
+#. (itstool) path: section/p
+#: C/vc-mode.page:230
+msgid ""
+"Most often, you will only want to see files that are identified as being in "
+"some way different; this is the default setting in <app>Meld</app>. You can "
+"change which file states you see by using the <gui style=\"button\">Version "
+"Filters</gui> button on the toolbar and selecting <gui "
+"style=\"menuitem\">Flatten Folders</gui> and selecting the <gui "
+"style=\"menuitem\">Modified</gui>, <gui style=\"menuitem\">Normal</gui>, "
+"<gui style=\"menuitem\">Unversioned</gui> and <gui "
+"style=\"menuitem\">Ignored</gui> buttons on the toolbar."
+msgstr ""
+"Som oftast vil du berre sjå filer som er identifiserte som på eit vis "
+"annleis; dette er standardinnstillinga i <app>Meld</app>. Du kan endre kva "
+"filtilstandar du ser ved å bruke <gui "
+"style=\"button\">Versjonsfilter</gui>-knappen på verktøylinja og velje <gui "
+"style=\"menuitem\">Flat ut mapper</gui> og dei andre alternativa <gui "
+"style=\"menuitem\">Endra</gui>, <gui style=\"menuitem\">Normal</gui>, <gui "
+"style=\"menuitem\">Uversjonert</gui> og <gui "
+"style=\"menuitem\">Ignorert</gui>."
+
+#. (itstool) path: info/title
+#: C/vc-supported.page:5
+msgctxt "sort"
+msgid "3"
+msgstr "3"
+
+#. (itstool) path: page/title
+#: C/vc-supported.page:15
+msgid "Supported version control systems"
+msgstr "Støtta versjonskontrollsystem"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:17
+msgid "<app>Meld</app> supports a wide range of version control systems:"
+msgstr "<app>Meld</app> støttar eit breitt utval av versjonskontrollsystem:"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:22
+msgid "Bazaar"
+msgstr "Bazaar"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:23
+msgid "Darcs"
+msgstr "Darcs"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:24
+msgid "Git"
+msgstr "Git"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:25
+msgid "Mercurial"
+msgstr "Mercurial"
+
+#. (itstool) path: item/p
+#: C/vc-supported.page:26
+msgid "SVN"
+msgstr "SVN"
+
+#. (itstool) path: page/p
+#: C/vc-supported.page:29
+msgid ""
+"Less common version control systems or unusual configurations may not be "
+"properly tested; please report any version control support bugs to the <link "
+"href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Meld issue tracker</"
+"link>."
+msgstr ""
+"Færre brukte versjonskontrollsystem eller uvanlege innstillingar kan vere "
+"dårleg testa; gje gjerne melding om feil med versjonskontrollstøtte i <link "
+"href=\"https://gitlab.gnome.org/GNOME/meld/issues\">Meld-"
+"feilsporaren</link>."
