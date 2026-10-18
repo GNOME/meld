@@ -18,7 +18,7 @@ import logging
 from typing import ClassVar
 
 import cairo
-from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Gtk
+from gi.repository import Gdk, GdkPixbuf, GLib, GObject, Graphene, Gtk
 
 log = logging.getLogger(__name__)
 
@@ -54,32 +54,44 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         self._icon_size = 16
         self._emblem_size = 8
 
-    def _get_pixbuf(self, name, size):
+    def _get_pixbuf(self, widget, name, size):
         if not name:
             return None
 
         if (name, size) not in self.icon_cache:
-            icon_theme = Gtk.IconTheme.get_default()
-            try:
-                pixbuf = icon_theme.load_icon(name, size, 0).copy()
-            except GLib.GError as err:
-                if err.domain != GLib.quark_to_string(Gtk.IconThemeError.quark()):
-                    raise
+            icon_theme = Gtk.IconTheme.get_for_display(widget.get_display())
+            pixbuf = None
+            if icon_theme.has_icon(name):
+                paintable = icon_theme.lookup_icon(
+                    name, None, size, 1, Gtk.TextDirection.NONE, 0
+                )
+                icon_file = paintable.get_file()
+                try:
+                    stream = icon_file.read(None)
+                    pixbuf = GdkPixbuf.Pixbuf.new_from_stream_at_scale(
+                        stream, size, size, True, None
+                    )
+                except GLib.Error as err:
+                    log.error(f"Icon {name!r} could not be loaded: {err.message}")
+            else:
                 log.error(f"Icon {name!r} not found; an icon theme is missing")
-                pixbuf = None
 
             self.icon_cache[(name, size)] = pixbuf
 
         return self.icon_cache[(name, size)]
 
-    def do_render(self, context, widget, background_area, cell_area, flags):
+    def do_snapshot(self, snapshot, widget, background_area, cell_area, flags):
+        bounds = Graphene.Rect().init(
+            cell_area.x, cell_area.y, cell_area.width, cell_area.height
+        )
+        context = snapshot.append_cairo(bounds)
         context.translate(cell_area.x, cell_area.y)
         context.rectangle(0, 0, cell_area.width, cell_area.height)
         context.clip()
 
         # TODO: Incorporate padding
         context.push_group()
-        pixbuf = self._get_pixbuf(self.icon_name, self._icon_size)
+        pixbuf = self._get_pixbuf(widget, self.icon_name, self._icon_size)
         if pixbuf:
             context.set_operator(cairo.OPERATOR_SOURCE)
             # Assumes square icons; may break if we don't get the requested
@@ -103,7 +115,7 @@ class EmblemCellRenderer(Gtk.CellRenderer):
                 context.paint()
 
             if self.emblem_name:
-                pixbuf = self._get_pixbuf(self.emblem_name, self._emblem_size)
+                pixbuf = self._get_pixbuf(widget, self.emblem_name, self._emblem_size)
                 if pixbuf:
                     x_offset = self._icon_size - self._emblem_size
                     context.set_operator(cairo.OPERATOR_OVER)
@@ -115,9 +127,10 @@ class EmblemCellRenderer(Gtk.CellRenderer):
         context.set_operator(cairo.OPERATOR_OVER)
         context.paint()
 
-    def do_get_size(self, widget, cell_area):
-        # TODO: Account for cell_area if we have alignment set
-        x_offset, y_offset = 0, 0
-        width, height = self._icon_size, self._icon_size
+    def do_get_preferred_width(self, widget):
         # TODO: Account for padding
-        return (x_offset, y_offset, width, height)
+        return (self._icon_size, self._icon_size)
+
+    def do_get_preferred_height(self, widget):
+        # TODO: Account for padding
+        return (self._icon_size, self._icon_size)
