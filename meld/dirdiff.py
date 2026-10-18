@@ -259,9 +259,6 @@ def _files_same(files, regexes, comparison_args):
     return result
 
 
-EMBLEM_NEW = "emblem-new"
-EMBLEM_SELECTED = "emblem-default-symbolic"
-
 COL_EMBLEM, COL_SIZE, COL_TIME, COL_PERMS, COL_END = range(
     tree.COL_END, tree.COL_END + 5
 )
@@ -650,7 +647,6 @@ class DirDiff(Gtk.Box, MeldDoc):
             column.set_attributes(
                 renicon,
                 icon_name=col_index(tree.COL_ICON, i),
-                emblem_name=col_index(COL_EMBLEM, i),
                 icon_tint=col_index(tree.COL_TINT, i),
             )
             self.treeview[i].append_column(column)
@@ -939,7 +935,6 @@ class DirDiff(Gtk.Box, MeldDoc):
                 it,
                 pane,
                 {
-                    COL_EMBLEM: None,
                     COL_TIME: MISSING_TIMESTAMP,
                     COL_SIZE: -1,
                     COL_PERMS: -1,
@@ -1835,16 +1830,6 @@ class DirDiff(Gtk.Box, MeldDoc):
 
         name_overrides = [name_override(i, f) for i, f in enumerate(files)]
 
-        existing_times = [s.st_mtime for s in stats if s]
-        newest_time = max(existing_times) if existing_times else 0
-        if existing_times.count(newest_time) == len(existing_times):
-            # If all actually-present files have the same mtime, don't
-            # pretend that any are "newer", and do the same if e.g.,
-            # there's only one file.
-            newest = set()
-        else:
-            newest = {i for i, t in enumerate(times) if t == newest_time}
-
         if all(stats):
             all_same = self.file_compare(files, regexes)
             all_present_same = all_same
@@ -1875,22 +1860,16 @@ class DirDiff(Gtk.Box, MeldDoc):
                     it, j, state, isdir[j], display_text=name_overrides[j]
                 )
 
+                self.model.unsafe_set(it, j, {COL_TIME: times[j], COL_PERMS: perms[j]})
                 if self.marked and self.marked.matches_iter(j, it):
-                    emblem = EMBLEM_SELECTED
-                else:
-                    emblem = EMBLEM_NEW if j in newest else None
-
-                self.model.unsafe_set(
-                    it, j, {COL_EMBLEM: emblem, COL_TIME: times[j], COL_PERMS: perms[j]}
-                )
-                if j in symlinks:
                     self.model.unsafe_set(
-                        it,
-                        j,
-                        {
-                            tree.COL_ICON: "symbolic-link-symbolic",
-                        },
+                        it, j, {tree.COL_ICON: "checkbox-checked-symbolic"}
                     )
+                elif j in symlinks:
+                    self.model.unsafe_set(
+                        it, j, {tree.COL_ICON: "symbolic-link-symbolic"}
+                    )
+
                 # Size is handled independently, because unsafe_set
                 # can't correctly box GObject.TYPE_INT64.
                 self.model.set(it, self.model.column_index(COL_SIZE, j), sizes[j])

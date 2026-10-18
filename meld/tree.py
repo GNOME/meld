@@ -115,20 +115,20 @@ class DiffTreeStore(SearchableTreeStore):
 
         self.icon_details = [
             # file-icon, folder-icon, file-tint
-            ("text-x-generic", "folder", None),  # IGNORED
-            ("text-x-generic", "folder", None),  # NONE
-            ("text-x-generic", "folder", None),  # NORMAL
-            ("text-x-generic", "folder", None),  # NOCHANGE
+            ("text-x-generic-symbolic", "folder-symbolic", None),  # IGNORED
+            ("text-x-generic-symbolic", "folder-symbolic", None),  # NONE
+            ("text-x-generic-symbolic", "folder-symbolic", None),  # NORMAL
+            ("text-x-generic-symbolic", "folder-symbolic", None),  # NOCHANGE
             ("dialog-warning-symbolic", None, None),  # ERROR
             (None, None, None),  # EMPTY
-            ("text-x-generic", "folder", new_fg),  # NEW
-            ("text-x-generic", "folder", mod_fg),  # MODIFIED
-            ("text-x-generic", "folder", mod_fg),  # RENAMED
-            ("text-x-generic", "folder", con_fg),  # CONFLICT
-            ("text-x-generic", "folder", del_fg),  # REMOVED
-            (None, "folder", unk_fg),  # MISSING
-            (None, "folder", unk_fg),  # NONEXIST
-            ("text-x-generic", "folder", None),  # SPINNER
+            ("text-x-generic-symbolic", "folder-symbolic", new_fg),  # NEW
+            ("text-x-generic-symbolic", "folder-symbolic", mod_fg),  # MODIFIED
+            ("text-x-generic-symbolic", "folder-symbolic", mod_fg),  # RENAMED
+            ("text-x-generic-symbolic", "folder-symbolic", con_fg),  # CONFLICT
+            ("text-x-generic-symbolic", "folder-symbolic", del_fg),  # REMOVED
+            (None, "folder-symbolic", unk_fg),  # MISSING
+            (None, "folder-symbolic", unk_fg),  # NONEXIST
+            ("text-x-generic-symbolic", "folder-symbolic", None),  # SPINNER
         ]
 
         assert len(self.icon_details) == len(self.text_attributes) == STATE_MAX
