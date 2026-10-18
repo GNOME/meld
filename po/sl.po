@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-11 07:15+0000\n"
-"PO-Revision-Date: 2026-10-03 22:38+0200\n"
+"POT-Creation-Date: 2026-10-18 04:04+0000\n"
+"PO-Revision-Date: 2026-10-18 09:36+0200\n"
 "Last-Translator: Martin Srebotnjak <miles@filmsi.net>\n"
 "Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -124,12 +124,8 @@ msgid "Highlight syntax"
 msgstr "Poudarjanje skladnje"
 
 #: data/org.gnome.Meld.gschema.xml:95
-msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld’s own color "
-"highlighting, this is off by default."
-msgstr ""
-"Ali naj bo skladnja v primerjavah poudarjena. Zaradi Meldovega poudarjanja z "
-"barvami je to privzeto izklopljeno."
+msgid "Whether to highlight syntax in comparisons."
+msgstr "Ali naj bo v primerjavah označena skladnja."
 
 #: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
@@ -1098,7 +1094,7 @@ msgstr "Predhodni dnevniki:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1292
 #: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "_Prekliči"
@@ -1313,7 +1309,7 @@ msgstr "Dejavno"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:633
 msgid "Name"
 msgstr "Ime"
 
@@ -1390,7 +1386,7 @@ msgstr "Prelomljeno"
 msgid "Replace _All"
 msgstr "Zamenjaj _vse"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1294
 msgid "_Replace"
 msgstr "_Zamenjaj"
 
@@ -1878,53 +1874,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:655 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Velikost"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:663 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Čas spremembe"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:671 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Čas spremembe (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:679 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Dovoljenja"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name} (pregledovanje …)"
 
-#: meld/dirdiff.py:969 meld/dirdiff.py:999
+#: meld/dirdiff.py:964 meld/dirdiff.py:994
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "Prebiranje mape {folder}"
 
-#: meld/dirdiff.py:1138
+#: meld/dirdiff.py:1133
 msgid "Done"
 msgstr "Končano"
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1145
 #, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "Mapo {} primerjate samo s seboj"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1153
 msgid "Folders have no differences"
 msgstr "V mapah ni razlik"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1154
 msgid "Contents of scanned files in folders are identical."
 msgstr "Vsebina preiskanih datotek v mapah je enaka."
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1156
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1932,43 +1928,43 @@ msgstr ""
 "Optično prebrane datoteke v mapah se zdijo enake, vendar vsebina ni bila "
 "optično prebrana."
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1160
 msgid "File filters are in use, so not all files have been scanned."
 msgstr ""
 "Filtri datotek so v uporabi, zato niso bile optično prebrane vse datoteke."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1163
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Filtri za besedilo so v uporabi in lahko prikrijejo razlike v vsebini."
 
-#: meld/dirdiff.py:1184 meld/filediff.py:2169
+#: meld/dirdiff.py:1179 meld/filediff.py:2169
 msgid "Hide"
 msgstr "Skrij"
 
-#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/dirdiff.py:1181 meld/filediff.py:2171 meld/filediff.py:2201
 #: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
 #: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "S_krij"
 
-#: meld/dirdiff.py:1197
+#: meld/dirdiff.py:1192
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Med preiskovanjem mape je prišlo do več napak."
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1193
 msgid "Files with invalid encodings found"
 msgstr "Zaznane so datoteke z neveljavnim znakovnim naborom"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1196
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr ""
 "Zaznane so datoteke z neveljavnim znakovnim naborom. Imena so na primer:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "Datoteke skrite zaradi primerjave brez upoštevanja velikosti črk"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1201
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1976,11 +1972,11 @@ msgstr ""
 "Zagnan je način primerjave brez upoštevanja velikosti črk na sistemu, ki "
 "razlike velikosti upošteva. Nekatere datoteke so skrite:"
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1205
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Datoteke se niso ujemale z vodilnim ali končnim presledkom"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1208
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
@@ -1988,17 +1984,17 @@ msgstr ""
 "Ta primerjava je našla nekatere datoteke, ki so se razlikovale le v vodilnem "
 "ali končnem presledku. Njihova imena so prikazana kot:"
 
-#: meld/dirdiff.py:1224
+#: meld/dirdiff.py:1219
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "»{first_file}« skrito s »{second_file}«"
 
-#: meld/dirdiff.py:1308
+#: meld/dirdiff.py:1303
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Ali želite zamenjati mapo »%s«?"
 
-#: meld/dirdiff.py:1310
+#: meld/dirdiff.py:1305
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -2007,11 +2003,11 @@ msgstr ""
 "Druga mapa z istim imenom že obstaja v »%s«.\n"
 "Če zamenjate obstoječo mapo, bodo vse datoteke v tej mapi izgubljene."
 
-#: meld/dirdiff.py:1325
+#: meld/dirdiff.py:1320
 msgid "Error copying file"
 msgstr "Napaka kopiranja datoteke"
 
-#: meld/dirdiff.py:1326
+#: meld/dirdiff.py:1321
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -2024,16 +2020,16 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1364 meld/vcview.py:829
+#: meld/dirdiff.py:1359 meld/vcview.py:829
 #, python-brace-format
 msgid "Error deleting {}"
 msgstr "Napaka pri brisanju {}"
 
-#: meld/dirdiff.py:1943
+#: meld/dirdiff.py:1922
 msgid "No folder"
 msgstr "Ni mape"
 
-#: meld/dirdiff.py:1956
+#: meld/dirdiff.py:1935
 msgid "Folder comparison:"
 msgstr "Primerjava map:"
 
