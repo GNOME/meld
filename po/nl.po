@@ -6,8 +6,8 @@
 msgid ""
 msgstr "Project-Id-Version: meld cvs\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-11 07:15+0000\n"
-"PO-Revision-Date: 2026-09-11 10:46+0200\n"
+"POT-Creation-Date: 2026-10-18 04:04+0000\n"
+"PO-Revision-Date: 2026-10-18 14:16+0200\n"
 "Last-Translator: Dick Groskamp <dikgro@yahoo.co.uk>\n"
 "Language-Team: GNOME-NL https://matrix.to/#/#nl:gnome.org\n"
 "Language: nl\n"
@@ -108,10 +108,8 @@ msgid "Highlight syntax"
 msgstr "Syntaxis accentueren"
 
 #: data/org.gnome.Meld.gschema.xml:95
-msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld’s own color "
-"highlighting, this is off by default."
-msgstr "Of syntaxis in vergelijkingen moet worden geaccentueerd. Wegens het eigen in kleur accentueren van Meld is dit standaard uitgeschakeld."
+msgid "Whether to highlight syntax in comparisons."
+msgstr "Of syntaxis moet worden geaccentueerd in vergelijkingen."
 
 #: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
@@ -1002,7 +1000,7 @@ msgstr "Vorige logs:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1292
 #: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "_Annuleren"
@@ -1214,7 +1212,7 @@ msgstr "Actief"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:633
 msgid "Name"
 msgstr "Naam"
 
@@ -1291,7 +1289,7 @@ msgstr "Doorloop"
 msgid "Replace _All"
 msgstr "_Alles vervangen"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1294
 msgid "_Replace"
 msgstr "_Vervangen"
 
@@ -1762,118 +1760,119 @@ msgid "Mac OS (CR)"
 msgstr "macOS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:655 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Grootte"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:663 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Tijd wijziging"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:671 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Tijd wijziging (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:679 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Toegangsrechten"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name} (scannen…)"
 
-#: meld/dirdiff.py:969 meld/dirdiff.py:999
+#: meld/dirdiff.py:964 meld/dirdiff.py:994
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "Scannen {folder}"
 
-#: meld/dirdiff.py:1138
+#: meld/dirdiff.py:1133
 msgid "Done"
 msgstr "Voltooid"
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1145
+#, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "Map {} wordt met zichzelf vergeleken"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1153
 msgid "Folders have no differences"
 msgstr "Mappen hebben geen verschillen"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1154
 msgid "Contents of scanned files in folders are identical."
 msgstr "Inhoud van gescande bestanden in mappen is identiek."
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1156
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "Gescande bestanden in mappen lijken identiek, maar de inhoud is niet gescand."
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1160
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Bestandsfilters worden gebruikt, dus zijn niet alle bestanden gescand."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1163
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Tekstfilters worden gebruikt en die zouden verschillen in de inhoud kunnen maskeren."
 
-#: meld/dirdiff.py:1184 meld/filediff.py:2169
+#: meld/dirdiff.py:1179 meld/filediff.py:2169
 msgid "Hide"
 msgstr "Verbergen"
 
-#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/dirdiff.py:1181 meld/filediff.py:2171 meld/filediff.py:2201
 #: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
 #: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "Ver_bergen"
 
-#: meld/dirdiff.py:1197
+#: meld/dirdiff.py:1192
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Er traden meerdere fouten op bij het scannen van deze map"
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1193
 msgid "Files with invalid encodings found"
 msgstr "Bestanden met ongeldige coderingen gevonden"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1196
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Sommige bestanden hadden een onjuiste codering. De namen leken op:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "Bestanden verborgen door hoofdletterongevoelige vergelijking"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1201
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
 msgstr "U gebruikt een hoofdletterongevoelige vergelijking op een hoofdlettergevoelig bestandssysteem. De volgende bestanden in deze map zijn verborgen:"
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1205
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Bestanden hadden een niet overeenkomende voorafgaande of achterliggende witruimte"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1208
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "Deze vergelijking vond enkele bestanden die alleen van elkaar verschilden in voorafgaande en achterliggende witruimte. Hun namen zijn:"
 
-#: meld/dirdiff.py:1224
+#: meld/dirdiff.py:1219
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "‘{first_file}’ verborgen door ‘{second_file}’"
 
-#: meld/dirdiff.py:1308
+#: meld/dirdiff.py:1303
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "Map ‘%s’ vervangen?"
 
-#: meld/dirdiff.py:1310
+#: meld/dirdiff.py:1305
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1881,11 +1880,11 @@ msgid ""
 msgstr "Er bestaat al een andere map met dezelfde naam in ‘%s’.\n"
 "Als u de bestaande map vervangt, gaan alle bestanden erin verloren."
 
-#: meld/dirdiff.py:1325
+#: meld/dirdiff.py:1320
 msgid "Error copying file"
 msgstr "Fout tijdens kopiëren van bestand"
 
-#: meld/dirdiff.py:1326
+#: meld/dirdiff.py:1321
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1897,15 +1896,16 @@ msgstr "Kon {source} niet kopiëren\n"
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1364 meld/vcview.py:829
+#: meld/dirdiff.py:1359 meld/vcview.py:829
+#, python-brace-format
 msgid "Error deleting {}"
 msgstr "Fout bij verwijderen van {}"
 
-#: meld/dirdiff.py:1943
+#: meld/dirdiff.py:1922
 msgid "No folder"
 msgstr "Geen map"
 
-#: meld/dirdiff.py:1956
+#: meld/dirdiff.py:1935
 msgid "Folder comparison:"
 msgstr "Mappen vergelijken:"
 
@@ -1996,6 +1996,7 @@ msgid "_Reload"
 msgstr "_Opnieuw laden"
 
 #: meld/filediff.py:2121
+#, python-brace-format
 msgid "File {} is being compared to itself"
 msgstr "Bestand {} wordt met zichzelf vergeleken"
 
@@ -2087,6 +2088,7 @@ msgid "Don’t Save"
 msgstr "Niet opslaan"
 
 #: meld/filediff.py:2321
+#, python-brace-format
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2145,6 +2147,7 @@ msgid "Delete Permanently?"
 msgstr "Permanent verwijderen?"
 
 #: meld/iohelpers.py:67
+#, python-brace-format
 msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
 msgstr "‘{}’ kan niet in de prullenbak worden geplaatst. Wilt u het permanent verwijderen?"
 
@@ -2258,6 +2261,7 @@ msgid "invalid path or URI “%s”"
 msgstr "ongeldig pad of URI ‘%s’"
 
 #: meld/meldapp.py:405
+#, python-brace-format
 msgid "remote folder “{}” not supported"
 msgstr "map op afstand ‘{}’ niet ondersteund"
 
@@ -2293,6 +2297,7 @@ msgid "Cannot compare a non-existent file"
 msgstr "Kan geen niet bestaand bestand vergelijken"
 
 #: meld/misc.py:101
+#, python-brace-format
 msgid ""
 "{}\n"
 "\n"
@@ -2388,6 +2393,7 @@ msgid "Version control:"
 msgstr "Versiebeheer:"
 
 #: meld/style.py:163
+#, python-brace-format
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr "Kon geen details voor kleurenschema vinden voor {}; dit is een slechte installatie"
 
@@ -2617,6 +2623,13 @@ msgid ""
 "This will remove all selected files and folders, and all files within any "
 "selected folders, from version control."
 msgstr "Dit zal alle geselecteerde bestanden en mappen verwijderen, en alle bestanden binnen elke geselecteerde map, uit versiebeheer."
+
+#~ msgid ""
+#~ "Whether to highlight syntax in comparisons. Because of Meld’s own color "
+#~ "highlighting, this is off by default."
+#~ msgstr ""
+#~ "Of syntaxis in vergelijkingen moet worden geaccentueerd. Wegens het eigen "
+#~ "in kleur accentueren van Meld is dit standaard uitgeschakeld."
 
 #~ msgid "Do you want to delete it permanently?"
 #~ msgstr "Wilt u het permanent verwijderen?"
