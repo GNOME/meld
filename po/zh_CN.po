@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-11 07:15+0000\n"
-"PO-Revision-Date: 2026-09-12 07:29+0800\n"
+"POT-Creation-Date: 2026-10-18 04:04+0000\n"
+"PO-Revision-Date: 2026-10-19 08:09+0800\n"
 "Last-Translator: lumingzh <lumingzh@qq.com>\n"
 "Language-Team: Chinese (China) <i18n-zh@googlegroups.com>\n"
 "Language: zh_CN\n"
@@ -24,7 +24,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Gtranslator 50.0\n"
+"X-Generator: Gtranslator 51.0\n"
 
 #: bin/meld:272
 #, c-format
@@ -123,11 +123,8 @@ msgid "Highlight syntax"
 msgstr "语法高亮"
 
 #: data/org.gnome.Meld.gschema.xml:95
-msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld’s own color "
-"highlighting, this is off by default."
-msgstr ""
-"决定是否在比较中使用语法高亮。由于 Meld 自身的颜色高亮功能，此选项默认关闭。"
+msgid "Whether to highlight syntax in comparisons."
+msgstr "是否在对比中高亮语法。"
 
 #: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
@@ -1049,7 +1046,7 @@ msgstr "上次的日志："
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1292
 #: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "取消(_C)"
@@ -1263,7 +1260,7 @@ msgstr "启用"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:633
 msgid "Name"
 msgstr "名称"
 
@@ -1340,7 +1337,7 @@ msgstr "有换行"
 msgid "Replace _All"
 msgstr "全部替换(_A)"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1294
 msgid "_Replace"
 msgstr "替换(_R)"
 
@@ -1816,92 +1813,93 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:655 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "大小"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:663 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "修改时间"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:671 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "修改时间（ISO）"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:679 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "权限"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name}（正在扫描…）"
 
-#: meld/dirdiff.py:969 meld/dirdiff.py:999
+#: meld/dirdiff.py:964 meld/dirdiff.py:994
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "正在扫描 {folder}"
 
-#: meld/dirdiff.py:1138
+#: meld/dirdiff.py:1133
 msgid "Done"
 msgstr "完成"
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1145
+#, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "文件夹 {} 正与自己进行比较"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1153
 msgid "Folders have no differences"
 msgstr "文件夹间没有差异"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1154
 msgid "Contents of scanned files in folders are identical."
 msgstr "文件夹中的已扫描文件的内容相同。"
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1156
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr "文件夹中的已扫描文件似乎相同，但是内容尚未被扫描。"
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1160
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "正在使用文件筛选器，因此并非所有文件都已被扫描。"
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1163
 msgid "Text filters are in use and may be masking content differences."
 msgstr "正在使用文本筛选器，可能会屏蔽内容的差异。"
 
-#: meld/dirdiff.py:1184 meld/filediff.py:2169
+#: meld/dirdiff.py:1179 meld/filediff.py:2169
 msgid "Hide"
 msgstr "隐藏"
 
-#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/dirdiff.py:1181 meld/filediff.py:2171 meld/filediff.py:2201
 #: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
 #: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "隐藏(_D)"
 
-#: meld/dirdiff.py:1197
+#: meld/dirdiff.py:1192
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "扫描此文件夹时出现了多个错误"
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1193
 msgid "Files with invalid encodings found"
 msgstr "发现编码无效的文件"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1196
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "某些文件编码不正确。名称是这样的："
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "因不区分大小写比较而隐藏的文件"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1201
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1909,27 +1907,27 @@ msgstr ""
 "您正在区分大小写的文件系统上运行不区分大小写的比较。此文件夹中的以下文件被隐"
 "藏："
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1205
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "文件具有不匹配的起始或尾部空白"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1208
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
 msgstr "此次比较发现了一些仅存在起始和尾部空白差异的文件。它们的名称为："
 
-#: meld/dirdiff.py:1224
+#: meld/dirdiff.py:1219
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "“{first_file}” 已被 “{second_file}”隐藏"
 
-#: meld/dirdiff.py:1308
+#: meld/dirdiff.py:1303
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "要替换文件夹“%s”吗？"
 
-#: meld/dirdiff.py:1310
+#: meld/dirdiff.py:1305
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -1938,11 +1936,11 @@ msgstr ""
 "另一个同名的文件夹已存在于“%s”中。\n"
 "如果要替换已存在的文件夹，其中的所有文件都将丢失。"
 
-#: meld/dirdiff.py:1325
+#: meld/dirdiff.py:1320
 msgid "Error copying file"
 msgstr "复制文件时出错"
 
-#: meld/dirdiff.py:1326
+#: meld/dirdiff.py:1321
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -1955,15 +1953,16 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1364 meld/vcview.py:829
+#: meld/dirdiff.py:1359 meld/vcview.py:829
+#, python-brace-format
 msgid "Error deleting {}"
 msgstr "删除 {} 时出错"
 
-#: meld/dirdiff.py:1943
+#: meld/dirdiff.py:1922
 msgid "No folder"
 msgstr "没有文件夹"
 
-#: meld/dirdiff.py:1956
+#: meld/dirdiff.py:1935
 msgid "Folder comparison:"
 msgstr "文件夹比较："
 
@@ -2055,6 +2054,7 @@ msgid "_Reload"
 msgstr "重新加载(_R)"
 
 #: meld/filediff.py:2121
+#, python-brace-format
 msgid "File {} is being compared to itself"
 msgstr "文件 {} 正与自己进行比较"
 
@@ -2148,6 +2148,7 @@ msgid "Don’t Save"
 msgstr "不保存"
 
 #: meld/filediff.py:2321
+#, python-brace-format
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2209,6 +2210,7 @@ msgid "Delete Permanently?"
 msgstr "永久删除吗？"
 
 #: meld/iohelpers.py:67
+#, python-brace-format
 msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
 msgstr "无法将“{}”放入回收站。确定要永久删除它吗？"
 
@@ -2330,6 +2332,7 @@ msgid "invalid path or URI “%s”"
 msgstr "无效路径或 URI“%s"
 
 #: meld/meldapp.py:405
+#, python-brace-format
 msgid "remote folder “{}” not supported"
 msgstr "不支持远端文件夹“{}”"
 
@@ -2365,6 +2368,7 @@ msgid "Cannot compare a non-existent file"
 msgstr "无法比较不存在的文件"
 
 #: meld/misc.py:101
+#, python-brace-format
 msgid ""
 "{}\n"
 "\n"
@@ -2461,6 +2465,7 @@ msgid "Version control:"
 msgstr "版本控制："
 
 #: meld/style.py:163
+#, python-brace-format
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr "无法找到 {} 的配色方案详细信息；安装有错误"
 
@@ -2689,6 +2694,13 @@ msgid ""
 "selected folders, from version control."
 msgstr ""
 "这将从版本控制中移除所有选中的文件及文件夹，以及选中文件夹中的所有文件。"
+
+#~ msgid ""
+#~ "Whether to highlight syntax in comparisons. Because of Meld’s own color "
+#~ "highlighting, this is off by default."
+#~ msgstr ""
+#~ "决定是否在比较中使用语法高亮。由于 Meld 自身的颜色高亮功能，此选项默认关"
+#~ "闭。"
 
 #~ msgid "Do you want to delete it permanently?"
 #~ msgstr "您要永久删除它吗？"
