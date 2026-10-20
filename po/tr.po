@@ -12,9 +12,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld master\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-11 07:15+0000\n"
-"PO-Revision-Date: 2026-09-14 21:32+0300\n"
-"Last-Translator: Sabri Ünal <yakushabb@gmail.com>\n"
+"POT-Creation-Date: 2026-10-18 04:04+0000\n"
+"PO-Revision-Date: 2026-10-20 08:00+0300\n"
+"Last-Translator: Emin Tufan Çetin <etcetin@gmail.com>\n"
 "Language-Team: Turkish <takim@gnome.org.tr>\n"
 "Language: tr\n"
 "MIME-Version: 1.0\n"
@@ -123,13 +123,8 @@ msgid "Highlight syntax"
 msgstr "Söz dizimini vurgula"
 
 #: data/org.gnome.Meld.gschema.xml:95
-msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld’s own color "
-"highlighting, this is off by default."
-msgstr ""
-"Karşılaştırmadaki söz diziminin vurgulanıp vurgulanmaması. Meld "
-"uygulamasının kendi renk vurgulaması yüzünden öntanımlı olarak bu özellik "
-"kapalıdır."
+msgid "Whether to highlight syntax in comparisons."
+msgstr "Karşılaştırmalarda söz diziminin vurgulanması."
 
 #: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
@@ -1098,7 +1093,7 @@ msgstr "Önceki kayıtlar:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1292
 #: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "İ_ptal"
@@ -1313,7 +1308,7 @@ msgstr "Etkin"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:633
 msgid "Name"
 msgstr "Ad"
 
@@ -1390,7 +1385,7 @@ msgstr "Kaydırılmış"
 msgid "Replace _All"
 msgstr "_Tümünü Değiştir"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1294
 msgid "_Replace"
 msgstr "_Değiştir"
 
@@ -1876,93 +1871,94 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:655 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Boyut"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:663 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Değiştirilme zamanı"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:671 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Değiştirilme zamanı (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:679 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "İzinler"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name} (taranıyor…)"
 
-#: meld/dirdiff.py:969 meld/dirdiff.py:999
+#: meld/dirdiff.py:964 meld/dirdiff.py:994
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "{folder} taranıyor"
 
-#: meld/dirdiff.py:1138
+#: meld/dirdiff.py:1133
 msgid "Done"
 msgstr "Bitti"
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1145
+#, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "{} klasörü kendiyle karşılaştırılıyor"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1153
 msgid "Folders have no differences"
 msgstr "Klasörlerde fark yok"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1154
 msgid "Contents of scanned files in folders are identical."
 msgstr "Klasörlerdeki taranan dosyaların içerikleri özdeş."
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1156
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
 msgstr ""
 "Klasördeki taranan dosyalar özdeş gözüküyor fakat içerikleri taranmadı."
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1160
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Dosya süzgeçleri kullanımda, bu yüzden tüm dosyalar taranamamış."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1163
 msgid "Text filters are in use and may be masking content differences."
 msgstr "Metin süzgeçleri kullanımda ve içerik farklılıklarını maskeleyebilir."
 
-#: meld/dirdiff.py:1184 meld/filediff.py:2169
+#: meld/dirdiff.py:1179 meld/filediff.py:2169
 msgid "Hide"
 msgstr "Gizle"
 
-#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/dirdiff.py:1181 meld/filediff.py:2171 meld/filediff.py:2201
 #: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
 #: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "Gi_zle"
 
-#: meld/dirdiff.py:1197
+#: meld/dirdiff.py:1192
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Bu klasör taranırken birçok hata oluştu"
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1193
 msgid "Files with invalid encodings found"
 msgstr "Geçersiz kodlamalı dosyalar bulundu"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1196
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Bazı dosyalar yanlış kodlamadaydı. Adları şu biçimdedir:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "Büyük küçük harf duyarsız karşılaştırmaya göre gizli dosyalar"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1201
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1970,11 +1966,11 @@ msgstr ""
 "Büyük/küçük harf duyarlı dosya sisteminde büyük/küçük harf duyarsız "
 "karşılaştırma yapmaktasınız. Bu klasördeki bazı dosyalar gizlidir:"
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1205
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Dosyalarda yanlış eşleşen başlangıçtaki ya da sondaki boşluk var"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1208
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
@@ -1982,17 +1978,17 @@ msgstr ""
 "Bu karşılaştırmada yalnızca başlangıçtaki ya da sondaki boşlukları farklılık "
 "gösteren kimi dosyalar bulundu. Adları şunlardır:"
 
-#: meld/dirdiff.py:1224
+#: meld/dirdiff.py:1219
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "“{first_file}”, “{second_file}” tarafından gizlendi"
 
-#: meld/dirdiff.py:1308
+#: meld/dirdiff.py:1303
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "“%s” klasörü değiştirilsin mi?"
 
-#: meld/dirdiff.py:1310
+#: meld/dirdiff.py:1305
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -2001,11 +1997,11 @@ msgstr ""
 "“%s” içinde aynı ad ile başka klasör zaten var.\n"
 "Eğer var olan klasörü değiştirirseniz, içindeki tüm dosyalar yitecektir."
 
-#: meld/dirdiff.py:1325
+#: meld/dirdiff.py:1320
 msgid "Error copying file"
 msgstr "Dosya kopyalamada hata"
 
-#: meld/dirdiff.py:1326
+#: meld/dirdiff.py:1321
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -2018,15 +2014,16 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1364 meld/vcview.py:829
+#: meld/dirdiff.py:1359 meld/vcview.py:829
+#, python-brace-format
 msgid "Error deleting {}"
 msgstr "{} silinirken hata"
 
-#: meld/dirdiff.py:1943
+#: meld/dirdiff.py:1922
 msgid "No folder"
 msgstr "Klasör yok"
 
-#: meld/dirdiff.py:1956
+#: meld/dirdiff.py:1935
 msgid "Folder comparison:"
 msgstr "Klasör karşılaştırma:"
 
@@ -2124,6 +2121,7 @@ msgid "_Reload"
 msgstr "_Yeniden yükle"
 
 #: meld/filediff.py:2121
+#, python-brace-format
 msgid "File {} is being compared to itself"
 msgstr "{} dosyası kendiyle karşılaştırılıyor"
 
@@ -2223,6 +2221,7 @@ msgid "Don’t Save"
 msgstr "Kaydetme"
 
 #: meld/filediff.py:2321
+#, python-brace-format
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2288,6 +2287,7 @@ msgid "Delete Permanently?"
 msgstr "Kalıcı Olarak Silinsin Mi?"
 
 #: meld/iohelpers.py:67
+#, python-brace-format
 msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
 msgstr "“{}” çöpe taşınamadı. Kalıcı olarak silmek istiyor musunuz?"
 
@@ -2407,6 +2407,7 @@ msgid "invalid path or URI “%s”"
 msgstr "geçersiz yol ya da URI “%s”"
 
 #: meld/meldapp.py:405
+#, python-brace-format
 msgid "remote folder “{}” not supported"
 msgstr "uzak klasör “{}” desteklenmiyor"
 
@@ -2442,6 +2443,7 @@ msgid "Cannot compare a non-existent file"
 msgstr "Var olmayan dosya karşılaştırılamaz"
 
 #: meld/misc.py:101
+#, python-brace-format
 msgid ""
 "{}\n"
 "\n"
@@ -2538,6 +2540,7 @@ msgid "Version control:"
 msgstr "Sürüm denetimi:"
 
 #: meld/style.py:163
+#, python-brace-format
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr "{} için renk şeması ayrıntıları bulunamadı; bu kötü bir kurulum"
 
@@ -2767,3 +2770,11 @@ msgid ""
 msgstr ""
 "Bu işlem, sürüm denetimi sisteminden tüm seçili dosya ve klasörleri, ve "
 "seçili herhangi bir klasör içindeki tüm dosyaları kaldıracak."
+
+#~ msgid ""
+#~ "Whether to highlight syntax in comparisons. Because of Meld’s own color "
+#~ "highlighting, this is off by default."
+#~ msgstr ""
+#~ "Karşılaştırmadaki söz diziminin vurgulanıp vurgulanmaması. Meld "
+#~ "uygulamasının kendi renk vurgulaması yüzünden öntanımlı olarak bu özellik "
+#~ "kapalıdır."
