@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: meld main\n"
 "Report-Msgid-Bugs-To: https://gitlab.gnome.org/GNOME/meld/issues\n"
-"POT-Creation-Date: 2026-09-11 07:15+0000\n"
-"PO-Revision-Date: 2026-09-14 21:38+0500\n"
+"POT-Creation-Date: 2026-10-18 04:04+0000\n"
+"PO-Revision-Date: 2026-11-06 21:45+0500\n"
 "Last-Translator: Baurzhan Muftakhidinov <baurthefirst@gmail.com>\n"
 "Language-Team: Kazakh <kk_KZ@googlegroups.com>\n"
 "Language: kk\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.9\n"
+"X-Generator: Poedit 3.10\n"
 
 #: bin/meld:272
 #, c-format
@@ -120,12 +120,8 @@ msgid "Highlight syntax"
 msgstr "Синтаксисті ерекшелеу"
 
 #: data/org.gnome.Meld.gschema.xml:95
-msgid ""
-"Whether to highlight syntax in comparisons. Because of Meld’s own color "
-"highlighting, this is off by default."
-msgstr ""
-"Салыстыру кезінде синтаксисті ерекшелеу керек пе. Meld-тің өз түсті "
-"ерекшелеуіне байланысты, бұл әдепкі бойынша сөндірілген."
+msgid "Whether to highlight syntax in comparisons."
+msgstr "Салыстыруларда синтаксисті ерекшелеу керек пе."
 
 #: data/org.gnome.Meld.gschema.xml:99
 msgid "Color scheme to use for syntax highlighting"
@@ -1102,7 +1098,7 @@ msgstr "Алдыңғы журналдар:"
 
 #: meld/resources/ui/commit-dialog.ui:85 meld/resources/ui/patch-dialog.ui:83
 #: meld/resources/ui/push-dialog.ui:12 meld/resources/ui/revert-dialog.ui:10
-#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1297
+#: meld/resources/ui/save-confirm-dialog.ui:15 meld/dirdiff.py:1292
 #: meld/iohelpers.py:70 meld/vcview.py:801
 msgid "_Cancel"
 msgstr "_Бас тарту"
@@ -1316,7 +1312,7 @@ msgstr "Белсенді"
 
 #. Create icon and filename CellRenderer
 #: meld/resources/ui/filter-list.ui:48 meld/resources/ui/vcview.ui:182
-#: meld/dirdiff.py:636
+#: meld/dirdiff.py:633
 msgid "Name"
 msgstr "Аты"
 
@@ -1393,7 +1389,7 @@ msgstr "Тасымалданған"
 msgid "Replace _All"
 msgstr "Барлығын _алмастыру"
 
-#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1299
+#: meld/resources/ui/findbar.ui:144 meld/dirdiff.py:1294
 msgid "_Replace"
 msgstr "_Алмастыру"
 
@@ -1880,52 +1876,53 @@ msgid "Mac OS (CR)"
 msgstr "Mac OS (CR)"
 
 #. Create file size CellRenderer
-#: meld/dirdiff.py:659 meld/ui/columnlist.py:43
+#: meld/dirdiff.py:655 meld/ui/columnlist.py:43
 msgid "Size"
 msgstr "Өлшемі"
 
 #. Create date-time CellRenderer
-#: meld/dirdiff.py:667 meld/ui/columnlist.py:44
+#: meld/dirdiff.py:663 meld/ui/columnlist.py:44
 msgid "Modification time"
 msgstr "Өзгерту уақыты"
 
 #. Create ISO-format date-time CellRenderer
-#: meld/dirdiff.py:675 meld/ui/columnlist.py:45
+#: meld/dirdiff.py:671 meld/ui/columnlist.py:45
 msgid "Modification time (ISO)"
 msgstr "Өзгерту уақыты (ISO)"
 
 #. Create permissions CellRenderer
-#: meld/dirdiff.py:683 meld/ui/columnlist.py:46
+#: meld/dirdiff.py:679 meld/ui/columnlist.py:46
 msgid "Permissions"
 msgstr "Рұқсаттар"
 
-#: meld/dirdiff.py:935
+#: meld/dirdiff.py:931
 #, python-brace-format
 msgid "{folder_name} (scanning…)"
 msgstr "{folder_name} (сканерлеу…)"
 
-#: meld/dirdiff.py:969 meld/dirdiff.py:999
+#: meld/dirdiff.py:964 meld/dirdiff.py:994
 #, python-brace-format
 msgid "Scanning {folder}"
 msgstr "{folder} сканерленуде"
 
-#: meld/dirdiff.py:1138
+#: meld/dirdiff.py:1133
 msgid "Done"
 msgstr "Дайын"
 
-#: meld/dirdiff.py:1150
+#: meld/dirdiff.py:1145
+#, python-brace-format
 msgid "Folder {} is being compared to itself"
 msgstr "{} бумасы өзімен салыстырылуда"
 
-#: meld/dirdiff.py:1158
+#: meld/dirdiff.py:1153
 msgid "Folders have no differences"
 msgstr "Бумалардың ешқандай айырмашылығы жоқ"
 
-#: meld/dirdiff.py:1159
+#: meld/dirdiff.py:1154
 msgid "Contents of scanned files in folders are identical."
 msgstr "Бумалардағы сканерленген файлдардың мазмұны бірдей."
 
-#: meld/dirdiff.py:1161
+#: meld/dirdiff.py:1156
 msgid ""
 "Scanned files in folders appear identical, but contents have not been "
 "scanned."
@@ -1933,43 +1930,43 @@ msgstr ""
 "Бумалардағы сканерленген файлдар бірдей көрінеді, бірақ мазмұны "
 "сканерленбеген."
 
-#: meld/dirdiff.py:1165
+#: meld/dirdiff.py:1160
 msgid "File filters are in use, so not all files have been scanned."
 msgstr "Файл сүзгілері қолданылуда, сондықтан барлық файлдар сканерленбеген."
 
-#: meld/dirdiff.py:1168
+#: meld/dirdiff.py:1163
 msgid "Text filters are in use and may be masking content differences."
 msgstr ""
 "Мәтіндік сүзгілер қолданылуда, олар мазмұндық айырмашылықтарды жасыруы "
 "мүмкін."
 
-#: meld/dirdiff.py:1184 meld/filediff.py:2169
+#: meld/dirdiff.py:1179 meld/filediff.py:2169
 msgid "Hide"
 msgstr "Жасыру"
 
-#: meld/dirdiff.py:1186 meld/filediff.py:2171 meld/filediff.py:2201
+#: meld/dirdiff.py:1181 meld/filediff.py:2171 meld/filediff.py:2201
 #: meld/filediff.py:2203 meld/filediff.py:2227 meld/ui/msgarea.py:139
 #: meld/ui/msgarea.py:151
 msgid "Hi_de"
 msgstr "Жасы_ру"
 
-#: meld/dirdiff.py:1197
+#: meld/dirdiff.py:1192
 msgid "Multiple errors occurred while scanning this folder"
 msgstr "Бұл буманы сканерлеу кезінде бірнеше қате орын алды"
 
-#: meld/dirdiff.py:1198
+#: meld/dirdiff.py:1193
 msgid "Files with invalid encodings found"
 msgstr "Жарамсыз кодтауы бар файлдар табылды"
 
-#: meld/dirdiff.py:1201
+#: meld/dirdiff.py:1196
 msgid "Some files were in an incorrect encoding. The names are something like:"
 msgstr "Кейбір файлдар қате кодтауда болды. Файл аттары мынадай:"
 
-#: meld/dirdiff.py:1203
+#: meld/dirdiff.py:1198
 msgid "Files hidden by case insensitive comparison"
 msgstr "Бас/кіші әріптерді елемей салыстыру нәтижесінде жасырылған файлдар"
 
-#: meld/dirdiff.py:1206
+#: meld/dirdiff.py:1201
 msgid ""
 "You are running a case insensitive comparison on a case sensitive "
 "filesystem. The following files in this folder are hidden:"
@@ -1977,11 +1974,11 @@ msgstr ""
 "Сіз бас/кіші әріптерді ескеретін файлдық жүйеде оларды елемей салыстыруды "
 "іске қостыңыз. Бұл бумадағы келесі файлдар жасырылған:"
 
-#: meld/dirdiff.py:1210
+#: meld/dirdiff.py:1205
 msgid "Files had mismatched leading or trailing whitespace"
 msgstr "Файлдардың алдыңғы немесе кейінгі бос орындарында сәйкессіздік болды"
 
-#: meld/dirdiff.py:1213
+#: meld/dirdiff.py:1208
 msgid ""
 "This comparison found some files that differed only in leading or trailing "
 "whitespace. Their names appear as:"
@@ -1989,17 +1986,17 @@ msgstr ""
 "Бұл салыстыру тек алдыңғы немесе кейінгі бос орындарымен ерекшеленетін "
 "кейбір файлдарды тапты. Олардың аттары мынадай:"
 
-#: meld/dirdiff.py:1224
+#: meld/dirdiff.py:1219
 #, python-brace-format
 msgid "“{first_file}” hidden by “{second_file}”"
 msgstr "«{first_file}» файлын «{second_file}» жасырды"
 
-#: meld/dirdiff.py:1308
+#: meld/dirdiff.py:1303
 #, python-format
 msgid "Replace folder “%s”?"
 msgstr "«%s» бумасын ауыстыру керек пе?"
 
-#: meld/dirdiff.py:1310
+#: meld/dirdiff.py:1305
 #, python-format
 msgid ""
 "Another folder with the same name already exists in “%s”.\n"
@@ -2008,11 +2005,11 @@ msgstr ""
 "«%s» ішінде аттас басқа бума бар.\n"
 "Егер бұрынғы буманы ауыстырсаңыз, ондағы барлық файл жоғалады."
 
-#: meld/dirdiff.py:1325
+#: meld/dirdiff.py:1320
 msgid "Error copying file"
 msgstr "Файлды көшіру қатесі"
 
-#: meld/dirdiff.py:1326
+#: meld/dirdiff.py:1321
 #, python-brace-format
 msgid ""
 "Couldn’t copy {source}\n"
@@ -2025,15 +2022,16 @@ msgstr ""
 "\n"
 "{error}"
 
-#: meld/dirdiff.py:1364 meld/vcview.py:829
+#: meld/dirdiff.py:1359 meld/vcview.py:829
+#, python-brace-format
 msgid "Error deleting {}"
 msgstr "{} өшіру қатесі"
 
-#: meld/dirdiff.py:1943
+#: meld/dirdiff.py:1922
 msgid "No folder"
 msgstr "Бума жоқ"
 
-#: meld/dirdiff.py:1956
+#: meld/dirdiff.py:1935
 msgid "Folder comparison:"
 msgstr "Бумаларды салыстыру:"
 
@@ -2130,6 +2128,7 @@ msgid "_Reload"
 msgstr "_Қайта жүктеу"
 
 #: meld/filediff.py:2121
+#, python-brace-format
 msgid "File {} is being compared to itself"
 msgstr "{} файлы өзімен салыстырылуда"
 
@@ -2229,6 +2228,7 @@ msgid "Don’t Save"
 msgstr "Сақтамау"
 
 #: meld/filediff.py:2321
+#, python-brace-format
 msgid ""
 "File “{}” contains characters that can’t be encoded using its current "
 "encoding “{}”."
@@ -2293,6 +2293,7 @@ msgid "Delete Permanently?"
 msgstr "Толығымен өшіру керек пе?"
 
 #: meld/iohelpers.py:67
+#, python-brace-format
 msgid "“{}” can’t be put in the trash. Do you want to delete it permanently?"
 msgstr ""
 "«{}» элементін қоқыс шелегіне тастау мүмкін емес. Оны толығымен өшіруді "
@@ -2410,6 +2411,7 @@ msgid "invalid path or URI “%s”"
 msgstr "жарамсыз жол немесе URI «%s»"
 
 #: meld/meldapp.py:405
+#, python-brace-format
 msgid "remote folder “{}” not supported"
 msgstr "«{}» қашықтағы бумасына қолдау көрсетілмейді"
 
@@ -2445,6 +2447,7 @@ msgid "Cannot compare a non-existent file"
 msgstr "Жоқ файлды салыстыру мүмкін емес"
 
 #: meld/misc.py:101
+#, python-brace-format
 msgid ""
 "{}\n"
 "\n"
@@ -2541,6 +2544,7 @@ msgid "Version control:"
 msgstr "Нұсқаларды басқару:"
 
 #: meld/style.py:163
+#, python-brace-format
 msgid "Couldn’t find color scheme details for {}; this is a bad install"
 msgstr ""
 "{} үшін түстер схемасы мәліметтері табылмады; бұл бағдарламаның дұрыс "
@@ -2772,6 +2776,13 @@ msgid ""
 msgstr ""
 "Бұл әрекет барлық таңдалған файлдар мен бумаларды, және таңдалған бумалардың "
 "ішіндегі барлық файлдарды нұсқаны басқару жүйесінен өшіреді."
+
+#~ msgid ""
+#~ "Whether to highlight syntax in comparisons. Because of Meld’s own color "
+#~ "highlighting, this is off by default."
+#~ msgstr ""
+#~ "Салыстыру кезінде синтаксисті ерекшелеу керек пе. Meld-тің өз түсті "
+#~ "ерекшелеуіне байланысты, бұл әдепкі бойынша сөндірілген."
 
 #~ msgid "Swap Left and Right Panes"
 #~ msgstr "Сол және оң жақ панельдерді ауыстыру"
