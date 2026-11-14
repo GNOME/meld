@@ -29,13 +29,6 @@ def get_install_languages():
     return [p.parents[1].name for p in mo_paths]
 
 
-def get_repo_path():
-    return subprocess.run(["git", "rev-parse", "--show-toplevel"],
-        encoding="utf-8",
-        capture_output=True,
-        text=True,
-    ).stdout.strip("\n")
-
 # NOTE: First attempt in path handling was to do this nicely and find the repo
 # root and do meson introspection and file copying relative to that. This
 # didn't work because the absolute paths somehow got mangled from being
@@ -43,8 +36,6 @@ def get_repo_path():
 # just using "../.." worked.
 
 def get_version() -> Version:
-    cwd = get_repo_path()
-
     projectinfo = json.loads(
         subprocess.run(
             ["meson", "introspect", "meson.build", "--projectinfo"],
@@ -65,7 +56,15 @@ def copy_repo_files():
     )
 
 
+def copy_gdbus_binaries():
+    shutil.copy2(
+        Path(sys.base_prefix) / "bin" / "gdbus.exe",
+        "./gdbus.exe",
+    )
+
+
 copy_repo_files()
+copy_gdbus_binaries()
 version = get_version()
 version_string = f"{version.major}.{version.minor}.{version.micro}"
 copyright = "Copyright © 2002-2006 Stephen Kennedy, 2008-2025 Kai Willadsen"
@@ -76,7 +75,9 @@ sys.path.insert(0, str(get_install_tree_library_path()))
 
 a = Analysis(
     ["bin/meld"],
-    binaries=[],
+    binaries=[
+        ("gdbus.exe", "."),
+    ],
     datas=[
         ("meld.ico", "."),
         ("share", "share"),
