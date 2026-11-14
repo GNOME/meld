@@ -2443,13 +2443,14 @@ class FileDiff(Gtk.Box, MeldDoc):
 
         self.confirm_unsaved_change_action(on_confirm=on_confirm)
 
-    def revert_pane(self, *extra):
-        pane = extra[0]
-        if not self.check_unsaved_changes(self.textbuffer[pane : pane + 1]):
-            return
+    def revert_pane(self, pane):
+        def on_confirm():
+            data = self.textbuffer[pane].data
+            self.set_file(pane, data.gfile, data.encoding)
 
-        data = self.textbuffer[pane].data
-        self.set_file(pane, data.gfile, data.encoding)
+        self.confirm_unsaved_change_action(
+            on_confirm=on_confirm, buffers=[self.textbuffer[pane]]
+        )
 
     def action_refresh(self, *extra):
         self.refresh_comparison()
