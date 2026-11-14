@@ -71,6 +71,6 @@ class SavedWindowState(GObject.GObject):
                 self.props.is_maximized = is_maximized
 
         if event.name == "fullscreen":
-            is_fullscreen = window.is_fullscreen
+            is_fullscreen = window.is_fullscreen()
             if is_fullscreen != self.props.is_fullscreen:
                 self.props.is_fullscreen = is_fullscreen
