@@ -56,7 +56,15 @@ def copy_repo_files():
     )
 
 
+def copy_gdbus_binaries():
+    shutil.copy2(
+        Path(sys.base_prefix) / "bin" / "gdbus.exe",
+        "./gdbus.exe",
+    )
+
+
 copy_repo_files()
+copy_gdbus_binaries()
 version = get_version()
 version_string = f"{version.major}.{version.minor}.{version.micro}"
 copyright = "Copyright © 2002-2006 Stephen Kennedy, 2008-2025 Kai Willadsen"
@@ -67,7 +75,9 @@ sys.path.insert(0, str(get_install_tree_library_path()))
 
 a = Analysis(
     ["bin/meld"],
-    binaries=[],
+    binaries=[
+        ("gdbus.exe", "."),
+    ],
     datas=[
         ("meld.ico", "."),
         ("share", "share"),
