@@ -58,6 +58,7 @@ class MeldWindow(Adw.ApplicationWindow):
     previous_conflict_button = Gtk.Template.Child()
     spinner = Gtk.Template.Child()
     text_filter_button: Gtk.Button = Gtk.Template.Child()
+    text_display_button: Gtk.Button = Gtk.Template.Child()
     vc_filter_button: Gtk.Button = Gtk.Template.Child()
     view_toolbar = Gtk.Template.Child()
 

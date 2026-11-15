@@ -251,6 +251,7 @@ class NewDiffTab(Gtk.Box):
 
     def on_container_switch_in_event(self, window):
         window.text_filter_button.set_visible(False)
+        window.text_display_button.set_visible(False)
         window.folder_filter_button.set_visible(False)
         window.vc_filter_button.set_visible(False)
         window.next_conflict_button.set_visible(False)

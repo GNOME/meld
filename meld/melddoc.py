@@ -119,6 +119,7 @@ class MeldDoc(GObject.GObject):
             show_conflict_actions = False
 
         window.text_filter_button.set_visible(text)
+        window.text_display_button.set_visible(text)
         window.folder_filter_button.set_visible(folder)
         window.vc_filter_button.set_visible(vc)
 

@@ -318,7 +318,10 @@ class FileDiff(Gtk.Box, MeldDoc):
         self.in_nested_textview_gutter_expose = False
         self._cached_match = CachedSequenceMatcher(self.scheduler)
 
-        # Set up property actions for statusbar toggles
+        # Set up per-view action group for top-level menu insertion
+        self.view_action_group = Gio.SimpleActionGroup()
+
+        # Set up property actions for display toggles
         sourceview_prop_actions = [
             "draw-spaces-bool",
             "highlight-current-line-local",
@@ -326,14 +329,9 @@ class FileDiff(Gtk.Box, MeldDoc):
             "wrap-mode-bool",
         ]
 
-        prop_action_group = Gio.SimpleActionGroup()
         for prop in sourceview_prop_actions:
             action = make_multiobject_property_action(self.textview, prop)
-            prop_action_group.add_action(action)
-        self.insert_action_group("view-local", prop_action_group)
-
-        # Set up per-view action group for top-level menu insertion
-        self.view_action_group = Gio.SimpleActionGroup()
+            self.view_action_group.add_action(action)
 
         property_actions = (
             ("show-overview-map", self, "show-overview-map"),
