@@ -636,6 +636,11 @@ class FileDiff(Gtk.Box, MeldDoc):
         for textview in self.textview:
             textview.set_sensitive(True)
         for buf in self.textbuffer:
+            # Disconnect any leftover handlers. This can happen if comparisons
+            # overlap (e.g., the comparison is refreshed before it has
+            # finished running).
+            for h in getattr(buf, "handlers", []):
+                buf.disconnect(h)
             id0 = buf.connect("insert-text", self.on_text_insert_text)
             id1 = buf.connect("delete-range", self.on_text_delete_range)
             id2 = buf.connect_after("insert-text", self.after_text_insert_text)
