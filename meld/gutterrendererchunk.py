@@ -116,10 +116,6 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
         y, height = lines.get_line_yrange(
             line, GtkSource.GutterRendererAlignmentMode.CELL
         )
-        # Adjustment because we want to stroke the bottom border. This needs
-        # to match do_snapshot_layer in meld.sourceview or things will not
-        # align correctly.
-        height += 1
 
         if chunk and chunk[1] != chunk[2]:
             if self.props.view.current_chunk_check(chunk):
@@ -130,6 +126,11 @@ class GutterRendererChunkLines(GtkSource.GutterRendererText):
             rect = Graphene.Rect()
             rect.init(x, y + 1, width, height)
             snapshot.append_color(background_rgba, rect)
+
+        # Adjustment because we want to stroke the bottom border. This needs
+        # to match do_snapshot_layer in meld.sourceview or things will not
+        # align correctly.
+        height += 1
 
         # If we don't have a chunk, we don't draw any borders
         if chunk:
