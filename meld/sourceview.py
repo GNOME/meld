@@ -361,7 +361,7 @@ class MeldSourceView(GtkSource.View, SourceViewHelperMixin):
 
         bounds = (start_line, end_line)
 
-        x = 0
+        x = visible_rect.x
         width = self.get_width() + 1
 
         rect = Graphene.Rect()
